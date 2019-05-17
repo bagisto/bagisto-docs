@@ -217,17 +217,80 @@ public function boot()
 ```
 </code></pre></div></div>
 
+<p><img src="assets/images/Bagisto_Docs_Images/Events/define-event.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
+
 <h4 id="manually-registering-listeners">Manually Registering Listeners</h4>
 
 <p>As we see above, in registering events we specify listener function to be executed when event is called so on every event a listener function is to be executed</p>
 
 <h3 id="how-we-specify-events">How we specify events?</h3>
 
-<p>In most of repositories’s CRUD operation functions. We had fired an event before and after the execution of function.</p>
+<p>In most of CRUD operation. We had fired an event before and after the execution of function. So, that if some one want to perform any operation after or before product create/update/delete can perform by simply calling a listener function in event registration</p>
 
 <p><img src="/docs/assets/images/Bagisto_Docs_Images/Events/create-event-before-after.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
 
 <p><img src="/docs/assets/images/Bagisto_Docs_Images/Events/delete-event-before-after.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
+
+<h2 id="events-used-in-bagisto">Events used in Bagisto</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Events name</th>
+      <th>functionality</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Admin</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>checkout.order.save.after</td>
+      <td>This event will be fire after order creation and listen in <code class="highlighter-rouge">ProductFlat</code> listener file to send new order mail from <code class="highlighter-rouge">sendNewOrderMail</code> function</td>
+    </tr>
+    <tr>
+      <td>sales.invoice.save.after</td>
+      <td>This event will be fire after invoice details have been saved and listen in <code class="highlighter-rouge">ProductFlat</code> listener file to send new invoice mail from <code class="highlighter-rouge">sendNewInvoiceMail</code> function</td>
+    </tr>
+    <tr>
+      <td>sales.shipment.save.after</td>
+      <td>This event will be fire after shipment details have been saved and listen in <code class="highlighter-rouge">ProductFlat</code> listener file to send new shipment mail from <code class="highlighter-rouge">sendNewShipmentMail</code> function</td>
+    </tr>
+    <tr>
+      <td>checkout.order.save.after</td>
+      <td>This event will be fire after order has been created  and will listen in <code class="highlighter-rouge">ProductFlat</code> listener file  to update product inventory from <code class="highlighter-rouge">updateProductInventory</code> function</td>
+    </tr>
+    <tr>
+      <td>products.datagrid.sync (nOT CLEAR )</td>
+      <td>This event will be fire after attribute creation and listen in <code class="highlighter-rouge">ProductFlat</code> listener file  from <code class="highlighter-rouge">afterAttributeCreatedUpdated</code> function</td>
+    </tr>
+    <tr>
+      <td>Product</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>catalog.attribute.create.after</td>
+      <td>This event will be fire after attribute has created and listen in <code class="highlighter-rouge">ProductFlat</code> listener file  from <code class="highlighter-rouge">afterAttributeCreatedUpdated</code> function</td>
+    </tr>
+    <tr>
+      <td>catalog.attribute.update.after</td>
+      <td>This event will be fire after attribute has updated and listen in <code class="highlighter-rouge">ProductFlat</code> listener file  from <code class="highlighter-rouge">afterAttributeCreatedUpdated</code> function</td>
+    </tr>
+    <tr>
+      <td>catalog.attribute.delete.before</td>
+      <td>This event will be fire before attribute has been delete and listen in <code class="highlighter-rouge">ProductFlat</code> listener file  from <code class="highlighter-rouge">afterAttributeDeleted</code> function</td>
+    </tr>
+    <tr>
+      <td>catalog.product.create.after</td>
+      <td>This event will be fire after product has been creation and listen in <code class="highlighter-rouge">ProductFlat</code> listener file  from <code class="highlighter-rouge">afterProductCreatedUpdated</code> function</td>
+    </tr>
+    <tr>
+      <td>catalog.product.update.after</td>
+      <td>This event will be fire after product has been updated and listen in <code class="highlighter-rouge">ProductFlat</code> listener file  from <code class="highlighter-rouge">afterProductCreatedUpdated</code> function</td>
+    </tr>
+  </tbody>
+</table>
 
                     </div>
                 </div>
