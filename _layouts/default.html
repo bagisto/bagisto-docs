@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+
+        <title>{{ page.title }}</title>
+
+        <link rel="stylesheet" href="assets/scss/layout.css" />
+    </head>
+    <body>
+        <div class="container">
+            <div class="content-wrapper">
+                {% include header.html %}
+
+                <div class="content">
+                    <div class="side-menu">
+                        {% include sidebar.html %}
+                    </div>
+
+                    <div class="right-content">
+                        {{ content }}
+                    </div>
+                </div>
+
+                {% include footer.html %}
+            </div>
+        </div>
+    </body>
+</html>

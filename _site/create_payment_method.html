@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+
+        <title>Creating Payment method-Bagisto</title>
+
+        <link rel="stylesheet" href="assets/scss/layout.css" />
+    </head>
+    <body>
+        <div class="container">
+            <div class="content-wrapper">
+                <header class="header">
+    <div class="logo-wrapper">
+        <a href="/docs/"><img class="logo" src="assets/images/logo.png" /></a>
+    </div>
+
+    <nav class="menu-list">
+        <ul>
+            <!-- <li>
+                <a href="">Learn</a>
+            </li>
+
+            <li>
+                <a href="">Ecosystem</a>
+            </li>
+
+            <li>
+                <a href="">Team</a>
+            </li>
+
+            <li>
+                <a href="">Translations</a>
+            </li> -->
+
+            <li>
+                <a href="https://github.com/bagisto/bagisto">Edit On Github</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+                <div class="content">
+                    <div class="side-menu">
+                        <div class="sidebar">
+    <ul>
+        <li><a href="introduction.html">Introduction</a>
+            <ul>
+                <li>
+                    <a href="#requirements">Requirements</a>
+                </li>
+
+                <li>
+                    <a href="#installation">Installation & configuration</a>
+                </li>
+
+                <li>
+                    <a href="#directory_structure">Directory structure</a>
+                </li>
+            </ul>
+        </li>
+
+        <!-- <li>
+            <a href="create_migration.html">Database Migrations</a>
+
+            <ul>
+                <li>
+                    <a href="#what-is-migration">What Is Migration ?</a>
+                </li>
+
+                <li>
+                    <a href="#create-migrations">How to create migrations ?</a>
+                </li>
+            </ul>
+        </li> -->
+
+        <!-- Module Development -->
+        <li>
+            <a href="create_module.html">Package development</a>
+
+            <ul>
+                <li>
+                    <a href="#how-to-create-module">Creating a package</a>
+                </li>
+
+                <li>
+                    <a href="#add-menu">Adding menu in backend & storefront</a>
+                </li>
+
+                <li>
+                    <a href="#create-acl">Creating ACL</a>
+                </li>
+
+                <!--
+                <li>
+                    <a href="#create-routes">Creating routes</a>
+                </li> -->
+
+                <li>
+                    <a href="#custom-configuration">Custom configuration</a>
+                </li>
+
+                <!-- <li>
+                    <a href="#view-render-for-menu">Rendering view for custom menu</a>
+                </li> -->
+
+                <li>
+                    <a href="#create_models">Creating models</a>
+                    <ul>
+                        <li>
+                            <a href="">Contracts, repositories & proxies</a>
+                        </li>
+
+                        <li>
+                            <a href="#store-data-through-repository">
+                                Store data with repository
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+        </li>
+
+
+        <li>
+            <a href="override-core-model.html">Advance topics</a>
+
+            <ul>
+                <li>
+                    <a href="override-core-model.html">Override core models</a>
+                </li>
+
+                <li>
+                    <a href="create_theme.html">Creating themes</a>
+                </li>
+
+                <li>
+                    <a href="create_shipping_method.html">Creating shipping method</a>
+                </li>
+
+                <li>
+                    <a href="create_payment_method.html">Creating Payment method</a>
+                </li>
+
+                <li>
+                    <a href="render_event.html">View render event</a>
+                </li>
+
+                <li>
+                    <a href="events.html">Events</a>
+                </li>
+
+                <li>
+                    <a href="listen_event.html">Listen existing events</a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a>User guide</a>
+
+            <ul>
+                <!-- User Guides -->
+                <li>
+                    <li>
+                        <a href="create_product.html">How to create product?</a>
+                    </li>
+
+                    <li>
+                        <a href="configure_settings.html">Configure settings</a>
+                    </li>
+
+                    <li>
+                        <a href="#add-currency">Create currencies</a>
+                    </li>
+
+                    <li>
+                        <a href="#add-locale">Create locales</a>
+                    </li>
+
+                    <li>
+                        <a href="#add-channel">Create channels</a>
+                    </li>
+
+                    <li>
+                        <a href="#add-language">Add translation files</a>
+                    </li>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+                    </div>
+
+                    <div class="right-content">
+                        <p>I hope that you know how to create package, if not(refer ( <a href="/docs/create_module.html">Package development</a>), and I will skip package development step</p>
+
+<p>Bagisto ease the task of payment method creation so novice to professional developers can easily create payment methods. As diversity payment method provide the options for customer when they proceed to checkout. On another perspective, multiple payment methods  is a great strategy to reach out the global marketplace.</p>
+
+<p>In this article, we will understand how to create payment method by own with just following below steps:</p>
+
+<h3 id="steps-to-create-payment-method">Steps to create payment method</h3>
+
+<ul>
+  <li>
+    <p>Following the module development process, firstly, you must create ‘Config’, ‘Database’
+‘Resources’, ‘Providers’, ‘Models’, ‘Payment’, ‘Repositories’, ‘Http’, ‘Listeners’ folders under src folder of your company’s namespace.</p>
+  </li>
+  <li>
+    <p>Within Config folder, contains all of your application’s configuration files. Let’s just create two files as ‘system.php’ and ‘paymentmethod.php’</p>
+
+    <ol>
+      <li>
+        <p>system.php</p>
+
+        <ul>
+          <li>
+            <p>Inside the file, you can include the below code as shown in image</p>
+
+            <p><img src="/docs/assets/images/Bagisto_Docs_Images/payment-config-1.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
+          </li>
+        </ul>
+
+        <p>#### Explanation for the keys:</p>
+
+        <ul>
+          <li>
+            <p><strong>key</strong> : these values provided are unique and nested with ‘.’ (dot) operator. After creation of two nested, other keys written are display in browser in form of accordian {figure needed}</p>
+          </li>
+          <li>
+            <p><strong>name</strong> : these keys accept the value as placeholder of your configuration. Generally, in bagisto, we consider writing it using translation.</p>
+          </li>
+          <li>
+            <p><strong>sort</strong> : these key accept the sort position for the configuration menu.</p>
+          </li>
+          <li>
+            <p><strong>fields</strong> : these key accepts the array for the value of custom configuration.</p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p><img src="/docs/assets/images/Bagisto_Docs_Images/payment-config-2.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>Within Database folder, the migration’s and seeder(if needed) files are stored.</p>
+  </li>
+  <li>
+    <p>Within Resources folder, contains your views as well as your raw, un-compiled assets such as  SASS, or JavaScript. This directory also houses all of your language files.</p>
+  </li>
+  <li>
+    <p>Within Providers folder, contains all of the service providers for your application. Service providers bootstrap your application by binding services in the service container, registering events, or performing any other tasks to prepare your application for incoming requests.</p>
+
+    <p>Here, in our case we have created two providers files i.e.,</p>
+
+    <ol>
+      <li>
+        <p>EventServiceProvider : In this file, events included with your application provides a convenient place to register all of your application’s event listeners.</p>
+      </li>
+      <li>
+        <p>PaymentServiceProvider : In this file, you may register all your configuration, language and routes within register and boot methods.</p>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>Within Models folder, the models are stored for the application.</p>
+  </li>
+  <li>
+    <p>Within Payment folder, write the code needed to operate your payment method</p>
+  </li>
+  <li>
+    <p>Within Repositories folder, create a file as ‘HelloWorldRepository.php’ which must extends   repository class</p>
+  </li>
+  <li>
+    <p>Within Http folder, define your routes and controller application.</p>
+  </li>
+  <li>
+    <p>Within Listeners folder, this folder incudes listender files to listen respective events.</p>
+  </li>
+</ul>
+
+<h3 id="an-explanation-for-these-parameters">An Explanation For These Parameters:</h3>
+
+<h3 id="an-explanation-for-these-parameters-1">An Explanation For These Parameters:</h3>
+
+<ul>
+  <li>
+    <p><strong>code</strong> : a text to represent payment method</p>
+  </li>
+  <li>
+    <p><strong>title</strong> : in this field, the name of payment method is specified</p>
+  </li>
+  <li>
+    <p><strong>description</strong> : a brief description of payment method.</p>
+  </li>
+  <li>
+    <p><strong>class</strong> : this field includes the class namespace where all functions of payment                method is written</p>
+  </li>
+  <li>
+    <p><strong>sandbox</strong> :</p>
+  </li>
+  <li>
+    <p><strong>active</strong> : this field accepts true/false to enable or disbale module.</p>
+  </li>
+</ul>
+
+
+                    </div>
+                </div>
+
+                <footer>
+    &copy; 2019 Webkul
+
+    <!--<a style="text-align: center;
+    justify-content: center;
+    display: flex;" href="https://laravel.com/docs/5.8">Laravel Documentation</a>-->
+</footer>
+            </div>
+        </div>
+    </body>
+</html>
