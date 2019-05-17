@@ -46,7 +46,6 @@ In most of CRUD operation. We had fired an event before and after the execution 
 
 
 
-
 ## Events used in Bagisto
 
 
