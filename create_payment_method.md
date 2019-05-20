@@ -3,6 +3,8 @@ title: Creating Payment method-Bagisto
 layout: default
 ---
 
+## Payment Method <span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px"/> <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_payment_method.md">Edit On github</a></span>
+
 I hope that you know how to create package, if not(refer ( [Package development](create_module.md)), and I will skip package development step
 
 Bagisto ease the task of payment method creation so novice to professional developers can easily create payment methods. As diversity payment method provide the options for customer when they proceed to checkout. On another perspective, multiple payment methods  is a great strategy to reach out the global marketplace.

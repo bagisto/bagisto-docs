@@ -3,7 +3,7 @@ title: Events-Bagisto
 layout: default
 ---
 
-## Events
+## Events<span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px"/> <a href="https://github.com/bagisto/bagisto-docs">Edit On github</a></span>
 
 Events provide a simple observer implementation which allows a user to subscribe and listen to various events triggered in the web application. All the event classes in Bagisto are stored in the `Providers` folder and the listeners are stored in the `Listeners` folder.
 
@@ -46,20 +46,16 @@ In most of CRUD operation. We had fired an event before and after the execution 
 
 
 
-
 ## Events used in Bagisto
 
 
 | Events name                     | functionality |
 | ------------------------------- | ------------- |
 |           :---:                 | :---:         |
-| Admin                           |               |
 | checkout.order.save.after       | This event will be fire after order creation and listen in `ProductFlat` listener file to send new order mail from `sendNewOrderMail` function  |
 | sales.invoice.save.after        | This event will be fire after invoice details have been saved and listen in `ProductFlat` listener file to send new invoice mail from `sendNewInvoiceMail` function  |
 | sales.shipment.save.after       | This event will be fire after shipment details have been saved and listen in `ProductFlat` listener file to send new shipment mail from `sendNewShipmentMail` function  |
 | checkout.order.save.after       | This event will be fire after order has been created  and will listen in `ProductFlat` listener file  to update product inventory from `updateProductInventory` function  |
-| products.datagrid.sync (nOT CLEAR )         | This event will be fire after attribute creation and listen in `ProductFlat` listener file  from `afterAttributeCreatedUpdated` function  |
-| Product                         |               |
 | catalog.attribute.create.after  | This event will be fire after attribute has created and listen in `ProductFlat` listener file  from `afterAttributeCreatedUpdated` function  |
 | catalog.attribute.update.after  | This event will be fire after attribute has updated and listen in `ProductFlat` listener file  from `afterAttributeCreatedUpdated` function  |
 | catalog.attribute.delete.before | This event will be fire before attribute has been delete and listen in `ProductFlat` listener file  from `afterAttributeDeleted` function  |

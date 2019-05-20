@@ -4,7 +4,7 @@ layout: default
 ---
 
 
-# Override core model
+# Override core model<span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px"/> <a href="https://github.com/bagisto/bagisto-docs/blob/master/override-core-model.md">Edit On github</a></span>
 
 Concord is a Laravel Extension that serves as a foundation to build modules for Laravel Applications on top of Laravel's built in Service Providers. Bagisto uses Concord for managing their modules. The concept of model proxies has been introduced. Proxies as their name state, will drive you to the actual model class.
 

@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
 
-        <title>Directory structure-Bagisto</title>
+        <title>DataGrid-Bagisto</title>
 
         <link rel="stylesheet" href="assets/scss/layout.css" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
@@ -187,66 +187,52 @@
                     </div>
 
                     <div class="right-content">
-                        <h2 id="directory-structure-edit-on-github">Directory Structure<span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px" /> <a class="nav-link" href="https://github.com/bagisto/bagisto-docs">Edit On github</a></span></h2>
+                        <h2 id="datagrid">DataGrid</h2>
 
-<ul>
-  <li>module-name/
-    <ul>
-      <li>Console/
-        <ul>
-          <li>Commands/</li>
-        </ul>
-      </li>
-      <li>Contracts/</li>
-      <li>Events/</li>
-      <li>Exceptions/</li>
-      <li>Helpers/</li>
-      <li>Http/
-        <ul>
-          <li>Controllers/</li>
-          <li>Middleware/</li>
-          <li>Requests/</li>
-          <li>Resources/</li>
-        </ul>
-      </li>
-      <li>Jobs/</li>
-      <li>Listeners/</li>
-      <li>Models/</li>
-      <li>Providers/
-        <ul>
-          <li>ModuleServiceProvider.php</li>
-          <li>EventServiceProvider.php</li>
-        </ul>
-      </li>
-      <li>Services/</li>
-      <li>resources/
-        <ul>
-          <li>assets/</li>
-          <li>config/
-            <ul>
-              <li>module.php</li>
-            </ul>
-          </li>
-          <li>database/
-            <ul>
-              <li>migrations/</li>
-              <li>seeds/</li>
-            </ul>
-          </li>
-          <li>lang/</li>
-          <li>routes/
-            <ul>
-              <li>api.php</li>
-              <li>web.php</li>
-            </ul>
-          </li>
-          <li>views/</li>
-          <li>manifest.php</li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-</ul>
+<h3 id="global-properties-of-datagrid">Global Properties of DataGrid</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>functionality</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>index</td>
+      <td>This variable is defined in our grid, and the value assign to this variable must be unique i.e., id so that data will be uniquely identified and operation  perform will be based on your index variable</td>
+    </tr>
+    <tr>
+      <td>sortOrder</td>
+      <td>sortOrder is used to arrange the order in ascending/descending in the dataGrid file, we have to set sortOrder variable to asc/desc</td>
+    </tr>
+    <tr>
+      <td>queryBuilder</td>
+      <td>It can be used to perform most database operations in your application</td>
+    </tr>
+    <tr>
+      <td>enableMassAction</td>
+      <td>this accept boolean values <code class="highlighter-rouge">true/false</code> to enable/disable the mass action on datagrid</td>
+    </tr>
+    <tr>
+      <td>enableAction</td>
+      <td>this accept boolean values <code class="highlighter-rouge">true/false</code> to enable/disable the action column of datagrid</td>
+    </tr>
+    <tr>
+      <td>paginate</td>
+      <td>While creating your grid file you have to declare paginate variable and set it to <code class="highlighter-rouge">true</code> to allow pagination on your page</td>
+    </tr>
+    <tr>
+      <td>itemsPerPage</td>
+      <td>In itemsPerPage, a numeric value is assigned to <code class="highlighter-rouge">itemsPerPage</code> variable to display items per page</td>
+    </tr>
+    <tr>
+      <td>enableFilterMap</td>
+      <td>this accept boolean values <code class="highlighter-rouge">true/false</code> to enable/disable the filter on the basis of columns</td>
+    </tr>
+  </tbody>
+</table>
 
                     </div>
                 </div>

@@ -3,6 +3,8 @@ title: Package development-Bagisto
 layout: default
 ---
 
+## Package  <span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px"/> <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_module.md">Edit On github</a></span>
+
 A package is like Laravel packages that includes views, controller and models. Packages are  created to manage your large laravel applications into smaller units. In the bagisto, we have created the plenty of packages at path `packages/Webkul/`. can refer bagisto's root directory shown's in fig
 
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/bagisto_root_directory.png){: height="50%" width="50%" .center}
@@ -40,8 +42,8 @@ Ex – Here namespace is specified as ACME
         /**
         * HelloWorld service provider
         *
-        * @author    Jane Doe <prateek.srivastava781@webkul.com>
-        * @copyright 2019 Webkul Software Pvt Ltd (http://www.webkul.com)
+        * @author    Jane Doe <janedoe@gmail.com>
+        * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
         */
         class HelloWorldServiceProvider extends ServiceProvider
         {
@@ -130,7 +132,7 @@ Now just like route file, we need to register our view folder inside service pro
 
 * Now, we need to create a route & render a view on that route.
 
-Go to Webkul->src->Http->routes.php file and create a route to render view
+Go to ACME->src->Http->routes.php file and create a route to render view
 
         ```php
         <?php
@@ -159,17 +161,14 @@ Now, we need to register the language file to service provider.
         public function boot()
         {
             $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'helloworld');
-
-            // $this->publishes([
-            //     __DIR__.'/../Resources/lang' => resource_path('lang/vendor/helloworld'),
-            // ]);
         }
         ```
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/translation-registration.png){: height="50%" width="50%" .center}
+
 
 Now we can write translation in app.php like below.
 
         ```php
+        <?php
         return [
             'hello-world' => [
                 'name' => 'Jane Doe'
@@ -177,16 +176,18 @@ Now we can write translation in app.php like below.
         ];
         ```
 
-And, to render the translation string in blade file we can include this line of code
+Add {{ __(‘helloworld::app.hello-world.name’) }} to your application’s view & it will automatically translate it.
 
-    {{ __('HelloWorld::app.hello-world.name') }}
-   [comment]: <(pending to do)>
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/translation-output.png){: height="50%" width="50%" .center}
 
 ### Step-9
 
-* Next, we will add styling for our package through CSS. To add css create ‘package.json’ and ‘webpack.mix.js’ file inside the package. Inside ‘Resources’ folder of package, create a folder name ‘assets’ & inside it create ‘sass’ folder & inside it create a file named as ‘app.scss’. This ‘app.scss’ will consist styling for the package.
+* Now we will add CSS to our package. To add CSS create ‘package.json’ file & ‘webpack.mix.js’ file inside the root of your package.
 
-‘package.json' file consist dependencies as
+Create a ‘Resources’ folder inside the ‘src’ folder. Inside ‘Resources’ folder creates a folder name ‘assests’& inside it create ‘sass’ folder & inside it create a folder name ‘app.scss’. This ‘app.scss’ will consist SASS for a package. In ‘package.json’ file, you can mention your npm dependencies.  Create a webpack.mix.js file, this will be used for compiling our assets.
+
+
+‘package.json' file consist
 
         ```javascript
         {
@@ -211,7 +212,7 @@ And, to render the translation string in blade file we can include this line of 
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/package-json.png){: height="50%" width="50%" .center}
 
 
- webpack.mix.js will be use for bundling the scripts & will include these lines of code
+ webpack.mix.js will consist
 
         ```javascript
         const { mix } = require("laravel-mix");
@@ -236,18 +237,14 @@ And, to render the translation string in blade file we can include this line of 
         }
         ```
 
+All dependency can be updated according to need.
 
+After doing this go to the root of your package & run ‘npm install’ which will install all dependencies. After installing dependencies run ‘npm run watch’, which will compile all your CSS & publish it inside public folder according to path mention in webpack.mix.js according to the environment.
 
-All dependencies can be updated according to need of your package.
+In the same way, we can also add images & js. Inside ‘assests’ folder of ‘Resources’, create two folders ‘js’ & ‘images’ in which create ‘app.js’ file for js & inside ‘images’ folder, download images.
 
-After performing the steps, go to your package & run ‘npm install’ in terminal which will install all dependency, after installing dependency run ‘npm run watch’ , which will compile all your css & publish it inside public folder of root according to path mention in webpack.mix.js
+Now we need to publish these two also as we did for CSS. We will add this too to our webpack.mix.js.
 
-In similar way, we can also add images & js. Inside ‘assets’ folder of ‘Resources’, create two folder ‘js’ & ‘images’ in which
-create ‘app.js’ file for js & inside ‘images’ folder, save the images required for your package.
-
-Now, we need to publish these two also as we did for CSS.
-
-We will add this too to our webpack.mix.js for package
 
         ```javascript
         mix.js(__dirname + "/src/Resources/assets/js/app.js", "js/helloworld.js")
@@ -259,29 +256,28 @@ We will add this too to our webpack.mix.js for package
 
 Once again, we need to run ‘npm run watch’ to compile assets.
 
-Now, we need to add a event listener so that admin layouts includes our css.
+After doing this we need to add an event listener so that admin layouts include our CSS. For this we need to add an Event Listener in service provider & Inside views create a folder called layouts & inside it create a file called ‘style.blade.php’ & mention compiled CSS path inside this file.
 
-For this we need to add event listener in service provider & inside views create a folder called layouts & inside it create a file called ‘style.blade.php’ & mention compiled css path inside this file.
+        ```html
+        <link rel="stylesheet"
+        href="{{ bagisto_asset('css/helloworld.css') }}">
+        ( In style.blade.php)
+        ```
+
+**For Event Listener –**
 
         ```php
         public function boot()
         {
             Event::listen('bagisto.admin.layout.head', function($viewRenderEventManager) {
-                $viewRenderEventManager->addTemplate
-                ('helloworld::helloworld.layouts.style');
+                $viewRenderEventManager->addTemplate('helloworld::helloworld.layouts.style');
             });
         }
         ```
 
+Now we need to extend admin::layouts.master as @extends(‘admin::layouts.master’) to packages/acme/HelloWorld/src/Resources & we can write CSS for our packages. If you don’t want to include this one then you need to create your own master file which includes your packages CSS & js.
 
-Now we need to use @extends directive of laravel to include master layout in our view file using:
-
-        ```php
-            @extends('admin::layouts.master')
-        ```
-
-If you don’t want to include this one then you need to create
-your own master file which includes your packages css & js.
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/layout-content.png){: height="50%" width="50%" .center}
 
 
 ### Step-10
