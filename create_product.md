@@ -3,7 +3,7 @@ title: Bagisto Introduction
 layout: default
 ---
 
-### How to Create Product<sup><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px"/> <a class="nav-link" href="https://github.com/bagisto/bagisto-docs">Edit On github</a></sup>
+### How to Create Product<span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px"/> <a class="nav-link" href="https://github.com/bagisto/bagisto-docs">Edit On github</a></span>
 
 Bagisto provide the feature to add product easily from novice to professional users by just following some simple steps. As every e-commerce platform needs product but adding product sometimes become clumsy and hard for novice users. Within bagisto, to create product you can refer to the below steps to create product
 

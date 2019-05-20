@@ -72,7 +72,8 @@ a:hover {
     .logo-wrapper a span {
         font-size: 19px;
         float: right;
-        margin-top: 18px;
+        margin-top: 17px;
+        padding-left: 5px;
     }
 
     .logo-wrapper a:hover{
@@ -115,6 +116,8 @@ a:hover {
     }
 }
 
+
+
 .content {
     display: flex;
     flex-direction: row;
@@ -128,8 +131,9 @@ a:hover {
         top: 71px;
         letter-spacing: -0.021em;
         padding-left: 0px;
-        height: 700px;
-        overflow: auto;
+        height: 600px;
+        overflow: scroll;
+        background-color: #F8F8FF;
         box-shadow: 5px 9px 12px -9px #888888;
         font-family: "Times New Roman", Times, serif !important;
 
@@ -210,5 +214,18 @@ td {
     border-width: 1px;
 }
 
+.menu-heading > a {
+    font-size: 18px;
+}
 
+.edit-github {
+    float: right;
+    font-size: 16px;
+    margin-top: 9px;
+    font-weight: normal;
+    box-shadow: 15px 14px 16px -9px #888888;
+    font-style: italic;
+    z-index: 2;
+    background-color: #ffffff;
+}
 

@@ -33,7 +33,6 @@
                 <div class="content">
                     <div class="side-menu">
                         <div class="sidebar">
-    <div class="accordion_container">
         <ul>
                 <!-- Introduction -->
                 <li class="menu-heading">
@@ -182,34 +181,13 @@
                     </ul>
                 </li> -->
         </ul>
-    </div>
 
 </div>
-
-<script>
-    $(document).ready(function() {
-        //toggle the component with class accordion_body
-        $(".accordion_head").click(function() {
-        if ($('.accordion_body').is(':visible')) {
-            $(".accordion_body").slideUp(300);
-            $(".plusminus").text('+');
-        }
-        if ($(this).next(".accordion_body").is(':visible')) {
-            $(this).next(".accordion_body").slideUp(300);
-            $(this).children(".plusminus").text('+');
-        } else {
-            $(this).next(".accordion_body").slideDown(300);
-            $(this).children(".plusminus").text('-');
-        }
-        });
-    });
-
-</script>
 
                     </div>
 
                     <div class="right-content">
-                        <h1 id="introduction---edit-on-github">Introduction <a id="bagisto"></a> <sup><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px" /> <a class="nav-link" href="https://github.com/bagisto/bagisto-docs/blob/master/introduction.md">Edit On github</a></sup></h1>
+                        <h1 id="introduction--edit-on-github">Introduction <a id="bagisto"></a><span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="20px" height="15px" /> <a href="https://github.com/bagisto/bagisto-docs/blob/master/introduction.md">Edit On github</a></span></h1>
 
 <p>Bagisto is a hand tailored E-Commerce framework designed on some of the hottest opensource technologies such as Laravel a PHP framework, Vue.js a progressive Javascript framework.</p>
 

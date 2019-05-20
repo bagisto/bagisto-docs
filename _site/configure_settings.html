@@ -33,7 +33,6 @@
                 <div class="content">
                     <div class="side-menu">
                         <div class="sidebar">
-    <div class="accordion_container">
         <ul>
                 <!-- Introduction -->
                 <li class="menu-heading">
@@ -182,36 +181,15 @@
                     </ul>
                 </li> -->
         </ul>
-    </div>
 
 </div>
-
-<script>
-    $(document).ready(function() {
-        //toggle the component with class accordion_body
-        $(".accordion_head").click(function() {
-        if ($('.accordion_body').is(':visible')) {
-            $(".accordion_body").slideUp(300);
-            $(".plusminus").text('+');
-        }
-        if ($(this).next(".accordion_body").is(':visible')) {
-            $(this).next(".accordion_body").slideUp(300);
-            $(this).children(".plusminus").text('+');
-        } else {
-            $(this).next(".accordion_body").slideDown(300);
-            $(this).children(".plusminus").text('-');
-        }
-        });
-    });
-
-</script>
 
                     </div>
 
                     <div class="right-content">
                         <h2 id="how-to-configure-settings">How to Configure Settings</h2>
 
-<h3 id="add-currency-edit-on-github">Add Currency<a id="add-currency"></a><sup><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px" /> <a class="nav-link" href="https://github.com/bagisto/bagisto-docs">Edit On github</a></sup></h3>
+<h3 id="add-currency-edit-on-github">Add Currency<a id="add-currency"></a><span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px" /> <a class="nav-link" href="https://github.com/bagisto/bagisto-docs">Edit On github</a></span></h3>
 
 <p>Before launching ecommerce store, it has been crucial decision to decide the currency to be used all over store. And, for providing ease to store owner to perform trade in multiple countries with their currency format</p>
 

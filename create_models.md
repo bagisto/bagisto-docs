@@ -2,7 +2,7 @@
 title: Bagisto Introduction
 layout: default
 ---
-# What is Contracts, Repositories and proxies ?<a id="#detail"></a><sup><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px"/> <a class="nav-link" href="https://github.com/bagisto/bagisto-docs">Edit On github</a></sup>
+# What is Contracts, Repositories and proxies ?<a id="#detail"></a><span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px"/> <a class="nav-link" href="https://github.com/bagisto/bagisto-docs">Edit On github</a></span>
 
 ## Contracts
 

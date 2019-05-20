@@ -3,7 +3,7 @@ title: Introduction-Bagisto
 layout: default
 ---
 
-# Introduction <a id="bagisto"></a> <sup><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px"/> <a class="nav-link" href="https://github.com/bagisto/bagisto-docs/blob/master/introduction.md">Edit On github</a></sup>
+# Introduction <a id="bagisto"></a><span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="20px" height="15px"/> <a href="https://github.com/bagisto/bagisto-docs/blob/master/introduction.md">Edit On github</a></span>
 
 
 Bagisto is a hand tailored E-Commerce framework designed on some of the hottest opensource technologies such as Laravel a PHP framework, Vue.js a progressive Javascript framework.

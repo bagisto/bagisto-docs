@@ -33,7 +33,6 @@
                 <div class="content">
                     <div class="side-menu">
                         <div class="sidebar">
-    <div class="accordion_container">
         <ul>
                 <!-- Introduction -->
                 <li class="menu-heading">
@@ -182,34 +181,13 @@
                     </ul>
                 </li> -->
         </ul>
-    </div>
 
 </div>
-
-<script>
-    $(document).ready(function() {
-        //toggle the component with class accordion_body
-        $(".accordion_head").click(function() {
-        if ($('.accordion_body').is(':visible')) {
-            $(".accordion_body").slideUp(300);
-            $(".plusminus").text('+');
-        }
-        if ($(this).next(".accordion_body").is(':visible')) {
-            $(this).next(".accordion_body").slideUp(300);
-            $(this).children(".plusminus").text('+');
-        } else {
-            $(this).next(".accordion_body").slideDown(300);
-            $(this).children(".plusminus").text('-');
-        }
-        });
-    });
-
-</script>
 
                     </div>
 
                     <div class="right-content">
-                        <h2 id="events-edit-on-github">Events<sup><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px" /> <a class="nav-link" href="https://github.com/bagisto/bagisto-docs">Edit On github</a></sup></h2>
+                        <h2 id="events-edit-on-github">Events<span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px" /> <a href="https://github.com/bagisto/bagisto-docs">Edit On github</a></span></h2>
 
 <p>Events provide a simple observer implementation which allows a user to subscribe and listen to various events triggered in the web application. All the event classes in Bagisto are stored in the <code class="highlighter-rouge">Providers</code> folder and the listeners are stored in the <code class="highlighter-rouge">Listeners</code> folder.</p>
 
@@ -257,10 +235,6 @@ public function boot()
   </thead>
   <tbody>
     <tr>
-      <td>Admin</td>
-      <td> </td>
-    </tr>
-    <tr>
       <td>checkout.order.save.after</td>
       <td>This event will be fire after order creation and listen in <code class="highlighter-rouge">ProductFlat</code> listener file to send new order mail from <code class="highlighter-rouge">sendNewOrderMail</code> function</td>
     </tr>
@@ -275,14 +249,6 @@ public function boot()
     <tr>
       <td>checkout.order.save.after</td>
       <td>This event will be fire after order has been created  and will listen in <code class="highlighter-rouge">ProductFlat</code> listener file  to update product inventory from <code class="highlighter-rouge">updateProductInventory</code> function</td>
-    </tr>
-    <tr>
-      <td>products.datagrid.sync (nOT CLEAR )</td>
-      <td>This event will be fire after attribute creation and listen in <code class="highlighter-rouge">ProductFlat</code> listener file  from <code class="highlighter-rouge">afterAttributeCreatedUpdated</code> function</td>
-    </tr>
-    <tr>
-      <td>Product</td>
-      <td> </td>
     </tr>
     <tr>
       <td>catalog.attribute.create.after</td>

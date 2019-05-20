@@ -33,7 +33,6 @@
                 <div class="content">
                     <div class="side-menu">
                         <div class="sidebar">
-    <div class="accordion_container">
         <ul>
                 <!-- Introduction -->
                 <li class="menu-heading">
@@ -182,34 +181,13 @@
                     </ul>
                 </li> -->
         </ul>
-    </div>
 
 </div>
-
-<script>
-    $(document).ready(function() {
-        //toggle the component with class accordion_body
-        $(".accordion_head").click(function() {
-        if ($('.accordion_body').is(':visible')) {
-            $(".accordion_body").slideUp(300);
-            $(".plusminus").text('+');
-        }
-        if ($(this).next(".accordion_body").is(':visible')) {
-            $(this).next(".accordion_body").slideUp(300);
-            $(this).children(".plusminus").text('+');
-        } else {
-            $(this).next(".accordion_body").slideDown(300);
-            $(this).children(".plusminus").text('-');
-        }
-        });
-    });
-
-</script>
 
                     </div>
 
                     <div class="right-content">
-                        <h1 id="what-is-migration-edit-on-github">What is Migration?<a id="what-is-migration"></a><sup><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px" /> <a class="nav-link" href="https://github.com/bagisto/bagisto-docs">Edit On github</a></sup></h1>
+                        <h1 id="what-is-migration-edit-on-github">What is Migration?<a id="what-is-migration"></a><span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px" /> <a class="nav-link" href="https://github.com/bagisto/bagisto-docs">Edit On github</a></span></h1>
 
 <p>Migrations are like version control for your database, allowing your team to easily modify and share the application’s database schema. Migrations are typically paired with Laravel’s schema builder to easily build your application’s database schema. If you have ever had to tell a teammate to manually add a column to their local database schema, you’ve faced the problem that database migrations solve.</p>
 
