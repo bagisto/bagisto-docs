@@ -6,36 +6,25 @@
         <title>Package development-Bagisto</title>
 
         <link rel="stylesheet" href="assets/scss/layout.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+
     </head>
     <body>
         <div class="container">
             <div class="content-wrapper">
                 <header class="header">
     <div class="logo-wrapper">
-        <a href="/docs/"><img class="logo" src="assets/images/logo.png" /></a>
+        <a href="/docs/"><img class="logo" src="assets/images/logo.png" /><span>| Docs</span></a>
     </div>
 
     <nav class="menu-list">
         <ul>
-            <!-- <li>
-                <a href="">Learn</a>
+            <li>
+                <a class="nav-link" href="https://forums.bagisto.com/">Forum</a>
             </li>
-
             <li>
-                <a href="">Ecosystem</a>
-            </li>
-
-            <li>
-                <a href="">Team</a>
-            </li>
-
-            <li>
-                <a href="">Translations</a>
-            </li> -->
-
-            <li>
-               <img src="/docs/assets/images/Icon-Pencil-Large.svg"/>
-               <a href="https://github.com/bagisto/bagisto-docs">Improve this page</a>
+                <a class="nav-link" href="https://bagisto.com/en/blog/">Blogs</a>
             </li>
         </ul>
     </nav>
@@ -44,158 +33,185 @@
                 <div class="content">
                     <div class="side-menu">
                         <div class="sidebar">
-    <ul>
-        <li><a href="introduction.html">Introduction</a>
-            <ul>
-                <li>
-                    <a href="#requirements">Requirements</a>
-                </li>
+    <div class="accordion_container">
+        <ul>
+                <!-- Introduction -->
+                <li class="menu-heading">
+                    <a href="introduction.html">Introduction</a>
 
-                <li>
-                    <a href="#installation">Installation & configuration</a>
-                </li>
+                    <div class="horizontal-rule"></div>
 
-                <li>
-                    <a href="#directory_structure">Directory structure</a>
-                </li>
-            </ul>
-        </li>
-
-        <!-- <li>
-            <a href="create_migration.html">Database Migrations</a>
-
-            <ul>
-                <li>
-                    <a href="#what-is-migration">What Is Migration ?</a>
-                </li>
-
-                <li>
-                    <a href="#create-migrations">How to create migrations ?</a>
-                </li>
-            </ul>
-        </li> -->
-
-        <!-- Module Development -->
-        <li>
-            <a href="create_module.html">Package development</a>
-
-            <ul>
-                <li>
-                    <a href="#how-to-create-module">Creating a package</a>
-                </li>
-
-                <li>
-                    <a href="#add-menu">Adding menu in backend & storefront</a>
-                </li>
-
-                <li>
-                    <a href="#create-acl">Creating ACL</a>
-                </li>
-
-                <!--
-                <li>
-                    <a href="#create-routes">Creating routes</a>
-                </li> -->
-
-                <li>
-                    <a href="#custom-configuration">Custom configuration</a>
-                </li>
-
-                <!-- <li>
-                    <a href="#view-render-for-menu">Rendering view for custom menu</a>
-                </li> -->
-
-                <li>
-                    <a href="#create_models">Creating models</a>
-                    <ul>
+                    <ul class="sub-menu">
                         <li>
-                            <a href="">Contracts, repositories & proxies</a>
+                            <a href="#requirements">Requirements</a>
                         </li>
 
                         <li>
-                            <a href="#store-data-through-repository">
-                                Store data with repository
-                            </a>
+                            <a href="#installation">Installation & configuration</a>
+                        </li>
+
+                        <li>
+                            <a href="#directory_structure">Directory structure</a>
                         </li>
                     </ul>
                 </li>
-            </ul>
-
-        </li>
 
 
-        <li>
-            <a href="override-core-model.html">Advance topics</a>
+                <!-- Module Development -->
+                <li class="menu-heading">
+                    <a href="create_module.html">Package development</a>
 
-            <ul>
-                <li>
-                    <a href="override-core-model.html">Override core models</a>
+                    <div class="horizontal-rule"></div>
+
+                    <ul class="sub-menu">
+                        <li>
+                            <a href="#how-to-create-module">Creating a package</a>
+                        </li>
+
+                        <li>
+                            <a href="#add-menu">Adding menu in backend & storefront</a>
+                        </li>
+
+                        <li>
+                            <a href="#create-acl">Creating ACL</a>
+                        </li>
+
+                        <!--
+                        <li>
+                            <a href="#create-routes">Creating routes</a>
+                        </li> -->
+
+                        <li>
+                            <a href="#custom-configuration">Custom configuration</a>
+                        </li>
+
+                        <!-- <li>
+                            <a href="#view-render-for-menu">Rendering view for custom menu</a>
+                        </li> -->
+
+                        <li>
+                            <a href="#create_models">Creating models</a>
+
+                            <ul>
+                                <li>
+                                    <a href="">Contracts, repositories & proxies</a>
+                                </li>
+
+                                <li>
+                                    <a href="#store-data-through-repository">
+                                        Store data with repository
+                                    </a>
+                                </li>
+                            </ul>
+
+                        </li>
+                    </ul>
                 </li>
 
-                <li>
-                    <a href="create_theme.html">Creating themes</a>
+
+                <li class="menu-heading">
+                    <a href="override-core-model.html">Advance topics</a>
+
+                    <div class="horizontal-rule"></div>
+
+                    <ul class="sub-menu">
+                        <li>
+                            <a href="override-core-model.html">Override core models</a>
+                        </li>
+
+                        <li>
+                            <a href="create_theme.html">Creating themes</a>
+                        </li>
+
+                        <li>
+                            <a href="create_shipping_method.html">Creating shipping method</a>
+                        </li>
+
+                        <li>
+                            <a href="create_payment_method.html">Creating Payment method</a>
+                        </li>
+
+                        <li>
+                            <a href="render_event.html">View render event</a>
+                        </li>
+
+                        <li>
+                            <a href="events.html">Events</a>
+                        </li>
+
+                        <li>
+                            <a href="listen_event.html">Listen existing events</a>
+                        </li>
+
+                        <li>
+                            <a href="data_grid.html">Data Grid</a>
+                        </li>
+                    </ul>
                 </li>
 
-                <li>
-                    <a href="create_shipping_method.html">Creating shipping method</a>
-                </li>
+                <!-- <li>
+                    <a>User guide</a>
 
-                <li>
-                    <a href="create_payment_method.html">Creating Payment method</a>
-                </li>
+                    <ul>
+                        User Guides
+                        <li>
+                            <li>
+                                <a href="create_product.html">How to create product?</a>
+                            </li>
 
-                <li>
-                    <a href="render_event.html">View render event</a>
-                </li>
+                            <li>
+                                <a href="configure_settings.html">Configure settings</a>
+                            </li>
 
-                <li>
-                    <a href="events.html">Events</a>
-                </li>
+                            <li>
+                                <a href="#add-currency">Create currencies</a>
+                            </li>
 
-                <li>
-                    <a href="listen_event.html">Listen existing events</a>
-                </li>
-            </ul>
-        </li>
+                            <li>
+                                <a href="#add-locale">Create locales</a>
+                            </li>
 
-        <li>
-            <a>User guide</a>
+                            <li>
+                                <a href="#add-channel">Create channels</a>
+                            </li>
 
-            <ul>
-                <!-- User Guides -->
-                <li>
-                    <li>
-                        <a href="create_product.html">How to create product?</a>
-                    </li>
+                            <li>
+                                <a href="#add-language">Add translation files</a>
+                            </li>
+                        </li>
+                    </ul>
+                </li> -->
+        </ul>
+    </div>
 
-                    <li>
-                        <a href="configure_settings.html">Configure settings</a>
-                    </li>
-
-                    <li>
-                        <a href="#add-currency">Create currencies</a>
-                    </li>
-
-                    <li>
-                        <a href="#add-locale">Create locales</a>
-                    </li>
-
-                    <li>
-                        <a href="#add-channel">Create channels</a>
-                    </li>
-
-                    <li>
-                        <a href="#add-language">Add translation files</a>
-                    </li>
-                </li>
-            </ul>
-        </li>
-    </ul>
 </div>
+
+<script>
+    $(document).ready(function() {
+        //toggle the component with class accordion_body
+        $(".accordion_head").click(function() {
+        if ($('.accordion_body').is(':visible')) {
+            $(".accordion_body").slideUp(300);
+            $(".plusminus").text('+');
+        }
+        if ($(this).next(".accordion_body").is(':visible')) {
+            $(this).next(".accordion_body").slideUp(300);
+            $(this).children(".plusminus").text('+');
+        } else {
+            $(this).next(".accordion_body").slideDown(300);
+            $(this).children(".plusminus").text('-');
+        }
+        });
+    });
+
+</script>
+
                     </div>
 
                     <div class="right-content">
-                        <p>A package is like Laravel packages that includes views, controller and models. Packages are  created to manage your large laravel applications into smaller units. In the bagisto, we have created the plenty of packages at path <code class="highlighter-rouge">packages/Webkul/</code>. can refer bagisto’s root directory shown’s in fig</p>
+                        <h2 id="package---edit-on-github">Package  <sup><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px" /> <a class="nav-link" href="https://github.com/bagisto/bagisto-docs/blob/master/create_module.md">Edit On github</a></sup></h2>
+
+<p>A package is like Laravel packages that includes views, controller and models. Packages are  created to manage your large laravel applications into smaller units. In the bagisto, we have created the plenty of packages at path <code class="highlighter-rouge">packages/Webkul/</code>. can refer bagisto’s root directory shown’s in fig</p>
 
 <p><img src="/docs/assets/images/Bagisto_Docs_Images/bagisto_root_directory.png" alt="Bagisto Root Directory" height="50%" width="50%" class="center" /></p>
 
@@ -241,8 +257,8 @@ Ex – Here namespace is specified as ACME</li>
  <span class="sd">/**
  * HelloWorld service provider
  *
- * @author    Jane Doe &lt;prateek.srivastava781@webkul.com&gt;
- * @copyright 2019 Webkul Software Pvt Ltd (http://www.webkul.com)
+ * @author    Jane Doe &lt;janedoe@gmail.com&gt;
+ * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
  */</span>
  <span class="k">class</span> <span class="nc">HelloWorldServiceProvider</span> <span class="k">extends</span> <span class="nx">ServiceProvider</span>
  <span class="p">{</span>
@@ -348,7 +364,7 @@ public function boot()
   <li>Now, we need to create a route &amp; render a view on that route.</li>
 </ul>
 
-<p>Go to Webkul-&gt;src-&gt;Http-&gt;routes.php file and create a route to render view</p>
+<p>Go to ACME-&gt;src-&gt;Http-&gt;routes.php file and create a route to render view</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    ```php
     &lt;?php
@@ -379,17 +395,14 @@ public function boot()
     public function boot()
     {
         $this-&gt;loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'helloworld');
-
-        // $this-&gt;publishes([
-        //     __DIR__.'/../Resources/lang' =&gt; resource_path('lang/vendor/helloworld'),
-        // ]);
     }
-    ``` ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/translation-registration.png){: height="50%" width="50%" .center}
+    ```
 </code></pre></div></div>
 
 <p>Now we can write translation in app.php like below.</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    ```php
+    &lt;?php
     return [
         'hello-world' =&gt; [
             'name' =&gt; 'Jane Doe'
@@ -398,15 +411,19 @@ public function boot()
     ```
 </code></pre></div></div>
 
-<p>And, to render the translation string in blade file we can include this line of code</p>
+<p>Add  to your application’s view &amp; it will automatically translate it.</p>
+
+<p><img src="/docs/assets/images/Bagisto_Docs_Images/PackageDevelopment/translation-output.png" alt="Bagisto Root Directory" height="50%" width="50%" class="center" /></p>
 
 <h3 id="step-9">Step-9</h3>
 
 <ul>
-  <li>Next, we will add styling for our package through CSS. To add css create ‘package.json’ and ‘webpack.mix.js’ file inside the package. Inside ‘Resources’ folder of package, create a folder name ‘assets’ &amp; inside it create ‘sass’ folder &amp; inside it create a file named as ‘app.scss’. This ‘app.scss’ will consist styling for the package.</li>
+  <li>Now we will add CSS to our package. To add CSS create ‘package.json’ file &amp; ‘webpack.mix.js’ file inside the root of your package.</li>
 </ul>
 
-<p>‘package.json’ file consist dependencies as</p>
+<p>Create a ‘Resources’ folder inside the ‘src’ folder. Inside ‘Resources’ folder creates a folder name ‘assests’&amp; inside it create ‘sass’ folder &amp; inside it create a folder name ‘app.scss’. This ‘app.scss’ will consist SASS for a package. In ‘package.json’ file, you can mention your npm dependencies.  Create a webpack.mix.js file, this will be used for compiling our assets.</p>
+
+<p>‘package.json’ file consist</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    ```javascript
     {
@@ -431,7 +448,7 @@ public function boot()
 
 <p><img src="/docs/assets/images/Bagisto_Docs_Images/PackageDevelopment/package-json.png" alt="Bagisto Root Directory" height="50%" width="50%" class="center" /></p>
 
-<p>webpack.mix.js will be use for bundling the scripts &amp; will include these lines of code</p>
+<p>webpack.mix.js will consist</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    ```javascript
     const { mix } = require("laravel-mix");
@@ -457,16 +474,13 @@ public function boot()
     ```
 </code></pre></div></div>
 
-<p>All dependencies can be updated according to need of your package.</p>
+<p>All dependency can be updated according to need.</p>
 
-<p>After performing the steps, go to your package &amp; run ‘npm install’ in terminal which will install all dependency, after installing dependency run ‘npm run watch’ , which will compile all your css &amp; publish it inside public folder of root according to path mention in webpack.mix.js</p>
+<p>After doing this go to the root of your package &amp; run ‘npm install’ which will install all dependencies. After installing dependencies run ‘npm run watch’, which will compile all your CSS &amp; publish it inside public folder according to path mention in webpack.mix.js according to the environment.</p>
 
-<p>In similar way, we can also add images &amp; js. Inside ‘assets’ folder of ‘Resources’, create two folder ‘js’ &amp; ‘images’ in which
-create ‘app.js’ file for js &amp; inside ‘images’ folder, save the images required for your package.</p>
+<p>In the same way, we can also add images &amp; js. Inside ‘assests’ folder of ‘Resources’, create two folders ‘js’ &amp; ‘images’ in which create ‘app.js’ file for js &amp; inside ‘images’ folder, download images.</p>
 
-<p>Now, we need to publish these two also as we did for CSS.</p>
-
-<p>We will add this too to our webpack.mix.js for package</p>
+<p>Now we need to publish these two also as we did for CSS. We will add this too to our webpack.mix.js.</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    ```javascript
     mix.js(__dirname + "/src/Resources/assets/js/app.js", "js/helloworld.js")
@@ -478,30 +492,30 @@ create ‘app.js’ file for js &amp; inside ‘images’ folder, save the image
 
 <p>Once again, we need to run ‘npm run watch’ to compile assets.</p>
 
-<p>Now, we need to add a event listener so that admin layouts includes our css.</p>
+<p>After doing this we need to add an event listener so that admin layouts include our CSS. For this we need to add an Event Listener in service provider &amp; Inside views create a folder called layouts &amp; inside it create a file called ‘style.blade.php’ &amp; mention compiled CSS path inside this file.</p>
 
-<p>For this we need to add event listener in service provider &amp; inside views create a folder called layouts &amp; inside it create a file called ‘style.blade.php’ &amp; mention compiled css path inside this file.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    ```html
+    &lt;link rel="stylesheet"
+    href=""&gt;
+    ( In style.blade.php)
+    ```
+</code></pre></div></div>
+
+<p><strong>For Event Listener –</strong></p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    ```php
     public function boot()
     {
         Event::listen('bagisto.admin.layout.head', function($viewRenderEventManager) {
-            $viewRenderEventManager-&gt;addTemplate
-            ('helloworld::helloworld.layouts.style');
+            $viewRenderEventManager-&gt;addTemplate('helloworld::helloworld.layouts.style');
         });
     }
     ```
 </code></pre></div></div>
 
-<p>Now we need to use @extends directive of laravel to include master layout in our view file using:</p>
+<p>Now we need to extend admin::layouts.master as @extends(‘admin::layouts.master’) to packages/acme/HelloWorld/src/Resources &amp; we can write CSS for our packages. If you don’t want to include this one then you need to create your own master file which includes your packages CSS &amp; js.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    ```php
-        @extends('admin::layouts.master')
-    ```
-</code></pre></div></div>
-
-<p>If you don’t want to include this one then you need to create
-your own master file which includes your packages css &amp; js.</p>
+<p><img src="/docs/assets/images/Bagisto_Docs_Images/PackageDevelopment/layout-content.png" alt="Bagisto Root Directory" height="50%" width="50%" class="center" /></p>
 
 <h3 id="step-10">Step-10</h3>
 
@@ -787,14 +801,6 @@ write the model method for repository class and under the method return path of 
 
                     </div>
                 </div>
-
-                <footer>
-    &copy; 2019 Webkul
-
-    <!--<a style="text-align: center;
-    justify-content: center;
-    display: flex;" href="https://laravel.com/docs/5.8">Laravel Documentation</a>-->
-</footer>
             </div>
         </div>
     </body>

@@ -5,7 +5,7 @@ layout: default
 
 ## How to Configure Settings
 
-### Add Currency<a id="add-currency"></a>
+### Add Currency<a id="add-currency"></a><sup><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px"/> <a class="nav-link" href="https://github.com/bagisto/bagisto-docs">Edit On github</a></sup>
 
 Before launching ecommerce store, it has been crucial decision to decide the currency to be used all over store. And, for providing ease to store owner to perform trade in multiple countries with their currency format
 

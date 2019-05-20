@@ -3,7 +3,9 @@ title: Introduction-Bagisto
 layout: default
 ---
 
-# Introduction <a id="bagisto"></a>
+# Introduction <a id="bagisto"></a> <sup><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px"/> <a class="nav-link" href="https://github.com/bagisto/bagisto-docs/blob/master/introduction.md">Edit On github</a></sup>
+
+
 Bagisto is a hand tailored E-Commerce framework designed on some of the hottest opensource technologies such as Laravel a PHP framework, Vue.js a progressive Javascript framework.
 
 Bagisto is viable attempt to cut down your time, cost and workforce for building online stores or migrating from physical stores to the ever demanding online world. Your business whether small or huge it suits all and very simple to set it up. Built on top of Laravel, it is coupled with easy product information management. The framework is very flexible and easy to use even for non-tech users.

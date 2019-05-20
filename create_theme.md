@@ -2,6 +2,9 @@
 title: Creating themes-Bagisto
 layout: default
 ---
+
+## Create Theme<sup><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px"/> <a class="nav-link" href="https://github.com/bagisto/bagisto-docs/blob/master/create_theme.md">Edit On github</a></sup>
+
 I hope that you know how to create package, if not(refer ( [Package development](create_module.md)), and I will skip package development step
 
 Creating a custom theme for Bagisto had been a hot topic lately. More and more users are actively trying our framework and we’re genuinely overwhelmed by it.
