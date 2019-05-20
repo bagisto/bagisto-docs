@@ -189,6 +189,8 @@
                     <div class="right-content">
                         <h2 id="datagrid">DataGrid</h2>
 
+<p>DataGrid is just a concept of displaying your database records in tabular format. We have implemented this system in bagisto either you can use it to display data in tabular format or write code from scratch to display data in tabular format. In addition to datagrid, we have implemented additional features such as - sorting, filter, massAction . You may refer to below table for detail information about the features.</p>
+
 <h3 id="global-properties-of-datagrid">Global Properties of DataGrid</h3>
 
 <table>
@@ -201,7 +203,7 @@
   <tbody>
     <tr>
       <td>index</td>
-      <td>This variable is defined in our grid, and the value assign to this variable must be unique i.e., id so that data will be uniquely identified and operation  perform will be based on your index variable</td>
+      <td>This variable is defined in  grid, and the value assign to this variable must be unique i.e., id so that data will be uniquely identified and operation  perform will be based on your index variable</td>
     </tr>
     <tr>
       <td>sortOrder</td>
@@ -233,6 +235,118 @@
     </tr>
   </tbody>
 </table>
+
+<h2 id="steps-for-how-to-create-datagrid">Steps for how to create DataGrid</h2>
+
+<ol>
+  <li>
+    <p>Create a folder ‘DataGrid’ in your package, inside it create a file for your datagrid folder.</p>
+  </li>
+  <li>
+    <p>We have created <code class="highlighter-rouge">DataGrid</code> abstract class in  <code class="highlighter-rouge">UI</code> package. In DataGrid file, a list of properties and methods are declared. So, while creating datagrid only you have to extend the DataGrid abstract class and use it in your datagrid file.</p>
+  </li>
+  <li>
+    <p>In DataGrid abstract class, two abstract methods are declared <code class="highlighter-rouge">prepareQueryBuilder()</code> and <code class="highlighter-rouge">addColumns()</code> . We can prepare  grid by defining these two methods</p>
+
+    <ul>
+      <li>
+        <p><strong>prepareQueryBuilder()</strong> : In this method, records are retrieved through queries that is applicable on database and stored in a array. When records are retrieved,                           <code class="highlighter-rouge">$this-&gt;setQueryBuilder($queryBuilder)</code>
+ setQueryBuilder method is called</p>
+
+        <ul>
+          <li><strong><em>setQueryBuilder()</em></strong> : This method written in DataGrid file of UI package. This is used for setting the <code class="highlighter-rouge">$queryBuilder</code> array</li>
+        </ul>
+      </li>
+      <li>
+        <p><strong>addColumns()</strong> : In this method, the columns are created to be displayed in grid. Inside this method, <code class="highlighter-rouge">addColumn()</code> is called to create single column. Inside this function, parameter accepts the array in <code class="highlighter-rouge">"key" =&gt; "value"</code> pairs. Some of the essential keys are described below :</p>
+      </li>
+    </ul>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>functionality</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>index</td>
+          <td>This variable is defined in  grid, and the value assign to this variable must be unique i.e., id so that data will be uniquely identified and operation  perform will be based on your index variable</td>
+        </tr>
+        <tr>
+          <td>label</td>
+          <td>in this key, the name of column is defined</td>
+        </tr>
+        <tr>
+          <td>type</td>
+          <td>this key accept the type of data in column</td>
+        </tr>
+        <tr>
+          <td>searchable</td>
+          <td>this accept boolean values <code class="highlighter-rouge">true/false</code> to make the column searchable</td>
+        </tr>
+        <tr>
+          <td>sortable</td>
+          <td>this accept boolean values <code class="highlighter-rouge">true/false</code> to make the column sortable</td>
+        </tr>
+        <tr>
+          <td>filterable</td>
+          <td>this accept boolean values <code class="highlighter-rouge">true/false</code> to make the column filterable</td>
+        </tr>
+        <tr>
+          <td>wrapper</td>
+          <td> </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ul>
+      <li>
+        <p><strong>prepareActions()</strong> : This method is defined to perform actions on grid records such as- edit, delete Inside it, <code class="highlighter-rouge">addAction()</code> is called</p>
+
+        <ul>
+          <li><strong><em>addAction()</em></strong> : It is defined a number of times for individual action to be performed on grid</li>
+        </ul>
+      </li>
+    </ul>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>functionality</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>type</td>
+          <td>Edit/delete</td>
+        </tr>
+        <tr>
+          <td>method</td>
+          <td>HTTP verbs are written on basis of operation</td>
+        </tr>
+        <tr>
+          <td>route</td>
+          <td>this key accept the route of icon s</td>
+        </tr>
+        <tr>
+          <td>icon</td>
+          <td>class of icon to be displayed in action column you may prefer text also</td>
+        </tr>
+        <tr>
+          <td>confirm_text</td>
+          <td>A confirm box is open on clicking action icon  if you want the user to verify or accept something. you can include message here</td>
+        </tr>
+        <tr>
+          <td>label</td>
+          <td>the text to be displayed in written here, you may use translation also here</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+</ol>
 
                     </div>
                 </div>

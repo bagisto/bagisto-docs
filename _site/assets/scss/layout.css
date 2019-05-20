@@ -21,10 +21,10 @@ a:hover { text-decoration: none; cursor: pointer; }
 .header .menu-list ul li:last-child { margin-right: 0px; }
 
 .content { display: flex; flex-direction: row; justify-content: space-between; min-height: 100vh; height: auto; }
-.content .side-menu { width: 25%; position: sticky; top: 71px; letter-spacing: -0.021em; padding-left: 0px; height: 600px; overflow: scroll; background-color: #F8F8FF; box-shadow: 5px 9px 12px -9px #888888; font-family: "Times New Roman", Times, serif !important; }
+.content .side-menu { width: 25%; position: sticky; top: 71px; letter-spacing: -0.021em; padding-left: 0px; height: 600px; overflow-y: scroll; background-color: #F8F8FF; box-shadow: 5px 9px 12px -9px #888888; font-family: "Times New Roman", Times, serif !important; }
 .content .side-menu .sidebar ul li { list-style-type: none; }
 .content .side-menu .sidebar ul li a:hover { border-bottom: 1px solid #0041ff; }
-.content .right-content { width: 70%; padding: 15px; }
+.content .right-content { width: 70%; word-wrap: break-word; padding: 15px; }
 
 footer { font-family: Montserrat-Regular; font-size: 15px; color: #323232; letter-spacing: 0; text-align: center; }
 footer span { display: inline-block; }
@@ -49,3 +49,15 @@ td { padding: 5px; }
 .menu-heading > a { font-size: 18px; }
 
 .edit-github { float: right; font-size: 16px; margin-top: 9px; font-weight: normal; box-shadow: 15px 14px 16px -9px #888888; font-style: italic; z-index: 2; background-color: #ffffff; }
+
+.side-menu::-webkit-scrollbar { width: 5px; }
+
+.side-menu::-webkit-scrollbar-track { -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); }
+
+.side-menu::-webkit-scrollbar-thumb { background-color: darkgrey; outline: 1px solid slategrey; border-radius: 20px; }
+
+body::-webkit-scrollbar { width: 15px; }
+
+body::-webkit-scrollbar-track { -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); }
+
+body::-webkit-scrollbar-thumb { background-color: darkgrey; outline: 1px solid slategrey; border-radius: 15px; }
