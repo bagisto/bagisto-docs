@@ -7,7 +7,7 @@ layout: default
 
 ### Add Currency<a id="add-currency"></a><span class="edit-github"><img src="/assets/images/icons/Icon-Pencil-Large.svg"/> <a href="https://github.com/bagisto/bagisto-docs">Edit On github</a></span>
 
-Before launching ecommerce store, it has been crucial decision to decide the currency to be used all over store. And, for providing ease to store owner to perform trade in multiple countries with their currency format
+Before publishing the ecommerce store, it has been crucial decision to decide the currency to be used all over store. And, for providing ease to store owner to perform trade in multiple countries with their currency format
 
  > In admin panel, Click on Setting >> Currencies >> Add Currency
 
