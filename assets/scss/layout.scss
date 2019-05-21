@@ -206,15 +206,18 @@ td {
     justify-content: space-between;
 
     .side-menu {
-        width: 30%;
-        position: sticky;
+        width: 24%;
         overflow: auto;
-        box-shadow: 5px 9px 12px -9px #888888;
-
+        border-right: 1px solid #979797;
+        border-width: 2px;
 
         .sidebar {
-            position: sticky;
-            top: 0;
+           width: 24%;
+           position: fixed;
+
+           ul {
+            padding-inline-start: 20px;
+            }
 
             ul li {
                 list-style-type: none;
@@ -229,21 +232,34 @@ td {
     .right-content {
         width: 70%;
         word-wrap: break-word;
-        padding: 15px;
-    }
+        padding-right: 40px;
+        font-family: PTSerif-Regular;
+        font-size: 17px;
+        color: #323232;
+        letter-spacing: 0;
+        line-height: 31px;
 
+        h1, h2, h3, h4, h5, h6 {
+            font-family: Montserrat-Medium;
+            color: #3D3D3D;
+            letter-spacing: 0;
+        }
+    }
 }
 
 .nav-link {
+    font-family: Montserrat-SemiBold;
     font-size: 12px;
-    font-style: normal;
+    color: #2C3145;
+    letter-spacing: 0;
+    font-size: 1.5em;
 }
 
 .menu-heading {
     padding-top: 15px;
 
     .sub-menu {
-        padding-top: 10px;
+        padding-top: 6px;
 
         li {
             padding: 2px;
@@ -257,6 +273,9 @@ td {
 
 .sub-menu li a{
     color: #0041ff;
+    font-family: Montserrat-Medium;
+    font-size: 16px;
+    letter-spacing: 0;
 }
 
 // .submenu li a:hover {
@@ -264,13 +283,17 @@ td {
 // }
 
 .menu-heading > a {
-    font-size: 18px;
+    font-family: Montserrat-SemiBold;
+    color: #2C3145;
+    letter-spacing: 0;
+    font-size: 1.5em;
 }
 
 .edit-github {
     float: right;
-    font-size: 15px;
-    margin-top: -70px;
+    font-size: 18px;
+    margin-top: -58px;
+    font-family: Montserrat-SemiBold;
     // img {
     //     width: 20px;
     //     height: 16px;
@@ -281,6 +304,6 @@ td {
     width: 20px;
     height: 16px;
     float: right;
-    margin-top: -70px;
-    margin-right: 110px;
+    margin-top: -51px;
+    margin-right: 103px;
 }
