@@ -21,7 +21,7 @@ a:hover { text-decoration: none; cursor: pointer; }
 .header .menu-list ul li:last-child { margin-right: 0px; }
 
 .content { display: flex; flex-direction: row; justify-content: space-between; min-height: 100vh; height: auto; }
-.content .side-menu { width: 25%; position: sticky; top: 71px; letter-spacing: -0.021em; padding-left: 0px; overflow-y: scroll; background-color: #F8F8FF; box-shadow: 5px 9px 12px -9px #888888; font-family: "Times New Roman", Times, serif !important; }
+.content .side-menu { width: 25%; position: sticky; top: 0; letter-spacing: -0.021em; padding-left: 0px; overflow-y: auto; background-color: #F8F8FF; box-shadow: 5px 9px 12px -9px #888888; font-family: "Times New Roman", Times, serif !important; }
 .content .side-menu .sidebar ul li { list-style-type: none; }
 .content .side-menu .sidebar ul li a:hover { border-bottom: 1px solid #0041ff; }
 .content .right-content { width: 70%; word-wrap: break-word; padding: 15px; }

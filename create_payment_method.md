@@ -3,7 +3,7 @@ title: Creating Payment method-Bagisto
 layout: default
 ---
 
-## Payment Method <span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg"/> <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_payment_method.md">edit on github</a></span>
+## Payment Method (text placing ) <span class="edit-github"><img src="/assets/images/Icon-Pencil-Large.svg"/> <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_payment_method.md">edit on github</a></span>
 
 I hope that you know how to create package, if not(refer ( [Package development](create_module.md)), and I will skip package development step
 
@@ -24,18 +24,35 @@ In this article, we will understand how to create payment method by own with jus
 
             ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/payment-config-1.png){: height="50%" width="100%"}
 
-        #### Explanation for the keys:
+### Explanation for the keys:
 
-        * **key** : these values provided are unique and nested with '.' (dot) operator. After creation of two nested, other keys written are display in browser in form of accordian {figure needed}
+* **key** : these values provided are unique and nested with '.' (dot) operator. After creation of two nested, other keys written are display in browser in form of accordian {figure needed}
 
-        * **name** : these keys accept the value as placeholder of your configuration. Generally, in bagisto, we consider writing it using translation.
+* **name** : these keys accept the value as placeholder of your configuration. Generally, in bagisto, we consider writing it using translation.
 
-        * **sort** : these key accept the sort position for the configuration menu.
+* **sort** : these key accept the sort position for the configuration menu.
 
-        * **fields** : these key accepts the array for the value of custom configuration.
+* **fields** : these key accepts the array for the value of custom configuration.
 
 
-    2. ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/payment-config-2.png){: height="50%" width="100%"}
+    2. paymentmethod.php
+
+    ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/payment-config-2.png){: height="50%" width="100%"}
+
+### An Explanation For These Parameters:
+
+*  **code** : a text to represent payment method
+
+*  **title** : in this field, the name of payment method is specified
+
+*  **description** : a brief description of payment method.
+
+*  **class** : this field includes the class namespace where all functions of payment                method is written
+
+*  **sandbox** :
+
+*  **active** : this field accepts true/false to enable or disbale module.
+
 
 * Within Database folder, the migration's and seeder(if needed) files are stored.
 
@@ -61,23 +78,6 @@ In this article, we will understand how to create payment method by own with jus
 * Within Listeners folder, this folder incudes listender files to listen respective events.
 
 
-### An Explanation For These Parameters:
 
-
-
-
-### An Explanation For These Parameters:
-
-*  **code** : a text to represent payment method
-
-*  **title** : in this field, the name of payment method is specified
-
-*  **description** : a brief description of payment method.
-
-*  **class** : this field includes the class namespace where all functions of payment                method is written
-
-*  **sandbox** :
-
-*  **active** : this field accepts true/false to enable or disbale module.
 
 

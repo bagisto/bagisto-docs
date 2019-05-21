@@ -125,10 +125,10 @@ a:hover {
     .side-menu {
         width: 25%;
         position: sticky;
-        top: 71px;
+        top: 0;
         letter-spacing: -0.021em;
         padding-left: 0px;
-        overflow-y: scroll;
+        overflow-y: auto;
         background-color: #F8F8FF;
         box-shadow: 5px 9px 12px -9px #888888;
         font-family: "Times New Roman", Times, serif !important;

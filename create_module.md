@@ -3,7 +3,7 @@ title: Package development-Bagisto
 layout: default
 ---
 
-## Package  <span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg"/> <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_module.md">edit on github</a></span>
+## Package  <span class="edit-github"><img src="/assets/images/Icon-Pencil-Large.svg"/> <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_module.md">edit on github</a></span>
 
 A package is like Laravel packages that includes views, controller and models. Packages are  created to manage your large laravel applications into smaller units. In the bagisto, we have created the plenty of packages at path `packages/Webkul/`. can refer bagisto's root directory shown's in fig
 
@@ -13,18 +13,18 @@ A package is like Laravel packages that includes views, controller and models. P
 
 ### Step-1
 
-* Inside packages folder of bagisto, create a folder with your company name or namespace and inside it create a folder with your package name.
-Ex – Here namespace is specified as ACME
+* Inside **packages** folder, create a folder with your company name or namespace and inside it create a folder with your package name.
+e.g., here namespace is specified as ACME
 
->packages/ACME/HelloWorld
+> `packages/ACME/HelloWorld`
 
 ### Step-2
 
-* Inside your package create a file named as package.json and a folder named as 'src', we will use it later.
+* Inside your package create a file named as ***package.json*** and a folder named as **src**, we will use it later.
 
 ### Step-3
 
-* Inside ‘src’ folder create a folder named as ‘Providers’ and under it create a file named as ‘PackagenameServiceProvider.php’.
+* Inside **src** folder create a folder named as **Providers** and under it create a file named as ***PackagenameServiceProvider.php***.
 
     Ex – HelloWorldServiceProvider.php
 
@@ -119,12 +119,12 @@ Right now, we are going to create a folder ‘helloworld’ inside the views. In
 
 Now just like route file, we need to register our view folder inside service provider to specify path where views are located.
 
-    ```php
-    public function boot()
-    {
-        $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'helloworld');
-    }
-    ```
+```php
+public function boot()
+{
+    $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'helloworld');
+}
+```
 
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/view-register.png){: height="50%" width="50%" .center}
 
@@ -134,11 +134,10 @@ Now just like route file, we need to register our view folder inside service pro
 
 Go to ACME->src->Http->routes.php file and create a route to render view
 
-        ```php
-        <?php
-
-            Route::view('/hello-world', 'helloworld::helloworld.helloworld');
-        ```
+```php
+<?php
+    Route::view('/hello-world', 'helloworld::helloworld.helloworld');
+```
 
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/view-route-creation.png){: height="50%" width="50%" .center}
 
@@ -157,24 +156,24 @@ Inside lang folder, you can create different folder for languages translations l
 
 Now, we need to register the language file to service provider.
 
-        ```php
-        public function boot()
-        {
-            $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'helloworld');
-        }
-        ```
+```php
+public function boot()
+{
+    $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'helloworld');
+}
+```
 
 
 Now we can write translation in app.php like below.
 
-        ```php
-        <?php
-        return [
-            'hello-world' => [
-                'name' => 'Jane Doe'
-            ]
-        ];
-        ```
+```php
+<?php
+return [
+    'hello-world' => [
+        'name' => 'Jane Doe'
+    ]
+];
+```
 
 Add {{ __(‘helloworld::app.hello-world.name’) }} to your application’s view & it will automatically translate it.
 
@@ -189,53 +188,53 @@ Create a ‘Resources’ folder inside the ‘src’ folder. Inside ‘Resources
 
 ‘package.json' file consist
 
-        ```javascript
-        {
-            "scripts": {
-                "dev": "npm run development",
-                "development": "cross-env NODE_ENV=development          node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-                "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-                "watch-poll": "npm run watch -- --watch-poll",
-                "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
-                "prod": "npm run production",
-                "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
-            },
+```javascript
+{
+    "scripts": {
+        "dev": "npm run development",
+        "development": "cross-env NODE_ENV=development          node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "watch-poll": "npm run watch -- --watch-poll",
+        "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "prod": "npm run production",
+        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+    },
 
-            "devDependencies": {
-                "cross-env": "^5.1.4",
-                "laravel-mix": "^2.1",
-                "laravel-mix-merge-manifest": "^0.1.1"
-            }
-        }
-        ```
+    "devDependencies": {
+        "cross-env": "^5.1.4",
+        "laravel-mix": "^2.1",
+        "laravel-mix-merge-manifest": "^0.1.1"
+    }
+}
+```
 
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/package-json.png){: height="50%" width="50%" .center}
 
 
  webpack.mix.js will consist
 
-        ```javascript
-        const { mix } = require("laravel-mix");
-        require("laravel-mix-merge-manifest");
+```javascript
+const { mix } = require("laravel-mix");
+require("laravel-mix-merge-manifest");
 
-        if (mix.inProduction()) {
-            var publicPath = 'publishable/assets';
-        } else {
-            var publicPath = "../../../public/vendor/webkul/helloworld/assets";
-        }
+if (mix.inProduction()) {
+    var publicPath = 'publishable/assets';
+} else {
+    var publicPath = "../../../public/vendor/webkul/helloworld/assets";
+}
 
-        mix.setPublicPath(publicPath).mergeManifest();
+mix.setPublicPath(publicPath).mergeManifest();
 
-        mix.disableNotifications();
+mix.disableNotifications();
 
-        mix.sass(__dirname + "/src/Resources/assets/sass/app.scss", "css/helloworld.css").options({
-            processCssUrls: false
-        });
+mix.sass(__dirname + "/src/Resources/assets/sass/app.scss", "css/helloworld.css").options({
+    processCssUrls: false
+});
 
-        if (mix.inProduction()) {
-            mix.version();
-        }
-        ```
+if (mix.inProduction()) {
+    mix.version();
+}
+```
 
 All dependency can be updated according to need.
 
@@ -246,10 +245,10 @@ In the same way, we can also add images & js. Inside ‘assests’ folder of ‘
 Now we need to publish these two also as we did for CSS. We will add this too to our webpack.mix.js.
 
 
-        ```javascript
-        mix.js(__dirname + "/src/Resources/assets/js/app.js", "js/helloworld.js")
-            .copyDirectory( __dirname + '/src/Resources/assets/images', publicPath + '/images')
-        ```
+```javascript
+mix.js(__dirname + "/src/Resources/assets/js/app.js", "js/helloworld.js")
+    .copyDirectory( __dirname + '/src/Resources/assets/images', publicPath + '/images')
+```
 
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/webpack-mix.png){: height="50%" width="50%" .center}
 
@@ -258,22 +257,22 @@ Once again, we need to run ‘npm run watch’ to compile assets.
 
 After doing this we need to add an event listener so that admin layouts include our CSS. For this we need to add an Event Listener in service provider & Inside views create a folder called layouts & inside it create a file called ‘style.blade.php’ & mention compiled CSS path inside this file.
 
-        ```html
-        <link rel="stylesheet"
-        href="{{ bagisto_asset('css/helloworld.css') }}">
-        ( In style.blade.php)
-        ```
+
+```html
+<link rel="stylesheet" href="\{{ bagisto_asset('css/helloworld.css')\}}">
+( In style.blade.php)
+```
 
 **For Event Listener –**
 
-        ```php
-        public function boot()
-        {
-            Event::listen('bagisto.admin.layout.head', function($viewRenderEventManager) {
-                $viewRenderEventManager->addTemplate('helloworld::helloworld.layouts.style');
-            });
-        }
-        ```
+```php
+public function boot()
+{
+    Event::listen('bagisto.admin.layout.head', function($viewRenderEventManager) {
+        $viewRenderEventManager->addTemplate('helloworld::helloworld.layouts.style');
+    });
+}
+```
 
 Now we need to extend admin::layouts.master as @extends(‘admin::layouts.master’) to packages/acme/HelloWorld/src/Resources & we can write CSS for our packages. If you don’t want to include this one then you need to create your own master file which includes your packages CSS & js.
 
@@ -288,12 +287,12 @@ Create a ‘Database’ folder inside ‘src’ folder & inside ‘Database’ c
 
 Now, we need to add migrations to our service provider to load them.
 
-        ```php
-        public function boot()
-        {
-            $this->loadMigrationsFrom(__DIR__ .'/../Database/Migrations');
-        }
-        ```
+```php
+public function boot()
+{
+    $this->loadMigrationsFrom(__DIR__ .'/../Database/Migrations');
+}
+```
 
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/merge-config-for-menu.png){: height="50%" width="50%" .center}
 
@@ -311,19 +310,20 @@ Now, we need to add migrations to our service provider to load them.
 For this, we need to create a ‘Config’ folder inside ‘src’.
 Inside this src folder, create a file name as 'menu.php'.
 
-        ```php
-        <?php
+```php
+<?php
 
-        return [
-            [
-                'key' => 'helloworld',          // uniquely defined key for menu-icon
-                'name' => 'Hello World',        //  name of menu-icon
-                'route' => 'helloworld.index',  // the route for your menu-icon
-                'sort' => 1,                    // Sort number on which your menu-icon should display
-                'icon-class' => 'dashboard-icon',   //class of menu-icn
-            ]
-        ];
-        ```
+return [
+    [
+        'key' => 'helloworld',          // uniquely defined key for menu-icon
+        'name' => 'Hello World',        //  name of menu-icon
+        'route' => 'helloworld.index',  // the route for your menu-icon
+        'sort' => 1,                    // Sort number on which your menu-icon should display
+        'icon-class' => 'dashboard-icon',   //class of menu-icn
+    ]
+];
+```
+
 In this file we provide name of menu, its route & its icon.
 
 Now for route stated in `menu.php`, we need to create a controller to display view file.
@@ -332,47 +332,45 @@ So inside Controllers we will create HelloWorldController.php and controller.php
 
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/home-controller.png){: height="50%" width="50%" .center}
 
-        ```php
-        <?php
+```php
+<?php
 
-        namespace ACME\HelloWorld\Http\Controllers;
+namespace ACME\HelloWorld\Http\Controllers;
 
-        use Illuminate\Foundation\Bus\DispatchesJobs;
-        use Illuminate\Routing\Controller as BaseController;
-        use Illuminate\Foundation\Validation\ValidatesRequests;
-        use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-        class Controller extends BaseController
-        {
-            use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-        }
-        ```
+class Controller extends BaseController
+{
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+}
+```
 
 
+```php
+class HelloWorldController extends Controller
+{
+    protected $_config;
 
-        ```php
-        class HelloWorldController extends Controller
-        {
-            protected $_config;
+    public function __construct()
+    {
+        $this->_config = request('_config');
+    }
 
-            public function __construct()
-            {
-                $this->_config = request('_config');
-            }
+    /**
+    * Display a listing of the resource.
+    *
+    * @return \Illuminate\Http\Response
+    */
 
-            /**
-            * Display a listing of the resource.
-            *
-            * @return \Illuminate\Http\Response
-            */
-
-            public function index()
-            {
-                return view($this->_config['view']);
-            }
-        }
-        ```
-
+    public function index()
+    {
+        return view($this->_config['view']);
+    }
+}
+```
 
 For the route we will create a named route as
 
@@ -383,14 +381,14 @@ Route::get('hello-dashboard', 'ACME\HelloWorld\Http\Controllers\HelloWorldContro
 
 After creating controller & route we need to merge this `menu.php` folder with core menu file.For this purpose we will use method  ‘mergeConfigFrom’ method in register function of service provider.
 
-    ```php
-    public function register()
-    {
-        $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/menu.php', 'menu.admin'
-        );
-    }
-    ```
+```php
+public function register()
+{
+    $this->mergeConfigFrom(
+        dirname(__DIR__) . '/Config/menu.php', 'menu.admin'
+    );
+}
+```
 
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/merge-config-for-menu.png){: height="50%" width="50%" .center}
 
@@ -443,9 +441,7 @@ Creating a custom configuration ease the task for developer or any non-developer
 * **fields** : these key accepts the array for the value of custom configuration.
 
 
-
-
-# What is Contracts, Repositories and proxies ?<a id="create_models"></a>
+# What is Contracts, Repositories and proxies ?<a id="about"></a>
 
 ## Contracts
 
@@ -471,44 +467,40 @@ All of the Laravel contracts live in their own GitHub repository. This provides 
 
 * Now, at the same location create a model proxy file as 'HelloWorldProxy.php'. This Proxy class will extends  ModelProxy. Also, you have to add "use Konekt\Concord\Proxies\ModelProxy; " like below stated
 
-><?php
+```php
+<?php
 
->namespace Acme\HelloWorld\Models;
+namespace Acme\HelloWorld\Models;
 
->use Konekt\Concord\Proxies\ModelProxy;
+use Konekt\Concord\Proxies\ModelProxy;
 
->class DataFlowProfileProxy extends ModelProxy
->{
->}
+class DataFlowProfileProxy extends ModelProxy
+{
+
+}
+```
 
 * Now ,make a Folder named as Contracts and inside it create a interface file named as HelloWorld.php
 
 * Now, make a repository folder and inside it create a file 'HelloWorldRepository.php' and
 write the model method for repository class and under the method return path of your contract class.
 
-><?php
+```php
+<?php
+namespace Webkul\Marketplace\Repositories;
 
->namespace Webkul\Marketplace\Repositories;
+use Webkul\Core\Eloquent\Repository;
 
->use Webkul\Core\Eloquent\Repository;
-
-
->class HelloWorldRepository extends Repository
-
->{
-
-    /**
-     * Specify Model class name
-     *
-     * @return mixed
-     */
->    function model()
-
->    {
-
->        return 'ACME\HelloWorld\Contracts\HelloWorld';
-
->    }
-
->}
-
+class HelloWorldRepository extends Repository
+{
+   /**
+    * Specify Model class name
+    *
+    * @return mixed
+    */
+    function model()
+    {
+        return 'ACME\HelloWorld\Contracts\HelloWorld';
+    }
+}
+```

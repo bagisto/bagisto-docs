@@ -3,7 +3,7 @@ title: Creating shipping method-Bagisto
 layout: default
 ---
 
-## Shipping Method<span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg"/> <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_shipping_method.md">edit on github</a></span>
+## Shipping Method<span class="edit-github"><img src="/assets/images/Icon-Pencil-Large.svg"/> <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_shipping_method.md">edit on github</a></span>
 
 I hope that you know how to create package, if not(refer ( [Package development](create_module.md)), and I will skip package development step
 
