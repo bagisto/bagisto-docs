@@ -5,7 +5,7 @@ layout: default
 
 ## Package  <span class="edit-github"><img src="/assets/images/icons/Icon-Pencil-Large.svg"/> <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_module.md">edit on github</a></span>
 
-A package is like Laravel packages that includes views, controller and models. Packages are  created to manage your large laravel applications into smaller units. In the bagisto, we have created the plenty of packages at path `packages/Webkul/`. can refer bagisto's root directory shown's in fig
+A package is like Laravel packages that include views, controller and models. Packages are created to manage your large laravel applications into smaller units. In the bagisto, we have created plenty of packages at path packages/Webkul/. can refer Bagisto's root directory shown's in fig. shown below.
 
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/bagisto_root_directory.png){: height="50%" width="50%" .center}
 
@@ -20,7 +20,7 @@ Ex – Here namespace is specified as ACME
 
 ### Step-2
 
-* Inside your package create a file named as package.json and a folder named as 'src', we will use it later.
+* Inside your package create a file name it as package.json and a folder named as 'src', we will use it later.
 
 ### Step-3
 
@@ -152,7 +152,6 @@ Now, you can append ‘hello-world’ to your local path in the browser's url to
 For this create a ‘lang’ folder inside ‘Resources’ folder.
 
 Inside lang folder, you can create different folder for languages translations like for English 'en' , Hindi ‘hn’ etc. Moving forward, we will create a folder name ‘en’ (`say language code`) & inside ‘en’ folder, create a file name as ‘app.php’ to perform language translation
-
 Now, we need to register the language file to service provider.
 
         ``` php
@@ -235,7 +234,7 @@ Create a ‘Resources’ folder inside the ‘src’ folder. Inside ‘Resources
         }
         ```
 
-All dependency can be updated according to need.
+All dependency can be updated according to requirements.
 
 After doing this go to the root of your package & run ‘npm install’ which will install all dependencies. After installing dependencies run ‘npm run watch’, which will compile all your CSS & publish it inside public folder according to path mention in webpack.mix.js according to the environment.
 
@@ -396,7 +395,7 @@ And, now we need to add `@extends('admin::layouts.master')` to our view files to
 
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/hello-world-icon.png){: height="50%" width="50%" .center}
 
-Now, this menu will comes in admin login. You can change icon accordingly your need.By clicking, upon icon it will open the view file provided in `Route` facade
+Now, this menu will appear in admin login. You can change icon accordingly your need.By clicking,on icon it will open the view file provided in `Route` facade
 
 
 ### How to Create ACL in Bagisto? <a id="create-acl"></a>
