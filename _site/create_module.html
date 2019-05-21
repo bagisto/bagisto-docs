@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>Package development-Bagisto</title>
         <link rel="stylesheet" href="assets/scss/layout.css" />
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="/assets/css/syntax.css" />
         <link rel="icon" sizes="16x16" href="assets/icons/favicon.ico" />
     </head>
     <body>
@@ -55,7 +55,6 @@
         </li>
 
         <!-- Module Development -->
-
         <li class="menu-heading">
             <a href="create_module.html">Package development</a>
             <div class="horizontal-rule"></div>
@@ -142,7 +141,7 @@
                     </div>
 
                     <div class="right-content">
-                        <h2 id="package---edit-on-github">Package  <span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg" /> <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_module.md">edit on github</a></span></h2>
+                        <h2 id="package---edit-on-github">Package  <span class="edit-github"><img src="/assets/images/icons/Icon-Pencil-Large.svg" /> <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_module.md">edit on github</a></span></h2>
 
 <p>A package is like Laravel packages that includes views, controller and models. Packages are  created to manage your large laravel applications into smaller units. In the bagisto, we have created the plenty of packages at path <code class="highlighter-rouge">packages/Webkul/</code>. can refer bagisto’s root directory shown’s in fig</p>
 
@@ -181,9 +180,7 @@ Ex – Here namespace is specified as ACME</li>
       <li>
         <p>register</p>
 
-        <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="cp">&lt;?php</span>
-
- <span class="k">namespace</span> <span class="nx">ACME\HelloWorld\Providers</span><span class="p">;</span>
+        <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">namespace</span> <span class="nx">ACME\HelloWorld\Providers</span><span class="p">;</span>
 
  <span class="k">use</span> <span class="nx">Illuminate\Support\ServiceProvider</span><span class="p">;</span>
 
@@ -281,7 +278,7 @@ Ex – Here namespace is specified as ACME</li>
 
 <p>Now just like route file, we need to register our view folder inside service provider to specify path where views are located.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>```php
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>``` php
 public function boot()
 {
     $this-&gt;loadViewsFrom(__DIR__ . '/../Resources/views', 'helloworld');
@@ -299,7 +296,7 @@ public function boot()
 
 <p>Go to ACME-&gt;src-&gt;Http-&gt;routes.php file and create a route to render view</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    ```php
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    ``` php
     &lt;?php
 
         Route::view('/hello-world', 'helloworld::helloworld.helloworld');
@@ -324,7 +321,7 @@ public function boot()
 
 <p>Now, we need to register the language file to service provider.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    ```php
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    ``` php
     public function boot()
     {
         $this-&gt;loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'helloworld');
@@ -334,7 +331,7 @@ public function boot()
 
 <p>Now we can write translation in app.php like below.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    ```php
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    ``` php
     &lt;?php
     return [
         'hello-world' =&gt; [
@@ -436,7 +433,7 @@ public function boot()
 
 <p><strong>For Event Listener –</strong></p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    ```php
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    ``` php
     public function boot()
     {
         Event::listen('bagisto.admin.layout.head', function($viewRenderEventManager) {
@@ -460,7 +457,7 @@ public function boot()
 
 <p>Now, we need to add migrations to our service provider to load them.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    ```php
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    ``` php
     public function boot()
     {
         $this-&gt;loadMigrationsFrom(__DIR__ .'/../Database/Migrations');
@@ -484,7 +481,7 @@ public function boot()
 For this, we need to create a ‘Config’ folder inside ‘src’.
 Inside this src folder, create a file name as ‘menu.php’.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    ```php
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    ``` php
     &lt;?php
 
     return [
@@ -505,7 +502,7 @@ Inside this src folder, create a file name as ‘menu.php’.</p>
 
 <p><img src="/assets/images/Bagisto_Docs_Images/PackageDevelopment/home-controller.png" alt="Bagisto Root Directory" height="50%" width="50%" class="center" /></p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    ```php
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    ``` php
     &lt;?php
 
     namespace ACME\HelloWorld\Http\Controllers;
@@ -523,7 +520,7 @@ Inside this src folder, create a file name as ‘menu.php’.</p>
 
 
 
-    ```php
+    ``` php
     class HelloWorldController extends Controller
     {
         protected $_config;
@@ -555,7 +552,7 @@ Inside this src folder, create a file name as ‘menu.php’.</p>
 
 <p>After creating controller &amp; route we need to merge this <code class="highlighter-rouge">menu.php</code> folder with core menu file.For this purpose we will use method  ‘mergeConfigFrom’ method in register function of service provider.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>```php
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>``` php
 public function register()
 {
     $this-&gt;mergeConfigFrom(

@@ -3,7 +3,7 @@ title: Creating shipping method-Bagisto
 layout: default
 ---
 
-## Shipping Method<span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg"/> <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_shipping_method.md">edit on github</a></span>
+## Shipping Method<span class="edit-github"><img src="/assets/images/icons/Icon-Pencil-Large.svg"/> <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_shipping_method.md">edit on github</a></span>
 
 I hope that you know how to create package, if not(refer ( [Package development](create_module.md)), and I will skip package development step
 
@@ -334,7 +334,7 @@ Now, the menu will be added in your menu bar. -->
 
 * User need to create a file named as `carriers.php` at `src/config` path in the package. Here, we are going to specify what to include in your `carriers.php` file.
 
-    ```php
+    ``` php
     <?php
 
     return [

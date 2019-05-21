@@ -2,7 +2,7 @@
 title: Bagisto Introduction
 layout: default
 ---
-# What is Contracts, Repositories and proxies ?<a id="#detail"></a><span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px"/> <a class="nav-link" href="https://github.com/bagisto/bagisto-docs">Edit On github</a></span>
+# What is Contracts, Repositories and proxies ?<a id="#detail"></a><span class="edit-github"><img src="/assets/images/icons/Icon-Pencil-Large.svg" width="19px" height="13px"/> <a class="nav-link" href="https://github.com/bagisto/bagisto-docs">Edit On github</a></span>
 
 ## Contracts
 
@@ -24,19 +24,19 @@ All of the Laravel contracts live in their own GitHub repository. This provides 
 
 * Beginning with the creation of models, generally models are created using command stated below. The model is created on specified path/location.
 
->php artisan make:model HelloWorld --path=""
+> php artisan make:model HelloWorld --path=""
 
 * Now, at the same location create a model proxy file as 'HelloWorldProxy.php'. This Proxy class will extends  ModelProxy. Also, you have to add "use Konekt\Concord\Proxies\ModelProxy; " like below stated
 
-><?php
+``` php
+namespace Acme\HelloWorld\Models;
 
->namespace Acme\HelloWorld\Models;
+use Konekt\Concord\Proxies\ModelProxy;
 
->use Konekt\Concord\Proxies\ModelProxy;
-
->class DataFlowProfileProxy extends ModelProxy
->{
->}
+class DataFlowProfileProxy extends ModelProxy
+{
+}
+```
 
 * Now ,make a Folder named as Contracts and inside it create a interface file named as HelloWorld.php
 

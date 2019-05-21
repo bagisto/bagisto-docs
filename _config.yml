@@ -24,6 +24,7 @@ twitter_username: bagistoshop
 github_username:  bagisto
 
 # Build settings
+highlighter: rouge
 markdown: kramdown
 theme: minima
 plugins:
