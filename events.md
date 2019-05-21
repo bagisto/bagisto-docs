@@ -3,7 +3,7 @@ title: Events-Bagisto
 layout: default
 ---
 
-## Events<span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px"/> <a href="https://github.com/bagisto/bagisto-docs">Edit On github</a></span>
+## Events<span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg"/> <a href="https://github.com/bagisto/bagisto-docs">edit on github</a></span>
 
 Events provide a simple observer implementation which allows a user to subscribe and listen to various events triggered in the web application. All the event classes in Bagisto are stored in the `Providers` folder and the listeners are stored in the `Listeners` folder.
 
