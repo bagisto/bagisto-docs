@@ -46,7 +46,6 @@ td { padding: 5px; }
 .content .side-menu { width: 30%; position: sticky; overflow: auto; box-shadow: 5px 9px 12px -9px #888888; }
 .content .side-menu .sidebar { position: sticky; top: 0; }
 .content .side-menu .sidebar ul li { list-style-type: none; }
-.content .side-menu .sidebar ul li a:hover { border-bottom: 1px solid #2650EF; }
 .content .right-content { width: 70%; word-wrap: break-word; padding: 15px; }
 .content .right-content h1 { display: inline-flex; border-bottom-style: solid; border-bottom-width: thin; border-bottom-color: #0031F0; }
 .content .right-content h3 { border-bottom-style: solid; border-bottom-width: thin; border-bottom-color: lightgrey; }
@@ -59,8 +58,6 @@ td { padding: 5px; }
 .menu-heading a { font-size: 15px; }
 
 .sub-menu li a { color: #0041ff; }
-
-.submenu li a:hover { border-bottom: 1px solid #0041ff; }
 
 .menu-heading > a { font-size: 18px; }
 

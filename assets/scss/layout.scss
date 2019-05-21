@@ -220,7 +220,7 @@ td {
                 list-style-type: none;
 
                 a:hover {
-                    border-bottom: 1px solid $link-color;
+                    // border-bottom: 1px solid $link-color;
                 }
             }
         }
@@ -272,9 +272,9 @@ td {
     color: #0041ff;
 }
 
-.submenu li a:hover {
-    border-bottom: 1px solid #0041ff;
-}
+// .submenu li a:hover {
+//     border-bottom: 1px solid #0041ff;
+// }
 
 .menu-heading > a {
     font-size: 18px;

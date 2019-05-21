@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>Creating themes-Bagisto</title>
         <link rel="stylesheet" href="assets/scss/layout.css" />
-        <link rel="stylesheet" href="/assets/css/syntax.css" />
+        <link rel="stylesheet" href="assets/css/syntax.css" />
         <link rel="icon" sizes="16x16" href="assets/images/icons/favicon.ico" />
     </head>
     <body>
@@ -39,15 +39,15 @@
 
             <ul class="sub-menu">
                 <li>
-                    <a href="/index.html#requirements">Requirements</a>
+                    <a href="index.html#requirements">Requirements</a>
                 </li>
 
                 <li>
-                    <a href="/index.html#installation">Installation & configuration</a>
+                    <a href="index.html#installation">Installation & configuration</a>
                 </li>
 
                 <li>
-                    <a href="/index.html#directory_structure">Directory structure</a>
+                    <a href="index.html#directory_structure">Directory structure</a>
                 </li>
             </ul>
         </li>
@@ -139,7 +139,7 @@
                     <div class="right-content">
                         <h2 id="create-theme">Create Theme</h2>
 
-<p class="horizontal-rule"><img src="/assets/images/icons/Icon-Pencil-Large.svg" alt="edit on github" class="pencil-icon" />
+<p class="horizontal-rule"><img src="/bagisto-docs/assets/images/icons/Icon-Pencil-Large.svg" alt="edit on github" class="pencil-icon" />
 <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_theme.md" class="edit-github" target="_blank">edit on github</a></p>
 
 <p>I hope that you know how to create package, if not(refer ( <a href="create_module.md">Package development</a>), and I will skip package development step</p>
@@ -156,7 +156,7 @@
   <li>Go to your project’s root directory and check for <code class="highlighter-rouge">config</code> folder. Inside it, you will find a file called <code class="highlighter-rouge">themes.php</code>:</li>
 </ul>
 
-<p><img src="/assets/images/Bagisto_Docs_Images/bagisto-theme-1.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
+<p><img src="/bagisto-docs/assets/images/Bagisto_Docs_Images/bagisto-theme-1.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
 
 <ul>
   <li>Check contents of ‘themes.php’ file, it holds all necessary information of creating a custom theme.</li>
@@ -184,7 +184,7 @@
 <span class="p">];</span>
 </code></pre></div></div>
 
-<p><img src="/assets/images/Bagisto_Docs_Images/bagisto-theme-2.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
+<p><img src="/bagisto-docs/assets/images/Bagisto_Docs_Images/bagisto-theme-2.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
 
 <p>Let’s go through the parameters of this theme’s file. Because the understanding of those parameters will help you in creating a custom theme.</p>
 
@@ -194,7 +194,7 @@
   <li>default: Declared at the top signifies the currently active or default theme in Bagisto. It is assigned with the value ‘default’. The (string)default indicates the name of the currently active theme.</li>
 </ol>
 
-<p><img src="/assets/images/Bagisto_Docs_Images/bagisto-theme-3.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
+<p><img src="/bagisto-docs/assets/images/Bagisto_Docs_Images/bagisto-theme-3.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
 
 <ol>
   <li>
@@ -209,7 +209,7 @@
   </li>
 </ol>
 
-<p><img src="/assets/images/Bagisto_Docs_Images/bagisto-theme-4.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
+<p><img src="/bagisto-docs/assets/images/Bagisto_Docs_Images/bagisto-theme-4.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
 
 <ul>
   <li>
@@ -226,11 +226,11 @@
   </li>
 </ul>
 
-<p><img src="/assets/images/Bagisto_Docs_Images/bagisto-theme-5.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
+<p><img src="/bagisto-docs/assets/images/Bagisto_Docs_Images/bagisto-theme-5.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
 
 <p>Finally, define your own paths and name of your custom theme inside ‘themes.php’ file. And start creating view files. Do not forget to cover all get routes of shop package having a parameter called ‘view’.</p>
 
-<p><img src="/assets/images/Bagisto_Docs_Images/bagisto-theme-6.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
+<p><img src="/bagisto-docs/assets/images/Bagisto_Docs_Images/bagisto-theme-6.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
 
 <p>Make sure the name of the blade file should be same as passed in this GET route file like this:</p>
 
@@ -240,7 +240,7 @@
     <span class="p">])</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">(</span><span class="s1">'shop.categories.index'</span><span class="p">);</span>
 </code></pre></div></div>
 
-<p><img src="/assets/images/Bagisto_Docs_Images/bagisto-theme-7.png" alt="Bagisto Root Directory" height="50%" width="100%" />
+<p><img src="/bagisto-docs/assets/images/Bagisto_Docs_Images/bagisto-theme-7.png" alt="Bagisto Root Directory" height="50%" width="100%" />
 For all views check all GET routes as they hold a view parameter with the value of view to be used.</p>
 
                     </div>
