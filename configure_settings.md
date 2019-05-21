@@ -35,14 +35,14 @@ Once the channel setting has been done click on Save Channel
 
 #### Front End:-
 
-At the Top of the front end, there is an option of Currency so you can select your currency.
+At the top of the front end, there is an option of currency so you can select your currency.
 
 
 
 
 ### Add Language<a id="add-language"></a>
 
-Lang file creation demonstration
+Language file creation demonstration
 
 
 ### Add Locale<a id="add-locale"></a>
@@ -73,5 +73,4 @@ Below, their are some steps that should be followed in accordance to create and 
 
 
 ### Add Channel<a id="add-channel"></a>
-
 
