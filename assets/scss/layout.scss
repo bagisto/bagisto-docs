@@ -67,7 +67,6 @@ a {
 
 a:hover {
     text-decoration: none;
-    // border-bottom: 2px solid rgb(137, 144, 151);
     cursor: pointer;
 }
 
@@ -127,8 +126,9 @@ td {
     .logo-wrapper a span {
         font-size: 19px;
         float: right;
-        margin-top: 17px;
+        margin-top: 13px;
         padding-left: 5px;
+        border-left: 1px solid black;
     }
 
     .logo-wrapper a:hover{
@@ -136,8 +136,9 @@ td {
     }
 
     .logo {
-        height: 50px;
-        width: 125px;
+        height: 45px;
+        width: 110px;
+        padding-right: 6px;
     }
 
     .menu-list {
@@ -192,6 +193,7 @@ td {
 
     .right-content {
         width: 70%;
+        word-wrap: break-word;
         padding: 15px;
     }
 

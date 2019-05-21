@@ -2,20 +2,19 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-
         <title></title>
-
         <link rel="stylesheet" href="assets/scss/layout.css" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-
-
+        <link rel="icon" sizes="16x16" href="assets/icons/favicon.ico" />
     </head>
     <body>
         <div class="container">
             <div class="content-wrapper">
                 <header class="header">
     <div class="logo-wrapper">
-        <a href="/docs/"><img class="logo" src="assets/images/logo.png" /><span>| Docs</span></a>
+        <a href="/docs/"><img class="logo" src="assets/images/logo.png" />
+            <span>Docs</span>
+        </a>
     </div>
 
     <nav class="menu-list">
@@ -38,150 +37,111 @@
                 <li class="menu-heading">
                     <a href="index.html">Introduction</a>
 
-                    <div class="horizontal-rule"></div>
+        <li class="menu-heading">
+            <a href="index.html">Introduction</a>
 
-                    <ul class="sub-menu">
-                        <li>
-                            <a href="#requirements">Requirements</a>
-                        </li>
+            <div class="horizontal-rule"></div>
 
-                        <li>
-                            <a href="#installation">Installation & configuration</a>
-                        </li>
-
-                        <li>
-                            <a href="#directory_structure">Directory structure</a>
-                        </li>
-                    </ul>
+            <ul class="sub-menu">
+                <li>
+                    <a href="#requirements">Requirements</a>
                 </li>
 
-
-                <!-- Module Development -->
-                <li class="menu-heading">
-                    <a href="create_module.html">Package development</a>
-
-                    <div class="horizontal-rule"></div>
-
-                    <ul class="sub-menu">
-                        <li>
-                            <a href="#how-to-create-module">Creating a package</a>
-                        </li>
-
-                        <li>
-                            <a href="#add-menu">Adding menu in backend & storefront</a>
-                        </li>
-
-                        <li>
-                            <a href="#create-acl">Creating ACL</a>
-                        </li>
-
-                        <!--
-                        <li>
-                            <a href="#create-routes">Creating routes</a>
-                        </li> -->
-
-                        <li>
-                            <a href="#custom-configuration">Custom configuration</a>
-                        </li>
-
-                        <!-- <li>
-                            <a href="#view-render-for-menu">Rendering view for custom menu</a>
-                        </li> -->
-
-                        <li>
-                            <a href="#create_models">Creating models</a>
-
-                            <ul>
-                                <li>
-                                    <a href="">Contracts, repositories & proxies</a>
-                                </li>
-
-                                <li>
-                                    <a href="#store-data-through-repository">
-                                        Store data with repository
-                                    </a>
-                                </li>
-                            </ul>
-
-                        </li>
-                    </ul>
+                <li>
+                    <a href="#installation">Installation & configuration</a>
                 </li>
 
+                <li>
+                    <a href="#directory_structure">Directory structure</a>
+                </li>
+            </ul>
+        </li>
 
-                <li class="menu-heading">
-                    <a href="override-core-model.html">Advance topics</a>
+        <!-- Module Development -->
 
-                    <div class="horizontal-rule"></div>
+        <li class="menu-heading">
+            <a href="create_module.html">Package development</a>
 
-                    <ul class="sub-menu">
-                        <li>
-                            <a href="override-core-model.html">Override core models</a>
-                        </li>
+            <div class="horizontal-rule"></div>
 
-                        <li>
-                            <a href="create_theme.html">Creating themes</a>
-                        </li>
-
-                        <li>
-                            <a href="create_shipping_method.html">Creating shipping method</a>
-                        </li>
-
-                        <li>
-                            <a href="create_payment_method.html">Creating Payment method</a>
-                        </li>
-
-                        <li>
-                            <a href="render_event.html">View render event</a>
-                        </li>
-
-                        <li>
-                            <a href="events.html">Events</a>
-                        </li>
-
-                        <li>
-                            <a href="listen_event.html">Listen existing events</a>
-                        </li>
-
-                        <li>
-                            <a href="data_grid.html">Data Grid</a>
-                        </li>
-                    </ul>
+            <ul class="sub-menu">
+                <li>
+                    <a href="#how-to-create-module">Creating a package</a>
                 </li>
 
-                <!-- <li>
-                    <a>User guide</a>
+                <li>
+                    <a href="#add-menu">Adding menu in backend & storefront</a>
+                </li>
+
+                <li>
+                    <a href="#create-acl">Creating ACL</a>
+                </li>
+
+                <li>
+                    <a href="#custom-configuration">Custom configuration</a>
+                </li>
+
+                <li>
+                    <a href="#create_models">Creating models</a>
 
                     <ul>
-                        User Guides
                         <li>
-                            <li>
-                                <a href="create_product.html">How to create product?</a>
-                            </li>
+                            <a href="">Contracts, repositories & proxies</a>
+                        </li>
 
-                            <li>
-                                <a href="configure_settings.html">Configure settings</a>
-                            </li>
-
-                            <li>
-                                <a href="#add-currency">Create currencies</a>
-                            </li>
-
-                            <li>
-                                <a href="#add-locale">Create locales</a>
-                            </li>
-
-                            <li>
-                                <a href="#add-channel">Create channels</a>
-                            </li>
-
-                            <li>
-                                <a href="#add-language">Add translation files</a>
-                            </li>
+                        <li>
+                            <a href="#store-data-through-repository">
+                                Store data with repository
+                            </a>
                         </li>
                     </ul>
-                </li> -->
-        </ul>
 
+                </li>
+            </ul>
+        </li>
+
+        <!-- Advanced Topics -->
+
+        <li class="menu-heading">
+            <a href="override-core-model.html">Advance topics</a>
+
+            <div class="horizontal-rule"></div>
+
+            <ul class="sub-menu">
+                <li>
+                    <a href="override-core-model.html">Override core models</a>
+                </li>
+
+                <li>
+                    <a href="create_theme.html">Creating themes</a>
+                </li>
+
+                <li>
+                    <a href="create_shipping_method.html">Creating shipping method</a>
+                </li>
+
+                <li>
+                    <a href="create_payment_method.html">Creating Payment method</a>
+                </li>
+
+                <li>
+                    <a href="render_event.html">View render event</a>
+                </li>
+
+                <li>
+                    <a href="events.html">Events</a>
+                </li>
+
+                <li>
+                    <a href="listen_event.html">Listen existing events</a>
+                </li>
+
+                <li>
+                    <a href="data_grid.html">Data Grid</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
 </div>
 
                     </div>
@@ -194,7 +154,7 @@
   </header>
 
   <div class="post-content">
-    
+
 
   </div>
 

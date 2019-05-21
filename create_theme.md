@@ -3,7 +3,7 @@ title: Creating themes-Bagisto
 layout: default
 ---
 
-## Create Theme<span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px"/> <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_theme.md">Edit On github</a></span>
+## Create Theme<span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg"/> <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_theme.md">edit on github</a></span>
 
 I hope that you know how to create package, if not(refer ( [Package development](create_module.md)), and I will skip package development step
 
