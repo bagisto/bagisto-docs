@@ -3,7 +3,7 @@ title: DataGrid-Bagisto
 layout: default
 ---
 
-## DataGrid
+## DataGrid<span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg"/> <a href="https://github.com/bagisto/bagisto-docs/blob/master/data_grid.md">edit on github</a></span>
 
 DataGrid is just a concept of displaying your database records in tabular format. We have implemented this system in bagisto either you can use it to display data in tabular format or write code from scratch to display data in tabular format. In addition to datagrid, we have implemented additional features such as - sorting, filter, massAction . You may refer to below table for detail information about the features.
 

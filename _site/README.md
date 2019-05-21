@@ -24,4 +24,10 @@ You can build the doc locally but before you need to install some packages on yo
 
 >bundle exec jekyll serve
 
+* Use the Server address URL http://127.0.0.1:4000/ in a browser to preview the content.
+
+* Press Ctrl+C in the serve terminal to stop the server.
+
 Now, the 'Bagisto Docs' project have been set up on your machine, you can improve or read the doc on your machine.
+
+>***TIP*** :Leave the serve terminal open and running. Every time you save changes to a file, it automatically regenerates the site so you can test the output immediately.
