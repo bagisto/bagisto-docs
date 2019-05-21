@@ -19,6 +19,6 @@ The new migration will be placed in your database/migrations directory. Each mig
 
 The - -table and - -create options may also be used to indicate the name of the table and whether the migration will be creating a new table.
 
-Also, Laravel provides us a option to create migration files at a specified path. The command to create migration file at our HelloWorld package database/migrations directory, we have to append '- -path' in artisan command.
+Also, Laravel provides us an option to create migration files at a specified path. The command to create migration file at our HelloWorld package database/migrations directory, we have to append '- -path' in artisan command.
 
 > php artisan make:migration create_demo_table - -path=packages/ACME/HelloWorld/src/Database/Migrations
