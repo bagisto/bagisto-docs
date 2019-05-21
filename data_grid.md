@@ -51,16 +51,24 @@ DataGrid is just a concept of displaying your database records in tabular format
 |    wrapper      |  |
 
 
-   * **prepareActions()** : This method is defined to perform actions on grid records such as- edit, delete Inside it, `addAction()` is called
+   * **prepareActions()** : Additionally, this method is defined when there is need to perform any action such as edit or delete on grid. Inside it, `addAction()` is called to define particular action
 
-       * ***addAction()*** : It is defined a number of times for individual action to be performed on grid
+       * ***addAction()*** : It is defined when you want to add action a number of times for individual action to be performed on grid
 
     |  Name                     | functionality |
 | ------------------------------- | ------------- |
 |            :---:                 | :---:         |
 |    type      | Edit/delete |
 |    method      |  HTTP verbs are written on basis of operation |
-|    route      | this key accept the route of icon s|
+|    route      | this key accept the route of icon |
 |    icon      |  class of icon to be displayed in action column you may prefer text also |
 |    confirm_text  | A confirm box is open on clicking action icon  if you want the user to verify or accept something. you can include message here |
 |  label  | the text to be displayed in written here, you may use translation also here  |
+
+
+
+## ***Warning***
+
+* ***Use JavaScripts with wrapper perperty set to true when really needed***
+
+* ***Return static blade files loaded with scripts in it with caution***
