@@ -115,6 +115,8 @@ td {
     margin-left: auto;
     margin-right: auto;
     border-style: outset;
+    height: 100%;
+    width: 100%;
 }
 
 .container {
@@ -135,11 +137,14 @@ td {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    background: $background-color;
+    background-color: $background-color;
     height: 80px;
     width: 100%;
     position: sticky;
+    top: 0;
     padding: 10px;
+    z-index: 2;
+    box-shadow: 5px 9px 12px -9px #888888;
 
     .logo-wrapper {
         display: flex;
@@ -156,6 +161,9 @@ td {
 
         span {
             padding-top: 5px;
+            padding-left: 5px;
+            font-size: 17px;
+            border-left: 1px solid black;
         }
     }
 
@@ -180,7 +188,7 @@ td {
                 padding-left: 20px;
 
                 a {
-                    font-size: 22px;
+                    font-size: 18px;
                     letter-spacing: 0.8px;
                 }
             }
@@ -200,9 +208,14 @@ td {
     .side-menu {
         width: 30%;
         position: sticky;
-        overflow: scroll;
+        overflow: auto;
+        box-shadow: 5px 9px 12px -9px #888888;
+
 
         .sidebar {
+            position: sticky;
+            top: 0;
+
             ul li {
                 list-style-type: none;
 
@@ -217,6 +230,19 @@ td {
         width: 70%;
         word-wrap: break-word;
         padding: 15px;
+
+        h1 {
+            display: inline-flex;
+            border-bottom-style: solid;
+            border-bottom-width: thin;
+            border-bottom-color: $brand-color;
+        }
+
+        h3 {
+            border-bottom-style: solid;
+            border-bottom-width: thin;
+            border-bottom-color: lightgrey;
+        }
     }
 
 }
@@ -228,6 +254,14 @@ td {
 
 .menu-heading {
     padding-top: 15px;
+
+    .sub-menu {
+        padding-top: 10px;
+
+        li {
+            padding: 2px;
+        }
+    }
 
     a {
         font-size: 15px;
@@ -242,17 +276,6 @@ td {
     border-bottom: 1px solid #0041ff;
 }
 
-
-.horizontal-rule {
-    display: block;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-    margin-left: auto;
-    margin-right: auto;
-    border-style: inset;
-    border-width: 1px;
-}
-
 .menu-heading > a {
     font-size: 18px;
 }
@@ -260,5 +283,24 @@ td {
 .edit-github {
     float: right;
     font-size: 15px;
-    margin-top: 9px;
+    margin-top: -70px;
+    // img {
+    //     width: 20px;
+    //     height: 16px;
+    // }
 }
+
+.pencil-icon {
+    width: 20px;
+    height: 16px;
+    float: right;
+    margin-top: -70px;
+    margin-right: 110px;
+}
+
+// .horizontal-rule {
+//     display: block;
+//     border: 0;
+//     border-bottom: 1px solid #0031F0;
+//     max-width: 50px;
+// }

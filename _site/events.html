@@ -5,7 +5,7 @@
         <title>Events-Bagisto</title>
         <link rel="stylesheet" href="assets/scss/layout.css" />
         <link rel="stylesheet" href="/assets/css/syntax.css" />
-        <link rel="icon" sizes="16x16" href="assets/icons/favicon.ico" />
+        <link rel="icon" sizes="16x16" href="assets/images/icons/favicon.ico" />
     </head>
     <body>
         <div class="container">
@@ -21,10 +21,10 @@
     <nav class="menu-list">
         <ul>
             <li>
-                <a class="nav-link" href="https://forums.bagisto.com/">Forum</a>
+                <a class="nav-link" target="_blank" href="https://forums.bagisto.com/">Forum</a>
             </li>
             <li>
-                <a class="nav-link" href="https://bagisto.com/en/blog/">Blogs</a>
+                <a class="nav-link" target="_blank" href="https://bagisto.com/en/blog/">Blogs</a>
             </li>
         </ul>
     </nav>
@@ -37,55 +37,52 @@
         <li class="menu-heading">
             <a href="index.html">Introduction</a>
 
-            <div class="horizontal-rule"></div>
-
             <ul class="sub-menu">
                 <li>
-                    <a href="#requirements">Requirements</a>
+                    <a href="/index.html#requirements">Requirements</a>
                 </li>
 
                 <li>
-                    <a href="#installation">Installation & configuration</a>
+                    <a href="/index.html#installation">Installation & configuration</a>
                 </li>
 
                 <li>
-                    <a href="#directory_structure">Directory structure</a>
+                    <a href="/index.html#directory_structure">Directory structure</a>
                 </li>
             </ul>
         </li>
 
         <!-- Module Development -->
         <li class="menu-heading">
-            <a href="create_module.html">Package development</a>
-            <div class="horizontal-rule"></div>
+            <a href="create_package.html">Package development</a>
 
             <ul class="sub-menu">
                 <li>
-                    <a href="#how-to-create-module">Creating a package</a>
+                    <a href="create_package.html#how-to-create-module">Creating a package</a>
                 </li>
 
                 <li>
-                    <a href="#add-menu">Adding menu in backend & storefront</a>
+                    <a href="create_package.html#add-menu">Adding menu in backend & storefront</a>
                 </li>
 
                 <li>
-                    <a href="#create-acl">Creating ACL</a>
+                    <a href="create_package.html#create-acl">Creating ACL</a>
                 </li>
 
                 <li>
-                    <a href="#custom-configuration">Custom configuration</a>
+                    <a href="create_package.html#custom-configuration">Custom configuration</a>
                 </li>
 
                 <li>
-                    <a href="#create_models">Creating models</a>
+                    <a href="create_package.html#create_models">Creating models</a>
 
                     <ul>
                         <li>
-                            <a href="">Contracts, repositories & proxies</a>
+                            <a href="create_package.html#about">Contracts, repositories & proxies</a>
                         </li>
 
                         <li>
-                            <a href="#store-data-through-repository">
+                            <a href="create_package.html#store-data-through-repository">
                                 Store data with repository
                             </a>
                         </li>
@@ -99,7 +96,6 @@
 
         <li class="menu-heading">
             <a href="override-core-model.html">Advance topics</a>
-            <div class="horizontal-rule"></div>
 
             <ul class="sub-menu">
                 <li>
@@ -141,7 +137,10 @@
                     </div>
 
                     <div class="right-content">
-                        <h2 id="events-edit-on-github">Events<span class="edit-github"><img src="/assets/images/icons/Icon-Pencil-Large.svg" /> <a href="https://github.com/bagisto/bagisto-docs">edit on github</a></span></h2>
+                        <h2 id="events">Events</h2>
+
+<p class="horizontal-rule"><img src="/assets/images/icons/Icon-Pencil-Large.svg" alt="edit on github" class="pencil-icon" />
+<a href="https://github.com/bagisto/bagisto-docs/blob/master/events.md" class="edit-github" target="_blank">edit on github</a></p>
 
 <p>Events provide a simple observer implementation which allows a user to subscribe and listen to various events triggered in the web application. All the event classes in Bagisto are stored in the <code class="highlighter-rouge">Providers</code> folder and the listeners are stored in the <code class="highlighter-rouge">Listeners</code> folder.</p>
 
@@ -149,19 +148,17 @@
 
 <p>For the sake of simplicity, in Bagisto, we register events manually in the boot method of your EventServiceProvider as below:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>``` php
-/**
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="sd">/**
 * Register any other events for your application.
 *
 * @return void
-*/
-public function boot()
-{
-    parent::boot();
+*/</span>
+<span class="k">public</span> <span class="k">function</span> <span class="nf">boot</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">parent</span><span class="o">::</span><span class="na">boot</span><span class="p">();</span>
 
-    Event::listen('event.name', 'path-upto-listener@function');
-}
-```
+    <span class="nx">Event</span><span class="o">::</span><span class="na">listen</span><span class="p">(</span><span class="s1">'event.name'</span><span class="p">,</span> <span class="s1">'path-upto-listener@function'</span><span class="p">);</span>
+<span class="p">}</span>
 </code></pre></div></div>
 
 <p><img src="/assets/images/Bagisto_Docs_Images/Events/define-event.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>

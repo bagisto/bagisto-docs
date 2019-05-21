@@ -3,28 +3,29 @@ title: Package development-Bagisto
 layout: default
 ---
 
-## Package  <span class="edit-github"><img src="/assets/images/icons/Icon-Pencil-Large.svg"/> <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_module.md">edit on github</a></span>
+## Package  <span class="edit-github">
+![edit on github](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
+[edit on github](https://github.com/bagisto/bagisto-docs/blob/master/create_module.md){:.edit-github  target="_blank"}
+{: .horizontal-rule}
 
-A package is like Laravel packages that includes views, controller and models. Packages are  created to manage your large laravel applications into smaller units. In the bagisto, we have created the plenty of packages at path `packages/Webkul/`. can refer bagisto's root directory shown's in fig
-
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/bagisto_root_directory.png){: height="50%" width="50%" .center}
+A package is like Laravel packages that includes views, controller and models. Packages are  created to manage your large laravel applications into smaller units. In the bagisto, we have created plenty of packages at path `packages/Webkul/`.
 
 ## How To Create Module <a id="how-to-create-module"></a>
 
 ### Step-1
 
-* Inside packages folder of bagisto, create a folder with your company name or namespace and inside it create a folder with your package name.
-Ex – Here namespace is specified as ACME
+* Inside **packages** folder, create a folder with your company name or namespace and inside it create a folder with your package name.
+e.g., here namespace is specified as ACME
 
->packages/ACME/HelloWorld
+> `packages/ACME/HelloWorld`
 
 ### Step-2
 
-* Inside your package create a file named as package.json and a folder named as 'src', we will use it later.
+* Inside your package create a file named as ***package.json*** and a folder named as **src**, we will use it later.
 
 ### Step-3
 
-* Inside ‘src’ folder create a folder named as ‘Providers’ and under it create a file named as ‘PackagenameServiceProvider.php’.
+* Inside **src** folder create a folder named as **Providers** and under it create a file named as ***PackagenameServiceProvider.php***.
 
     Ex – HelloWorldServiceProvider.php
 
@@ -165,14 +166,14 @@ Now, we need to register the language file to service provider.
 
 Now we can write translation in app.php like below.
 
-        ``` php
-        <?php
-        return [
-            'hello-world' => [
-                'name' => 'Jane Doe'
-            ]
-        ];
-        ```
+```php
+<?php
+return [
+    'hello-world' => [
+        'name' => 'Prateek Srivastava'
+    ]
+];
+```
 
 Add {{ __(‘helloworld::app.hello-world.name’) }} to your application’s view & it will automatically translate it.
 
@@ -187,53 +188,53 @@ Create a ‘Resources’ folder inside the ‘src’ folder. Inside ‘Resources
 
 ‘package.json' file consist
 
-        ```javascript
-        {
-            "scripts": {
-                "dev": "npm run development",
-                "development": "cross-env NODE_ENV=development          node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-                "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-                "watch-poll": "npm run watch -- --watch-poll",
-                "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
-                "prod": "npm run production",
-                "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
-            },
+```javascript
+{
+    "scripts": {
+        "dev": "npm run development",
+        "development": "cross-env NODE_ENV=development          node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "watch-poll": "npm run watch -- --watch-poll",
+        "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "prod": "npm run production",
+        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+    },
 
-            "devDependencies": {
-                "cross-env": "^5.1.4",
-                "laravel-mix": "^2.1",
-                "laravel-mix-merge-manifest": "^0.1.1"
-            }
-        }
-        ```
+    "devDependencies": {
+        "cross-env": "^5.1.4",
+        "laravel-mix": "^2.1",
+        "laravel-mix-merge-manifest": "^0.1.1"
+    }
+}
+```
 
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/package-json.png){: height="50%" width="50%" .center}
 
 
  webpack.mix.js will consist
 
-        ```javascript
-        const { mix } = require("laravel-mix");
-        require("laravel-mix-merge-manifest");
+```javascript
+const { mix } = require("laravel-mix");
+require("laravel-mix-merge-manifest");
 
-        if (mix.inProduction()) {
-            var publicPath = 'publishable/assets';
-        } else {
-            var publicPath = "../../../public/vendor/webkul/helloworld/assets";
-        }
+if (mix.inProduction()) {
+    var publicPath = 'publishable/assets';
+} else {
+    var publicPath = "../../../public/vendor/webkul/helloworld/assets";
+}
 
-        mix.setPublicPath(publicPath).mergeManifest();
+mix.setPublicPath(publicPath).mergeManifest();
 
-        mix.disableNotifications();
+mix.disableNotifications();
 
-        mix.sass(__dirname + "/src/Resources/assets/sass/app.scss", "css/helloworld.css").options({
-            processCssUrls: false
-        });
+mix.sass(__dirname + "/src/Resources/assets/sass/app.scss", "css/helloworld.css").options({
+    processCssUrls: false
+});
 
-        if (mix.inProduction()) {
-            mix.version();
-        }
-        ```
+if (mix.inProduction()) {
+    mix.version();
+}
+```
 
 All dependency can be updated according to need.
 
@@ -244,10 +245,10 @@ In the same way, we can also add images & js. Inside ‘assests’ folder of ‘
 Now we need to publish these two also as we did for CSS. We will add this too to our webpack.mix.js.
 
 
-        ```javascript
-        mix.js(__dirname + "/src/Resources/assets/js/app.js", "js/helloworld.js")
-            .copyDirectory( __dirname + '/src/Resources/assets/images', publicPath + '/images')
-        ```
+```javascript
+mix.js(__dirname + "/src/Resources/assets/js/app.js", "js/helloworld.js")
+    .copyDirectory( __dirname + '/src/Resources/assets/images', publicPath + '/images')
+```
 
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/webpack-mix.png){: height="50%" width="50%" .center}
 
@@ -256,22 +257,29 @@ Once again, we need to run ‘npm run watch’ to compile assets.
 
 After doing this we need to add an event listener so that admin layouts include our CSS. For this we need to add an Event Listener in service provider & Inside views create a folder called layouts & inside it create a file called ‘style.blade.php’ & mention compiled CSS path inside this file.
 
-        ```html
-        <link rel="stylesheet"
-        href="{{ bagisto_asset('css/helloworld.css') }}">
-        ( In style.blade.php)
-        ```
+
+```html
+<link rel="stylesheet" href="\{{ bagisto_asset('css/helloworld.css')\}}">
+( In style.blade.php)
+```
+
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/style-blade.png){: height="50%" width="50%" .center}
+
+
 
 **For Event Listener –**
 
-        ``` php
-        public function boot()
-        {
-            Event::listen('bagisto.admin.layout.head', function($viewRenderEventManager) {
-                $viewRenderEventManager->addTemplate('helloworld::helloworld.layouts.style');
-            });
-        }
-        ```
+```php
+public function boot()
+{
+    Event::listen('bagisto.admin.layout.head', function($viewRenderEventManager) {
+        $viewRenderEventManager->addTemplate('helloworld::helloworld.layouts.style');
+    });
+}
+```
+
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/provider-all.png){: height="50%" width="50%" .center}
+
 
 Now we need to extend admin::layouts.master as @extends(‘admin::layouts.master’) to packages/acme/HelloWorld/src/Resources & we can write CSS for our packages. If you don’t want to include this one then you need to create your own master file which includes your packages CSS & js.
 
@@ -295,12 +303,20 @@ Now, we need to add migrations to our service provider to load them.
 
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/merge-config-for-menu.png){: height="50%" width="50%" .center}
 
-<!-- ### Step-11
+### How to create Migrations ?<a id="create-migrations"></a>
 
-* Now, it's time to create controllers for packages. Create 'Controllers' folder inside 'Http' folder e.g., HelloWorldController.php
+To create a migration, use the make:migration Artisan command:
 
+>php artisan make:migration create_users_table
 
-       (image) -->
+The new migration will be placed in your database/migrations directory. Each migration file name contains a timestamp which allows Laravel to determine the order of the migrations.
+
+The - -table and - -create options may also be used to indicate the name of the table and whether the migration will be creating a new table.
+
+Also, Laravel provides us a option to create migration files at a specified path. The command to create migration file at our HelloWorld package database/migrations directory, we have to append '- -path' in artisan command.
+
+> php artisan make:migration create_demo_table - -path=packages/ACME/HelloWorld/src/Database/Migrations
+
 
 ### How to Add Menu in Admin/Customer <a id="add-menu"></a>
 
@@ -309,19 +325,24 @@ Now, we need to add migrations to our service provider to load them.
 For this, we need to create a ‘Config’ folder inside ‘src’.
 Inside this src folder, create a file name as 'menu.php'.
 
-        ``` php
-        <?php
+```php
+<?php
 
-        return [
-            [
-                'key' => 'helloworld',          // uniquely defined key for menu-icon
-                'name' => 'Hello World',        //  name of menu-icon
-                'route' => 'helloworld.index',  // the route for your menu-icon
-                'sort' => 1,                    // Sort number on which your menu-icon should display
-                'icon-class' => 'dashboard-icon',   //class of menu-icn
-            ]
-        ];
-        ```
+return [
+    [
+        'key' => 'helloworld',          // uniquely defined key for menu-icon
+        'name' => 'Hello World',        //  name of menu-icon
+        'route' => 'helloworld.index',  // the route for your menu-icon
+        'sort' => 1,                    // Sort number on which your menu-icon should display
+        'icon-class' => 'dashboard-icon',   //class of menu-icn
+    ]
+];
+```
+
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/menu-file-route.png){: height="50%" width="50%" .center}
+
+
+
 In this file we provide name of menu, its route & its icon.
 
 Now for route stated in `menu.php`, we need to create a controller to display view file.
@@ -333,43 +354,44 @@ So inside Controllers we will create HelloWorldController.php and controller.php
         ``` php
         <?php
 
-        namespace ACME\HelloWorld\Http\Controllers;
+namespace ACME\HelloWorld\Http\Controllers;
 
-        use Illuminate\Foundation\Bus\DispatchesJobs;
-        use Illuminate\Routing\Controller as BaseController;
-        use Illuminate\Foundation\Validation\ValidatesRequests;
-        use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-        class Controller extends BaseController
-        {
-            use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-        }
-        ```
+class Controller extends BaseController
+{
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+}
+```
 
 
+```php
+class HelloWorldController extends Controller
+{
+    protected $_config;
 
         ``` php
         class HelloWorldController extends Controller
         {
             protected $_config;
 
-            public function __construct()
-            {
-                $this->_config = request('_config');
-            }
+    /**
+    * Display a listing of the resource.
+    *
+    * @return \Illuminate\Http\Response
+    */
 
-            /**
-            * Display a listing of the resource.
-            *
-            * @return \Illuminate\Http\Response
-            */
+    public function index()
+    {
+        return view($this->_config['view']);
+    }
+}
+```
 
-            public function index()
-            {
-                return view($this->_config['view']);
-            }
-        }
-        ```
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/HelloWorldcontroller.png){: height="50%" width="50%" .center}
 
 
 For the route we will create a named route as
@@ -407,6 +429,52 @@ In term to manage an ecommerce site becomes clumsy and ambiguous. Here, in bagis
 
  There are some steps which the user have to follow to create ACL. User have to create an file in the config folder of module named as 'acl.php'. Below, the image of acl.php is attached
 
+```php
+<?php
+
+return [
+    [
+        'key' => 'dashboard',
+        'name' => 'admin::app.acl.dashboard',
+        'route' => 'admin.dashboard.index',
+        'sort' => 1
+    ], [
+        'key' => 'sales',
+        'name' => 'admin::app.acl.sales',
+        'route' => 'admin.sales.orders.index',
+        'sort' => 2
+    ], [
+        'key' => 'sales.orders',
+        'name' => 'admin::app.acl.orders',
+        'route' => 'admin.sales.orders.index',
+        'sort' => 1
+    ], [
+        'key' => 'sales.invoices',
+        'name' => 'admin::app.acl.invoices',
+        'route' => 'admin.sales.invoices.index',
+        'sort' => 2
+    ], [
+        'key' => 'sales.shipments',
+        'name' => 'admin::app.acl.shipments',
+        'route' => 'admin.sales.shipments.index',
+        'sort' => 3
+    ], [
+        'key' => 'catalog',
+        'name' => 'admin::app.acl.catalog',
+        'route' => 'admin.catalog.index',
+        'sort' => 3
+    ], [
+        'key' => 'catalog.products',
+        'name' => 'admin::app.acl.products',
+        'route' => 'admin.catalog.products.index',
+        'sort' => 1
+    ]
+];
+```
+
+
+
+
    ![ACL](assets/images/Bagisto_Docs_Images/ACL/acl-code.png){: height="50%" width="100%" .center}
 
  1. As you can see in above image, the acl.php includes some parameters (you can refer to       how to add menu in admin/customer section above)
@@ -427,6 +495,35 @@ Creating a custom configuration ease the task for developer or any non-developer
 
 * Inside the file, you can include the below code as shown in image
 
+```php
+<?php
+
+return [
+    [
+        'key' => 'ShowPriceAfterLogin',
+        'name' => 'ShowPriceAfterLogin::app.showpriceafterlogin.name',
+        'sort' => 5
+    ], [
+        'key' => 'ShowPriceAfterLogin.settings',
+        'name' => 'ShowPriceAfterLogin::app.showpriceafterlogin.settings',
+        'sort' => 1,
+    ], [
+        'key' => 'ShowPriceAfterLogin.settings.settings',
+        'name' => 'ShowPriceAfterLogin::app.showpriceafterlogin.settings',
+        'sort' => 1,
+        'fields' => [
+            [
+                'name' => 'enableordisable',
+                'title' => 'ShowPriceAfterLogin::app.showpriceafterlogin.toggle',
+                'type' => 'boolean',
+                'channel_based' => true,
+                'locale_based' => false
+            ]
+        ]
+    ]
+];
+```
+
 ![Custom Configuration file](assets/images/Bagisto_Docs_Images/custom-configuration.png){: height="50%" width="100%" .center}
 
 
@@ -440,10 +537,9 @@ Creating a custom configuration ease the task for developer or any non-developer
 
 * **fields** : these key accepts the array for the value of custom configuration.
 
+# Creating Models<a id="create_models"></a>
 
-
-
-# What is Contracts, Repositories and proxies ?<a id="create_models"></a>
+# What is Contracts, Repositories and proxies ?<a id="about"></a>
 
 ## Contracts
 
@@ -469,44 +565,40 @@ All of the Laravel contracts live in their own GitHub repository. This provides 
 
 * Now, at the same location create a model proxy file as 'HelloWorldProxy.php'. This Proxy class will extends  ModelProxy. Also, you have to add "use Konekt\Concord\Proxies\ModelProxy; " like below stated
 
-><?php
+```php
+<?php
 
->namespace Acme\HelloWorld\Models;
+namespace Acme\HelloWorld\Models;
 
->use Konekt\Concord\Proxies\ModelProxy;
+use Konekt\Concord\Proxies\ModelProxy;
 
->class DataFlowProfileProxy extends ModelProxy
->{
->}
+class DataFlowProfileProxy extends ModelProxy
+{
+
+}
+```
 
 * Now ,make a Folder named as Contracts and inside it create a interface file named as HelloWorld.php
 
 * Now, make a repository folder and inside it create a file 'HelloWorldRepository.php' and
 write the model method for repository class and under the method return path of your contract class.
 
-><?php
+```php
+<?php
+namespace Webkul\Marketplace\Repositories;
 
->namespace Webkul\Marketplace\Repositories;
+use Webkul\Core\Eloquent\Repository;
 
->use Webkul\Core\Eloquent\Repository;
-
-
->class HelloWorldRepository extends Repository
-
->{
-
-    /**
-     * Specify Model class name
-     *
-     * @return mixed
-     */
->    function model()
-
->    {
-
->        return 'ACME\HelloWorld\Contracts\HelloWorld';
-
->    }
-
->}
-
+class HelloWorldRepository extends Repository
+{
+   /**
+    * Specify Model class name
+    *
+    * @return mixed
+    */
+    function model()
+    {
+        return 'ACME\HelloWorld\Contracts\HelloWorld';
+    }
+}
+```
