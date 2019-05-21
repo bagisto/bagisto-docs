@@ -3,7 +3,7 @@ title: View render event-Bagisto
 layout: default
 ---
 
-## View Render Event
+# View Render Event
 
 
 ![edit on github](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}

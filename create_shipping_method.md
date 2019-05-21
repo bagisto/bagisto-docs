@@ -3,7 +3,7 @@ title: Creating shipping method-Bagisto
 layout: default
 ---
 
-## Shipping Method
+# Shipping Method
 
 
 ![edit on github](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
@@ -11,7 +11,7 @@ layout: default
 
 I hope that you know how to create package, if not(refer ( [Package development](create_module.md)), and I will skip package development step
 
-## Steps to create shipping methods
+### Steps to create shipping methods
 
 * User need to create a file named as `carriers.php` at `src/config` path in the package. Here, we are going to specify what to include in your `carriers.php` file.
 
@@ -30,7 +30,7 @@ I hope that you know how to create package, if not(refer ( [Package development]
     ];
     ```
 
-### Parameters needed for explanation
+##### Parameters needed for explanation
 
 1. code : unique value used for referring the particular menu
 

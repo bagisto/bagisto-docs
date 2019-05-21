@@ -3,7 +3,7 @@ title: Creating themes-Bagisto
 layout: default
 ---
 
-## Create Theme
+# Create Theme
 
 ![edit on github](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/create_theme.md){:.edit-github  target="_blank"}
@@ -55,7 +55,7 @@ return [
 
 Let’s go through the parameters of this theme’s file. Because the understanding of those parameters will help you in creating a custom theme.
 
-### An Explanation For These Parameters:
+##### An Explanation For These Parameters:
 
 1. default: Declared at the top signifies the currently active or default theme in Bagisto. It is assigned with the value ‘default’. The (string)default indicates the name of the currently active theme.
 

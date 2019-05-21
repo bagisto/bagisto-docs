@@ -3,16 +3,16 @@ title: Events-Bagisto
 layout: default
 ---
 
-## Events
+# Events
 
 ![edit on github](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/events.md){:.edit-github  target="_blank"}
 
-Events provide a simple observer implementation which allows a user to subscribe and listen to various events triggered in the web application. All the event classes in Bagisto are stored in the `Providers` folder and the listeners are stored in the `Listeners` folder.
+Events provide a simple observer implementation which allows a user to subscribe and listen to various events triggered in the web application. All the event classes in Bagisto are stored in the **Providers** folder and the listeners are stored in the **Listeners** folder.
 
-#### Manually Registering Events
+### Manually Registering Events
 
-For the sake of simplicity, in Bagisto, we register events manually in the boot method of your EventServiceProvider as below:
+For the sake of simplicity, in Bagisto, we register events manually in the boot method of your ***EventServiceProvider*** as below:
 
 ```php
 /**
@@ -39,7 +39,7 @@ As we see above, in registering events we specify listener function to be execut
 
 ### How we specify events?
 
-In most of CRUD operation. We had fired an event before and after the execution of function. So, that if some one want to perform any operation after or before product create/update/delete can perform by simply calling a listener function in event registration
+In most of **CRUD** operation. We had fired an event before and after the execution of function. So, that if some one want to perform any operation after or before product create/update/delete can perform by simply calling a listener function in event registration
 
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/Events/create-event-before-after.png){: height="50%" width="100%"}
 

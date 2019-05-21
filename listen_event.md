@@ -3,7 +3,7 @@ title: Listen existing events-Bagisto
 layout: default
 ---
 
-### Listen Existing Event
+# Listen Existing Event
 
 ![edit on github](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/listen_event.md){:.edit-github  target="_blank"}

@@ -3,7 +3,7 @@ title: DataGrid-Bagisto
 layout: default
 ---
 
-## DataGrid
+# DataGrid
 
 ![edit on github](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/data_grid.md){:.edit-github  target="_blank"}
@@ -12,8 +12,87 @@ layout: default
 
 DataGrid is just a concept of displaying your database records in tabular format. We have implemented this system in bagisto either you can use it to display data in tabular format or write code from scratch to display data in tabular format. In addition to datagrid, we have implemented additional features such as - sorting, filter, massAction . You may refer to below table for detail information about the features.
 
+```php
+<?php
 
+namespace Webkul\Admin\DataGrids;
 
+use Webkul\Ui\DataGrid\DataGrid;
+use DB;
+
+/**
+ * NewsLetterDataGrid Class
+ *
+ * @author Prashant Singh <prashant.singh852@webkul.com> @prashant-webkul
+ * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
+ */
+class NewsLetterDataGrid extends DataGrid
+{
+    protected $index = 'id';
+
+    protected $sortOrder = 'desc'; //asc or desc
+
+    public function prepareQueryBuilder()
+    {
+        $queryBuilder = DB::table('subscribers_list')->addSelect('id', 'is_subscribed', 'email');
+
+        $this->setQueryBuilder($queryBuilder);
+    }
+
+    public function addColumns()
+    {
+        $this->addColumn([
+            'index' => 'id',
+            'label' => trans('admin::app.datagrid.id'),
+            'type' => 'number',
+            'searchable' => false,
+            'sortable' => true,
+            'filterable' => true
+        ]);
+
+        $this->addColumn([
+            'index' => 'is_subscribed',
+            'label' => trans('admin::app.datagrid.subscribed'),
+            'type' => 'string',
+            'searchable' => false,
+            'sortable' => true,
+            'filterable' => true,
+            'wrapper' => function($value) {
+                if ($value->is_subscribed == 1)
+                    return 'True';
+                else
+                    return 'False';
+            }
+        ]);
+
+        $this->addColumn([
+            'index' => 'email',
+            'label' => trans('admin::app.datagrid.email'),
+            'type' => 'string',
+            'searchable' => true,
+            'sortable' => true,
+            'filterable' => true
+        ]);
+    }
+
+    public function prepareActions() {
+        $this->addAction([
+            'type' => 'Edit',
+            'method' => 'GET', // use GET request only for redirect purposes
+            'route' => 'admin.customers.subscribers.edit',
+            'icon' => 'icon pencil-lg-icon'
+        ]);
+
+        $this->addAction([
+            'type' => 'Delete',
+            'method' => 'POST', // use GET request only for redirect purposes
+            'route' => 'admin.customers.subscribers.delete',
+            'confirm_text' => trans('ui::app.datagrid.massaction.delete', ['resource' => 'Exchange Rate']),
+            'icon' => 'icon trash-icon'
+        ]);
+    }
+}
+```
 ### Global Properties of DataGrid
 
 |  Name                     | functionality |
@@ -28,7 +107,7 @@ DataGrid is just a concept of displaying your database records in tabular format
 |    itemsPerPage      | In itemsPerPage, a numeric value is assigned to `itemsPerPage` variable to display items per page  |
 | enableFilterMap |  this accept boolean values `true/false` to enable/disable the filter on the basis of columns |
 
-## Steps for how to create DataGrid
+### Steps for how to create DataGrid
 
 1. Create a folder 'DataGrid' in your package, inside it create a file for your datagrid folder.
 
@@ -71,8 +150,7 @@ DataGrid is just a concept of displaying your database records in tabular format
 |  label  | the text to be displayed in written here, you may use translation also here  |
 
 
-
-## ***Warning***
+### ***Warning***
 
 * ***Use JavaScripts with wrapper perperty set to true when really needed***
 

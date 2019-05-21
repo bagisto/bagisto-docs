@@ -3,26 +3,26 @@ title: Package development-Bagisto
 layout: default
 ---
 
-## Package  <span class="edit-github">
+# Package<span class="edit-github">
 ![edit on github](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/create_module.md){:.edit-github  target="_blank"}
 
 A package is like Laravel packages that includes views, controller and models. Packages are  created to manage your large laravel applications into smaller units. In the bagisto, we have created plenty of packages at path `packages/Webkul/`.
 
-## How To Create Module <a id="how-to-create-module"></a>
+### How To Create Module <a id="how-to-create-module"></a>
 
-### Step-1
+##### Step-1
 
 * Inside **packages** folder, create a folder with your company name or namespace and inside it create a folder with your package name.
 e.g., here namespace is specified as ACME
 
 > `packages/ACME/HelloWorld`
 
-### Step-2
+##### Step-2
 
 * Inside your package create a file named as ***package.json*** and a folder named as **src**, we will use it later.
 
-### Step-3
+##### Step-3
 
 * Inside **src** folder create a folder named as **Providers** and under it create a file named as ***PackagenameServiceProvider.php***.
 
@@ -67,7 +67,7 @@ e.g., here namespace is specified as ACME
         }
         ```
 
-### Step-4
+##### Step-4
 
 * Now, to register the service provider, go to ‘app.php’ file inside ‘config’ folder & add your service provider inside ‘providers’ array.
 
@@ -80,7 +80,7 @@ e.g., here namespace is specified as ACME
 
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/provider-registration.png){: height="50%" width="50%" .center}
 
-### Step-5
+##### Step-5
 
 * Now, we need to add our package to ‘composer.json’ file of project root for autoloading in psr-4.
 
@@ -91,7 +91,7 @@ e.g., here namespace is specified as ACME
     ```
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/psr4-registration.png){: height="50%" width="50%" .center}
 
-### Step-6
+##### Step-6
 
 * Now, we are going to add some routing & views for our package.
 
@@ -126,7 +126,7 @@ Now just like route file, we need to register our view folder inside service pro
 
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/view-register.png){: height="50%" width="50%" .center}
 
-### Step-7
+##### Step-7
 
 * Now, we need to create a route & render a view on that route.
 
@@ -145,7 +145,7 @@ Now, you can append ‘hello-world’ to your local path in the browser's url to
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/helloworld-browser-output.png){: height="50%" width="50%" .center}
 
 
-### Step-8
+##### Step-8
 
 * Now, we are going to create language file for our package.
 
@@ -178,7 +178,7 @@ Add {{ __(‘helloworld::app.hello-world.name’) }} to your application’s vie
 
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/translation-output.png){: height="50%" width="50%" .center}
 
-### Step-9
+##### Step-9
 
 * Now we will add CSS to our package. To add CSS create ‘package.json’ file & ‘webpack.mix.js’ file inside the root of your package.
 
@@ -285,7 +285,7 @@ Now we need to extend admin::layouts.master as @extends(‘admin::layouts.master
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/layout-content.png){: height="50%" width="50%" .center}
 
 
-### Step-10
+##### Step-10
 
 * Now we will add Database to our package.
 
@@ -424,7 +424,7 @@ Now, this menu will comes in admin login. You can change icon accordingly your n
 
 In term to manage an ecommerce site becomes clumsy and ambiguous. Here, in bagisto, it has been taken care of, bagisto has provided an functionality 'ACL'(Access Control List). Mainly,with ACL, admin has power to disable the menu whatever not-in-use for admin .
 
-### Creating an ACL file
+##### Creating an ACL file
 
  There are some steps which the user have to follow to create ACL. User have to create an file in the config folder of module named as 'acl.php'. Below, the image of acl.php is attached
 
@@ -484,11 +484,11 @@ return [
     ![ACL](assets/images/Bagisto_Docs_Images/ACL/acl-ui.png){: height="50%" width="100%" .center}
 
 
-## Custom Configuration <a id="custom-configuration"></a>
+### Custom Configuration <a id="custom-configuration"></a>
 
 Creating a custom configuration ease the task for developer or any non-developer person. It lets you option of enable/disable with the dropdown or any input *type* attribute. Generally, in bagisto, you can find it in admin panel **Configuration menu** .
 
-### Steps to create custom configuration
+##### Steps to create custom configuration
 
 * To create custom configuration for your application, you just need to create system.php file under *config* folder of your package.
 
@@ -526,7 +526,7 @@ return [
 ![Custom Configuration file](assets/images/Bagisto_Docs_Images/custom-configuration.png){: height="50%" width="100%" .center}
 
 
-### Explanation for the keys:
+##### Explanation for the keys:
 
 * **key** : these values provided are unique and nested with '.' (dot) operator. After creation of two nested, other keys written are display in browser in form of accordian {figure needed}
 
@@ -536,11 +536,11 @@ return [
 
 * **fields** : these key accepts the array for the value of custom configuration.
 
-# Creating Models<a id="create_models"></a>
+### Creating Models<a id="create_models"></a>
 
-# What is Contracts, Repositories and proxies ?<a id="about"></a>
+#### What is Contracts, Repositories and proxies ?<a id="about"></a>
 
-## Contracts
+##### Contracts
 
 Laravel's Contracts are a set of interfaces that define the core services provided by the framework. For example, a Illuminate\Contracts\Queue\Queue contract defines the methods needed for queueing jobs, while the Illuminate\Contracts\Mail\Mailer contract defines the methods needed for sending e-mail.
 
@@ -548,13 +548,13 @@ Each contract has a corresponding implementation provided by the framework. For 
 
 All of the Laravel contracts live in their own GitHub repository. This provides a quick reference point for all available contracts, as well as a single, decoupled package that may be utilized by package developers.
 
-## Repositories
+##### Repositories
 
 
-## Proxies
+##### Proxies
 
 
-# Store data through Repository <a id="store-data-through-repository"></a>
+##### Store data through Repository <a id="store-data-through-repository"></a>
 
  Steps to store data through repository :
 

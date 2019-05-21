@@ -137,16 +137,16 @@
                     </div>
 
                     <div class="right-content">
-                        <h2 id="events">Events</h2>
+                        <h1 id="events">Events</h1>
 
 <p><img src="/bagisto-docs/assets/images/icons/Icon-Pencil-Large.svg" alt="edit on github" class="pencil-icon" />
 <a href="https://github.com/bagisto/bagisto-docs/blob/master/events.md" class="edit-github" target="_blank">edit on github</a></p>
 
-<p>Events provide a simple observer implementation which allows a user to subscribe and listen to various events triggered in the web application. All the event classes in Bagisto are stored in the <code class="highlighter-rouge">Providers</code> folder and the listeners are stored in the <code class="highlighter-rouge">Listeners</code> folder.</p>
+<p>Events provide a simple observer implementation which allows a user to subscribe and listen to various events triggered in the web application. All the event classes in Bagisto are stored in the <strong>Providers</strong> folder and the listeners are stored in the <strong>Listeners</strong> folder.</p>
 
-<h4 id="manually-registering-events">Manually Registering Events</h4>
+<h3 id="manually-registering-events">Manually Registering Events</h3>
 
-<p>For the sake of simplicity, in Bagisto, we register events manually in the boot method of your EventServiceProvider as below:</p>
+<p>For the sake of simplicity, in Bagisto, we register events manually in the boot method of your <strong><em>EventServiceProvider</em></strong> as below:</p>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="sd">/**
 * Register any other events for your application.
@@ -169,7 +169,7 @@
 
 <h3 id="how-we-specify-events">How we specify events?</h3>
 
-<p>In most of CRUD operation. We had fired an event before and after the execution of function. So, that if some one want to perform any operation after or before product create/update/delete can perform by simply calling a listener function in event registration</p>
+<p>In most of <strong>CRUD</strong> operation. We had fired an event before and after the execution of function. So, that if some one want to perform any operation after or before product create/update/delete can perform by simply calling a listener function in event registration</p>
 
 <p><img src="/bagisto-docs/assets/images/Bagisto_Docs_Images/Events/create-event-before-after.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
 

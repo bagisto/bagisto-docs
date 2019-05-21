@@ -137,13 +137,93 @@
                     </div>
 
                     <div class="right-content">
-                        <h2 id="datagrid">DataGrid</h2>
+                        <h1 id="datagrid">DataGrid</h1>
 
 <p><img src="/bagisto-docs/assets/images/icons/Icon-Pencil-Large.svg" alt="edit on github" class="pencil-icon" />
 <a href="https://github.com/bagisto/bagisto-docs/blob/master/data_grid.md" class="edit-github" target="_blank">edit on github</a></p>
 
 <p>DataGrid is just a concept of displaying your database records in tabular format. We have implemented this system in bagisto either you can use it to display data in tabular format or write code from scratch to display data in tabular format. In addition to datagrid, we have implemented additional features such as - sorting, filter, massAction . You may refer to below table for detail information about the features.</p>
 
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+
+<span class="k">namespace</span> <span class="nx">Webkul\Admin\DataGrids</span><span class="p">;</span>
+
+<span class="k">use</span> <span class="nx">Webkul\Ui\DataGrid\DataGrid</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">DB</span><span class="p">;</span>
+
+<span class="sd">/**
+ * NewsLetterDataGrid Class
+ *
+ * @author Prashant Singh &lt;prashant.singh852@webkul.com&gt; @prashant-webkul
+ * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
+ */</span>
+<span class="k">class</span> <span class="nc">NewsLetterDataGrid</span> <span class="k">extends</span> <span class="nx">DataGrid</span>
+<span class="p">{</span>
+    <span class="k">protected</span> <span class="nv">$index</span> <span class="o">=</span> <span class="s1">'id'</span><span class="p">;</span>
+
+    <span class="k">protected</span> <span class="nv">$sortOrder</span> <span class="o">=</span> <span class="s1">'desc'</span><span class="p">;</span> <span class="c1">//asc or desc
+</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">prepareQueryBuilder</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$queryBuilder</span> <span class="o">=</span> <span class="nx">DB</span><span class="o">::</span><span class="na">table</span><span class="p">(</span><span class="s1">'subscribers_list'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">addSelect</span><span class="p">(</span><span class="s1">'id'</span><span class="p">,</span> <span class="s1">'is_subscribed'</span><span class="p">,</span> <span class="s1">'email'</span><span class="p">);</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">setQueryBuilder</span><span class="p">(</span><span class="nv">$queryBuilder</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">addColumns</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addColumn</span><span class="p">([</span>
+            <span class="s1">'index'</span> <span class="o">=&gt;</span> <span class="s1">'id'</span><span class="p">,</span>
+            <span class="s1">'label'</span> <span class="o">=&gt;</span> <span class="nx">trans</span><span class="p">(</span><span class="s1">'admin::app.datagrid.id'</span><span class="p">),</span>
+            <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'number'</span><span class="p">,</span>
+            <span class="s1">'searchable'</span> <span class="o">=&gt;</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="s1">'sortable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="s1">'filterable'</span> <span class="o">=&gt;</span> <span class="kc">true</span>
+        <span class="p">]);</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addColumn</span><span class="p">([</span>
+            <span class="s1">'index'</span> <span class="o">=&gt;</span> <span class="s1">'is_subscribed'</span><span class="p">,</span>
+            <span class="s1">'label'</span> <span class="o">=&gt;</span> <span class="nx">trans</span><span class="p">(</span><span class="s1">'admin::app.datagrid.subscribed'</span><span class="p">),</span>
+            <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'string'</span><span class="p">,</span>
+            <span class="s1">'searchable'</span> <span class="o">=&gt;</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="s1">'sortable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="s1">'filterable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="s1">'wrapper'</span> <span class="o">=&gt;</span> <span class="k">function</span><span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span><span class="o">-&gt;</span><span class="na">is_subscribed</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="s1">'True'</span><span class="p">;</span>
+                <span class="k">else</span>
+                    <span class="k">return</span> <span class="s1">'False'</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">]);</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addColumn</span><span class="p">([</span>
+            <span class="s1">'index'</span> <span class="o">=&gt;</span> <span class="s1">'email'</span><span class="p">,</span>
+            <span class="s1">'label'</span> <span class="o">=&gt;</span> <span class="nx">trans</span><span class="p">(</span><span class="s1">'admin::app.datagrid.email'</span><span class="p">),</span>
+            <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'string'</span><span class="p">,</span>
+            <span class="s1">'searchable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="s1">'sortable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="s1">'filterable'</span> <span class="o">=&gt;</span> <span class="kc">true</span>
+        <span class="p">]);</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">prepareActions</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addAction</span><span class="p">([</span>
+            <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'Edit'</span><span class="p">,</span>
+            <span class="s1">'method'</span> <span class="o">=&gt;</span> <span class="s1">'GET'</span><span class="p">,</span> <span class="c1">// use GET request only for redirect purposes
+</span>            <span class="s1">'route'</span> <span class="o">=&gt;</span> <span class="s1">'admin.customers.subscribers.edit'</span><span class="p">,</span>
+            <span class="s1">'icon'</span> <span class="o">=&gt;</span> <span class="s1">'icon pencil-lg-icon'</span>
+        <span class="p">]);</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addAction</span><span class="p">([</span>
+            <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'Delete'</span><span class="p">,</span>
+            <span class="s1">'method'</span> <span class="o">=&gt;</span> <span class="s1">'POST'</span><span class="p">,</span> <span class="c1">// use GET request only for redirect purposes
+</span>            <span class="s1">'route'</span> <span class="o">=&gt;</span> <span class="s1">'admin.customers.subscribers.delete'</span><span class="p">,</span>
+            <span class="s1">'confirm_text'</span> <span class="o">=&gt;</span> <span class="nx">trans</span><span class="p">(</span><span class="s1">'ui::app.datagrid.massaction.delete'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'resource'</span> <span class="o">=&gt;</span> <span class="s1">'Exchange Rate'</span><span class="p">]),</span>
+            <span class="s1">'icon'</span> <span class="o">=&gt;</span> <span class="s1">'icon trash-icon'</span>
+        <span class="p">]);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
 <h3 id="global-properties-of-datagrid">Global Properties of DataGrid</h3>
 
 <table>
@@ -189,7 +269,7 @@
   </tbody>
 </table>
 
-<h2 id="steps-for-how-to-create-datagrid">Steps for how to create DataGrid</h2>
+<h3 id="steps-for-how-to-create-datagrid">Steps for how to create DataGrid</h3>
 
 <ol>
   <li>
@@ -301,7 +381,7 @@
   </li>
 </ol>
 
-<h2 id="warning"><strong><em>Warning</em></strong></h2>
+<h3 id="warning"><strong><em>Warning</em></strong></h3>
 
 <ul>
   <li>

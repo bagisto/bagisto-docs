@@ -3,7 +3,7 @@ title: Creating Payment method-Bagisto
 layout: default
 ---
 
-## Payment Method
+# Payment Method
 
 ![edit on github](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/create_payment_method.md){:.edit-github  target="_blank"}
@@ -27,7 +27,7 @@ In this article, we will understand how to create payment method by own with jus
 
             ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/payment-config-1.png){: height="50%" width="100%"}
 
-### Explanation for the keys:
+##### Explanation for the keys:
 
 * **key** : these values provided are unique and nested with '.' (dot) operator. After creation of two nested, other keys written are display in browser in form of accordian {figure needed}
 
@@ -42,7 +42,7 @@ In this article, we will understand how to create payment method by own with jus
 
     ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/payment-config-2.png){: height="50%" width="100%"}
 
-### An Explanation For These Parameters:
+##### An Explanation For These Parameters:
 
 *  **code** : a text to represent payment method
 
