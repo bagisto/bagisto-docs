@@ -7,7 +7,6 @@ layout: default
 
 ![edit on github](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/data_grid.md){:.edit-github  target="_blank"}
-{: .horizontal-rule}
 
 
 

@@ -7,7 +7,6 @@ layout: default
 
 ![edit on github](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/events.md){:.edit-github  target="_blank"}
-{: .horizontal-rule}
 
 Events provide a simple observer implementation which allows a user to subscribe and listen to various events triggered in the web application. All the event classes in Bagisto are stored in the `Providers` folder and the listeners are stored in the `Listeners` folder.
 
