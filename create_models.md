@@ -5,12 +5,11 @@ layout: default
 # What is Contracts, Repositories and proxies ?<a id="#detail"></a><span class="edit-github"><img src="/assets/images/icons/Icon-Pencil-Large.svg" width="19px" height="13px"/> <a class="nav-link" href="https://github.com/bagisto/bagisto-docs">Edit On github</a></span>
 
 ## Contracts
-
-Laravel's Contracts are a set of interfaces that define the core services provided by the framework. For example, a Illuminate\Contracts\Queue\Queue contract defines the methods needed for queueing jobs, while the Illuminate\Contracts\Mail\Mailer contract defines the methods needed for sending e-mail.
+Laravel's Contracts are a set of interfaces that defines the core services provided by the framework. For example, an Illuminate\Contracts\Queue\Queue contract defines the methods needed for queueing jobs, while the Illuminate\Contracts\Mail\Mailer contract defines the methods needed for sending an e-mail.
 
 Each contract has a corresponding implementation provided by the framework. For example, Laravel provides a queue implementation with a variety of drivers, and a mailer implementation that is powered by SwiftMailer.
 
-All of the Laravel contracts live in their own GitHub repository. This provides a quick reference point for all available contracts, as well as a single, decoupled package that may be utilized by package developers.
+All of the Laravel contracts live in their own GitHub repository. This provides a quick reference point for all available contracts, as well as a single, decoupled packages that may be utilized by package developers.
 
 ## Repositories
 
@@ -22,12 +21,11 @@ All of the Laravel contracts live in their own GitHub repository. This provides 
 
  Steps to store data through repository :
 
-* Beginning with the creation of models, generally models are created using command stated below. The model is created on specified path/location.
+* Beginning with the creation of models, generally, models are created using command stated below. The model is created on a specified path/location.
 
 > php artisan make:model HelloWorld --path=""
 
-* Now, at the same location create a model proxy file as 'HelloWorldProxy.php'. This Proxy class will extends  ModelProxy. Also, you have to add "use Konekt\Concord\Proxies\ModelProxy; " like below stated
-
+* Now, at the same location create a model proxy file as 'HelloWorldProxy.php'. This Proxy class will extend the model proxy. Also, you have to add "use Konekt\Concord\Proxies\ModelProxy; " as stated below  
 ``` php
 namespace Acme\HelloWorld\Models;
 
@@ -38,7 +36,7 @@ class DataFlowProfileProxy extends ModelProxy
 }
 ```
 
-* Now ,make a Folder named as Contracts and inside it create a interface file named as HelloWorld.php
+* Now , make a Folder name it as Contracts and inside it create an interface file named as HelloWorld.php
 
 * Now, make a repository folder and inside it create a file 'HelloWorldRepository.php' and
 write the model method for repository class and under the method return path of your contract class.
@@ -73,7 +71,7 @@ write the model method for repository class and under the method return path of 
 # Override Existing model <a id="override-existing-model"></a>
 
 
-Concord is a Laravel Extension that serves as a foundation to build Modules for Laravel Applications on top of Laravel's built in Service Providers. Bagisto uses Concord for managing their modules. The concept of model proxies has been introduced. Proxies as their name state, will drive you to the actual model class.
+Concord is a Laravel Extension that serves as a foundation to build Modules for Laravel Applications on top of Laravel's built-in Service Providers. Bagisto uses Concord for managing their modules. The concept of model proxies has been introduced. Proxies as their name state will drive you to the actual model class.
 
 Concord's concept also requires to have an interface `Product` and this way it's possible to freely bind a concrete class to it using Concord's `registerModel()` method.
 
@@ -81,7 +79,7 @@ Concord's concept also requires to have an interface `Product` and this way it's
 
 The `registerModel()` method also silently binds the interface to the implementation with Laravel's service container so you can simply type hint the interface at any point where automatic injection happens.
 
-Overriding Model class in application:
+Overriding Model class in an application:
 
 
     namespace App\Providers;
