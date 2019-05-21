@@ -333,7 +333,7 @@ e.g., here namespace is specified as ACME</li>
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
 <span class="k">return</span> <span class="p">[</span>
     <span class="s1">'hello-world'</span> <span class="o">=&gt;</span> <span class="p">[</span>
-        <span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'Jane Doe'</span>
+        <span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'Prateek Srivastava'</span>
     <span class="p">]</span>
 <span class="p">];</span>
 </code></pre></div></div>
@@ -419,6 +419,8 @@ e.g., here namespace is specified as ACME</li>
 ( In style.blade.php)
 </code></pre></div></div>
 
+<p><img src="assets/images/Bagisto_Docs_Images/PackageDevelopment/style-blade.png" alt="Bagisto Root Directory" height="50%" width="50%" class="center" /></p>
+
 <p><strong>For Event Listener –</strong></p>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">function</span> <span class="nf">boot</span><span class="p">()</span>
@@ -428,6 +430,8 @@ e.g., here namespace is specified as ACME</li>
     <span class="p">});</span>
 <span class="p">}</span>
 </code></pre></div></div>
+
+<p><img src="assets/images/Bagisto_Docs_Images/PackageDevelopment/provider-all.png" alt="Bagisto Root Directory" height="50%" width="50%" class="center" /></p>
 
 <p>Now we need to extend admin::layouts.master as @extends(‘admin::layouts.master’) to packages/acme/HelloWorld/src/Resources &amp; we can write CSS for our packages. If you don’t want to include this one then you need to create your own master file which includes your packages CSS &amp; js.</p>
 
@@ -451,12 +455,23 @@ e.g., here namespace is specified as ACME</li>
 
 <p><img src="/assets/images/Bagisto_Docs_Images/PackageDevelopment/merge-config-for-menu.png" alt="Bagisto Root Directory" height="50%" width="50%" class="center" /></p>
 
-<!-- ### Step-11
+<h3 id="how-to-create-migrations-">How to create Migrations ?<a id="create-migrations"></a></h3>
 
-* Now, it's time to create controllers for packages. Create 'Controllers' folder inside 'Http' folder e.g., HelloWorldController.php
+<p>To create a migration, use the make:migration Artisan command:</p>
 
+<blockquote>
+  <p>php artisan make:migration create_users_table</p>
+</blockquote>
 
-       (image) -->
+<p>The new migration will be placed in your database/migrations directory. Each migration file name contains a timestamp which allows Laravel to determine the order of the migrations.</p>
+
+<p>The - -table and - -create options may also be used to indicate the name of the table and whether the migration will be creating a new table.</p>
+
+<p>Also, Laravel provides us a option to create migration files at a specified path. The command to create migration file at our HelloWorld package database/migrations directory, we have to append ‘- -path’ in artisan command.</p>
+
+<blockquote>
+  <p>php artisan make:migration create_demo_table - -path=packages/ACME/HelloWorld/src/Database/Migrations</p>
+</blockquote>
 
 <h3 id="how-to-add-menu-in-admincustomer-">How to Add Menu in Admin/Customer <a id="add-menu"></a></h3>
 
@@ -477,6 +492,8 @@ Inside this src folder, create a file name as ‘menu.php’.</p>
 </span>    <span class="p">]</span>
 <span class="p">];</span>
 </code></pre></div></div>
+
+<p><img src="assets/images/Bagisto_Docs_Images/PackageDevelopment/menu-file-route.png" alt="Bagisto Root Directory" height="50%" width="50%" class="center" /></p>
 
 <p>In this file we provide name of menu, its route &amp; its icon.</p>
 
@@ -523,6 +540,8 @@ Inside this src folder, create a file name as ‘menu.php’.</p>
 <span class="p">}</span>
 </code></pre></div></div>
 
+<p><img src="assets/images/Bagisto_Docs_Images/PackageDevelopment/HelloWorldcontroller.png" alt="Bagisto Root Directory" height="50%" width="50%" class="center" /></p>
+
 <p>For the route we will create a named route as</p>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Route</span><span class="o">::</span><span class="na">get</span><span class="p">(</span><span class="s1">'hello-dashboard'</span><span class="p">,</span> <span class="s1">'ACME\HelloWorld\Http\Controllers\HelloWorldController@index'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">defaults</span><span class="p">(</span><span class="s1">'_config'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'view'</span> <span class="o">=&gt;</span> <span class="s1">'helloworld::helloworld.index'</span>
@@ -555,6 +574,48 @@ Inside this src folder, create a file name as ‘menu.php’.</p>
 
 <p>There are some steps which the user have to follow to create ACL. User have to create an file in the config folder of module named as ‘acl.php’. Below, the image of acl.php is attached</p>
 
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+
+<span class="k">return</span> <span class="p">[</span>
+    <span class="p">[</span>
+        <span class="s1">'key'</span> <span class="o">=&gt;</span> <span class="s1">'dashboard'</span><span class="p">,</span>
+        <span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'admin::app.acl.dashboard'</span><span class="p">,</span>
+        <span class="s1">'route'</span> <span class="o">=&gt;</span> <span class="s1">'admin.dashboard.index'</span><span class="p">,</span>
+        <span class="s1">'sort'</span> <span class="o">=&gt;</span> <span class="mi">1</span>
+    <span class="p">],</span> <span class="p">[</span>
+        <span class="s1">'key'</span> <span class="o">=&gt;</span> <span class="s1">'sales'</span><span class="p">,</span>
+        <span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'admin::app.acl.sales'</span><span class="p">,</span>
+        <span class="s1">'route'</span> <span class="o">=&gt;</span> <span class="s1">'admin.sales.orders.index'</span><span class="p">,</span>
+        <span class="s1">'sort'</span> <span class="o">=&gt;</span> <span class="mi">2</span>
+    <span class="p">],</span> <span class="p">[</span>
+        <span class="s1">'key'</span> <span class="o">=&gt;</span> <span class="s1">'sales.orders'</span><span class="p">,</span>
+        <span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'admin::app.acl.orders'</span><span class="p">,</span>
+        <span class="s1">'route'</span> <span class="o">=&gt;</span> <span class="s1">'admin.sales.orders.index'</span><span class="p">,</span>
+        <span class="s1">'sort'</span> <span class="o">=&gt;</span> <span class="mi">1</span>
+    <span class="p">],</span> <span class="p">[</span>
+        <span class="s1">'key'</span> <span class="o">=&gt;</span> <span class="s1">'sales.invoices'</span><span class="p">,</span>
+        <span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'admin::app.acl.invoices'</span><span class="p">,</span>
+        <span class="s1">'route'</span> <span class="o">=&gt;</span> <span class="s1">'admin.sales.invoices.index'</span><span class="p">,</span>
+        <span class="s1">'sort'</span> <span class="o">=&gt;</span> <span class="mi">2</span>
+    <span class="p">],</span> <span class="p">[</span>
+        <span class="s1">'key'</span> <span class="o">=&gt;</span> <span class="s1">'sales.shipments'</span><span class="p">,</span>
+        <span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'admin::app.acl.shipments'</span><span class="p">,</span>
+        <span class="s1">'route'</span> <span class="o">=&gt;</span> <span class="s1">'admin.sales.shipments.index'</span><span class="p">,</span>
+        <span class="s1">'sort'</span> <span class="o">=&gt;</span> <span class="mi">3</span>
+    <span class="p">],</span> <span class="p">[</span>
+        <span class="s1">'key'</span> <span class="o">=&gt;</span> <span class="s1">'catalog'</span><span class="p">,</span>
+        <span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'admin::app.acl.catalog'</span><span class="p">,</span>
+        <span class="s1">'route'</span> <span class="o">=&gt;</span> <span class="s1">'admin.catalog.index'</span><span class="p">,</span>
+        <span class="s1">'sort'</span> <span class="o">=&gt;</span> <span class="mi">3</span>
+    <span class="p">],</span> <span class="p">[</span>
+        <span class="s1">'key'</span> <span class="o">=&gt;</span> <span class="s1">'catalog.products'</span><span class="p">,</span>
+        <span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'admin::app.acl.products'</span><span class="p">,</span>
+        <span class="s1">'route'</span> <span class="o">=&gt;</span> <span class="s1">'admin.catalog.products.index'</span><span class="p">,</span>
+        <span class="s1">'sort'</span> <span class="o">=&gt;</span> <span class="mi">1</span>
+    <span class="p">]</span>
+<span class="p">];</span>
+</code></pre></div></div>
+
 <p><img src="/assets/images/Bagisto_Docs_Images/ACL/acl-code.png" alt="ACL" height="50%" width="100%" class="center" /></p>
 
 <ol>
@@ -583,6 +644,34 @@ All we need to defined the menu which we want to be included in ACL functionalit
     <p>Inside the file, you can include the below code as shown in image</p>
   </li>
 </ul>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+
+<span class="k">return</span> <span class="p">[</span>
+    <span class="p">[</span>
+        <span class="s1">'key'</span> <span class="o">=&gt;</span> <span class="s1">'ShowPriceAfterLogin'</span><span class="p">,</span>
+        <span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'ShowPriceAfterLogin::app.showpriceafterlogin.name'</span><span class="p">,</span>
+        <span class="s1">'sort'</span> <span class="o">=&gt;</span> <span class="mi">5</span>
+    <span class="p">],</span> <span class="p">[</span>
+        <span class="s1">'key'</span> <span class="o">=&gt;</span> <span class="s1">'ShowPriceAfterLogin.settings'</span><span class="p">,</span>
+        <span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'ShowPriceAfterLogin::app.showpriceafterlogin.settings'</span><span class="p">,</span>
+        <span class="s1">'sort'</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="p">],</span> <span class="p">[</span>
+        <span class="s1">'key'</span> <span class="o">=&gt;</span> <span class="s1">'ShowPriceAfterLogin.settings.settings'</span><span class="p">,</span>
+        <span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'ShowPriceAfterLogin::app.showpriceafterlogin.settings'</span><span class="p">,</span>
+        <span class="s1">'sort'</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">'fields'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+            <span class="p">[</span>
+                <span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'enableordisable'</span><span class="p">,</span>
+                <span class="s1">'title'</span> <span class="o">=&gt;</span> <span class="s1">'ShowPriceAfterLogin::app.showpriceafterlogin.toggle'</span><span class="p">,</span>
+                <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'boolean'</span><span class="p">,</span>
+                <span class="s1">'channel_based'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+                <span class="s1">'locale_based'</span> <span class="o">=&gt;</span> <span class="kc">false</span>
+            <span class="p">]</span>
+        <span class="p">]</span>
+    <span class="p">]</span>
+<span class="p">];</span>
+</code></pre></div></div>
 
 <p><img src="/assets/images/Bagisto_Docs_Images/custom-configuration.png" alt="Custom Configuration file" height="50%" width="100%" class="center" /></p>
 

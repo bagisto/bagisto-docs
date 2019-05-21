@@ -170,7 +170,7 @@ Now we can write translation in app.php like below.
 <?php
 return [
     'hello-world' => [
-        'name' => 'Jane Doe'
+        'name' => 'Prateek Srivastava'
     ]
 ];
 ```
@@ -263,6 +263,10 @@ After doing this we need to add an event listener so that admin layouts include 
 ( In style.blade.php)
 ```
 
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/style-blade.png){: height="50%" width="50%" .center}
+
+
+
 **For Event Listener –**
 
 ```php
@@ -273,6 +277,9 @@ public function boot()
     });
 }
 ```
+
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/provider-all.png){: height="50%" width="50%" .center}
+
 
 Now we need to extend admin::layouts.master as @extends(‘admin::layouts.master’) to packages/acme/HelloWorld/src/Resources & we can write CSS for our packages. If you don’t want to include this one then you need to create your own master file which includes your packages CSS & js.
 
@@ -296,12 +303,20 @@ public function boot()
 
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/merge-config-for-menu.png){: height="50%" width="50%" .center}
 
-<!-- ### Step-11
+### How to create Migrations ?<a id="create-migrations"></a>
 
-* Now, it's time to create controllers for packages. Create 'Controllers' folder inside 'Http' folder e.g., HelloWorldController.php
+To create a migration, use the make:migration Artisan command:
 
+>php artisan make:migration create_users_table
 
-       (image) -->
+The new migration will be placed in your database/migrations directory. Each migration file name contains a timestamp which allows Laravel to determine the order of the migrations.
+
+The - -table and - -create options may also be used to indicate the name of the table and whether the migration will be creating a new table.
+
+Also, Laravel provides us a option to create migration files at a specified path. The command to create migration file at our HelloWorld package database/migrations directory, we have to append '- -path' in artisan command.
+
+> php artisan make:migration create_demo_table - -path=packages/ACME/HelloWorld/src/Database/Migrations
+
 
 ### How to Add Menu in Admin/Customer <a id="add-menu"></a>
 
@@ -323,6 +338,10 @@ return [
     ]
 ];
 ```
+
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/menu-file-route.png){: height="50%" width="50%" .center}
+
+
 
 In this file we provide name of menu, its route & its icon.
 
@@ -372,6 +391,9 @@ class HelloWorldController extends Controller
 }
 ```
 
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/HelloWorldcontroller.png){: height="50%" width="50%" .center}
+
+
 For the route we will create a named route as
 
 ```php
@@ -407,6 +429,52 @@ In term to manage an ecommerce site becomes clumsy and ambiguous. Here, in bagis
 
  There are some steps which the user have to follow to create ACL. User have to create an file in the config folder of module named as 'acl.php'. Below, the image of acl.php is attached
 
+```php
+<?php
+
+return [
+    [
+        'key' => 'dashboard',
+        'name' => 'admin::app.acl.dashboard',
+        'route' => 'admin.dashboard.index',
+        'sort' => 1
+    ], [
+        'key' => 'sales',
+        'name' => 'admin::app.acl.sales',
+        'route' => 'admin.sales.orders.index',
+        'sort' => 2
+    ], [
+        'key' => 'sales.orders',
+        'name' => 'admin::app.acl.orders',
+        'route' => 'admin.sales.orders.index',
+        'sort' => 1
+    ], [
+        'key' => 'sales.invoices',
+        'name' => 'admin::app.acl.invoices',
+        'route' => 'admin.sales.invoices.index',
+        'sort' => 2
+    ], [
+        'key' => 'sales.shipments',
+        'name' => 'admin::app.acl.shipments',
+        'route' => 'admin.sales.shipments.index',
+        'sort' => 3
+    ], [
+        'key' => 'catalog',
+        'name' => 'admin::app.acl.catalog',
+        'route' => 'admin.catalog.index',
+        'sort' => 3
+    ], [
+        'key' => 'catalog.products',
+        'name' => 'admin::app.acl.products',
+        'route' => 'admin.catalog.products.index',
+        'sort' => 1
+    ]
+];
+```
+
+
+
+
    ![ACL](assets/images/Bagisto_Docs_Images/ACL/acl-code.png){: height="50%" width="100%" .center}
 
  1. As you can see in above image, the acl.php includes some parameters (you can refer to       how to add menu in admin/customer section above)
@@ -426,6 +494,35 @@ Creating a custom configuration ease the task for developer or any non-developer
 * To create custom configuration for your application, you just need to create system.php file under *config* folder of your package.
 
 * Inside the file, you can include the below code as shown in image
+
+```php
+<?php
+
+return [
+    [
+        'key' => 'ShowPriceAfterLogin',
+        'name' => 'ShowPriceAfterLogin::app.showpriceafterlogin.name',
+        'sort' => 5
+    ], [
+        'key' => 'ShowPriceAfterLogin.settings',
+        'name' => 'ShowPriceAfterLogin::app.showpriceafterlogin.settings',
+        'sort' => 1,
+    ], [
+        'key' => 'ShowPriceAfterLogin.settings.settings',
+        'name' => 'ShowPriceAfterLogin::app.showpriceafterlogin.settings',
+        'sort' => 1,
+        'fields' => [
+            [
+                'name' => 'enableordisable',
+                'title' => 'ShowPriceAfterLogin::app.showpriceafterlogin.toggle',
+                'type' => 'boolean',
+                'channel_based' => true,
+                'locale_based' => false
+            ]
+        ]
+    ]
+];
+```
 
 ![Custom Configuration file](assets/images/Bagisto_Docs_Images/custom-configuration.png){: height="50%" width="100%" .center}
 

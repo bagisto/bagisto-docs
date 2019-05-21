@@ -161,15 +161,35 @@
   <li>Go to your project’s root directory and check for <code class="highlighter-rouge">config</code> folder. Inside it, you will find a file called <code class="highlighter-rouge">themes.php</code>:</li>
 </ul>
 
-<p><img src="/assets/images/Bagisto_Docs_Images/bagisto-theme-1.png" alt="Bagisto Root Directory" height="50%" width="100%" />
-themes.php file inside the config directory of Bagisto’s root.</p>
+<p><img src="/assets/images/Bagisto_Docs_Images/bagisto-theme-1.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
 
 <ul>
   <li>Check contents of ‘themes.php’ file, it holds all necessary information of creating a custom theme.</li>
 </ul>
 
-<p><img src="/assets/images/Bagisto_Docs_Images/bagisto-theme-2.png" alt="Bagisto Root Directory" height="50%" width="100%" />
-Contents of themes.php file having information of currently active theme named default.</p>
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+
+<span class="k">return</span> <span class="p">[</span>
+    <span class="s1">'default'</span> <span class="o">=&gt;</span> <span class="s1">'default'</span><span class="p">,</span>
+
+    <span class="s1">'themes'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="s1">'default'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+            <span class="s1">'views_path'</span> <span class="o">=&gt;</span> <span class="s1">'resources/themes/default/views'</span><span class="p">,</span>
+            <span class="s1">'assets_path'</span> <span class="o">=&gt;</span> <span class="s1">'public/themes/default/assets'</span><span class="p">,</span>
+            <span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'Default'</span>
+        <span class="p">],</span>
+
+        <span class="c1">// 'bliss' =&gt; [
+</span>        <span class="c1">//     'views_path' =&gt; 'resources/themes/bliss/views',
+</span>        <span class="c1">//     'assets_path' =&gt; 'public/themes/bliss/assets',
+</span>        <span class="c1">//     'name' =&gt; 'Bliss',
+</span>        <span class="c1">//     'parent' =&gt; 'default'
+</span>        <span class="c1">// ]
+</span>    <span class="p">]</span>
+<span class="p">];</span>
+</code></pre></div></div>
+
+<p><img src="/assets/images/Bagisto_Docs_Images/bagisto-theme-2.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
 
 <p>Let’s go through the parameters of this theme’s file. Because the understanding of those parameters will help you in creating a custom theme.</p>
 
@@ -179,8 +199,7 @@ Contents of themes.php file having information of currently active theme named d
   <li>default: Declared at the top signifies the currently active or default theme in Bagisto. It is assigned with the value ‘default’. The (string)default indicates the name of the currently active theme.</li>
 </ol>
 
-<p><img src="/assets/images/Bagisto_Docs_Images/bagisto-theme-3.png" alt="Bagisto Root Directory" height="50%" width="100%" />
-Default parameter showing your currently active theme.</p>
+<p><img src="/assets/images/Bagisto_Docs_Images/bagisto-theme-3.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
 
 <ol>
   <li>
@@ -195,8 +214,7 @@ Default parameter showing your currently active theme.</p>
   </li>
 </ol>
 
-<p><img src="/assets/images/Bagisto_Docs_Images/bagisto-theme-4.png" alt="Bagisto Root Directory" height="50%" width="100%" />
-Bagisto’s default theme parameters.</p>
+<p><img src="/assets/images/Bagisto_Docs_Images/bagisto-theme-4.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
 
 <ul>
   <li>
@@ -213,15 +231,19 @@ Bagisto’s default theme parameters.</p>
   </li>
 </ul>
 
-<p><img src="/assets/images/Bagisto_Docs_Images/bagisto-theme-5.png" alt="Bagisto Root Directory" height="50%" width="100%" />
-parent parameter allows you to use previously existing theme files.</p>
+<p><img src="/assets/images/Bagisto_Docs_Images/bagisto-theme-5.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
 
 <p>Finally, define your own paths and name of your custom theme inside ‘themes.php’ file. And start creating view files. Do not forget to cover all get routes of shop package having a parameter called ‘view’.</p>
 
-<p><img src="/assets/images/Bagisto_Docs_Images/bagisto-theme-6.png" alt="Bagisto Root Directory" height="50%" width="100%" />
-All storefront routes are inside this file.</p>
+<p><img src="/assets/images/Bagisto_Docs_Images/bagisto-theme-6.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
 
 <p>Make sure the name of the blade file should be same as passed in this GET route file like this:</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//Store front header nav-menu fetch
+</span>    <span class="nx">Route</span><span class="o">::</span><span class="na">get</span><span class="p">(</span><span class="s1">'/categories/{slug}'</span><span class="p">,</span> <span class="s1">'Webkul\Shop\Http\Controllers\CategoryController@index'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">defaults</span><span class="p">(</span><span class="s1">'_config'</span><span class="p">,</span> <span class="p">[</span>
+        <span class="s1">'view'</span> <span class="o">=&gt;</span> <span class="s1">'shop::products.index'</span>
+    <span class="p">])</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">(</span><span class="s1">'shop.categories.index'</span><span class="p">);</span>
+</code></pre></div></div>
 
 <p><img src="/assets/images/Bagisto_Docs_Images/bagisto-theme-7.png" alt="Bagisto Root Directory" height="50%" width="100%" />
 For all views check all GET routes as they hold a view parameter with the value of view to be used.</p>
