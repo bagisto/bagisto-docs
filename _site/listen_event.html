@@ -4,26 +4,27 @@
         <meta charset="utf-8">
         <title>Listen existing events-Bagisto</title>
         <link rel="stylesheet" href="assets/scss/layout.css" />
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-        <link rel="icon" sizes="16x16" href="assets/icons/favicon.ico" />
+        <link rel="stylesheet" href="/assets/css/syntax.css" />
+        <link rel="icon" sizes="16x16" href="assets/images/icons/favicon.ico" />
     </head>
     <body>
         <div class="container">
             <div class="content-wrapper">
                 <header class="header">
     <div class="logo-wrapper">
-        <a href="/docs/"><img class="logo" src="assets/images/logo.png" />
-            <span>Docs</span>
+        <a href="/">
+            <img class="logo" src="assets/images/logo.png" />
         </a>
+        <span>Docs</span>
     </div>
 
     <nav class="menu-list">
         <ul>
             <li>
-                <a class="nav-link" href="https://forums.bagisto.com/">Forum</a>
+                <a class="nav-link" target="_blank" href="https://forums.bagisto.com/">Forum</a>
             </li>
             <li>
-                <a class="nav-link" href="https://bagisto.com/en/blog/">Blogs</a>
+                <a class="nav-link" target="_blank" href="https://bagisto.com/en/blog/">Blogs</a>
             </li>
         </ul>
     </nav>
@@ -33,62 +34,55 @@
                     <div class="side-menu">
                         <div class="sidebar">
     <ul>
-        <!-- Introduction -->
-
         <li class="menu-heading">
             <a href="index.html">Introduction</a>
 
-            <div class="horizontal-rule"></div>
-
             <ul class="sub-menu">
                 <li>
-                    <a href="#requirements">Requirements</a>
+                    <a href="/index.html#requirements">Requirements</a>
                 </li>
 
                 <li>
-                    <a href="#installation">Installation & configuration</a>
+                    <a href="/index.html#installation">Installation & configuration</a>
                 </li>
 
                 <li>
-                    <a href="#directory_structure">Directory structure</a>
+                    <a href="/index.html#directory_structure">Directory structure</a>
                 </li>
             </ul>
         </li>
 
         <!-- Module Development -->
-
         <li class="menu-heading">
-            <a href="create_module.html">Package development</a>
-
-            <div class="horizontal-rule"></div>
+            <a href="create_package.html">Package development</a>
 
             <ul class="sub-menu">
                 <li>
-                    <a href="#how-to-create-module">Creating a package</a>
+                    <a href="create_package.html#how-to-create-module">Creating a package</a>
                 </li>
 
                 <li>
-                    <a href="#add-menu">Adding menu in backend & storefront</a>
+                    <a href="create_package.html#add-menu">Adding menu in backend & storefront</a>
                 </li>
 
                 <li>
-                    <a href="#create-acl">Creating ACL</a>
+                    <a href="create_package.html#create-acl">Creating ACL</a>
                 </li>
 
                 <li>
-                    <a href="#custom-configuration">Custom configuration</a>
+                    <a href="create_package.html#custom-configuration">Custom configuration</a>
                 </li>
 
                 <li>
-                    <a href="#create_models">Creating models</a>
+                    <a href="create_package.html#create_models">Creating models</a>
 
                     <ul>
                         <li>
-                            <a href="">Contracts, repositories & proxies</a>
+                            <a href="create_package.html#about">Contracts, repositories & proxies</a>
                         </li>
 
                         <li>
-                            <a href="#store-data-through-repository">
+                            <a href="create_package.html#store-data-through-repository">
                                 Store data with repository
                             </a>
                         </li>
@@ -102,8 +96,6 @@
 
         <li class="menu-heading">
             <a href="override-core-model.html">Advance topics</a>
-
-            <div class="horizontal-rule"></div>
 
             <ul class="sub-menu">
                 <li>
@@ -145,7 +137,10 @@
                     </div>
 
                     <div class="right-content">
-                        <h3 id="listen-existing-event-edit-on-github">Listen Existing Event<span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg" /> <a href="https://github.com/bagisto/bagisto-docs">edit on github</a></span></h3>
+                        <h3 id="listen-existing-event">Listen Existing Event</h3>
+
+<p class="horizontal-rule"><img src="/assets/images/icons/Icon-Pencil-Large.svg" alt="edit on github" class="pencil-icon" />
+<a href="https://github.com/bagisto/bagisto-docs/blob/master/listen_event.md" class="edit-github" target="_blank">edit on github</a></p>
 
 <p>You may refer our <a href="events.html">Event</a> section , all events used in bagisto are listed there so you may change or edit the listener function such as- <code class="highlighter-rouge">sendNewOrderMail</code> that is defined in <code class="highlighter-rouge">productFlat</code> listener file, so you can edit and perform the required operation</p>
 

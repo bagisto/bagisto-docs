@@ -3,7 +3,11 @@ title: Events-Bagisto
 layout: default
 ---
 
-## Events<span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg"/> <a href="https://github.com/bagisto/bagisto-docs">edit on github</a></span>
+## Events
+
+![edit on github](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
+[edit on github](https://github.com/bagisto/bagisto-docs/blob/master/events.md){:.edit-github  target="_blank"}
+{: .horizontal-rule}
 
 Events provide a simple observer implementation which allows a user to subscribe and listen to various events triggered in the web application. All the event classes in Bagisto are stored in the `Providers` folder and the listeners are stored in the `Listeners` folder.
 
@@ -11,19 +15,20 @@ Events provide a simple observer implementation which allows a user to subscribe
 
 For the sake of simplicity, in Bagisto, we register events manually in the boot method of your EventServiceProvider as below:
 
-    ```php
-    /**
-    * Register any other events for your application.
-    *
-    * @return void
-    */
-    public function boot()
-    {
-        parent::boot();
+```php
+/**
+* Register any other events for your application.
+*
+* @return void
+*/
+public function boot()
+{
+    parent::boot();
 
-        Event::listen('event.name', 'path-upto-listener@function');
-    }
-    ```
+    Event::listen('event.name', 'path-upto-listener@function');
+}
+```
+
 
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/Events/define-event.png){: height="50%" width="100%"}
 
