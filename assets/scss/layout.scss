@@ -230,19 +230,6 @@ td {
         width: 70%;
         word-wrap: break-word;
         padding: 15px;
-
-        h1 {
-            display: inline-flex;
-            border-bottom-style: solid;
-            border-bottom-width: thin;
-            border-bottom-color: $brand-color;
-        }
-
-        h3 {
-            border-bottom-style: solid;
-            border-bottom-width: thin;
-            border-bottom-color: lightgrey;
-        }
     }
 
 }
