@@ -8,9 +8,9 @@ Jekyll is a simple, extendable, static site generator. You give it text written 
 
 You can build the doc locally but before you need to install some packages on your machine
 
-* **Ruby**:may check through command if installed in your machine or not `ruby -v`
+* **Ruby**: may check through command if installed in your machine or not `ruby -v`
 
-* **Gems**:may check through command if installed in your machine or not `gem -v`
+* **Gems**: may check through command if installed in your machine or not `gem -v`
 
 ### Steps to setup doc project on your machine
 
