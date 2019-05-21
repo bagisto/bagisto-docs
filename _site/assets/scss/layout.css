@@ -1,32 +1,13 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,500,600");
 * { box-sizing: border-box; }
 
-body { margin: 0; padding: 0; color: black; line-height: 1.5294717647; font-weight: 400; letter-spacing: -0.021em; font-family: "Times New Roman", Times, serif; background-color: white; color: #191919; font-style: normal; overflow-x: hidden; }
-
-.center { display: block; margin-left: auto; margin-right: auto; border-style: outset; }
+body { margin: 0; padding: 0; background-color: #F2F2F2; font-weight: 500; letter-spacing: -0.10px; font-family: "Montserrat", sans-serif; color: #242424; overflow-x: hidden; }
 
 a { color: black; text-decoration: none; }
 
 a:hover { text-decoration: none; cursor: pointer; }
 
-.container { height: 100%; width: 100%; }
-.container .content-wrapper { max-width: 1300px; height: auto; width: 100%; margin-left: auto; margin-right: auto; }
-
-.header { display: flex; flex-direction: row; align-items: center; justify-content: space-between; height: 70px; width: 100%; background-color: #ffffff; position: sticky; top: 0; padding-left: 10px; padding-right: 10px; box-shadow: 5px 9px 12px -9px #888888; z-index: 2; }
-.header .logo-wrapper a span { font-size: 19px; float: right; margin-top: 17px; padding-left: 5px; }
-.header .logo-wrapper a:hover { text-decoration: none; }
-.header .logo { height: 50px; width: 125px; }
-.header .menu-list ul { margin: 0; padding: 0; display: flex; flex-direction: row; justify-content: flex-start; align-items: center; list-style-type: none; }
-.header .menu-list ul li { font-weight: bold; margin-right: 15px; padding-left: 20px; color: red; }
-.header .menu-list ul li a { font-size: 22px; letter-spacing: 0.8px; font-weight: normal; }
-.header .menu-list ul li:last-child { margin-right: 0px; }
-
-.content { display: flex; flex-direction: row; justify-content: space-between; min-height: 100vh; height: auto; }
-.content .side-menu { width: 25%; position: sticky; top: 71px; letter-spacing: -0.021em; padding-left: 0px; height: 600px; overflow: scroll; background-color: #F8F8FF; box-shadow: 5px 9px 12px -9px #888888; font-family: "Times New Roman", Times, serif !important; }
-.content .side-menu .sidebar ul li { list-style-type: none; }
-.content .side-menu .sidebar ul li a:hover { border-bottom: 1px solid #0041ff; }
-.content .right-content { width: 70%; padding: 15px; }
-
-footer { font-family: Montserrat-Regular; font-size: 15px; color: #323232; letter-spacing: 0; text-align: center; }
+footer { color: #323232; letter-spacing: 0; text-align: center; }
 footer span { display: inline-block; }
 
 table, tr, td { border: 1px solid grey; }
@@ -35,10 +16,30 @@ tr:nth-child(even) { background-color: #f2f2f2; }
 
 td { padding: 5px; }
 
-.nav-link { font-size: 12px; font-style: normal; letter-spacing: -0.021em; }
+.center { display: block; margin-left: auto; margin-right: auto; border-style: outset; }
+
+.container { height: 100%; width: 100%; }
+.container .content-wrapper { max-width: 1300px; height: auto; width: 100%; margin-left: auto; margin-right: auto; }
+
+.header { display: flex; flex-direction: row; align-items: center; justify-content: space-between; background: #F2F2F2; height: 80px; width: 100%; position: sticky; padding: 5px; }
+.header .logo-wrapper a span { font-size: 19px; float: right; margin-top: 17px; padding-left: 5px; }
+.header .logo-wrapper a:hover { text-decoration: none; }
+.header .logo { height: 50px; width: 125px; }
+.header .menu-list ul { margin: 0; padding: 0; display: flex; flex-direction: row; justify-content: flex-start; align-items: center; list-style-type: none; }
+.header .menu-list ul li { font-weight: 600; margin-right: 15px; padding-left: 20px; }
+.header .menu-list ul li a { font-size: 22px; letter-spacing: 0.8px; }
+.header .menu-list ul li:last-child { margin-right: 0px; }
+
+.content { display: flex; flex-direction: row; justify-content: space-between; }
+.content .side-menu { width: 30%; position: sticky; overflow: scroll; }
+.content .side-menu .sidebar ul li { list-style-type: none; }
+.content .side-menu .sidebar ul li a:hover { border-bottom: 1px solid #2650EF; }
+.content .right-content { width: 70%; padding: 15px; }
+
+.nav-link { font-size: 12px; font-style: normal; }
 
 .menu-heading { padding-top: 15px; }
-.menu-heading a { font-size: 15px; letter-spacing: 0.6px; }
+.menu-heading a { font-size: 15px; }
 
 .sub-menu li a { color: #0041ff; }
 
@@ -48,4 +49,4 @@ td { padding: 5px; }
 
 .menu-heading > a { font-size: 18px; }
 
-.edit-github { float: right; font-size: 16px; margin-top: 9px; font-weight: normal; box-shadow: 15px 14px 16px -9px #888888; font-style: italic; z-index: 2; background-color: #ffffff; }
+.edit-github { float: right; font-size: 15px; margin-top: 9px; }

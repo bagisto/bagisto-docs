@@ -1,1 +1,0 @@
-# Bagisto developer documentation

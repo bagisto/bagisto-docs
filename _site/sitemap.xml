@@ -34,10 +34,10 @@
 <loc>http://localhost:4000/events.html</loc>
 </url>
 <url>
-<loc>http://localhost:4000/installation.html</loc>
+<loc>http://localhost:4000/</loc>
 </url>
 <url>
-<loc>http://localhost:4000/introduction.html</loc>
+<loc>http://localhost:4000/installation.html</loc>
 </url>
 <url>
 <loc>http://localhost:4000/listen_event.html</loc>
@@ -50,8 +50,5 @@
 </url>
 <url>
 <loc>http://localhost:4000/create_acl.html</loc>
-</url>
-<url>
-<loc>http://localhost:4000/</loc>
 </url>
 </urlset>
