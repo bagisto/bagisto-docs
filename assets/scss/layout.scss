@@ -71,21 +71,15 @@ a:hover {
 }
 
 footer {
-    color: #323232;
-    letter-spacing: 0;
     text-align: center;
-
-    span {
-        display: inline-block;
-    }
 }
 
 table, tr, td {
     border: 1px solid grey;
-    }
+}
 
 tr:nth-child(even) {
-    background-color: #f2f2f2
+    background-color: $background-color;
 }
 
 td {
@@ -121,24 +115,28 @@ td {
     height: 80px;
     width: 100%;
     position: sticky;
-    padding: 5px;
+    padding: 10px;
 
-    .logo-wrapper a span {
+    .logo-wrapper {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
         font-size: 19px;
         float: right;
-        margin-top: 13px;
-        padding-left: 5px;
-        border-left: 1px solid black;
+
+        .logo {
+            height: 45px;
+            width: 110px;
+            padding-right: 6px;
+        }
+
+        span {
+            padding-top: 5px;
+        }
     }
 
     .logo-wrapper a:hover{
         text-decoration: none;
-    }
-
-    .logo {
-        height: 45px;
-        width: 110px;
-        padding-right: 6px;
     }
 
     .menu-list {
