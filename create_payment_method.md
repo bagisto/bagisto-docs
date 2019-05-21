@@ -3,7 +3,11 @@ title: Creating Payment method-Bagisto
 layout: default
 ---
 
-## Payment Method (text placing ) <span class="edit-github"><img src="/assets/images/Icon-Pencil-Large.svg"/> <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_payment_method.md">edit on github</a></span>
+## Payment Method
+
+![edit on github](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
+[edit on github](https://github.com/bagisto/bagisto-docs/blob/master/create_payment_method.md){:.edit-github  target="_blank"}
+{: .horizontal-rule}
 
 I hope that you know how to create package, if not(refer ( [Package development](create_module.md)), and I will skip package development step
 

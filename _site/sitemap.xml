@@ -1,22 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-<loc>http://localhost:4000/configure_settings.html</loc>
-</url>
-<url>
-<loc>http://localhost:4000/create_migration.html</loc>
-</url>
-<url>
-<loc>http://localhost:4000/create_models.html</loc>
-</url>
-<url>
-<loc>http://localhost:4000/create_module.html</loc>
+<loc>http://localhost:4000/create_package.html</loc>
 </url>
 <url>
 <loc>http://localhost:4000/create_payment_method.html</loc>
-</url>
-<url>
-<loc>http://localhost:4000/create_product.html</loc>
 </url>
 <url>
 <loc>http://localhost:4000/create_shipping_method.html</loc>
@@ -28,16 +16,10 @@
 <loc>http://localhost:4000/data_grid.html</loc>
 </url>
 <url>
-<loc>http://localhost:4000/directory_structure.html</loc>
-</url>
-<url>
 <loc>http://localhost:4000/events.html</loc>
 </url>
 <url>
 <loc>http://localhost:4000/</loc>
-</url>
-<url>
-<loc>http://localhost:4000/installation.html</loc>
 </url>
 <url>
 <loc>http://localhost:4000/listen_event.html</loc>
@@ -47,12 +29,5 @@
 </url>
 <url>
 <loc>http://localhost:4000/render_event.html</loc>
-</url>
-<url>
-<loc>http://localhost:4000/create_acl.html</loc>
-</url>
-<url>
-<loc>http://localhost:4000/fgfcgcfgcfgcf.html</loc>
-<lastmod>2019-05-21T13:05:05+05:30</lastmod>
 </url>
 </urlset>

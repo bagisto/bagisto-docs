@@ -3,11 +3,12 @@ title: Package development-Bagisto
 layout: default
 ---
 
-## Package  <span class="edit-github"><img src="/assets/images/Icon-Pencil-Large.svg"/> <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_module.md">edit on github</a></span>
+## Package  <span class="edit-github">
+![edit on github](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
+[edit on github](https://github.com/bagisto/bagisto-docs/blob/master/create_module.md){:.edit-github  target="_blank"}
+{: .horizontal-rule}
 
-A package is like Laravel packages that includes views, controller and models. Packages are  created to manage your large laravel applications into smaller units. In the bagisto, we have created the plenty of packages at path `packages/Webkul/`. can refer bagisto's root directory shown's in fig
-
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/bagisto_root_directory.png){: height="50%" width="50%" .center}
+A package is like Laravel packages that includes views, controller and models. Packages are  created to manage your large laravel applications into smaller units. In the bagisto, we have created plenty of packages at path `packages/Webkul/`.
 
 ## How To Create Module <a id="how-to-create-module"></a>
 
@@ -32,9 +33,7 @@ e.g., here namespace is specified as ACME
     1. boot
     2. register
 
-        ```php
-        <?php
-
+        ``` php
         namespace ACME\HelloWorld\Providers;
 
         use Illuminate\Support\ServiceProvider;
@@ -73,7 +72,7 @@ e.g., here namespace is specified as ACME
 
 * Now, to register the service provider, go to ‘app.php’ file inside ‘config’ folder & add your service provider inside ‘providers’ array.
 
-    ```php
+    ``` php
     'providers' => [
         //ACME package
         ACME\HelloWorld\Providers\HelloWorldServiceProvider::class,
@@ -86,7 +85,7 @@ e.g., here namespace is specified as ACME
 
 * Now, we need to add our package to ‘composer.json’ file of project root for autoloading in psr-4.
 
-    ```php
+    ``` php
     "psr-4": {
         "ACME\\HelloWorld\\": "packages/ACME/HelloWorld"
     }
@@ -101,7 +100,7 @@ e.g., here namespace is specified as ACME
 
     Now, we need to register our route file to service provider’s boot method i.e. HelloWorldServiceProvider.php
 
-    ```php
+    ``` php
     public function boot()
     {
         include __DIR__ . '/../Http/routes.php';
@@ -119,12 +118,12 @@ Right now, we are going to create a folder ‘helloworld’ inside the views. In
 
 Now just like route file, we need to register our view folder inside service provider to specify path where views are located.
 
-```php
-public function boot()
-{
-    $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'helloworld');
-}
-```
+    ``` php
+    public function boot()
+    {
+        $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'helloworld');
+    }
+    ```
 
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/view-register.png){: height="50%" width="50%" .center}
 
@@ -134,10 +133,11 @@ public function boot()
 
 Go to ACME->src->Http->routes.php file and create a route to render view
 
-```php
-<?php
-    Route::view('/hello-world', 'helloworld::helloworld.helloworld');
-```
+        ``` php
+        <?php
+
+            Route::view('/hello-world', 'helloworld::helloworld.helloworld');
+        ```
 
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/view-route-creation.png){: height="50%" width="50%" .center}
 
@@ -156,12 +156,12 @@ Inside lang folder, you can create different folder for languages translations l
 
 Now, we need to register the language file to service provider.
 
-```php
-public function boot()
-{
-    $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'helloworld');
-}
-```
+        ``` php
+        public function boot()
+        {
+            $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'helloworld');
+        }
+        ```
 
 
 Now we can write translation in app.php like below.
@@ -294,12 +294,12 @@ Create a ‘Database’ folder inside ‘src’ folder & inside ‘Database’ c
 
 Now, we need to add migrations to our service provider to load them.
 
-```php
-public function boot()
-{
-    $this->loadMigrationsFrom(__DIR__ .'/../Database/Migrations');
-}
-```
+        ``` php
+        public function boot()
+        {
+            $this->loadMigrationsFrom(__DIR__ .'/../Database/Migrations');
+        }
+        ```
 
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/merge-config-for-menu.png){: height="50%" width="50%" .center}
 
@@ -351,8 +351,8 @@ So inside Controllers we will create HelloWorldController.php and controller.php
 
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/home-controller.png){: height="50%" width="50%" .center}
 
-```php
-<?php
+        ``` php
+        <?php
 
 namespace ACME\HelloWorld\Http\Controllers;
 
@@ -373,10 +373,10 @@ class HelloWorldController extends Controller
 {
     protected $_config;
 
-    public function __construct()
-    {
-        $this->_config = request('_config');
-    }
+        ``` php
+        class HelloWorldController extends Controller
+        {
+            protected $_config;
 
     /**
     * Display a listing of the resource.
@@ -396,21 +396,21 @@ class HelloWorldController extends Controller
 
 For the route we will create a named route as
 
-```php
+``` php
 Route::get('hello-dashboard', 'ACME\HelloWorld\Http\Controllers\HelloWorldController@index')->defaults('_config', ['view' => 'helloworld::helloworld.index'
 ])->name('helloworld.index');
 ```
 
 After creating controller & route we need to merge this `menu.php` folder with core menu file.For this purpose we will use method  ‘mergeConfigFrom’ method in register function of service provider.
 
-```php
-public function register()
-{
-    $this->mergeConfigFrom(
-        dirname(__DIR__) . '/Config/menu.php', 'menu.admin'
-    );
-}
-```
+    ``` php
+    public function register()
+    {
+        $this->mergeConfigFrom(
+            dirname(__DIR__) . '/Config/menu.php', 'menu.admin'
+        );
+    }
+    ```
 
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/merge-config-for-menu.png){: height="50%" width="50%" .center}
 
@@ -537,6 +537,7 @@ return [
 
 * **fields** : these key accepts the array for the value of custom configuration.
 
+# Creating Models<a id="create_models"></a>
 
 # What is Contracts, Repositories and proxies ?<a id="about"></a>
 
