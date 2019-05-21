@@ -27,7 +27,9 @@ tr:nth-child(even) { background-color: #F2F2F2; }
 
 td { padding: 5px; }
 
-.center { display: block; margin-left: auto; margin-right: auto; border-style: outset; height: 100%; width: 100%; }
+.center { display: block; margin-left: auto; margin-right: auto; border-style: outset; }
+
+.screenshot-dimension { height: 100%; width: 60%; }
 
 .container { height: 100%; width: 100%; }
 .container .content-wrapper { max-width: 1300px; height: auto; width: 100%; margin-left: auto; margin-right: auto; }
@@ -48,6 +50,7 @@ td { padding: 5px; }
 .content .side-menu .sidebar ul { padding-inline-start: 20px; }
 .content .side-menu .sidebar ul li { list-style-type: none; }
 .content .right-content { width: 70%; word-wrap: break-word; padding-right: 40px; font-family: PTSerif-Regular; font-size: 17px; color: #323232; letter-spacing: 0; line-height: 31px; }
+.content .right-content span { border: 1px solid green; }
 .content .right-content h1, .content .right-content h2, .content .right-content h3, .content .right-content h4, .content .right-content h5, .content .right-content h6 { font-family: Montserrat-Medium; color: #3D3D3D; letter-spacing: 0; }
 
 .nav-link { font-family: Montserrat-SemiBold; font-size: 12px; color: #2C3145; letter-spacing: 0; font-size: 1.5em; }

@@ -25,7 +25,7 @@ In this article, we will understand how to create payment method by own with jus
 
         * Inside the file, you can include the below code as shown in image
 
-            ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/payment-config-1.png){: height="50%" width="100%"}
+            ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/payment-config-1.png){: .screenshot-dimension .center}
 
 ##### Explanation for the keys:
 
@@ -40,7 +40,7 @@ In this article, we will understand how to create payment method by own with jus
 
     2. paymentmethod.php
 
-    ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/payment-config-2.png){: height="50%" width="100%"}
+    ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/payment-config-2.png){:  .screenshot-dimension .center}
 
 ##### An Explanation For These Parameters:
 

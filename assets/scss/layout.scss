@@ -115,8 +115,11 @@ td {
     margin-left: auto;
     margin-right: auto;
     border-style: outset;
+}
+
+.screenshot-dimension {
     height: 100%;
-    width: 100%;
+    width: 60%;
 }
 
 .container {
@@ -238,6 +241,10 @@ td {
         color: #323232;
         letter-spacing: 0;
         line-height: 31px;
+
+        span {
+            border: 1px solid green;
+        }
 
         h1, h2, h3, h4, h5, h6 {
             font-family: Montserrat-Medium;

@@ -78,7 +78,7 @@ e.g., here namespace is specified as ACME
     ],
     ```
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/provider-registration.png){: height="50%" width="50%" .center}
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/provider-registration.png){: .screenshot-dimension .center}
 
 ##### Step-5
 
@@ -89,7 +89,7 @@ e.g., here namespace is specified as ACME
         "ACME\\HelloWorld\\": "packages/ACME/HelloWorld"
     }
     ```
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/psr4-registration.png){: height="50%" width="50%" .center}
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/psr4-registration.png){: .screenshot-dimension .center}
 
 ##### Step-6
 
@@ -106,7 +106,7 @@ e.g., here namespace is specified as ACME
     }
     ```
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/register-route.png){: height="50%" width="50%" .center}
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/register-route.png){: .screenshot-dimension .center}
 
 
 To load routes, you can also use ‘loadRoutesFrom’ method.
@@ -124,7 +124,7 @@ Now just like route file, we need to register our view folder inside service pro
     }
     ```
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/view-register.png){: height="50%" width="50%" .center}
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/view-register.png){: .screenshot-dimension .center}
 
 ##### Step-7
 
@@ -138,11 +138,11 @@ Go to ACME->src->Http->routes.php file and create a route to render view
             Route::view('/hello-world', 'helloworld::helloworld.helloworld');
         ```
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/view-route-creation.png){: height="50%" width="50%" .center}
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/view-route-creation.png){: .screenshot-dimension .center}
 
 Now, you can append ‘hello-world’ to your local path in the browser's url to see the output.
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/helloworld-browser-output.png){: height="50%" width="50%" .center}
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/helloworld-browser-output.png){: .screenshot-dimension .center}
 
 
 ##### Step-8
@@ -176,7 +176,7 @@ return [
 
 Add {{ __(‘helloworld::app.hello-world.name’) }} to your application’s view & it will automatically translate it.
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/translation-output.png){: height="50%" width="50%" .center}
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/translation-output.png){: .screenshot-dimension .center}
 
 ##### Step-9
 
@@ -207,7 +207,7 @@ Create a ‘Resources’ folder inside the ‘src’ folder. Inside ‘Resources
 }
 ```
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/package-json.png){: height="50%" width="50%" .center}
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/package-json.png){: .screenshot-dimension .center}
 
 
  webpack.mix.js will consist
@@ -249,7 +249,7 @@ mix.js(__dirname + "/src/Resources/assets/js/app.js", "js/helloworld.js")
     .copyDirectory( __dirname + '/src/Resources/assets/images', publicPath + '/images')
 ```
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/webpack-mix.png){: height="50%" width="50%" .center}
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/webpack-mix.png){: .screenshot-dimension .center}
 
 
 Once again, we need to run ‘npm run watch’ to compile assets.
@@ -262,7 +262,7 @@ After doing this we need to add an event listener so that admin layouts include 
 ( In style.blade.php)
 ```
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/style-blade.png){: height="50%" width="50%" .center}
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/style-blade.png){: .screenshot-dimension .center}
 
 
 
@@ -277,12 +277,12 @@ public function boot()
 }
 ```
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/provider-all.png){: height="50%" width="50%" .center}
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/provider-all.png){: .screenshot-dimension .center}
 
 
 Now we need to extend admin::layouts.master as @extends(‘admin::layouts.master’) to packages/acme/HelloWorld/src/Resources & we can write CSS for our packages. If you don’t want to include this one then you need to create your own master file which includes your packages CSS & js.
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/layout-content.png){: height="50%" width="50%" .center}
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/layout-content.png){: .screenshot-dimension .center}
 
 
 ##### Step-10
@@ -300,7 +300,7 @@ Now, we need to add migrations to our service provider to load them.
         }
         ```
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/merge-config-for-menu.png){: height="50%" width="50%" .center}
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/merge-config-for-menu.png){: .screenshot-dimension .center}
 
 ### How to create Migrations ?<a id="create-migrations"></a>
 
@@ -338,7 +338,7 @@ return [
 ];
 ```
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/menu-file-route.png){: height="50%" width="50%" .center}
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/menu-file-route.png){: .screenshot-dimension .center}
 
 
 
@@ -348,7 +348,7 @@ Now for route stated in `menu.php`, we need to create a controller to display vi
 
 So inside Controllers we will create HelloWorldController.php and controller.php as:
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/home-controller.png){: height="50%" width="50%" .center}
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/home-controller.png){: .screenshot-dimension .center}
 
         ``` php
         <?php
@@ -390,7 +390,7 @@ class HelloWorldController extends Controller
 }
 ```
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/HelloWorldcontroller.png){: height="50%" width="50%" .center}
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/HelloWorldcontroller.png){: .screenshot-dimension .center}
 
 
 For the route we will create a named route as
@@ -411,11 +411,11 @@ After creating controller & route we need to merge this `menu.php` folder with c
     }
     ```
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/merge-config-for-menu.png){: height="50%" width="50%" .center}
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/merge-config-for-menu.png){: .screenshot-dimension .center}
 
 And, now we need to add `@extends('admin::layouts.master')` to our view files to extend the bagisto default layout
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/hello-world-icon.png){: height="50%" width="50%" .center}
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/hello-world-icon.png){: .screenshot-dimension .center}
 
 Now, this menu will comes in admin login. You can change icon accordingly your need.By clicking, upon icon it will open the view file provided in `Route` facade
 
@@ -474,14 +474,14 @@ return [
 
 
 
-   ![ACL](assets/images/Bagisto_Docs_Images/ACL/acl-code.png){: height="50%" width="100%" .center}
+   ![ACL](assets/images/Bagisto_Docs_Images/ACL/acl-code.png){: .screenshot-dimension .center}
 
  1. As you can see in above image, the acl.php includes some parameters (you can refer to       how to add menu in admin/customer section above)
 
  2. Array is created for individual's menu with the parameters (key, name, route, sort)
     All we need to defined the menu which we want to be included in ACL functionality such as- in our case, in images attached the below image is includes the menu whatever defined in above image within code
 
-    ![ACL](assets/images/Bagisto_Docs_Images/ACL/acl-ui.png){: height="50%" width="100%" .center}
+    ![ACL](assets/images/Bagisto_Docs_Images/ACL/acl-ui.png){: .screenshot-dimension .center}
 
 
 ### Custom Configuration <a id="custom-configuration"></a>
@@ -523,7 +523,7 @@ return [
 ];
 ```
 
-![Custom Configuration file](assets/images/Bagisto_Docs_Images/custom-configuration.png){: height="50%" width="100%" .center}
+![Custom Configuration file](assets/images/Bagisto_Docs_Images/custom-configuration.png){:  .screenshot-dimension .center}
 
 
 ##### Explanation for the keys:

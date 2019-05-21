@@ -29,7 +29,7 @@ public function boot()
 ```
 
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/Events/define-event.png){: height="50%" width="100%"}
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/Events/define-event.png){:  .screenshot-dimension .center}
 
 
 #### Manually Registering Listeners
@@ -41,11 +41,11 @@ As we see above, in registering events we specify listener function to be execut
 
 In most of **CRUD** operation. We had fired an event before and after the execution of function. So, that if some one want to perform any operation after or before product create/update/delete can perform by simply calling a listener function in event registration
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/Events/create-event-before-after.png){: height="50%" width="100%"}
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/Events/create-event-before-after.png){:  .screenshot-dimension .center}
 
 
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/Events/delete-event-before-after.png){: height="50%" width="100%"}
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/Events/delete-event-before-after.png){:  .screenshot-dimension .center}
 
 
 

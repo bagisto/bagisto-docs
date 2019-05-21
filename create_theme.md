@@ -21,7 +21,7 @@ Please follow the below steps on how to create a custom theme in Bagisto.
 
 * Go to your project’s root directory and check for `config` folder. Inside it, you will find a file called `themes.php`:
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/bagisto-theme-1.png){: height="50%" width="100%"}
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/bagisto-theme-1.png){: height="50%" width="50%" .screenshot-dimension .center}
 
 * Check contents of ‘themes.php’ file, it holds all necessary information of creating a custom theme.
 
@@ -50,7 +50,7 @@ return [
 
 
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/bagisto-theme-2.png){: height="50%" width="100%"}
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/bagisto-theme-2.png){: height="50%" width="100%" .screenshot-dimension .center}
 
 
 Let’s go through the parameters of this theme’s file. Because the understanding of those parameters will help you in creating a custom theme.
@@ -59,7 +59,7 @@ Let’s go through the parameters of this theme’s file. Because the understand
 
 1. default: Declared at the top signifies the currently active or default theme in Bagisto. It is assigned with the value ‘default’. The (string)default indicates the name of the currently active theme.
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/bagisto-theme-3.png){: height="50%" width="100%"}
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/bagisto-theme-3.png){: height="50%" width="100%" .screenshot-dimension .center}
 
 2. themes: This parameter is where you’ve to define all essentials for your own custom theme. Multiple themes can also be created and used at the same time in Bagisto.
 
@@ -67,7 +67,7 @@ Let’s go through the parameters of this theme’s file. Because the understand
 
     * ‘default‘: When you look inside this array name ‘default‘ it holds few more key-value pairs. such as ‘view_path‘, ‘assets_path‘, ‘name’ all those are explained below:
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/bagisto-theme-4.png){: height="50%" width="100%"}
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/bagisto-theme-4.png){: height="50%" width="100%" .screenshot-dimension .center}
 
    * views_path: It’ll take the path of your views or blade files that you wanna put up in your custom theme.
 
@@ -77,11 +77,11 @@ Let’s go through the parameters of this theme’s file. Because the understand
 
    * parent: This is a magic parameter that you can find in the commented code below the sub array ‘default‘. Using this parameter you can make use of existing themes inside Bagisto and just customise them even further. This parameter will take the value of the ‘name’ parameter listed in point 3rd above
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/bagisto-theme-5.png){: height="50%" width="100%"}
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/bagisto-theme-5.png){: height="50%" width="100%" .screenshot-dimension .center}
 
 Finally, define your own paths and name of your custom theme inside ‘themes.php’ file. And start creating view files. Do not forget to cover all get routes of shop package having a parameter called ‘view’.
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/bagisto-theme-6.png){: height="50%" width="100%"}
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/bagisto-theme-6.png){: height="50%" width="100%" .screenshot-dimension .center}
 
 Make sure the name of the blade file should be same as passed in this GET route file like this:
 
@@ -92,5 +92,5 @@ Make sure the name of the blade file should be same as passed in this GET route 
     ])->name('shop.categories.index');
 ```
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/bagisto-theme-7.png){: height="50%" width="100%"}
+![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/bagisto-theme-7.png){: width="100%" height="100%"  .center}
 For all views check all GET routes as they hold a view parameter with the value of view to be used.
