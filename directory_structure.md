@@ -3,7 +3,7 @@ title: Directory structure-Bagisto
 layout: default
 ---
 
-## Directory Structure<span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="20px" height="15px"/> <a href="https://github.com/bagisto/bagisto-docs">edit on github</a></span>
+## Directory Structure<span class="edit-github"><img src="/assets/images/icons/Icon-Pencil-Large.svg" width="20px" height="15px"/> <a href="https://github.com/bagisto/bagisto-docs">edit on github</a></span>
 
 *    module-name/
         * Console/
