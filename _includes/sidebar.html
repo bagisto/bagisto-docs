@@ -109,32 +109,4 @@
 </div>
 
 
-<script>
 
-$(function () {
-    $(document).ready(function() {
-        setNavigation();
-    });
-
-    $('.sub-menu li a').click(function(e) {
-        location.reload();
-    });
-});
-
-function setNavigation() {
-    var path = window.location.href;
-    var urlPath = path.substring(35, 400);
-
-    $(".sub-menu li a").each(function () {
-        var href = $(this).attr('href');
-
-        if (urlPath === href) {
-            console.log(href);
-            $(this).closest('a').addClass('active');
-
-            $(this).closest('.menu-heading').find('.menu-heading-title').css('color','#0031F0');
-        }
-    });
-}
-
-</script>
