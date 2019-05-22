@@ -6,7 +6,7 @@ layout: default
 
 ## Contracts
 
-Laravel's Contracts are a set of interfaces that define the core services provided by the framework. For example, a Illuminate\Contracts\Queue\Queue contract defines the methods needed for queueing jobs, while the Illuminate\Contracts\Mail\Mailer contract defines the methods needed for sending e-mail.
+Laravel's Contracts are a set of interfaces that define the core services provided by the framework. For example, an Illuminate\Contracts\Queue\Queue contract defines the methods needed for queueing jobs, while the Illuminate\Contracts\Mail\Mailer contract defines the methods needed for sending an e-mail.
 
 Each contract has a corresponding implementation provided by the framework. For example, Laravel provides a queue implementation with a variety of drivers, and a mailer implementation that is powered by SwiftMailer.
 
@@ -73,7 +73,7 @@ write the model method for repository class and under the method return path of 
 # Override Existing model <a id="override-existing-model"></a>
 
 
-Concord is a Laravel Extension that serves as a foundation to build Modules for Laravel Applications on top of Laravel's built in Service Providers. Bagisto uses Concord for managing their modules. The concept of model proxies has been introduced. Proxies as their name state, will drive you to the actual model class.
+Concord is a Laravel Extension that serves as a foundation to build Modules for Laravel Applications on top of Laravel's built-in Service Providers. Bagisto uses Concord for managing their modules. The concept of model proxies has been introduced. Proxies as their name state will drive you to the actual model class.
 
 Concord's concept also requires to have an interface `Product` and this way it's possible to freely bind a concrete class to it using Concord's `registerModel()` method.
 
