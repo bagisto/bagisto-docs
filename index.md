@@ -8,7 +8,7 @@ layout: default
 
 Bagisto is a hand tailored E-Commerce framework designed on some of the hottest opensource technologies such as Laravel a PHP framework, Vue.js a progressive Javascript framework.
 
-Bagisto is viable attempt to cut down your time, cost and workforce for building online stores or migrating from physical stores to the ever demanding online world. Your business whether small or huge it suits all and very simple to set it up. Built on top of Laravel, it is coupled with easy product information management. The framework is very flexible and easy to use even for non-tech users.
+Bagisto is a viable attempt to cut down your time, cost and workforce for building online stores or migrating from physical stores to the most demanding online world. It Doesn't matter whether your business is small or huge, it suits all and very simple to set it up. Built on the top of Laravel, it is coupled with easy products information management. The framework is very flexible and easy to operate even for non-tech users.
 
 At the time of writing, Bagisto’s main feature list includes:
 
@@ -29,7 +29,7 @@ Bagisto features an administration panel with a Dashboard, sales data, a catalog
 
 
 
-Besides the features already available, the Bagisto’s roadmap includes:
+Besides these features already available, the Bagisto’s roadmap includes:
 
 API Support (REST and GraphQL)
 Progressive web application
@@ -89,7 +89,7 @@ http(s)://example.com/public
 
 **Now configure your database:**
 
-If the above command was completed successfully, then you'll find directory **bagisto** and all of the code will be inside it.
+If the above command is completed successfully, then you'll find directory **bagisto** and all of the code will be inside it.
 
 Find file **.env** inside **bagisto** directory and set the environment variables listed below:
 
@@ -126,7 +126,7 @@ Although, mailer environment variables are also required to be set up as **Bagis
 
 
 **To execute Bagisto**:
-
+This event will be fire after invoice details have been saved and listen in `ProductFlat` listener file to send new invoice mail from `send newInvoiceMail` function 
 ##### On server:
 
 ~~~
