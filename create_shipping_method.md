@@ -16,7 +16,7 @@ Ex – Here namespace is specified as ACME
 packages/ACME/HelloWorldPackage
 
 ### Step-2
-* Inside your package create a file named as package.json and a folder named as 'src', we will use it later.
+* Inside your package create a file named as package.json and a folder named as 'src', that will be used later.
 
 ### Step-3
 * Inside ‘src’ folder create a folder named as ‘Providers’ and under it create a file named as ‘PackagenameServiceProvider.php’.
@@ -89,9 +89,9 @@ class HelloWorldServiceProvider extends ServiceProvider
 ### Step-6
 * Now we are going to add some routing & views to our package.
 
-    1) For route: create a ‘Http’ folder inside ‘src’ folder of your package & inside this folder (Http) create a file name as ‘routes.php’. In this file, we can create routes of our project & route file name can be according to need. For Example: admin-routes.php, shop-routes.php.
+    1) For route: create a ‘Http’ folder inside ‘src’ folder of your package & inside this folder (Http) create a file name as ‘routes.php’. In this file, we can create routes of our project & route file name can be according to the requirements. For Example: admin-routes.php, shop-routes.php.
 
-Now, we need to register our route file to service provider’s boot method i.e. HelloWorldProvider.php
+Now, we need to register our route file to the service provider’s boot method i.e. HelloWorldProvider.php
 
     public function boot()
 
@@ -106,10 +106,10 @@ To load routes, you can also use ‘loadRoutesFrom’ method.
 
 Inside ‘Resources’ folder create a folder name as ‘views’.
 
-Now, in this ‘views’ folder, we can create a views for our package. We can create multiple folder inside view to distinguish
+Now, in this ‘views’ folder, we can create a views for our package. We can create multiple folders inside view to distinguish
 views according to need.
 
-Right, Now we are going to create a folder ‘helloworld’ inside the views. In this ‘helloworld’ folder we will create a file name as helloworld.blade.php.
+Right, Now we are going to create a folder ‘helloworld’ inside the views. In this ‘helloworld’ folder we have to create a file name as helloworld.blade.php.
 
 Now just like route file, we also need to register our view folder inside serviceprovider to specify path where views are located.
 
@@ -351,22 +351,22 @@ Now, the menu will be added in your menu bar. -->
 
 ### Parameters needed for explanation
 
-1. code : unique value used for referring the particular menu
+1. code : unique value used for referring the particular menu.
 
-2. title : label/name to display at user interface
+2. title : label/name to display at user interface.
 
 3. description : about your shipping method.
 
-4. active : enable/disable option for shipping method
+4. active : enable/disable option for shipping method.
 
 5. type : these field specifies that the shipping method apply as per_unit or
-   per_order
+   per_order.
 
-6. class : path specified with filename 'namespace\package-name\Carriers-folder\filename'
+6. class : path specified with filename 'namespace\package-name\Carriers-folder\filename'.
 
 
 * And, `Carriers` named folder inside `src` folder. We will now create a file name as our shipping method name for better understandability inside Carriers folder e.g., Fedex.php
 
-    1. File `Fedex.php` will extends AbstractShipping class which is defined at `Webkul\Shipping\Carriers\AbstractShipping`. Inside this file, the methods are defined that you can use while creating shipping method.
+    1. File `Fedex.php` will extends AbstractShipping class which is defined at `Webkul\Shipping\Carriers\AbstractShipping`. Inside this file, the methods are defined that can be used while creating shipping method.
 
-    2. Now, you can write all operations needed for your shipping method in `Fedex.php` file
+    2. Now, you can write all operations needed for your shipping method in `Fedex.php` file.
