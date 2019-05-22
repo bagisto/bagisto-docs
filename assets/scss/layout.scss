@@ -141,13 +141,12 @@ td {
     align-items: center;
     justify-content: space-between;
     background-color: $background-color;
-    height: 70px;
-    width: 100%;
-    position: sticky;
+    width: 25%;
+    border-right: 2px solid ;
+    border-right-color: rgba(151,151,151, 0.5);
+    position: fixed;
     top: 0;
-    padding: 10px;
-    z-index: 2;
-    box-shadow: 5px 9px 12px -9px #888888;
+    padding: 18px;
 
     .logo-wrapper {
         display: flex;
@@ -209,25 +208,25 @@ td {
     justify-content: space-between;
 
     .side-menu {
-        width: 24%;
+        width: 25%;
+        height: 100%;
         overflow: auto;
-        box-shadow: 5px 9px 12px -9px #888888;
+        margin-top: 70px;
 
         .sidebar {
-           width: 24%;
+           width: 25%;
+           height: 100%;
            position: fixed;
+           border-right: 2px solid ;
+           border-right-color: rgba(151,151,151, 0.5);
 
-           ul {
-            padding-inline-start: 25px;
+            ul {
+                padding-inline-start: 25px;
             }
 
             ul li {
                 list-style-type: none;
-                padding: 3.5px;
-
-                a:hover {
-                    // border-bottom: 1px solid $link-color;
-                }
+                padding: 3.25px;
             }
         }
     }
@@ -282,7 +281,7 @@ td {
 }
 
 .sub-menu li a{
-    color: #0041ff;
+    // color: #0041ff;
     font-family: Montserrat-Medium;
     font-size: 16px;
     letter-spacing: 0;
@@ -316,4 +315,8 @@ td {
     float: right;
     margin-top: -46px;
     margin-right: 103px;
+}
+
+.active {
+    color: $brand-color;
 }

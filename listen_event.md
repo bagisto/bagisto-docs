@@ -1,9 +1,12 @@
 ---
 title: Listen existing events-Bagisto
 layout: default
+url: /listen-evencct.html
 ---
 
 # Listen Existing Event
+
+{{ page.url }}
 
 ![edit on github](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/listen_event.md){:.edit-github  target="_blank"}
