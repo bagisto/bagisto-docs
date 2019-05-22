@@ -7,17 +7,17 @@ a { color: black; text-decoration: none; }
 
 a:hover { text-decoration: none; cursor: pointer; }
 
-h1 { font-size: 36px; }
+h1 { font-size: 34px; }
 
-h2 { font-size: 32px; }
+h2 { font-size: 30px; }
 
-h3 { font-size: 28px; }
+h3 { font-size: 26px; }
 
-h4 { font-size: 24px; }
+h4 { font-size: 22px; }
 
-h5 { font-size: 20px; }
+h5 { font-size: 18px; }
 
-h6 { font-size: 16px; }
+h6 { font-size: 14px; }
 
 footer { text-align: center; }
 
@@ -34,7 +34,7 @@ td { padding: 5px; }
 .container { height: 100%; width: 100%; }
 .container .content-wrapper { max-width: 1300px; height: auto; width: 100%; margin-left: auto; margin-right: auto; }
 
-.header { display: flex; flex-direction: row; align-items: center; justify-content: space-between; background-color: #F2F2F2; height: 80px; width: 100%; position: sticky; top: 0; padding: 10px; z-index: 2; box-shadow: 5px 9px 12px -9px #888888; }
+.header { display: flex; flex-direction: row; align-items: center; justify-content: space-between; background-color: #F2F2F2; height: 70px; width: 100%; position: sticky; top: 0; padding: 10px; z-index: 2; box-shadow: 5px 9px 12px -9px #888888; }
 .header .logo-wrapper { display: flex; flex-direction: row; align-items: center; font-size: 19px; float: right; }
 .header .logo-wrapper .logo { height: 45px; width: 110px; padding-right: 6px; }
 .header .logo-wrapper span { padding-top: 5px; padding-left: 5px; font-size: 17px; border-left: 1px solid black; }
@@ -45,15 +45,15 @@ td { padding: 5px; }
 .header .menu-list ul li:last-child { margin-right: 0px; }
 
 .content { display: flex; flex-direction: row; justify-content: space-between; }
-.content .side-menu { width: 24%; overflow: auto; border-right: 1px solid #979797; border-width: 2px; }
+.content .side-menu { width: 24%; overflow: auto; box-shadow: 5px 9px 12px -9px #888888; }
 .content .side-menu .sidebar { width: 24%; position: fixed; }
-.content .side-menu .sidebar ul { padding-inline-start: 20px; }
-.content .side-menu .sidebar ul li { list-style-type: none; }
-.content .right-content { width: 70%; word-wrap: break-word; padding-right: 40px; font-family: PTSerif-Regular; font-size: 17px; color: #323232; letter-spacing: 0; line-height: 31px; }
-.content .right-content span { border: 1px solid green; }
-.content .right-content h1, .content .right-content h2, .content .right-content h3, .content .right-content h4, .content .right-content h5, .content .right-content h6 { font-family: Montserrat-Medium; color: #3D3D3D; letter-spacing: 0; }
+.content .side-menu .sidebar ul { padding-inline-start: 25px; }
+.content .side-menu .sidebar ul li { list-style-type: none; padding: 3.5px; }
+.content .right-content { width: 70%; word-wrap: break-word; padding-right: 40px; }
+.content .right-content h1, .content .right-content h2, .content .right-content h3, .content .right-content h4, .content .right-content h5, .content .right-content h6 { font-family: Montserrat; color: #3D3D3D; letter-spacing: 0; }
+.content .right-content p, .content .right-content li { font-family: PTSerif-Regular; font-size: 17px; color: #323232; letter-spacing: 0; line-height: 31px; }
 
-.nav-link { font-family: Montserrat-SemiBold; font-size: 12px; color: #2C3145; letter-spacing: 0; font-size: 1.5em; }
+.nav-link { font-family: Montserrat-SemiBold; font-size: 12px; color: #2C3145; letter-spacing: 0; font-size: 1.26em; }
 
 .menu-heading { padding-top: 15px; }
 .menu-heading .sub-menu { padding-top: 6px; }
@@ -62,8 +62,8 @@ td { padding: 5px; }
 
 .sub-menu li a { color: #0041ff; font-family: Montserrat-Medium; font-size: 16px; letter-spacing: 0; }
 
-.menu-heading > a { font-family: Montserrat-SemiBold; color: #2C3145; letter-spacing: 0; font-size: 1.5em; }
+.menu-heading > a { font-size: 1.26em; font-family: Montserrat-SemiBold; color: #2C3145; letter-spacing: 0; }
 
-.edit-github { float: right; font-size: 18px; margin-top: -58px; font-family: Montserrat-SemiBold; }
+.edit-github { float: right; font-size: 18px; margin-top: -53px; font-family: Montserrat-SemiBold; }
 
-.pencil-icon { width: 20px; height: 16px; float: right; margin-top: -51px; margin-right: 103px; }
+.pencil-icon { width: 20px; height: 16px; float: right; margin-top: -46px; margin-right: 103px; }

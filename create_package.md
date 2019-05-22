@@ -117,12 +117,12 @@ Right now, we are going to create a folder ‘helloworld’ inside the views. In
 
 Now just like route file, we need to register our view folder inside service provider to specify path where views are located.
 
-    ``` php
-    public function boot()
-    {
-        $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'helloworld');
-    }
-    ```
+```php
+public function boot()
+{
+    $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'helloworld');
+}
+```
 
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/view-register.png){: .screenshot-dimension .center}
 
@@ -132,11 +132,11 @@ Now just like route file, we need to register our view folder inside service pro
 
 Go to ACME->src->Http->routes.php file and create a route to render view
 
-        ``` php
-        <?php
+```php
+<?php
 
-            Route::view('/hello-world', 'helloworld::helloworld.helloworld');
-        ```
+    Route::view('/hello-world', 'helloworld::helloworld.helloworld');
+```
 
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/view-route-creation.png){: .screenshot-dimension .center}
 
@@ -155,12 +155,12 @@ Inside lang folder, you can create different folder for languages translations l
 
 Now, we need to register the language file to service provider.
 
-        ``` php
-        public function boot()
-        {
-            $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'helloworld');
-        }
-        ```
+``` php
+public function boot()
+{
+    $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'helloworld');
+}
+```
 
 
 Now we can write translation in app.php like below.
@@ -293,12 +293,12 @@ Create a ‘Database’ folder inside ‘src’ folder & inside ‘Database’ c
 
 Now, we need to add migrations to our service provider to load them.
 
-        ``` php
-        public function boot()
-        {
-            $this->loadMigrationsFrom(__DIR__ .'/../Database/Migrations');
-        }
-        ```
+```php
+public function boot()
+{
+    $this->loadMigrationsFrom(__DIR__ .'/../Database/Migrations');
+}
+```
 
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/merge-config-for-menu.png){: .screenshot-dimension .center}
 
@@ -306,7 +306,9 @@ Now, we need to add migrations to our service provider to load them.
 
 To create a migration, use the make:migration Artisan command:
 
->php artisan make:migration create_users_table
+```php
+php artisan make:migration create_users_table
+```
 
 The new migration will be placed in your database/migrations directory. Each migration file name contains a timestamp which allows Laravel to determine the order of the migrations.
 
@@ -314,13 +316,14 @@ The - -table and - -create options may also be used to indicate the name of the 
 
 Also, Laravel provides us a option to create migration files at a specified path. The command to create migration file at our HelloWorld package database/migrations directory, we have to append '- -path' in artisan command.
 
-> php artisan make:migration create_demo_table - -path=packages/ACME/HelloWorld/src/Database/Migrations
-
+```php
+php artisan make:migration create_demo_table - -path=packages/ACME/HelloWorld/src/Database/Migrations
+```
 
 ### How to Add Menu in Admin/Customer <a id="add-menu"></a>
 
 ### Step-1
--> Now, we will show how to add menu in admin panel.
+1. Now, we will show how to add menu in admin panel.
 For this, we need to create a ‘Config’ folder inside ‘src’.
 Inside this src folder, create a file name as 'menu.php'.
 
@@ -350,8 +353,8 @@ So inside Controllers we will create HelloWorldController.php and controller.php
 
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/home-controller.png){: .screenshot-dimension .center}
 
-        ``` php
-        <?php
+``` php
+<?php
 
 namespace ACME\HelloWorld\Http\Controllers;
 
@@ -402,14 +405,14 @@ Route::get('hello-dashboard', 'ACME\HelloWorld\Http\Controllers\HelloWorldContro
 
 After creating controller & route we need to merge this `menu.php` folder with core menu file.For this purpose we will use method  ‘mergeConfigFrom’ method in register function of service provider.
 
-    ``` php
-    public function register()
-    {
-        $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/menu.php', 'menu.admin'
-        );
-    }
-    ```
+```php
+public function register()
+{
+    $this->mergeConfigFrom(
+        dirname(__DIR__) . '/Config/menu.php', 'menu.admin'
+    );
+}
+```
 
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/merge-config-for-menu.png){: .screenshot-dimension .center}
 
