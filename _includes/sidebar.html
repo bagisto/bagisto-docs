@@ -1,17 +1,20 @@
-<header class="header">
-    <div class="logo-wrapper">
-        <a href="/">
-            <img class="logo" src="assets/images/logo.png" />
-        </a>
-        <span>Docs</span>
-    </div>
-</header>
 
 <div class="sidebar">
+    <header class="header">
+        <div class="logo-wrapper">
+            <a href="http://127.0.0.1:4000/bagisto-docs/">
+                <img class="logo" src="assets/images/logo.png" />
+            </a>
+
+            <span>Docs</span>
+        </div>
+    </header>
+
     <ul>
             <!-- Introduction -->
             <li class="menu-heading">
-                <a class="current" href="index.html">Introduction</a>
+                <a class="menu-heading-title" href="index.html">Introduction</a>
+
                 <ul class="sub-menu">
                     <li>
                         <a href="index.html#requirements">Requirements</a>
@@ -73,7 +76,7 @@
 
                 <ul class="sub-menu">
                     <li>
-                        <a href="override-core-model.html">Override core models</a>
+                        <a data-id="override-core-model.html" href="override-core-model.html">Override core models</a>
                     </li>
 
                     <li>
@@ -97,10 +100,6 @@
                     </li>
 
                     <li>
-                        <a href="listen_event.html">Listen existing events</a>
-                    </li>
-
-                    <li>
                         <a href="data_grid.html">Data Grid</a>
                     </li>
                 </ul>
@@ -110,7 +109,13 @@
 
 <script>
     $('.sub-menu li a').on('click', function(){
-        $('li a.current').removeClass('current');
-        $(this).addClass('current');
+        href = $(this).attr('href');
+
+        if(window.location.href.indexOf(href)) {
+            $('li a.current').removeClass('current');
+            $(this).addClass('current');
+
+            $(this).closest('.menu-heading').find('.menu-heading-title').css('color','#0031F0');
+        }
     });
 </script>

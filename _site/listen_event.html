@@ -7,7 +7,6 @@
         <link rel="stylesheet" href="assets/css/syntax.css" />
         <link rel="icon" sizes="16x16" href="assets/images/icons/favicon.ico" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-
     </head>
     <body>
         <div class="container">
@@ -15,20 +14,23 @@
 
                 <div class="content">
                     <div class="side-menu">
-                        <header class="header">
-    <div class="logo-wrapper">
-        <a href="/">
-            <img class="logo" src="assets/images/logo.png" />
-        </a>
-        <span>Docs</span>
-    </div>
-</header>
-
+                        
 <div class="sidebar">
+    <header class="header">
+        <div class="logo-wrapper">
+            <a href="http://127.0.0.1:4000/bagisto-docs/">
+                <img class="logo" src="assets/images/logo.png" />
+            </a>
+
+            <span>Docs</span>
+        </div>
+    </header>
+
     <ul>
             <!-- Introduction -->
             <li class="menu-heading">
-                <a class="current" href="index.html">Introduction</a>
+                <a class="menu-heading-title" href="index.html">Introduction</a>
+
                 <ul class="sub-menu">
                     <li>
                         <a href="index.html#requirements">Requirements</a>
@@ -90,7 +92,7 @@
 
                 <ul class="sub-menu">
                     <li>
-                        <a href="override-core-model.html">Override core models</a>
+                        <a data-id="override-core-model.html" href="override-core-model.html">Override core models</a>
                     </li>
 
                     <li>
@@ -114,10 +116,6 @@
                     </li>
 
                     <li>
-                        <a href="listen_event.html">Listen existing events</a>
-                    </li>
-
-                    <li>
                         <a href="data_grid.html">Data Grid</a>
                     </li>
                 </ul>
@@ -127,8 +125,14 @@
 
 <script>
     $('.sub-menu li a').on('click', function(){
-        $('li a.current').removeClass('current');
-        $(this).addClass('current');
+        href = $(this).attr('href');
+
+        if(window.location.href.indexOf(href)) {
+            $('li a.current').removeClass('current');
+            $(this).addClass('current');
+
+            $(this).closest('.menu-heading').find('.menu-heading-title').css('color','#0031F0');
+        }
     });
 </script>
                     </div>
@@ -140,6 +144,20 @@
 <a href="https://github.com/bagisto/bagisto-docs/blob/master/listen_event.md" class="edit-github" target="_blank">edit on github</a></p>
 
 <p>You may refer our <a href="events.html">Event</a> section , all events used in bagisto are listed there so you may change or edit the listener function such as- <code class="highlighter-rouge">sendNewOrderMail</code> that is defined in <code class="highlighter-rouge">productFlat</code> listener file, so you can edit and perform the required operation</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">EventServiceProvider</span> <span class="k">extends</span> <span class="nx">ServiceProvider</span>
+<span class="p">{</span>
+    <span class="sd">/**
+     * Bootstrap services.
+     *
+     * @return void
+     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">boot</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nx">Event</span><span class="o">::</span><span class="na">listen</span><span class="p">(</span><span class="s1">'checkout.order.save.after'</span><span class="p">,</span> <span class="s1">'Webkul\Admin\Listeners\Order@sendNewOrderMail'</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <p><img src="/bagisto-docs/assets/images/Bagisto_Docs_Images/Events/define-event.png" alt="Bagisto Root Directory" class="screenshot-dimension center" /></p>
 

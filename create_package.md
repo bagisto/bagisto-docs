@@ -541,20 +541,19 @@ return [
 
 ### Creating Models<a id="create_models"></a>
 
-To get started, let's create an Eloquent model. Models typically live in the app directory, but you are free to place them anywhere that can be auto-loaded according to your  composer.json file. All Eloquent models extend Illuminate\Database\Eloquent\Model class.
+Models typically live in the app directory, but you are free to place them anywhere that can be auto-loaded according to your  composer.json file. All Eloquent models extend Illuminate\Database\Eloquent\Model class.
 
-The easiest way to create a model instance is using the make:model Artisan command:
+The simple way to create a model is executing the command *make:model Artisan command*:
 
 >`php artisan make:model User`
 
-If you would like to generate a database migration when you generate the model, you may use the --migration or -m option:
+After creating model, to generate database migration, you may append  `--migration or -m option` artisan command as stated below
 
 >`php artisan make:model User --migration`
 
 >`php artisan make:model User -m`
 
-
-
+**Note** : *For more details check* ***[Laravel Models](https://laravel.com/docs/5.8/eloquent#defining-models)***
 
 #### What is Contracts, Repositories and proxies ?<a id="about"></a>
 

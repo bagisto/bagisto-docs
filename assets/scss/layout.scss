@@ -141,9 +141,9 @@ td {
     align-items: center;
     justify-content: space-between;
     background-color: $background-color;
-    width: 25%;
-    border-right: 2px solid ;
-    border-right-color: rgba(151,151,151, 0.5);
+    width: 320px;
+    border-right: 2px solid;
+    border-right-color: rgba(151, 151, 151, 0.5);
     position: fixed;
     top: 0;
     padding: 18px;
@@ -211,14 +211,23 @@ td {
         width: 25%;
         height: 100%;
         overflow: auto;
-        margin-top: 70px;
+        width: 320px;
+        background-color: #f1f1f1;
+        position: fixed;
+        height: 100%;
+        overflow: auto;
+        border-right: 2px solid;
+        border-right-color: rgba(151, 151, 151, 0.5);
 
         .sidebar {
-           width: 25%;
-           height: 100%;
-           position: fixed;
-           border-right: 2px solid ;
-           border-right-color: rgba(151,151,151, 0.5);
+            width: 320px;
+            background-color: #f1f1f1;
+            position: fixed;
+            height: 100%;
+            overflow: auto;
+            border-right: 2px solid;
+            border-right-color: rgba(151, 151, 151, 0.5);
+            margin-top: 71px;
 
             ul {
                 padding-inline-start: 25px;
@@ -233,8 +242,8 @@ td {
 
     .right-content {
         width: 70%;
-        word-wrap: break-word;
         padding-right: 40px;
+        margin-left: 370px;
 
         span {
         }
@@ -318,5 +327,6 @@ td {
 
 .current {
     color: $brand-color;
+    font-size: 17px !important;
 }
 
