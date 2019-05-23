@@ -9,7 +9,7 @@ layout: default
 
 A package is like Laravel packages that includes views, controller and models. Packages are  created to manage your large laravel applications into smaller units. In the bagisto, we have created plenty of packages at path `packages/Webkul/`.
 
-### How To Create Module <a id="how-to-create-module"></a>
+### How To Create Package <a id="how-to-create-package"></a>
 
 ##### Step-1
 

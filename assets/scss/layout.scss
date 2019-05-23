@@ -103,7 +103,7 @@ table, tr, td {
 }
 
 tr:nth-child(even) {
-    background-color: $background-color;
+    background-color: #f5f5f5;
 }
 
 td {
@@ -114,12 +114,12 @@ td {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    border-style: outset;
+    // border-style: outset;
 }
 
 .screenshot-dimension {
-    height: 100%;
-    width: 60%;
+    height: 90%;
+    width: 100%;
 }
 
 .container {
@@ -140,13 +140,12 @@ td {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    background-color: $background-color;
+    background-color: #F2F2F2;
     width: 320px;
     border-right: 2px solid;
-    border-right-color: rgba(151, 151, 151, 0.5);
+    border-right-color: rgba(151,151,151,0.5);
     position: fixed;
-    top: 0;
-    padding: 18px;
+    top: 0px;
 
     .logo-wrapper {
         display: flex;
@@ -206,18 +205,17 @@ td {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    padding: 20px;
+
 
     .side-menu {
-        width: 25%;
-        height: 100%;
-        overflow: auto;
         width: 320px;
         background-color: #f1f1f1;
         position: fixed;
         height: 100%;
         overflow: auto;
         border-right: 2px solid;
-        border-right-color: rgba(151, 151, 151, 0.5);
+        border-right-color: rgba(151,151,151,0.5);
 
         .sidebar {
             width: 320px;
@@ -226,11 +224,11 @@ td {
             height: 100%;
             overflow: auto;
             border-right: 2px solid;
-            border-right-color: rgba(151, 151, 151, 0.5);
-            margin-top: 71px;
+            border-right-color: rgba(151,151,151,0.5);
+            margin-top: 40px;
 
             ul {
-                padding-inline-start: 25px;
+                padding: 0;
             }
 
             ul li {
@@ -241,11 +239,12 @@ td {
     }
 
     .right-content {
-        width: 70%;
-        padding-right: 40px;
-        margin-left: 370px;
+        width: 100%;
+        padding-left: 340px;
+
 
         span {
+            overflow-x: auto;
         }
 
         h1, h2, h3, h4, h5, h6 {
@@ -330,3 +329,6 @@ td {
     font-size: 17px !important;
 }
 
+li ul {
+    padding-left: 20px !important;
+}
