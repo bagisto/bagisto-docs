@@ -69,6 +69,6 @@ DataGrid is just a concept of displaying your database records in tabular format
 
 ## ***Warning***
 
-* ***Use JavaScripts with wrapper perperty set to true when really needed***
+* ***Use JavaScript with wrapper perperty set to true when really needed***
 
 * ***Return static blade files loaded with scripts in it with caution***
