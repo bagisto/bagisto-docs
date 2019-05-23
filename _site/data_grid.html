@@ -7,32 +7,7 @@
         <link rel="stylesheet" href="assets/css/syntax.css" />
         <link rel="icon" sizes="16x16" href="assets/images/icons/favicon.ico" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-        <script type="text/javascript">
-            $(function () {
-                $(document).ready(function() {
-                    setNavigation();
-                });
 
-                $('.sub-menu li a').click(function(e) {
-                    location.reload();
-                });
-            });
-
-            function setNavigation() {
-                var path = window.location.href;
-                var urlPath = path.substring(35, 400);
-
-                $(".sub-menu li a").each(function () {
-                    var href = $(this).attr('href');
-
-                    if (urlPath === href) {
-                        console.log(href);
-                        $(this).closest('a').addClass('active');
-                        $(this).closest('.menu-heading').find('.menu-heading-title').css('color','#0031F0');
-                    }
-                });
-            }
-        </script>
     </head>
     <body>
         <div class="container">
@@ -53,7 +28,7 @@
     <ul>
             <!-- Introduction -->
             <li class="menu-heading">
-                <a class="menu-heading-title" href="index.html">Introduction</a>
+                <a class="current" href="index.html">Introduction</a>
                 <ul class="sub-menu">
                     <li>
                         <a href="index.html#requirements">Requirements</a>
@@ -150,9 +125,12 @@
     </ul>
 </div>
 
-
-
-
+<script>
+    $('.sub-menu li a').on('click', function(){
+        $('li a.current').removeClass('current');
+        $(this).addClass('current');
+    });
+</script>
                     </div>
 
                     <div class="right-content">
@@ -163,28 +141,17 @@
 
 <p>DataGrid is just a concept of displaying your database records in tabular format. We have implemented this system in bagisto either you can use it to display data in tabular format or write code from scratch to display data in tabular format. In addition to datagrid, we have implemented additional features such as - sorting, filter, massAction . You may refer to below table for detail information about the features.</p>
 
-<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
-
-<span class="k">namespace</span> <span class="nx">Webkul\Admin\DataGrids</span><span class="p">;</span>
-
-<span class="k">use</span> <span class="nx">Webkul\Ui\DataGrid\DataGrid</span><span class="p">;</span>
-<span class="k">use</span> <span class="nx">DB</span><span class="p">;</span>
-
-<span class="sd">/**
- * NewsLetterDataGrid Class
- *
- * @author Prashant Singh &lt;prashant.singh852@webkul.com&gt; @prashant-webkul
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
- */</span>
-<span class="k">class</span> <span class="nc">NewsLetterDataGrid</span> <span class="k">extends</span> <span class="nx">DataGrid</span>
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">AttributeDataGrid</span> <span class="k">extends</span> <span class="nx">DataGrid</span>
 <span class="p">{</span>
-    <span class="k">protected</span> <span class="nv">$index</span> <span class="o">=</span> <span class="s1">'id'</span><span class="p">;</span>
-
+    <span class="k">protected</span> <span class="nv">$index</span> <span class="o">=</span> <span class="s1">'id'</span><span class="p">;</span> <span class="c1">//the column that needs to be treated as index column
+</span>
     <span class="k">protected</span> <span class="nv">$sortOrder</span> <span class="o">=</span> <span class="s1">'desc'</span><span class="p">;</span> <span class="c1">//asc or desc
 </span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">prepareQueryBuilder</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="nv">$queryBuilder</span> <span class="o">=</span> <span class="nx">DB</span><span class="o">::</span><span class="na">table</span><span class="p">(</span><span class="s1">'subscribers_list'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">addSelect</span><span class="p">(</span><span class="s1">'id'</span><span class="p">,</span> <span class="s1">'is_subscribed'</span><span class="p">,</span> <span class="s1">'email'</span><span class="p">);</span>
+        <span class="nv">$queryBuilder</span> <span class="o">=</span> <span class="nx">DB</span><span class="o">::</span><span class="na">table</span><span class="p">(</span><span class="s1">'attributes'</span><span class="p">)</span>
+                <span class="o">-&gt;</span><span class="na">select</span><span class="p">(</span><span class="s1">'id'</span><span class="p">)</span>
+                <span class="o">-&gt;</span><span class="na">addSelect</span><span class="p">(</span><span class="s1">'id'</span><span class="p">,</span> <span class="s1">'code'</span><span class="p">,</span> <span class="s1">'admin_name'</span><span class="p">,</span> <span class="s1">'type'</span><span class="p">,</span> <span class="s1">'is_required'</span><span class="p">,</span> <span class="s1">'is_unique'</span><span class="p">,</span> <span class="s1">'value_per_locale'</span><span class="p">,</span> <span class="s1">'value_per_channel'</span><span class="p">);</span>
 
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">setQueryBuilder</span><span class="p">(</span><span class="nv">$queryBuilder</span><span class="p">);</span>
     <span class="p">}</span>
@@ -201,14 +168,40 @@
         <span class="p">]);</span>
 
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addColumn</span><span class="p">([</span>
-            <span class="s1">'index'</span> <span class="o">=&gt;</span> <span class="s1">'is_subscribed'</span><span class="p">,</span>
-            <span class="s1">'label'</span> <span class="o">=&gt;</span> <span class="nx">trans</span><span class="p">(</span><span class="s1">'admin::app.datagrid.subscribed'</span><span class="p">),</span>
+            <span class="s1">'index'</span> <span class="o">=&gt;</span> <span class="s1">'code'</span><span class="p">,</span>
+            <span class="s1">'label'</span> <span class="o">=&gt;</span> <span class="nx">trans</span><span class="p">(</span><span class="s1">'admin::app.datagrid.code'</span><span class="p">),</span>
             <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'string'</span><span class="p">,</span>
-            <span class="s1">'searchable'</span> <span class="o">=&gt;</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="s1">'searchable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
             <span class="s1">'sortable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
-            <span class="s1">'filterable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="s1">'filterable'</span> <span class="o">=&gt;</span> <span class="kc">true</span>
+        <span class="p">]);</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addColumn</span><span class="p">([</span>
+            <span class="s1">'index'</span> <span class="o">=&gt;</span> <span class="s1">'admin_name'</span><span class="p">,</span>
+            <span class="s1">'label'</span> <span class="o">=&gt;</span> <span class="nx">trans</span><span class="p">(</span><span class="s1">'admin::app.datagrid.admin-name'</span><span class="p">),</span>
+            <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'string'</span><span class="p">,</span>
+            <span class="s1">'searchable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="s1">'sortable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="s1">'filterable'</span> <span class="o">=&gt;</span> <span class="kc">true</span>
+        <span class="p">]);</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addColumn</span><span class="p">([</span>
+            <span class="s1">'index'</span> <span class="o">=&gt;</span> <span class="s1">'type'</span><span class="p">,</span>
+            <span class="s1">'label'</span> <span class="o">=&gt;</span> <span class="nx">trans</span><span class="p">(</span><span class="s1">'admin::app.datagrid.type'</span><span class="p">),</span>
+            <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'string'</span><span class="p">,</span>
+            <span class="s1">'sortable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="s1">'searchable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="s1">'filterable'</span> <span class="o">=&gt;</span> <span class="kc">true</span>
+        <span class="p">]);</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addColumn</span><span class="p">([</span>
+            <span class="s1">'index'</span> <span class="o">=&gt;</span> <span class="s1">'is_required'</span><span class="p">,</span>
+            <span class="s1">'label'</span> <span class="o">=&gt;</span> <span class="nx">trans</span><span class="p">(</span><span class="s1">'admin::app.datagrid.required'</span><span class="p">),</span>
+            <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'boolean'</span><span class="p">,</span>
+            <span class="s1">'sortable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="s1">'searchable'</span> <span class="o">=&gt;</span> <span class="kc">false</span><span class="p">,</span>
             <span class="s1">'wrapper'</span> <span class="o">=&gt;</span> <span class="k">function</span><span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span><span class="o">-&gt;</span><span class="na">is_subscribed</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span><span class="o">-&gt;</span><span class="na">is_required</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
                     <span class="k">return</span> <span class="s1">'True'</span><span class="p">;</span>
                 <span class="k">else</span>
                     <span class="k">return</span> <span class="s1">'False'</span><span class="p">;</span>
@@ -216,33 +209,82 @@
         <span class="p">]);</span>
 
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addColumn</span><span class="p">([</span>
-            <span class="s1">'index'</span> <span class="o">=&gt;</span> <span class="s1">'email'</span><span class="p">,</span>
-            <span class="s1">'label'</span> <span class="o">=&gt;</span> <span class="nx">trans</span><span class="p">(</span><span class="s1">'admin::app.datagrid.email'</span><span class="p">),</span>
-            <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'string'</span><span class="p">,</span>
-            <span class="s1">'searchable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="s1">'index'</span> <span class="o">=&gt;</span> <span class="s1">'is_unique'</span><span class="p">,</span>
+            <span class="s1">'label'</span> <span class="o">=&gt;</span> <span class="nx">trans</span><span class="p">(</span><span class="s1">'admin::app.datagrid.unique'</span><span class="p">),</span>
+            <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'boolean'</span><span class="p">,</span>
             <span class="s1">'sortable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
-            <span class="s1">'filterable'</span> <span class="o">=&gt;</span> <span class="kc">true</span>
+            <span class="s1">'searchable'</span> <span class="o">=&gt;</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="s1">'filterable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="s1">'wrapper'</span> <span class="o">=&gt;</span> <span class="k">function</span><span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span><span class="o">-&gt;</span><span class="na">is_unique</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="s1">'True'</span><span class="p">;</span>
+                <span class="k">else</span>
+                    <span class="k">return</span> <span class="s1">'False'</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">]);</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addColumn</span><span class="p">([</span>
+            <span class="s1">'index'</span> <span class="o">=&gt;</span> <span class="s1">'value_per_locale'</span><span class="p">,</span>
+            <span class="s1">'label'</span> <span class="o">=&gt;</span> <span class="nx">trans</span><span class="p">(</span><span class="s1">'admin::app.datagrid.per-locale'</span><span class="p">),</span>
+            <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'boolean'</span><span class="p">,</span>
+            <span class="s1">'sortable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="s1">'searchable'</span> <span class="o">=&gt;</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="s1">'filterable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="s1">'wrapper'</span> <span class="o">=&gt;</span> <span class="k">function</span><span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span><span class="o">-&gt;</span><span class="na">value_per_locale</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="s1">'True'</span><span class="p">;</span>
+                <span class="k">else</span>
+                    <span class="k">return</span> <span class="s1">'False'</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">]);</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addColumn</span><span class="p">([</span>
+            <span class="s1">'index'</span> <span class="o">=&gt;</span> <span class="s1">'value_per_channel'</span><span class="p">,</span>
+            <span class="s1">'label'</span> <span class="o">=&gt;</span> <span class="nx">trans</span><span class="p">(</span><span class="s1">'admin::app.datagrid.per-channel'</span><span class="p">),</span>
+            <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'boolean'</span><span class="p">,</span>
+            <span class="s1">'sortable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="s1">'searchable'</span> <span class="o">=&gt;</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="s1">'filterable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="s1">'wrapper'</span> <span class="o">=&gt;</span> <span class="k">function</span><span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span><span class="o">-&gt;</span><span class="na">value_per_channel</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="s1">'True'</span><span class="p">;</span>
+                <span class="k">else</span>
+                    <span class="k">return</span> <span class="s1">'False'</span><span class="p">;</span>
+            <span class="p">}</span>
         <span class="p">]);</span>
     <span class="p">}</span>
 
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">prepareActions</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">prepareActions</span><span class="p">()</span>
+    <span class="p">{</span>
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addAction</span><span class="p">([</span>
             <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'Edit'</span><span class="p">,</span>
-            <span class="s1">'method'</span> <span class="o">=&gt;</span> <span class="s1">'GET'</span><span class="p">,</span> <span class="c1">// use GET request only for redirect purposes
-</span>            <span class="s1">'route'</span> <span class="o">=&gt;</span> <span class="s1">'admin.customers.subscribers.edit'</span><span class="p">,</span>
+            <span class="s1">'method'</span> <span class="o">=&gt;</span> <span class="s1">'GET'</span><span class="p">,</span> <span class="c1">//use post only for redirects only
+</span>            <span class="s1">'route'</span> <span class="o">=&gt;</span> <span class="s1">'admin.catalog.attributes.edit'</span><span class="p">,</span>
             <span class="s1">'icon'</span> <span class="o">=&gt;</span> <span class="s1">'icon pencil-lg-icon'</span>
         <span class="p">]);</span>
 
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addAction</span><span class="p">([</span>
             <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'Delete'</span><span class="p">,</span>
-            <span class="s1">'method'</span> <span class="o">=&gt;</span> <span class="s1">'POST'</span><span class="p">,</span> <span class="c1">// use GET request only for redirect purposes
-</span>            <span class="s1">'route'</span> <span class="o">=&gt;</span> <span class="s1">'admin.customers.subscribers.delete'</span><span class="p">,</span>
-            <span class="s1">'confirm_text'</span> <span class="o">=&gt;</span> <span class="nx">trans</span><span class="p">(</span><span class="s1">'ui::app.datagrid.massaction.delete'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'resource'</span> <span class="o">=&gt;</span> <span class="s1">'Exchange Rate'</span><span class="p">]),</span>
+            <span class="s1">'method'</span> <span class="o">=&gt;</span> <span class="s1">'POST'</span><span class="p">,</span> <span class="c1">//use post only for requests other than redirects
+</span>            <span class="s1">'route'</span> <span class="o">=&gt;</span> <span class="s1">'admin.catalog.attributes.delete'</span><span class="p">,</span>
             <span class="s1">'icon'</span> <span class="o">=&gt;</span> <span class="s1">'icon trash-icon'</span>
+        <span class="p">]);</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">prepareMassActions</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addMassAction</span><span class="p">([</span>
+            <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'delete'</span><span class="p">,</span>
+            <span class="s1">'action'</span> <span class="o">=&gt;</span> <span class="nx">route</span><span class="p">(</span><span class="s1">'admin.catalog.attributes.massdelete'</span><span class="p">),</span>
+            <span class="s1">'label'</span> <span class="o">=&gt;</span> <span class="s1">'Delete'</span><span class="p">,</span>
+            <span class="s1">'method'</span> <span class="o">=&gt;</span> <span class="s1">'DELETE'</span>
         <span class="p">]);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div>
+
+<p width="50%" height="50%"><img src="/bagisto-docs/assets/images/Bagisto_Docs_Images/DataGrid/datagrid-pic.png" alt="datagrid" /></p>
+
 <h3 id="global-properties-of-datagrid">Global Properties of DataGrid</h3>
 
 <table>
@@ -399,6 +441,8 @@
     </table>
   </li>
 </ol>
+
+<p><img src="/bagisto-docs/assets/images/Bagisto_Docs_Images/DataGrid/grid-action.png" alt="Add-Action" class="screenshot-dimension center" /></p>
 
 <h3 id="warning"><strong><em>Warning</em></strong></h3>
 

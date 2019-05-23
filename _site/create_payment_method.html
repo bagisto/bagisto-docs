@@ -7,32 +7,7 @@
         <link rel="stylesheet" href="assets/css/syntax.css" />
         <link rel="icon" sizes="16x16" href="assets/images/icons/favicon.ico" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-        <script type="text/javascript">
-            $(function () {
-                $(document).ready(function() {
-                    setNavigation();
-                });
 
-                $('.sub-menu li a').click(function(e) {
-                    location.reload();
-                });
-            });
-
-            function setNavigation() {
-                var path = window.location.href;
-                var urlPath = path.substring(35, 400);
-
-                $(".sub-menu li a").each(function () {
-                    var href = $(this).attr('href');
-
-                    if (urlPath === href) {
-                        console.log(href);
-                        $(this).closest('a').addClass('active');
-                        $(this).closest('.menu-heading').find('.menu-heading-title').css('color','#0031F0');
-                    }
-                });
-            }
-        </script>
     </head>
     <body>
         <div class="container">
@@ -53,7 +28,7 @@
     <ul>
             <!-- Introduction -->
             <li class="menu-heading">
-                <a class="menu-heading-title" href="index.html">Introduction</a>
+                <a class="current" href="index.html">Introduction</a>
                 <ul class="sub-menu">
                     <li>
                         <a href="index.html#requirements">Requirements</a>
@@ -150,9 +125,12 @@
     </ul>
 </div>
 
-
-
-
+<script>
+    $('.sub-menu li a').on('click', function(){
+        $('li a.current').removeClass('current');
+        $(this).addClass('current');
+    });
+</script>
                     </div>
 
                     <div class="right-content">

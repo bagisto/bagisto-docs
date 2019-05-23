@@ -37,7 +37,7 @@ td { padding: 5px; }
 .header { display: flex; flex-direction: row; align-items: center; justify-content: space-between; background-color: #F2F2F2; width: 25%; border-right: 2px solid; border-right-color: rgba(151, 151, 151, 0.5); position: fixed; top: 0; padding: 18px; }
 .header .logo-wrapper { display: flex; flex-direction: row; align-items: center; font-size: 19px; float: right; }
 .header .logo-wrapper .logo { height: 45px; width: 110px; padding-right: 6px; }
-.header .logo-wrapper span { padding-top: 5px; padding-left: 5px; font-size: 17px; border-left: 1px solid black; }
+.header .logo-wrapper span { margin-top: 5px; padding-left: 5px; font-size: 17px; border-left: 1px solid black; }
 .header .logo-wrapper a:hover { text-decoration: none; }
 .header .menu-list ul { margin: 0; padding: 0; display: flex; flex-direction: row; justify-content: flex-start; align-items: center; list-style-type: none; }
 .header .menu-list ul li { font-weight: 600; margin-right: 15px; padding-left: 20px; }
@@ -66,6 +66,6 @@ td { padding: 5px; }
 
 .edit-github { float: right; font-size: 18px; margin-top: -53px; font-family: Montserrat-SemiBold; }
 
-.pencil-icon { width: 20px; height: 16px; float: right; margin-top: -46px; margin-right: 103px; }
+.pencil-icon { width: 20px; height: 16px; float: right; margin-top: -46px; margin-right: 110px; }
 
-.active { color: #0031F0; }
+.current { color: #0031F0; }

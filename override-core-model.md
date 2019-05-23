@@ -18,6 +18,9 @@ Concord's concept also requires to have an interface ***Product*** and this way 
 
 The **registerModel()** method also silently binds the interface to the implementation with Laravel's service container so you can simply type hint the interface at any point where automatic injection happens.
 
+**Note** : *For more details check* ***[Concord](https://github.com/artkonekt/concord)*** *on github or refer to its* ***[Documentation](https://artkonekt.github.io/concord/#/)***
+
+
 Overriding Model class in application:
 
 ```php

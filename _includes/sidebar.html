@@ -11,7 +11,7 @@
     <ul>
             <!-- Introduction -->
             <li class="menu-heading">
-                <a class="menu-heading-title" href="index.html">Introduction</a>
+                <a class="current" href="index.html">Introduction</a>
                 <ul class="sub-menu">
                     <li>
                         <a href="index.html#requirements">Requirements</a>
@@ -108,5 +108,9 @@
     </ul>
 </div>
 
-
-
+<script>
+    $('.sub-menu li a').on('click', function(){
+        $('li a.current').removeClass('current');
+        $(this).addClass('current');
+    });
+</script>

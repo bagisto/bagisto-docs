@@ -541,6 +541,21 @@ return [
 
 ### Creating Models<a id="create_models"></a>
 
+To get started, let's create an Eloquent model. Models typically live in the app directory, but you are free to place them anywhere that can be auto-loaded according to your  composer.json file. All Eloquent models extend Illuminate\Database\Eloquent\Model class.
+
+The easiest way to create a model instance is using the make:model Artisan command:
+
+>`php artisan make:model User`
+
+If you would like to generate a database migration when you generate the model, you may use the --migration or -m option:
+
+>`php artisan make:model User --migration`
+
+>`php artisan make:model User -m`
+
+
+
+
 #### What is Contracts, Repositories and proxies ?<a id="about"></a>
 
 ##### Contracts
@@ -551,10 +566,18 @@ Each contract has a corresponding implementation provided by the framework. For 
 
 All of the Laravel contracts live in their own GitHub repository. This provides a quick reference point for all available contracts, as well as a single, decoupled package that may be utilized by package developers.
 
+**Note** : *For more details check* ***[Laravel Contracts](https://laravel.com/docs/5.8/contracts)***
+
 ##### Repositories
+
+Generally, we wrote all of our application logic in the controller. There’s an alternative approach of development that abstracts some calls into PHP classes called Repositories. The idea is that we can decouple models from controllers and assign readable names to complicated queries
+
+This file defines our Repository class. Instances of this class have a model property that we tie to an Eloquent model. Once this is bound in the constructor we can call Eloquent methods like findOrFail, update or all from the class methods.
 
 
 ##### Proxies
+
+Proxies as their name state, will drive you to the actual model class. The concept of model proxies has been introduced. because to override the main functionality of existing Model. It is a type of model inheritance without creating a new table in Database.
 
 
 ##### Store data through Repository <a id="store-data-through-repository"></a>

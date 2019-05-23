@@ -162,7 +162,7 @@ td {
         }
 
         span {
-            padding-top: 5px;
+            margin-top: 5px;
             padding-left: 5px;
             font-size: 17px;
             border-left: 1px solid black;
@@ -313,9 +313,10 @@ td {
     height: 16px;
     float: right;
     margin-top: -46px;
-    margin-right: 103px;
+    margin-right: 110px;
 }
 
-.active {
+.current {
     color: $brand-color;
 }
+

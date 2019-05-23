@@ -13,28 +13,17 @@ layout: default
 DataGrid is just a concept of displaying your database records in tabular format. We have implemented this system in bagisto either you can use it to display data in tabular format or write code from scratch to display data in tabular format. In addition to datagrid, we have implemented additional features such as - sorting, filter, massAction . You may refer to below table for detail information about the features.
 
 ```php
-<?php
-
-namespace Webkul\Admin\DataGrids;
-
-use Webkul\Ui\DataGrid\DataGrid;
-use DB;
-
-/**
- * NewsLetterDataGrid Class
- *
- * @author Prashant Singh <prashant.singh852@webkul.com> @prashant-webkul
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
- */
-class NewsLetterDataGrid extends DataGrid
+class AttributeDataGrid extends DataGrid
 {
-    protected $index = 'id';
+    protected $index = 'id'; //the column that needs to be treated as index column
 
     protected $sortOrder = 'desc'; //asc or desc
 
     public function prepareQueryBuilder()
     {
-        $queryBuilder = DB::table('subscribers_list')->addSelect('id', 'is_subscribed', 'email');
+        $queryBuilder = DB::table('attributes')
+                ->select('id')
+                ->addSelect('id', 'code', 'admin_name', 'type', 'is_required', 'is_unique', 'value_per_locale', 'value_per_channel');
 
         $this->setQueryBuilder($queryBuilder);
     }
@@ -51,14 +40,40 @@ class NewsLetterDataGrid extends DataGrid
         ]);
 
         $this->addColumn([
-            'index' => 'is_subscribed',
-            'label' => trans('admin::app.datagrid.subscribed'),
+            'index' => 'code',
+            'label' => trans('admin::app.datagrid.code'),
             'type' => 'string',
-            'searchable' => false,
+            'searchable' => true,
             'sortable' => true,
-            'filterable' => true,
+            'filterable' => true
+        ]);
+
+        $this->addColumn([
+            'index' => 'admin_name',
+            'label' => trans('admin::app.datagrid.admin-name'),
+            'type' => 'string',
+            'searchable' => true,
+            'sortable' => true,
+            'filterable' => true
+        ]);
+
+        $this->addColumn([
+            'index' => 'type',
+            'label' => trans('admin::app.datagrid.type'),
+            'type' => 'string',
+            'sortable' => true,
+            'searchable' => true,
+            'filterable' => true
+        ]);
+
+        $this->addColumn([
+            'index' => 'is_required',
+            'label' => trans('admin::app.datagrid.required'),
+            'type' => 'boolean',
+            'sortable' => true,
+            'searchable' => false,
             'wrapper' => function($value) {
-                if ($value->is_subscribed == 1)
+                if ($value->is_required == 1)
                     return 'True';
                 else
                     return 'False';
@@ -66,33 +81,84 @@ class NewsLetterDataGrid extends DataGrid
         ]);
 
         $this->addColumn([
-            'index' => 'email',
-            'label' => trans('admin::app.datagrid.email'),
-            'type' => 'string',
-            'searchable' => true,
+            'index' => 'is_unique',
+            'label' => trans('admin::app.datagrid.unique'),
+            'type' => 'boolean',
             'sortable' => true,
-            'filterable' => true
+            'searchable' => false,
+            'filterable' => true,
+            'wrapper' => function($value) {
+                if ($value->is_unique == 1)
+                    return 'True';
+                else
+                    return 'False';
+            }
+        ]);
+
+        $this->addColumn([
+            'index' => 'value_per_locale',
+            'label' => trans('admin::app.datagrid.per-locale'),
+            'type' => 'boolean',
+            'sortable' => true,
+            'searchable' => false,
+            'filterable' => true,
+            'wrapper' => function($value) {
+                if ($value->value_per_locale == 1)
+                    return 'True';
+                else
+                    return 'False';
+            }
+        ]);
+
+        $this->addColumn([
+            'index' => 'value_per_channel',
+            'label' => trans('admin::app.datagrid.per-channel'),
+            'type' => 'boolean',
+            'sortable' => true,
+            'searchable' => false,
+            'filterable' => true,
+            'wrapper' => function($value) {
+                if ($value->value_per_channel == 1)
+                    return 'True';
+                else
+                    return 'False';
+            }
         ]);
     }
 
-    public function prepareActions() {
+    public function prepareActions()
+    {
         $this->addAction([
             'type' => 'Edit',
-            'method' => 'GET', // use GET request only for redirect purposes
-            'route' => 'admin.customers.subscribers.edit',
+            'method' => 'GET', //use post only for redirects only
+            'route' => 'admin.catalog.attributes.edit',
             'icon' => 'icon pencil-lg-icon'
         ]);
 
         $this->addAction([
             'type' => 'Delete',
-            'method' => 'POST', // use GET request only for redirect purposes
-            'route' => 'admin.customers.subscribers.delete',
-            'confirm_text' => trans('ui::app.datagrid.massaction.delete', ['resource' => 'Exchange Rate']),
+            'method' => 'POST', //use post only for requests other than redirects
+            'route' => 'admin.catalog.attributes.delete',
             'icon' => 'icon trash-icon'
+        ]);
+    }
+
+    public function prepareMassActions()
+    {
+        $this->addMassAction([
+            'type' => 'delete',
+            'action' => route('admin.catalog.attributes.massdelete'),
+            'label' => 'Delete',
+            'method' => 'DELETE'
         ]);
     }
 }
 ```
+
+![datagrid](assets/images/Bagisto_Docs_Images/DataGrid/datagrid-pic.png)
+{: width="50%" height="50%"}
+
+
 ### Global Properties of DataGrid
 
 |  Name                     | functionality |
@@ -149,6 +215,8 @@ class NewsLetterDataGrid extends DataGrid
 |    confirm_text  | A confirm box is open on clicking action icon  if you want the user to verify or accept something. you can include message here |
 |  label  | the text to be displayed in written here, you may use translation also here  |
 
+
+![Add-Action](assets/images/Bagisto_Docs_Images/DataGrid/grid-action.png){: .screenshot-dimension .center}
 
 ### ***Warning***
 
