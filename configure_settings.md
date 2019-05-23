@@ -5,9 +5,9 @@ layout: default
 
 ## How to Configure Settings
 
-### Add Currency<a id="add-currency"></a><span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg"/> <a href="https://github.com/bagisto/bagisto-docs">Edit On github</a></span>
+### Add Currency<a id="add-currency"></a><span class="edit-github"><img src="/assets/images/icons/Icon-Pencil-Large.svg"/> <a href="https://github.com/bagisto/bagisto-docs">Edit On github</a></span>
 
-Before launching ecommerce store, it has been crucial decision to decide the currency to be used all over store. And, for providing ease to store owner to perform trade in multiple countries with their currency format
+Before publishing the ecommerce store, it's very crucial to decide the currency to be used all over store. Also for the store owner to perform trade in multiple countries with their desired currency format. 
 
  > In admin panel, Click on Setting >> Currencies >> Add Currency
 
@@ -35,14 +35,14 @@ Once the channel setting has been done click on Save Channel
 
 #### Front End:-
 
-At the Top of the front end, there is an option of Currency so you can select your currency.
+At the top of the front end, there is an option of currency so you can select your currency.
 
 
 
 
 ### Add Language<a id="add-language"></a>
 
-Lang file creation demonstration
+Language file creation demonstration
 
 
 ### Add Locale<a id="add-locale"></a>
@@ -73,5 +73,4 @@ Below, their are some steps that should be followed in accordance to create and 
 
 
 ### Add Channel<a id="add-channel"></a>
-
 

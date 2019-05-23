@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>Bagisto Introduction</title>
         <link rel="stylesheet" href="assets/scss/layout.css" />
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="/assets/css/syntax.css" />
         <link rel="icon" sizes="16x16" href="assets/icons/favicon.ico" />
     </head>
     <body>
@@ -12,9 +12,10 @@
             <div class="content-wrapper">
                 <header class="header">
     <div class="logo-wrapper">
-        <a href="/docs/"><img class="logo" src="assets/images/logo.png" />
-            <span>Docs</span>
+        <a href="/">
+            <img class="logo" src="assets/images/logo.png" />
         </a>
+        <span>Docs</span>
     </div>
 
     <nav class="menu-list">
@@ -33,8 +34,6 @@
                     <div class="side-menu">
                         <div class="sidebar">
     <ul>
-        <!-- Introduction -->
-
         <li class="menu-heading">
             <a href="index.html">Introduction</a>
 
@@ -56,10 +55,8 @@
         </li>
 
         <!-- Module Development -->
-
         <li class="menu-heading">
             <a href="create_module.html">Package development</a>
-
             <div class="horizontal-rule"></div>
 
             <ul class="sub-menu">
@@ -102,7 +99,6 @@
 
         <li class="menu-heading">
             <a href="override-core-model.html">Advance topics</a>
-
             <div class="horizontal-rule"></div>
 
             <ul class="sub-menu">
@@ -145,7 +141,7 @@
                     </div>
 
                     <div class="right-content">
-                        <h1 id="what-is-contracts-repositories-and-proxies--edit-on-github">What is Contracts, Repositories and proxies ?<a id="#detail"></a><span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px" /> <a class="nav-link" href="https://github.com/bagisto/bagisto-docs">Edit On github</a></span></h1>
+                        <h1 id="what-is-contracts-repositories-and-proxies--edit-on-github">What is Contracts, Repositories and proxies ?<a id="#detail"></a><span class="edit-github"><img src="/assets/images/icons/Icon-Pencil-Large.svg" width="19px" height="13px" /> <a class="nav-link" href="https://github.com/bagisto/bagisto-docs">Edit On github</a></span></h1>
 
 <h2 id="contracts">Contracts</h2>
 
@@ -175,23 +171,14 @@
   <li>Now, at the same location create a model proxy file as ‘HelloWorldProxy.php’. This Proxy class will extends  ModelProxy. Also, you have to add “use Konekt\Concord\Proxies\ModelProxy; “ like below stated</li>
 </ul>
 
-<blockquote>
-  <p>&lt;?php</p>
-</blockquote>
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">namespace</span> <span class="nx">Acme\HelloWorld\Models</span><span class="p">;</span>
 
-<blockquote>
-  <p>namespace Acme\HelloWorld\Models;</p>
-</blockquote>
+<span class="k">use</span> <span class="nx">Konekt\Concord\Proxies\ModelProxy</span><span class="p">;</span>
 
-<blockquote>
-  <p>use Konekt\Concord\Proxies\ModelProxy;</p>
-</blockquote>
-
-<blockquote>
-  <p>class DataFlowProfileProxy extends ModelProxy
-{
-}</p>
-</blockquote>
+<span class="k">class</span> <span class="nc">DataFlowProfileProxy</span> <span class="k">extends</span> <span class="nx">ModelProxy</span>
+<span class="p">{</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <ul>
   <li>

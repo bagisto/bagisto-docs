@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>Override Core Model-Bagisto</title>
         <link rel="stylesheet" href="assets/scss/layout.css" />
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="/assets/css/syntax.css" />
         <link rel="icon" sizes="16x16" href="assets/icons/favicon.ico" />
     </head>
     <body>
@@ -12,9 +12,10 @@
             <div class="content-wrapper">
                 <header class="header">
     <div class="logo-wrapper">
-        <a href="/docs/"><img class="logo" src="assets/images/logo.png" />
-            <span>Docs</span>
+        <a href="/">
+            <img class="logo" src="assets/images/logo.png" />
         </a>
+        <span>Docs</span>
     </div>
 
     <nav class="menu-list">
@@ -33,8 +34,6 @@
                     <div class="side-menu">
                         <div class="sidebar">
     <ul>
-        <!-- Introduction -->
-
         <li class="menu-heading">
             <a href="index.html">Introduction</a>
 
@@ -56,10 +55,8 @@
         </li>
 
         <!-- Module Development -->
-
         <li class="menu-heading">
             <a href="create_module.html">Package development</a>
-
             <div class="horizontal-rule"></div>
 
             <ul class="sub-menu">
@@ -102,7 +99,6 @@
 
         <li class="menu-heading">
             <a href="override-core-model.html">Advance topics</a>
-
             <div class="horizontal-rule"></div>
 
             <ul class="sub-menu">
@@ -145,7 +141,7 @@
                     </div>
 
                     <div class="right-content">
-                        <h1 id="override-core-model-edit-on-github">Override core model<span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg" /> <a href="https://github.com/bagisto/bagisto-docs/blob/master/override-core-model.md">edit on github</a></span></h1>
+                        <h1 id="override-core-model-edit-on-github">Override core model<span class="edit-github"><img src="/assets/images/icons/Icon-Pencil-Large.svg" /> <a href="https://github.com/bagisto/bagisto-docs/blob/master/override-core-model.md">edit on github</a></span></h1>
 
 <p>Concord is a Laravel Extension that serves as a foundation to build modules for Laravel Applications on top of Laravel’s built in Service Providers. Bagisto uses Concord for managing their modules. The concept of model proxies has been introduced. Proxies as their name state, will drive you to the actual model class.</p>
 
