@@ -17,7 +17,7 @@ Click on Setting >> open the selected channel in Edit Mode
 
 * Currency:- You can select or multi-select currency as per your choice.
 
-* Base Currency:- You have to set your Base currency that will be applicable throughout your eCommerce ecosystem as the default currency.
+* Base Currency:- You have to set your Base currency that will be applicable throughout your e-commerce ecosystem as the default currency.
 
 Once the channel setting has been done click on Save Channel
 
