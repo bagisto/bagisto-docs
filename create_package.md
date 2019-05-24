@@ -4,8 +4,8 @@ layout: default
 ---
 
 # Package<span class="edit-github">
-![edit on github](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
-[edit on github](https://github.com/bagisto/bagisto-docs/blob/master/create_module.md){:.edit-github  target="_blank"}
+![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
+[edit on github](https://github.com/bagisto/bagisto-docs/blob/master/create_package.md){:.edit-github  target="_blank"}
 
 A package is like Laravel packages that includes views, controller and models. Packages are  created to manage your large laravel applications into smaller units. In the bagisto, we have created plenty of packages at path `packages/Webkul/`.
 

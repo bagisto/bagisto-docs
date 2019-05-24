@@ -6,7 +6,7 @@ layout: default
 # View Render Event
 
 
-![edit on github](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
+![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/render_event.md){:.edit-github  target="_blank"}
 
 
