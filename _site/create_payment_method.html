@@ -143,9 +143,9 @@
 <p><img src="/bagisto-docs/assets/images/icons/Icon-Pencil-Large.svg" alt="edit on github" class="pencil-icon" />
 <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_payment_method.md" class="edit-github" target="_blank">edit on github</a></p>
 
-<p>I hope that you know how to create package, if not(refer ( <a href="create_module.md">Package development</a>), and I will skip package development step</p>
+<p>I hope that you know how to create package, if not(refer <a href="/bagisto-docs/create_package.html">Package development</a>), and I will skip package development step</p>
 
-<p>Bagisto ease the task of payment method creation so novice to professional developers can easily create payment methods. As diversity payment method provide the options for customer when they proceed to checkout. On another perspective, multiple payment methods  is a great strategy to reach out the global marketplace.</p>
+<p>Bagisto ease the task of creation of payment method so novice to professional developers can easily create payment methods. As diversity of payment methods provide the options to customer for pay when they proceed to checkout. On another perspective, multiple payment methods  is a great strategy to reach out the global marketplace.</p>
 
 <p>In this article, we will understand how to create payment method by own with just following below steps:</p>
 
@@ -153,25 +153,20 @@
 
 <ul>
   <li>
-    <p>Following the module development process, firstly, you must create ‘Config’, ‘Database’
-‘Resources’, ‘Providers’, ‘Models’, ‘Payment’, ‘Repositories’, ‘Http’, ‘Listeners’ folders under src folder of your company’s namespace.</p>
+    <p>Following the module development process, firstly, you must create ‘<strong>Config</strong>’,’<strong>Database</strong>’, <strong>Resources</strong>, ‘<strong>Providers</strong>’, ‘<strong>Models</strong>’, ‘<strong>Payment</strong>’, ‘<strong>Repositories</strong>’, ‘<strong>Http</strong>’, <strong>Listeners</strong> folders under src folder of your company’s namespace.</p>
   </li>
   <li>
-    <p>Within Config folder, contains all of your application’s configuration files. Let’s just create two files as ‘system.php’ and ‘paymentmethod.php’</p>
+    <p>Within <strong>Config</strong> folder, contains all of your application’s configuration files. Let’s just create two files as <em>system.php</em> and <em>paymentmethod.php</em></p>
 
-    <ol>
+    <p><strong>system.php</strong></p>
+
+    <ul>
       <li>
-        <p>system.php</p>
+        <p>Inside the file, you can include the below code as shown in image</p>
 
-        <ul>
-          <li>
-            <p>Inside the file, you can include the below code as shown in image</p>
-
-            <p><img src="/bagisto-docs/assets/images/Bagisto_Docs_Images/payment-config-1.png" alt="Bagisto Root Directory" class="screenshot-dimension center" /></p>
-          </li>
-        </ul>
+        <p><img src="/bagisto-docs/assets/images/Bagisto_Docs_Images/payment-config-1.png" alt="system-configuration" class="screenshot-dimension center" /></p>
       </li>
-    </ol>
+    </ul>
   </li>
 </ul>
 
@@ -179,7 +174,7 @@
 
 <ul>
   <li>
-    <p><strong>key</strong> : these values provided are unique and nested with ‘.’ (dot) operator. After creation of two nested, other keys written are display in browser in form of accordian {figure needed}</p>
+    <p><strong>key</strong> : these values provided are unique and concatenated with ‘.’ (dot) operator. After creation of two nested, other keys written are display in browser in form of accordian</p>
   </li>
   <li>
     <p><strong>name</strong> : these keys accept the value as placeholder of your configuration. Generally, in bagisto, we consider writing it using translation.</p>
@@ -190,11 +185,9 @@
   <li>
     <p><strong>fields</strong> : these key accepts the array for the value of custom configuration.</p>
 
-    <ol>
-      <li>paymentmethod.php</li>
-    </ol>
+    <p><strong>paymentmethod.php</strong></p>
 
-    <p><img src="/bagisto-docs/assets/images/Bagisto_Docs_Images/payment-config-2.png" alt="Bagisto Root Directory" class="screenshot-dimension center" /></p>
+    <p><img src="/bagisto-docs/assets/images/Bagisto_Docs_Images/payment-config-2.png" alt="payment-method-configuration" class="screenshot-dimension center" /></p>
   </li>
 </ul>
 
@@ -220,39 +213,39 @@
     <p><strong>active</strong> : this field accepts true/false to enable or disbale module.</p>
   </li>
   <li>
-    <p>Within Database folder, the migration’s and seeder(if needed) files are stored.</p>
+    <p>Within <strong>Database</strong> folder, the migration and seeder(if needed) files are stored.</p>
   </li>
   <li>
-    <p>Within Resources folder, contains your views as well as your raw, un-compiled assets such as  SASS, or JavaScript. This directory also houses all of your language files.</p>
+    <p>Within <strong>Resources</strong> folder, contains your views as well as your raw, un-compiled assets such as  SASS, or JavaScript. This directory also houses all of your language files.</p>
   </li>
   <li>
-    <p>Within Providers folder, contains all of the service providers for your application. Service providers bootstrap your application by binding services in the service container, registering events, or performing any other tasks to prepare your application for incoming requests.</p>
+    <p>Within <strong>Providers</strong> folder, contains all of the service providers for your application. Service providers bootstrap your application by binding services in the service container, registering events, or performing any other tasks to prepare your application for incoming requests.</p>
 
     <p>Here, in our case we have created two providers files i.e.,</p>
 
     <ol>
       <li>
-        <p>EventServiceProvider : In this file, events included with your application provides a convenient place to register all of your application’s event listeners.</p>
+        <p><strong><em>EventServiceProvider</em></strong> : In this file, events included with your application provides a convenient place to register all of your application’s event listeners.</p>
       </li>
       <li>
-        <p>PaymentServiceProvider : In this file, you may register all your configuration, language and routes within register and boot methods.</p>
+        <p><strong><em>PaymentServiceProvider</em></strong> : In this file, you may register all your configuration, language and routes within register and boot methods.</p>
       </li>
     </ol>
   </li>
   <li>
-    <p>Within Models folder, the models are stored for the application.</p>
+    <p>Within <strong>Models</strong> folder, the models are stored for the application.</p>
   </li>
   <li>
-    <p>Within Payment folder, write the code needed to operate your payment method</p>
+    <p>Within <strong>Payment</strong> folder, write the code needed to operate your payment method</p>
   </li>
   <li>
-    <p>Within Repositories folder, create a file as ‘HelloWorldRepository.php’ which must extends   repository class</p>
+    <p>Within <strong>Repositories</strong> folder, create a file as <em>HelloWorldRepository.php</em> which must extends   repository class</p>
   </li>
   <li>
-    <p>Within Http folder, define your routes and controller application.</p>
+    <p>Within <strong>Http</strong> folder, define your routes and controller application.</p>
   </li>
   <li>
-    <p>Within Listeners folder, this folder incudes listender files to listen respective events.</p>
+    <p>Within <strong>Listeners</strong> folder, this folder includes listener files to listen respective events.</p>
   </li>
 </ul>
 

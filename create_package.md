@@ -78,7 +78,7 @@ e.g., here namespace is specified as ACME
     ],
     ```
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/provider-registration.png){: .screenshot-dimension .center}
+![provider-registration](assets/images/Bagisto_Docs_Images/PackageDevelopment/provider-registration.png){: .screenshot-dimension .center}
 
 ##### Step-5
 
@@ -89,7 +89,7 @@ e.g., here namespace is specified as ACME
         "ACME\\HelloWorld\\": "packages/ACME/HelloWorld"
     }
     ```
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/psr4-registration.png){: .screenshot-dimension .center}
+![psr4](assets/images/Bagisto_Docs_Images/PackageDevelopment/psr4-registration.png){: .screenshot-dimension .center}
 
 ##### Step-6
 
@@ -106,7 +106,7 @@ e.g., here namespace is specified as ACME
     }
     ```
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/register-route.png){: .screenshot-dimension .center}
+![register-route](assets/images/Bagisto_Docs_Images/PackageDevelopment/register-route.png){: .screenshot-dimension .center}
 
 
 To load routes, you can also use ‘loadRoutesFrom’ method.
@@ -124,7 +124,7 @@ public function boot()
 }
 ```
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/view-register.png){: .screenshot-dimension .center}
+![view-register](assets/images/Bagisto_Docs_Images/PackageDevelopment/view-register.png){: .screenshot-dimension .center}
 
 ##### Step-7
 
@@ -138,11 +138,11 @@ Go to ACME->src->Http->routes.php file and create a route to render view
     Route::view('/hello-world', 'helloworld::helloworld.helloworld');
 ```
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/view-route-creation.png){: .screenshot-dimension .center}
+![view-route-creation](assets/images/Bagisto_Docs_Images/PackageDevelopment/view-route-creation.png){: .screenshot-dimension .center}
 
 Now, you can append ‘hello-world’ to your local path in the browser's url to see the output.
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/helloworld-browser-output.png){: .screenshot-dimension .center}
+![helloworld-browser-output](assets/images/Bagisto_Docs_Images/PackageDevelopment/helloworld-browser-output.png){: .screenshot-dimension .center}
 
 
 ##### Step-8
@@ -176,7 +176,7 @@ return [
 
 Add {{ __(‘helloworld::app.hello-world.name’) }} to your application’s view & it will automatically translate it.
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/translation-output.png){: .screenshot-dimension .center}
+![translation-output](assets/images/Bagisto_Docs_Images/PackageDevelopment/translation-output.png){: .screenshot-dimension .center}
 
 ##### Step-9
 
@@ -207,7 +207,7 @@ Create a ‘Resources’ folder inside the ‘src’ folder. Inside ‘Resources
 }
 ```
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/package-json.png){: .screenshot-dimension .center}
+![package-json](assets/images/Bagisto_Docs_Images/PackageDevelopment/package-json.png){: .screenshot-dimension .center}
 
 
  webpack.mix.js will consist
@@ -249,7 +249,7 @@ mix.js(__dirname + "/src/Resources/assets/js/app.js", "js/helloworld.js")
     .copyDirectory( __dirname + '/src/Resources/assets/images', publicPath + '/images')
 ```
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/webpack-mix.png){: .screenshot-dimension .center}
+![webpack-mix](assets/images/Bagisto_Docs_Images/PackageDevelopment/webpack-mix.png){: .screenshot-dimension .center}
 
 
 Once again, we need to run ‘npm run watch’ to compile assets.
@@ -262,7 +262,7 @@ After doing this we need to add an event listener so that admin layouts include 
 ( In style.blade.php)
 ```
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/style-blade.png){: .screenshot-dimension .center}
+![style-blade](assets/images/Bagisto_Docs_Images/PackageDevelopment/style-blade.png){: .screenshot-dimension .center}
 
 
 
@@ -277,12 +277,12 @@ public function boot()
 }
 ```
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/provider-all.png){: .screenshot-dimension .center}
+![provider](assets/images/Bagisto_Docs_Images/PackageDevelopment/provider-all.png){: .screenshot-dimension .center}
 
 
 Now we need to extend admin::layouts.master as @extends(‘admin::layouts.master’) to packages/acme/HelloWorld/src/Resources & we can write CSS for our packages. If you don’t want to include this one then you need to create your own master file which includes your packages CSS & js.
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/layout-content.png){: .screenshot-dimension .center}
+![layout-content](assets/images/Bagisto_Docs_Images/PackageDevelopment/layout-content.png){: .screenshot-dimension .center}
 
 
 ##### Step-10
@@ -300,7 +300,7 @@ public function boot()
 }
 ```
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/merge-config-for-menu.png){: .screenshot-dimension .center}
+![merge-config-for-menu](assets/images/Bagisto_Docs_Images/PackageDevelopment/merge-config-for-menu.png){: .screenshot-dimension .center}
 
 ### How to create Migrations ?<a id="create-migrations"></a>
 
@@ -341,7 +341,7 @@ return [
 ];
 ```
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/menu-file-route.png){: .screenshot-dimension .center}
+![menu-file-route](assets/images/Bagisto_Docs_Images/PackageDevelopment/menu-file-route.png){: .screenshot-dimension .center}
 
 
 
@@ -351,9 +351,9 @@ Now for route stated in `menu.php`, we need to create a controller to display vi
 
 So inside Controllers we will create HelloWorldController.php and controller.php as:
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/home-controller.png){: .screenshot-dimension .center}
+![home-controller](assets/images/Bagisto_Docs_Images/PackageDevelopment/home-controller.png){: .screenshot-dimension .center}
 
-``` php
+```php
 <?php
 
 namespace ACME\HelloWorld\Http\Controllers;
@@ -371,29 +371,24 @@ class Controller extends BaseController
 
 
 ```php
+
 class HelloWorldController extends Controller
 {
     protected $_config;
 
-        ``` php
-        class HelloWorldController extends Controller
-        {
-            protected $_config;
+/**
+* Display a listing of the resource.
+*
+* @return \Illuminate\Http\Response
+*/
 
-    /**
-    * Display a listing of the resource.
-    *
-    * @return \Illuminate\Http\Response
-    */
-
-    public function index()
-    {
-        return view($this->_config['view']);
-    }
+public function index()
+{
+    return view($this->_config['view']);
 }
 ```
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/HelloWorldcontroller.png){: .screenshot-dimension .center}
+![HelloWorldcontroller](assets/images/Bagisto_Docs_Images/PackageDevelopment/HelloWorldcontroller.png){: .screenshot-dimension .center}
 
 
 For the route we will create a named route as
@@ -414,11 +409,11 @@ public function register()
 }
 ```
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/merge-config-for-menu.png){: .screenshot-dimension .center}
+![merge-config-for-menu](assets/images/Bagisto_Docs_Images/PackageDevelopment/merge-config-for-menu.png){: .screenshot-dimension .center}
 
 And, now we need to add `@extends('admin::layouts.master')` to our view files to extend the bagisto default layout
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/PackageDevelopment/hello-world-icon.png){: .screenshot-dimension .center}
+![hello-world-icon](assets/images/Bagisto_Docs_Images/PackageDevelopment/hello-world-icon.png){: .screenshot-dimension .center}
 
 Now, this menu will comes in admin login. You can change icon accordingly your need.By clicking, upon icon it will open the view file provided in `Route` facade
 
@@ -583,9 +578,9 @@ Proxies as their name state, will drive you to the actual model class. The conce
 
  Steps to store data through repository :
 
-* Beginning with the creation of models, generally models are created using command stated below. The model is created on specified path/location.
+* Beginning with the creation of models, generally models are created using command stated below.
 
->php artisan make:model HelloWorld --path=""
+>php artisan make:model HelloWorld
 
 * Now, at the same location create a model proxy file as 'HelloWorldProxy.php'. This Proxy class will extends  ModelProxy. Also, you have to add "use Konekt\Concord\Proxies\ModelProxy; " like below stated
 
@@ -602,7 +597,7 @@ class DataFlowProfileProxy extends ModelProxy
 }
 ```
 
-* Now ,make a Folder named as Contracts and inside it create a interface file named as HelloWorld.php
+* Now ,make a folder named as Contracts and inside it create a interface file named as HelloWorld.php
 
 * Now, make a repository folder and inside it create a file 'HelloWorldRepository.php' and
 write the model method for repository class and under the method return path of your contract class.

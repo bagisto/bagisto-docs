@@ -9,13 +9,13 @@ layout: default
 ![edit on github](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/create_shipping_method.md){:.edit-github  target="_blank"}
 
-I hope that you know how to create package, if not(refer ( [Package development](create_module.md)), and I will skip package development step
+I hope that you know how to create package, if not(refer [Package development](create_package.md)), and I will skip package development step
 
 ### Steps to create shipping methods
 
 * User need to create a file named as `carriers.php` at `src/config` path in the package. Here, we are going to specify what to include in your `carriers.php` file.
 
-    ``` php
+    ```php
     <?php
 
     return [

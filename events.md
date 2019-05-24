@@ -8,7 +8,9 @@ layout: default
 ![edit on github](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/events.md){:.edit-github  target="_blank"}
 
-Events provide a simple observer implementation which allows a user to subscribe and listen to various events triggered in the web application. All the event classes in Bagisto are stored in the **Providers** folder and the listeners are stored in the **Listeners** folder.
+
+Events are an implementation of observer pattern such that whenever an event takes place, then the one or more listener associated with that event responds. It can be imagine like something making an announcement to your application, and then actions being taken due to that announcement. All the event classes in Bagisto are stored in the **Providers** folder and the listeners are stored in the **Listeners** folder.
+
 
 ### Manually Registering Events
 
@@ -29,7 +31,7 @@ public function boot()
 ```
 
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/Events/define-event.png){:  .screenshot-dimension .center}
+![Event](assets/images/Bagisto_Docs_Images/Events/define-event.png){:  .screenshot-dimension .center}
 
 
 #### Manually Registering Listeners
@@ -42,11 +44,11 @@ As we see above, in registering events we specify listener function to be execut
 In most of **CRUD** operation. We had fired an event before and after the execution of function. So, that if some one want to perform any operation after or before product create/update/delete can perform by simply calling a listener function in event registration
 
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/Events/create-event-before-after.png){:  .screenshot-dimension .center}
+![create-event](assets/images/Bagisto_Docs_Images/Events/create-event-before-after.png){:  .screenshot-dimension .center}
 
 
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/Events/delete-event-before-after.png){:  .screenshot-dimension .center}
+![delete-event](assets/images/Bagisto_Docs_Images/Events/delete-event-before-after.png){:  .screenshot-dimension .center}
 
 
 
@@ -227,19 +229,7 @@ class EventServiceProvider extends ServiceProvider
 }
 ```
 
-![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/Events/define-event.png){:  .screenshot-dimension .center}
-
-
-
-
-
-
-
-
-
-
-
-
+![event-listen](assets/images/Bagisto_Docs_Images/Events/define-event.png){:  .screenshot-dimension .center}
 
 
 

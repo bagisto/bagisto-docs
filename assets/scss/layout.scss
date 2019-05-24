@@ -233,7 +233,7 @@ td {
 
             ul li {
                 list-style-type: none;
-                padding: 3.25px;
+                padding: 4.7px;
             }
         }
     }
@@ -242,6 +242,9 @@ td {
         width: 100%;
         padding-left: 340px;
 
+        p:first-child a {
+            border: 1px solid red;
+        }
 
         span {
             overflow-x: auto;
@@ -331,4 +334,11 @@ td {
 
 li ul {
     padding-left: 20px !important;
+}
+
+.along {
+    border: 1px solid red;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
 }

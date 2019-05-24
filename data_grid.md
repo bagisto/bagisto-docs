@@ -8,8 +8,6 @@ layout: default
 ![edit on github](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/data_grid.md){:.edit-github  target="_blank"}
 
-
-
 DataGrid is just a concept of displaying your database records in tabular format. We have implemented this system in bagisto either you can use it to display data in tabular format or write code from scratch to display data in tabular format. In addition to datagrid, we have implemented additional features such as - sorting, filter, massAction . You may refer to below table for detail information about the features.
 
 ```php
@@ -155,8 +153,7 @@ class AttributeDataGrid extends DataGrid
 }
 ```
 
-![datagrid](assets/images/Bagisto_Docs_Images/DataGrid/datagrid-pic.png)
-{: width="50%" height="50%"}
+![datagrid](assets/images/Bagisto_Docs_Images/DataGrid/datagrid-pic.png){: .screenshot-dimension .center}
 
 
 ### Global Properties of DataGrid
@@ -216,7 +213,7 @@ class AttributeDataGrid extends DataGrid
 |  label  | the text to be displayed in written here, you may use translation also here  |
 
 
-![Add-Action](assets/images/Bagisto_Docs_Images/DataGrid/grid-action.png){: .screenshot-dimension .center}
+![add-action](assets/images/Bagisto_Docs_Images/DataGrid/grid-action.png){: .screenshot-dimension .center}
 
 ### ***Warning***
 

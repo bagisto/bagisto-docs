@@ -3,7 +3,7 @@ title: View render event-Bagisto
 layout: default
 ---
 
-# View Render Event( X )
+# View Render Event
 
 
 ![edit on github](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
@@ -19,8 +19,9 @@ To render any template before or after any function we may use view_rener_event
 
 1. Create the page you want to render on view
 
-2.
+2. and just use the name of event with function view_render_event
 
+3. This will automatically fire and the page will be included
 
 As , it is fired before and after the event so, this event helps to inject anything before after the load of page
 
