@@ -1,22 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-<loc>http://localhost:4000/bagisto-docs/configure_settings.html</loc>
-</url>
-<url>
-<loc>http://localhost:4000/bagisto-docs/create_migration.html</loc>
-</url>
-<url>
-<loc>http://localhost:4000/bagisto-docs/create_models.html</loc>
-</url>
-<url>
 <loc>http://localhost:4000/bagisto-docs/create_package.html</loc>
 </url>
 <url>
 <loc>http://localhost:4000/bagisto-docs/create_payment_method.html</loc>
-</url>
-<url>
-<loc>http://localhost:4000/bagisto-docs/create_product.html</loc>
 </url>
 <url>
 <loc>http://localhost:4000/bagisto-docs/create_shipping_method.html</loc>
