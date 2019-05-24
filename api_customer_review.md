@@ -3,20 +3,22 @@ title: Customer's Reviews Requests | Bagisto Web APIs Documentation
 layout: default
 ---
 
-# How To Create Requests For Customer's Reviews <span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px"/> <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_module.md">Edit On github</a></span>
+# How To Requests For Customer's Reviews
+![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
+[edit on github](https://github.com/bagisto/bagisto-docs/blob/master/api_customer_review.md){:class="edit-github" target="_blank"}
 
-## 1. Get All Reviews Of Specific Customer:
-To get all the reviews of a specific customer, you have to pass a **`customer_id`** as a query parameter like **`reviews?customer={id}`** in API url. To use this API call customer's authentication is not required.
+## 1. Get All Reviews Of Specific Customer: <a id="get-reviews-of-customer"></a>
+To get all the reviews of a specific customer, you have to pass a **`customer_id`** as a query parameter like **`reviews?customer={id}`** in API url. To use this API call customer authentication is not required.
 
 > *http(s)://example.com/public/api/reviews?customer_id={id}*
 
 **Note: In the `reviews?customer_id={id}` resource API call, we used `GET HTTP verb` to get all the reviews of a customer.**
 
-### Request:
+##### Request:
 
 > *http(s)://example.com/public/api/reviews?customer_id=6*
 
-### Response:
+##### Response:
     {
         "data": [
             {
@@ -44,14 +46,13 @@ To get all the reviews of a specific customer, you have to pass a **`customer_id
         "meta": {...}
     }
 
-<a href="assets/images/Bagisto_Api/bagisto_reviews_cust_id.jpg" target="_blank">
-![Bagisto Root Directory](assets/images/Bagisto_Api/bagisto_reviews_cust_id.jpg){: height="50%" width="50%" .center}
-</a>
+![bagisto_reviews_cust_id](assets/images/Bagisto_Api/bagisto_reviews_cust_id.jpg){:class="screenshot-dimension center"}
 
-### 1.1 Get Customer's Reviews With Pagination:
+
+### 1.1 Get Customer's Reviews With Pagination: <a id="get-customer-reviews-pagination"></a>
 You can get customer's reviews according to the pagination. You can define the limit that how many records of reviews you want in each page.
 
-#### Request:
+###### Request:
 
 > *http(s)://example.com/public/api/reviews?customer_id=1&page=1*
 
@@ -59,7 +60,7 @@ You can get customer's reviews according to the pagination. You can define the l
 
 **Note: If you didn't use the page(?page=x) filter, then it returns the data of the first page by default. You can also provide the limit request parameter in the api url.**
 
-#### Response:
+###### Response:
     {
         "data": [
             {
@@ -88,11 +89,9 @@ You can get customer's reviews according to the pagination. You can define the l
         "meta": {...}
     }
 
-<a href="assets/images/Bagisto_Api/bagisto_reviews_cust_page.jpg" target="_blank">
-![Bagisto Root Directory](assets/images/Bagisto_Api/bagisto_reviews_cust_page.jpg){: height="50%" width="50%" .center}
-</a>
+![bagisto_reviews_cust_page](assets/images/Bagisto_Api/bagisto_reviews_cust_page.jpg){:class="screenshot-dimension center"}
 
-#### Explanation:
+##### Explanation:
 
 * In the above response, you will find the three Objects with below mentioned indexes:
     1. data
@@ -101,19 +100,19 @@ You can get customer's reviews according to the pagination. You can define the l
 
 #### data object:
 
-Under the data object, you will find an array of multiple objects which contains the details of the customer's reviews. you can use these objects to access the data of each individual customer's review.
+Under the data object, you will find a array of multiple objects which contain the details of the customer's reviews. you can use these objects to access the data of each individual customer's review.
 
 **Note: Regarding both link and meta objects, we already explained these objects functionality in <a href="api_category.html#link-object" target="_blank" class="bagsito-link"> Category API </a> section.**
 
 
-### 1.2 Get Customer's Reviews Without Pagination:
+### 1.2 Get Customer's Reviews Without Pagination: <a id="get-customer-reviews-no-pagination"></a>
 You can also get all the customer's reviews of Bagisto Store in a single API call without using pagination. For this you have to pass **`pagination=0`** in the query parameter with the **`reviews?customer_id={id}`** resource in API URL.
 
-#### Request:
+###### Request:
 
 > *http(s)://example.com/public/api/reviews?customer_id=1pagination=0*
 
-### Response:
+##### Response:
     {
         "data": [
             {
@@ -130,6 +129,4 @@ You can also get all the customer's reviews of Bagisto Store in a single API cal
         ]
     }
 
-<a href="assets/images/Bagisto_Api/bagisto_reviews_cust_no_page.jpg" target="_blank">
-![Bagisto Root Directory](assets/images/Bagisto_Api/bagisto_reviews_cust_no_page.jpg){: height="50%" width="50%" .center}
-</a>
+![bagisto_reviews_cust_no_page](assets/images/Bagisto_Api/bagisto_reviews_cust_no_page.jpg){:class="screenshot-dimension center"}
