@@ -5,10 +5,10 @@ layout: default
 
 # DataGrid
 
-![edit on github](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
+![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/data_grid.md){:.edit-github  target="_blank"}
 
-DataGrid is just a concept of displaying your database records in tabular format. We have implemented this system in bagisto either you can use it to display data in tabular format or write code from scratch to display data in tabular format. In addition to datagrid, we have implemented additional features such as - sorting, filter, massAction . You may refer to below table for detail information about the features.
+DataGrid is just a concept of displaying your database records in tabular format. We have implemented this system in Bagisto either you can use it to display data in tabular format or write code from scratch to display data in tabular format. In addition to datagrid, we have implemented additional features such as - sorting, filter, massAction . You may refer to below table for detailed information about the features.
 
 ```php
 class AttributeDataGrid extends DataGrid
@@ -161,14 +161,14 @@ class AttributeDataGrid extends DataGrid
 |  Name                     | functionality |
 | ------------------------------- | ------------- |
 |           :---:                 | :---:         |
-|    index      | This variable is defined in  grid, and the value assign to this variable must be unique i.e., id so that data will be uniquely identified and operation  perform will be based on your index variable   |
+|    index      | This variable is defined in  grid, and the value assigned to this variable must be unique i.e., id so that data will be uniquely identified and operations  performed will be based on your index variable   |
 |    sortOrder      |  sortOrder is used to arrange the order in ascending/descending in the dataGrid file, we have to set sortOrder variable to asc/desc   |
 |    queryBuilder      | It can be used to perform most database operations in your application  |
-|    enableMassAction      | this accept boolean values `true/false` to enable/disable the mass action on datagrid  |
-|    enableAction      | this accept boolean values `true/false` to enable/disable the action column of datagrid   |
+|    enableMassAction      | This accepts boolean values `true/false` to enable/disable the mass action on datagrid  |
+|    enableAction      | This accepts boolean values `true/false` to enable/disable the action column of datagrid   |
 |    paginate      |  While creating your grid file you have to declare paginate variable and set it to `true` to allow pagination on your page |
 |    itemsPerPage      | In itemsPerPage, a numeric value is assigned to `itemsPerPage` variable to display items per page  |
-| enableFilterMap |  this accept boolean values `true/false` to enable/disable the filter on the basis of columns |
+| enableFilterMap |  this accepts boolean values `true/false` to enable/disable the filter on the basis of columns |
 
 ### Steps for how to create DataGrid
 
@@ -181,7 +181,7 @@ class AttributeDataGrid extends DataGrid
     * **prepareQueryBuilder()** : In this method, records are retrieved through queries that is applicable on database and stored in a array. When records are retrieved,                           `$this->setQueryBuilder($queryBuilder)`
     setQueryBuilder method is called
 
-       * ***setQueryBuilder()*** : This method written in DataGrid file of UI package. This is used for setting the `$queryBuilder` array
+       * ***setQueryBuilder()*** : This method is written in DataGrid file of UI package. This is used for setting the `$queryBuilder` array
 
 
     * **addColumns()** : In this method, the columns are created to be displayed in grid. Inside this method, `addColumn()` is called to create single column. Inside this function, parameter accepts the array in `"key" => "value"` pairs. Some of the essential keys are described below :
@@ -190,11 +190,11 @@ class AttributeDataGrid extends DataGrid
 | ------------------------------- | ------------- |
 |           :---:                 | :---:         |
 |    index      | This variable is defined in  grid, and the value assign to this variable must be unique i.e., id so that data will be uniquely identified and operation  perform will be based on your index variable   |
-|    label      |  in this key, the name of column is defined  |
-|    type      | this key accept the type of data in column  |
-|    searchable      |  this accept boolean values `true/false` to make the column searchable |
-|    sortable      |  this accept boolean values `true/false` to make the column sortable |
-|    filterable      |  this accept boolean values `true/false` to make the column filterable  |
+|    label      |  In this key, the name of column is defined  |
+|    type      | This key accepts the type of data in column  |
+|    searchable      |  This accepts boolean values `true/false` to make the column searchable |
+|    sortable      |  This accepts boolean values `true/false` to make the column sortable |
+|    filterable      |  This accepts boolean values `true/false` to make the column filterable  |
 |    wrapper      |  |
 
 
@@ -207,16 +207,16 @@ class AttributeDataGrid extends DataGrid
 |            :---:                 | :---:         |
 |    type      | Edit/delete |
 |    method      |  HTTP verbs are written on basis of operation |
-|    route      | this key accept the route of icon |
+|    route      | This key accepts the route of icon |
 |    icon      |  class of icon to be displayed in action column you may prefer text also |
-|    confirm_text  | A confirm box is open on clicking action icon  if you want the user to verify or accept something. you can include message here |
-|  label  | the text to be displayed in written here, you may use translation also here  |
+|    confirm_text  | A confirm box is open on clicking action icon  if you want the user to verify or accepts something. you can include message here |
+|  label  | The text to be displayed in written here, you may use translation also here  |
 
 
 ![add-action](assets/images/Bagisto_Docs_Images/DataGrid/grid-action.png){: .screenshot-dimension .center}
 
 ### ***Warning***
 
-* ***Use JavaScripts with wrapper perperty set to true when really needed***
+* ***Use JavaScript with wrapper perperty set to true when really needed***
 
 * ***Return static blade files loaded with scripts in it with caution***

@@ -18,7 +18,7 @@
 <div class="sidebar">
     <header class="header">
         <div class="logo-wrapper">
-            <a href="http://127.0.0.1:4000/bagisto-docs/">
+            <a href="http://devdocs.bagisto.com">
                 <img class="logo" src="assets/images/logo.png" />
             </a>
 
@@ -104,7 +104,7 @@
                     </li>
 
                     <li>
-                        <a href="create_payment_method.html">Creating Payment method</a>
+                        <a href="create_payment_method.html">Creating payment method</a>
                     </li>
 
                     <li>
@@ -116,7 +116,7 @@
                     </li>
 
                     <li>
-                        <a href="data_grid.html">Data Grid</a>
+                        <a href="data_grid.html">Data grid</a>
                     </li>
                 </ul>
             </li>
@@ -140,7 +140,7 @@
                     <div class="right-content">
                         <h1 id="events">Events</h1>
 
-<p><img src="/bagisto-docs/assets/images/icons/Icon-Pencil-Large.svg" alt="edit on github" class="pencil-icon" />
+<p><img src="/assets/images/icons/Icon-Pencil-Large.svg" alt="" class="pencil-icon" />
 <a href="https://github.com/bagisto/bagisto-docs/blob/master/events.md" class="edit-github" target="_blank">edit on github</a></p>
 
 <p>Events are an implementation of observer pattern such that whenever an event takes place, then the one or more listener associated with that event responds. It can be imagine like something making an announcement to your application, and then actions being taken due to that announcement. All the event classes in Bagisto are stored in the <strong>Providers</strong> folder and the listeners are stored in the <strong>Listeners</strong> folder.</p>
@@ -162,19 +162,19 @@
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p><img src="/bagisto-docs/assets/images/Bagisto_Docs_Images/Events/define-event.png" alt="Event" class="screenshot-dimension center" /></p>
+<p><img src="/assets/images/Bagisto_Docs_Images/Events/define-event.png" alt="Event" class="screenshot-dimension center" /></p>
 
 <h4 id="manually-registering-listeners">Manually Registering Listeners</h4>
 
-<p>As we see above, in registering events we specify listener function to be executed when event is called so on every event a listener function is to be executed</p>
+<p>As we have seen above, in registering events we specify listener function to be executed when an event is called so on every event a listener function is to be executed</p>
 
 <h3 id="how-we-specify-events">How we specify events?</h3>
 
 <p>In most of <strong>CRUD</strong> operation. We had fired an event before and after the execution of function. So, that if some one want to perform any operation after or before product create/update/delete can perform by simply calling a listener function in event registration</p>
 
-<p><img src="/bagisto-docs/assets/images/Bagisto_Docs_Images/Events/create-event-before-after.png" alt="create-event" class="screenshot-dimension center" /></p>
+<p><img src="/assets/images/Bagisto_Docs_Images/Events/create-event-before-after.png" alt="create-event" class="screenshot-dimension center" /></p>
 
-<p><img src="/bagisto-docs/assets/images/Bagisto_Docs_Images/Events/delete-event-before-after.png" alt="delete-event" class="screenshot-dimension center" /></p>
+<p><img src="/assets/images/Bagisto_Docs_Images/Events/delete-event-before-after.png" alt="delete-event" class="screenshot-dimension center" /></p>
 
 <h2 id="events-fired-in-bagisto">Events Fired in Bagisto</h2>
 
@@ -904,7 +904,7 @@
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p><img src="/bagisto-docs/assets/images/Bagisto_Docs_Images/Events/define-event.png" alt="event-listen" class="screenshot-dimension center" /></p>
+<p><img src="/assets/images/Bagisto_Docs_Images/Events/define-event.png" alt="event-listen" class="screenshot-dimension center" /></p>
 
 <h2 id="events-listen-in-bagisto-1">Events Listen in Bagisto</h2>
 
@@ -934,7 +934,7 @@
     </tr>
     <tr>
       <td>catalog.attribute.create.after</td>
-      <td>This event will be fire after attribute has created and listen in <code class="highlighter-rouge">ProductFlat</code> listener file  from <code class="highlighter-rouge">afterAttributeCreatedUpdated</code> function</td>
+      <td>This event will be fire after attribute has been created and listen in <code class="highlighter-rouge">ProductFlat</code> listener file  from <code class="highlighter-rouge">afterAttributeCreatedUpdated</code> function</td>
     </tr>
     <tr>
       <td>catalog.attribute.update.after</td>

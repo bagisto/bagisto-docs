@@ -5,11 +5,11 @@ layout: default
 
 # Create Theme
 
-![edit on github](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
+![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/create_theme.md){:.edit-github  target="_blank"}
 
 
-I hope that you know how to create package, if not(refer [Package development](create_package.md)), and I will skip package development step
+I hope that you know how to create package, if not(refer [Package development](create_package.md){: target="_blank"}), and I will skip package development step
 
 Creating a custom theme for Bagisto had been a hot topic lately. More and more users are actively trying our framework and we’re genuinely overwhelmed by it.
 
@@ -17,7 +17,7 @@ Coming on how to create a custom theme for Bagisto. It’s super easy!!!. With j
 
 ### Steps to create theme
 
-Please follow the below steps on how to create a custom theme in Bagisto.
+Please follow steps mentioned below that how to create a custom theme in Bagisto.
 
 * Go to your project’s root directory and check for `config` folder. Inside it, you will find a file called `themes.php`:
 
@@ -75,7 +75,7 @@ Let’s go through the parameters of this theme’s file. Because the understand
 
    * name: Defines a global name for your theme inside Bagisto.
 
-   * parent: This is a magic parameter that you can find in the commented code below the sub array ‘default‘. Using this parameter you can make use of existing themes inside Bagisto and just customise them even further. This parameter will take the value of the ‘name’ parameter listed in point 3rd above
+   * parent: This is a magic parameter that you can find in the commented code below the sub array ‘default‘. Using this parameter you can make use of existing themes inside Bagisto and just customise them even further. This parameter will take the value of the ‘name’ parameter listed in 3rd point above.
 
 ![bliss-theme](assets/images/Bagisto_Docs_Images/theme/bliss-array.png){: .screenshot-dimension .center}
 
