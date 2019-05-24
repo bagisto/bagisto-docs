@@ -4,8 +4,8 @@ layout: default
 ---
 
 # Introduction <a id="bagisto"></a>
-![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon .along}
-[edit on github](https://github.com/bagisto/bagisto-docs/blob/master/index.md){:.edit-github .along target="_blank"}
+![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon }
+[edit on github](https://github.com/bagisto/bagisto-docs/blob/master/index.md){:.edit-github  target="_blank"}
 
 Bagisto is a hand tailored E-Commerce framework designed on some of the hottest opensource technologies such as Laravel a PHP framework, Vue.js a progressive Javascript framework.
 
@@ -46,7 +46,7 @@ New product types like subscriptions, bookings, and recurring billing.
 GDPR compliance
 To learn more about Bagisto’s features and try a demo, check out [Bagisto](https://bagisto.com). You can get started with the source code by checking out the repo on GitHub at [bagisto/bagisto](https://github.com/bagisto/bagisto).
 
-Also, You can Check out the roadmap for Bagisto here: [bagisto roadmap](https://bagisto.com/roadmap/)
+Also, You can Check out the roadmap for Bagisto here: [bagisto roadmap](https://bagisto.com/roadmap/){: target="_blank"}
 
 ### Requirements <a id="requirements"></a>:
 

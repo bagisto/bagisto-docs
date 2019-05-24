@@ -195,7 +195,7 @@ class AttributeDataGrid extends DataGrid
 |    searchable      |  This accepts boolean values `true/false` to make the column searchable |
 |    sortable      |  This accepts boolean values `true/false` to make the column sortable |
 |    filterable      |  This accepts boolean values `true/false` to make the column filterable  |
-|    wrapper      |  |
+|    wrapper      | perform actions on basis of condition satisfied  |
 
 
    * **prepareActions()** : Additionally, this method is defined when there is need to perform any action such as edit or delete on grid. Inside it, `addAction()` is called to define particular action
@@ -206,7 +206,7 @@ class AttributeDataGrid extends DataGrid
 | ------------------------------- | ------------- |
 |            :---:                 | :---:         |
 |    type      | Edit/delete |
-|    method      |  HTTP verbs are written on basis of operation |
+|    method      |  HTTP methods are declared |
 |    route      | This key accepts the route of icon |
 |    icon      |  class of icon to be displayed in action column you may prefer text also |
 |    confirm_text  | A confirm box is open on clicking action icon  if you want the user to verify or accepts something. you can include message here |

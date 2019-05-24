@@ -225,7 +225,7 @@ td {
             overflow: auto;
             border-right: 2px solid;
             border-right-color: rgba(151,151,151,0.5);
-            margin-top: 40px;
+            padding-top: 40px;
 
             ul {
                 padding: 0;
@@ -337,9 +337,10 @@ li ul {
 }
 
 .along {
-    border: 1px solid red;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-around;
 }
-.bagsito-link { color: #0041ff; text-decoration: underline; cursor: pointer; }
+
+.bagsito-link {
+    color: #0041ff;
+    text-decoration: underline;
+    cursor: pointer;
+}

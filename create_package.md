@@ -3,7 +3,7 @@ title: Package development-Bagisto
 layout: default
 ---
 
-# Package<span class="edit-github">
+# Package
 ![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/create_package.md){:.edit-github  target="_blank"}
 
@@ -174,7 +174,7 @@ return [
 ];
 ```
 
-Add {{ __(‘helloworld::app.hello-world.name’) }} to your application’s view & it will automatically translate it.
+Add \{\{ __(‘helloworld::app.hello-world.name’) \}\} to your application’s view & it will automatically translate it.
 
 ![translation-output](assets/images/Bagisto_Docs_Images/PackageDevelopment/translation-output.png){: .screenshot-dimension .center}
 
@@ -258,7 +258,7 @@ After doing this we need to add an event listener so that admin layouts include 
 
 
 ```html
-<link rel="stylesheet" href="\{{ bagisto_asset('css/helloworld.css')\}}">
+<link rel="stylesheet" href="{`{`bagisto_asset('css/helloworld.css') `}`}">
 ( In style.blade.php)
 ```
 

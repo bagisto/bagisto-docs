@@ -120,6 +120,25 @@
                     </li>
                 </ul>
             </li>
+            <!-- Bagisto APIs -->
+            <li class="menu-heading">
+                <a href="bagisto_api.html">Bagisto Web APIs</a>
+
+                <div class="horizontal-rule"></div>
+
+                <ul class="sub-menu">
+                        <!-- <li><a href="api_call_bagisto.html">Generate A Request</a></li> -->
+                        <li><a href="api_category.html">Categories</a></li>
+                        <li><a href="api_product.html">Products</a></li>
+                        <li><a href="api_product_review.html">Product's Reviews</a></li>
+                        <li><a href="api_customer.html">Customers</a></li>
+                        <li><a href="api_customer_review.html">Customer's Reviews</a></li>
+                        <li><a href="api_customer_addresses.html">Addresses</a></li>
+                        <li><a href="api_order.html">Orders</a></li>
+                        <li><a href="api_invoice_shipment.html">Invoices & Shipments</a></li>
+                        <li><a href="api_cart.html">Shopping Cart</a></li>
+                </ul>
+            </li>
     </ul>
 </div>
 
@@ -185,654 +204,524 @@
     <tr>
       <th>Events name</th>
       <th>Functionality</th>
-      <th> </th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>core.configuration.save.after</td>
       <td>This event will be fire after core configuration form data gets saved and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>core.configuration.save.after</td>
       <td>This event will be fire after core configuration form data gets saved and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>checkout.cart.item.add.before</td>
       <td>This event will be fire before saving in database of item added in checkout and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>checkout.cart.item.add.after</td>
       <td>This event will be fire after saving in database of item added in checkout and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>checkout.cart.item.update.before</td>
       <td>This event will be fire before updating database item of checkout table of respective passed <code class="highlighter-rouge">id</code> and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>checkout.cart.item.update.after</td>
       <td>This event will be fire after updating database item of checkout table of respective passed <code class="highlighter-rouge">id</code> and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>checkout.cart.delete.before</td>
       <td>This event will be fire before deleting database item of checkout table of respective passed <code class="highlighter-rouge">id</code> and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>checkout.cart.delete.after</td>
       <td>This event will be fire after deleting database item of checkout table of respective passed <code class="highlighter-rouge">id</code> and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>checkout.cart.item.delete.before</td>
       <td>This event will be fire before deleting database item of checkout table of respective passed <code class="highlighter-rouge">id</code> and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>checkout.cart.item.delete.after</td>
       <td>This event will be fire after deleting database item of checkout table of respective passed <code class="highlighter-rouge">id</code> and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>checkout.cart.item.move-to-wishlist.before</td>
       <td>This event will be fire before adding cart item to wishlist added in checkout and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>checkout.cart.item.move-to-wishlist.after</td>
       <td>This event will be fire after adding cart item to wishlist added in checkout and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>customer.registration.before</td>
       <td>This event will be fire before registration of customer details and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>customer.registration.after</td>
       <td>This event will be fire after registration of customer details and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>customer.after.login</td>
       <td>This event will be fire after login of customer and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>catalog.attribute_family.create.before</td>
       <td>This event will be fire before attribute family gets created and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>catalog.attribute_family.create.after</td>
       <td>This event will be fire after attribute family gets created and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>catalog.attribute_family.update.before</td>
       <td>This event will be fire before updating attribute family and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>catalog.attribute_family.update.after</td>
       <td>This event will be fire after updating attribute family and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>catalog.attribute_family.delete.before</td>
       <td>This event will be fire before deleting attribute family and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>catalog.attribute_family.delete.after</td>
       <td>This event will be fire after deleting attribute family and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>catalog.attribute.create.before</td>
       <td>This event will be fire before attribute gets created and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>catalog.attribute.create.after</td>
       <td>This event will be fire after attribute gets created and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>catalog.attribute.update.before</td>
       <td>This event will be fire before attribute gets updated and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>catalog.attribute.update.after</td>
       <td>This event will be fire after attribute gets updated and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>catalog.attribute.delete.before</td>
       <td>This event will be fire before attribute gets deleted and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>catalog.attribute.delete.after</td>
       <td>This event will be fire after attribute gets deleted and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>catalog.category.delete.after</td>
       <td>This event will be fire after deleting category and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>catalog.category.delete.before</td>
       <td>This event will be fire before deleting category with mass selection and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>catalog.category.delete.after</td>
       <td>This event will be fire after deleting category with mass selection and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>catalog.category.create.before</td>
       <td>This event will be fire before creating category and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>catalog.category.create.after</td>
       <td>This event will be fire after creating category and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>catalog.category.update.before</td>
       <td>This event will be fire before updating category and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>catalog.category.update.after</td>
       <td>This event will be fire after updating category and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>catalog.category.delete.before</td>
       <td>This event will be fire before deleting category and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>catalog.category.delete.after</td>
       <td>This event will be fire after deleting category and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>core.channel.create.before</td>
       <td>This event will be fire before channel gets created and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>core.channel.create.after</td>
       <td>This event will be fire after channel gets created and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>core.channel.update.before</td>
       <td>This event will be fire before channel gets updated and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>core.channel.update.after</td>
       <td>This event will be fire after channel gets updated and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>core.channel.delete.before</td>
       <td>This event will be fire before channel gets deleted and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>core.channel.delete.after</td>
       <td>This event will be fire after channel gets deleted and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>core.currency.create.before</td>
       <td>This event will be fire before currency gets created and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>core.currency.create.after</td>
       <td>This event will be fire after currency gets created and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>core.currency.update.before</td>
       <td>This event will be fire before currency gets updated and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>core.currency.update.after</td>
       <td>This event will be fire after currency gets updated and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>core.currency.delete.before</td>
       <td>This event will be fire before currency gets deleted and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>core.currency.delete.after</td>
       <td>This event will be fire after currency gets deleted and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>core.currency.delete.before</td>
       <td>This event will be fire before currency gets deleted with mass selection and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>core.currency.delete.after</td>
       <td>This event will be fire after currency gets deleted with mass selection and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>core.exchange_rate.create.before</td>
       <td>This event will be fire before exchange rate gets created and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>core.exchange_rate.create.after</td>
       <td>This event will be fire after exchange rate gets created and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>core.exchange_rate.update.before</td>
       <td>This event will be fire before exchange rate gets updated and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>core.exchange_rate.update.after</td>
       <td>This event will be fire after exchange rate gets updated and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>core.exchange_rate.delete.before</td>
       <td>This event will be fire before exchange rate gets deleted and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>core.exchange_rate.delete.after</td>
       <td>This event will be fire after exchange rate gets deleted and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>core.locale.create.before</td>
       <td>This event will be fire before locale gets created and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>core.locale.create.after</td>
       <td>This event will be fire after locale gets created and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>core.locale.update.before</td>
       <td>This event will be fire before locale gets updated and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>core.locale.update.after</td>
       <td>This event will be fire after locale gets updated and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>core.locale.delete.before</td>
       <td>This event will be fire before locale gets deleted and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>core.locale.delete.after</td>
       <td>This event will be fire after locale gets deleted and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>customer.registration.before</td>
       <td>This event will be fire before customer gets registered and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>customer.registration.after</td>
       <td>This event will be fire after customer gets registered and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>customer.after.login</td>
       <td>This event will be fire after customer successfully logins in store and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>customer.after.logout</td>
       <td>This event will be fire after customer successfully logouts from store and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>inventory.inventory_source.create.before</td>
       <td>This event will be fire before inventory source gets created and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>inventory.inventory_source.create.after</td>
       <td>This event will be fire after inventory source gets created and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>inventory.inventory_source.update.before</td>
       <td>This event will be fire before inventory source gets updated and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>inventory.inventory_source.update.after</td>
       <td>This event will be fire after inventory source gets updated and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>inventory.inventory_source.delete.before</td>
       <td>This event will be fire before inventory source gets deleted and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>inventory.inventory_source.delete.after</td>
       <td>This event will be fire after inventory source gets deleted and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>customer.review.update.before</td>
       <td>This event will be fire before customer review gets updated and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>customer.review.update.after</td>
       <td>This event will be fire after customer review gets updated and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>customer.review.delete.before</td>
       <td>This event will be fire before customer review gets deleted and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>customer.review.delete.after</td>
       <td>This event will be fire after customer review gets deleted and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>customer.review.delete.before</td>
       <td>This event will be fire before customer review gets deleted with mass selection and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>customer.review.delete.after</td>
       <td>This event will be fire after customer review gets deleted with mass selection and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>customer.review.update.before</td>
       <td>This event will be fire before customer review gets updated with mass selection and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>customer.review.update.after</td>
       <td>This event will be fire after customer review gets updated with mass selection and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>catalog.product.create.before</td>
       <td>This event will be fire before product gets created and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>catalog.product.create.after</td>
       <td>This event will be fire after product gets created and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>catalog.product.update.before</td>
       <td>This event will be fire before product gets updated and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>catalog.product.update.after</td>
       <td>This event will be fire after product gets updated and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>catalog.product.delete.before</td>
       <td>This event will be fire before product gets deleted and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>catalog.product.delete.after</td>
       <td>This event will be fire after product gets deleted and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>sales.invoice.save.before</td>
       <td>This event will be fire before invoice gets created and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>sales.invoice.save.after</td>
       <td>This event will be fire after invoice gets created and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>checkout.order.save.before</td>
       <td>This event will be fire before order gets created and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>checkout.order.save.after</td>
       <td>This event will be fire after order gets created and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>sales.order.cancel.before</td>
       <td>This event will be fire before order gets cancelled and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>sales.order.cancel.after</td>
       <td>This event will be fire after order gets cancelled and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>catalog.product.update.after</td>
       <td>This event will be fire after product gets updated and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>sales.shipment.save.before</td>
       <td>This event will be fire before shipment for product gets created and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>sales.shipment.save.after</td>
       <td>This event will be fire after shipment for product gets created and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>checkout.cart.add.before</td>
       <td>This event will be fire before product get added in cart and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>checkout.cart.add.after</td>
       <td>This event will be fire after product get added in cart and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>checkout.cart.delete.before</td>
       <td>This event will be fire before product get deleted from cart and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>checkout.cart.delete.after</td>
       <td>This event will be fire after product get deleted from cart and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>checkout.cart.update.before</td>
       <td>This event will be fire before cart item get updated and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>checkout.cart.update.after</td>
       <td>This event will be fire after cart item get updated and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>checkout.cart.add.before</td>
       <td>This event will be fire before configurable product get added in cart and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>checkout.cart.add.after</td>
       <td>This event will be fire after configurable product get added in cart and proceeded to but the product and you may create listener file and perform the respective operation on fire of event</td>
-      <td>(cross- check)</td>
     </tr>
     <tr>
       <td>tax.tax_category.create.before</td>
       <td>This event will be fire before tax category gets created and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>tax.tax_category.create.after</td>
       <td>This event will be fire after tax category gets created and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>tax.tax_category.update.before</td>
       <td>This event will be fire before tax category gets updated and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>tax.tax_category.update.after</td>
       <td>This event will be fire after tax category gets updated and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>tax.tax_category.delete.before</td>
       <td>This event will be fire before tax category gets deleted and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>tax.tax_category.delete.after</td>
       <td>This event will be fire after tax category gets deleted and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>tax.tax_rate.create.before</td>
       <td>This event will be fire before tax rate gets created and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>tax.tax_rate.create.after</td>
       <td>This event will be fire after tax rate gets created and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>tax.tax_rate.update.before</td>
       <td>This event will be fire before tax rate gets updated and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>tax.tax_rate.update.after</td>
       <td>This event will be fire after tax rate gets updated and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>tax.tax_rate.delete.before</td>
       <td>This event will be fire before tax rate gets deleted and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>tax.tax_rate.delete.after</td>
       <td>This event will be fire after tax rate gets deleted and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>user.role.create.before</td>
       <td>This event will be fire before user role gets created. The role of user in created from admin panel and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>user.role.create.after</td>
       <td>This event will be fire after user role gets created. The role of user in created from admin panel and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>user.role.update.before</td>
       <td>This event will be fire before user role gets updated. The role of user in created from admin panel and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>user.role.update.after</td>
       <td>This event will be fire after user role gets updated. The role of user in created from admin panel and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>user.role.delete.before</td>
       <td>This event will be fire before user role gets updated. The role of user in created from admin panel and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>user.role.delete.after</td>
       <td>This event will be fire after user role gets deleted. The role of user in created from admin panel and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>user.admin.create.before</td>
       <td>This event will be fire before user gets created. The user gets created from admin panel and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>user.admin.delete.after</td>
       <td>This event will be fire after user gets deleted. The user gets created from admin panel and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>user.admin.update.before</td>
       <td>This event will be fire before user gets updated. The user gets created from admin panel and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>user.admin.update.after</td>
       <td>This event will be fire after user gets updated. The user gets created from admin panel and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>user.admin.delete.before</td>
       <td>This event will be fire before user gets deleted. The user gets created from admin panel and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>user.admin.delete.after</td>
       <td>This event will be fire after user gets deleted. The user gets created from admin panel and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>user.admin.delete.before</td>
       <td>This event will be fire before user gets deleted. The user gets created from admin panel and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
     <tr>
       <td>user.admin.delete.after</td>
       <td>This event will be fire after user gets deleted. The user gets created from admin panel and you may create listener file and perform the respective operation on fire of event</td>
-      <td> </td>
     </tr>
   </tbody>
 </table>

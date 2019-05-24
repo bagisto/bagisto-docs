@@ -162,7 +162,7 @@ Events fired in bagisto but not listened such that if any user wants to perform 
 |checkout.cart.update.before|This event will be fire before cart item get updated and you may create listener file and perform the respective operation on fire of event|
 |checkout.cart.update.after|This event will be fire after cart item get updated and you may create listener file and perform the respective operation on fire of event|
 |checkout.cart.add.before|This event will be fire before configurable product get added in cart and you may create listener file and perform the respective operation on fire of event|
-|checkout.cart.add.after|This event will be fire after configurable product get added in cart and proceeded to but the product and you may create listener file and perform the respective operation on fire of event| (cross- check)
+|checkout.cart.add.after|This event will be fire after configurable product get added in cart and proceeded to but the product and you may create listener file and perform the respective operation on fire of event|
 |tax.tax_category.create.before|This event will be fire before tax category gets created and you may create listener file and perform the respective operation on fire of event|
 |tax.tax_category.create.after|This event will be fire after tax category gets created and you may create listener file and perform the respective operation on fire of event|
 |tax.tax_category.update.before|This event will be fire before tax category gets updated and you may create listener file and perform the respective operation on fire of event|
