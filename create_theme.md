@@ -9,7 +9,7 @@ layout: default
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/create_theme.md){:.edit-github  target="_blank"}
 
 
-I hope that you know how to create package, if not(refer [Package development](create_package.md)), and I will skip package development step
+I hope that you know how to create package, if not(refer [Package development](create_package.md){: target="_blank"}), and I will skip package development step
 
 Creating a custom theme for Bagisto had been a hot topic lately. More and more users are actively trying our framework and we’re genuinely overwhelmed by it.
 
