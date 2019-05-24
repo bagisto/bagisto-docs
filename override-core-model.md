@@ -6,7 +6,7 @@ layout: default
 
 # Override core model
 
-![edit on github](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
+![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/override-core-model.md){:.edit-github  target="_blank"}
 
 

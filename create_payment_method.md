@@ -5,7 +5,7 @@ layout: default
 
 # Payment Method
 
-![edit on github](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
+![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/create_payment_method.md){:.edit-github  target="_blank"}
 
 I hope that you know how to create package, if not(refer [Package development](create_package.md)), and I will skip package development step

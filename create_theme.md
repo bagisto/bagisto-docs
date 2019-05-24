@@ -5,7 +5,7 @@ layout: default
 
 # Create Theme
 
-![edit on github](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
+![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/create_theme.md){:.edit-github  target="_blank"}
 
 
