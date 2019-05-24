@@ -193,7 +193,7 @@ You can also filter your store product(s) by using **`filterable attributes quer
 
 
 ## 2. Get Specific Product:
-If you want the record of any specific product, then you have to provide the product id as as input parameter in api url.
+If you want the record of any specific product, then you have to provide the product id as  input parameter in api url.
 
 > *http(s)://example.com/public/api/products/1*
 
