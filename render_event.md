@@ -12,7 +12,7 @@ layout: default
 
 ![View Render Event](assets/images/Bagisto_Docs_Images/render-event/view-render-event.png){:  .screenshot-dimension .center}
 
-To render any template before or after any function we may use view_rener_event
+To render any template before or after any function we may use view_render_event
 
 
 ### Steps to render View
