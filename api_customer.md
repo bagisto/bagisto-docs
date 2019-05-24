@@ -6,7 +6,7 @@ layout: default
 # How To Create Requests For Customers <span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px"/> <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_module.md">Edit On github</a></span>
 
 
-In the customer's APIs: Firstly, we will look for the customer's authentication with the help of login credentials. Because customer can't access/add/modify their addresses, orders, reviews and wishlists without logged into the front store. To logined in at the Bagisto front store, customer need a valid email address and password.
+In the customer's APIs: Firstly, we will look for the customer's authentication with the help of login credentials. Because customer can't access/add/modify their addresses, orders, reviews and wishlists without logged into the front store. To login into the Bagisto front store, the customer needs a valid email address and password.
 
 ## 1. Customer's Login Authentication:
 
@@ -72,7 +72,7 @@ You can use logout the customer from the Bagisto store with the help of `custome
 
 
 ## 4. Get Customer's Information:
-You can get the customer information only for the logged in customer. To achieve customer inforamtion you can use the `customer/get` resource. This API call will return you the personal details of logged in customer.
+You can get the customer information only for the logged in customer. To achieve customers inforamtion you can use the `customer/get` resource. This API call will return you the personal details of logged in customer.
 
 > *http(s)://example.com/public/api/customer/get*
 
@@ -195,7 +195,7 @@ You can create/register a new customer in the Bagisto store. To achieve this tas
 
 
 ## 7. Get Customer Infomation Based On Id:
-You can also get the customer information (like: `customer/get` resource) by using customer_id as a request payload. To achieve this task, you can use the `customers/{id}` API call resource.
+You can also get the customers information (like: `customer/get` resource) by using customer_id as a request payload. To achieve this task, you can use the `customers/{id}` API call resource.
 
 > *http(s)://example.com/public/api/customers/{id}*
 
