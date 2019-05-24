@@ -135,6 +135,25 @@
                 </li>
             </ul>
         </li>
+        
+        <li class="menu-heading">
+            <a href="bagisto_api.html">Bagisto Web APIs</a>
+
+            <div class="horizontal-rule"></div>
+
+            <ul class="sub-menu">
+                    <!-- <li><a href="api_call_bagisto.html">Generate A Request</a></li> -->
+                    <li><a href="api_category.html">Categories</a></li>
+                    <li><a href="api_product.html">Products</a></li>
+                    <li><a href="api_product_review.html">Product's Reviews</a></li>
+                    <li><a href="api_customer.html">Customers</a></li>
+                    <li><a href="api_customer_review.html">Customer's Reviews</a></li>
+                    <li><a href="api_customer_addresses.html">Addresses</a></li>
+                    <li><a href="api_order.html">Orders</a></li>
+                    <li><a href="api_invoice_shipment.html">Invoices & Shipments</a></li>
+                    <li><a href="api_cart.html">Shopping Cart</a></li>
+            </ul>
+        </li>
     </ul>
 </div>
 
@@ -143,7 +162,7 @@
                     <div class="right-content">
                         <h2 id="datagrid-edit-on-github">DataGrid<span class="edit-github"><img src="/assets/images/icons/Icon-Pencil-Large.svg" /> <a href="https://github.com/bagisto/bagisto-docs/blob/master/data_grid.md">edit on github</a></span></h2>
 
-<p>DataGrid is just a concept of displaying your database records in tabular format. We have implemented this system in bagisto either you can use it to display data in tabular format or write code from scratch to display data in tabular format. In addition to datagrid, we have implemented additional features such as - sorting, filter, massAction . You may refer to below table for detail information about the features.</p>
+<p>DataGrid is just a concept of displaying your database records in tabular format. We have implemented this system in Bagisto either you can use it to display data in tabular format or write code from scratch to display data in tabular format. In addition to datagrid, we have implemented additional features such as - sorting, filter, massAction . You may refer to below table for detailed information about the features.</p>
 
 <h3 id="global-properties-of-datagrid">Global Properties of DataGrid</h3>
 
@@ -157,7 +176,7 @@
   <tbody>
     <tr>
       <td>index</td>
-      <td>This variable is defined in  grid, and the value assign to this variable must be unique i.e., id so that data will be uniquely identified and operation  perform will be based on your index variable</td>
+      <td>This variable is defined in  grid, and the value assigned to this variable must be unique i.e., id so that data will be uniquely identified and operations  performed will be based on your index variable</td>
     </tr>
     <tr>
       <td>sortOrder</td>
@@ -169,11 +188,11 @@
     </tr>
     <tr>
       <td>enableMassAction</td>
-      <td>this accept boolean values <code class="highlighter-rouge">true/false</code> to enable/disable the mass action on datagrid</td>
+      <td>This accepts boolean values <code class="highlighter-rouge">true/false</code> to enable/disable the mass action on datagrid</td>
     </tr>
     <tr>
       <td>enableAction</td>
-      <td>this accept boolean values <code class="highlighter-rouge">true/false</code> to enable/disable the action column of datagrid</td>
+      <td>This accepts boolean values <code class="highlighter-rouge">true/false</code> to enable/disable the action column of datagrid</td>
     </tr>
     <tr>
       <td>paginate</td>
@@ -185,7 +204,7 @@
     </tr>
     <tr>
       <td>enableFilterMap</td>
-      <td>this accept boolean values <code class="highlighter-rouge">true/false</code> to enable/disable the filter on the basis of columns</td>
+      <td>this accepts boolean values <code class="highlighter-rouge">true/false</code> to enable/disable the filter on the basis of columns</td>
     </tr>
   </tbody>
 </table>
@@ -208,7 +227,7 @@
  setQueryBuilder method is called</p>
 
         <ul>
-          <li><strong><em>setQueryBuilder()</em></strong> : This method written in DataGrid file of UI package. This is used for setting the <code class="highlighter-rouge">$queryBuilder</code> array</li>
+          <li><strong><em>setQueryBuilder()</em></strong> : This method is written in DataGrid file of UI package. This is used for setting the <code class="highlighter-rouge">$queryBuilder</code> array</li>
         </ul>
       </li>
       <li>
@@ -230,23 +249,23 @@
         </tr>
         <tr>
           <td>label</td>
-          <td>in this key, the name of column is defined</td>
+          <td>In this key, the name of column is defined</td>
         </tr>
         <tr>
           <td>type</td>
-          <td>this key accept the type of data in column</td>
+          <td>This key accepts the type of data in column</td>
         </tr>
         <tr>
           <td>searchable</td>
-          <td>this accept boolean values <code class="highlighter-rouge">true/false</code> to make the column searchable</td>
+          <td>This accepts boolean values <code class="highlighter-rouge">true/false</code> to make the column searchable</td>
         </tr>
         <tr>
           <td>sortable</td>
-          <td>this accept boolean values <code class="highlighter-rouge">true/false</code> to make the column sortable</td>
+          <td>This accepts boolean values <code class="highlighter-rouge">true/false</code> to make the column sortable</td>
         </tr>
         <tr>
           <td>filterable</td>
-          <td>this accept boolean values <code class="highlighter-rouge">true/false</code> to make the column filterable</td>
+          <td>This accepts boolean values <code class="highlighter-rouge">true/false</code> to make the column filterable</td>
         </tr>
         <tr>
           <td>wrapper</td>
@@ -283,7 +302,7 @@
         </tr>
         <tr>
           <td>route</td>
-          <td>this key accept the route of icon</td>
+          <td>This key accepts the route of icon</td>
         </tr>
         <tr>
           <td>icon</td>
@@ -291,11 +310,11 @@
         </tr>
         <tr>
           <td>confirm_text</td>
-          <td>A confirm box is open on clicking action icon  if you want the user to verify or accept something. you can include message here</td>
+          <td>A confirm box is open on clicking action icon  if you want the user to verify or accepts something. you can include message here</td>
         </tr>
         <tr>
           <td>label</td>
-          <td>the text to be displayed in written here, you may use translation also here</td>
+          <td>The text to be displayed in written here, you may use translation also here</td>
         </tr>
       </tbody>
     </table>
@@ -306,7 +325,7 @@
 
 <ul>
   <li>
-    <p><strong><em>Use JavaScripts with wrapper perperty set to true when really needed</em></strong></p>
+    <p><strong><em>Use JavaScript with wrapper perperty set to true when really needed</em></strong></p>
   </li>
   <li>
     <p><strong><em>Return static blade files loaded with scripts in it with caution</em></strong></p>

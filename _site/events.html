@@ -135,6 +135,25 @@
                 </li>
             </ul>
         </li>
+        
+        <li class="menu-heading">
+            <a href="bagisto_api.html">Bagisto Web APIs</a>
+
+            <div class="horizontal-rule"></div>
+
+            <ul class="sub-menu">
+                    <!-- <li><a href="api_call_bagisto.html">Generate A Request</a></li> -->
+                    <li><a href="api_category.html">Categories</a></li>
+                    <li><a href="api_product.html">Products</a></li>
+                    <li><a href="api_product_review.html">Product's Reviews</a></li>
+                    <li><a href="api_customer.html">Customers</a></li>
+                    <li><a href="api_customer_review.html">Customer's Reviews</a></li>
+                    <li><a href="api_customer_addresses.html">Addresses</a></li>
+                    <li><a href="api_order.html">Orders</a></li>
+                    <li><a href="api_invoice_shipment.html">Invoices & Shipments</a></li>
+                    <li><a href="api_cart.html">Shopping Cart</a></li>
+            </ul>
+        </li>
     </ul>
 </div>
 
@@ -168,11 +187,11 @@ public function boot()
 
 <h4 id="manually-registering-listeners">Manually Registering Listeners</h4>
 
-<p>As we see above, in registering events we specify listener function to be executed when event is called so on every event a listener function is to be executed</p>
+<p>As we have seen above, in registering events we specify listener function to be executed when an event is called so on every event a listener function is to be executed</p>
 
 <h3 id="how-we-specify-events">How we specify events?</h3>
 
-<p>In most of CRUD operation. We had fired an event before and after the execution of function. So, that if some one want to perform any operation after or before product create/update/delete can perform by simply calling a listener function in event registration</p>
+<p>In most of CRUD operation. We had fired an event before and after the execution of function. So, that if some one want to perform any operation after or before product create/update/delete can perform by simply calling a listener function in event registration.</p>
 
 <p><img src="/assets/images/Bagisto_Docs_Images/Events/create-event-before-after.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
 
@@ -206,7 +225,7 @@ public function boot()
     </tr>
     <tr>
       <td>catalog.attribute.create.after</td>
-      <td>This event will be fire after attribute has created and listen in <code class="highlighter-rouge">ProductFlat</code> listener file  from <code class="highlighter-rouge">afterAttributeCreatedUpdated</code> function</td>
+      <td>This event will be fire after attribute has been created and listen in <code class="highlighter-rouge">ProductFlat</code> listener file  from <code class="highlighter-rouge">afterAttributeCreatedUpdated</code> function</td>
     </tr>
     <tr>
       <td>catalog.attribute.update.after</td>

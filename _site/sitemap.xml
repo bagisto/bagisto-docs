@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://localhost:4000/api_cart.html</loc>
+</url>
+<url>
+<loc>http://localhost:4000/api_category.html</loc>
+</url>
+<url>
+<loc>http://localhost:4000/api_customer.html</loc>
+</url>
+<url>
+<loc>http://localhost:4000/api_customer_addresses.html</loc>
+</url>
+<url>
+<loc>http://localhost:4000/api_customer_review.html</loc>
+</url>
+<url>
+<loc>http://localhost:4000/api_invoice_shipment.html</loc>
+</url>
+<url>
+<loc>http://localhost:4000/api_order.html</loc>
+</url>
+<url>
+<loc>http://localhost:4000/api_product.html</loc>
+</url>
+<url>
+<loc>http://localhost:4000/api_product_review.html</loc>
+</url>
+<url>
+<loc>http://localhost:4000/bagisto_api.html</loc>
+</url>
+<url>
 <loc>http://localhost:4000/configure_settings.html</loc>
 </url>
 <url>
