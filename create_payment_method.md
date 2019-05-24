@@ -28,13 +28,13 @@ In this article, we will understand how to create payment method by own with jus
 
 ##### Explanation for the keys:
 
-* **key** : these values provided are unique and concatenated with '.' (dot) operator. After creation of two nested, other keys written are display in browser in form of accordian
+1. **key** : these values provided are unique and concatenated with '.' (dot) operator. After creation of two nested, other keys written are display in browser in form of accordian
 
-* **name** : these keys accept the value as placeholder of your configuration. Generally, in bagisto, we consider writing it using translation.
+2. **name** : these keys accept the value as placeholder of your configuration. Generally, in bagisto, we consider writing it using translation.
 
-* **sort** : these key accept the sort position for the configuration menu.
+3. **sort** : these key accept the sort position for the configuration menu.
 
-* **fields** : these key accepts the array for the value of custom configuration.
+4. **fields** : these key accepts the array for the value of custom configuration.
 
 
     **paymentmethod.php**
@@ -43,17 +43,17 @@ In this article, we will understand how to create payment method by own with jus
 
 ##### An Explanation For These Parameters:
 
-*  **code** : a text to represent payment method
+   1.  **code** : a text to represent payment method
 
-*  **title** : in this field, the name of payment method is specified
+   2.  **title** : in this field, the name of payment method is specified
 
-*  **description** : a brief description of payment method.
+   3.  **description** : a brief description of payment method.
 
-*  **class** : this field includes the class namespace where all functions of payment                method is written
+   4.  **class** : this field includes the class namespace where all functions of payment           method is written
 
-*  **sandbox** : this is a custom option of boolean type
+   5.  **sandbox** : this is a custom option of boolean type
 
-*  **active** : this field accepts true/false to enable or disbale module.
+   6.  **active** : this field accepts true/false to enable or disbale module.
 
 
 * Within **Database** folder, the migration and seeder(if needed) files are stored.
@@ -62,7 +62,7 @@ In this article, we will understand how to create payment method by own with jus
 
 * Within **Providers** folder, contains all of the service providers for your application. Service providers bootstrap your application by binding services in the service container, registering events, or performing any other tasks to prepare your application for incoming requests.
 
-     Here, in our case we have created two providers files i.e.,
+    Here, in our case we have created two providers files i.e.,
 
     1. ***EventServiceProvider*** : In this file, events included with your application provides a convenient place to register all of your application's event listeners.
 
