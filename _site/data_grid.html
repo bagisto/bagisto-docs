@@ -4,146 +4,290 @@
         <meta charset="utf-8">
         <title>DataGrid-Bagisto</title>
         <link rel="stylesheet" href="assets/scss/layout.css" />
-        <link rel="stylesheet" href="/assets/css/syntax.css" />
-        <link rel="icon" sizes="16x16" href="assets/icons/favicon.ico" />
+        <link rel="stylesheet" href="assets/css/syntax.css" />
+        <link rel="icon" sizes="16x16" href="assets/images/icons/favicon.ico" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     </head>
     <body>
         <div class="container">
             <div class="content-wrapper">
-                <header class="header">
-    <div class="logo-wrapper">
-        <a href="/">
-            <img class="logo" src="assets/images/logo.png" />
-        </a>
-        <span>Docs</span>
-    </div>
-
-    <nav class="menu-list">
-        <ul>
-            <li>
-                <a class="nav-link" href="https://forums.bagisto.com/">Forum</a>
-            </li>
-            <li>
-                <a class="nav-link" href="https://bagisto.com/en/blog/">Blogs</a>
-            </li>
-        </ul>
-    </nav>
-</header>
 
                 <div class="content">
                     <div class="side-menu">
-                        <div class="sidebar">
+                        
+<div class="sidebar">
+    <header class="header">
+        <div class="logo-wrapper">
+            <a href="http://127.0.0.1:4000/bagisto-docs/">
+                <img class="logo" src="assets/images/logo.png" />
+            </a>
+
+            <span>Docs</span>
+        </div>
+    </header>
+
     <ul>
-        <li class="menu-heading">
-            <a href="index.html">Introduction</a>
+            <!-- Introduction -->
+            <li class="menu-heading">
+                <a class="menu-heading-title" href="index.html">Introduction</a>
 
-            <div class="horizontal-rule"></div>
+                <ul class="sub-menu">
+                    <li>
+                        <a href="index.html#requirements">Requirements</a>
+                    </li>
 
-            <ul class="sub-menu">
-                <li>
-                    <a href="#requirements">Requirements</a>
-                </li>
+                    <li>
+                        <a href="index.html#installation">Installation & configuration</a>
+                    </li>
 
-                <li>
-                    <a href="#installation">Installation & configuration</a>
-                </li>
+                    <li>
+                        <a href="index.html#directory_structure">Directory structure</a>
+                    </li>
+                </ul>
+            </li>
 
-                <li>
-                    <a href="#directory_structure">Directory structure</a>
-                </li>
-            </ul>
-        </li>
+            <!-- Module Development -->
+            <li class="menu-heading">
+                <a class="menu-heading-title" href="create_package.html">Package development</a>
 
-        <!-- Module Development -->
-        <li class="menu-heading">
-            <a href="create_module.html">Package development</a>
-            <div class="horizontal-rule"></div>
+                <ul class="sub-menu">
+                    <li>
+                        <a href="create_package.html#how-to-create-package">Creating a package</a>
+                    </li>
 
-            <ul class="sub-menu">
-                <li>
-                    <a href="#how-to-create-module">Creating a package</a>
-                </li>
+                    <li>
+                        <a href="create_package.html#add-menu">Adding menu in backend & storefront</a>
+                    </li>
 
-                <li>
-                    <a href="#add-menu">Adding menu in backend & storefront</a>
-                </li>
+                    <li>
+                        <a href="create_package.html#create-acl">Creating ACL</a>
+                    </li>
 
-                <li>
-                    <a href="#create-acl">Creating ACL</a>
-                </li>
+                    <li>
+                        <a href="create_package.html#custom-configuration">Custom configuration</a>
+                    </li>
 
-                <li>
-                    <a href="#custom-configuration">Custom configuration</a>
-                </li>
+                    <li>
+                        <a href="create_package.html#create_models">Creating models</a>
 
-                <li>
-                    <a href="#create_models">Creating models</a>
+                        <ul>
+                            <li>
+                                <a href="create_package.html#about">Contracts, repositories & proxies</a>
+                            </li>
 
-                    <ul>
-                        <li>
-                            <a href="">Contracts, repositories & proxies</a>
-                        </li>
+                            <li>
+                                <a href="create_package.html#store-data-through-repository">
+                                    Store data with repository
+                                </a>
+                            </li>
+                        </ul>
 
-                        <li>
-                            <a href="#store-data-through-repository">
-                                Store data with repository
-                            </a>
-                        </li>
-                    </ul>
+                    </li>
+                </ul>
+            </li>
 
-                </li>
-            </ul>
-        </li>
+            <!-- Advanced Topics -->
+            <li class="menu-heading">
+                <a class="menu-heading-title" href="override-core-model.html">Advance topics</a>
 
-        <!-- Advanced Topics -->
+                <ul class="sub-menu">
+                    <li>
+                        <a data-id="override-core-model.html" href="override-core-model.html">Override core models</a>
+                    </li>
 
-        <li class="menu-heading">
-            <a href="override-core-model.html">Advance topics</a>
-            <div class="horizontal-rule"></div>
+                    <li>
+                        <a href="create_theme.html">Creating themes</a>
+                    </li>
 
-            <ul class="sub-menu">
-                <li>
-                    <a href="override-core-model.html">Override core models</a>
-                </li>
+                    <li>
+                        <a href="create_shipping_method.html">Creating shipping method</a>
+                    </li>
 
-                <li>
-                    <a href="create_theme.html">Creating themes</a>
-                </li>
+                    <li>
+                        <a href="create_payment_method.html">Creating Payment method</a>
+                    </li>
 
-                <li>
-                    <a href="create_shipping_method.html">Creating shipping method</a>
-                </li>
+                    <li>
+                        <a href="render_event.html">View render event</a>
+                    </li>
 
-                <li>
-                    <a href="create_payment_method.html">Creating Payment method</a>
-                </li>
+                    <li>
+                        <a href="events.html">Events</a>
+                    </li>
 
-                <li>
-                    <a href="render_event.html">View render event</a>
-                </li>
-
-                <li>
-                    <a href="events.html">Events</a>
-                </li>
-
-                <li>
-                    <a href="listen_event.html">Listen existing events</a>
-                </li>
-
-                <li>
-                    <a href="data_grid.html">Data Grid</a>
-                </li>
-            </ul>
-        </li>
+                    <li>
+                        <a href="data_grid.html">Data Grid</a>
+                    </li>
+                </ul>
+            </li>
     </ul>
 </div>
 
+<script>
+    $('.sub-menu li a').on('click', function(){
+        href = $(this).attr('href');
+
+        if(window.location.href.indexOf(href)) {
+            $('li a.current').removeClass('current');
+            $(this).addClass('current');
+
+            $(this).closest('.menu-heading').find('.menu-heading-title').css('color','#0031F0');
+        }
+    });
+</script>
                     </div>
 
                     <div class="right-content">
-                        <h2 id="datagrid-edit-on-github">DataGrid<span class="edit-github"><img src="/assets/images/icons/Icon-Pencil-Large.svg" /> <a href="https://github.com/bagisto/bagisto-docs/blob/master/data_grid.md">edit on github</a></span></h2>
+                        <h1 id="datagrid">DataGrid</h1>
 
-<p>DataGrid is just a concept of displaying your database records in tabular format. We have implemented this system in bagisto either you can use it to display data in tabular format or write code from scratch to display data in tabular format. In addition to datagrid, we have implemented additional features such as - sorting, filter, massAction . You may refer to below table for detail information about the features.</p>
+<p><img src="/bagisto-docs/assets/images/icons/Icon-Pencil-Large.svg" alt="edit on github" class="pencil-icon" />
+<a href="https://github.com/bagisto/bagisto-docs/blob/master/data_grid.md" class="edit-github" target="_blank">edit on github</a></p>
+
+<p>DataGrid is just a concept of displaying your database records in tabular format. We have implemented this system in Bagisto either you can use it to display data in tabular format or write code from scratch to display data in tabular format. In addition to datagrid, we have implemented additional features such as - sorting, filter, massAction . You may refer to below table for detailed information about the features.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">AttributeDataGrid</span> <span class="k">extends</span> <span class="nx">DataGrid</span>
+<span class="p">{</span>
+    <span class="k">protected</span> <span class="nv">$index</span> <span class="o">=</span> <span class="s1">'id'</span><span class="p">;</span> <span class="c1">//the column that needs to be treated as index column
+</span>
+    <span class="k">protected</span> <span class="nv">$sortOrder</span> <span class="o">=</span> <span class="s1">'desc'</span><span class="p">;</span> <span class="c1">//asc or desc
+</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">prepareQueryBuilder</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$queryBuilder</span> <span class="o">=</span> <span class="nx">DB</span><span class="o">::</span><span class="na">table</span><span class="p">(</span><span class="s1">'attributes'</span><span class="p">)</span>
+                <span class="o">-&gt;</span><span class="na">select</span><span class="p">(</span><span class="s1">'id'</span><span class="p">)</span>
+                <span class="o">-&gt;</span><span class="na">addSelect</span><span class="p">(</span><span class="s1">'id'</span><span class="p">,</span> <span class="s1">'code'</span><span class="p">,</span> <span class="s1">'admin_name'</span><span class="p">,</span> <span class="s1">'type'</span><span class="p">,</span> <span class="s1">'is_required'</span><span class="p">,</span> <span class="s1">'is_unique'</span><span class="p">,</span> <span class="s1">'value_per_locale'</span><span class="p">,</span> <span class="s1">'value_per_channel'</span><span class="p">);</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">setQueryBuilder</span><span class="p">(</span><span class="nv">$queryBuilder</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">addColumns</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addColumn</span><span class="p">([</span>
+            <span class="s1">'index'</span> <span class="o">=&gt;</span> <span class="s1">'id'</span><span class="p">,</span>
+            <span class="s1">'label'</span> <span class="o">=&gt;</span> <span class="nx">trans</span><span class="p">(</span><span class="s1">'admin::app.datagrid.id'</span><span class="p">),</span>
+            <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'number'</span><span class="p">,</span>
+            <span class="s1">'searchable'</span> <span class="o">=&gt;</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="s1">'sortable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="s1">'filterable'</span> <span class="o">=&gt;</span> <span class="kc">true</span>
+        <span class="p">]);</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addColumn</span><span class="p">([</span>
+            <span class="s1">'index'</span> <span class="o">=&gt;</span> <span class="s1">'code'</span><span class="p">,</span>
+            <span class="s1">'label'</span> <span class="o">=&gt;</span> <span class="nx">trans</span><span class="p">(</span><span class="s1">'admin::app.datagrid.code'</span><span class="p">),</span>
+            <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'string'</span><span class="p">,</span>
+            <span class="s1">'searchable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="s1">'sortable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="s1">'filterable'</span> <span class="o">=&gt;</span> <span class="kc">true</span>
+        <span class="p">]);</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addColumn</span><span class="p">([</span>
+            <span class="s1">'index'</span> <span class="o">=&gt;</span> <span class="s1">'admin_name'</span><span class="p">,</span>
+            <span class="s1">'label'</span> <span class="o">=&gt;</span> <span class="nx">trans</span><span class="p">(</span><span class="s1">'admin::app.datagrid.admin-name'</span><span class="p">),</span>
+            <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'string'</span><span class="p">,</span>
+            <span class="s1">'searchable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="s1">'sortable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="s1">'filterable'</span> <span class="o">=&gt;</span> <span class="kc">true</span>
+        <span class="p">]);</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addColumn</span><span class="p">([</span>
+            <span class="s1">'index'</span> <span class="o">=&gt;</span> <span class="s1">'type'</span><span class="p">,</span>
+            <span class="s1">'label'</span> <span class="o">=&gt;</span> <span class="nx">trans</span><span class="p">(</span><span class="s1">'admin::app.datagrid.type'</span><span class="p">),</span>
+            <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'string'</span><span class="p">,</span>
+            <span class="s1">'sortable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="s1">'searchable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="s1">'filterable'</span> <span class="o">=&gt;</span> <span class="kc">true</span>
+        <span class="p">]);</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addColumn</span><span class="p">([</span>
+            <span class="s1">'index'</span> <span class="o">=&gt;</span> <span class="s1">'is_required'</span><span class="p">,</span>
+            <span class="s1">'label'</span> <span class="o">=&gt;</span> <span class="nx">trans</span><span class="p">(</span><span class="s1">'admin::app.datagrid.required'</span><span class="p">),</span>
+            <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'boolean'</span><span class="p">,</span>
+            <span class="s1">'sortable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="s1">'searchable'</span> <span class="o">=&gt;</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="s1">'wrapper'</span> <span class="o">=&gt;</span> <span class="k">function</span><span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span><span class="o">-&gt;</span><span class="na">is_required</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="s1">'True'</span><span class="p">;</span>
+                <span class="k">else</span>
+                    <span class="k">return</span> <span class="s1">'False'</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">]);</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addColumn</span><span class="p">([</span>
+            <span class="s1">'index'</span> <span class="o">=&gt;</span> <span class="s1">'is_unique'</span><span class="p">,</span>
+            <span class="s1">'label'</span> <span class="o">=&gt;</span> <span class="nx">trans</span><span class="p">(</span><span class="s1">'admin::app.datagrid.unique'</span><span class="p">),</span>
+            <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'boolean'</span><span class="p">,</span>
+            <span class="s1">'sortable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="s1">'searchable'</span> <span class="o">=&gt;</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="s1">'filterable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="s1">'wrapper'</span> <span class="o">=&gt;</span> <span class="k">function</span><span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span><span class="o">-&gt;</span><span class="na">is_unique</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="s1">'True'</span><span class="p">;</span>
+                <span class="k">else</span>
+                    <span class="k">return</span> <span class="s1">'False'</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">]);</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addColumn</span><span class="p">([</span>
+            <span class="s1">'index'</span> <span class="o">=&gt;</span> <span class="s1">'value_per_locale'</span><span class="p">,</span>
+            <span class="s1">'label'</span> <span class="o">=&gt;</span> <span class="nx">trans</span><span class="p">(</span><span class="s1">'admin::app.datagrid.per-locale'</span><span class="p">),</span>
+            <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'boolean'</span><span class="p">,</span>
+            <span class="s1">'sortable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="s1">'searchable'</span> <span class="o">=&gt;</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="s1">'filterable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="s1">'wrapper'</span> <span class="o">=&gt;</span> <span class="k">function</span><span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span><span class="o">-&gt;</span><span class="na">value_per_locale</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="s1">'True'</span><span class="p">;</span>
+                <span class="k">else</span>
+                    <span class="k">return</span> <span class="s1">'False'</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">]);</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addColumn</span><span class="p">([</span>
+            <span class="s1">'index'</span> <span class="o">=&gt;</span> <span class="s1">'value_per_channel'</span><span class="p">,</span>
+            <span class="s1">'label'</span> <span class="o">=&gt;</span> <span class="nx">trans</span><span class="p">(</span><span class="s1">'admin::app.datagrid.per-channel'</span><span class="p">),</span>
+            <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'boolean'</span><span class="p">,</span>
+            <span class="s1">'sortable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="s1">'searchable'</span> <span class="o">=&gt;</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="s1">'filterable'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="s1">'wrapper'</span> <span class="o">=&gt;</span> <span class="k">function</span><span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span><span class="o">-&gt;</span><span class="na">value_per_channel</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="s1">'True'</span><span class="p">;</span>
+                <span class="k">else</span>
+                    <span class="k">return</span> <span class="s1">'False'</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">]);</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">prepareActions</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addAction</span><span class="p">([</span>
+            <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'Edit'</span><span class="p">,</span>
+            <span class="s1">'method'</span> <span class="o">=&gt;</span> <span class="s1">'GET'</span><span class="p">,</span> <span class="c1">//use post only for redirects only
+</span>            <span class="s1">'route'</span> <span class="o">=&gt;</span> <span class="s1">'admin.catalog.attributes.edit'</span><span class="p">,</span>
+            <span class="s1">'icon'</span> <span class="o">=&gt;</span> <span class="s1">'icon pencil-lg-icon'</span>
+        <span class="p">]);</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addAction</span><span class="p">([</span>
+            <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'Delete'</span><span class="p">,</span>
+            <span class="s1">'method'</span> <span class="o">=&gt;</span> <span class="s1">'POST'</span><span class="p">,</span> <span class="c1">//use post only for requests other than redirects
+</span>            <span class="s1">'route'</span> <span class="o">=&gt;</span> <span class="s1">'admin.catalog.attributes.delete'</span><span class="p">,</span>
+            <span class="s1">'icon'</span> <span class="o">=&gt;</span> <span class="s1">'icon trash-icon'</span>
+        <span class="p">]);</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">prepareMassActions</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addMassAction</span><span class="p">([</span>
+            <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'delete'</span><span class="p">,</span>
+            <span class="s1">'action'</span> <span class="o">=&gt;</span> <span class="nx">route</span><span class="p">(</span><span class="s1">'admin.catalog.attributes.massdelete'</span><span class="p">),</span>
+            <span class="s1">'label'</span> <span class="o">=&gt;</span> <span class="s1">'Delete'</span><span class="p">,</span>
+            <span class="s1">'method'</span> <span class="o">=&gt;</span> <span class="s1">'DELETE'</span>
+        <span class="p">]);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><img src="/bagisto-docs/assets/images/Bagisto_Docs_Images/DataGrid/datagrid-pic.png" alt="datagrid" class="screenshot-dimension center" /></p>
 
 <h3 id="global-properties-of-datagrid">Global Properties of DataGrid</h3>
 
@@ -157,7 +301,7 @@
   <tbody>
     <tr>
       <td>index</td>
-      <td>This variable is defined in  grid, and the value assign to this variable must be unique i.e., id so that data will be uniquely identified and operation  perform will be based on your index variable</td>
+      <td>This variable is defined in  grid, and the value assigned to this variable must be unique i.e., id so that data will be uniquely identified and operations  performed will be based on your index variable</td>
     </tr>
     <tr>
       <td>sortOrder</td>
@@ -169,11 +313,11 @@
     </tr>
     <tr>
       <td>enableMassAction</td>
-      <td>this accept boolean values <code class="highlighter-rouge">true/false</code> to enable/disable the mass action on datagrid</td>
+      <td>This accepts boolean values <code class="highlighter-rouge">true/false</code> to enable/disable the mass action on datagrid</td>
     </tr>
     <tr>
       <td>enableAction</td>
-      <td>this accept boolean values <code class="highlighter-rouge">true/false</code> to enable/disable the action column of datagrid</td>
+      <td>This accepts boolean values <code class="highlighter-rouge">true/false</code> to enable/disable the action column of datagrid</td>
     </tr>
     <tr>
       <td>paginate</td>
@@ -185,12 +329,12 @@
     </tr>
     <tr>
       <td>enableFilterMap</td>
-      <td>this accept boolean values <code class="highlighter-rouge">true/false</code> to enable/disable the filter on the basis of columns</td>
+      <td>this accepts boolean values <code class="highlighter-rouge">true/false</code> to enable/disable the filter on the basis of columns</td>
     </tr>
   </tbody>
 </table>
 
-<h2 id="steps-for-how-to-create-datagrid">Steps for how to create DataGrid</h2>
+<h3 id="steps-for-how-to-create-datagrid">Steps for how to create DataGrid</h3>
 
 <ol>
   <li>
@@ -208,7 +352,7 @@
  setQueryBuilder method is called</p>
 
         <ul>
-          <li><strong><em>setQueryBuilder()</em></strong> : This method written in DataGrid file of UI package. This is used for setting the <code class="highlighter-rouge">$queryBuilder</code> array</li>
+          <li><strong><em>setQueryBuilder()</em></strong> : This method is written in DataGrid file of UI package. This is used for setting the <code class="highlighter-rouge">$queryBuilder</code> array</li>
         </ul>
       </li>
       <li>
@@ -230,23 +374,23 @@
         </tr>
         <tr>
           <td>label</td>
-          <td>in this key, the name of column is defined</td>
+          <td>In this key, the name of column is defined</td>
         </tr>
         <tr>
           <td>type</td>
-          <td>this key accept the type of data in column</td>
+          <td>This key accepts the type of data in column</td>
         </tr>
         <tr>
           <td>searchable</td>
-          <td>this accept boolean values <code class="highlighter-rouge">true/false</code> to make the column searchable</td>
+          <td>This accepts boolean values <code class="highlighter-rouge">true/false</code> to make the column searchable</td>
         </tr>
         <tr>
           <td>sortable</td>
-          <td>this accept boolean values <code class="highlighter-rouge">true/false</code> to make the column sortable</td>
+          <td>This accepts boolean values <code class="highlighter-rouge">true/false</code> to make the column sortable</td>
         </tr>
         <tr>
           <td>filterable</td>
-          <td>this accept boolean values <code class="highlighter-rouge">true/false</code> to make the column filterable</td>
+          <td>This accepts boolean values <code class="highlighter-rouge">true/false</code> to make the column filterable</td>
         </tr>
         <tr>
           <td>wrapper</td>
@@ -283,7 +427,7 @@
         </tr>
         <tr>
           <td>route</td>
-          <td>this key accept the route of icon</td>
+          <td>This key accepts the route of icon</td>
         </tr>
         <tr>
           <td>icon</td>
@@ -291,22 +435,24 @@
         </tr>
         <tr>
           <td>confirm_text</td>
-          <td>A confirm box is open on clicking action icon  if you want the user to verify or accept something. you can include message here</td>
+          <td>A confirm box is open on clicking action icon  if you want the user to verify or accepts something. you can include message here</td>
         </tr>
         <tr>
           <td>label</td>
-          <td>the text to be displayed in written here, you may use translation also here</td>
+          <td>The text to be displayed in written here, you may use translation also here</td>
         </tr>
       </tbody>
     </table>
   </li>
 </ol>
 
-<h2 id="warning"><strong><em>Warning</em></strong></h2>
+<p><img src="/bagisto-docs/assets/images/Bagisto_Docs_Images/DataGrid/grid-action.png" alt="add-action" class="screenshot-dimension center" /></p>
+
+<h3 id="warning"><strong><em>Warning</em></strong></h3>
 
 <ul>
   <li>
-    <p><strong><em>Use JavaScripts with wrapper perperty set to true when really needed</em></strong></p>
+    <p><strong><em>Use JavaScript with wrapper perperty set to true when really needed</em></strong></p>
   </li>
   <li>
     <p><strong><em>Return static blade files loaded with scripts in it with caution</em></strong></p>

@@ -4,148 +4,148 @@
         <meta charset="utf-8">
         <title>Creating Payment method-Bagisto</title>
         <link rel="stylesheet" href="assets/scss/layout.css" />
-        <link rel="stylesheet" href="/assets/css/syntax.css" />
-        <link rel="icon" sizes="16x16" href="assets/icons/favicon.ico" />
+        <link rel="stylesheet" href="assets/css/syntax.css" />
+        <link rel="icon" sizes="16x16" href="assets/images/icons/favicon.ico" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     </head>
     <body>
         <div class="container">
             <div class="content-wrapper">
-                <header class="header">
-    <div class="logo-wrapper">
-        <a href="/">
-            <img class="logo" src="assets/images/logo.png" />
-        </a>
-        <span>Docs</span>
-    </div>
-
-    <nav class="menu-list">
-        <ul>
-            <li>
-                <a class="nav-link" href="https://forums.bagisto.com/">Forum</a>
-            </li>
-            <li>
-                <a class="nav-link" href="https://bagisto.com/en/blog/">Blogs</a>
-            </li>
-        </ul>
-    </nav>
-</header>
 
                 <div class="content">
                     <div class="side-menu">
-                        <div class="sidebar">
+                        
+<div class="sidebar">
+    <header class="header">
+        <div class="logo-wrapper">
+            <a href="http://127.0.0.1:4000/bagisto-docs/">
+                <img class="logo" src="assets/images/logo.png" />
+            </a>
+
+            <span>Docs</span>
+        </div>
+    </header>
+
     <ul>
-        <li class="menu-heading">
-            <a href="index.html">Introduction</a>
+            <!-- Introduction -->
+            <li class="menu-heading">
+                <a class="menu-heading-title" href="index.html">Introduction</a>
 
-            <div class="horizontal-rule"></div>
+                <ul class="sub-menu">
+                    <li>
+                        <a href="index.html#requirements">Requirements</a>
+                    </li>
 
-            <ul class="sub-menu">
-                <li>
-                    <a href="#requirements">Requirements</a>
-                </li>
+                    <li>
+                        <a href="index.html#installation">Installation & configuration</a>
+                    </li>
 
-                <li>
-                    <a href="#installation">Installation & configuration</a>
-                </li>
+                    <li>
+                        <a href="index.html#directory_structure">Directory structure</a>
+                    </li>
+                </ul>
+            </li>
 
-                <li>
-                    <a href="#directory_structure">Directory structure</a>
-                </li>
-            </ul>
-        </li>
+            <!-- Module Development -->
+            <li class="menu-heading">
+                <a class="menu-heading-title" href="create_package.html">Package development</a>
 
-        <!-- Module Development -->
-        <li class="menu-heading">
-            <a href="create_module.html">Package development</a>
-            <div class="horizontal-rule"></div>
+                <ul class="sub-menu">
+                    <li>
+                        <a href="create_package.html#how-to-create-package">Creating a package</a>
+                    </li>
 
-            <ul class="sub-menu">
-                <li>
-                    <a href="#how-to-create-module">Creating a package</a>
-                </li>
+                    <li>
+                        <a href="create_package.html#add-menu">Adding menu in backend & storefront</a>
+                    </li>
 
-                <li>
-                    <a href="#add-menu">Adding menu in backend & storefront</a>
-                </li>
+                    <li>
+                        <a href="create_package.html#create-acl">Creating ACL</a>
+                    </li>
 
-                <li>
-                    <a href="#create-acl">Creating ACL</a>
-                </li>
+                    <li>
+                        <a href="create_package.html#custom-configuration">Custom configuration</a>
+                    </li>
 
-                <li>
-                    <a href="#custom-configuration">Custom configuration</a>
-                </li>
+                    <li>
+                        <a href="create_package.html#create_models">Creating models</a>
 
-                <li>
-                    <a href="#create_models">Creating models</a>
+                        <ul>
+                            <li>
+                                <a href="create_package.html#about">Contracts, repositories & proxies</a>
+                            </li>
 
-                    <ul>
-                        <li>
-                            <a href="">Contracts, repositories & proxies</a>
-                        </li>
+                            <li>
+                                <a href="create_package.html#store-data-through-repository">
+                                    Store data with repository
+                                </a>
+                            </li>
+                        </ul>
 
-                        <li>
-                            <a href="#store-data-through-repository">
-                                Store data with repository
-                            </a>
-                        </li>
-                    </ul>
+                    </li>
+                </ul>
+            </li>
 
-                </li>
-            </ul>
-        </li>
+            <!-- Advanced Topics -->
+            <li class="menu-heading">
+                <a class="menu-heading-title" href="override-core-model.html">Advance topics</a>
 
-        <!-- Advanced Topics -->
+                <ul class="sub-menu">
+                    <li>
+                        <a data-id="override-core-model.html" href="override-core-model.html">Override core models</a>
+                    </li>
 
-        <li class="menu-heading">
-            <a href="override-core-model.html">Advance topics</a>
-            <div class="horizontal-rule"></div>
+                    <li>
+                        <a href="create_theme.html">Creating themes</a>
+                    </li>
 
-            <ul class="sub-menu">
-                <li>
-                    <a href="override-core-model.html">Override core models</a>
-                </li>
+                    <li>
+                        <a href="create_shipping_method.html">Creating shipping method</a>
+                    </li>
 
-                <li>
-                    <a href="create_theme.html">Creating themes</a>
-                </li>
+                    <li>
+                        <a href="create_payment_method.html">Creating Payment method</a>
+                    </li>
 
-                <li>
-                    <a href="create_shipping_method.html">Creating shipping method</a>
-                </li>
+                    <li>
+                        <a href="render_event.html">View render event</a>
+                    </li>
 
-                <li>
-                    <a href="create_payment_method.html">Creating Payment method</a>
-                </li>
+                    <li>
+                        <a href="events.html">Events</a>
+                    </li>
 
-                <li>
-                    <a href="render_event.html">View render event</a>
-                </li>
-
-                <li>
-                    <a href="events.html">Events</a>
-                </li>
-
-                <li>
-                    <a href="listen_event.html">Listen existing events</a>
-                </li>
-
-                <li>
-                    <a href="data_grid.html">Data Grid</a>
-                </li>
-            </ul>
-        </li>
+                    <li>
+                        <a href="data_grid.html">Data Grid</a>
+                    </li>
+                </ul>
+            </li>
     </ul>
 </div>
 
+<script>
+    $('.sub-menu li a').on('click', function(){
+        href = $(this).attr('href');
+
+        if(window.location.href.indexOf(href)) {
+            $('li a.current').removeClass('current');
+            $(this).addClass('current');
+
+            $(this).closest('.menu-heading').find('.menu-heading-title').css('color','#0031F0');
+        }
+    });
+</script>
                     </div>
 
                     <div class="right-content">
-                        <h2 id="payment-method--edit-on-github">Payment Method <span class="edit-github"><img src="/assets/images/icons/Icon-Pencil-Large.svg" /> <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_payment_method.md">edit on github</a></span></h2>
+                        <h1 id="payment-method">Payment Method</h1>
 
-<p>I hope that you know how to create package, if not(refer ( <a href="/create_module.html">Package development</a>), and I will skip package development step</p>
+<p><img src="/bagisto-docs/assets/images/icons/Icon-Pencil-Large.svg" alt="edit on github" class="pencil-icon" />
+<a href="https://github.com/bagisto/bagisto-docs/blob/master/create_payment_method.md" class="edit-github" target="_blank">edit on github</a></p>
 
-<p>Bagisto ease the task of payment method creation so novice to professional developers can easily create payment methods. As diversity payment method provide the options for customer when they proceed to checkout. On another perspective, multiple payment methods  is a great strategy to reach out the global marketplace.</p>
+<p>I hope that you know how to create package, if not(refer <a href="/bagisto-docs/create_package.html">Package development</a>), and I will skip package development step</p>
+
+<p>Bagisto ease the task of creation of payment method so novice to professional developers can easily create payment methods. As diversity of payment methods provide the options to customer for pay when they proceed to checkout. On another perspective, multiple payment methods  is a great strategy to reach out the global marketplace.</p>
 
 <p>In this article, we will understand how to create payment method by own with just following below steps:</p>
 
@@ -153,86 +153,45 @@
 
 <ul>
   <li>
-    <p>Following the module development process, firstly, you must create ‘Config’, ‘Database’
-‘Resources’, ‘Providers’, ‘Models’, ‘Payment’, ‘Repositories’, ‘Http’, ‘Listeners’ folders under src folder of your company’s namespace.</p>
+    <p>Following the module development process, firstly, you must create ‘<strong>Config</strong>’,’<strong>Database</strong>’, <strong>Resources</strong>, ‘<strong>Providers</strong>’, ‘<strong>Models</strong>’, ‘<strong>Payment</strong>’, ‘<strong>Repositories</strong>’, ‘<strong>Http</strong>’, <strong>Listeners</strong> folders under src folder of your company’s namespace.</p>
   </li>
   <li>
-    <p>Within Config folder, contains all of your application’s configuration files. Let’s just create two files as ‘system.php’ and ‘paymentmethod.php’</p>
+    <p>Within <strong>Config</strong> folder, contains all of your application’s configuration files. Let’s just create two files as <em>system.php</em> and <em>paymentmethod.php</em></p>
 
-    <ol>
+    <p><strong>system.php</strong></p>
+
+    <ul>
       <li>
-        <p>system.php</p>
+        <p>Inside the file, you can include the below code as shown in image</p>
 
-        <ul>
-          <li>
-            <p>Inside the file, you can include the below code as shown in image</p>
-
-            <p><img src="/assets/images/Bagisto_Docs_Images/payment-config-1.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
-          </li>
-        </ul>
-
-        <p>#### Explanation for the keys:</p>
-
-        <ul>
-          <li>
-            <p><strong>key</strong> : these values provided are unique and nested with ‘.’ (dot) operator. After creation of two nested, other keys written are display in browser in form of accordian {figure needed}</p>
-          </li>
-          <li>
-            <p><strong>name</strong> : these keys accept the value as placeholder of your configuration. Generally, in bagisto, we consider writing it using translation.</p>
-          </li>
-          <li>
-            <p><strong>sort</strong> : these key accept the sort position for the configuration menu.</p>
-          </li>
-          <li>
-            <p><strong>fields</strong> : these key accepts the array for the value of custom configuration.</p>
-          </li>
-        </ul>
+        <p><img src="/bagisto-docs/assets/images/Bagisto_Docs_Images/payment-config-1.png" alt="system-configuration" class="screenshot-dimension center" /></p>
       </li>
-      <li>
-        <p><img src="/assets/images/Bagisto_Docs_Images/payment-config-2.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
-      </li>
-    </ol>
-  </li>
-  <li>
-    <p>Within Database folder, the migration’s and seeder(if needed) files are stored.</p>
-  </li>
-  <li>
-    <p>Within Resources folder, contains your views as well as your raw, un-compiled assets such as  SASS, or JavaScript. This directory also houses all of your language files.</p>
-  </li>
-  <li>
-    <p>Within Providers folder, contains all of the service providers for your application. Service providers bootstrap your application by binding services in the service container, registering events, or performing any other tasks to prepare your application for incoming requests.</p>
-
-    <p>Here, in our case we have created two providers files i.e.,</p>
-
-    <ol>
-      <li>
-        <p>EventServiceProvider : In this file, events included with your application provides a convenient place to register all of your application’s event listeners.</p>
-      </li>
-      <li>
-        <p>PaymentServiceProvider : In this file, you may register all your configuration, language and routes within register and boot methods.</p>
-      </li>
-    </ol>
-  </li>
-  <li>
-    <p>Within Models folder, the models are stored for the application.</p>
-  </li>
-  <li>
-    <p>Within Payment folder, write the code needed to operate your payment method</p>
-  </li>
-  <li>
-    <p>Within Repositories folder, create a file as ‘HelloWorldRepository.php’ which must extends   repository class</p>
-  </li>
-  <li>
-    <p>Within Http folder, define your routes and controller application.</p>
-  </li>
-  <li>
-    <p>Within Listeners folder, this folder incudes listender files to listen respective events.</p>
+    </ul>
   </li>
 </ul>
 
-<h3 id="an-explanation-for-these-parameters">An Explanation For These Parameters:</h3>
+<h5 id="explanation-for-the-keys">Explanation for the keys:</h5>
 
-<h3 id="an-explanation-for-these-parameters-1">An Explanation For These Parameters:</h3>
+<ul>
+  <li>
+    <p><strong>key</strong> : these values provided are unique and concatenated with ‘.’ (dot) operator. After creation of two nested, other keys written are display in browser in form of accordian</p>
+  </li>
+  <li>
+    <p><strong>name</strong> : these keys accept the value as placeholder of your configuration. Generally, in bagisto, we consider writing it using translation.</p>
+  </li>
+  <li>
+    <p><strong>sort</strong> : these key accept the sort position for the configuration menu.</p>
+  </li>
+  <li>
+    <p><strong>fields</strong> : these key accepts the array for the value of custom configuration.</p>
+
+    <p><strong>paymentmethod.php</strong></p>
+
+    <p><img src="/bagisto-docs/assets/images/Bagisto_Docs_Images/payment-config-2.png" alt="payment-method-configuration" class="screenshot-dimension center" /></p>
+  </li>
+</ul>
+
+<h5 id="an-explanation-for-these-parameters">An Explanation For These Parameters:</h5>
 
 <ul>
   <li>
@@ -252,6 +211,41 @@
   </li>
   <li>
     <p><strong>active</strong> : this field accepts true/false to enable or disbale module.</p>
+  </li>
+  <li>
+    <p>Within <strong>Database</strong> folder, the migration and seeder(if needed) files are stored.</p>
+  </li>
+  <li>
+    <p>Within <strong>Resources</strong> folder, contains your views as well as your raw, un-compiled assets such as  SASS, or JavaScript. This directory also houses all of your language files.</p>
+  </li>
+  <li>
+    <p>Within <strong>Providers</strong> folder, contains all of the service providers for your application. Service providers bootstrap your application by binding services in the service container, registering events, or performing any other tasks to prepare your application for incoming requests.</p>
+
+    <p>Here, in our case we have created two providers files i.e.,</p>
+
+    <ol>
+      <li>
+        <p><strong><em>EventServiceProvider</em></strong> : In this file, events included with your application provides a convenient place to register all of your application’s event listeners.</p>
+      </li>
+      <li>
+        <p><strong><em>PaymentServiceProvider</em></strong> : In this file, you may register all your configuration, language and routes within register and boot methods.</p>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>Within <strong>Models</strong> folder, the models are stored for the application.</p>
+  </li>
+  <li>
+    <p>Within <strong>Payment</strong> folder, write the code needed to operate your payment method</p>
+  </li>
+  <li>
+    <p>Within <strong>Repositories</strong> folder, create a file as <em>HelloWorldRepository.php</em> which must extends   repository class</p>
+  </li>
+  <li>
+    <p>Within <strong>Http</strong> folder, define your routes and controller application.</p>
+  </li>
+  <li>
+    <p>Within <strong>Listeners</strong> folder, this folder includes listener files to listen respective events.</p>
   </li>
 </ul>
 
