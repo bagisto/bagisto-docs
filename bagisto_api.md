@@ -7,19 +7,19 @@ layout: default
 
 ## Introduction
 
-Bagisto Web Api is a medium to use the features of the core Bagisto System. By using Bagisto Web Api, you can integrate your application with the Bagisto Syatem to serve the default content of Bagisto.
+Bagisto Web Api is a medium to use the features of the core Bagisto System. By using Bagisto Web Api, you can integrate your application with the Bagisto System to serve the default content of Bagisto.
 
 ### Key Features:
 
 * Bagisto APIs supports REST (Representational State Transfer).
-* Authentication: Customer Authentication with Login Details.
+* Authentication: Customers Authentication with Login Details.
 * Provide access to performed CURD operations (Create, Update, Read & Delete).
 * Also Provide the option to filter the responses based on Attribute Fields.
 * The Framework supports the Pagination which helps to increase the performance of application.
 
 
 ### Where can I use Bagisto Web APIs?
-We can use the Bagisto APIs in different areaes. Some of them as:
+We can use the Bagisto APIs in different areaes. Some of them are:
 
 * To build a PWA (Progressive Web Application) application, which uses modern web capabilities to deliver an application like experience to the users and provide more user friendly experience than a web application.
 

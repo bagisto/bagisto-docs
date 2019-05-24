@@ -64,7 +64,7 @@ Currently, this **`invoices`** resource is helpful for both admin user and custo
 
 
 ## 2. Get Specific Order's Invoice Based On Order Id:
-To get the detail of specific order's invoice, you have to pass an order_id as a query parameter like **`invoies?order_id={id}`** in API url. By using this resource and query parameter, you will get only a single invoice detail regarding the provided `order_id` in response.
+To get the details of specific order's invoice, you have to pass an order_id as a query parameter like **`invoies?order_id={id}`** in API url. By using this resource and query parameter, you will get only a single invoice detail regarding the provided `order_id` in response.
 
 > *http(s)://example.com/public/api/invoices?order_id={id}*
 
@@ -106,7 +106,7 @@ To get the detail of specific order's invoice, you have to pass an order_id as a
 
 
 ## 3. Get Specific Invoice Based On Invoice Id:
-To get the detail of specific invoice, you have to pass an invoice_id as a request payload like **`invoies/{id}`** in API url. By using this resource and request payload, you will get only `a single object` of invoice detail under the **`data object`** in response.
+To get the details of specific invoice, you have to pass an invoice_id as a request payload like **`invoies/{id}`** in API url. By using this resource and request payload, you will get only `a single object` of invoice detail under the **`data object`** in response.
 
 > *http(s)://example.com/public/api/invoices/{id}*
 
@@ -249,7 +249,7 @@ To get the detail of specific order's shipment, you have to pass an **`'order_id
 
 
 ## 3. Get Specific Shipment Based On Shipment Id:
-To get the detail of specific shipment, you have to pass a **`shipment_id`** as a request payload like **`shipments/{id}`** in API url. By using this resource and request payload, you will get only `a single object` of shipment detail under the **`data object`** in response.
+To get the details of specific shipment, you have to pass a **`shipment_id`** as a request payload like **`shipments/{id}`** in API url. By using this resource and request payload, you will get only `a single object` of shipment detail under the **`data object`** in response.
 
 > *http(s)://example.com/public/api/shipments/{id}*
 

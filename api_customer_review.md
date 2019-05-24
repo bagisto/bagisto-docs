@@ -6,7 +6,7 @@ layout: default
 # How To Create Requests For Customer's Reviews <span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px"/> <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_module.md">Edit On github</a></span>
 
 ## 1. Get All Reviews Of Specific Customer:
-To get all the reviews of a specific customer, you have to pass a **`customer_id`** as a query parameter like **`reviews?customer={id}`** in API url. To use this API call customer authentication is not required.
+To get all the reviews of a specific customer, you have to pass a **`customer_id`** as a query parameter like **`reviews?customer={id}`** in API url. To use this API call customer's authentication is not required.
 
 > *http(s)://example.com/public/api/reviews?customer_id={id}*
 
@@ -101,7 +101,7 @@ You can get customer's reviews according to the pagination. You can define the l
 
 #### data object:
 
-Under the data object, you will find a array of multiple objects which contain the details of the customer's reviews. you can use these objects to access the data of each individual customer's review.
+Under the data object, you will find an array of multiple objects which contains the details of the customer's reviews. you can use these objects to access the data of each individual customer's review.
 
 **Note: Regarding both link and meta objects, we already explained these objects functionality in <a href="api_category.html#link-object" target="_blank" class="bagsito-link"> Category API </a> section.**
 
