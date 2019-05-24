@@ -4,147 +4,148 @@
         <meta charset="utf-8">
         <title>Creating shipping method-Bagisto</title>
         <link rel="stylesheet" href="assets/scss/layout.css" />
-        <link rel="stylesheet" href="/assets/css/syntax.css" />
+        <link rel="stylesheet" href="assets/css/syntax.css" />
         <link rel="icon" sizes="16x16" href="assets/images/icons/favicon.ico" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     </head>
     <body>
         <div class="container">
             <div class="content-wrapper">
-                <header class="header">
-    <div class="logo-wrapper">
-        <a href="/">
-            <img class="logo" src="assets/images/logo.png" />
-        </a>
-        <span>Docs</span>
-    </div>
-
-    <nav class="menu-list">
-        <ul>
-            <li>
-                <a class="nav-link" target="_blank" href="https://forums.bagisto.com/">Forum</a>
-            </li>
-            <li>
-                <a class="nav-link" target="_blank" href="https://bagisto.com/en/blog/">Blogs</a>
-            </li>
-        </ul>
-    </nav>
-</header>
 
                 <div class="content">
                     <div class="side-menu">
-                        <div class="sidebar">
+                        
+<div class="sidebar">
+    <header class="header">
+        <div class="logo-wrapper">
+            <a href="http://127.0.0.1:4000/bagisto-docs/">
+                <img class="logo" src="assets/images/logo.png" />
+            </a>
+
+            <span>Docs</span>
+        </div>
+    </header>
+
     <ul>
-        <li class="menu-heading">
-            <a href="index.html">Introduction</a>
+            <!-- Introduction -->
+            <li class="menu-heading">
+                <a class="menu-heading-title" href="index.html">Introduction</a>
 
-            <ul class="sub-menu">
-                <li>
-                    <a href="/index.html#requirements">Requirements</a>
-                </li>
+                <ul class="sub-menu">
+                    <li>
+                        <a href="index.html#requirements">Requirements</a>
+                    </li>
 
-                <li>
-                    <a href="/index.html#installation">Installation & configuration</a>
-                </li>
+                    <li>
+                        <a href="index.html#installation">Installation & configuration</a>
+                    </li>
 
-                <li>
-                    <a href="/index.html#directory_structure">Directory structure</a>
-                </li>
-            </ul>
-        </li>
+                    <li>
+                        <a href="index.html#directory_structure">Directory structure</a>
+                    </li>
+                </ul>
+            </li>
 
-        <!-- Module Development -->
-        <li class="menu-heading">
-            <a href="create_package.html">Package development</a>
+            <!-- Module Development -->
+            <li class="menu-heading">
+                <a class="menu-heading-title" href="create_package.html">Package development</a>
 
-            <ul class="sub-menu">
-                <li>
-                    <a href="create_package.html#how-to-create-module">Creating a package</a>
-                </li>
+                <ul class="sub-menu">
+                    <li>
+                        <a href="create_package.html#how-to-create-package">Creating a package</a>
+                    </li>
 
-                <li>
-                    <a href="create_package.html#add-menu">Adding menu in backend & storefront</a>
-                </li>
+                    <li>
+                        <a href="create_package.html#add-menu">Adding menu in backend & storefront</a>
+                    </li>
 
-                <li>
-                    <a href="create_package.html#create-acl">Creating ACL</a>
-                </li>
+                    <li>
+                        <a href="create_package.html#create-acl">Creating ACL</a>
+                    </li>
 
-                <li>
-                    <a href="create_package.html#custom-configuration">Custom configuration</a>
-                </li>
+                    <li>
+                        <a href="create_package.html#custom-configuration">Custom configuration</a>
+                    </li>
 
-                <li>
-                    <a href="create_package.html#create_models">Creating models</a>
+                    <li>
+                        <a href="create_package.html#create_models">Creating models</a>
 
-                    <ul>
-                        <li>
-                            <a href="create_package.html#about">Contracts, repositories & proxies</a>
-                        </li>
+                        <ul>
+                            <li>
+                                <a href="create_package.html#about">Contracts, repositories & proxies</a>
+                            </li>
 
-                        <li>
-                            <a href="create_package.html#store-data-through-repository">
-                                Store data with repository
-                            </a>
-                        </li>
-                    </ul>
+                            <li>
+                                <a href="create_package.html#store-data-through-repository">
+                                    Store data with repository
+                                </a>
+                            </li>
+                        </ul>
 
-                </li>
-            </ul>
-        </li>
+                    </li>
+                </ul>
+            </li>
 
-        <!-- Advanced Topics -->
+            <!-- Advanced Topics -->
+            <li class="menu-heading">
+                <a class="menu-heading-title" href="override-core-model.html">Advance topics</a>
 
-        <li class="menu-heading">
-            <a href="override-core-model.html">Advance topics</a>
+                <ul class="sub-menu">
+                    <li>
+                        <a data-id="override-core-model.html" href="override-core-model.html">Override core models</a>
+                    </li>
 
-            <ul class="sub-menu">
-                <li>
-                    <a href="override-core-model.html">Override core models</a>
-                </li>
+                    <li>
+                        <a href="create_theme.html">Creating themes</a>
+                    </li>
 
-                <li>
-                    <a href="create_theme.html">Creating themes</a>
-                </li>
+                    <li>
+                        <a href="create_shipping_method.html">Creating shipping method</a>
+                    </li>
 
-                <li>
-                    <a href="create_shipping_method.html">Creating shipping method</a>
-                </li>
+                    <li>
+                        <a href="create_payment_method.html">Creating Payment method</a>
+                    </li>
 
-                <li>
-                    <a href="create_payment_method.html">Creating Payment method</a>
-                </li>
+                    <li>
+                        <a href="render_event.html">View render event</a>
+                    </li>
 
-                <li>
-                    <a href="render_event.html">View render event</a>
-                </li>
+                    <li>
+                        <a href="events.html">Events</a>
+                    </li>
 
-                <li>
-                    <a href="events.html">Events</a>
-                </li>
-
-                <li>
-                    <a href="listen_event.html">Listen existing events</a>
-                </li>
-
-                <li>
-                    <a href="data_grid.html">Data Grid</a>
-                </li>
-            </ul>
-        </li>
+                    <li>
+                        <a href="data_grid.html">Data Grid</a>
+                    </li>
+                </ul>
+            </li>
     </ul>
 </div>
 
+<script>
+    $('.sub-menu li a').on('click', function(){
+        href = $(this).attr('href');
+
+        if(window.location.href.indexOf(href)) {
+            $('li a.current').removeClass('current');
+            $(this).addClass('current');
+
+            $(this).closest('.menu-heading').find('.menu-heading-title').css('color','#0031F0');
+        }
+    });
+</script>
                     </div>
 
                     <div class="right-content">
-                        <h2 id="shipping-method">Shipping Method</h2>
+                        <h1 id="shipping-method">Shipping Method</h1>
 
-<p class="horizontal-rule"><img src="/assets/images/icons/Icon-Pencil-Large.svg" alt="edit on github" class="pencil-icon" />
+<p><img src="/bagisto-docs/assets/images/icons/Icon-Pencil-Large.svg" alt="edit on github" class="pencil-icon" />
 <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_shipping_method.md" class="edit-github" target="_blank">edit on github</a></p>
 
-<p>I hope that you know how to create package, if not(refer ( <a href="create_module.md">Package development</a>), and I will skip package development step</p>
+<p>I hope that you know how to create package, if not(refer <a href="/bagisto-docs/create_package.html">Package development</a>), and I will skip package development step</p>
 
-<h2 id="steps-to-create-shipping-methods">Steps to create shipping methods</h2>
+<h3 id="steps-to-create-shipping-methods">Steps to create shipping methods</h3>
 
 <ul>
   <li>
@@ -166,7 +167,7 @@
   </li>
 </ul>
 
-<h3 id="parameters-needed-for-explanation">Parameters needed for explanation</h3>
+<h5 id="parameters-needed-for-explanation">Parameters needed for explanation</h5>
 
 <ol>
   <li>

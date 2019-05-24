@@ -3,16 +3,157 @@ title: DataGrid-Bagisto
 layout: default
 ---
 
-## DataGrid
+# DataGrid
 
 ![edit on github](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/data_grid.md){:.edit-github  target="_blank"}
-{: .horizontal-rule}
-
-
 
 DataGrid is just a concept of displaying your database records in tabular format. We have implemented this system in bagisto either you can use it to display data in tabular format or write code from scratch to display data in tabular format. In addition to datagrid, we have implemented additional features such as - sorting, filter, massAction . You may refer to below table for detail information about the features.
 
+```php
+class AttributeDataGrid extends DataGrid
+{
+    protected $index = 'id'; //the column that needs to be treated as index column
+
+    protected $sortOrder = 'desc'; //asc or desc
+
+    public function prepareQueryBuilder()
+    {
+        $queryBuilder = DB::table('attributes')
+                ->select('id')
+                ->addSelect('id', 'code', 'admin_name', 'type', 'is_required', 'is_unique', 'value_per_locale', 'value_per_channel');
+
+        $this->setQueryBuilder($queryBuilder);
+    }
+
+    public function addColumns()
+    {
+        $this->addColumn([
+            'index' => 'id',
+            'label' => trans('admin::app.datagrid.id'),
+            'type' => 'number',
+            'searchable' => false,
+            'sortable' => true,
+            'filterable' => true
+        ]);
+
+        $this->addColumn([
+            'index' => 'code',
+            'label' => trans('admin::app.datagrid.code'),
+            'type' => 'string',
+            'searchable' => true,
+            'sortable' => true,
+            'filterable' => true
+        ]);
+
+        $this->addColumn([
+            'index' => 'admin_name',
+            'label' => trans('admin::app.datagrid.admin-name'),
+            'type' => 'string',
+            'searchable' => true,
+            'sortable' => true,
+            'filterable' => true
+        ]);
+
+        $this->addColumn([
+            'index' => 'type',
+            'label' => trans('admin::app.datagrid.type'),
+            'type' => 'string',
+            'sortable' => true,
+            'searchable' => true,
+            'filterable' => true
+        ]);
+
+        $this->addColumn([
+            'index' => 'is_required',
+            'label' => trans('admin::app.datagrid.required'),
+            'type' => 'boolean',
+            'sortable' => true,
+            'searchable' => false,
+            'wrapper' => function($value) {
+                if ($value->is_required == 1)
+                    return 'True';
+                else
+                    return 'False';
+            }
+        ]);
+
+        $this->addColumn([
+            'index' => 'is_unique',
+            'label' => trans('admin::app.datagrid.unique'),
+            'type' => 'boolean',
+            'sortable' => true,
+            'searchable' => false,
+            'filterable' => true,
+            'wrapper' => function($value) {
+                if ($value->is_unique == 1)
+                    return 'True';
+                else
+                    return 'False';
+            }
+        ]);
+
+        $this->addColumn([
+            'index' => 'value_per_locale',
+            'label' => trans('admin::app.datagrid.per-locale'),
+            'type' => 'boolean',
+            'sortable' => true,
+            'searchable' => false,
+            'filterable' => true,
+            'wrapper' => function($value) {
+                if ($value->value_per_locale == 1)
+                    return 'True';
+                else
+                    return 'False';
+            }
+        ]);
+
+        $this->addColumn([
+            'index' => 'value_per_channel',
+            'label' => trans('admin::app.datagrid.per-channel'),
+            'type' => 'boolean',
+            'sortable' => true,
+            'searchable' => false,
+            'filterable' => true,
+            'wrapper' => function($value) {
+                if ($value->value_per_channel == 1)
+                    return 'True';
+                else
+                    return 'False';
+            }
+        ]);
+    }
+
+    public function prepareActions()
+    {
+        $this->addAction([
+            'type' => 'Edit',
+            'method' => 'GET', //use post only for redirects only
+            'route' => 'admin.catalog.attributes.edit',
+            'icon' => 'icon pencil-lg-icon'
+        ]);
+
+        $this->addAction([
+            'type' => 'Delete',
+            'method' => 'POST', //use post only for requests other than redirects
+            'route' => 'admin.catalog.attributes.delete',
+            'icon' => 'icon trash-icon'
+        ]);
+    }
+
+    public function prepareMassActions()
+    {
+        $this->addMassAction([
+            'type' => 'delete',
+            'action' => route('admin.catalog.attributes.massdelete'),
+            'label' => 'Delete',
+            'method' => 'DELETE'
+        ]);
+    }
+}
+```
+
+![datagrid](assets/images/Bagisto_Docs_Images/DataGrid/datagrid-pic.png){: .screenshot-dimension .center}
 
 
 ### Global Properties of DataGrid
@@ -29,7 +170,7 @@ DataGrid is just a concept of displaying your database records in tabular format
 |    itemsPerPage      | In itemsPerPage, a numeric value is assigned to `itemsPerPage` variable to display items per page  |
 | enableFilterMap |  this accept boolean values `true/false` to enable/disable the filter on the basis of columns |
 
-## Steps for how to create DataGrid
+### Steps for how to create DataGrid
 
 1. Create a folder 'DataGrid' in your package, inside it create a file for your datagrid folder.
 
@@ -72,8 +213,9 @@ DataGrid is just a concept of displaying your database records in tabular format
 |  label  | the text to be displayed in written here, you may use translation also here  |
 
 
+![add-action](assets/images/Bagisto_Docs_Images/DataGrid/grid-action.png){: .screenshot-dimension .center}
 
-## ***Warning***
+### ***Warning***
 
 * ***Use JavaScripts with wrapper perperty set to true when really needed***
 

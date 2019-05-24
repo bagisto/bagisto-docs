@@ -4,145 +4,146 @@
         <meta charset="utf-8">
         <title>Creating themes-Bagisto</title>
         <link rel="stylesheet" href="assets/scss/layout.css" />
-        <link rel="stylesheet" href="/assets/css/syntax.css" />
+        <link rel="stylesheet" href="assets/css/syntax.css" />
         <link rel="icon" sizes="16x16" href="assets/images/icons/favicon.ico" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     </head>
     <body>
         <div class="container">
             <div class="content-wrapper">
-                <header class="header">
-    <div class="logo-wrapper">
-        <a href="/">
-            <img class="logo" src="assets/images/logo.png" />
-        </a>
-        <span>Docs</span>
-    </div>
-
-    <nav class="menu-list">
-        <ul>
-            <li>
-                <a class="nav-link" target="_blank" href="https://forums.bagisto.com/">Forum</a>
-            </li>
-            <li>
-                <a class="nav-link" target="_blank" href="https://bagisto.com/en/blog/">Blogs</a>
-            </li>
-        </ul>
-    </nav>
-</header>
 
                 <div class="content">
                     <div class="side-menu">
-                        <div class="sidebar">
+                        
+<div class="sidebar">
+    <header class="header">
+        <div class="logo-wrapper">
+            <a href="http://127.0.0.1:4000/bagisto-docs/">
+                <img class="logo" src="assets/images/logo.png" />
+            </a>
+
+            <span>Docs</span>
+        </div>
+    </header>
+
     <ul>
-        <li class="menu-heading">
-            <a href="index.html">Introduction</a>
+            <!-- Introduction -->
+            <li class="menu-heading">
+                <a class="menu-heading-title" href="index.html">Introduction</a>
 
-            <ul class="sub-menu">
-                <li>
-                    <a href="/index.html#requirements">Requirements</a>
-                </li>
+                <ul class="sub-menu">
+                    <li>
+                        <a href="index.html#requirements">Requirements</a>
+                    </li>
 
-                <li>
-                    <a href="/index.html#installation">Installation & configuration</a>
-                </li>
+                    <li>
+                        <a href="index.html#installation">Installation & configuration</a>
+                    </li>
 
-                <li>
-                    <a href="/index.html#directory_structure">Directory structure</a>
-                </li>
-            </ul>
-        </li>
+                    <li>
+                        <a href="index.html#directory_structure">Directory structure</a>
+                    </li>
+                </ul>
+            </li>
 
-        <!-- Module Development -->
-        <li class="menu-heading">
-            <a href="create_package.html">Package development</a>
+            <!-- Module Development -->
+            <li class="menu-heading">
+                <a class="menu-heading-title" href="create_package.html">Package development</a>
 
-            <ul class="sub-menu">
-                <li>
-                    <a href="create_package.html#how-to-create-module">Creating a package</a>
-                </li>
+                <ul class="sub-menu">
+                    <li>
+                        <a href="create_package.html#how-to-create-package">Creating a package</a>
+                    </li>
 
-                <li>
-                    <a href="create_package.html#add-menu">Adding menu in backend & storefront</a>
-                </li>
+                    <li>
+                        <a href="create_package.html#add-menu">Adding menu in backend & storefront</a>
+                    </li>
 
-                <li>
-                    <a href="create_package.html#create-acl">Creating ACL</a>
-                </li>
+                    <li>
+                        <a href="create_package.html#create-acl">Creating ACL</a>
+                    </li>
 
-                <li>
-                    <a href="create_package.html#custom-configuration">Custom configuration</a>
-                </li>
+                    <li>
+                        <a href="create_package.html#custom-configuration">Custom configuration</a>
+                    </li>
 
-                <li>
-                    <a href="create_package.html#create_models">Creating models</a>
+                    <li>
+                        <a href="create_package.html#create_models">Creating models</a>
 
-                    <ul>
-                        <li>
-                            <a href="create_package.html#about">Contracts, repositories & proxies</a>
-                        </li>
+                        <ul>
+                            <li>
+                                <a href="create_package.html#about">Contracts, repositories & proxies</a>
+                            </li>
 
-                        <li>
-                            <a href="create_package.html#store-data-through-repository">
-                                Store data with repository
-                            </a>
-                        </li>
-                    </ul>
+                            <li>
+                                <a href="create_package.html#store-data-through-repository">
+                                    Store data with repository
+                                </a>
+                            </li>
+                        </ul>
 
-                </li>
-            </ul>
-        </li>
+                    </li>
+                </ul>
+            </li>
 
-        <!-- Advanced Topics -->
+            <!-- Advanced Topics -->
+            <li class="menu-heading">
+                <a class="menu-heading-title" href="override-core-model.html">Advance topics</a>
 
-        <li class="menu-heading">
-            <a href="override-core-model.html">Advance topics</a>
+                <ul class="sub-menu">
+                    <li>
+                        <a data-id="override-core-model.html" href="override-core-model.html">Override core models</a>
+                    </li>
 
-            <ul class="sub-menu">
-                <li>
-                    <a href="override-core-model.html">Override core models</a>
-                </li>
+                    <li>
+                        <a href="create_theme.html">Creating themes</a>
+                    </li>
 
-                <li>
-                    <a href="create_theme.html">Creating themes</a>
-                </li>
+                    <li>
+                        <a href="create_shipping_method.html">Creating shipping method</a>
+                    </li>
 
-                <li>
-                    <a href="create_shipping_method.html">Creating shipping method</a>
-                </li>
+                    <li>
+                        <a href="create_payment_method.html">Creating Payment method</a>
+                    </li>
 
-                <li>
-                    <a href="create_payment_method.html">Creating Payment method</a>
-                </li>
+                    <li>
+                        <a href="render_event.html">View render event</a>
+                    </li>
 
-                <li>
-                    <a href="render_event.html">View render event</a>
-                </li>
+                    <li>
+                        <a href="events.html">Events</a>
+                    </li>
 
-                <li>
-                    <a href="events.html">Events</a>
-                </li>
-
-                <li>
-                    <a href="listen_event.html">Listen existing events</a>
-                </li>
-
-                <li>
-                    <a href="data_grid.html">Data Grid</a>
-                </li>
-            </ul>
-        </li>
+                    <li>
+                        <a href="data_grid.html">Data Grid</a>
+                    </li>
+                </ul>
+            </li>
     </ul>
 </div>
 
+<script>
+    $('.sub-menu li a').on('click', function(){
+        href = $(this).attr('href');
+
+        if(window.location.href.indexOf(href)) {
+            $('li a.current').removeClass('current');
+            $(this).addClass('current');
+
+            $(this).closest('.menu-heading').find('.menu-heading-title').css('color','#0031F0');
+        }
+    });
+</script>
                     </div>
 
                     <div class="right-content">
-                        <h2 id="create-theme">Create Theme</h2>
+                        <h1 id="create-theme">Create Theme</h1>
 
-<p class="horizontal-rule"><img src="/assets/images/icons/Icon-Pencil-Large.svg" alt="edit on github" class="pencil-icon" />
+<p><img src="/bagisto-docs/assets/images/icons/Icon-Pencil-Large.svg" alt="edit on github" class="pencil-icon" />
 <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_theme.md" class="edit-github" target="_blank">edit on github</a></p>
 
-<p>I hope that you know how to create package, if not(refer ( <a href="create_module.md">Package development</a>), and I will skip package development step</p>
+<p>I hope that you know how to create package, if not(refer <a href="/bagisto-docs/create_package.html">Package development</a>), and I will skip package development step</p>
 
 <p>Creating a custom theme for Bagisto had been a hot topic lately. More and more users are actively trying our framework and we’re genuinely overwhelmed by it.</p>
 
@@ -156,7 +157,7 @@
   <li>Go to your project’s root directory and check for <code class="highlighter-rouge">config</code> folder. Inside it, you will find a file called <code class="highlighter-rouge">themes.php</code>:</li>
 </ul>
 
-<p><img src="/assets/images/Bagisto_Docs_Images/bagisto-theme-1.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
+<p><img src="/bagisto-docs/assets/images/Bagisto_Docs_Images/theme/theme-file-location.png" alt="theme-file-location" width="30%" height="50%" class="center" /></p>
 
 <ul>
   <li>Check contents of ‘themes.php’ file, it holds all necessary information of creating a custom theme.</li>
@@ -184,17 +185,17 @@
 <span class="p">];</span>
 </code></pre></div></div>
 
-<p><img src="/assets/images/Bagisto_Docs_Images/bagisto-theme-2.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
+<p><img src="/bagisto-docs/assets/images/Bagisto_Docs_Images/theme/theme-file-code.png" alt="theme-file" class="screenshot-dimension center" /></p>
 
 <p>Let’s go through the parameters of this theme’s file. Because the understanding of those parameters will help you in creating a custom theme.</p>
 
-<h3 id="an-explanation-for-these-parameters">An Explanation For These Parameters:</h3>
+<h5 id="an-explanation-for-these-parameters">An Explanation For These Parameters:</h5>
 
 <ol>
   <li>default: Declared at the top signifies the currently active or default theme in Bagisto. It is assigned with the value ‘default’. The (string)default indicates the name of the currently active theme.</li>
 </ol>
 
-<p><img src="/assets/images/Bagisto_Docs_Images/bagisto-theme-3.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
+<p><img src="/bagisto-docs/assets/images/Bagisto_Docs_Images/theme/theme-array-key.png" alt="theme" width="30%" height="50%" class="center" /></p>
 
 <ol>
   <li>
@@ -209,7 +210,7 @@
   </li>
 </ol>
 
-<p><img src="/assets/images/Bagisto_Docs_Images/bagisto-theme-4.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
+<p><img src="/bagisto-docs/assets/images/Bagisto_Docs_Images/theme/theme-array.png" alt="default-theme" class="screenshot-dimension center" /></p>
 
 <ul>
   <li>
@@ -226,11 +227,11 @@
   </li>
 </ul>
 
-<p><img src="/assets/images/Bagisto_Docs_Images/bagisto-theme-5.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
+<p><img src="/bagisto-docs/assets/images/Bagisto_Docs_Images/theme/bliss-array.png" alt="bliss-theme" class="screenshot-dimension center" /></p>
 
 <p>Finally, define your own paths and name of your custom theme inside ‘themes.php’ file. And start creating view files. Do not forget to cover all get routes of shop package having a parameter called ‘view’.</p>
 
-<p><img src="/assets/images/Bagisto_Docs_Images/bagisto-theme-6.png" alt="Bagisto Root Directory" height="50%" width="100%" /></p>
+<p><img src="/bagisto-docs/assets/images/Bagisto_Docs_Images/theme/theme-routes.png" alt="theme-route-file-location" width="30%" height="50%" class="center" /></p>
 
 <p>Make sure the name of the blade file should be same as passed in this GET route file like this:</p>
 
@@ -240,8 +241,9 @@
     <span class="p">])</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">(</span><span class="s1">'shop.categories.index'</span><span class="p">);</span>
 </code></pre></div></div>
 
-<p><img src="/assets/images/Bagisto_Docs_Images/bagisto-theme-7.png" alt="Bagisto Root Directory" height="50%" width="100%" />
-For all views check all GET routes as they hold a view parameter with the value of view to be used.</p>
+<p><img src="/bagisto-docs/assets/images/Bagisto_Docs_Images/theme/route.png" alt="theme-route" class="screenshot-dimension center" /></p>
+
+<p>For all views check all GET routes as they hold a view parameter with the value of view to be used.</p>
 
                     </div>
                 </div>
