@@ -5,7 +5,7 @@ layout: default
 
 ## Create Theme<span class="edit-github"><img src="/assets/images/icons/Icon-Pencil-Large.svg"/> <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_theme.md">edit on github</a></span>
 
-I hope that you know how to create package, if not(refer ( [Package development](create_module.md)), and I will skip package development step
+I hope that you know how to create package, if not(refer ( [Package development](create_module.md)), and I will skip package development step.
 
 Creating a custom theme for Bagisto had been a hot topic lately. More and more users are actively trying our framework and we’re genuinely overwhelmed by it.
 
@@ -13,7 +13,7 @@ Coming on how to create a custom theme for Bagisto. It’s super easy!!!. With j
 
 ### Steps to create theme
 
-Please follow the below steps on how to create a custom theme in Bagisto.
+Please follow steps mentioned below that how to create a custom theme in Bagisto.
 
 * Go to your project’s root directory and check for `config` folder. Inside it, you will find a file called `themes.php`:
 
@@ -49,7 +49,7 @@ Bagisto’s default theme parameters.
 
    * name: Defines a global name for your theme inside Bagisto.
 
-   * parent: This is a magic parameter that you can find in the commented code below the sub array ‘default‘. Using this parameter you can make use of existing themes inside Bagisto and just customise them even further. This parameter will take the value of the ‘name’ parameter listed in point 3rd above
+   * parent: This is a magic parameter that you can find in the commented code below the sub array ‘default‘. Using this parameter you can make use of existing themes inside Bagisto and just customise them even further. This parameter will take the value of the ‘name’ parameter listed in 3rd point above.
 
 ![Bagisto Root Directory](assets/images/Bagisto_Docs_Images/bagisto-theme-5.png){: height="50%" width="100%"}
 parent parameter allows you to use previously existing theme files.

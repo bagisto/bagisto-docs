@@ -5,9 +5,9 @@ layout: default
 
 ## Payment Method <span class="edit-github"><img src="/assets/images/icons/Icon-Pencil-Large.svg"/> <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_payment_method.md">edit on github</a></span>
 
-I hope that you know how to create package, if not(refer ( [Package development](create_module.md)), and I will skip package development step
+I hope that you know how to create package, if not(refer ( [Package development](create_module.md)), and I will skip package development step.
 
-Bagisto ease the task of payment method creation so novice to professional developers can easily create payment methods. As diversity payment method provide the options for customer when they proceed to checkout. On another perspective, multiple payment methods  is a great strategy to reach out the global marketplace.
+Bagisto eases the task of payment method creation so novice to professional developers can easily create payment methods. As diversity payment method provide the options for the customer when they proceed to checkout. On another perspective, multiple payment methods are a great strategy to reach out to the global marketplace.
 
 In this article, we will understand how to create payment method by own with just following below steps:
 
@@ -28,9 +28,9 @@ In this article, we will understand how to create payment method by own with jus
 
         * **key** : these values provided are unique and nested with '.' (dot) operator. After creation of two nested, other keys written are display in browser in form of accordian {figure needed}
 
-        * **name** : these keys accept the value as placeholder of your configuration. Generally, in bagisto, we consider writing it using translation.
+        * **name** : these keys accepts the value as placeholder of your configuration. Generally, in bagisto, we consider writing it using translation.
 
-        * **sort** : these key accept the sort position for the configuration menu.
+        * **sort** : these key accepts the sort position for the configuration menu.
 
         * **fields** : these key accepts the array for the value of custom configuration.
 
@@ -68,13 +68,13 @@ In this article, we will understand how to create payment method by own with jus
 
 ### An Explanation For These Parameters:
 
-*  **code** : a text to represent payment method
+*  **code** : A text to represent payment method
 
-*  **title** : in this field, the name of payment method is specified
+*  **title** : In this field, the name of payment method is specified
 
-*  **description** : a brief description of payment method.
+*  **description** : A brief description of payment method.
 
-*  **class** : this field includes the class namespace where all functions of payment                method is written
+*  **class** : This field includes the class namespace where all functions of payment                method is written
 
 *  **sandbox** :
 

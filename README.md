@@ -2,7 +2,7 @@
 
 This documentation is rendered online at ***http://127.0.0.1:4000/docs/introduction.html***(after serving)
 
-Jekyll is a simple, extendable, static site generator. You give it text written in your favorite markup language and it churns through layouts to create a static website. Throughout that process you can tweak how you want the site URLs to look, what data gets displayed in the layout, and more.(more details refer to [https://jekyllrb.com/](Jekyll))
+Jekyll is a simple, extendable, static site generator. You give it text written in your favorite markup language and it churns through layouts to create a static website. Throughout that process you can tweak how you want the site URLs to look, which data gets displayed in the layout, and more.( for more details refer to [https://jekyllrb.com/](Jekyll))
 
 ## Getting Started
 

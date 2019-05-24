@@ -6,7 +6,7 @@ layout: default
 
 ## Contracts
 
-Laravel's Contracts are a set of interfaces that define the core services provided by the framework. For example, a Illuminate\Contracts\Queue\Queue contract defines the methods needed for queueing jobs, while the Illuminate\Contracts\Mail\Mailer contract defines the methods needed for sending e-mail.
+Laravel's Contracts are the set of interfaces that defines the core services provided by the framework. For example, a Illuminate\Contracts\Queue\Queue contract defines the methods needed for queueing jobs, while the Illuminate\Contracts\Mail\Mailer contract defines the methods needed for sending e-mail.
 
 Each contract has a corresponding implementation provided by the framework. For example, Laravel provides a queue implementation with a variety of drivers, and a mailer implementation that is powered by SwiftMailer.
 
@@ -22,7 +22,7 @@ All of the Laravel contracts live in their own GitHub repository. This provides 
 
  Steps to store data through repository :
 
-* Beginning with the creation of models, generally models are created using command stated below. The model is created on specified path/location.
+* Beginning with the creation of models, generally models are created using command as stated below. The model is created on specified path/location.
 
 > php artisan make:model HelloWorld --path=""
 
@@ -38,7 +38,7 @@ class DataFlowProfileProxy extends ModelProxy
 }
 ```
 
-* Now ,make a Folder named as Contracts and inside it create a interface file named as HelloWorld.php
+* Now, make a Folder named as Contracts and inside it create a interface file named as HelloWorld.php
 
 * Now, make a repository folder and inside it create a file 'HelloWorldRepository.php' and
 write the model method for repository class and under the method return path of your contract class.

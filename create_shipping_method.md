@@ -5,7 +5,7 @@ layout: default
 
 ## Shipping Method<span class="edit-github"><img src="/assets/images/icons/Icon-Pencil-Large.svg"/> <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_shipping_method.md">edit on github</a></span>
 
-I hope that you know how to create package, if not(refer ( [Package development](create_module.md)), and I will skip package development step
+I hope that you know that how to create package, if not(refer ( [Package development](create_module.md)), and I will skip package development step
 
 
 
@@ -305,7 +305,7 @@ public function register()
 
 ## Custom Configuration <a id="custom-configuration"></a>
 
-Creating a custom configuration ease the task for developer or any non-developer person. It lets you option of enable/disable with the dropdown or any input *type* attribute. Generally, in bagisto, you can find it in admin panel **Configuration menu** .
+Creating a custom configuration eases the task for developer or any non-developer person. It lets you option of enable/disable with the dropdown or any input *type* attribute. Generally, in bagisto, you can find it in admin panel **Configuration menu** .
 
 ### Steps to create custom configuration
 
@@ -322,9 +322,9 @@ Creating a custom configuration ease the task for developer or any non-developer
 
 * **name** : these keys accept the value as placeholder of your configuration. Generally, in bagisto, we consider writing it using translation.
 
-* **sort** : these key accept the sort position for the configuration menu.
+* **sort** : These key accept the sort position for the configuration menu.
 
-* **fields** : these key accepts the array for the value of custom configuration.
+* **fields** : These key accepts the array for the value of custom configuration.
 
 ## Render View for custom menu <a id="view-render-for-menu"></a>
 
