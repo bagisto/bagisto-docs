@@ -46,7 +46,7 @@ td { padding: 5px; }
 
 .content { display: flex; flex-direction: row; justify-content: space-between; padding: 20px; }
 .content .side-menu { width: 320px; background-color: #f1f1f1; position: fixed; height: 100%; overflow: auto; border-right: 2px solid; border-right-color: rgba(151, 151, 151, 0.5); }
-.content .side-menu .sidebar { width: 320px; background-color: #f1f1f1; position: fixed; height: 100%; overflow: auto; border-right: 2px solid; border-right-color: rgba(151, 151, 151, 0.5); margin-top: 40px; }
+.content .side-menu .sidebar { width: 320px; background-color: #f1f1f1; position: fixed; height: 100%; overflow: auto; border-right: 2px solid; border-right-color: rgba(151, 151, 151, 0.5); padding-top: 30px; }
 .content .side-menu .sidebar ul { padding: 0; }
 .content .side-menu .sidebar ul li { list-style-type: none; padding: 4.7px; }
 .content .right-content { width: 100%; padding-left: 340px; }
@@ -73,5 +73,3 @@ td { padding: 5px; }
 .current { color: #0031F0; font-size: 17px !important; }
 
 li ul { padding-left: 20px !important; }
-
-.along { border: 1px solid red; display: flex; flex-flow: row wrap; justify-content: space-around; }

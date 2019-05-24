@@ -23,6 +23,6 @@ To render any template before or after any function we may use view_rener_event
 
 3. This will automatically fire and the page will be included
 
-As , it is fired before and after the event so, this event helps to inject anything before after the load of page
+As , it is fired before and after the event so, this event helps to inject anything before or after the content.
 
 
