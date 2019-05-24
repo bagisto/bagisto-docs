@@ -3,11 +3,13 @@ title: Category Requests | Bagisto Web APIs Documentation
 layout: default
 ---
 
-# How To Create Requests For Categories <span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px"/> <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_module.md">Edit On github</a></span>
+# How To Create Requests For Categories
+![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
+[edit on github](https://github.com/bagisto/bagisto-docs/blob/master/api_category.md){:class="edit-github" target="_blank"}
 
 To get all the Bagisto Categories with the pagination, you have to place a request by using the below API Call with the resource i.e. `categories` :
 
-## 1. Get Categories With Pagination:
+## 1. Get Categories With Pagination: <a id="get-categories-with-pagination"></a>
 
 > *http(s)://example.com/public/api/categories*
 
@@ -15,11 +17,9 @@ To get all the Bagisto Categories with the pagination, you have to place a reque
 
 **Note: If you didn't use the page(?page=x) filter, then it returns the data of the first page by default.**
 
-### Response:
+##### Response:
 
-<a href="assets/images/Bagisto_Api/bagisto_cat_pagination.jpg" target="_blank">
-![Bagisto Root Directory](assets/images/Bagisto_Api/bagisto_cat_pagination.jpg){: height="50%" width="50%" .center}
-</a>
+![bagisto_cat_pagination](assets/images/Bagisto_Api/bagisto_cat_pagination.jpg){:class="screenshot-dimension center"}
     
         {
             "data": [
@@ -46,23 +46,21 @@ To get all the Bagisto Categories with the pagination, you have to place a reque
             "meta": {}
         }
 
-### Explanation:
+##### Explanation:
 
 * In the above response, you will find the three Objects with below mentioned indexes:
     1. data
     2. link
     3. meta
 
-#### data object:
+#### data object: <a id="data-object"></a>
 
 Under the data object, you will find the collection of many objects which represent the bagisto store's categories. you can use the category's index data by accessing these categories sub-objects.
 
-#### link object:
+#### link object: <a id="link-object"></a>
 * Under link object, you will find four indexes, which will be used only with the pagination:
 
-<a href="assets/images/Bagisto_Api/bagisto_cat_link.jpg" target="_blank">
-![Bagisto Root Directory](assets/images/Bagisto_Api/bagisto_cat_link.jpg){: height="50%" width="50%" .center}
-</a>
+![bagisto_cat_link](assets/images/Bagisto_Api/bagisto_cat_link.jpg){:class="screenshot-dimension center"}
 
 **1. `first`: It will represent the first url link of the called API with filter variable `page:first_page`**
 
@@ -88,12 +86,11 @@ Under the data object, you will find the collection of many objects which repres
 * prev_URL -
 > *http(s)://example.com/public/api/categories?page=5*
 
-#### meta object:
+#### meta object: <a id="meta-object"></a>
 * `meta` object will only used with pagination. Under meta object, you will find seven indexes:
 
-<a href="assets/images/Bagisto_Api/bagisto_cat_meta.jpg" target="_blank">
-![Bagisto Root Directory](assets/images/Bagisto_Api/bagisto_cat_meta.jpg){: height="50%" width="50%" .center}
-</a>
+
+![bagisto_cat_meta](assets/images/Bagisto_Api/bagisto_cat_meta.jpg){:class="screenshot-dimension center"}
 
 **1. `current_page`: It will contain the value of currently called page `current_page:1`**
 
@@ -122,7 +119,7 @@ from = (5 * (2-1)) + 1  i.e. 6
             }
         }
 
-**3. to: It will return, the last count of the returned data object based on the provided page and limit filters as parameter `to = (limit * page)`.**
+**3. `to`: It will return, the last count of the returned data object based on the provided page and limit filters as parameter `to = (limit * page)`.**
 * For Example: If you called categories API with page filter 2 `i.e. ?page=2` and a limit filter of 5 `i.e. ?limit=5`, then `to` will contain the value `10`.
 
 > *http(s)://example.com/public/api/categories?limit=5&page=2*
@@ -140,7 +137,7 @@ from = (5 * 2)  i.e. 10
             }
         }
 
-**4. per_page: It will contain the total of record number that will want in a single page `per_page = limit`.**
+**4. `per_page`: It will contain the total of record number that will want in a single page `per_page = limit`.**
 
 > *http(s)://example.com/public/api/categories?limit=5&page=1*
 
@@ -153,7 +150,7 @@ from = (5 * 2)  i.e. 10
             }
         }
 
-**5. last_page: It will contain the value of total of pages. This index value will depend on the limit input parameter and the total number of records `last_page = (total number of records / limit)`.**
+**5. `last_page`: It will contain the value of total of pages. This index value will depend on the limit input parameter and the total number of records `last_page = (total number of records / limit)`.**
 
 * For Example: Suppose there are total 50 categies and you want to fetch them in slot of 10 in each pages, then there will be total 5 total pages `last_page = ( ceil(50) / 10)`.
 
@@ -169,7 +166,7 @@ from = (5 * 2)  i.e. 10
             }
         }
 
-**6. total: It will contain the value of total number of records in the store. `total = total number of records`.**
+**6. `total`: It will contain the value of total number of records in the store. `total = total number of records`.**
 
 > *http(s)://example.com/public/api/categories?limit=10&page=1*
 
@@ -184,7 +181,7 @@ from = (5 * 2)  i.e. 10
             }
         }
 
-**7. path: It will contain the current api url without input parameters.**
+**7. `path`: It will contain the current api url without input parameters.**
 
 > *http(s)://example.com/public/api/categories?limit=10&page=1*
 
@@ -200,35 +197,28 @@ from = (5 * 2)  i.e. 10
             }
         }
 
-<a href="assets/images/Bagisto_Api/bagisto_cat_path.jpg" target="_blank">
-![Bagisto Root Directory](assets/images/Bagisto_Api/bagisto_cat_path.jpg){: height="50%" width="50%" .center}
-</a>
+![bagisto_cat_path](assets/images/Bagisto_Api/bagisto_cat_path.jpg){:class="screenshot-dimension center"}
 
-
-## 2. Get All Categories Without Pagination:
+## 2. Get All Categories Without Pagination: <a id="get-all-categories-without-pagination"></a>
 If you don't want to use the pagination and want to access all the store's categories at once, then you have to send a filter parameter named: `pagination` with value `zero`. By doing this you will get all categories objects at once under the data object and will not get the both link and meta objects.
 
 > **Like: pagination=0**
 
 > *http(s)://example.com/public/api/categories?pagination=0*
 
-<a href="assets/images/Bagisto_Api/bagisto_cat_no_pagination.jpg" target="_blank">
-![Bagisto Root Directory](assets/images/Bagisto_Api/bagisto_cat_no_pagination.jpg){: height="50%" width="50%" .center}
-</a>
+![bagisto_cat_no_pagination](assets/images/Bagisto_Api/bagisto_cat_no_pagination.jpg){:class="screenshot-dimension center"}
 
 
-## 3. Get Specific Category:
+## 3. Get Specific Category: <a id="get-specific-category"></a>
 If you want the record of any specific category, then you have to provide the category id as as input parameter in api url.
 
 > *http(s)://example.com/public/api/categories/1*
 
-<a href="assets/images/Bagisto_Api/bagisto_cat_single.jpg" target="_blank">
-![Bagisto Root Directory](assets/images/Bagisto_Api/bagisto_cat_single.jpg){: height="50%" width="50%" .center}
-</a>
+![bagisto_cat_single](assets/images/Bagisto_Api/bagisto_cat_single.jpg){:class="screenshot-dimension center"}
 
 **Note: Here you will see in the api response `data Object` will only contain the single object of category record**
 
-## 4. Get Direct Descendant Categories Of Specific Category:
+## 4. Get Direct Descendant Categories Of Specific Category: <a id="get-descendant-category"></a>
 If you want to get the direct descendant categories (sub-categories) of any particular category, then you have to follow the below structure of calling the API.
 
 > *http(s)://example.com/public/api/descendant-categories?parent_id=1*
@@ -239,6 +229,4 @@ If you want to get the direct descendant categories (sub-categories) of any part
 
 > *http(s)://example.com/public/api/descendant-categories?parent_id=2*
 
-<a href="assets/images/Bagisto_Api/bagisto_cat_descendant.jpg" target="_blank">
-![Bagisto Root Directory](assets/images/Bagisto_Api/bagisto_cat_descendant.jpg){: height="50%" width="50%" .center}
-</a>
+![bagisto_cat_descendant](assets/images/Bagisto_Api/bagisto_cat_descendant.jpg){:class="screenshot-dimension center"}
