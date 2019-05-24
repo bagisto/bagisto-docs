@@ -73,3 +73,5 @@ td { padding: 5px; }
 .current { color: #0031F0; font-size: 17px !important; }
 
 li ul { padding-left: 20px !important; }
+
+.bagsito-link { color: #0041ff; text-decoration: underline; cursor: pointer; }

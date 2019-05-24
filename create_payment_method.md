@@ -51,7 +51,7 @@ In this article, we will understand how to create payment method by own with jus
 
 *  **class** : this field includes the class namespace where all functions of payment                method is written
 
-*  **sandbox** : this is a custom option with boolean type
+*  **sandbox** : this is a custom option of boolean type
 
 *  **active** : this field accepts true/false to enable or disbale module.
 
