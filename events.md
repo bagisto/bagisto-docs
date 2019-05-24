@@ -36,7 +36,7 @@ public function boot()
 
 #### Manually Registering Listeners
 
-As we see above, in registering events we specify listener function to be executed when event is called so on every event a listener function is to be executed
+As we have seen above, in registering events we specify listener function to be executed when an event is called so on every event a listener function is to be executed
 
 
 ### How we specify events?
@@ -243,7 +243,7 @@ class EventServiceProvider extends ServiceProvider
 | sales.invoice.save.after        | This event will be fire after invoice details have been saved and listen in `ProductFlat` listener file to send new invoice mail from `sendNewInvoiceMail` function  |
 | sales.shipment.save.after       | This event will be fire after shipment details have been saved and listen in `ProductFlat` listener file to send new shipment mail from `sendNewShipmentMail` function  |
 | checkout.order.save.after       | This event will be fire after order has been created  and will listen in `ProductFlat` listener file  to update product inventory from `updateProductInventory` function  |
-| catalog.attribute.create.after  | This event will be fire after attribute has created and listen in `ProductFlat` listener file  from `afterAttributeCreatedUpdated` function  |
+| catalog.attribute.create.after  | This event will be fire after attribute has been created and listen in `ProductFlat` listener file  from `afterAttributeCreatedUpdated` function  |
 | catalog.attribute.update.after  | This event will be fire after attribute has updated and listen in `ProductFlat` listener file  from `afterAttributeCreatedUpdated` function  |
 | catalog.attribute.delete.before | This event will be fire before attribute has been delete and listen in `ProductFlat` listener file  from `afterAttributeDeleted` function  |
 | catalog.product.create.after    | This event will be fire after product has been creation and listen in `ProductFlat` listener file  from `afterProductCreatedUpdated` function  |

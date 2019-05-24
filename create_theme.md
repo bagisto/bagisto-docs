@@ -17,7 +17,7 @@ Coming on how to create a custom theme for Bagisto. It’s super easy!!!. With j
 
 ### Steps to create theme
 
-Please follow the below steps on how to create a custom theme in Bagisto.
+Please follow steps mentioned below that how to create a custom theme in Bagisto.
 
 * Go to your project’s root directory and check for `config` folder. Inside it, you will find a file called `themes.php`:
 
@@ -75,7 +75,7 @@ Let’s go through the parameters of this theme’s file. Because the understand
 
    * name: Defines a global name for your theme inside Bagisto.
 
-   * parent: This is a magic parameter that you can find in the commented code below the sub array ‘default‘. Using this parameter you can make use of existing themes inside Bagisto and just customise them even further. This parameter will take the value of the ‘name’ parameter listed in point 3rd above
+   * parent: This is a magic parameter that you can find in the commented code below the sub array ‘default‘. Using this parameter you can make use of existing themes inside Bagisto and just customise them even further. This parameter will take the value of the ‘name’ parameter listed in 3rd point above.
 
 ![bliss-theme](assets/images/Bagisto_Docs_Images/theme/bliss-array.png){: .screenshot-dimension .center}
 
