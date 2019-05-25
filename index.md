@@ -1,5 +1,5 @@
 ---
-title: Introduction-Bagisto
+title: Bagisto Documentation | Laravel eCommerce DevDocs
 layout: default
 ---
 

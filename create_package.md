@@ -258,7 +258,7 @@ After doing this we need to add an event listener so that admin layouts include 
 
 
 ```html
-<link rel="stylesheet" href="{`{`bagisto_asset('css/helloworld.css') `}`}">
+<link rel="stylesheet" href="{% raw %} {{ bagisto_asset('css/helloworld.css') }} {% endraw %}">
 ( In style.blade.php)
 ```
 
