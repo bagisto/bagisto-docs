@@ -16,6 +16,9 @@
 <loc>http://localhost:4000/api_customer_review.html</loc>
 </url>
 <url>
+<loc>http://localhost:4000/api_customer_wishlist.html</loc>
+</url>
+<url>
 <loc>http://localhost:4000/api_invoice_shipment.html</loc>
 </url>
 <url>
