@@ -12,7 +12,7 @@ layout: default
 
 ![View Render Event](assets/images/Bagisto_Docs_Images/render-event/view-render-event.png){:  .screenshot-dimension .center}
 
-To render any template before or after any function we may use view_rener_event
+To render any template before or after any function we may use view_render_event
 
 
 ### Steps to render View
@@ -23,6 +23,6 @@ To render any template before or after any function we may use view_rener_event
 
 3. This will automatically fire and the page will be included
 
-As , it is fired before and after the event so, this event helps to inject anything before after the load of page
+As , it is fired before and after the event so, this event helps to inject anything before or after the content.
 
 

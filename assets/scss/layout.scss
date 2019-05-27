@@ -337,9 +337,10 @@ li ul {
 }
 
 .along {
-    border: 1px solid red;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-around;
 }
-.bagsito-link { color: #0041ff; text-decoration: underline; cursor: pointer; }
+
+.bagsito-link {
+    color: #0041ff;
+    text-decoration: underline;
+    cursor: pointer;
+}

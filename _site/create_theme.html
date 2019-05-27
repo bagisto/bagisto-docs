@@ -1,7 +1,10 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <meta charset="utf-8">
+        <meta charset="utf-8" >
+        <meta name="keywords" content="bagisto documentation, bagisto API, laravel ecommerce"/>
+        <meta name="description" contenet="Easily extend functionality, build extensions and mobile applications on top of the bagisto framework using this laravel eCommerce development and API documentation">
+
         <title>Creating themes-Bagisto</title>
         <link rel="stylesheet" href="assets/scss/layout.css" />
         <link rel="stylesheet" href="assets/css/syntax.css" />
@@ -120,11 +123,30 @@
                     </li>
                 </ul>
             </li>
+            <!-- Bagisto APIs -->
+            <li class="menu-heading">
+                <a href="bagisto_api.html">Bagisto Web APIs</a>
+
+                <div class="horizontal-rule"></div>
+
+                <ul class="sub-menu">
+                        <!-- <li><a href="api_call_bagisto.html">Generate A Request</a></li> -->
+                        <li><a href="api_category.html">Categories</a></li>
+                        <li><a href="api_product.html">Products</a></li>
+                        <li><a href="api_product_review.html">Product's Reviews</a></li>
+                        <li><a href="api_customer.html">Customers</a></li>
+                        <li><a href="api_customer_review.html">Customer's Reviews</a></li>
+                        <li><a href="api_customer_addresses.html">Addresses</a></li>
+                        <li><a href="api_order.html">Orders</a></li>
+                        <li><a href="api_invoice_shipment.html">Invoices & Shipments</a></li>
+                        <li><a href="api_cart.html">Shopping Cart</a></li>
+                </ul>
+            </li>
     </ul>
 </div>
 
 <script>
-    $('.sub-menu li a').on('click', function(){
+    $('.sub-menu li a').on('click', function() {
         href = $(this).attr('href');
 
         if(window.location.href.indexOf(href)) {
@@ -133,6 +155,7 @@
 
             $(this).closest('.menu-heading').find('.menu-heading-title').css('color','#0031F0');
         }
+        $(".sub-menu").animate({top: '250px'});
     });
 </script>
                     </div>
