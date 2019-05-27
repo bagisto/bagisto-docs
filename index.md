@@ -50,7 +50,10 @@ Also, You can Check out the roadmap for Bagisto here: [bagisto roadmap](https://
 
 ### Requirements <a id="requirements"></a>:
 
-* **OS**: Ubuntu 16.04 LTS or higher.
+* **OS**:
+    1. Windows 7 or above with WAMP/XAMPP environment
+    2. Compatible with macOS.
+    3. Ubuntu 16.04 LTS or higher
 * **SERVER**: Apache 2 or NGINX
 * **RAM**: 3 GB or higher.
 * **PHP**: 7.1.17 or higher.
