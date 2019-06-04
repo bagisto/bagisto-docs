@@ -72,7 +72,7 @@ You can use logout the customer from the Bagisto store with the help of `custome
 
 
 ## 4. Get Customer's Information:
-You can get the customer information only for the logged in customer. To achieve customers inforamtion you can use the `customer/get` resource. This API call will return you the personal details of logged in customer.
+You can get the customer's information only for the logged in customer. To achieve customers inforamtion you can use the `customer/get` resource. This API call will return you the personal details of logged in customer.
 
 > *http(s)://example.com/public/api/customer/get*
 
@@ -177,7 +177,7 @@ You can create/register a new customer in the Bagisto store. To achieve this tas
 ![Bagisto Root Directory](assets/images/Bagisto_Api/bagisto_cust_register.jpg){: height="50%" width="50%" .center}
 </a>
 
-* In case there is already a customer in the Bagisto Store with the email address for which you are going to create new customer, then you will get a error message in response like:
+* In case there is already a customer in the Bagisto Store with the same email address for which you are going to create new customer, then you will get an error message in response like:
 
 ### Response:
     {
