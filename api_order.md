@@ -6,8 +6,8 @@ layout: default
 # How To Create Requests For Orders <span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px"/> <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_module.md">Edit On github</a></span>
 
 ## 1. Get All Bagisto's Orders:
-You can get all the orders of the Bagisto Store. To get the orders of the store, the customer must be logged in Bagisto Store. You can achieve this job by using **`orders`** API call resource.
-Currently, this **`orders`** resource is helpful for both admin user and customer too.
+You can get all the orders of the Bagisto Store. To get the orders of the store, the customer must be logged into the Bagisto Store. You can achieve this job by using **`orders`** API call resource.
+Currently, this **`orders`** resource is helpful for both admin,user and customer too.
 
 > *http(s)://example.com/public/api/orders*
 
@@ -69,13 +69,13 @@ Currently, this **`orders`** resource is helpful for both admin user and custome
 
 #### data object:
 
-Under the data object, you will find a array of multiple objects which contains the details of the orders. you can use the order's index data by accessing these order sub-objects.
+Under the data object, you will find an array with multiple objects that contains the details of the orders. you can use the order's index data by accessing these order sub-objects.
 
 **Note: Regarding both link and meta objects, we already explained these objects functionality in <a href="api_category.html#link-object" target="_blank" class="bagsito-link"> Category API </a> section.**
 
 
 ### 1.2 Get Orders Without Pagination:
-You can also get all the orders at once of Bagisto Store without pagination. To get the orders, customer must be logged in Bagisto Store. For this you have to pass **`pagination=0`** in the query parameter with the **`orders`** resource in API URL.
+You can also get all the orders at once of Bagisto Store without pagination. To get the orders, customer must be logged into the Bagisto Store. For this you have to pass **`pagination=0`** in the query parameter with the **`orders`** resource in API URL.
 
 #### Request:
 
