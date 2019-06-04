@@ -6,7 +6,7 @@ layout: default
 # How To Create Requests For Cart <span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px"/> <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_module.md">Edit On github</a></span>
 
 ## 1. Get Complete Cart Details:
-To get the current cart details, you have use the **`checkout/cart`** resource in API url. You will see in all the **`cart`** related api, we used **`checkout prefix`**. This API call will work both with customer's authentication or without customer's authentication. If customer is not logged into the store, the this API resource will return the `Guest's` cart detail.
+To get the current cart details, you have to use the **`checkout/cart`** resource in API url. You will see in all the **`cart`** related api, we used **`checkout prefix`**. This API call will work both with customer's authentication or without customer's authentication. If customer is not logged into the store, this API resource will return the `Guest's` cart details.
 
 **Note: In the `checkout/cart` resource API call, we used `GET HTTP verb` to get complete cart details of the customer/guest.**
 
@@ -78,7 +78,7 @@ To get the current cart details, you have use the **`checkout/cart`** resource i
 </a>
 
 ## 2. Add Product To Cart:
-By using this API call you can add new product into the cart and also you can add quantity to the existing product in cart. To do this task, you have use the **`checkout/cart/add/{id}`** resource with **`{id} i.e product_id`** as a request payload in API url. This API call will work both with customer's authentication or without customer's authentication.
+By using this API call you can add new products into the cart and also you can add quantity to the existing product in cart. To do this task, you have use the **`checkout/cart/add/{id}`** resource with **`{id} i.e product_id`** as a request payload in API url. This API call will work both with customer's authentication or without customer's authentication.
 
 > *http(s)://example.com/public/api/checkout/cart/add/{id}*
 
