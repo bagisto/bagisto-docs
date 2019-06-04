@@ -148,7 +148,7 @@ To get the details of specific invoice, you have to pass an invoice_id as a requ
 # How To Create Requests For Shipments <span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px"/> <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_module.md">Edit On github</a></span>
 
 ## 1. Get All Shipments Of All Orders:
-You can get all the shipments of the Bagisto Store. To get the shipments of the store, the customer must be logged in Bagisto Store. You can achieve this job by using **`shipments`** API call resource.
+You can get all the shipments of the Bagisto Store. To get the shipments of the store, the customer must be logged into the Bagisto Store. You can achieve this job by using **`shipments`** API call resource.
 Currently, this **`shipments`** resource is helpful for both admin user and customer too.
 
 > *http(s)://example.com/public/api/shipments*
