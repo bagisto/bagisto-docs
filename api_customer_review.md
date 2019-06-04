@@ -107,7 +107,7 @@ Under the data object, you will find an array of multiple objects which contains
 
 
 ### 1.2 Get Customer's Reviews Without Pagination:
-You can also get all the customer's reviews of Bagisto Store in a single API call without using pagination. For this you have to pass **`pagination=0`** in the query parameter with the **`reviews?customer_id={id}`** resource in API URL.
+You can also get all of the customer's reviews of Bagisto Store in a single API call without using pagination. For this you have to pass **`pagination=0`** in the query parameter with the **`reviews?customer_id={id}`** resource in API URL.
 
 #### Request:
 
