@@ -225,7 +225,7 @@ If you want to get the direct descendant categories (sub-categories) of any part
 
 * In the above API url we passed `parent_id` as an input parameter for which we want to access the direct sub-categories.
 
-* For Exampe: Suppose there is a category named as `Men's Collection` with `category_id=2`  which have two direct sub-categories named as `T-Shirt` and `Men's Shoes`, then the API url will be:
+* For Example: Suppose there is a category named as `Men's Collection` with `category_id=2`  that have two direct sub-categories named as `T-Shirt` and `Men's Shoes`, then the API url will be:
 
 > *http(s)://example.com/public/api/descendant-categories?parent_id=2*
 

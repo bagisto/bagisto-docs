@@ -147,9 +147,8 @@ To get the detail of specific invoice, you have to pass an invoice_id as a reque
 ![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/api_invoice_shipment.md){:class="edit-github" target="_blank"}
 
-
-## 1. Get All Shipments Of All Orders: <a id="get-all-shipments"></a>
-You can get all the shipments of the Bagisto Store. To get the shipments of the store, the customer must be login into the Bagisto Store. You can achieve this job by using **`shipments`** API call resource.
+## 1. Get All Shipments Of All Orders:
+You can get all the shipments of the Bagisto Store. To get the shipments of the store, the customer must be logged into the Bagisto Store. You can achieve this job by using **`shipments`** API call resource.
 Currently, this **`shipments`** resource is helpful for both admin user and customer too.
 
 > *http(s)://example.com/public/api/shipments*

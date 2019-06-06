@@ -105,8 +105,8 @@ Under the data object, you will find a array of multiple objects which contain t
 **Note: Regarding both link and meta objects, we already explained these objects functionality in <a href="api_category.html#link-object" target="_blank" class="bagsito-link"> Category API </a> section.**
 
 
-### 1.2 Get Customer's Reviews Without Pagination: <a id="get-customer-reviews-no-pagination"></a>
-You can also get all the customer's reviews of Bagisto Store in a single API call without using pagination. For this you have to pass **`pagination=0`** in the query parameter with the **`reviews?customer_id={id}`** resource in API URL.
+### 1.2 Get Customer's Reviews Without Pagination:
+You can also get all of the customer's reviews of Bagisto Store in a single API call without using pagination. For this you have to pass **`pagination=0`** in the query parameter with the **`reviews?customer_id={id}`** resource in API URL.
 
 ###### Request:
 
