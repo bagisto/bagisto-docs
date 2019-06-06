@@ -75,9 +75,8 @@ To get the current cart details, you have to use the **`checkout/cart`** resourc
 
 ![bagisto_cart](assets/images/Bagisto_Api/bagisto_cart.jpg){:class="screenshot-dimension center"}
 
-
-## 2. Add Product To Cart: <a id="add-product-to-cart"></a>
-By using this API call you can add new product into the cart and also you can add quantity to the existing product in cart. To do this task, you have to use the **`checkout/cart/add/{id}`** resource with **`{id} i.e product_id`** as a request payload in API url. This API call will work both with customer's authentication or without customer's authentication.
+## 2. Add Product To Cart:
+By using this API call you can add new products into the cart and also you can add quantity to the existing product in cart. To do this task, you have use the **`checkout/cart/add/{id}`** resource with **`{id} i.e product_id`** as a request payload in API url. This API call will work both with customer's authentication or without customer's authentication.
 
 > *http(s)://example.com/public/api/checkout/cart/add/{id}*
 
