@@ -57,7 +57,7 @@ To get all the Bagisto Store Products with the pagination, you have to place a r
 
 #### data object: <a id="data-object"></a>
 
-Under the data object, you will find the collection of many objects which contain the details of bagisto store's products. you can use the product's index data by accessing these products sub-objects.
+Under the data object, you will find the collection of many objects containing the details of bagisto store's products. you can use the product's index data by accessing these products sub-objects.
 
 **Note: Regarding link and meta objects, we already explained these objects functionality in <a href="api_category.html#link-object" target="_blank" class="bagsito-link"> Category API </a> section.**
 

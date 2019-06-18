@@ -7,8 +7,8 @@ layout: default
 ![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/api_customer_addresses.md){:class="edit-github" target="_blank"}
 
-## 1. Get All Addresses of LoggedIn Customer: <a id="get-addresses-of-customer"></a>
-You can get all the addresses of a customer in Bagisto Store. To get the addresses of a customer, that customer must be logged in Bagisto Store. You can achieve this job by using `addresses` API call resource.
+## 1. Get All Addresses of LoggedIn Customer:
+You can get all the addresses of the customers in Bagisto Store. To get the address of a customer, that customer must be logged into the Bagisto Store. You can achieve this job by using `addresses` API call resource.
 
 > *http(s)://example.com/public/api/addresses*
 
@@ -69,13 +69,13 @@ You can get all the addresses of a customer in Bagisto Store. To get the address
 
 #### data object:
 
-Under the data object, you will find the collection of many objects which will contain the details of addresses of the login customer. you can use the addresses's index data by accessing these addresses sub-objects.
+Under the data object, you will find the collection of many objects which will contain the details of address of the logged in customer. you can use the addresses index data by accessing these addresses sub-objects.
 
 **Note: Regarding both link and meta objects, we already explained these objects functionality in <a href="api_category.html#link-object" target="_blank" class="bagsito-link"> Category API </a> section.**
 
 
-### 1.2 Get Addresses Without Pagination: <a id="get-addresses-without-pagination"></a>
-You can also get all the addresses at once without pagination of a customer from Bagisto Store. To get the addresses of a customer, that customer must be login into the Bagisto Store. For this you have to pass **`pagination=0`** in the query parameter in API URL.
+### 1.2 Get Addresses Without Pagination:
+You can also get all the addresses at once without pagination of a customer from Bagisto Store. To get the addresses of a customer, that customer must be logged in Bagisto Store,for this you have to pass **`pagination=0`** in the query parameter in API URL.
 
 ###### Request:
 
