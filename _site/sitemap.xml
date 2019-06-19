@@ -1,63 +1,115 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
 <url>
-<loc>http://localhost:4000/api_cart.html</loc>
+  <loc>https://devdocs.bagisto.com/</loc>
+  <lastmod>2019-05-27T09:09:30+00:00</lastmod>
+  <priority>1.00</priority>
 </url>
 <url>
-<loc>http://localhost:4000/api_category.html</loc>
+  <loc>https://devdocs.bagisto.com/index.html</loc>
+  <lastmod>2019-05-27T09:09:30+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
 <url>
-<loc>http://localhost:4000/api_customer.html</loc>
+  <loc>https://devdocs.bagisto.com/create_package.html</loc>
+  <lastmod>2019-05-27T09:09:30+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
 <url>
-<loc>http://localhost:4000/api_customer_addresses.html</loc>
+  <loc>https://devdocs.bagisto.com/override-core-model.html</loc>
+  <lastmod>2019-05-27T09:09:30+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
 <url>
-<loc>http://localhost:4000/api_customer_review.html</loc>
+  <loc>https://devdocs.bagisto.com/create_theme.html</loc>
+  <lastmod>2019-05-27T09:09:30+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
 <url>
-<loc>http://localhost:4000/api_customer_wishlist.html</loc>
+  <loc>https://devdocs.bagisto.com/create_shipping_method.html</loc>
+  <lastmod>2019-05-27T09:09:30+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
 <url>
-<loc>http://localhost:4000/api_invoice_shipment.html</loc>
+  <loc>https://devdocs.bagisto.com/create_payment_method.html</loc>
+  <lastmod>2019-05-27T09:09:30+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
 <url>
-<loc>http://localhost:4000/api_order.html</loc>
+  <loc>https://devdocs.bagisto.com/render_event.html</loc>
+  <lastmod>2019-05-27T09:09:30+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
 <url>
-<loc>http://localhost:4000/api_product.html</loc>
+  <loc>https://devdocs.bagisto.com/events.html</loc>
+  <lastmod>2019-05-27T09:09:30+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
 <url>
-<loc>http://localhost:4000/api_product_review.html</loc>
+  <loc>https://devdocs.bagisto.com/data_grid.html</loc>
+  <lastmod>2019-05-27T09:09:30+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
 <url>
-<loc>http://localhost:4000/bagisto_api.html</loc>
+  <loc>https://devdocs.bagisto.com/bagisto_api.html</loc>
+  <lastmod>2019-05-27T09:09:30+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
 <url>
-<loc>http://localhost:4000/create_package.html</loc>
+  <loc>https://devdocs.bagisto.com/api_category.html</loc>
+  <lastmod>2019-05-27T09:09:30+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
 <url>
-<loc>http://localhost:4000/create_payment_method.html</loc>
+  <loc>https://devdocs.bagisto.com/api_product.html</loc>
+  <lastmod>2019-05-27T09:09:30+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
 <url>
-<loc>http://localhost:4000/create_shipping_method.html</loc>
+  <loc>https://devdocs.bagisto.com/api_product_review.html</loc>
+  <lastmod>2019-05-27T09:09:30+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
 <url>
-<loc>http://localhost:4000/create_theme.html</loc>
+  <loc>https://devdocs.bagisto.com/api_customer.html</loc>
+  <lastmod>2019-05-27T09:09:30+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
 <url>
-<loc>http://localhost:4000/data_grid.html</loc>
+  <loc>https://devdocs.bagisto.com/api_customer_review.html</loc>
+  <lastmod>2019-05-27T09:09:30+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
 <url>
-<loc>http://localhost:4000/events.html</loc>
+  <loc>https://devdocs.bagisto.com/api_customer_wishlist.html</loc>
+  <lastmod>2019-05-27T09:09:30+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
 <url>
-<loc>http://localhost:4000/</loc>
+  <loc>https://devdocs.bagisto.com/api_customer_addresses.html</loc>
+  <lastmod>2019-05-27T09:09:30+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
 <url>
-<loc>http://localhost:4000/override-core-model.html</loc>
+  <loc>https://devdocs.bagisto.com/api_order.html</loc>
+  <lastmod>2019-05-27T09:09:30+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
 <url>
-<loc>http://localhost:4000/render_event.html</loc>
+  <loc>https://devdocs.bagisto.com/api_invoice_shipment.html</loc>
+  <lastmod>2019-05-27T09:09:30+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
+<url>
+  <loc>https://devdocs.bagisto.com/api_cart.html</loc>
+  <lastmod>2019-05-27T09:09:30+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+
+
 </urlset>
