@@ -19,9 +19,9 @@ description: # this means to ignore newlines until "baseurl:"
   This is official documentation site for Bagisto. Go ahead
   and try one of the most easiest e-commerce frameworks ever.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "bagisto.com/" # the base hostname & protocol for your site, e.g. http://example.com
+url: https://devdocs.bagisto.com # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: bagistoshop
-github_username:  bagisto
+github_username: bagisto
 
 # Build settings
 highlighter: rouge
@@ -34,14 +34,13 @@ sass:
 sass_dir: _sass
 
 load_paths:
-- /assets/style/
+  - /assets/style/
 
 defaults:
   - scope:
       path: "assets/images"
     values:
       image: true
-
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
 # to override the default setting.
