@@ -623,7 +623,7 @@ After creating all files stated above for our package, we have to create a provi
     class ModuleServiceProvider extends BaseModuleServiceProvider
     {
         protected $models = [
-            \Webkul\HelloWorld\Models\HelloWorld::class,
+            \Acme\HelloWorld\Models\HelloWorld::class,
         ];
     }
 ```
@@ -642,7 +642,7 @@ return [
          *
          */
 
-        \Webkul\HelloWorld\Providers\ModuleServiceProvider::class
+        \Acme\HelloWorld\Providers\ModuleServiceProvider::class
     ]
 ];
 ```
