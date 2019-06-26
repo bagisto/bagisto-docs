@@ -593,7 +593,7 @@ class DataFlowProfileProxy extends ModelProxy
 
 ```php
 <?php
-namespace Webkul\Marketplace\Repositories;
+namespace Acme\HelloWorld\Repositories;
 
 use Webkul\Core\Eloquent\Repository;
 
@@ -609,4 +609,40 @@ class HelloWorldRepository extends Repository
         return 'ACME\HelloWorld\Contracts\HelloWorld';
     }
 }
+```
+
+After creating all files stated above for our package, we have to create a provider as `ModuleServiceProvider.php` and register it in `config/concord.php`. Inside this file, models used within package are registered. You may check below code
+
+```php
+    <?php
+
+    namespace  Acme\HelloWorld\Providers;
+
+    use Konekt\Concord\BaseModuleServiceProvider;
+
+    class ModuleServiceProvider extends BaseModuleServiceProvider
+    {
+        protected $models = [
+            \Webkul\HelloWorld\Models\HelloWorld::class,
+        ];
+    }
+```
+
+**Now**, Registering `ModuleServiceProvider.php` in `config/concord.php` file
+
+```php
+<?php
+
+return [
+    'modules' => [
+        /**
+         * Example:
+         * VendorA\ModuleX\Providers\ModuleServiceProvider::class,
+         * VendorB\ModuleY\Providers\ModuleServiceProvider::class
+         *
+         */
+
+        \Webkul\HelloWorld\Providers\ModuleServiceProvider::class
+    ]
+];
 ```
