@@ -51,8 +51,8 @@ Restart apache
 ```
     RewriteEngine On
     RewriteCond %{REQUEST*URI} .*/admin
-    RewriteCond %{REMOTE*ADDR} !=103.80.65.178
-    RewriteCond %{REMOTE_ADDR} !=203.122.41.218
+    RewriteCond %{REMOTE*ADDR} !=<IP address>
+    RewriteCond %{REMOTE_ADDR} !=<IP address>
     RewriteRule ^(.*)\$ - [R=403,L]
 ```
 
