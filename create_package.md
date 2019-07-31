@@ -337,7 +337,7 @@ return [
         'name' => 'Hello World',        //  name of menu-icon
         'route' => 'helloworld.index',  // the route for your menu-icon
         'sort' => 1,                    // Sort number on which your menu-icon should display
-        'icon-class' => 'dashboard-icon',   //class of menu-icn
+        'icon-class' => 'dashboard-icon',   //class of menu-icon
     ]
 ];
 ```
@@ -551,7 +551,7 @@ Each contract has a corresponding implementation provided by the framework. For 
 
 All of the Laravel contracts live in their own GitHub repository. This provides a quick reference point for all available contracts, as well as a single, decoupled package that may be utilized by package developers.
 
-**Note** : _For more details check_ **_[Laravel Contracts](https://laravel.com/docs/5.8/contracts)_**
+**Note** : _For more details check_ **_[Laravel Contracts](https://laravel.com/docs/5.8/contracts)_**{: target="\_blank"}
 
 ##### Repositories
 
@@ -561,7 +561,7 @@ This file defines our Repository class. Instances of this class have a model pro
 
 ##### Proxies
 
-Proxies as their name state, will drive you to the actual model class. The concept of model proxies has been introduced. because to override the main functionality of existing Model. It is a type of model inheritance without creating a new table in Database.
+Proxies as their name state, will drive you to the actual model class. The concept of model proxies has been introduced to override the functionality of existing Model. It is a type of model inheritance without creating a new table in Database.
 
 ##### Store data through Repository <a id="store-data-through-repository"></a>
 
