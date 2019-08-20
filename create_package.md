@@ -174,7 +174,8 @@ return [
 ];
 ```
 
-Add \{\{ \_\_(‘helloworld::app.hello-world.name’) \}\} to your application’s view & it will automatically translate it.
+
+Add \{\{ trans('helloworld::app.hola-mundo.name') \}\} to your application’s view & it will automatically translate it.
 
 ![translation-output](assets/images/Bagisto_Docs_Images/PackageDevelopment/translation-output.png){: .screenshot-dimension .center}
 
