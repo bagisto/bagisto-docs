@@ -88,7 +88,7 @@ A package is like Laravel packages that includes views, controller and models. P
 
       ``` php
       "psr-4": {
-          "ACME\\HelloWorld\\": "packages/ACME/HelloWorld"
+          "ACME\\HelloWorld\\": "packages/ACME/HelloWorld/src"
       }
       ```
 
@@ -141,6 +141,8 @@ Go to ACME->src->Http->routes.php file and create a route to render view
 ```
 
 ![view-route-creation](assets/images/Bagisto_Docs_Images/PackageDevelopment/view-route-creation.png){: .screenshot-dimension .center}
+
+If everythings goes well you can run composer dump-autoload so laravel detects the new route files and works othwerway it wont work and will return NotFound Exception.
 
 Now, you can append ‘hello-world’ to your local path in the browser's url to see the output.
 
