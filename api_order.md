@@ -53,7 +53,7 @@ Currently, this **`orders`** resource is helpful for both admin,user and custome
 
 > *http(s)://example.com/public/api/orders?limit=5&page=1*
 
-**Note: If you didn't use the page(?page=x) filter, then it returns the data of the first page by default. You can also provide the limit request parameter in the api url.**
+**Note: If you didn't use the page(?page=x) filter, then it returns the data of the first page by default. You can also provide the limit request parameter in the API url.**
 
 ![bagisto_orders_page](assets/images/Bagisto_Api/bagisto_orders_page.jpg){:class="screenshot-dimension center"}
 
@@ -197,7 +197,7 @@ To get all the orders of a specific customer, you have to pass a customer_id as 
     }
 ![bagisto_orders_cust_pag](assets/images/Bagisto_Api/bagisto_orders_cust_pag.jpg){:class="screenshot-dimension center"}
 
-**Note: If you didn't use the page(?page=x) filter, then it returns the data of the first page by default. You can also provide the limit and page request parameters with the customer_id query parameter in the api url.**
+**Note: If you didn't use the page(?page=x) filter, then it returns the data of the first page by default. You can also provide the limit and page request parameters with the customer_id query parameter in the API url.**
 
 ### 2.2 Get Customer's Orders Without Pagination: <a id="get-customer-orders-no-pagination"></a>
 

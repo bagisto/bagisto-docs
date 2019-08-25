@@ -180,13 +180,13 @@ You can also filter your store product(s) by using **`filterable attributes quer
 
 ## 2. Get Specific Product: <a id="get-specific-product"></a>
 
-If you want the record of any specific product, then you have to provide the product id as as input parameter in api url.
+If you want the record of any specific product, then you have to provide the product id as as input parameter in API url.
 
 > _http(s)://example.com/public/api/products/1_
 
 ![bagisto_prod_id](assets/images/Bagisto_Api/bagisto_prod_id.jpg){:class="screenshot-dimension center"}
 
-**Note: Here you will see in the api response `data Object` will only contain the single object of category record**
+**Note: Here you will see in the API response `data Object` will only contain the single object of category record**
 
 ## 3. Get Product's Additional Information: <a id="get-product-additional-info"></a>
 

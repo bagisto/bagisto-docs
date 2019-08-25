@@ -394,7 +394,7 @@ After applying shipping method to the cart, you have to select a payment method 
 
 
 ## 10. Save Order: <a id="save-order"></a>
-After applying shipping addresses, shipping method, and payment method to the cart, now finally you have to create/save order. You can achieve this task by using the **`checkout/save-order`** resource in API url. By using this API order will be placed and save to the current store and this api will work for the both login customers and with guest users also.
+After applying shipping addresses, shipping method, and payment method to the cart, now finally you have to create/save order. You can achieve this task by using the **`checkout/save-order`** resource in API url. By using this API order will be placed and save to the current store and this API will work for the both login customers and with guest users also.
 
 **Note: In the `checkout/save-order` resource API call, we used `POST HTTP verb` to create and save order in the current store.**
 

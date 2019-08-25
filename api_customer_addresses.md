@@ -56,7 +56,7 @@ You can get all the addresses of the customers in Bagisto Store. To get the addr
 
 > *http(s)://example.com/public/api/addresses?limit=5&page=1*
 
-**Note: If you didn't use the page(?page=x) filter, then it returns the data of the first page by default. You can also provide the limit request parameter in the api url.**
+**Note: If you didn't use the page(?page=x) filter, then it returns the data of the first page by default. You can also provide the limit request parameter in the API url.**
 
 ![bagisto_addresses_page](assets/images/Bagisto_Api/bagisto_addresses_pag.jpg){:class="screenshot-dimension center"}
 

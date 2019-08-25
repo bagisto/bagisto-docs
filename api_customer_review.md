@@ -58,7 +58,7 @@ You can get customer's reviews according to the pagination. You can define the l
 
 > *http(s)://example.com/public/api/reviews?customer_id=1&limit=3&page=1*
 
-**Note: If you didn't use the page(?page=x) filter, then it returns the data of the first page by default. You can also provide the limit request parameter in the api url.**
+**Note: If you didn't use the page(?page=x) filter, then it returns the data of the first page by default. You can also provide the limit request parameter in the API url.**
 
 ###### Response:
     {

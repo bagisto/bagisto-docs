@@ -59,7 +59,7 @@ You can get all the wishlists of Bagisto Store's customers. To call this API cus
 
 > *http(s)://example.com/public/api/wishlist?limit=5&page=1*
 
-**Note: If you didn't use the page(?page=x) filter, then it returns the data of the first page by default. You can also provide the limit request parameter in the api url.**
+**Note: If you didn't use the page(?page=x) filter, then it returns the data of the first page by default. You can also provide the limit request parameter in the API url.**
 
 ![bagisto_wishlist_page](assets/images/Bagisto_Api/bagisto_wishlist_page.jpg){:class="screenshot-dimension center"}
 

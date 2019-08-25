@@ -56,7 +56,7 @@ Currently, this **`invoices`** resource is helpful for both admin user and custo
 
 > *http(s)://example.com/public/api/invoices?&limit=5&page=1*
 
-**Note: If you didn't use the page(?page=x) filter, then it returns the data of the first page by default. You can provide both limit and page request parameters in the api url.**
+**Note: If you didn't use the page(?page=x) filter, then it returns the data of the first page by default. You can provide both limit and page request parameters in the API url.**
 
 ### 1.2 Get Invoices Without Pagination: <a id="get-all-invoices-without-pagination"></a>
 
@@ -195,7 +195,7 @@ Currently, this **`shipments`** resource is helpful for both admin user and cust
 
 > *http(s)://example.com/public/api/shipments?&limit=5&page=1*
 
-**Note: If you didn't use the page(?page=x) filter, then it returns the data of the first page by default. You can provide both limit and page request parameters in the api url.**
+**Note: If you didn't use the page(?page=x) filter, then it returns the data of the first page by default. You can provide both limit and page request parameters in the API url.**
 
 ### 1.2 Get Shipments Without Pagination: <a id="get-shipments-without-pagination"></a>
 

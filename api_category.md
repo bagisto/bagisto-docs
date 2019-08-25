@@ -210,13 +210,13 @@ If you don't want to use the pagination and want to access all the store's categ
 
 
 ## 3. Get Specific Category: <a id="get-specific-category"></a>
-If you want the record of any specific category, then you have to provide the category id as as input parameter in api url.
+If you want the record of any specific category, then you have to provide the category id as as input parameter in API url.
 
 > *http(s)://example.com/public/api/categories/1*
 
 ![bagisto_cat_single](assets/images/Bagisto_Api/bagisto_cat_single.jpg){:class="screenshot-dimension center"}
 
-**Note: Here you will see in the api response `data Object` will only contain the single object of category record**
+**Note: Here you will see in the API response `data Object` will only contain the single object of category record**
 
 ## 4. Get Direct Descendant Categories Of Specific Category: <a id="get-descendant-category"></a>
 If you want to get the direct descendant categories (sub-categories) of any particular category, then you have to follow the below structure of calling the API.
