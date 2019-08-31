@@ -68,7 +68,7 @@ You can use logout the customer from the Bagisto store with the help of `custome
 
 
 ## 4. Get Customer's Information:
-You can get the customer's information only for the logged in customer. To achieve customers inforamtion you can use the `customer/get` resource. This API call will return you the personal details of logged in customer.
+You can get the customer's information only for the logged in customer. To achieve customers information you can use the `customer/get` resource. This API call will return you the personal details of logged in customer.
 
 > *http(s)://example.com/public/api/customer/get*
 
