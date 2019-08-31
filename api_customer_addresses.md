@@ -69,7 +69,7 @@ You can get all the addresses of the customers in Bagisto Store. To get the addr
 
 #### data object:
 
-Under the data object, you will find the collection of many objects which will contain the details of address of the logged in customer. you can use the addresses index data by accessing these addresses sub-objects.
+Under the data object, you will find the collection of many objects which will contain the details of address of the logged in customer. You can use the addresses index data by accessing these addresses sub-objects.
 
 **Note: Regarding both link and meta objects, we already explained these objects functionality in <a href="api_category.html#link-object" target="_blank" class="bagsito-link"> Category API </a> section.**
 

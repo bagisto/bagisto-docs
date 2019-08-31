@@ -67,9 +67,9 @@ Currently, this **`orders`** resource is helpful for both admin,user and custome
 #### data object:
 
 <<<<<<< HEAD
-Under the data object, you will find a array of multiple objects which contain the details of the orders. you can use the order's index data by accessing these order sub-objects.
+Under the data object, you will find a array of multiple objects which contain the details of the orders. You can use the order's index data by accessing these order sub-objects.
 =======
-Under the data object, you will find an array with multiple objects that contains the details of the orders. you can use the order's index data by accessing these order sub-objects.
+Under the data object, you will find an array with multiple objects that contains the details of the orders. You can use the order's index data by accessing these order sub-objects.
 >>>>>>> 325acfb78004e83a103cd06b7caa0300fbb16c92
 
 **Note: Regarding both link and meta objects, we already explained these objects functionality in <a href="api_category.html#link-object" target="_blank" class="bagsito-link"> Category API </a> section.**

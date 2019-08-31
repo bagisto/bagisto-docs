@@ -55,7 +55,7 @@ To get all the Bagisto Categories with the pagination, you have to place a reque
 
 #### data object: <a id="data-object"></a>
 
-Under the data object, you will find the collection of many objects which represent the bagisto store's categories. you can use the category's index data by accessing these categories sub-objects.
+Under the data object, you will find the collection of many objects which represent the bagisto store's categories. You can use the category's index data by accessing these categories sub-objects.
 
 #### link object: <a id="link-object"></a>
 * Under link object, you will find four indexes, which will be used only with the pagination:

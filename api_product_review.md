@@ -110,7 +110,7 @@ You can get store's review according to the pagination. You can define the limit
 
 #### data object:
 
-Under the data object, you will find a array of multiple objects which contain the details of the store's reviews. you can use these objects to access the data of each individual review.
+Under the data object, you will find a array of multiple objects which contain the details of the store's reviews. You can use these objects to access the data of each individual review.
 
 **Note: Regarding both link and meta objects, we already explained these objects functionality in <a href="api_category.html#link-object" target="_blank" class="bagsito-link"> Category API </a> section.**
 
