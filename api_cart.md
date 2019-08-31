@@ -8,7 +8,7 @@ layout: default
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/api_cart.md){:class="edit-github" target="_blank"}
 
 ## 1. Get Complete Cart Details: <a id="get-cart"></a>
-To get the current cart details, you have to use the **`checkout/cart`** resource in API url. You will see in all the **`cart`** related api, we used **`checkout prefix`**. This API call will work both with customer's authentication or without customer's authentication. If customer is not login into the store, the this API resource will return the `Guest's` cart detail.
+To get the current cart details, you have to use the **`checkout/cart`** resource in API url. You will see in all the **`cart`** related api, we used **`checkout prefix`**. This API call will work both with customer's authentication or without customer's authentication. If customer is not login into the store, then this API resource will return the `Guest's` cart detail.
 
 **Note: In the `checkout/cart` resource API call, we used `GET HTTP verb` to get complete cart details of the customer/guest.**
 
