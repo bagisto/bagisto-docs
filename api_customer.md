@@ -8,7 +8,7 @@ layout: default
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/api_customer.md){:class="edit-github" target="_blank"}
 
 
-In the customer's APIs: Firstly, we will look for the customer's authentication with the help of login credentials. Because customer can't access/add/modify their addresses, orders, reviews and wishlists without login into the front store. To logined in at the Bagisto front store, customer need a valid email address and password.
+In the customer's APIs: Firstly, we will look for the customer's authentication with the help of login credentials. Because customer can't access/add/modify their addresses, orders, reviews and wishlists without login into the front store. To logged in at the Bagisto front store, customer need a valid email address and password.
 
 ## 1. Customer's Login Authentication: <a id="customer-login-authentication"></a>
 
