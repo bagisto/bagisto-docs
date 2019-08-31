@@ -75,7 +75,7 @@ Under the data object, you will find the collection of many objects which will c
 
 
 ### 1.2 Get Addresses Without Pagination:
-You can also get all the addresses at once without pagination of a customer from Bagisto Store. To get the addresses of a customer, that customer must be logged in Bagisto Store,for this you have to pass **`pagination=0`** in the query parameter in API URL.
+You can also get all the addresses at once without pagination of a customer from Bagisto Store. To get the addresses of a customer, that customer must be logged in Bagisto Store, for this you have to pass **`pagination=0`** in the query parameter in API URL.
 
 ###### Request:
 
