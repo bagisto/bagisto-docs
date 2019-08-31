@@ -8,7 +8,7 @@ layout: default
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/api_customer_addresses.md){:class="edit-github" target="_blank"}
 
 ## 1. Get All Addresses of LoggedIn Customer:
-You can get all the addresses of the customers in Bagisto Store. To get the address of a customer, that customer must be logged into the Bagisto Store. You can achieve this job by using `addresses` API call resource.
+You can get all the addresses of the customers in Bagisto Store. To get the address of a customer, that customer must be logged in to the Bagisto Store. You can achieve this job by using `addresses` API call resource.
 
 > *http(s)://example.com/public/api/addresses*
 

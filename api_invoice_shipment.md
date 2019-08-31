@@ -110,7 +110,7 @@ To get the detail of specific invoice, you have to pass an invoice_id as a reque
 
 > *http(s)://example.com/public/api/invoices/{id}*
 
-* This **`invoices/{id}`** API call resource will return the single invoice details, only if the customer has logged into the store.
+* This **`invoices/{id}`** API call resource will return the single invoice details, only if the customer has logged in to the store.
 
 **Note: In the **`'invoices/{id}'`** resource API call, we used `GET HTTP verb` to get the single invoice detail based on invoice_id.**
 
@@ -148,7 +148,7 @@ To get the detail of specific invoice, you have to pass an invoice_id as a reque
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/api_invoice_shipment.md){:class="edit-github" target="_blank"}
 
 ## 1. Get All Shipments Of All Orders:
-You can get all the shipments of the Bagisto Store. To get the shipments of the store, the customer must be logged into the Bagisto Store. You can achieve this job by using **`shipments`** API call resource.
+You can get all the shipments of the Bagisto Store. To get the shipments of the store, the customer must be logged in to the Bagisto Store. You can achieve this job by using **`shipments`** API call resource.
 Currently, this **`shipments`** resource is helpful for both admin user and customer too.
 
 > *http(s)://example.com/public/api/shipments*
@@ -250,7 +250,7 @@ To get the detail of specific shipment, you have to pass a **`shipment_id`** as 
 
 > *http(s)://example.com/public/api/shipments/{id}*
 
-* This **`shipments/{id}`** API call resource will return the single shipment details, only if the customer has logged into the store.
+* This **`shipments/{id}`** API call resource will return the single shipment details, only if the customer has logged in to the store.
 
 **Note: In the **`'shipments/{id}'`** resource API call, we used `GET HTTP verb` to get the single shipment detail based on `shipment_id`.**
 
