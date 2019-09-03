@@ -51,3 +51,62 @@ I hope that you know how to create package, if not(refer [Package development](c
     1. File `Fedex.php` will extends AbstractShipping class which is defined at `Webkul\Shipping\Carriers\AbstractShipping`. Inside this file, the methods are defined that you can use while creating shipping method.
 
     2. Now, you can write all operations needed for your shipping method in `Fedex.php` file
+    
+ 7. After creating all necessary files and config you need to create the Form that will appear on the config section in the next route packages/Webkul/Shipping/src/Config/system.php. so you can use them on 'Fedex.php'
+ 
+ // wew add the form to the new carrier 
+    [
+        'key' => 'sales.carriers.Fedex',
+        'name' => 'admin::app.admin.system.fedex-shipping',
+        'sort' => 2,
+        'fields' => [
+            [
+                'name' => 'title',
+                'title' => 'admin::app.admin.system.title',
+                'type' => 'text',
+                'validation' => 'required',
+                'channel_based' => true,
+                'locale_based' => true
+            ], [
+                'name' => 'description',
+                'title' => 'admin::app.admin.system.description',
+                'type' => 'textarea',
+                'channel_based' => true,
+                'locale_based' => false
+            ], [
+                'name' => 'default_rate',
+                'title' => 'admin::app.admin.system.rate',
+                'type' => 'text',
+                'channel_based' => true,
+                'locale_based' => false
+            ],
+            //you can add custom fields as on example to get the minimum subtotal to calculate the standard rate .
+            [
+                'name' => 'base_amount',
+                'title' => 'admin::app.admin.system.minimum-amount',
+                'type' => 'text',
+                'channel_based' => true,
+                'locale_based' => false
+            ]
+            ,  [
+                'name' => 'active',
+                'title' => 'admin::app.admin.system.status',
+                'type' => 'select',
+                'options' => [
+                    [
+                        'title' => 'Activo',
+                        'value' => true
+                    ], [
+                        'title' => 'Inactivo',
+                        'value' => false
+                    ]
+                ],
+                'validation' => 'required',
+                'channel_based' => false,
+                'locale_based' => true
+            ]
+        ]
+    ]
+    
+    8. to get the translations working you need to add them on packages/Webkul/Admin/src/Resources/lang/en/app.php
+     'fedex-shipping'=>' Your title or translation',
