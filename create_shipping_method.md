@@ -5,30 +5,29 @@ layout: default
 
 # Shipping Method
 
-
 ![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
-[edit on github](https://github.com/bagisto/bagisto-docs/blob/master/create_shipping_method.md){:.edit-github  target="_blank"}
+[edit on github](https://github.com/bagisto/bagisto-docs/blob/master/create_shipping_method.md){:.edit-github target="\_blank"}
 
-I hope that you know how to create package, if not(refer [Package development](create_package.md){: target="_blank"}), and I will skip package development step
+I hope that you know how to create package, if not(refer [Package development](create_package.md){: target="\_blank"}), and I will skip package development step
 
 ### Steps to create shipping methods
 
-* User need to create a file named as `carriers.php` at `src/config` path in the package. Here, we are going to specify what to include in your `carriers.php` file.
+- User need to create a file named as `carriers.php` at `src/config` path in the package. Here, we are going to specify what to include in your `carriers.php` file.
 
-    ```php
-    <?php
+  ```php
+  <?php
 
-    return [
-        'FedEx' => [
-            'code' => 'fedex',
-            'title' => 'FedEx',
-            'description' => 'FedEx Shipping',
-            'active' => true,
-            'type' => 'per_unit',
-            'class' => 'ACME\FedEx\Carriers\FedEx',
-            ]
-    ];
-    ```
+  return [
+      'FedEx' => [
+          'code' => 'fedex',
+          'title' => 'FedEx',
+          'description' => 'FedEx Shipping',
+          'active' => true,
+          'type' => 'per_unit',
+          'class' => 'ACME\FedEx\Carriers\FedEx',
+          ]
+  ];
+  ```
 
 ##### Parameters needed for explanation
 
@@ -45,9 +44,8 @@ I hope that you know how to create package, if not(refer [Package development](c
 
 6. class : path specified with filename 'namespace\package-name\Carriers-folder\filename'
 
+- And, `Carriers` named folder inside `src` folder. We will now create a file name as our shipping method name for better understandability inside Carriers folder e.g., Fedex.php
 
-* And, `Carriers` named folder inside `src` folder. We will now create a file name as our shipping method name for better understandability inside Carriers folder e.g., Fedex.php
+  1. File `Fedex.php` will extends AbstractShipping class which is defined at `Webkul\Shipping\Carriers\AbstractShipping`. Inside this file, the methods are defined that you can use while creating shipping method.
 
-    1. File `Fedex.php` will extends AbstractShipping class which is defined at `Webkul\Shipping\Carriers\AbstractShipping`. Inside this file, the methods are defined that you can use while creating shipping method.
-
-    2. Now, you can write all operations needed for your shipping method in `Fedex.php` file
+  2. Now, you can write all operations needed for your shipping method in `Fedex.php` file

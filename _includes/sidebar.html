@@ -124,9 +124,10 @@
         </li>
       </ul>
     </li>
+
     <!-- Bagisto APIs -->
     <li class="menu-heading">
-      <a href="bagisto_api.html">Bagisto Web APIs</a>
+      <a class="menu-heading-title" href="bagisto_api.html">Bagisto Web APIs</a>
 
       <div class="horizontal-rule"></div>
 
@@ -145,7 +146,6 @@
     </li>
 
     <!-- User Guides -->
-
     <li class="menu-heading">
       <a class="menu-heading-title" href="cart_rule.html">User Guides</a>
 
@@ -153,24 +153,55 @@
         <li>
           <a href="cart_rule.html">Cart Rule</a>
         </li>
+
+        <li>
+          <a href="about_cms.html">CMS</a>
+        </li>
       </ul>
     </li>
   </ul>
 </div>
 
-<script>
-  $(".sub-menu li a").on("click", function() {
-    href = $(this).attr("href");
+<!-- <script type="text/javascript">
+  // menu heading as active
+  var loc = window.location.pathname;
+  var urlPath = loc.slice(1, loc.length);
+  $("ul")
+    .find("a")
+    .each(function() {
+      $(this).toggleClass("current", $(this).attr("href") == urlPath);
+    });
 
-    if (window.location.href.indexOf(href)) {
-      $("li a.current").removeClass("current");
-      $(this).addClass("current");
+  // sub-menu as active
+  let mainNavLinks = document.querySelectorAll("ul.sub-menu li a");
+  let mainSections = document.querySelectorAll("div.right-content");
 
-      $(this)
-        .closest(".menu-heading")
-        .find(".menu-heading-title")
-        .css("color", "#0031F0");
-    }
-    $(".sub-menu").animate({ top: "250px" });
+  let lastId;
+  let cur = [];
+
+  // This should probably be throttled.
+  // Especially because it triggers during smooth scrolling.
+  // https://lodash.com/docs/4.17.10#throttle
+  // You could do like...
+  // window.addEventListener("scroll", () => {
+  //    _.throttle(doThatStuff, 100);
+  // });
+  // Only not doing it here to keep this Pen dependency-free.
+
+  window.addEventListener("scroll", event => {
+    let fromTop = window.scrollY;
+
+    mainNavLinks.forEach(link => {
+      let section = document.querySelector(link.hash);
+
+      if (
+        section.offsetTop <= fromTop &&
+        section.offsetTop + section.offsetHeight > fromTop
+      ) {
+        link.classList.add("current");
+      } else {
+        link.classList.remove("current");
+      }
+    });
   });
-</script>
+</script> -->
