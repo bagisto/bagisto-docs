@@ -204,19 +204,19 @@
             <h1 id="payment-method">Payment Method</h1>
 
 <p><img src="/assets/images/icons/Icon-Pencil-Large.svg" alt="" class="pencil-icon" />
-<a href="https://github.com/bagisto/bagisto-docs/blob/master/create_payment_method.md" class="edit-github" target="_blank">edit on github</a></p>
+<a href="https://github.com/bagisto/bagisto-docs/blob/master/create_payment_method.md" class="edit-github" target="\_blank">edit on github</a></p>
 
-<p>I hope that you know how to create package, if not(refer <a href="/create_package.html" target="_blank">Package development</a>), and I will skip package development step</p>
+<p>I hope that you know how to create package, if not(refer <a href="/create_package.html" target="\_blank">Package development</a>), and I will skip package development step</p>
 
-<p>Bagisto ease the task of creation of payment method so novice to professional developers can easily create payment methods. As diversity of payment methods provide the options to customer for pay when they proceed to checkout. On another perspective, multiple payment methods  is a great strategy to reach out the global marketplace.</p>
+<p>Bagisto ease the task of creation of payment method so novice developer or professional developer can easily create payment methods. As diversity of payment methods provide the options to customer for payment when they proceed to checkout. On another perspective, multiple payment methods is a great strategy to reach out the global marketplace.</p>
 
-<p>In this article, we will understand how to create payment method by own with just following below steps:</p>
+<p>In this article, we will understand how to create payment method by own with just following steps:</p>
 
 <h3 id="steps-to-create-payment-method">Steps to create payment method</h3>
 
 <ul>
   <li>
-    <p>Following the module development process, firstly, you must create ‘<strong>Config</strong>’,’<strong>Database</strong>’, <strong>Resources</strong>, ‘<strong>Providers</strong>’, ‘<strong>Models</strong>’, ‘<strong>Payment</strong>’, ‘<strong>Repositories</strong>’, ‘<strong>Http</strong>’, <strong>Listeners</strong> folders under src folder of your company’s namespace.</p>
+    <p>Following the module development process, firstly, you must create ‘<strong>Config</strong>’,’<strong>Database</strong>’, ‘<strong>Resources</strong>’, ‘<strong>Providers</strong>’, ‘<strong>Models</strong>’, ‘<strong>Payment</strong>’, ‘<strong>Repositories</strong>’, ‘<strong>Http</strong>’, <strong>Listeners</strong> folders under src folder of your company’s namespace.</p>
   </li>
   <li>
     <p>Within <strong>Config</strong> folder, contains all of your application’s configuration files. Let’s just create two files as <em>system.php</em> and <em>paymentmethod.php</em></p>
@@ -267,13 +267,13 @@
     <p><strong>description</strong> : a brief description of payment method.</p>
   </li>
   <li>
-    <p><strong>class</strong> : this field includes the class namespace where all functions of payment           method is written</p>
+    <p><strong>class</strong> : this field includes the class namespace where all functions of payment method is written</p>
   </li>
   <li>
     <p><strong>sandbox</strong> : this is a custom option of boolean type</p>
   </li>
   <li>
-    <p><strong>active</strong> : this field accepts true/false to enable or disbale module.</p>
+    <p><strong>active</strong> : this field accepts true/false to enable or disable module.</p>
   </li>
 </ol>
 
@@ -282,7 +282,7 @@
     <p>Within <strong>Database</strong> folder, the migration and seeder(if needed) files are stored.</p>
   </li>
   <li>
-    <p>Within <strong>Resources</strong> folder, contains your views as well as your raw, un-compiled assets such as  SASS, or JavaScript. This directory also houses all of your language files.</p>
+    <p>Within <strong>Resources</strong> folder, contains your views as well as your raw, un-compiled assets such as SASS, or JavaScript. This directory also houses all of your language files.</p>
   </li>
   <li>
     <p>Within <strong>Providers</strong> folder, contains all of the service providers for your application. Service providers bootstrap your application by binding services in the service container, registering events, or performing any other tasks to prepare your application for incoming requests.</p>
@@ -305,7 +305,7 @@
     <p>Within <strong>Payment</strong> folder, write the code needed to operate your payment method</p>
   </li>
   <li>
-    <p>Within <strong>Repositories</strong> folder, create a file as <em>HelloWorldRepository.php</em> which must extends   repository class</p>
+    <p>Within <strong>Repositories</strong> folder, create a file as <em>HelloWorldRepository.php</em> which must extends repository class</p>
   </li>
   <li>
     <p>Within <strong>Http</strong> folder, define your routes and controller application.</p>
@@ -314,7 +314,6 @@
     <p>Within <strong>Listeners</strong> folder, this folder includes listener files to listen respective events.</p>
   </li>
 </ul>
-
 
           </div>
         </div>

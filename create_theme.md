@@ -53,7 +53,7 @@ Let’s go through the parameters of this theme’s file. Because the understand
 
 ##### An Explanation For These Parameters:
 
-1. default: Declared at the top signifies the currently active or default theme in Bagisto. It is assigned with the value ‘default’. The (string)default indicates the name of the currently active theme.
+1. default: Declared at the top signifies the currently active or default theme in Bagisto. It is assigned with the value ‘default’. The default(string) indicates the name of the currently active theme.
 
 ![theme](assets/images/Bagisto_Docs_Images/theme/theme-array-key.png){: width="30%" height="50%" .center}
 
@@ -65,7 +65,7 @@ Let’s go through the parameters of this theme’s file. Because the understand
 
 ![default-theme](assets/images/Bagisto_Docs_Images/theme/theme-array.png){: .screenshot-dimension .center}
 
-- views_path: It’ll take the path of your views or blade files that you wanna put up in your custom theme.
+- views_path: It’ll take the path of your views or blade files that you want to put up in your custom theme.
 
 - assets_path: Responsible for your assets i.e images, CSS and javascript files, etc.
 
@@ -75,7 +75,7 @@ Let’s go through the parameters of this theme’s file. Because the understand
 
 ![bliss-theme](assets/images/Bagisto_Docs_Images/theme/bliss-array.png){: .screenshot-dimension .center}
 
-Finally, define your own paths and name of your custom theme inside ‘themes.php’ file. And start creating view files. Do not forget to cover all get routes of shop package having a parameter called ‘view’.
+Finally, define your own paths and name of your custom theme inside ‘themes.php’ file , and start creating view files. Do not forget to cover all get routes of shop package having a parameter called ‘view’.
 
 ![theme-route-file-location](assets/images/Bagisto_Docs_Images/theme/theme-routes.png){: width="30%" height="50%" .center}
 

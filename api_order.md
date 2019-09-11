@@ -6,7 +6,7 @@ layout: default
 # How To Create Requests For Orders <span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px"/> <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_module.md">Edit On github</a></span>
 
 ## 1. Get All Bagisto's Orders:
-You can get all the orders of the Bagisto Store. To get the orders of the store, the customer must be logged into the Bagisto Store. You can achieve this job by using **`orders`** API call resource.
+You can get all the orders of the Bagisto Store. To get the orders of the store, the customer must be logged in to the Bagisto Store. You can achieve this job by using **`orders`** API call resource.
 Currently, this **`orders`** resource is helpful for both admin,user and customer too.
 
 > *http(s)://example.com/public/api/orders*
@@ -53,7 +53,7 @@ Currently, this **`orders`** resource is helpful for both admin,user and custome
 
 > *http(s)://example.com/public/api/orders?limit=5&page=1*
 
-**Note: If you didn't use the page(?page=x) filter, then it returns the data of the first page by default. You can also provide the limit request parameter in the api url.**
+**Note: If you didn't use the page(?page=x) filter, then it returns the data of the first page by default. You can also provide the limit request parameter in the API url.**
 
 ![bagisto_orders_page](assets/images/Bagisto_Api/bagisto_orders_page.jpg){:class="screenshot-dimension center"}
 
@@ -67,9 +67,9 @@ Currently, this **`orders`** resource is helpful for both admin,user and custome
 #### data object:
 
 <<<<<<< HEAD
-Under the data object, you will find a array of multiple objects which contain the details of the orders. you can use the order's index data by accessing these order sub-objects.
+Under the data object, you will find a array of multiple objects which contain the details of the orders. You can use the order's index data by accessing these order sub-objects.
 =======
-Under the data object, you will find an array with multiple objects that contains the details of the orders. you can use the order's index data by accessing these order sub-objects.
+Under the data object, you will find an array with multiple objects that contains the details of the orders. You can use the order's index data by accessing these order sub-objects.
 >>>>>>> 325acfb78004e83a103cd06b7caa0300fbb16c92
 
 **Note: Regarding both link and meta objects, we already explained these objects functionality in <a href="api_category.html#link-object" target="_blank" class="bagsito-link"> Category API </a> section.**
@@ -80,7 +80,7 @@ Under the data object, you will find an array with multiple objects that contain
 You can also get all the orders at once of Bagisto Store without pagination. To get the orders, customer must be login into the Bagisto Store. For this you have to pass **`pagination=0`** in the query parameter with the **`orders`** resource in API URL.
 =======
 ### 1.2 Get Orders Without Pagination:
-You can also get all the orders at once of Bagisto Store without pagination. To get the orders, customer must be logged into the Bagisto Store. For this you have to pass **`pagination=0`** in the query parameter with the **`orders`** resource in API URL.
+You can also get all the orders at once of Bagisto Store without pagination. To get the orders, customer must be logged in to the Bagisto Store. For this you have to pass **`pagination=0`** in the query parameter with the **`orders`** resource in API URL.
 >>>>>>> 325acfb78004e83a103cd06b7caa0300fbb16c92
 
 ###### Request:
@@ -120,7 +120,7 @@ To get all the orders of a specific customer, you have to pass a customer_id as 
 
 > *http(s)://example.com/public/api/orders?customer_id={id}*
 
-* This **`'orders?customer_id={id}'`** API call resource will return the customer's orders details, only if that customer has logged into the store.
+* This **`'orders?customer_id={id}'`** API call resource will return the customer's orders details, only if that customer has logged in to the store.
 
 **Note: In the `orders?customer_id={id}` resource API call, we used `GET HTTP verb` to get all the orders of a customer.**
 
@@ -197,7 +197,7 @@ To get all the orders of a specific customer, you have to pass a customer_id as 
     }
 ![bagisto_orders_cust_pag](assets/images/Bagisto_Api/bagisto_orders_cust_pag.jpg){:class="screenshot-dimension center"}
 
-**Note: If you didn't use the page(?page=x) filter, then it returns the data of the first page by default. You can also provide the limit and page request parameters with the customer_id query parameter in the api url.**
+**Note: If you didn't use the page(?page=x) filter, then it returns the data of the first page by default. You can also provide the limit and page request parameters with the customer_id query parameter in the API url.**
 
 ### 2.2 Get Customer's Orders Without Pagination: <a id="get-customer-orders-no-pagination"></a>
 
@@ -246,7 +246,7 @@ To get the specific order details, you have to pass an order_id as a request pay
 
 > *http(s)://example.com/public/api/orders/{id}*
 
-* This **`orders/{id}`** API call resource will return the single order details, only if the customer of that order has logged into the store.
+* This **`orders/{id}`** API call resource will return the single order details, only if the customer of that order has logged in to the store.
 
 **Note: In the `orders/{id}` resource API call, we used `GET HTTP verb` to get the single order of login customer.**
 
