@@ -209,7 +209,7 @@ class AttributeDataGrid extends DataGrid
 |    method      |  HTTP methods are declared |
 |    route      | This key accepts the route of icon |
 |    icon      |  class of icon to be displayed in action column you may prefer text also |
-|    confirm_text  | A confirm box is open on clicking action icon  if you want the user to verify or accepts something. you can include message here |
+|    confirm_text  | A confirm box is open on clicking action icon  if you want the user to verify or accepts something. You can include message here |
 |  label  | The text to be displayed in written here, you may use translation also here  |
 
 

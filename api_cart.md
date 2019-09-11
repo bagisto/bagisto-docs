@@ -8,7 +8,7 @@ layout: default
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/api_cart.md){:class="edit-github" target="_blank"}
 
 ## 1. Get Complete Cart Details: <a id="get-cart"></a>
-To get the current cart details, you have to use the **`checkout/cart`** resource in API url. You will see in all the **`cart`** related api, we used **`checkout prefix`**. This API call will work both with customer's authentication or without customer's authentication. If customer is not login into the store, the this API resource will return the `Guest's` cart detail.
+To get the current cart details, you have to use the **`checkout/cart`** resource in API url. You will see in all the **`cart`** related api, we used **`checkout prefix`**. This API call will work both with customer's authentication or without customer's authentication. If customer is not login into the store, then this API resource will return the `Guest's` cart detail.
 
 **Note: In the `checkout/cart` resource API call, we used `GET HTTP verb` to get complete cart details of the customer/guest.**
 
@@ -394,7 +394,7 @@ After applying shipping method to the cart, you have to select a payment method 
 
 
 ## 10. Save Order: <a id="save-order"></a>
-After applying shipping addresses, shipping method, and payment method to the cart, now finally you have to create/save order. You can achieve this task by using the **`checkout/save-order`** resource in API url. By using this API order will be placed and save to the current store and this api will work for the both login customers and with guest users also.
+After applying shipping addresses, shipping method, and payment method to the cart, now finally you have to create/save order. You can achieve this task by using the **`checkout/save-order`** resource in API url. By using this API order will be placed and save to the current store and this API will work for the both login customers and with guest users also.
 
 **Note: In the `checkout/save-order` resource API call, we used `POST HTTP verb` to create and save order in the current store.**
 
