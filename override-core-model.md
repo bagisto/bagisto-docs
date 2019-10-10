@@ -47,9 +47,9 @@ Concord modules generally defines interface for every eloquent model. If you wan
 
 In the code shown above, **registerModel()** method accepts two parameters described below
 
-- The first parameter states your Contracts path which you want to override
+- The first parameter states your Contracts path which you want to override.
 
-- And, the second parameter states the model path from where you will override the model
+- The second parameter states the model path from where you will override the model.
 
 The model from which you want to override must extends your model path as shown below
 

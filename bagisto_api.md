@@ -26,7 +26,7 @@ We can use the Bagisto APIs in different areas. Some of them are:
 
 - To build a PWA (Progressive Web Application) application, which uses modern web capabilities to deliver an application like experience to the users and provide more user friendly experience than a web application.
 
-- Use to integrate an Online-Shopping Mobile Application with the Bagisto Store to helps the customers make purchase.
+- Use to integrate an Online-Shopping Mobile Application with the Bagisto Store to help the customers make purchase.
 
 - Use to integrate with CRM (Customer Relationship Management) systems Like: HubSpot, Salesforce etc. which allows you to manage the business relationships with your customers to help you grow your business.
 
