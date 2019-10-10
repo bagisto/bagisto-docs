@@ -58,7 +58,7 @@ To get all the Bagisto Store Products with the pagination, you have to place a r
 
 #### data object: <a id="data-object"></a>
 
-Under the data object, you will find the collection of many objects containing the details of bagisto store's products. you can use the product's index data by accessing these products sub-objects.
+Under the data object, you will find the collection of many objects containing the details of bagisto store's products. You can use the product's index data by accessing these products sub-objects.
 
 **Note: Regarding link and meta objects, we already explained these objects functionality in <a href="api_category.html#link-object" target="_blank" class="bagsito-link"> Category API </a> section.**
 
@@ -180,13 +180,13 @@ You can also filter your store product(s) by using **`filterable attributes quer
 
 ## 2. Get Specific Product: <a id="get-specific-product"></a>
 
-If you want the record of any specific product, then you have to provide the product id as as input parameter in api url.
+If you want the record of any specific product, then you have to provide the product id as as input parameter in API url.
 
 > _http(s)://example.com/public/api/products/1_
 
 ![bagisto_prod_id](assets/images/Bagisto_Api/bagisto_prod_id.jpg){:class="screenshot-dimension center"}
 
-**Note: Here you will see in the api response `data Object` will only contain the single object of category record**
+**Note: Here you will see in the API response `data Object` will only contain the single object of category record**
 
 ## 3. Get Product's Additional Information: <a id="get-product-additional-info"></a>
 

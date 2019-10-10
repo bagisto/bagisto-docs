@@ -300,6 +300,68 @@ per_order</p>
   </li>
 </ul>
 
+<ol>
+  <li>After creating all necessary files and config you need to create the Form that will appear on the config section in the next route packages/Webkul/Shipping/src/Config/system.php. so you can use them on ‘Fedex.php’</li>
+</ol>
+
+<p>// wew add the form to the new carrier
+[
+‘key’ =&gt; ‘sales.carriers.Fedex’,
+‘name’ =&gt; ‘admin::app.admin.system.fedex-shipping’,
+‘sort’ =&gt; 2,
+‘fields’ =&gt; [
+[
+‘name’ =&gt; ‘title’,
+‘title’ =&gt; ‘admin::app.admin.system.title’,
+‘type’ =&gt; ‘text’,
+‘validation’ =&gt; ‘required’,
+‘channel_based’ =&gt; true,
+‘locale_based’ =&gt; true
+], [
+‘name’ =&gt; ‘description’,
+‘title’ =&gt; ‘admin::app.admin.system.description’,
+‘type’ =&gt; ‘textarea’,
+‘channel_based’ =&gt; true,
+‘locale_based’ =&gt; false
+], [
+‘name’ =&gt; ‘default_rate’,
+‘title’ =&gt; ‘admin::app.admin.system.rate’,
+‘type’ =&gt; ‘text’,
+‘channel_based’ =&gt; true,
+‘locale_based’ =&gt; false
+],
+//you can add custom fields as on example to get the minimum subtotal to calculate the standard rate .
+[
+‘name’ =&gt; ‘base_amount’,
+‘title’ =&gt; ‘admin::app.admin.system.minimum-amount’,
+‘type’ =&gt; ‘text’,
+‘channel_based’ =&gt; true,
+‘locale_based’ =&gt; false
+]
+, [
+‘name’ =&gt; ‘active’,
+‘title’ =&gt; ‘admin::app.admin.system.status’,
+‘type’ =&gt; ‘select’,
+‘options’ =&gt; [
+[
+‘title’ =&gt; ‘Activo’,
+‘value’ =&gt; true
+], [
+‘title’ =&gt; ‘Inactivo’,
+‘value’ =&gt; false
+]
+],
+‘validation’ =&gt; ‘required’,
+‘channel_based’ =&gt; false,
+‘locale_based’ =&gt; true
+]
+]
+]</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>8. to get the translations working you need to add them on packages/Webkul/Admin/src/Resources/lang/en/app.php
+ 'fedex-shipping'=&gt;' Your title or translation',
+</code></pre></div></div>
+
           </div>
         </div>
       </div>

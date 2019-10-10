@@ -58,7 +58,7 @@ You can get customer's reviews according to the pagination. You can define the l
 
 > *http(s)://example.com/public/api/reviews?customer_id=1&limit=3&page=1*
 
-**Note: If you didn't use the page(?page=x) filter, then it returns the data of the first page by default. You can also provide the limit request parameter in the api url.**
+**Note: If you didn't use the page(?page=x) filter, then it returns the data of the first page by default. You can also provide the limit request parameter in the API url.**
 
 ###### Response:
     {
@@ -100,7 +100,7 @@ You can get customer's reviews according to the pagination. You can define the l
 
 #### data object:
 
-Under the data object, you will find a array of multiple objects which contain the details of the customer's reviews. you can use these objects to access the data of each individual customer's review.
+Under the data object, you will find a array of multiple objects which contain the details of the customer's reviews. You can use these objects to access the data of each individual customer's review.
 
 **Note: Regarding both link and meta objects, we already explained these objects functionality in <a href="api_category.html#link-object" target="_blank" class="bagsito-link"> Category API </a> section.**
 
