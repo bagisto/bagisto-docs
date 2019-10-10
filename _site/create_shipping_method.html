@@ -147,9 +147,10 @@
         </li>
       </ul>
     </li>
+
     <!-- Bagisto APIs -->
     <li class="menu-heading">
-      <a href="bagisto_api.html">Bagisto Web APIs</a>
+      <a class="menu-heading-title" href="bagisto_api.html">Bagisto Web APIs</a>
 
       <div class="horizontal-rule"></div>
 
@@ -168,7 +169,6 @@
     </li>
 
     <!-- User Guides -->
-
     <li class="menu-heading">
       <a class="menu-heading-title" href="cart_rule.html">User Guides</a>
 
@@ -176,27 +176,58 @@
         <li>
           <a href="cart_rule.html">Cart Rule</a>
         </li>
+
+        <!-- <li>
+          <a href="about_cms.html">CMS</a>
+        </li> -->
       </ul>
     </li>
   </ul>
 </div>
 
-<script>
-  $(".sub-menu li a").on("click", function() {
-    href = $(this).attr("href");
+<!-- <script type="text/javascript">
+  // menu heading as active
+  var loc = window.location.pathname;
+  var urlPath = loc.slice(1, loc.length);
+  $("ul")
+    .find("a")
+    .each(function() {
+      $(this).toggleClass("current", $(this).attr("href") == urlPath);
+    });
 
-    if (window.location.href.indexOf(href)) {
-      $("li a.current").removeClass("current");
-      $(this).addClass("current");
+  // sub-menu as active
+  let mainNavLinks = document.querySelectorAll("ul.sub-menu li a");
+  let mainSections = document.querySelectorAll("div.right-content");
 
-      $(this)
-        .closest(".menu-heading")
-        .find(".menu-heading-title")
-        .css("color", "#0031F0");
-    }
-    $(".sub-menu").animate({ top: "250px" });
+  let lastId;
+  let cur = [];
+
+  // This should probably be throttled.
+  // Especially because it triggers during smooth scrolling.
+  // https://lodash.com/docs/4.17.10#throttle
+  // You could do like...
+  // window.addEventListener("scroll", () => {
+  //    _.throttle(doThatStuff, 100);
+  // });
+  // Only not doing it here to keep this Pen dependency-free.
+
+  window.addEventListener("scroll", event => {
+    let fromTop = window.scrollY;
+
+    mainNavLinks.forEach(link => {
+      let section = document.querySelector(link.hash);
+
+      if (
+        section.offsetTop <= fromTop &&
+        section.offsetTop + section.offsetHeight > fromTop
+      ) {
+        link.classList.add("current");
+      } else {
+        link.classList.remove("current");
+      }
+    });
   });
-</script>
+</script> -->
 
           </div>
 
@@ -204,9 +235,9 @@
             <h1 id="shipping-method">Shipping Method</h1>
 
 <p><img src="/assets/images/icons/Icon-Pencil-Large.svg" alt="" class="pencil-icon" />
-<a href="https://github.com/bagisto/bagisto-docs/blob/master/create_shipping_method.md" class="edit-github" target="_blank">edit on github</a></p>
+<a href="https://github.com/bagisto/bagisto-docs/blob/master/create_shipping_method.md" class="edit-github" target="\_blank">edit on github</a></p>
 
-<p>I hope that you know how to create package, if not(refer <a href="/create_package.html" target="_blank">Package development</a>), and I will skip package development step</p>
+<p>I hope that you know how to create package, if not(refer <a href="/create_package.html" target="\_blank">Package development</a>), and I will skip package development step</p>
 
 <h3 id="steps-to-create-shipping-methods">Steps to create shipping methods</h3>
 
@@ -214,18 +245,18 @@
   <li>
     <p>User need to create a file named as <code class="highlighter-rouge">carriers.php</code> at <code class="highlighter-rouge">src/config</code> path in the package. Here, we are going to specify what to include in your <code class="highlighter-rouge">carriers.php</code> file.</p>
 
-    <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="cp">&lt;?php</span>
+    <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
 
-  <span class="k">return</span> <span class="p">[</span>
-      <span class="s1">'FedEx'</span> <span class="o">=&gt;</span> <span class="p">[</span>
-          <span class="s1">'code'</span> <span class="o">=&gt;</span> <span class="s1">'fedex'</span><span class="p">,</span>
-          <span class="s1">'title'</span> <span class="o">=&gt;</span> <span class="s1">'FedEx'</span><span class="p">,</span>
-          <span class="s1">'description'</span> <span class="o">=&gt;</span> <span class="s1">'FedEx Shipping'</span><span class="p">,</span>
-          <span class="s1">'active'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
-          <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'per_unit'</span><span class="p">,</span>
-          <span class="s1">'class'</span> <span class="o">=&gt;</span> <span class="s1">'ACME\FedEx\Carriers\FedEx'</span><span class="p">,</span>
-          <span class="p">]</span>
-  <span class="p">];</span>
+<span class="k">return</span> <span class="p">[</span>
+    <span class="s1">'FedEx'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="s1">'code'</span> <span class="o">=&gt;</span> <span class="s1">'fedex'</span><span class="p">,</span>
+        <span class="s1">'title'</span> <span class="o">=&gt;</span> <span class="s1">'FedEx'</span><span class="p">,</span>
+        <span class="s1">'description'</span> <span class="o">=&gt;</span> <span class="s1">'FedEx Shipping'</span><span class="p">,</span>
+        <span class="s1">'active'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'per_unit'</span><span class="p">,</span>
+        <span class="s1">'class'</span> <span class="o">=&gt;</span> <span class="s1">'ACME\FedEx\Carriers\FedEx'</span><span class="p">,</span>
+        <span class="p">]</span>
+<span class="p">];</span>
 </code></pre></div>    </div>
   </li>
 </ul>
@@ -254,20 +285,78 @@ per_order</p>
   </li>
 </ol>
 
-<ul>
-  <li>
-    <p>And, <code class="highlighter-rouge">Carriers</code> named folder inside <code class="highlighter-rouge">src</code> folder. We will now create a file name as our shipping method name for better understandability inside Carriers folder e.g., Fedex.php</p>
+<p>And, <code class="highlighter-rouge">Carriers</code> named folder inside <code class="highlighter-rouge">src</code> folder. We will now create a file name as our shipping method name for better understandability inside Carriers folder e.g., Fedex.php</p>
 
-    <ol>
-      <li>
-        <p>File <code class="highlighter-rouge">Fedex.php</code> will extends AbstractShipping class which is defined at <code class="highlighter-rouge">Webkul\Shipping\Carriers\AbstractShipping</code>. Inside this file, the methods are defined that you can use while creating shipping method.</p>
-      </li>
-      <li>
-        <p>Now, you can write all operations needed for your shipping method in <code class="highlighter-rouge">Fedex.php</code> file</p>
-      </li>
-    </ol>
+<ol>
+  <li>
+    <p>File <code class="highlighter-rouge">Fedex.php</code> will extends AbstractShipping class which is defined at <code class="highlighter-rouge">Webkul\Shipping\Carriers\AbstractShipping</code>. Inside this file, the methods are defined that you can use while creating shipping method.</p>
   </li>
-</ul>
+  <li>
+    <p>Now, you can write all operations needed for your shipping method in <code class="highlighter-rouge">Fedex.php</code> file</p>
+  </li>
+  <li>
+    <p>After creating all necessary files and config you need to create the Form that will appear on the config section in the next route packages/Webkul/Shipping/src/Config/system.php. so you can use them on ‘Fedex.php’</p>
+  </li>
+  <li>
+    <p>To get the translations working you need to add them on packages/Webkul/Admin/src/Resources/lang/en/app.php
+‘fedex-shipping’=&gt;’ Your title or translation’,</p>
+  </li>
+</ol>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="p">[</span>
+    <span class="s1">'key'</span> <span class="o">=&gt;</span> <span class="s1">'sales.carriers.Fedex'</span><span class="p">,</span>
+    <span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'admin::app.admin.system.fedex-shipping'</span><span class="p">,</span>
+    <span class="s1">'sort'</span> <span class="o">=&gt;</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s1">'fields'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+      <span class="p">[</span>
+        <span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'title'</span><span class="p">,</span>
+        <span class="s1">'title'</span> <span class="o">=&gt;</span> <span class="s1">'admin::app.admin.system.title'</span><span class="p">,</span>
+        <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'text'</span><span class="p">,</span>
+        <span class="s1">'validation'</span> <span class="o">=&gt;</span> <span class="s1">'required'</span><span class="p">,</span>
+        <span class="s1">'channel_based'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="s1">'locale_based'</span> <span class="o">=&gt;</span> <span class="kc">true</span>
+      <span class="p">],</span> <span class="p">[</span>
+        <span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'description'</span><span class="p">,</span>
+        <span class="s1">'title'</span> <span class="o">=&gt;</span> <span class="s1">'admin::app.admin.system.description'</span><span class="p">,</span>
+        <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'textarea'</span><span class="p">,</span>
+        <span class="s1">'channel_based'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="s1">'locale_based'</span> <span class="o">=&gt;</span> <span class="kc">false</span>
+      <span class="p">],</span> <span class="p">[</span>
+        <span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'default_rate'</span><span class="p">,</span>
+        <span class="s1">'title'</span> <span class="o">=&gt;</span> <span class="s1">'admin::app.admin.system.rate'</span><span class="p">,</span>
+        <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'text'</span><span class="p">,</span>
+        <span class="s1">'channel_based'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="s1">'locale_based'</span> <span class="o">=&gt;</span> <span class="kc">false</span>
+      <span class="p">],</span>
+
+    <span class="c1">//you can add custom fields as on example to get the minimum subtotal to calculate the standard rate .
+</span>
+    <span class="p">[</span>
+      <span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'base_amount'</span><span class="p">,</span>
+      <span class="s1">'title'</span> <span class="o">=&gt;</span> <span class="s1">'admin::app.admin.system.minimum-amount'</span><span class="p">,</span>
+      <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'text'</span><span class="p">,</span>
+      <span class="s1">'channel_based'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+      <span class="s1">'locale_based'</span> <span class="o">=&gt;</span> <span class="kc">false</span>
+    <span class="p">],</span> <span class="p">[</span>
+      <span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'active'</span><span class="p">,</span>
+      <span class="s1">'title'</span> <span class="o">=&gt;</span> <span class="s1">'admin::app.admin.system.status'</span><span class="p">,</span>
+      <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'select'</span><span class="p">,</span>
+      <span class="s1">'options'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="p">[</span>
+        <span class="s1">'title'</span> <span class="o">=&gt;</span> <span class="s1">'Activo'</span><span class="p">,</span>
+        <span class="s1">'value'</span> <span class="o">=&gt;</span> <span class="kc">true</span>
+        <span class="p">],</span> <span class="p">[</span>
+        <span class="s1">'title'</span> <span class="o">=&gt;</span> <span class="s1">'Inactivo'</span><span class="p">,</span>
+        <span class="s1">'value'</span> <span class="o">=&gt;</span> <span class="kc">false</span>
+        <span class="p">]</span>
+      <span class="p">],</span>
+      <span class="s1">'validation'</span> <span class="o">=&gt;</span> <span class="s1">'required'</span><span class="p">,</span>
+      <span class="s1">'channel_based'</span> <span class="o">=&gt;</span> <span class="kc">false</span><span class="p">,</span>
+      <span class="s1">'locale_based'</span> <span class="o">=&gt;</span> <span class="kc">true</span>
+      <span class="p">]</span>
+    <span class="p">]</span>
+  <span class="p">]</span>
+</code></pre></div></div>
 
           </div>
         </div>
