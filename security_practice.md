@@ -39,8 +39,9 @@ layout: "default"
 
 Restart apache
 
-- use strong and unique passwords, and change them periodically.
-  https://passwordsgenerator.net/
+- use strong and unique passwords, and change them periodically
+
+  [(Use password generator)](https://passwordsgenerator.net/)
 
 - Limit access to the bagisto admin by updating the whitelist with the ip address of each computer that is authorized to use the admin.
 
