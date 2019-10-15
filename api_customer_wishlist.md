@@ -4,20 +4,22 @@ layout: default
 ---
 
 # How To Requests For Customer's Wishlist
+
 ![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
-[edit on github](https://github.com/bagisto/bagisto-docs/blob/master/api_customer_wishlist.md){:class="edit-github" target="_blank"}
+[edit on github](https://github.com/bagisto/bagisto-docs/blob/master/api_customer_wishlist.md){:class="edit-github" target="\_blank"}
 
 ## 1. Get All Wishlists of Customers: <a id="get-wishlists-of-customers"></a>
+
 You can get all the wishlists of Bagisto Store's customers. To call this API customer must be login into the Bagisto Store. You can achieve this job by using `wishlist` API call resource.
 
-
-**Note: In the `wishlist` resource API call, we used `GET HTTP verb` to get all the wishlist of Bagisto's Store customers.**
+**Note**: _In the `wishlist` resource API call, we used `GET HTTP verb` to get all the wishlist of Bagisto's Store customers._
 
 ###### Request:
 
-> *http(s)://example.com/public/api/wishlist*
+> _http(s)://example.com/public/api/wishlist_
 
 ###### Response:
+
     {
         "data": [
             {
@@ -52,39 +54,39 @@ You can get all the wishlists of Bagisto Store's customers. To call this API cus
 
 ![bagisto_cust_wishlists](assets/images/Bagisto_Api/bagisto_cust_wishlists.jpg){:class="screenshot-dimension center"}
 
-
 ### 1.1 Get Wishlists With Pagination: <a id="get-wishlists-with-pagination"></a>
 
-> *http(s)://example.com/public/api/wishlist?page=1*
+> _http(s)://example.com/public/api/wishlist?page=1_
 
-> *http(s)://example.com/public/api/wishlist?limit=5&page=1*
+> _http(s)://example.com/public/api/wishlist?limit=5&page=1_
 
-**Note: If you didn't use the page(?page=x) filter, then it returns the data of the first page by default. You can also provide the limit request parameter in the API url.**
+**Note**: _If you didn't use the page(?page=x) filter, then it returns the data of the first page by default. You can also provide the limit request parameter in the API url._
 
 ![bagisto_wishlist_page](assets/images/Bagisto_Api/bagisto_wishlist_page.jpg){:class="screenshot-dimension center"}
 
 ###### Explanation:
 
-* In the above response, you will find the three Objects with below mentioned indexes:
-    1. data
-    2. link
-    3. meta
+- In the above response, you will find the three Objects with below mentioned indexes:
+  1. data
+  2. link
+  3. meta
 
 #### data object:
 
 Under the data object, you will find the collection of many objects which will contain the details of wishlists of the store's customer.
 
-**Note: Regarding both link and meta objects, we already explained these objects functionality in <a href="api_category.html#link-object" target="_blank" class="bagsito-link"> Category API </a> section.**
-
+**Note**: _Regarding both link and meta objects, we already explained these objects functionality in_ <a href="api_category.html#link-object" target="_blank" class="bagsito-link"> _Category API_ </a> _section_
 
 ### 1.2 Get Wishlists Without Pagination: <a id="get-wishlists-without-pagination"></a>
+
 You can also get all the wishlists of Store's customers at once without pagination. To get the wishlists, customer must be login into the Bagisto Store. For this you have to pass **`pagination=0`** in the query parameter in API URL.
 
 ###### Request:
 
-> *http(s)://example.com/public/api/wishlist?pagination=0*
+> _http(s)://example.com/public/api/wishlist?pagination=0_
 
 ##### Response:
+
     {
         "data": [
             {
@@ -114,19 +116,20 @@ You can also get all the wishlists of Store's customers at once without paginati
 
 ![bagisto_wishlist_no_page](assets/images/Bagisto_Api/bagisto_wishlist_no_page.jpg){:class="screenshot-dimension center"}
 
-
 ## 2. Get all Wishlists Of A Customer: <a id="get-all-wishlist-of-customer"></a>
+
 To get all wishlists of a specific customer, you have to pass a `customer_id` as a query parameter like **`wishlist?customer_id={id}`** in API url. By using this resource and query parameter, you will get a array of wishlist(s) objects of a customer under **`data object`** in response.
 
-> *http(s)://example.com/public/api/wishlist?customer_id={id}*
+> _http(s)://example.com/public/api/wishlist?customer_id={id}_
 
-**Note: In the `wishlist/?customer_id={id}` resource API call, we used `GET HTTP verb` to get all the wishlist(s) of a customer.**
+**Note**: _In the `wishlist/?customer_id={id}` resource API call, we used `GET HTTP verb` to get all the wishlist(s) of a customer._
 
 ##### Request:
 
-> *http(s)://example.com/public/api/wishlist?customer_id=1*
+> _http(s)://example.com/public/api/wishlist?customer_id=1_
 
 ##### Response:
+
     {
         "data": [
             {
@@ -153,21 +156,22 @@ To get all wishlists of a specific customer, you have to pass a `customer_id` as
 
 ![bagisto_wishlist_cust](assets/images/Bagisto_Api/bagisto_wishlist_cust.jpg){:class="screenshot-dimension center"}
 
-
 ## 3. Add Product To Wishlist: <a id="add-product-to-wishlist"></a>
+
 To add a product to customer's wishlist, you have to pass a `product_id` as a request payload like **`wishlist/add/{id}`** in API url.
 
-> *http(s)://example.com/public/api/wishlist/add/{id}*
+> _http(s)://example.com/public/api/wishlist/add/{id}_
 
-* This `wishlist/add/{id}` API call resource will add a new wishlist for a specific product, only if the customer has logged in currently into the store.
+- This `wishlist/add/{id}` API call resource will add a new wishlist for a specific product, only if the customer has logged in currently into the store.
 
-**Note: In the `wishlist/add/{id}` resource API call, we used `GET HTTP verb` to add a new wishlist for a login customer.**
+**Note**: _In the `wishlist/add/{id}` resource API call, we used `GET HTTP verb` to add a new wishlist for a login customer._
 
 ##### Request:
 
-> *http(s)://example.com/public/api/wishlist/add/{id}*
-    
+> _http(s)://example.com/public/api/wishlist/add/{id}_
+
 ##### Response:
+
     {
         "data": {
             "id": 11,
