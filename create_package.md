@@ -541,7 +541,7 @@ After creating model, to generate database migration, you may append `--migratio
 
 > `php artisan make:model User -m`
 
-**Note** : _For more details check_ **_[Laravel Models](https://laravel.com/docs/5.8/eloquent#defining-models)_**
+**Note** : _For more details check_ **_[Laravel Models](https://laravel.com/docs/5.8/eloquent#defining-models)_**{:target="\_blank"}
 
 #### What is Contracts, Repositories and proxies ?<a id="about"></a>
 
@@ -553,7 +553,7 @@ Each contract has a corresponding implementation provided by the framework. For 
 
 All of the Laravel contracts live in their own GitHub repository. This provides a quick reference point for all available contracts, as well as a single, decoupled package that may be utilized by package developers.
 
-**Note** : _For more details check_ **_[Laravel Contracts](https://laravel.com/docs/5.8/contracts)_**{: target="\_blank"}
+**Note** : _For more details check_ **_[Laravel Contracts](https://laravel.com/docs/5.8/contracts)_**{:target="\_blank"}
 
 ##### Repositories
 
