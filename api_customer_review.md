@@ -135,3 +135,53 @@ You can also get all of the customer's reviews of Bagisto Store in a single API 
     }
 
 ![bagisto_reviews_cust_no_page](assets/images/Bagisto_Api/bagisto_reviews_cust_no_page.jpg){:class="screenshot-dimension center"}
+
+# How To Post For Products's Reviews
+To post a review of a specific product, you have to login as customer.{id} = Product_id in API url. To use this API call customer authentication is required.
+
+> *http(s)://example.com/public/api/reviews/{id}/create*
+
+###### Post data:
+    {
+        "rating" : "3",
+        "title" : "This is dummy title",
+        "comment" : "This is the comment for the dummy title"
+    }
+
+#### Response:
+    {
+        "message": "Your review submitted successfully.",
+        "data": {
+            "id": 1,
+            "title": "This is dummy title",
+            "rating": "3.0",
+            "comment": "This is the comment for the dummy title",
+            "name": "Mohammad Asif",
+            "status": "pending",
+            "product": {
+                "id": 23,
+                "type": "simple",
+                "name": "white shirt",
+                "url_key": "key",
+                "price": 1000,
+                "formated_price": "$1,000.00",
+                "short_description": "<p>lorem</p>",
+                "description": "<p>lorem ipsum</p>",
+                "sku": "ssh",
+                "images": [ {...}, { ...} ],
+                "base_image": { ... },
+                "variants": [],
+                "in_stock": true,
+                "reviews": { ... },
+                "is_saved": false,
+                "created_at": { ... },
+                "updated_at": { ... }
+                },
+            "customer": { ... },
+                "created_at": { ... },
+                "updated_at": { ... }
+            },
+            "created_at": { ... },
+            "updated_at": { ... }
+        }
+    }

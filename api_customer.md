@@ -16,6 +16,12 @@ In the customer's APIs: Firstly, we will look for the customer's authentication 
 
 **Note**: _For the customer's login, you have to send your data `(i.e. email and password)` using `POST HTTP verb` ._
 
+##### Request:
+    {
+        email:johndoe@webkul.com,
+        password:******
+    }
+
 ##### Response:
 
 ![bagisto_cust_login](assets/images/Bagisto_Api/bagisto_cust_login.jpg){:class="screenshot-dimension center"}

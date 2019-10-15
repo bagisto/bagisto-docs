@@ -89,6 +89,44 @@ By using this API call you can add new products into the cart and also you can a
 
 ##### Request:
 
+> *http(s)://example.com/public/api/checkout/cart/add/23*
+##### Post data for non-configurable product
+    {
+        "product":"product_id",
+        "quantity:"quantity",
+        "is_configurable":false
+    }
+
+> ##### Post data
+    {
+        "product":"23",
+        "quantity:"2",
+        "is_configurable":false
+    }
+
+
+##### Request:
+
+> *http(s)://example.com/public/api/checkout/cart/add/24*
+##### Post data for configurable product
+    {
+        "product" : "product_id",
+        "quantity" : "1",
+        "is_configurable" : "true",
+        "selected_configurable_option" : "configurable_product_variant_id",
+        "super_attribute" : {"attribute_id":"attribute_option_id", "attribute_id":"attribute_option_id"}
+    }
+
+> ##### Post data
+    {
+        "product" : "24",
+        "quantity" : "1",
+        "is_configurable" : "true",
+        "selected_configurable_option" : "26",
+        "super_attribute" : {"23":"2", "24":6}
+    }
+
+
 > _http(s)://example.com/public/api/checkout/cart/add/6_
 
 ##### Response:
@@ -149,6 +187,15 @@ By using this API call you can update the cart's product(s) quantity. To do this
 ##### Request:
 
 > _http(s)://example.com/public/api/checkout/cart/update_
+
+    {
+        qty : { "cart_item_id" : "quantity" }
+    }
+
+##### Post data
+    {
+      qty : { "4":"2" }
+    }
 
 ##### Response:
 
@@ -269,6 +316,58 @@ You can move a product from cart to wishlist. To do this task, you have to use t
 
 At the checkout step, customer can create new addresses or select from the existing addresses for billing & shipping the cart's item. You can achieve this task by using the **`checkout/save-address`** resource in API url. This API will work for the both login customers and with guest users also.
 
+**Note: In the `checkout/save-address` resource API call, we used `POST HTTP verb` for choosing the customer's addresses for checkout process.**
+#### When customer is logged in
+##### Request:
+
+> *http(s)://example.com/public/api/checkout/save-address*
+##### Post data
+    {
+        "billing" : {
+            "address1" :  {
+            "0" : ""
+            },
+            "use_for_shipping" : "false",
+            "first_name" : "john",
+            "last_name" : "doe",
+            "email" : "john@gmail.com",
+            "address_id" : 1
+        },
+        "shipping" : {
+            "address1" : {
+            "0" : ""
+        },
+            "first_name" : "john",
+            "last_name" : "doe",
+            "email" : "john@gmail.com",
+            "address_id" : 2
+        }
+    }
+
+#### When guest check out
+
+##### Post data
+
+    {
+        "billing" :  {
+            "address1" : { "0" : "h23" },
+            "use_for_shipping" : "true",
+            "first_name" : "john",
+            "last_name" : "doe",
+            "email" : "john@webkul.com",
+            "city" : "noida",
+            "state"  :"DL",
+            "postcode" : "110092",
+            "country" : "IN",
+            "phone" : "8802097347"
+        },
+        "shipping" : {
+            "address1" : {
+            "0" : ""
+            }
+        }
+    }
+
 **Note**: _In the `checkout/save-address` resource API call, we used `POST HTTP verb` for choosing the customer's addresses for checkout process._
 
 ##### Request:
@@ -330,6 +429,12 @@ After saving customer's addresses to the cart, you have to select a shipping met
 
 ##### Request:
 
+> *http(s)://example.com/public/api/checkout/save-shipping*
+
+##### Post data
+    {
+        "shipping_method": "flatrate_flatrate"
+    }
 > _http(s)://example.com/public/api/checkout/save-shipping_
 
 ##### Response:
@@ -371,6 +476,14 @@ After applying shipping method to the cart, you have to select a payment method 
 ##### Request:
 
 > _http(s)://example.com/public/api/checkout/save-payment_
+
+##### Post data
+    {
+        "payment" : {
+            "method" : "cashondelivery"
+
+        }
+    }
 
 ##### Response:
 
