@@ -4,21 +4,24 @@ layout: default
 ---
 
 # How To Create Requests For Cart
+
 ![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
-[edit on github](https://github.com/bagisto/bagisto-docs/blob/master/api_cart.md){:class="edit-github" target="_blank"}
+[edit on github](https://github.com/bagisto/bagisto-docs/blob/master/api_cart.md){:class="edit-github" target="\_blank"}
 
 ## 1. Get Complete Cart Details: <a id="get-cart"></a>
+
 To get the current cart details, you have to use the **`checkout/cart`** resource in API url. You will see in all the **`cart`** related api, we used **`checkout prefix`**. This API call will work both with customer's authentication or without customer's authentication. If customer is not login into the store, then this API resource will return the `Guest's` cart detail.
 
-**Note: In the `checkout/cart` resource API call, we used `GET HTTP verb` to get complete cart details of the customer/guest.**
+**Note**: _In the `checkout/cart` resource API call, we used `GET HTTP verb` to get complete cart details of the customer/guest._
 
 ##### Request:
 
-> *http(s)://example.com/public/api/checkout/cart*
+> _http(s)://example.com/public/api/checkout/cart_
 
 ##### Response:
 
 #### 1.1 In case of Guest Customer: <a id="get-guest-cart"></a>
+
     {
         "data": {
             "id": 7,
@@ -47,6 +50,7 @@ To get the current cart details, you have to use the **`checkout/cart`** resourc
 ![bagisto_cart_guest](assets/images/Bagisto_Api/bagisto_cart_guest.jpg){:class="screenshot-dimension center"}
 
 #### 1.2 In case of Login Customer: <a id="get-customer-cart"></a>
+
     {
         "data": {
             "id": 6,
@@ -76,15 +80,16 @@ To get the current cart details, you have to use the **`checkout/cart`** resourc
 ![bagisto_cart](assets/images/Bagisto_Api/bagisto_cart.jpg){:class="screenshot-dimension center"}
 
 ## 2. Add Product To Cart:
+
 By using this API call you can add new products into the cart and also you can add quantity to the existing product in cart. To do this task, you have use the **`checkout/cart/add/{id}`** resource with **`{id} i.e product_id`** as a request payload in API url. This API call will work both with customer's authentication or without customer's authentication.
 
-> *http(s)://example.com/public/api/checkout/cart/add/{id}*
+> _http(s)://example.com/public/api/checkout/cart/add/{id}_
 
-**Note: In the `checkout/cart/add/{id}` resource API call, we used `POST HTTP verb` to add/update the product to the cart for the customer/guest.**
+**Note**: _In the `checkout/cart/add/{id}` resource API call, we used `POST HTTP verb` to add/update the product to the cart for the customer/guest._
 
 ##### Request:
 
-> *http(s)://example.com/public/api/checkout/cart/add/6*
+> _http(s)://example.com/public/api/checkout/cart/add/6_
 
 ##### Response:
 
@@ -116,15 +121,15 @@ By using this API call you can add new products into the cart and also you can a
 
 ![bagisto_cart_add](assets/images/Bagisto_Api/bagisto_cart_add.jpg){:class="screenshot-dimension center"}
 
-
 ## 3. To Empty Cart: <a id="empty-cart"></a>
+
 By using this API call you can remove all the products from the cart. To do this task, you have to use the **`checkout/cart/empty`** resource in API url. This API call will work both with customer's authentication or without customer's authentication.
 
-**Note: In the `checkout/cart/empty` resource API call, we used `GET HTTP verb` to remove all the product(s) from the cart for the customer/guest.**
+**Note**: _In the `checkout/cart/empty` resource API call, we used `GET HTTP verb` to remove all the product(s) from the cart for the customer/guest._
 
 ##### Request:
 
-> *http(s)://example.com/public/api/checkout/cart/empty*
+> _http(s)://example.com/public/api/checkout/cart/empty_
 
 ##### Response:
 
@@ -135,15 +140,15 @@ By using this API call you can remove all the products from the cart. To do this
 
 ![bagisto_cart_empty](assets/images/Bagisto_Api/bagisto_cart_empty.jpg){:class="screenshot-dimension center"}
 
-
 ## 4. To Update Cart: <a id="update-cart"></a>
+
 By using this API call you can update the cart's product(s) quantity. To do this task, you have to use the **`checkout/cart/update`** resource in API url. This API call will work both with customer's authentication or without customer's authentication.
 
-**Note: In the `checkout/cart/update` resource API call, we used `PUT HTTP verb` to update the cart's product(s) quantity for the customer/guest.**
+**Note**: _In the `checkout/cart/update` resource API call, we used `PUT HTTP verb` to update the cart's product(s) quantity for the customer/guest._
 
 ##### Request:
 
-> *http(s)://example.com/public/api/checkout/cart/update*
+> _http(s)://example.com/public/api/checkout/cart/update_
 
 ##### Response:
 
@@ -176,17 +181,17 @@ By using this API call you can update the cart's product(s) quantity. To do this
 
 ![bagisto_cart_update](assets/images/Bagisto_Api/bagisto_cart_update.jpg){:class="screenshot-dimension center"}
 
-
 ## 5. Remove Specific Product From Cart: <a id="remove-product-from-cart"></a>
+
 You can remove any particular product from the cart. To do this task, you have to use the **`checkout/cart/remove-item/{id}`** resource with the **`{id}`** i.e. **`cart_item_id`** as request payload in API url. This API call will work both with customer's authentication or without customer's authentication.
 
-> *http(s)://example.com/public/api/checkout/cart/remove-item/{id}*
+> _http(s)://example.com/public/api/checkout/cart/remove-item/{id}_
 
-**Note: In the `checkout/cart/remove-item` resource API call, we used `GET HTTP verb` to remove the cart's product for the customer/guest.**
+**Note**: _In the `checkout/cart/remove-item` resource API call, we used `GET HTTP verb` to remove the cart's product for the customer/guest._
 
 ##### Request:
 
-> *http(s)://example.com/public/api/checkout/cart/remove-item/15*
+> _http(s)://example.com/public/api/checkout/cart/remove-item/15_
 
 ##### Response:
 
@@ -219,17 +224,17 @@ You can remove any particular product from the cart. To do this task, you have t
 
 ![bagisto_cart_remove_item](assets/images/Bagisto_Api/bagisto_cart_remove_item.jpg){:class="screenshot-dimension center"}
 
-
 ## 6. Move Product From Cart To Wishlist: <a id="move-to-wishlist"></a>
+
 You can move a product from cart to wishlist. To do this task, you have to use the **`checkout/cart/move-to-wishlist/{id}`** resource with the **`{id}`** i.e. **`cart_item_id`** as request payload in API url.
 
-> *http(s)://example.com/public/api/checkout/cart/move-to-wishlist/{id}*
+> _http(s)://example.com/public/api/checkout/cart/move-to-wishlist/{id}_
 
-**Note: In the `checkout/cart/move-to-wishlist` resource API call, we used `GET HTTP verb` to move the cart's product to the wishlist for the login customer.**
+**Note**: _In the `checkout/cart/move-to-wishlist` resource API call, we used `GET HTTP verb` to move the cart's product to the wishlist for the login customer._
 
 ##### Request:
 
-> *http(s)://example.com/public/api/checkout/cart/move-to-wishlist/16*
+> _http(s)://example.com/public/api/checkout/cart/move-to-wishlist/16_
 
 ##### Response:
 
@@ -260,15 +265,15 @@ You can move a product from cart to wishlist. To do this task, you have to use t
 
 ![bagisto_move_to_wishlist](assets/images/Bagisto_Api/bagisto_move_to_wishlist.jpg){:class="screenshot-dimension center"}
 
-
 ## 7. Save Addresses To Cart: <a id="save-address-to-cart"></a>
+
 At the checkout step, customer can create new addresses or select from the existing addresses for billing & shipping the cart's item. You can achieve this task by using the **`checkout/save-address`** resource in API url. This API will work for the both login customers and with guest users also.
 
-**Note: In the `checkout/save-address` resource API call, we used `POST HTTP verb` for choosing the customer's addresses for checkout process.**
+**Note**: _In the `checkout/save-address` resource API call, we used `POST HTTP verb` for choosing the customer's addresses for checkout process._
 
 ##### Request:
 
-> *http(s)://example.com/public/api/checkout/save-address*
+> _http(s)://example.com/public/api/checkout/save-address_
 
 ##### Response:
 
@@ -317,15 +322,15 @@ At the checkout step, customer can create new addresses or select from the exist
 
 ![bagisto_save_address](assets/images/Bagisto_Api/bagisto_save_address.jpg){:class="screenshot-dimension center"}
 
-
 ## 8. Save Shipping Method To Cart: <a id="save-shipping-to-cart"></a>
+
 After saving customer's addresses to the cart, you have to select a shipping method to proceed for completing the order. You can achieve this task by using the **`checkout/save-shipping`** resource in API url. Shipping method and changes will apply to the cart through this API call. This API will work for the both login customers and with guest users also.
 
-**Note: In the `checkout/save-shipping` resource API call, we used `POST HTTP verb` to apply the shipping method and changes to the cart.**
+**Note**: _In the `checkout/save-shipping` resource API call, we used `POST HTTP verb` to apply the shipping method and changes to the cart._
 
 ##### Request:
 
-> *http(s)://example.com/public/api/checkout/save-shipping*
+> _http(s)://example.com/public/api/checkout/save-shipping_
 
 ##### Response:
 
@@ -357,15 +362,15 @@ After saving customer's addresses to the cart, you have to select a shipping met
 
 ![bagisto_save_shipping](assets/images/Bagisto_Api/bagisto_save_shipping.jpg){:class="screenshot-dimension center"}
 
-
 ## 9. Save Payment Method To Cart: <a id="save-payment-to-cart"></a>
+
 After applying shipping method to the cart, you have to select a payment method to proceed for completing the order. You can achieve this task by using the **`checkout/save-payment`** resource in API url. By using this API `Payment method` will apply to the cart and will work for the both login customers and with guest users also.
 
-**Note: In the `checkout/save-payment` resource API call, we used `POST HTTP verb` to apply the payment method to the cart.**
+**Note**: _In the `checkout/save-payment` resource API call, we used `POST HTTP verb` to apply the payment method to the cart._
 
 ##### Request:
 
-> *http(s)://example.com/public/api/checkout/save-payment*
+> _http(s)://example.com/public/api/checkout/save-payment_
 
 ##### Response:
 
@@ -392,15 +397,15 @@ After applying shipping method to the cart, you have to select a payment method 
 
 ![bagisto_save_payment](assets/images/Bagisto_Api/bagisto_save_payment.jpg){:class="screenshot-dimension center"}
 
-
 ## 10. Save Order: <a id="save-order"></a>
+
 After applying shipping addresses, shipping method, and payment method to the cart, now finally you have to create/save order. You can achieve this task by using the **`checkout/save-order`** resource in API url. By using this API order will be placed and save to the current store and this API will work for the both login customers and with guest users also.
 
-**Note: In the `checkout/save-order` resource API call, we used `POST HTTP verb` to create and save order in the current store.**
+**Note**: _In the `checkout/save-order` resource API call, we used `POST HTTP verb` to create and save order in the current store._
 
 ##### Request:
 
-> *http(s)://example.com/public/api/checkout/save-order*
+> _http(s)://example.com/public/api/checkout/save-order_
 
 ##### Response:
 
