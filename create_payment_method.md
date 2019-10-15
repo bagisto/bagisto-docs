@@ -16,7 +16,7 @@ In this article, we will understand how to create payment method by own with jus
 
 ### Steps to create payment method
 
-- Following the module development process, firstly, you must create '**Config**','**Database**', '**Resources**', '**Providers**', '**Models**', '**Payment**', '**Repositories**', '**Http**', **Listeners** folders under src folder of your company's namespace.
+- Following the module development process, firstly, you must create '**Config**', '**Database**', '**Resources**', '**Providers**', '**Models**', '**Payment**', '**Repositories**', '**Http**', '**Listeners**' folders under src folder of your company's namespace.
 
 - Within **Config** folder, contains all of your application's configuration files. Let's just create two files as _system.php_ and _paymentmethod.php_
 

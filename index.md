@@ -69,7 +69,7 @@ Also, You can Check out the roadmap for Bagisto here: [bagisto roadmap](https://
 
 ##### a. Download zip from the link below:
 
-[Download](https://github.com/bagisto/bagisto/archive/v0.1.5.zip)
+[Download](https://github.com/bagisto/bagisto/archive/v0.1.6.zip)
 
 ##### b. Extract the contents of zip and execute the project in browser:
 
