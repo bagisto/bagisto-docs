@@ -16,7 +16,7 @@ To get all the Bagisto Store Products with the pagination, you have to place a r
 
 > _http(s)://example.com/public/api/products?page=1_
 
-**Note: If you didn't use the page(?page=x) filter, then it returns the data of the first page by default.**
+**Note**: _If you didn't use the page(?page=x) filter, then it returns the data of the first page by default_.
 
 ##### Response:
 
@@ -60,7 +60,7 @@ To get all the Bagisto Store Products with the pagination, you have to place a r
 
 Under the data object, you will find the collection of many objects containing the details of bagisto store's products. You can use the product's index data by accessing these products sub-objects.
 
-**Note: Regarding link and meta objects, we already explained these objects functionality in <a href="api_category.html#link-object" target="_blank" class="bagsito-link"> Category API </a> section.**
+**Note**: _Regarding link and meta objects, we already explained these objects functionality in_ <a href="api_category.html#link-object" target="_blank" class="bagsito-link"> _Category API_ </a> _section_.
 
 ### 1.1. Get Product(s) With Query Parameters: <a id="get-product-with-query-parameters"></a>
 
@@ -176,7 +176,7 @@ You can also filter your store product(s) by using **`filterable attributes quer
 
 ![bagisto_prod_price_config](assets/images/Bagisto_Api/bagisto_prod_price_config.jpg){:class="screenshot-dimension center"}
 
-**Note: The above explained `filter query parameters` (i.e. size,color,price) can be use together.**
+**Note**: _The above explained `filter query parameters` (i.e. size,color,price) can be use together_.
 
 ## 2. Get Specific Product: <a id="get-specific-product"></a>
 
@@ -186,7 +186,7 @@ If you want the record of any specific product, then you have to provide the pro
 
 ![bagisto_prod_id](assets/images/Bagisto_Api/bagisto_prod_id.jpg){:class="screenshot-dimension center"}
 
-**Note: Here you will see in the API response `data Object` will only contain the single object of category record**
+**Note**: _Here you will see in the API response `data Object` will only contain the single object of category record_
 
 ## 3. Get Product's Additional Information: <a id="get-product-additional-info"></a>
 
