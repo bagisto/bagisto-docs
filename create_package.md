@@ -322,7 +322,7 @@ Also, Laravel provides us a option to create migration files at a specified path
 php artisan make:migration create_demo_table - -path=packages/ACME/HelloWorld/src/Database/Migrations
 ```
 
-### How to Add Menu in Admin/Customer <a id="add-menu"></a>
+### How to Add Menu in Admin <a id="add-menu"></a>
 
 ### Step-1
 

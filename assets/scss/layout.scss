@@ -48,6 +48,11 @@ $font-montserrat: "Montserrat", sans-serif;
   box-sizing: border-box;
 }
 
+.link-color {
+  color: $link-color;
+  text-decoration: underline;
+}
+
 body {
   margin: 0;
   padding: 0;
