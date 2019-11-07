@@ -8,7 +8,7 @@ layout: default
 ![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/create_theme.md){:.edit-github target="\_blank"}
 
-I hope that you know how to create package, if not(refer [Package development](create_package.md){: target="\_blank"}), and I will skip package development step
+I hope that you know how to create package, if not refer [Package development](create_package.md){: target="\_blank" .link-color}.
 
 Creating a custom theme for Bagisto had been a hot topic lately. More and more users are actively trying our framework and we’re genuinely overwhelmed by it.
 
@@ -22,7 +22,7 @@ Please follow steps mentioned below that how to create a custom theme in Bagisto
 
 ![theme-file-location](assets/images/Bagisto_Docs_Images/theme/theme-file-location.png){: width="30%" height="50%" .center}
 
-- Check contents of ‘themes.php’ file, it holds all necessary information of creating a custom theme.
+- Check contents of 'themes.php’ file, it holds all necessary information of creating a custom theme.
 
 ```php
 <?php
@@ -53,15 +53,15 @@ Let’s go through the parameters of this theme’s file. Because the understand
 
 ##### An Explanation For These Parameters:
 
-1. default: Declared at the top signifies the currently active or default theme in Bagisto. It is assigned with the value ‘default’. The default(string) indicates the name of the currently active theme.
+1. default: Declared at the top signifies the currently active or default theme in Bagisto. It is assigned with the value 'default’. The default(string) indicates the name of the currently active theme.
 
 ![theme](assets/images/Bagisto_Docs_Images/theme/theme-array-key.png){: width="30%" height="50%" .center}
 
 2. themes: This parameter is where you’ve to define all essentials for your own custom theme. Multiple themes can also be created and used at the same time in Bagisto.
 
-3. Inside ‘themes’ there is another array by name ‘default‘ which is your currently active theme. Containing some key-value pairs.
+3. Inside 'themes’ there is another array by name 'default' which is your currently active theme. Containing some key-value pairs.
 
-   - ‘default‘: When you look inside this array name ‘default‘ it holds few more key-value pairs. such as ‘view_path‘, ‘assets_path‘, ‘name’ all those are explained below:
+   - 'default': When you look inside this array name 'default' it holds few more key-value pairs. such as 'view_path', 'assets_path', 'name’ all those are explained below:
 
 ![default-theme](assets/images/Bagisto_Docs_Images/theme/theme-array.png){: .screenshot-dimension .center}
 
@@ -71,11 +71,11 @@ Let’s go through the parameters of this theme’s file. Because the understand
 
 - name: Defines a global name for your theme inside Bagisto.
 
-- parent: This is a magic parameter that you can find in the commented code below the sub array ‘default‘. Using this parameter you can make use of existing themes inside Bagisto and just customise them even further. This parameter will take the value of the ‘name’ parameter listed in 3rd point above.
+- parent: This is a magic parameter that you can find in the commented code below the sub array 'default'. Using this parameter you can make use of existing themes inside Bagisto and just customise them even further. This parameter will take the value of the 'name’ parameter listed in 3rd point above.
 
 ![bliss-theme](assets/images/Bagisto_Docs_Images/theme/bliss-array.png){: .screenshot-dimension .center}
 
-Finally, define your own paths and name of your custom theme inside ‘themes.php’ file , and start creating view files. Do not forget to cover all get routes of shop package having a parameter called ‘view’.
+Finally, define your own paths and name of your custom theme inside 'themes.php’ file , and start creating view files. Do not forget to cover all get routes of shop package having a parameter called 'view’.
 
 ![theme-route-file-location](assets/images/Bagisto_Docs_Images/theme/theme-routes.png){: width="30%" height="50%" .center}
 
