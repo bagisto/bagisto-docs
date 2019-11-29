@@ -69,7 +69,8 @@ a {
   text-decoration: none;
 }
 
-a:hover, a:active {
+a:hover,
+a:active {
   text-decoration: none;
   cursor: pointer;
 }
@@ -156,16 +157,16 @@ td {
     background-color: #fff;
     &.active {
       width: 320px;
-      .hangburger {
+      .hamburger {
         left: 270px;
         top: 34px;
         background-color: #fff;
-        &:before{
-          top:1px;
+        &:before {
+          top: 1px;
           transform: rotate(45deg);
         }
-        &:after{
-          top:1px;
+        &:after {
+          top: 1px;
           transform: rotate(-45deg);
         }
       }
@@ -184,19 +185,19 @@ td {
       width: 320px;
       border-right: 2px solid $outline-hvr;
       padding: 10px 16px;
-    
+
       .logo-wrapper {
         display: flex;
         flex-direction: row;
         align-items: center;
         font-size: 19px;
-    
+
         .logo {
           height: 45px;
           width: 110px;
           padding-right: 5px;
         }
-    
+
         span {
           margin-top: 5px;
           padding-left: 5px;
@@ -204,11 +205,11 @@ td {
           border-left: 1px solid black;
         }
       }
-    
+
       .logo-wrapper a:hover {
         text-decoration: none;
       }
-    
+
       .menu-list {
         ul {
           margin: 0;
@@ -218,18 +219,18 @@ td {
           justify-content: flex-start;
           align-items: center;
           list-style-type: none;
-    
+
           li {
             font-weight: 600;
             margin-right: 15px;
             padding-left: 20px;
-    
+
             a {
               font-size: 18px;
               letter-spacing: 0.8px;
             }
           }
-    
+
           li:last-child {
             margin-right: 0px;
           }
@@ -237,7 +238,7 @@ td {
       }
     }
 
-      .sidebar {
+    .sidebar {
       width: 320px;
 
       @media screen and (max-width: 768px) {
@@ -289,11 +290,11 @@ td {
       color: #3d3d3d;
       letter-spacing: 0;
     }
-    h3{
-      color:#515151;
+    h3 {
+      color: #515151;
       margin-top: 50px;
     }
-    p{
+    p {
       font-family: $font-montserrat;
       font-size: 18px;
       color: #515151;
@@ -301,7 +302,8 @@ td {
       line-height: 31px;
     }
 
-    ul, ol{
+    ul,
+    ol {
       li {
         font-family: $font-montserrat;
         font-size: 17px;
@@ -309,11 +311,12 @@ td {
         letter-spacing: 0;
         line-height: 31px;
         font-weight: 600;
-          ul, ol{
-            li{
-              font-weight: 500;
-            }
+        ul,
+        ol {
+          li {
+            font-weight: 500;
           }
+        }
       }
     }
   }
@@ -403,28 +406,29 @@ li ul {
 ::-webkit-scrollbar {
   width: 3px;
 }
- 
+
 ::-webkit-scrollbar-thumb {
-  background: $spnr-color; 
+  background: $spnr-color;
 }
 
-.hangburger{
+.hamburger {
   display: none;
   position: fixed;
   background-color: #a5a5a5;
   width: 20px;
-  height:3px;
+  height: 3px;
   top: 100px;
   left: 20px;
-  &:after, &:before{
+  &:after,
+  &:before {
     content: "";
     background-color: #a5a5a5;
     position: absolute;
     width: 20px;
-    height:3px;
+    height: 3px;
     top: -6px;
   }
-  &:before{
+  &:before {
     top: 6px;
   }
 
@@ -433,10 +437,11 @@ li ul {
   }
 }
 
-.hangburger:hover{
+.hamburger:hover {
   cursor: pointer;
   background-color: #515151;
-  &:after, &:before{
+  &:after,
+  &:before {
     background-color: #515151;
   }
 }
