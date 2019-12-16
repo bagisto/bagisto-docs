@@ -81,7 +81,7 @@ To get the current cart details, you have to use the **`checkout/cart`** resourc
 
 ## 2. Add Product To Cart:
 
-By using this API call you can add new products into the cart and also you can add quantity to the existing product in cart. To do this task, you have use the **`checkout/cart/add/{id}`** resource with **`{id} i.e product_id`** as a request payload in API url. This API call will work both with customer's authentication or without customer's authentication.
+By using this API call you can add new products into the cart and also you can add quantity to the existing product in cart. To do this task, you have use the **`checkout/cart/add/{id}`** resource with **`{id} i.e. product_id`** as a request payload in API url. This API call will work both with customer's authentication or without customer's authentication.
 
 > _http(s)://example.com/public/api/checkout/cart/add/{id}_
 
@@ -89,8 +89,10 @@ By using this API call you can add new products into the cart and also you can a
 
 ##### Request:
 
-> *http(s)://example.com/public/api/checkout/cart/add/23*
+> _http(s)://example.com/public/api/checkout/cart/add/23_
+
 ##### Post data for non-configurable product
+
     {
         "product":"product_id",
         "quantity:"quantity",
@@ -98,17 +100,19 @@ By using this API call you can add new products into the cart and also you can a
     }
 
 > ##### Post data
+
     {
         "product":"23",
         "quantity:"2",
         "is_configurable":false
     }
 
-
 ##### Request:
 
-> *http(s)://example.com/public/api/checkout/cart/add/24*
+> _http(s)://example.com/public/api/checkout/cart/add/24_
+
 ##### Post data for configurable product
+
     {
         "product" : "product_id",
         "quantity" : "1",
@@ -118,6 +122,7 @@ By using this API call you can add new products into the cart and also you can a
     }
 
 > ##### Post data
+
     {
         "product" : "24",
         "quantity" : "1",
@@ -125,7 +130,6 @@ By using this API call you can add new products into the cart and also you can a
         "selected_configurable_option" : "26",
         "super_attribute" : {"23":"2", "24":6}
     }
-
 
 > _http(s)://example.com/public/api/checkout/cart/add/6_
 
@@ -193,6 +197,7 @@ By using this API call you can update the cart's product(s) quantity. To do this
     }
 
 ##### Post data
+
     {
       qty : { "4":"2" }
     }
@@ -317,11 +322,15 @@ You can move a product from cart to wishlist. To do this task, you have to use t
 At the checkout step, customer can create new addresses or select from the existing addresses for billing & shipping the cart's item. You can achieve this task by using the **`checkout/save-address`** resource in API url. This API will work for the both login customers and with guest users also.
 
 **Note: In the `checkout/save-address` resource API call, we used `POST HTTP verb` for choosing the customer's addresses for checkout process.**
+
 #### When customer is logged in
+
 ##### Request:
 
-> *http(s)://example.com/public/api/checkout/save-address*
+> _http(s)://example.com/public/api/checkout/save-address_
+
 ##### Post data
+
     {
         "billing" : {
             "address1" :  {
@@ -429,12 +438,14 @@ After saving customer's addresses to the cart, you have to select a shipping met
 
 ##### Request:
 
-> *http(s)://example.com/public/api/checkout/save-shipping*
+> _http(s)://example.com/public/api/checkout/save-shipping_
 
 ##### Post data
+
     {
         "shipping_method": "flatrate_flatrate"
     }
+
 > _http(s)://example.com/public/api/checkout/save-shipping_
 
 ##### Response:
@@ -478,6 +489,7 @@ After applying shipping method to the cart, you have to select a payment method 
 > _http(s)://example.com/public/api/checkout/save-payment_
 
 ##### Post data
+
     {
         "payment" : {
             "method" : "cashondelivery"

@@ -142,7 +142,7 @@ Go to ACME->src->Http->routes.php file and create a route to render view
 
 ![view-route-creation](assets/images/Bagisto_Docs_Images/PackageDevelopment/view-route-creation.png){: .screenshot-dimension .center}
 
-If everythings goes well you can run composer dump-autoload so laravel detects the new route files and works othwerway it wont work and will return NotFound Exception.
+If everythings goes well you can run composer dump-autoload so laravel detects the new route files and works otherway it wont work and will return NotFound Exception.
 
 Now, you can append ‘hello-world’ to your local path in the browser's url to see the output.
 
@@ -184,7 +184,7 @@ Add \{\{ \_\_(‘helloworld::app.hello-world.name’) \}\} to your application�
 
 - Now we will add CSS to our package. To add CSS create ‘package.json’ file & ‘webpack.mix.js’ file inside the root of your package.
 
-Create a ‘Resources’ folder inside the ‘src’ folder. Inside ‘Resources’ folder creates a folder name ‘assests’& inside it create ‘sass’ folder & inside it create a folder name ‘app.scss’. This ‘app.scss’ will consist SASS for a package. In ‘package.json’ file, you can mention your npm dependencies. Create a webpack.mix.js file, this will be used for compiling our assets.
+Create a ‘Resources’ folder inside the ‘src’ folder. Inside ‘Resources’ folder creates a folder name ‘assets’& inside it create ‘sass’ folder & inside it create a folder name ‘app.scss’. This ‘app.scss’ will consist SASS for a package. In ‘package.json’ file, you can mention your npm dependencies. Create a webpack.mix.js file, this will be used for compiling our assets.
 
 ‘package.json' file consist
 
@@ -241,7 +241,7 @@ All dependency can be updated according to need.
 
 After doing this go to the root of your package & run ‘npm install’ which will install all dependencies. After installing dependencies run ‘npm run watch’, which will compile all your CSS & publish it inside public folder according to path mention in webpack.mix.js according to the environment.
 
-In the same way, we can also add images & js. Inside ‘assests’ folder of ‘Resources’, create two folders ‘js’ & ‘images’ in which create ‘app.js’ file for js & inside ‘images’ folder, download images.
+In the same way, we can also add images & js. Inside ‘assets’ folder of ‘Resources’, create two folders ‘js’ & ‘images’ in which create ‘app.js’ file for js & inside ‘images’ folder, download images.
 
 Now we need to publish these two also as we did for CSS. We will add this too to our webpack.mix.js.
 
@@ -418,7 +418,7 @@ Now, this menu will comes in admin login. You can change icon accordingly your n
 
 ### How to Create ACL in Bagisto? <a id="create-acl"></a>
 
-In term to manage an ecommerce site becomes clumsy and ambiguous. Here, in bagisto, it has been taken care of, bagisto has provided an functionality 'ACL'(Access Control List). Mainly,with ACL, admin has power to disable the menu whatever not-in-use for admin .
+In term to manage an ecommerce site becomes clumsy and ambiguous. Here, in bagisto, it has been taken care of, bagisto has provided an functionality 'ACL'(Access Control List). Mainly, with ACL, admin has power to disable the menu whatever not-in-use for admin .
 
 ##### Creating an ACL file
 
@@ -471,8 +471,8 @@ return [
 
 1.  As you can see in above image, the acl.php includes some parameters (you can refer to how to add menu in admin/customer section above)
 
-2.  Array is created for individual's menu with the parameters (key, name, route, sort)
-    All we need to defined the menu which we want to be included in ACL functionality such as- in our case, in images attached the below image is includes the menu whatever defined in above image within code
+2.  Array is created for individual's menu with the parameters (key, name, route, sort).
+    All we need is to define the menu which we want to be included in ACL functionality.
 
     ![ACL](assets/images/Bagisto_Docs_Images/ACL/acl-ui.png){: .screenshot-dimension .center}
 
@@ -557,7 +557,7 @@ All of the Laravel contracts live in their own GitHub repository. This provides 
 
 ##### Repositories
 
-Generally, we wrote all of our application logic in the controller. There’s an alternative approach of development that abstracts some calls into PHP classes called Repositories. The idea is that we can decouple models from controllers and assign readable names to complicated queries.
+Generally, we wrote all of our application logic in the controller. There’s an alternative approach of development that abstracts some calls into PHP classes called Repositories. The idea is that we can decouple models from controllers and assign readable name's to complicated queries.
 
 This file defines our Repository class. Instances of this class have a model property that we tie to an Eloquent model. Once this is bound in the constructor we can call Eloquent methods like findOrFail, update or all from the class methods.
 

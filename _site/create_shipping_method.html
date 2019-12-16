@@ -7,6 +7,10 @@
       content="bagisto documentation, bagisto API, laravel ecommerce"
     />
     <meta
+      name="viewport"
+      content="width=device-width,user-scalable=yes,initial-scale=1,maximum-scale=5"
+    />
+    <meta
       name="description"
       content="Easily extend functionality, build extensions and mobile applications on top of the bagisto framework using the bagisto development and API documentation"
     />
@@ -21,21 +25,22 @@
       <div class="content-wrapper">
         <div class="content">
           <div class="side-menu">
-            <div class="sidebar">
-  <header class="header">
-    <div class="logo-wrapper">
-      <a href="http://devdocs.bagisto.com">
-        <img class="logo" src="assets/images/logo.png" />
-      </a>
-
-      <span>Docs</span>
-    </div>
-  </header>
-
+            <div id="sidebar-icon" class="hamburger"></div>
+            <header class="header">
+  <div class="logo-wrapper">
+    <a href="http://devdocs.bagisto.com">
+      <img class="logo" src="assets/images/logo.png" />
+    </a>
+    <span>Docs</span>
+  </div>
+</header>
+<div class="sidebar">
   <ul>
     <!-- Introduction -->
     <li class="menu-heading">
-      <a class="menu-heading-title" href="index.html">Introduction</a>
+      <h5 class="menu-heading-title collapsible" href="index.html">
+        Introduction
+      </h5>
 
       <ul class="sub-menu">
         <li>
@@ -54,9 +59,9 @@
 
     <!-- Module Development -->
     <li class="menu-heading">
-      <a class="menu-heading-title" href="create_package.html"
-        >Package development</a
-      >
+      <h5 class="menu-heading-title collapsible" href="create_package.html">
+        Package development
+      </h5>
 
       <ul class="sub-menu">
         <li>
@@ -101,9 +106,12 @@
 
     <!-- Advanced Topics -->
     <li class="menu-heading">
-      <a class="menu-heading-title" href="override-core-model.html"
-        >Advance topics</a
+      <h5
+        class="menu-heading-title collapsible"
+        href="override-core-model.html"
       >
+        Advance topics
+      </h5>
 
       <ul class="sub-menu">
         <li>
@@ -148,9 +156,9 @@
 
     <!-- Bagisto APIs -->
     <li class="menu-heading">
-      <a class="menu-heading-title" href="bagisto_api.html">Bagisto Web APIs</a>
-
-      <div class="horizontal-rule"></div>
+      <h5 class="menu-heading-title collapsible" href="bagisto_api.html">
+        Bagisto Web APIs
+      </h5>
 
       <ul class="sub-menu">
         <li><a href="api_category.html">Categories</a></li>
@@ -168,24 +176,38 @@
 
     <!-- User Guides -->
     <li class="menu-heading">
-      <a class="menu-heading-title" href="cart_rule.html">User Guides</a>
+      <h5 class="menu-heading-title collapsible" href="cart_rule.html">
+        User Guides
+      </h5>
 
       <ul class="sub-menu">
         <li>
           <a href="cart_rule.html">Cart Rule</a>
         </li>
 
-        <!-- <li>
-          <a href="set_category.html">Set category at store</a>
+        <li>
+          <a href="error_translation.html">
+            How to change language of error validation on front end
+          </a>
         </li>
 
         <li>
-          <a href="configure_homepage.html">How to Edit Home Page Design ?</a>
-        </li> -->
+          <a href="translation_on_locale.html">
+            Translation based on locale
+          </a>
+        </li>
 
         <!-- <li>
-          <a href="about_cms.html">CMS</a>
-        </li> -->
+        <a href="set_category.html">Set category at store</a>
+      </li>
+
+      <li>
+        <a href="configure_homepage.html">How to Edit Home Page Design ?</a>
+      </li> -->
+
+        <!-- <li>
+        <a href="about_cms.html">CMS</a>
+      </li> -->
       </ul>
     </li>
   </ul>
@@ -201,48 +223,88 @@
     }
   );
 </script>
-<!-- <script type="text/javascript">
-  // menu heading as active
-  var loc = window.location.pathname;
-  var urlPath = loc.slice(1, loc.length);
-  $("ul")
-    .find("a")
-    .each(function() {
-      $(this).toggleClass("current", $(this).attr("href") == urlPath);
-    });
 
-  // sub-menu as active
-  let mainNavLinks = document.querySelectorAll("ul.sub-menu li a");
-  let mainSections = document.querySelectorAll("div.right-content");
+<script type="text/javascript">
+  window.addEventListener("load", function() {
+    var loc = window.location.pathname;
+    var urlPath = loc.slice(1, loc.length);
+    var fullPath = window.location.href;
 
-  let lastId;
-  let cur = [];
+    $("ul")
+      .find("a")
+      .each(function() {
+        if ($(this).attr("href") == urlPath) {
+          demo = this.parentElement;
+          var coll = document.getElementsByClassName("collapsible");
+          var content = demo.parentElement;
 
-  // This should probably be throttled.
-  // Especially because it triggers during smooth scrolling.
-  // https://lodash.com/docs/4.17.10#throttle
-  // You could do like...
-  // window.addEventListener("scroll", () => {
-  //    _.throttle(doThatStuff, 100);
-  // });
-  // Only not doing it here to keep this Pen dependency-free.
+          if (content.style.display === "block") {
+            content.style.display = "none";
+          } else {
+            content.style.display = "block";
+          }
+        }
+      });
+  });
 
-  window.addEventListener("scroll", event => {
-    let fromTop = window.scrollY;
+  var coll = document.getElementsByClassName("collapsible");
+  var i;
 
-    mainNavLinks.forEach(link => {
-      let section = document.querySelector(link.hash);
+  for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+      var content = this.nextElementSibling;
 
-      if (
-        section.offsetTop <= fromTop &&
-        section.offsetTop + section.offsetHeight > fromTop
-      ) {
-        link.classList.add("current");
+      if (content.style.display === "block") {
+        content.style.display = "none";
       } else {
-        link.classList.remove("current");
+        content.style.display = "block";
       }
     });
+  }
+</script>
+
+<!-- <script type="text/javascript">
+// menu heading as active
+var loc = window.location.pathname;
+var urlPath = loc.slice(1, loc.length);
+$("ul")
+  .find("a")
+  .each(function() {
+    $(this).toggleClass("current", $(this).attr("href") == urlPath);
   });
+
+// sub-menu as active
+let mainNavLinks = document.querySelectorAll("ul.sub-menu li a");
+let mainSections = document.querySelectorAll("div.right-content");
+
+let lastId;
+let cur = [];
+
+// This should probably be throttled.
+// Especially because it triggers during smooth scrolling.
+// https://lodash.com/docs/4.17.10#throttle
+// You could do like...
+// window.addEventListener("scroll", () => {
+//    _.throttle(doThatStuff, 100);
+// });
+// Only not doing it here to keep this Pen dependency-free.
+
+window.addEventListener("scroll", event => {
+  let fromTop = window.scrollY;
+
+  mainNavLinks.forEach(link => {
+    let section = document.querySelector(link.hash);
+
+    if (
+      section.offsetTop <= fromTop &&
+      section.offsetTop + section.offsetHeight > fromTop
+    ) {
+      link.classList.add("current");
+    } else {
+      link.classList.remove("current");
+    }
+  });
+});
 </script> -->
 
           </div>
@@ -378,5 +440,12 @@ per_order</p>
         </div>
       </div>
     </div>
+    <script>
+      $(document).ready(function() {
+        $(".hamburger").click(function() {
+          $(".side-menu").toggleClass("active");
+        });
+      });
+    </script>
   </body>
 </html>
