@@ -67,11 +67,11 @@ Let’s go through the parameters of this theme’s file. Because the understand
 
 - views_path: It’ll take the path of your views or blade files that you want to put up in your custom theme.
 
-- assets_path: Responsible for your assets i.e images, CSS and javascript files, etc.
+- assets_path: Responsible for your assets i.e. images, CSS and javascript files, etc.
 
 - name: Defines a global name for your theme inside Bagisto.
 
-- parent: This is a magic parameter that you can find in the commented code below the sub array 'default'. Using this parameter you can make use of existing themes inside Bagisto and just customise them even further. This parameter will take the value of the 'name’ parameter listed in 3rd point above.
+- parent: This is a magic parameter that you can find in the commented code below the sub array 'default'. Using this parameter you can make use of existing themes inside Bagisto and just customise them even further. This parameter will take the value of the 'name’ parameter listed in the 3rd point above.
 
 ![bliss-theme](assets/images/Bagisto_Docs_Images/theme/bliss-array.png){: .screenshot-dimension .center}
 

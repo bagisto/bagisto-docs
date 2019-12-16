@@ -154,7 +154,8 @@ td {
     overflow: auto;
     border-right: 2px solid $outline-hvr;
     overflow-x: hidden;
-    background-color: #fff;
+    background: $background-color;
+
     &.active {
       width: 320px;
       .hamburger {
@@ -180,7 +181,9 @@ td {
     }
 
     .header {
-      background-color: #fff;
+      // background: linear-gradient(0deg, #fff, #f5f5fa);
+      background: #fff;
+
       border-bottom: 1px solid #f2f2f2;
       width: 320px;
       border-right: 2px solid $outline-hvr;
@@ -309,12 +312,13 @@ td {
         font-size: 17px;
         color: #323232;
         letter-spacing: 0;
-        line-height: 31px;
+        line-height: 32px;
         font-weight: 600;
         ul,
         ol {
           li {
             font-weight: 500;
+            padding-left: 10px;
           }
         }
       }
@@ -334,8 +338,20 @@ td {
   padding-top: 15px;
   margin-bottom: 15px;
 
+  .menu-heading-title {
+    margin: 0px;
+    color: $font-color;
+    font-size: 15px;
+    // display: block;
+  }
+
   .sub-menu {
     padding-top: 6px;
+    display: none;
+
+    .current {
+      display: block;
+    }
 
     li {
       padding: 2px;
@@ -404,7 +420,7 @@ li ul {
 }
 
 ::-webkit-scrollbar {
-  width: 3px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-thumb {

@@ -9,8 +9,8 @@ To Upgrade your current version to latest version of bagisto, you need to follow
 
 - Firstly, you need to download the latest version of bagisto. You can download from these two provided links
 
-1.  [Download Bagisto](https://bagisto.com/en/download/)
-2.  [Download from Github](https://github.com/bagisto/bagisto)
+1.  [Download Bagisto](https://bagisto.com/en/download/){: target="\_blank" .link-color}.
+2.  [Download from Github](https://github.com/bagisto/bagisto){: target="\_blank" .link-color}.
 
 - Now, after the download has been completed. Run some commands in terminal
 

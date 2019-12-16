@@ -44,9 +44,9 @@ Besides the features already available, the Bagisto’s roadmap includes:
 - New product types like subscriptions, bookings, and recurring billing.
 - GDPR compliance
 
-To learn more about Bagisto’s features and try a demo, check out [Bagisto](https://bagisto.com). You can get started with the source code by checking out the repo on GitHub at [bagisto/bagisto](https://github.com/bagisto/bagisto).
+To learn more about Bagisto’s features and try a demo, check out [Bagisto](https://bagisto.com){: target="\_blank" .link-color}. You can get started with the source code by checking out the repo on GitHub at [bagisto/bagisto](https://github.com/bagisto/bagisto){: target="\_blank" .link-color}.
 
-Also, You can Check out the roadmap for Bagisto here: [bagisto roadmap](https://bagisto.com/roadmap/){: target="\_blank"}
+Also, You can Check out the roadmap for Bagisto here: [bagisto roadmap](https://bagisto.com/roadmap/){: target="\_blank" .link-color}
 
 ### Requirements <a id="requirements"></a>:
 
@@ -62,6 +62,8 @@ Also, You can Check out the roadmap for Bagisto here: [bagisto roadmap](https://
 - **For MariaDB users**: 10.2.7 or Higher.
 - **Node**: 8.11.3 LTS or higher.
 - **Composer**: 1.6.5 or higher.
+- **php7.1-intl extension**
+- **php7.1-gd extension**
 
 ### Installation & Configuration <a id="installation"></a>:
 
@@ -69,7 +71,7 @@ Also, You can Check out the roadmap for Bagisto here: [bagisto roadmap](https://
 
 ##### a. Download zip from the link below:
 
-[Download](https://github.com/bagisto/bagisto/archive/v0.1.8.zip)
+[Download](https://github.com/bagisto/bagisto/archive/v0.1.8.zip){: target="\_self" .link-color}.
 
 ##### b. Extract the contents of zip and execute the project in browser:
 
