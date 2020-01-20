@@ -271,6 +271,10 @@ After doing this we need to add an event listener so that admin layouts include 
 ![style-blade](assets/images/Bagisto_Docs_Images/PackageDevelopment/style-blade.png){: .screenshot-dimension .center}
 
 **For Event Listener –**
+Add Event module into your HelloWorldServiceProver.php file
+```php
+use Illuminate\Support\Facades\Event;
+```
 
 ```php
 public function boot()
