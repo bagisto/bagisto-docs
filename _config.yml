@@ -27,7 +27,6 @@ github_username: bagisto
 highlighter: rouge
 markdown: kramdown
 theme: minima
-version: 1.x, 0.x
 plugins:
   - jekyll-feed
 
