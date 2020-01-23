@@ -7,7 +7,7 @@ layout: default
 
 In this release, we provided the options for admin to create more than two types of the product i.e., virtual, grouped, downloadable and bundled. But, in addition to this, the user has the power to create their product-types as per their need.
 
-## Steps to create own product-types
+## Steps to create your own product-types
 
 You may access this super-functionality of creating your own product-types by following the points listed below.
 
