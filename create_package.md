@@ -8,7 +8,7 @@ layout: default
 ![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/create_package.md){:.edit-github target="\_blank"}
 
-A package is like Laravel packages that includes views, controller and models. Packages are created to manage your large laravel applications into smaller units. In the bagisto, we have created plenty of packages at path `packages/Webkul/`.
+A package is like laravel package that includes views, controller and models. Packages are created to manage your large laravel applications into smaller units. In the bagisto, we have created plenty of packages at path `packages/Webkul/`.
 
 ### How To Create Package <a id="how-to-create-package"></a>
 
@@ -21,7 +21,7 @@ A package is like Laravel packages that includes views, controller and models. P
 
 ##### Step-2
 
-- Inside your package create a file named as **_package.json_** and a folder named as **src**, we will use it later.
+- Inside your package create a file named **_package.json_** and a folder named **src**, we will use it later.
 
 ##### Step-3
 
@@ -29,7 +29,7 @@ A package is like Laravel packages that includes views, controller and models. P
 
   Ex – HelloWorldServiceProvider.php
 
-  The Service Provider consist two methods.
+  The Service Provider consists of two methods.
 
   1. boot
   2. register
@@ -71,7 +71,7 @@ A package is like Laravel packages that includes views, controller and models. P
 
 ##### Step-4
 
-- Now, to register the service provider, go to ‘app.php’ file inside ‘config’ folder & add your service provider inside ‘providers’ array.
+- Now, to register the service provider, go to the ‘app.php’ file inside the ‘config’ folder & add your service provider inside the ‘providers’ array.
 
   ```php
   'providers' => [
@@ -84,7 +84,7 @@ A package is like Laravel packages that includes views, controller and models. P
 
 ##### Step-5
 
-- Now, we need to add our package to ‘composer.json’ file of project root for autoloading in psr-4.
+- Now, we need to add our package to the ‘composer.json’ file of project root for autoloading in psr-4.
 
       ``` php
       "psr-4": {
@@ -113,11 +113,11 @@ A package is like Laravel packages that includes views, controller and models. P
 
 To load routes, you can also use ‘loadRoutesFrom’ method.
 
-2. For views: Create a ‘Resources’ folder inside ‘src’ folder of package. Inside ‘Resources’ folder create a folder name as ‘views’. Now, in the ‘views’ folder, we can create a views for the package.
+2. For views: Create a ‘Resources’ folder inside ‘src’ folder of the package. Inside the ‘Resources’ folder create a folder name as ‘views’. Now, in the ‘views’ folder, we can create a view for the package.
 
 Right now, we are going to create a folder ‘helloworld’ inside the views. In this ‘helloworld’ folder we will create a file name as helloworld.blade.php.
 
-Now just like route file, we need to register our view folder inside service provider to specify path where views are located.
+Now just like the route file, we need to register our view folder inside the service provider to specify a path where views are located.
 
 ```php
 public function boot()
@@ -142,7 +142,7 @@ Go to ACME->src->Http->routes.php file and create a route to render view
 
 ![view-route-creation](assets/images/Bagisto_Docs_Images/PackageDevelopment/view-route-creation.png){: .screenshot-dimension .center}
 
-If everythings goes well you can run composer dump-autoload so laravel detects the new route files and works otherway it wont work and will return NotFound Exception.
+If everything goes well you can run composer dump-autoload so laravel detects the new route files and works otherway it wont work and will return NotFound Exception.
 
 Now, you can append ‘hello-world’ to your local path in the browser's url to see the output.
 
@@ -150,11 +150,11 @@ Now, you can append ‘hello-world’ to your local path in the browser's url to
 
 ##### Step-8
 
-- Now, we are going to create language file for our package.
+- Now, we are going to create a language file for our package.
 
-For this create a ‘lang’ folder inside ‘Resources’ folder.
+For this create a ‘lang’ folder inside the ‘Resources’ folder.
 
-Inside lang folder, you can create different folder for languages translations like for English 'en' , Hindi ‘hn’ etc. Moving forward, we will create a folder name ‘en’ (`say language code`) & inside ‘en’ folder, create a file name as ‘app.php’ to perform language translation
+Inside the lang folder, you can create a different folder for language translations like for English 'en', Hindi ‘hn’ etc. Moving forward, we will create a folder name ‘en’ (`say language code`) & inside ‘en’ folder, create a file name as ‘app.php’ to perform language translation
 
 Now, we need to register the language file to service provider.
 

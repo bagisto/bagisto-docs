@@ -460,3 +460,11 @@ li ul {
     background-color: #515151;
   }
 }
+
+.version-changer {
+  select {
+    height: 25px;
+    float: right;
+    margin-top: -32px;
+  }
+}
