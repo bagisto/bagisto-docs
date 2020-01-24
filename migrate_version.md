@@ -5,7 +5,7 @@ layout: default
 
 # Upgrading To 6.0 From 5.6
 
-If you want to migrate your project to the bagito v1.0.0, then you need to follow some guidelines as listed below:
+If you want to migrate your project to the bagisto v1.0.0, then you need to follow some guidelines as listed below:
 
 1. Delete composer.lock and vendor.
 2. Execute command "`composer install`"

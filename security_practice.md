@@ -22,7 +22,7 @@ layout: "default"
 
 - Manage files only with secure communication protocols (SSH/ SFTP/ HTTPs), disable FTP.
 
-- [ .htaccess ] file to protect system files, when using apache web server
+- [ .htaccess ] file to protect system files, when using apache webserver
 
 ### Restrict php execution inside storage directory
 
@@ -43,7 +43,7 @@ Restart apache
 
   [(Use password generator)](https://passwordsgenerator.net/){: target="\_blank" .link-color}.
 
-- Limit access to the bagisto admin by updating the whitelist with the ip address of each computer that is authorized to use the admin.
+- Limit access to the bagisto admin by updating the whitelist with the IP address of each computer that is authorized to use the admin.
 
 ### Allow admin access to certain IPs
 
@@ -69,6 +69,6 @@ Restart apache
     </FilesMatch>
 ```
 
-- Use Web application firewall to analyze traffic and discover suspicious patterns such as credit card information being sent to an attacker.
+- Use a Web application firewall to analyze traffic and discover suspicious patterns such as credit card information being sent to an attacker.
 
-- Make sure only port 80 and 443 are publicly accessible and rest of the ports are restricted.
+- Make sure only port 80 and 443 are publicly accessible and the rest of the ports are restricted.

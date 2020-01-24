@@ -322,7 +322,7 @@ The new migration will be placed in your database/migrations directory. Each mig
 
 The - -table and - -create options may also be used to indicate the name of the table and whether the migration will be creating a new table.
 
-Also, Laravel provides us an option to create migration files at a specified path. The command to create a migration file at our HelloWorld package database/migrations directory, we have to append '- -path' in artisan command.
+Also, Laravel provides us an option to create migration files on a specified path. The command to create a migration file at our HelloWorld package database/migrations directory, we have to append '- -path' in artisan command.
 
 ```php
 php artisan make:migration create_demo_table - -path=packages/ACME/HelloWorld/src/Database/Migrations
@@ -420,7 +420,7 @@ And, now we need to add `@extends('admin::layouts.master')` to our view files to
 
 ![hello-world-icon](assets/images/Bagisto_Docs_Images/PackageDevelopment/hello-world-icon.png){: .screenshot-dimension .center}
 
-Now, this menu will come in the admin login. You can change the icon accordingly to your needs. By clicking, upon icon, it will open the view file provided in `Route` facade
+Now, this menu will come in the admin login. You can change the icon accordingly to your needs. By clicking, upon the icon, it will open the view file provided in `Route` facade
 
 ### How to Create ACL in Bagisto? <a id="create-acl"></a>
 

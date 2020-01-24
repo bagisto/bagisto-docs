@@ -57,9 +57,9 @@ In this article, we will understand how to create a payment method by own with j
 
 - Within **Database** folder, the migration and seeder(if needed) files are stored.
 
-- Within **Resources** folder, contains your views as well as your raw, un-compiled assets such as SASS, or JavaScript. This directory also houses all of your language files.
+- Within **Resources** folder your views as well as your raw, un-compiled assets such as SASS, or JavaScript. This directory also houses all of your language files.
 
-- Within **Providers** folder, contains all of the service providers for your application. Service providers bootstrap your application by binding services in the service container, registering events, or performing any other tasks to prepare your application for incoming requests.
+- Within **Providers** folder all of the service providers for your application. Service providers bootstrap your application by binding services in the service container, registering events, or performing any other tasks to prepare your application for incoming requests.
 
   Here, in our case, we have created two providers files i.e.,
 

@@ -16,8 +16,8 @@ To render any template before or after any function we may use view_render_event
 
 1. Create the page you want to render on view
 
-2. Use the name of event with function view_render_event
+2. Use the name of the event with function view_render_event
 
 3. This will automatically fire and the page will be included
 
-As , it is fired before and after the event so, this event helps to inject anything before or after the content.
+As, it is fired before and after the event so, this event helps to inject anything before or after the content.

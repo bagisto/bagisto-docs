@@ -10,11 +10,11 @@ layout: default
 
 If you want to make your website easily accessible to customers in multiple languages and expand your business to a global level then language translation is imperative for your website. It will help you get more traffic and further generate sales.
 
-By using language translation in Bagisto, you can easily localise your website for many global or regional languages. Your customer can easily translate your whole website just by a single click which also plays a major role in website SEO in the respective region and to show translation as per your locale, you need to follow these below steps:
+By using language translation in Bagisto, you can easily localize your website for many global or regional languages. Your customer can easily translate your whole website just by a single click which also plays a major role in website SEO in the respective region and to show translation as per your locale, you need to follow these below steps:
 
 ### Steps to apply translation based on locale
 
-You can easily perform language translate for both Admin dashboard and for the front-end view
+You can easily perform language translate for both Admin dashboard and the front-end view
 
 **Translation For Front-End View**
 
@@ -28,7 +28,7 @@ Kindly follow the steps as needed on the admin dashboard.
 
 ![add-locale-bagisto](assets/images/Bagisto_Docs_Images/user-guide/add-locale-bagisto.png){: .screenshot-dimension .center}
 
-Next, you need to change locale in the below main section: Products, Categories and Attributes
+Next, you need to change locale in the below main section: Products, Categories, and Attributes
 
 ![language-changes](assets/images/Bagisto_Docs_Images/user-guide/language-changes.png){: .screenshot-dimension .center}
 
@@ -40,7 +40,7 @@ Next, you need to change locale in the below main section: Products, Categories 
 
 ![catageory-in-arabic](assets/images/Bagisto_Docs_Images/user-guide/catageory-in-arabic.png){: .screenshot-dimension .center}
 
-**Step 5:-** Under Product Section, click on Product. Open selected product in Edit Mode and enter the product name in Arabic and Short Description in Arabic
+**Step 5:-** Under Product Section, click on Product. Open the selected product in Edit Mode and enter the product name in Arabic and Short Description in Arabic
 
 ![product-in-arabic](assets/images/Bagisto_Docs_Images/user-guide/product-in-arabic.png){: .screenshot-dimension .center}
 
@@ -70,6 +70,6 @@ When you will select the locale in Arabic from the front end then it will be vis
 
 **Translation For Admin View**
 
-You need to specify the locale in config/app.php file of root as shown in screenshot, replace 'en' with your locale code.
+You need to specify the locale in config/app.php file of the root as shown in the screenshot, replace 'en' with your locale code.
 
 ![locale-setup](assets/images/Bagisto_Docs_Images/user-guide/locale-setup.png){: .screenshot-dimension .center}

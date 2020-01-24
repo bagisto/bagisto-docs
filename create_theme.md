@@ -14,9 +14,9 @@ Creating a custom theme for Bagisto had been a hot topic lately. More and more u
 
 Coming on how to create a custom theme for Bagisto. It’s super easy!!!. With just a few lines of configuration code. Similarly following the traditional way of creating view files in Laravel would be enough.
 
-### Steps to create theme
+### Steps to create a theme
 
-Please follow steps mentioned below that how to create a custom theme in Bagisto.
+Please follow the steps mentioned below that how to create a custom theme in Bagisto.
 
 - Go to your project’s root directory and check for `config` folder. Inside it, you will find a file called `themes.php`:
 
@@ -71,11 +71,11 @@ Let’s go through the parameters of this theme’s file. Because the understand
 
 - name: Defines a global name for your theme inside Bagisto.
 
-- parent: This is a magic parameter that you can find in the commented code below the sub array 'default'. Using this parameter you can make use of existing themes inside Bagisto and just customise them even further. This parameter will take the value of the 'name’ parameter listed in the 3rd point above.
+- parent: This is a magic parameter that you can find in the commented code below the sub-array 'default'. Using this parameter you can make use of existing themes inside Bagisto and just customize them even further. This parameter will take the value of the 'name’ parameter listed in the 3rd point above.
 
 ![bliss-theme](assets/images/Bagisto_Docs_Images/theme/bliss-array.png){: .screenshot-dimension .center}
 
-Finally, define your own paths and name of your custom theme inside 'themes.php’ file , and start creating view files. Do not forget to cover all get routes of shop package having a parameter called 'view’.
+Finally, define your own paths and name of your custom theme inside 'themes.php’ file, and start creating view files. Do not forget to cover all get routes of shop package having a parameter called 'view’.
 
 ![theme-route-file-location](assets/images/Bagisto_Docs_Images/theme/theme-routes.png){: width="30%" height="50%" .center}
 
