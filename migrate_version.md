@@ -7,9 +7,10 @@ layout: default
 
 If you want to migrate your project to the bagisto v1.0.0, then you need to follow some guidelines as listed below:
 
-1. Delete composer.lock and vendor.
-2. Execute command "`composer install`"
-3. Install bagisto v0.1.9 (follow [Installation guide](index.md/#installation)) .
+1. Initially, the user needs to take a backup of their project database.
+2. Delete composer.lock and vendor.
+3. Execute command "`composer install`"
+4. Install bagisto 1.0.0 (follow [Installation guide](index.md/#installation)) .
 
 
 **Note**: In addtion, you may refer to [Laravel upgrade guide](https://laravel.com/docs/6.x/upgrade){: target="\_blank" .link-color} for migration of your packages.
