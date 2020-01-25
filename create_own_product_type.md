@@ -3,7 +3,7 @@ title: Create own product-type | Bagisto Web APIs Documentation
 layout: default
 ---
 
-# Create your own product-type
+# Create your own product type
 
 In this release, we provided the options for admin to create more than two types of the product i.e., virtual, grouped, downloadable and bundled. But, in addition to this, the user has the power to create their product-types as per their need.
 

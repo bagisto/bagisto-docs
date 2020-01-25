@@ -3,7 +3,7 @@ title: Bagisto 1.0.0 backward-incompatible changes | Bagisto Web APIs Documentat
 layout: default
 ---
 
-# Bagisto 1.0.0 backward-incompatible changes
+# Backward incompatible changes
 
 In our latest release, Bagisto 1.0.0, we introduce many major changes that may affect the running functionality of external modules and packages. This topic will be highlighting about the compatibility changes from bagisto v0.2.2 to bagisto 1.0.0
 

@@ -1,16 +1,15 @@
 ---
-title: Migrate versions | Bagisto Web APIs Documentation
+title: Upgrading To bagisto 1.0.0 from 0.2.2 | Bagisto Web APIs Documentation
 layout: default
 ---
 
-# Upgrading To 6.0 From 5.6
+# Upgrading To bagisto 1.0.0 from 0.2.2
 
 If you want to migrate your project to the bagisto v1.0.0, then you need to follow some guidelines as listed below:
 
 1. Initially, the user needs to take a backup of their project database.
 2. Delete composer.lock and vendor.
-3. Execute command "`composer install`"
-4. Install bagisto 1.0.0 (follow [Installation guide](index.md/#installation)).
+3. Take a pull from [Bagisto v1.0.0](https://github.com/bagisto/bagisto){: target="\_blank" .link-color}.    There may be some conflicts, you need to resolve it by own.
+3. Read for [backward incompatible changes](backward-incompatible.md){: target="\_blank" .link-color}
 
-
-**Note**: In addtion, you may refer to [Laravel upgrade guide](https://laravel.com/docs/6.x/upgrade){: target="\_blank" .link-color} for migration of your packages.
+**Note**: The changes in core packages will be removed, if done.
