@@ -5,8 +5,12 @@ layout: default
 
 # How To Create Requests For Invoices
 
-![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
-[edit on github](https://github.com/bagisto/bagisto-docs/blob/master/api_invoice_shipment.md){:class="edit-github" target="\_blank"}
+
+
+<div style="margin-top: -18px; float: right;">
+    <img  src="assets/images/icons/Icon-Pencil-Large.svg" alt="edit" height="16px"/>
+    <a href="https://github.com/bagisto/bagisto-docs/blob/master/api_invoice_shipment.md" target="_blank">edit on github</a>
+</div>
 
 ## 1. Get All Invoices Of All Orders: <a id="get-all-invoices"></a>
 

@@ -5,8 +5,10 @@ layout: default
 
 # How To Create Requests For Categories
 
-![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
-[edit on github](https://github.com/bagisto/bagisto-docs/blob/master/api_category.md){:class="edit-github" target="\_blank"}
+<div style="margin-top: -18px; float: right;">
+    <img  src="assets/images/icons/Icon-Pencil-Large.svg" alt="edit" height="16px"/>
+    <a target="_blank" href="https://github.com/bagisto/bagisto-docs/blob/master/api_category.md">edit on github</a>
+</div>
 
 To get all the Bagisto Categories with the pagination, you have to place a request by using the below API Call with the resource i.e. `categories` :
 

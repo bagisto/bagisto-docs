@@ -3,7 +3,12 @@ title: Order Requests | Bagisto Web APIs Documentation
 layout: default
 ---
 
-# How To Create Requests For Orders <span class="edit-github"><img src="/docs/assets/images/Icon-Pencil-Large.svg" width="19px" height="13px"/> <a href="https://github.com/bagisto/bagisto-docs/blob/master/create_module.md">Edit On github</a></span>
+# How To Create Requests For Orders
+
+<div style="margin-top: -18px; float: right;">
+    <img  src="assets/images/icons/Icon-Pencil-Large.svg" alt="edit" height="16px"/>
+    <a href="https://github.com/bagisto/bagisto-docs/blob/master/api_order.md" target="_blank">edit on github</a>
+</div>
 
 ## 1. Get All Bagisto's Orders:
 
