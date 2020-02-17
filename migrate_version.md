@@ -17,7 +17,7 @@ If you want to migrate your project to the bagisto v1.0.0, then you need to foll
 
 5. Run command `php artisan vendor:publish`
 
--> Press 0 and then press enter to publish all assets and configurations.
+        -> Press 0 and then press enter to publish all assets and configurations.
 
 6. Check for folder `node_modules` in folder `shop`, `UI`, `admin`.
 
