@@ -5,8 +5,10 @@ layout: default
 
 # How To Requests For Product's Reviews
 
-![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
-[edit on github](https://github.com/bagisto/bagisto-docs/blob/master/api_product_review.md){:class="edit-github" target="\_blank"}
+<div style="margin-top: -18px; float: right;">
+    <img  src="assets/images/icons/Icon-Pencil-Large.svg" alt="edit" height="16px"/>
+    <a href="https://github.com/bagisto/bagisto-docs/blob/master/api_product_review.md" target="_blank">edit on github</a>
+</div>
 
 ## 1. Get All Bagisto's Reviews: <a id="get-all-bagisto-reviews"></a>
 

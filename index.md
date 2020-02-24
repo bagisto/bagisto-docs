@@ -8,9 +8,9 @@ layout: default
 ![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon }
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/index.md){:.edit-github target="\_blank"}
 
-Bagisto is a hand tailored E-Commerce framework designed on some of the hottest opensource technologies such as Laravel a PHP framework, Vue.js a progressive Javascript framework.
+Bagisto is a hand-tailored E-Commerce framework designed on some of the hottest opensource technologies such as Laravel a PHP framework, Vue.js a progressive Javascript framework.
 
-Bagisto is viable attempt to cut down your time, cost and workforce for building online stores or migrating from physical stores to the ever demanding online world. Your business whether small or huge it suits all and very simple to set it up. Built on top of Laravel, it is coupled with easy product information management. The framework is very flexible and easy to use even for non-tech users.
+Bagisto is a viable attempt to cut down your time, cost and workforce for building online stores or migrating from physical stores to the ever demanding online world. Your business whether small or huge it suits all and very simple to set it up. Built on top of Laravel, it is coupled with easy product information management. The framework is very flexible and easy to use even for non-tech users.
 
 At the time of writing, Bagisto’s main feature list includes:
 
@@ -20,7 +20,7 @@ At the time of writing, Bagisto’s main feature list includes:
 - Descriptive and Simple Admin Panel.
 - Admin Dashboard.
 - Custom Attributes.
-- Built on Modular Approach.
+- Built on a Modular Approach.
 - Support for Multiple Store Themes.
 - Multistore Inventory System.
 - Orders Management System.
@@ -107,7 +107,7 @@ Find file **.env** inside **bagisto** directory and set the environment variable
 - **DB_USERNAME**
 - **DB_PASSWORD**
 
-Although, mailer environment variables are also required to be set up as **Bagisto** requires emails to send to customers and admins for various functionalities that are built in.
+Although, mailer environment variables are also required to be set up as **Bagisto** requires emails to send to customers and admins for various built-in functionalities.
 
 ```
 2. php artisan migrate
@@ -155,7 +155,7 @@ password:admin123
 
 **How to log in as customer:**
 
-_You can directly register as customer and then login._
+_You can directly register as a customer and then login._
 
 > _http(s)://example.com/customer/register_
 

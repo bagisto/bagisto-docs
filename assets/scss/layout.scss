@@ -173,6 +173,11 @@ td {
       }
       .sidebar {
         display: inline-block;
+        ul {
+          a {
+            cursor: pointer;
+          }
+        }
       }
     }
 
@@ -341,12 +346,25 @@ td {
     margin: 0px;
     color: $font-color;
     font-size: 15px;
-    // display: block;
+    cursor: pointer;
   }
 
   .sub-menu {
     padding-top: 6px;
     display: none;
+
+    .child-menu {
+      padding-top: 6px !important;
+
+      li {
+        padding: 9px 0px 0px 6px !important
+        a {
+          font-family: Montserrat-Medium;
+          font-size: 14px;
+          letter-spacing: 0;
+        }
+      }
+    }
 
     .current {
       display: block;
@@ -458,5 +476,13 @@ li ul {
   &:after,
   &:before {
     background-color: #515151;
+  }
+}
+
+.version-changer {
+  select {
+    height: 25px;
+    float: right;
+    margin-top: -32px;
   }
 }

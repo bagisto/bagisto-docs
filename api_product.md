@@ -5,8 +5,10 @@ layout: default
 
 # How To Create Requests For Products
 
-![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
-[edit on github](https://github.com/bagisto/bagisto-docs/blob/master/api_product.md){:class="edit-github" target="\_blank"}
+<div style="margin-top: -18px; float: right;">
+    <img  src="assets/images/icons/Icon-Pencil-Large.svg" alt="edit" height="16px"/>
+    <a href="https://github.com/bagisto/bagisto-docs/blob/master/api_product.md" target="_blank">edit on github</a>
+</div>
 
 To get all the Bagisto Store Products with the pagination, you have to place a request by using the below API Call with the resource i.e. `products` :
 

@@ -5,8 +5,10 @@ layout: default
 
 # How To Create Requests For Customers
 
-![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
-[edit on github](https://github.com/bagisto/bagisto-docs/blob/master/api_customer.md){:class="edit-github" target="\_blank"}
+<div style="margin-top: -18px; float: right;">
+    <img  src="assets/images/icons/Icon-Pencil-Large.svg" alt="edit" height="16px"/>
+    <a target="_blank" href="https://github.com/bagisto/bagisto-docs/blob/master/api_customer.md">edit on github</a>
+</div>
 
 In the customer's APIs: Firstly, we will look for the customer's authentication with the help of login credentials. Because customer can't access/add/modify their addresses, orders, reviews and wishlists without login into the front store. To logged in at the Bagisto front store, customer need a valid email address and password.
 

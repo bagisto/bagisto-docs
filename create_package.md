@@ -8,7 +8,7 @@ layout: default
 ![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/create_package.md){:.edit-github target="\_blank"}
 
-A package is like Laravel packages that includes views, controller and models. Packages are created to manage your large laravel applications into smaller units. In the bagisto, we have created plenty of packages at path `packages/Webkul/`.
+A package is like a laravel package that includes views, controller and models. Packages are created to manage your large laravel applications into smaller units. In the bagisto, we have created plenty of packages at path `packages/Webkul/`.
 
 ### How To Create Package <a id="how-to-create-package"></a>
 
@@ -21,7 +21,7 @@ A package is like Laravel packages that includes views, controller and models. P
 
 ##### Step-2
 
-- Inside your package create a file named as **_package.json_** and a folder named as **src**, we will use it later.
+- Inside your package create a file named **_package.json_** and a folder named **src**, we will use it later.
 
 ##### Step-3
 
@@ -29,7 +29,7 @@ A package is like Laravel packages that includes views, controller and models. P
 
   Ex – HelloWorldServiceProvider.php
 
-  The Service Provider consist two methods.
+  The Service Provider consists of two methods.
 
   1. boot
   2. register
@@ -71,7 +71,7 @@ A package is like Laravel packages that includes views, controller and models. P
 
 ##### Step-4
 
-- Now, to register the service provider, go to ‘app.php’ file inside ‘config’ folder & add your service provider inside ‘providers’ array.
+- Now, to register the service provider, go to the ‘app.php’ file inside the ‘config’ folder & add your service provider inside the ‘providers’ array.
 
   ```php
   'providers' => [
@@ -84,7 +84,7 @@ A package is like Laravel packages that includes views, controller and models. P
 
 ##### Step-5
 
-- Now, we need to add our package to ‘composer.json’ file of project root for autoloading in psr-4.
+- Now, we need to add our package to the ‘composer.json’ file of project root for autoloading in psr-4.
 
       ``` php
       "psr-4": {
@@ -98,7 +98,7 @@ A package is like Laravel packages that includes views, controller and models. P
 
 - Now, we are going to add some routing & views for our package.
 
-  1.  For routes: create a ‘Http’ folder inside ‘src’ folder of package & inside `Http` create a file name as ‘routes.php’. In this file, we can create routes for the package.
+  1.  For routes: create an ‘Http’ folder inside ‘src’ folder of package & inside `Http` create a file name as ‘routes.php’. In this file, we can create routes for the package.
 
   Now, we need to register our route file to service provider’s boot method i.e. HelloWorldServiceProvider.php
 
@@ -113,11 +113,11 @@ A package is like Laravel packages that includes views, controller and models. P
 
 To load routes, you can also use ‘loadRoutesFrom’ method.
 
-2. For views: Create a ‘Resources’ folder inside ‘src’ folder of package. Inside ‘Resources’ folder create a folder name as ‘views’. Now, in the ‘views’ folder, we can create a views for the package.
+2. For views: Create a ‘Resources’ folder inside ‘src’ folder of the package. Inside the ‘Resources’ folder create a folder name as ‘views’. Now, in the ‘views’ folder, we can create a view for the package.
 
 Right now, we are going to create a folder ‘helloworld’ inside the views. In this ‘helloworld’ folder we will create a file name as helloworld.blade.php.
 
-Now just like route file, we need to register our view folder inside service provider to specify path where views are located.
+Now just like the route file, we need to register our view folder inside the service provider to specify a path where views are located.
 
 ```php
 public function boot()
@@ -142,21 +142,21 @@ Go to ACME->src->Http->routes.php file and create a route to render view
 
 ![view-route-creation](assets/images/Bagisto_Docs_Images/PackageDevelopment/view-route-creation.png){: .screenshot-dimension .center}
 
-If everythings goes well you can run composer dump-autoload so laravel detects the new route files and works otherway it wont work and will return NotFound Exception.
+If everything goes well you can run composer dump-autoload so laravel detects the new route files and works other way it won't work and will return NotFound Exception.
 
-Now, you can append ‘hello-world’ to your local path in the browser's url to see the output.
+Now, you can append ‘hello-world’ to your local path in the browser's URL to see the output.
 
 ![helloworld-browser-output](assets/images/Bagisto_Docs_Images/PackageDevelopment/helloworld-browser-output.png){: .screenshot-dimension .center}
 
 ##### Step-8
 
-- Now, we are going to create language file for our package.
+- Now, we are going to create a language file for our package.
 
-For this create a ‘lang’ folder inside ‘Resources’ folder.
+For this create a ‘lang’ folder inside the ‘Resources’ folder.
 
-Inside lang folder, you can create different folder for languages translations like for English 'en' , Hindi ‘hn’ etc. Moving forward, we will create a folder name ‘en’ (`say language code`) & inside ‘en’ folder, create a file name as ‘app.php’ to perform language translation
+Inside the lang folder, you can create a different folder for language translations like for English 'en', Hindi ‘hn’ etc. Moving forward, we will create a folder name ‘en’ (`say language code`) & inside ‘en’ folder, create a file name as ‘app.php’ to perform language translation
 
-Now, we need to register the language file to service provider.
+Now, we need to register the language file to the service provider.
 
 ```php
 public function boot()
@@ -165,7 +165,7 @@ public function boot()
 }
 ```
 
-Now we can write translation in app.php like below.
+Now we can write a translation in app.php like below.
 
 ```php
 <?php
@@ -272,7 +272,7 @@ After doing this we need to add an event listener so that admin layouts include 
 
 **For Event Listener –**
 
-Initially, add facade 'Event' into your HelloWorldServiceProvider.php file, else it will throw error.
+Initially, add facade 'Event' into your HelloWorldServiceProvider.php file, else it will throw an error.
 
 ```php
 use Illuminate\Support\Facades\Event;
@@ -322,7 +322,7 @@ The new migration will be placed in your database/migrations directory. Each mig
 
 The - -table and - -create options may also be used to indicate the name of the table and whether the migration will be creating a new table.
 
-Also, Laravel provides us a option to create migration files at a specified path. The command to create migration file at our HelloWorld package database/migrations directory, we have to append '- -path' in artisan command.
+Also, Laravel provides us an option to create migration files on a specified path. The command to create a migration file at our HelloWorld package database/migrations directory, we have to append '- -path' in artisan command.
 
 ```php
 php artisan make:migration create_demo_table - -path=packages/ACME/HelloWorld/src/Database/Migrations
@@ -332,7 +332,7 @@ php artisan make:migration create_demo_table - -path=packages/ACME/HelloWorld/sr
 
 ### Step-1
 
-1. Now, we will show how to add menu in admin panel.
+1. Now, we will show how to add a menu in the admin panel.
    For this, we need to create a ‘Config’ folder inside ‘src’.
    Inside this src folder, create a file name as 'menu.php'.
 
@@ -352,7 +352,7 @@ return [
 
 ![menu-file-route](assets/images/Bagisto_Docs_Images/PackageDevelopment/menu-file-route.png){: .screenshot-dimension .center}
 
-In this file we provide name of menu, its route & its icon.
+In this file, we provide the name of the menu, its route & its icon.
 
 Now for route stated in `menu.php`, we need to create a controller to display view file.
 
@@ -396,14 +396,14 @@ public function index()
 
 ![HelloWorldcontroller](assets/images/Bagisto_Docs_Images/PackageDevelopment/HelloWorldcontroller.png){: .screenshot-dimension .center}
 
-For the route we will create a named route as
+For the route, we will create a named route as
 
 ```php
 Route::get('hello-dashboard', 'ACME\HelloWorld\Http\Controllers\HelloWorldController@index')->defaults('_config', ['view' => 'helloworld::helloworld.index'
 ])->name('helloworld.index');
 ```
 
-After creating controller & route we need to merge this `menu.php` folder with core menu file.For this purpose we will use method ‘mergeConfigFrom’ method in register function of service provider.
+After creating the controller & route we need to merge this `menu.php` folder with a core menu file. For this purpose, we will use the method ‘mergeConfigFrom’ method in the register function of the service provider.
 
 ```php
 public function register()
@@ -420,15 +420,15 @@ And, now we need to add `@extends('admin::layouts.master')` to our view files to
 
 ![hello-world-icon](assets/images/Bagisto_Docs_Images/PackageDevelopment/hello-world-icon.png){: .screenshot-dimension .center}
 
-Now, this menu will comes in admin login. You can change icon accordingly your need.By clicking, upon icon it will open the view file provided in `Route` facade
+Now, this menu will come in the admin login. You can change the icon accordingly to your needs. By clicking, upon the icon, it will open the view file provided in `Route` facade
 
 ### How to Create ACL in Bagisto? <a id="create-acl"></a>
 
-In term to manage an ecommerce site becomes clumsy and ambiguous. Here, in bagisto, it has been taken care of, bagisto has provided an functionality 'ACL'(Access Control List). Mainly, with ACL, admin has power to disable the menu whatever not-in-use for admin .
+In term to manage an eCommerce site becomes clumsy and ambiguous. Here, in bagisto, it has been taken care of, bagisto has provided a functionality 'ACL'(Access Control List). Mainly, with ACL, admin has the power to disable the menu whatever not-in-use for admin.
 
 ##### Creating an ACL file
 
-There are some steps which the user have to follow to create ACL. User have to create an file in the config folder of module named as 'acl.php'. Below, the image of acl.php is attached
+There are some steps that the user has to follow to create ACL. The user has to create a file in the config folder of a module named 'acl.php'. Below, the image of acl.php is attached
 
 ```php
 <?php
@@ -475,20 +475,20 @@ return [
 
 ![ACL](assets/images/Bagisto_Docs_Images/ACL/acl-code.png){: .screenshot-dimension .center}
 
-1.  As you can see in above image, the acl.php includes some parameters (you can refer to how to add menu in admin/customer section above)
+1.  As you can see in the above image, the acl.php includes some parameters (you can refer to how to add menu in admin/customer section above)
 
-2.  Array is created for individual's menu with the parameters (key, name, route, sort).
+2.  The array is created for an individual's menu with the parameters (key, name, route, sort).
     All we need is to define the menu which we want to be included in ACL functionality.
 
     ![ACL](assets/images/Bagisto_Docs_Images/ACL/acl-ui.png){: .screenshot-dimension .center}
 
 ### Custom Configuration <a id="custom-configuration"></a>
 
-Creating a custom configuration ease the task for developer or any non-developer person. It lets you option of enable/disable with the dropdown or any input _type_ attribute. Generally, in bagisto, you can find it in admin panel **Configuration menu** .
+Creating a custom configuration ease the task for a developer or any non-developer person. It lets you option of enable/disable with the dropdown or any input _type_ attribute. Generally, in bagisto, you can find it in admin panel **Configuration menu**.
 
 ##### Steps to create custom configuration
 
-- To create custom configuration for your application, you just need to create system.php file under _config_ folder of your package.
+- To create a custom configuration for your application, you just need to create a system.php file under the _config_ folder of your package.
 
 - Inside the file, you can include the below code as shown in image
 
@@ -525,13 +525,13 @@ return [
 
 ##### Explanation for the keys:
 
-- **key** : these values provided are unique and nested with '.' (dot) operator. After creation of two nested, other keys written are display in browser in form of accordian {figure needed}
+- **key** : these values provided are unique and nested with '.' (dot) operator. After the creation of two nested, other keys written are display in the browser in the form of accordion {figure needed}
 
-- **name** : these keys accept the value as placeholder of your configuration. Generally, in bagisto, we consider writing it using translation.
+- **name** : these keys accept the value as a placeholder of your configuration. Generally, in bagisto, we consider writing it using translation.
 
-- **sort** : these key accept the sort position for the configuration menu.
+- **sort** : these keys accept the sort position for the configuration menu.
 
-- **fields** : these key accepts the array for the value of custom configuration.
+- **fields** : these keys accept the array for the value of the custom configuration.
 
 ### Creating Models<a id="create_models"></a>
 
@@ -553,7 +553,7 @@ After creating model, to generate database migration, you may append `--migratio
 
 ##### Contracts
 
-Laravel's Contracts are a set of interfaces that define the core services provided by the framework. For example, a Illuminate\Contracts\Queue\Queue contract defines the methods needed for queueing jobs, while the Illuminate\Contracts\Mail\Mailer contract defines the methods needed for sending e-mail.
+Laravel's Contracts are a set of interfaces that define the core services provided by the framework. For example, an Illuminate\Contracts\Queue\Queue contract defines the methods needed for queueing jobs, while the Illuminate\Contracts\Mail\Mailer contract defines the methods needed for sending an e-mail.
 
 Each contract has a corresponding implementation provided by the framework. For example, Laravel provides a queue implementation with a variety of drivers, and a mailer implementation that is powered by SwiftMailer.
 
@@ -563,19 +563,19 @@ All of the Laravel contracts live in their own GitHub repository. This provides 
 
 ##### Repositories
 
-Generally, we wrote all of our application logic in the controller. There’s an alternative approach of development that abstracts some calls into PHP classes called Repositories. The idea is that we can decouple models from controllers and assign readable name's to complicated queries.
+Generally, we wrote all of our application logic in the controller. There’s an alternative approach of development that abstracts some calls into PHP classes called Repositories. The idea is that we can decouple models from controllers and assign a readable name's to complicated queries.
 
 This file defines our Repository class. Instances of this class have a model property that we tie to an Eloquent model. Once this is bound in the constructor we can call Eloquent methods like findOrFail, update or all from the class methods.
 
 ##### Proxies
 
-Proxies as their name state, will drive you to the actual model class. The concept of model proxies has been introduced to override the functionality of existing Model. It is a type of model inheritance without creating a new table in Database.
+Proxies as their name state will drive you to the actual model class. The concept of model proxies has been introduced to override the functionality of the existing Model. It is a type of model inheritance without creating a new table in the database.
 
 ##### Store data through Repository <a id="store-data-through-repository"></a>
 
 Steps to store data through repository :
 
-- Beginning with the creation of models, generally models are created using command stated below.
+- Beginning with the creation of models, generally, models are created using command stated below.
 
 > php artisan make:model HelloWorld
 
@@ -594,7 +594,7 @@ class DataFlowProfileProxy extends ModelProxy
 }
 ```
 
-- Now ,make a folder named as Contracts and inside it create a interface file named as HelloWorld.php
+- Now, make a folder named as Contracts and inside it create an interface file named as HelloWorld.php
 
 - Now, make a repository folder and inside it create a file 'HelloWorldRepository.php' and
   write the model method for repository class and under the method return path of your contract class.
@@ -619,7 +619,7 @@ class HelloWorldRepository extends Repository
 }
 ```
 
-After creating all files stated above for our package, we have to create a provider as `ModuleServiceProvider.php` and register it in `config/concord.php`. Inside this file, models used within package are registered. You may check below code
+After creating all the files stated above for our package, we have to create a provider as `ModuleServiceProvider.php` and register it in `config/concord.php`. Inside this file, models used within the package are registered. You may check below code
 
 ```php
     <?php
