@@ -30,4 +30,7 @@ If you want to migrate your project to the bagisto v1.0.0, then you need to foll
     2. If it doesn't exist, then run the command `npm install` and `npm run watch` on folder `shop`, `UI`, `admin`.
 
 
-**Note**: The changes in core packages will be removed, if done.
+**Note**:
+* The changes in core packages will be removed, if done.
+
+* Backup of additional modules/packages must be done. And, those modules need to be configure after version migration.
