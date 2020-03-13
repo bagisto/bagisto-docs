@@ -201,9 +201,9 @@ Create a ‘Resources’ folder inside the ‘src’ folder. Inside ‘Resources
     },
 
     "devDependencies": {
-        "cross-env": "^5.1.4",
-        "laravel-mix": "^2.1",
-        "laravel-mix-merge-manifest": "^0.1.1"
+        "cross-env": "^7.0.2",
+        "laravel-mix": "^5.0.1",
+        "laravel-mix-merge-manifest": "^0.1.2"
     }
 }
 ```
@@ -213,7 +213,7 @@ Create a ‘Resources’ folder inside the ‘src’ folder. Inside ‘Resources
 webpack.mix.js will consist
 
 ```javascript
-const { mix } = require("laravel-mix");
+const mix = require("laravel-mix");
 require("laravel-mix-merge-manifest");
 
 if (mix.inProduction()) {
