@@ -46,7 +46,7 @@ Besides the features already available, the Bagisto’s roadmap includes:
 
 To learn more about Bagisto’s features and try a demo, check out [Bagisto](https://bagisto.com){: target="\_blank" .link-color}. You can get started with the source code by checking out the repo on GitHub at [bagisto/bagisto](https://github.com/bagisto/bagisto){: target="\_blank" .link-color}.
 
-Also, You can Check out the roadmap for Bagisto here: [bagisto roadmap](https://bagisto.com/roadmap/){: target="\_blank" .link-color}
+To get a quick heads-up on the currently working and recently released features, see [Bagisto roadmap](https://bagisto.com/roadmap/){: target="\_blank" .link-color}. 
 
 ### Requirements <a id="requirements"></a>:
 
