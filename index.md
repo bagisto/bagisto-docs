@@ -14,18 +14,18 @@ Bagisto is a viable attempt to cut down your time, cost and workforce for buildi
 
 At the time of writing, Bagisto’s main feature list includes:
 
-- Multiple Channels, Locale, Currencies.
-- Built-in Access Control Layer.
-- Beautiful and Responsive Storefront.
-- Descriptive and Simple Admin Panel.
-- Admin Dashboard.
-- Custom Attributes.
-- Built on a Modular Approach.
-- Support for Multiple Store Themes.
-- Multistore Inventory System.
-- Orders Management System.
-- Customer Cart, Wishlist, Product Reviews.
-- Simple and Configurable Products.
+- Multiple Channels, Locale, Currencies
+- Built-in Access Control Layer
+- Beautiful and Responsive Storefront
+- Descriptive and Simple Admin Panel
+- Admin Dashboard
+- Custom Attributes
+- Built on a Modular Approach
+- Support for Multiple Store Themes
+- Multistore Inventory System
+- Orders Management System
+- Customer Cart, Wishlist, Product Reviews
+- Simple and Configurable Products
 
 Bagisto features an administration panel with a Dashboard, sales data, a catalog of products you can manage, and customer management:
 
@@ -41,7 +41,7 @@ Besides the features already available, the Bagisto’s roadmap includes:
 - Percona support
 - Accelerated mobile pages (AMP) integration
 - CI/CD Pipeline management
-- New product types like subscriptions, bookings, and recurring billing.
+- New product types like subscriptions, bookings, and recurring billing
 - GDPR compliance
 
 To learn more about Bagisto’s features and try a demo, check out [Bagisto](https://bagisto.com){: target="\_blank" .link-color}. You can get started with the source code by checking out the repo on GitHub at [bagisto/bagisto](https://github.com/bagisto/bagisto){: target="\_blank" .link-color}.
@@ -52,16 +52,16 @@ Also, You can Check out the roadmap for Bagisto here: [bagisto roadmap](https://
 
 - **OS**:
   1. Windows 7 or above with WAMP/XAMPP environment
-  2. Compatible with macOS.
+  2. Compatible with macOS
   3. Ubuntu 16.04 LTS or higher
 - **SERVER**: Apache 2 or NGINX
-- **RAM**: 3 GB or higher.
-- **PHP**: 7.1.17 or higher.
-- **Processor**: Clock Cycle 1 Ghz or higher.
-- **For MySQL users**: 5.7.23 or higher.
-- **For MariaDB users**: 10.2.7 or Higher.
-- **Node**: 8.11.3 LTS or higher.
-- **Composer**: 1.6.5 or higher.
+- **RAM**: 3 GB or higher
+- **PHP**: 7.1.17 or higher
+- **Processor**: Clock Cycle 1 Ghz or higher
+- **For MySQL users**: 5.7.23 or higher
+- **For MariaDB users**: 10.2.7 or higher
+- **Node**: 8.11.3 LTS or higher
+- **Composer**: 1.6.5 or higher
 - **php7.1-intl extension**
 - **php7.1-gd extension**
 
