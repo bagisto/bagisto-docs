@@ -46,7 +46,7 @@ Besides the features already available, the Bagisto’s roadmap includes:
 
 To learn more about Bagisto’s features and try a demo, check out [Bagisto](https://bagisto.com){: target="\_blank" .link-color}. You can get started with the source code by checking out the repo on GitHub at [bagisto/bagisto](https://github.com/bagisto/bagisto){: target="\_blank" .link-color}.
 
-Also, You can Check out the roadmap for Bagisto here: [bagisto roadmap](https://bagisto.com/roadmap/){: target="\_blank" .link-color}
+To get a quick heads-up on the currently working and recently released features, see [Bagisto roadmap](https://bagisto.com/roadmap/){: target="\_blank" .link-color}. 
 
 ### Requirements <a id="requirements"></a>:
 
@@ -62,6 +62,13 @@ Also, You can Check out the roadmap for Bagisto here: [bagisto roadmap](https://
 - **For MariaDB users**: 10.2.7 or higher
 - **Node**: 8.11.3 LTS or higher
 - **Composer**: 1.6.5 or higher
+- **RAM**: 3 GB or higher.
+- **PHP**: 7.1.17 or higher.
+- **Processor**: Clock Cycle 1 GHz or higher.
+- **For MySQL users**: 5.7.23 or higher.
+- **For MariaDB users**: 10.2.7 or Higher.
+- **Node**: 8.11.3 LTS or higher.
+- **Composer**: 1.6.5 or higher.
 - **php7.1-intl extension**
 - **php7.1-gd extension**
 
