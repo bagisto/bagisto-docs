@@ -57,7 +57,7 @@ To get a quick heads-up on the currently working and recently released features,
 - **SERVER**: Apache 2 or NGINX
 - **RAM**: 3 GB or higher.
 - **PHP**: 7.1.17 or higher.
-- **Processor**: Clock Cycle 1 Ghz or higher.
+- **Processor**: Clock Cycle 1 GHz or higher.
 - **For MySQL users**: 5.7.23 or higher.
 - **For MariaDB users**: 10.2.7 or Higher.
 - **Node**: 8.11.3 LTS or higher.
