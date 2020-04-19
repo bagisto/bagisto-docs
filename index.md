@@ -93,6 +93,13 @@ http(s)://example.com/public
 1. composer create-project bagisto/bagisto
 ```
 
+**Now configure artisan command-line interface:**
+
+Inside *bagisto* folder:
+```
+2. composer install
+```
+
 **Now configure your database:**
 
 If the above command was completed successfully, then you'll find directory **bagisto** and all of the code will be inside it.
@@ -110,24 +117,24 @@ Find file **.env** inside **bagisto** directory and set the environment variable
 Although, mailer environment variables are also required to be set up as **Bagisto** requires emails to send to customers and admins for various built-in functionalities.
 
 ```
-2. php artisan migrate
+3. php artisan migrate
 ```
 
 ```
-3. php artisan db:seed
+4. php artisan db:seed
 ```
 
 ```
-4. php artisan vendor:publish
+5. php artisan vendor:publish
 -> Press 0 and then press enter to publish all assets and configurations.
 ```
 
 ```
-5. php artisan storage:link
+6. php artisan storage:link
 ```
 
 ```
-6. composer dump-autoload
+7. composer dump-autoload
 ```
 
 **To execute Bagisto**:
