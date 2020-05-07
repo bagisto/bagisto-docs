@@ -72,26 +72,13 @@ Currently, this **`orders`** resource is helpful for both admin,user and custome
 
 #### data object:
 
-<<<<<<< HEAD
-Under the data object, you will find a array of multiple objects which contain the details of the orders. You can use the order's index data by accessing these order sub-objects.
-=======
 Under the data object, you will find an array with multiple objects that contains the details of the orders. You can use the order's index data by accessing these order sub-objects.
-
-> > > > > > > 325acfb78004e83a103cd06b7caa0300fbb16c92
 
 **Note**: _Regarding both link and meta objects, we already explained these objects functionality in_ <a href="api_category.html#link-object" target="_blank" class="bagsito-link"> _Category API_ </a> _section._
 
-<<<<<<< HEAD
-
 ### 1.2 Get Orders Without Pagination: <a id="get-orders-without-pagination"></a>
 
-# You can also get all the orders at once of Bagisto Store without pagination. To get the orders, customer must be login into the Bagisto Store. For this you have to pass **`pagination=0`** in the query parameter with the **`orders`** resource in API URL.
-
-### 1.2 Get Orders Without Pagination:
-
 You can also get all the orders at once of Bagisto Store without pagination. To get the orders, customer must be logged in to the Bagisto Store. For this you have to pass **`pagination=0`** in the query parameter with the **`orders`** resource in API URL.
-
-> > > > > > > 325acfb78004e83a103cd06b7caa0300fbb16c92
 
 ###### Request:
 
