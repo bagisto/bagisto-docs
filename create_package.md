@@ -96,7 +96,7 @@ A package is a unit added to your application for enhancement which includes rou
 
 ##### Step-4
 
-- Now, to register the service provider, go to the ‘app.php’ file inside the ‘config’ folder & add your service provider inside the ‘providers’ array.
+- Now, to register the service provider, go to the **_app.php_** file inside the **config** folder & add your service provider inside the ‘providers’ array.
 
     ```php
         ACME\HelloWorld\Providers\HelloWorldServiceProvider::class,
@@ -106,7 +106,7 @@ A package is a unit added to your application for enhancement which includes rou
 
 ##### Step-5
 
-- Now, we need to add our package to the ‘composer.json’ file of project root for autoloading in psr-4.
+- Now, we need to add our package to the **_composer.json_** file of project root for autoloading in psr-4.
 
     ```php
             "ACME\\HelloWorld\\": "packages/ACME/HelloWorld/src"
@@ -116,11 +116,11 @@ A package is a unit added to your application for enhancement which includes rou
 
 ##### Step-6
 
-- Now, we are going to add some routing & views for our package.
+- Now, we are going to add routing & views in our package.
 
-  1.  For routes: create an ‘Http’ folder inside ‘src’ folder of package & inside `Http` create a file name as ‘routes.php’. In this file, we can create routes for the package.
+  1.  For routes: create an **Http** folder inside **src** folder of your package & inside **Http** create a file name as **_routes.php_** like `YourPackage/src/Http/routes.php`. In this file, we can create routes for the package.
 
-  Now, we need to register our route file to service provider’s boot method i.e. HelloWorldServiceProvider.php
+  Now, we need to register our route file to service provider’s boot method i.e. **_HelloWorldServiceProvider.php_**
 
   ```php
   public function boot()
@@ -133,9 +133,9 @@ A package is a unit added to your application for enhancement which includes rou
 
 To load routes, you can also use ‘loadRoutesFrom’ method.
 
-2. For views: Create a ‘Resources’ folder inside ‘src’ folder of the package. Inside the ‘Resources’ folder create a folder name as ‘views’. Now, in the ‘views’ folder, we can create a view for the package.
+2. For views: Create a **Resources** folder inside **src** folder of the package. Inside the **Resources** folder create a folder name as **views**. Now, in the **views** folder, we can create a view for the package.
 
-Right now, we are going to create a folder ‘helloworld’ inside the views. In this ‘helloworld’ folder we will create a file name as helloworld.blade.php.
+Right now, we are going to create a folder **helloworld** inside the views. In this **helloworld** folder we will create a file name as **_helloworld.blade.php_**
 
 Now just like the route file, we need to register our view folder inside the service provider to specify a path where views are located.
 
@@ -162,7 +162,7 @@ Go to `ACME/src/Http/routes.php` file and create a route to render view
 
 ![view-route-creation](assets/images/Bagisto_Docs_Images/PackageDevelopment/view-route-creation.png){: .screenshot-dimension .center}
 
-Now run composer dump-autoload, so laravel can detects the new route files and works. Otherwise, it won't work and will return NotFound Exception.
+Now run 'composer dump-autoload', so laravel can detects the new route files and works. Otherwise, it won't work and will return NotFound Exception.
 
 Now, you can append ‘hello-world’ to your local path in the browser's URL to see the output.
 
@@ -172,9 +172,9 @@ Now, you can append ‘hello-world’ to your local path in the browser's URL to
 
 - Now, we are going to create a language file for our package.
 
-For this create a ‘lang’ folder inside the ‘Resources’ folder.
+For this create a **lang** folder inside the **Resources** folder.
 
-Inside the lang folder, you can create a different folder for language translations like for English 'en', Hindi ‘hn’ etc. Moving forward, we will create a folder name ‘en’ (`say language code`) & inside ‘en’ folder, create a file name as ‘app.php’ to perform language translation
+Inside the **lang** folder, you can create a different folder for language translations like for English 'en', Hindi ‘hn’ etc. Moving forward, we will create a folder name **en** (`say language code`) & inside **en** folder, create a file name as **_app.php_** to perform language translation
 
 Now, we need to register the language file to the service provider.
 
@@ -185,7 +185,7 @@ public function boot()
 }
 ```
 
-Now we can write a translation in app.php like below.
+Now we can write a translation in **_app.php_** like below.
 
 ```php
 <?php
@@ -202,11 +202,11 @@ Add \{\{ \_\_(‘helloworld::app.hello-world.name’) \}\} to your application�
 
 ##### Step-9
 
-- Now we will add CSS to our package. To add CSS create ‘package.json’ file & ‘webpack.mix.js’ file inside the root of your package.
+- Now we will add CSS to our package. To add CSS create **_package.json_** file & **_webpack.mix.js_** file inside the root of your package.
 
-Create a ‘Resources’ folder inside the ‘src’ folder. Inside ‘Resources’ folder creates a folder name ‘assets’& inside it create ‘sass’ folder & inside it create a folder name ‘app.scss’. This ‘app.scss’ will consist SASS for a package. In ‘package.json’ file, you can mention your npm dependencies. Create a webpack.mix.js file, this will be used for compiling our assets.
+Create a **Resources** folder inside the **src** folder of your package. Inside **Resources** folder creates a folder name **assets** & inside it create **sass** folder & inside it create a file **_app.scss_** like `package/src/Resources/assets/app.scss`. This **_app.scss_** will consist SASS for a package. In **_package.json_** file, you can mention your npm dependencies. Create a **_webpack.mix.js_** file, this will be used for compiling our assets.
 
-‘package.json' file consist
+**_package.json_** file consist
 
 ```javascript
 {
@@ -230,7 +230,7 @@ Create a ‘Resources’ folder inside the ‘src’ folder. Inside ‘Resources
 
 ![package-json](assets/images/Bagisto_Docs_Images/PackageDevelopment/package-json.png){: .screenshot-dimension .center}
 
-webpack.mix.js will consist
+**_webpack.mix.js_** will consist
 
 ```javascript
 const mix = require("laravel-mix");
@@ -259,11 +259,11 @@ if (mix.inProduction()) {
 
 All dependency can be updated according to need.
 
-After doing this go to the root of your package & run ‘npm install’ which will install all dependencies. After installing dependencies run ‘npm run watch’, which will compile all your CSS & publish it inside public folder according to path mention in webpack.mix.js according to the environment.
+After doing this go to the root of your package & run ‘npm install’ which will install all dependencies. After installing dependencies run ‘npm run watch’, which will compile all your CSS & publish it inside public folder according to path mention in **_webpack.mix.js_** according to the environment.
 
-In the same way, we can also add images & js. Inside ‘assets’ folder of ‘Resources’, create two folders ‘js’ & ‘images’ in which create ‘app.js’ file for js & inside ‘images’ folder, place the images.
+In the same way, we can also add images & js. Inside **assets** folder of **Resources**, create two folders **js** & **images** in which create **_app.js_** file for js & inside **images** folder, place the images.
 
-Now we need to publish these two also as we did for CSS. We will add this too to our webpack.mix.js.
+Now we need to publish these two also as we did for CSS. We will add this too to our **_webpack.mix.js_**
 
 ```javascript
 mix
@@ -278,7 +278,7 @@ mix
 
 Once again, we need to run ‘npm run watch’ to compile assets.
 
-After doing this we need to add an event listener so that admin layouts include our CSS. For this we need to add an Event Listener in service provider & Inside views create a folder called layouts & inside it create a file called ‘style.blade.php’ & mention compiled CSS path inside this file.
+After doing this we need to add an event listener so that admin layouts include our CSS. For this we need to add an Event Listener in service provider & Inside views create a folder called **layouts** & inside it create a file called **_style.blade.php_** & mention compiled CSS path inside this file.
 
 ```html
 <link
@@ -292,7 +292,7 @@ After doing this we need to add an event listener so that admin layouts include 
 
 **For Event Listener –**
 
-Initially, add facade 'Event' into your HelloWorldServiceProvider.php file, else it will throw an error.
+Initially, add facade 'Event' into your **_HelloWorldServiceProvider.php_** file, else it will throw an error.
 
 ```php
 use Illuminate\Support\Facades\Event;
@@ -309,7 +309,7 @@ public function boot()
 
 ![provider](assets/images/Bagisto_Docs_Images/PackageDevelopment/provider-all.png){: .screenshot-dimension .center}
 
-Till now, we configured our package HelloWorld and now we need to extend the default layout of our admin panel by using @extends('admin::layouts.content') in file `packages/acme/HelloWorld/src/Resources/views/admin/index.php` &we can write CSS for our packages. If you don’t want to include this one then you can create your own master file which includes your packages CSS & JS.
+Till now, we configured our package HelloWorld and now we need to extend the default layout of our admin panel by using '@extends('admin::layouts.content')' in file `packages/acme/HelloWorld/src/Resources/views/admin/index.php`. If you don’t want to include this one then you can create your own master file which includes your packages CSS & JS.
 
 ![layout-content](assets/images/Bagisto_Docs_Images/PackageDevelopment/layout-content.png){: .screenshot-dimension .center}
 
@@ -317,7 +317,7 @@ Till now, we configured our package HelloWorld and now we need to extend the def
 
 - Now we will add Database to our package.
 
-Create a ‘Database’ folder inside ‘src’ folder & inside ‘Database’ create ‘Migrations’ & ‘Seeders’ folder.
+Create a **Database** folder inside **src** folder & inside **Database** folder create **Migrations** & **Seeders** folder like `package/src/Database/Migrations`.
 
 Now, we need to add migrations to our service provider to load them.
 
@@ -332,7 +332,7 @@ public function boot()
 
 ### How to create Migrations ?<a id="create-migrations"></a>
 
-To create a migration, use the make:migration Artisan command:
+To create a migration, use the 'make:migration Artisan command':
 
 ```php
 php artisan make:migration create_users_table
@@ -340,19 +340,19 @@ php artisan make:migration create_users_table
 
 The new migration will be placed in your `database/migrations` directory. Each migration file name contains a timestamp which allows Laravel to determine the order of the migrations.
 
-The - -table and - -create options may also be used to indicate the name of the table and whether the migration will be creating a new table.
+The --table and --create options may also be used to indicate the name of the table and whether the migration will be creating a new table.
 
-Also, Laravel provides us an option to create migration files on a specified path. The command to create a migration file at our HelloWorld package `database/migrations` directory, we have to append '- -path' in artisan command.
+You may also specify a --path option when creating the migration. The path should be relative to the root directory of your installation:
 
 ```php
-php artisan make:migration create_demo_table - -path=packages/ACME/HelloWorld/src/Database/Migrations
+php artisan make:migration create_demo_table --path=packages/ACME/HelloWorld/src/Database/Migrations
 ```
 
 ### How to Add Menu in Admin <a id="add-menu"></a>
 
 ### Step-1
 
-1. Within your package (say HelloWorld)`HelloWorld/src/`, create Config folder and create a file as 'menu.php'.
+1. Within your package `HelloWorld/src/`, create **Config** folder and create a file as **_menu.php_**'.
 
 ```php
 <?php
@@ -372,9 +372,9 @@ return [
 
 In this file, we provide the name of the menu, its route & its icon.
 
-Now for route stated in menu.php, we need to create a controller to display view file.
+Now for route stated in **_menu.php_**, we need to create a controller to display view file.
 
-So inside Controllers we will create HelloWorldController.php and controller.php as:
+So inside Controllers we will create **_HelloWorldController.php_** and **_controller.php_** as:
 
 ![home-controller](assets/images/Bagisto_Docs_Images/PackageDevelopment/home-controller.png){: .screenshot-dimension .center}
 
@@ -421,7 +421,7 @@ Route::get('hello-dashboard', 'ACME\HelloWorld\Http\Controllers\HelloWorldContro
 ])->name('helloworld.index');
 ```
 
-After creating the controller & route we need to merge this menu.php folder with a core menu file. For this purpose, we will use the method ‘mergeConfigFrom’ method in the register function of the service provider.
+After creating the controller & route we need to merge this **_menu.php_** folder with a core menu file. For this purpose, we will use the method ‘mergeConfigFrom’ method in the register function of the service provider.
 
 ```php
 public function register()
@@ -434,7 +434,7 @@ public function register()
 
 ![merge-config-for-menu](assets/images/Bagisto_Docs_Images/PackageDevelopment/merge-config-for-menu.png){: .screenshot-dimension .center}
 
-And, now we need to extend the default layout of our admin panel by using @extends('admin::layouts.content') in our package master file.
+And, now we need to extend the default layout of our admin panel by using '@extends('admin::layouts.content')' in our package master file.
 
 ![hello-world-icon](assets/images/Bagisto_Docs_Images/PackageDevelopment/hello-world-icon.png){: .screenshot-dimension .center}
 
@@ -446,7 +446,7 @@ In term to manage an eCommerce site becomes clumsy and ambiguous. Here, in bagis
 
 ##### Creating an ACL file
 
-There are some steps that the user has to follow to create ACL. The user has to create a file in the config folder of a module named 'acl.php'. Below, the image of acl.php is attached
+There are some steps that the user has to follow to create ACL. The user has to create a file in the **Config** folder of a module named **_acl.php_**. Below, the image of **_acl.php_** is attached
 
 ```php
 <?php
@@ -493,7 +493,7 @@ return [
 
 ![ACL](assets/images/Bagisto_Docs_Images/ACL/acl-code.png){: .screenshot-dimension .center}
 
-1.  As you can see in the above image, the acl.php includes some parameters (you can refer to how to add menu in admin/customer section above)
+1.  As you can see in the above image, the **_acl.php_** includes some parameters (you can refer to how to add menu in admin/customer section above)
 
 2.  The array is created for an individual's menu with the parameters (key, name, route, sort).
     All we need is to define the menu which we want to be included in ACL functionality.
@@ -506,7 +506,7 @@ Creating a custom configuration ease the task for a developer or any non-develop
 
 ##### Steps to create custom configuration
 
-- To create a custom configuration for your application, you just need to create a system.php file under the _config_ folder of your package.
+- To create a custom configuration for your application, you just need to create a **_system.php_** file under the **Config** folder of your package.
 
 - Inside the file, you can include the below code as shown in image
 
@@ -553,7 +553,7 @@ return [
 
 ### Creating Models<a id="create_models"></a>
 
-Models typically live in the app directory, but you are free to place them anywhere that can be auto-loaded according to your composer.json file. All Eloquent models extend `Illuminate\Database\Eloquent\Model` class.
+Models typically live in the app directory, but you are free to place them anywhere that can be auto-loaded according to your **_composer.json_** file. All Eloquent models extend `Illuminate\Database\Eloquent\Model` class.
 
 The simple way to create a model is executing the command _make:model Artisan command_:
 
@@ -597,7 +597,7 @@ Steps to store data through repository :
 
 > php artisan make:model HelloWorld
 
-- Now, at the same location create a model proxy file as 'HelloWorldProxy.php'. This Proxy class will extends ModelProxy. Also, you have to add `use Konekt\Concord\Proxies\ModelProxy;` like below stated
+- Now, at the same location create a model proxy file as **_HelloWorldProxy.php_**. This Proxy class will extends ModelProxy. Also, you have to add `use Konekt\Concord\Proxies\ModelProxy;` like below stated
 
 ```php
 <?php
@@ -612,9 +612,9 @@ class DataFlowProfileProxy extends ModelProxy
 }
 ```
 
-- Now, make a folder named as Contracts and inside it create an interface file named as HelloWorld.php
+- Now, make a folder named as **Contracts** and inside it create an interface file named as **_HelloWorld.php_**
 
-- Now, make a repository folder and inside it create a file 'HelloWorldRepository.php' and
+- Now, make a **Repository** folder and inside it create a file **_HelloWorldRepository.php_** and
   write the model method for repository class and under the method return path of your contract class.
 
 ```php
@@ -637,7 +637,7 @@ class HelloWorldRepository extends Repository
 }
 ```
 
-After creating all the files stated above for our package, we have to create a provider as ModuleServiceProvider.php and register it in `config/concord.php`. Inside this file, models used within the package are registered. You may check below code
+After creating all the files stated above for our package, we have to create a provider as **_ModuleServiceProvider.php_** and register it in `config/concord.php`. Inside this file, models used within the package are registered. You may check below code
 
 ```php
     <?php
@@ -654,7 +654,7 @@ After creating all the files stated above for our package, we have to create a p
     }
 ```
 
-**Now**, Registering ModuleServiceProvider.php in `config/concord.php` file
+**Now**, Registering **_ModuleServiceProvider.php_** in `config/concord.php` file
 
 ```php
 <?php
