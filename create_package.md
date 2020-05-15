@@ -8,13 +8,37 @@ layout: default
 ![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/create_package.md){:.edit-github target="\_blank"}
 
-A package is like a laravel package that includes views, controller and models. Packages are created to manage your large laravel applications into smaller units. In the bagisto, we have created plenty of packages at path `packages/Webkul/`.
+A package is a unit added to your application for enhancement which includes routes, controllers, views, and configuration specifically. Packages are created to manage your large applications into smaller units. In the bagisto, we have created plenty of packages at path `packages/Webkul/`. You can find a basic tree-structure of package below :
+
+- module-name/
+  - src/
+    - Config/
+    - Contracts/
+    - Database/
+    - Events/
+    - Helpers/
+    - Http/
+        - Controllers/
+        - Middleware/
+        - Routes/
+    - Listeners/
+    - Models/
+    - Providers/
+        - ModuleServiceProvider.php
+        - EventServiceProvider.php
+    - Repositories/
+    - Resources/
+        - assets/
+        - lang/
+        - views/
+  - package.json
+  - webpack.mix.js
 
 ### How To Create Package <a id="how-to-create-package"></a>
 
 ##### Step-1
 
-- Inside **packages** folder, create a folder with your company name or namespace and inside it create a folder with your package name.
+-  Inside **packages** folder, create a folder with your company name or namespace and inside it create a folder with your package name.
   e.g., here namespace is specified as ACME
 
 > `packages/ACME/HelloWorld`
@@ -31,10 +55,11 @@ A package is like a laravel package that includes views, controller and models. 
 
   The Service Provider consists of two methods.
 
-  1. boot
-  2. register
+    - [Boot Method](https://laravel.com/docs/7.x/providers#the-boot-method){: target="\_blank"}
 
-     ```php
+    - [Register Method](https://laravel.com/docs/7.x/providers#the-register-method){: target="\_blank"}
+
+```php
      namespace ACME\HelloWorld\Providers;
 
      use Illuminate\Support\ServiceProvider;
@@ -45,54 +70,49 @@ A package is like a laravel package that includes views, controller and models. 
      * @author    Jane Doe <janedoe@gmail.com>
      * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
      */
-     class HelloWorldServiceProvider extends ServiceProvider
-     {
-         /**
-         * Bootstrap services.
-         *
-         * @return void
-         */
-         public function boot()
-         {
+    class HelloWorldServiceProvider extends ServiceProvider
+    {
+        /**
+        * Bootstrap services.
+        *
+        * @return void
+        */
+        public function boot()
+        {
 
-         }
+        }
 
-         /**
-         * Register services.
-         *
-         * @return void
-         */
-         public function register()
-         {
+        /**
+        * Register services.
+        *
+        * @return void
+        */
+        public function register()
+        {
 
-         }
-     }
-     ```
+        }
+    }
+```
 
 ##### Step-4
 
 - Now, to register the service provider, go to the ‘app.php’ file inside the ‘config’ folder & add your service provider inside the ‘providers’ array.
 
-  ```php
-  'providers' => [
-      //ACME package
-      ACME\HelloWorld\Providers\HelloWorldServiceProvider::class,
-  ],
-  ```
+    ```php
+        ACME\HelloWorld\Providers\HelloWorldServiceProvider::class,
+    ```
 
-![provider-registration](assets/images/Bagisto_Docs_Images/PackageDevelopment/provider-registration.png){: .screenshot-dimension .center}
+<!-- ![provider-registration](assets/images/Bagisto_Docs_Images/PackageDevelopment/provider-registration.png){: .screenshot-dimension .center} -->
 
 ##### Step-5
 
 - Now, we need to add our package to the ‘composer.json’ file of project root for autoloading in psr-4.
 
-      ``` php
-      "psr-4": {
-          "ACME\\HelloWorld\\": "packages/ACME/HelloWorld/src"
-      }
-      ```
+    ```php
+            "ACME\\HelloWorld\\": "packages/ACME/HelloWorld/src"
+    ```
 
-  ![psr4](assets/images/Bagisto_Docs_Images/PackageDevelopment/psr4-registration.png){: .screenshot-dimension .center}
+  <!-- ![psr4](assets/images/Bagisto_Docs_Images/PackageDevelopment/psr4-registration.png){: .screenshot-dimension .center} -->
 
 ##### Step-6
 
@@ -132,7 +152,7 @@ public function boot()
 
 - Now, we need to create a route & render a view on that route.
 
-Go to ACME->src->Http->routes.php file and create a route to render view
+Go to `ACME/src/Http/routes.php` file and create a route to render view
 
 ```php
 <?php
@@ -142,7 +162,7 @@ Go to ACME->src->Http->routes.php file and create a route to render view
 
 ![view-route-creation](assets/images/Bagisto_Docs_Images/PackageDevelopment/view-route-creation.png){: .screenshot-dimension .center}
 
-If everything goes well you can run composer dump-autoload so laravel detects the new route files and works other way it won't work and will return NotFound Exception.
+Now run composer dump-autoload, so laravel can detects the new route files and works. Otherwise, it won't work and will return NotFound Exception.
 
 Now, you can append ‘hello-world’ to your local path in the browser's URL to see the output.
 
@@ -241,7 +261,7 @@ All dependency can be updated according to need.
 
 After doing this go to the root of your package & run ‘npm install’ which will install all dependencies. After installing dependencies run ‘npm run watch’, which will compile all your CSS & publish it inside public folder according to path mention in webpack.mix.js according to the environment.
 
-In the same way, we can also add images & js. Inside ‘assets’ folder of ‘Resources’, create two folders ‘js’ & ‘images’ in which create ‘app.js’ file for js & inside ‘images’ folder, download images.
+In the same way, we can also add images & js. Inside ‘assets’ folder of ‘Resources’, create two folders ‘js’ & ‘images’ in which create ‘app.js’ file for js & inside ‘images’ folder, place the images.
 
 Now we need to publish these two also as we did for CSS. We will add this too to our webpack.mix.js.
 
@@ -289,7 +309,7 @@ public function boot()
 
 ![provider](assets/images/Bagisto_Docs_Images/PackageDevelopment/provider-all.png){: .screenshot-dimension .center}
 
-Now we need to extend admin::layouts.master as @extends(‘admin::layouts.master’) to packages/acme/HelloWorld/src/Resources & we can write CSS for our packages. If you don’t want to include this one then you need to create your own master file which includes your packages CSS & js.
+Till now, we configured our package HelloWorld and now we need to extend the default layout of our admin panel by using @extends('admin::layouts.content') in file `packages/acme/HelloWorld/src/Resources/views/admin/index.php` &we can write CSS for our packages. If you don’t want to include this one then you can create your own master file which includes your packages CSS & JS.
 
 ![layout-content](assets/images/Bagisto_Docs_Images/PackageDevelopment/layout-content.png){: .screenshot-dimension .center}
 
@@ -318,11 +338,11 @@ To create a migration, use the make:migration Artisan command:
 php artisan make:migration create_users_table
 ```
 
-The new migration will be placed in your database/migrations directory. Each migration file name contains a timestamp which allows Laravel to determine the order of the migrations.
+The new migration will be placed in your `database/migrations` directory. Each migration file name contains a timestamp which allows Laravel to determine the order of the migrations.
 
 The - -table and - -create options may also be used to indicate the name of the table and whether the migration will be creating a new table.
 
-Also, Laravel provides us an option to create migration files on a specified path. The command to create a migration file at our HelloWorld package database/migrations directory, we have to append '- -path' in artisan command.
+Also, Laravel provides us an option to create migration files on a specified path. The command to create a migration file at our HelloWorld package `database/migrations` directory, we have to append '- -path' in artisan command.
 
 ```php
 php artisan make:migration create_demo_table - -path=packages/ACME/HelloWorld/src/Database/Migrations
@@ -332,9 +352,7 @@ php artisan make:migration create_demo_table - -path=packages/ACME/HelloWorld/sr
 
 ### Step-1
 
-1. Now, we will show how to add a menu in the admin panel.
-   For this, we need to create a ‘Config’ folder inside ‘src’.
-   Inside this src folder, create a file name as 'menu.php'.
+1. Within your package (say HelloWorld)`HelloWorld/src/`, create Config folder and create a file as 'menu.php'.
 
 ```php
 <?php
@@ -354,7 +372,7 @@ return [
 
 In this file, we provide the name of the menu, its route & its icon.
 
-Now for route stated in `menu.php`, we need to create a controller to display view file.
+Now for route stated in menu.php, we need to create a controller to display view file.
 
 So inside Controllers we will create HelloWorldController.php and controller.php as:
 
@@ -403,7 +421,7 @@ Route::get('hello-dashboard', 'ACME\HelloWorld\Http\Controllers\HelloWorldContro
 ])->name('helloworld.index');
 ```
 
-After creating the controller & route we need to merge this `menu.php` folder with a core menu file. For this purpose, we will use the method ‘mergeConfigFrom’ method in the register function of the service provider.
+After creating the controller & route we need to merge this menu.php folder with a core menu file. For this purpose, we will use the method ‘mergeConfigFrom’ method in the register function of the service provider.
 
 ```php
 public function register()
@@ -416,7 +434,7 @@ public function register()
 
 ![merge-config-for-menu](assets/images/Bagisto_Docs_Images/PackageDevelopment/merge-config-for-menu.png){: .screenshot-dimension .center}
 
-And, now we need to add `@extends('admin::layouts.master')` to our view files to extend the bagisto default layout
+And, now we need to extend the default layout of our admin panel by using @extends('admin::layouts.content') in our package master file.
 
 ![hello-world-icon](assets/images/Bagisto_Docs_Images/PackageDevelopment/hello-world-icon.png){: .screenshot-dimension .center}
 
@@ -535,7 +553,7 @@ return [
 
 ### Creating Models<a id="create_models"></a>
 
-Models typically live in the app directory, but you are free to place them anywhere that can be auto-loaded according to your composer.json file. All Eloquent models extend Illuminate\Database\Eloquent\Model class.
+Models typically live in the app directory, but you are free to place them anywhere that can be auto-loaded according to your composer.json file. All Eloquent models extend `Illuminate\Database\Eloquent\Model` class.
 
 The simple way to create a model is executing the command _make:model Artisan command_:
 
@@ -553,7 +571,7 @@ After creating model, to generate database migration, you may append `--migratio
 
 ##### Contracts
 
-Laravel's Contracts are a set of interfaces that define the core services provided by the framework. For example, an Illuminate\Contracts\Queue\Queue contract defines the methods needed for queueing jobs, while the Illuminate\Contracts\Mail\Mailer contract defines the methods needed for sending an e-mail.
+Laravel's Contracts are a set of interfaces that define the core services provided by the framework. For example, an `Illuminate\Contracts\Queue\Queue` contract defines the methods needed for queueing jobs, while the `Illuminate\Contracts\Mail\Mailer` contract defines the methods needed for sending an e-mail.
 
 Each contract has a corresponding implementation provided by the framework. For example, Laravel provides a queue implementation with a variety of drivers, and a mailer implementation that is powered by SwiftMailer.
 
@@ -579,7 +597,7 @@ Steps to store data through repository :
 
 > php artisan make:model HelloWorld
 
-- Now, at the same location create a model proxy file as 'HelloWorldProxy.php'. This Proxy class will extends ModelProxy. Also, you have to add "use Konekt\Concord\Proxies\ModelProxy; " like below stated
+- Now, at the same location create a model proxy file as 'HelloWorldProxy.php'. This Proxy class will extends ModelProxy. Also, you have to add `use Konekt\Concord\Proxies\ModelProxy;` like below stated
 
 ```php
 <?php
@@ -619,7 +637,7 @@ class HelloWorldRepository extends Repository
 }
 ```
 
-After creating all the files stated above for our package, we have to create a provider as `ModuleServiceProvider.php` and register it in `config/concord.php`. Inside this file, models used within the package are registered. You may check below code
+After creating all the files stated above for our package, we have to create a provider as ModuleServiceProvider.php and register it in `config/concord.php`. Inside this file, models used within the package are registered. You may check below code
 
 ```php
     <?php
@@ -636,7 +654,7 @@ After creating all the files stated above for our package, we have to create a p
     }
 ```
 
-**Now**, Registering `ModuleServiceProvider.php` in `config/concord.php` file
+**Now**, Registering ModuleServiceProvider.php in `config/concord.php` file
 
 ```php
 <?php
