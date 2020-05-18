@@ -122,14 +122,49 @@ A package is a unit added to your application for enhancement which includes rou
 
   Now, we need to register our route file to service provider’s boot method i.e. **_HelloWorldServiceProvider.php_**
 
-  ```php
+  <!-- ```php
   public function boot()
   {
       include __DIR__ . '/../Http/routes.php';
   }
-  ```
+  ``` -->
 
-![register-route](assets/images/Bagisto_Docs_Images/PackageDevelopment/register-route.png){: .screenshot-dimension .center}
+```php
+        <?php
+
+        namespace ACME\HelloWorld\Providers;
+
+        use Illuminate\Support\ServiceProvider;
+
+        /**
+        * HelloWorld service provider
+        *
+        * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
+        */
+        class HelloWorldServiceProvider extends ServiceProvider
+        {
+            /**
+            * Bootstrap services.
+            *
+            * @return void
+            */
+            public function boot()
+            {
+                include __DIR__ . '/../Http/routes.php';
+            }
+
+            /**
+            * Register services.
+            *
+            * @return void
+            */
+            public function register()
+            {
+
+            }
+        }
+```
+<!-- ![register-route](assets/images/Bagisto_Docs_Images/PackageDevelopment/register-route.png){: .screenshot-dimension .center} -->
 
 To load routes, you can also use ‘loadRoutesFrom’ method.
 
@@ -140,19 +175,57 @@ Right now, we are going to create a folder **helloworld** inside the views. In t
 Now just like the route file, we need to register our view folder inside the service provider to specify a path where views are located.
 
 ```php
+        <?php
+
+        namespace ACME\HelloWorld\Providers;
+
+        use Illuminate\Support\ServiceProvider;
+
+        /**
+        * HelloWorld service provider
+        *
+        * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
+        */
+        class HelloWorldServiceProvider extends ServiceProvider
+        {
+            /**
+            * Bootstrap services.
+            *
+            * @return void
+            */
+            public function boot()
+            {
+                include __DIR__ . '/../Http/routes.php';
+
+                $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'helloworld');
+            }
+
+            /**
+            * Register services.
+            *
+            * @return void
+            */
+            public function register()
+            {
+
+            }
+        }
+```
+
+<!-- ```php
 public function boot()
 {
     $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'helloworld');
 }
-```
+``` -->
 
-![view-register](assets/images/Bagisto_Docs_Images/PackageDevelopment/view-register.png){: .screenshot-dimension .center}
+<!-- ![view-register](assets/images/Bagisto_Docs_Images/PackageDevelopment/view-register.png){: .screenshot-dimension .center} -->
 
 ##### Step-7
 
 - Now, we need to create a route & render a view on that route.
 
-Go to `ACME/src/Http/routes.php` file and create a route to render view
+Go to `ACME/HelloWorld/src/Http/routes.php` file and create a route to render view
 
 ```php
 <?php
@@ -179,11 +252,51 @@ Inside the **lang** folder, you can create a different folder for language trans
 Now, we need to register the language file to the service provider.
 
 ```php
+        <?php
+
+        namespace ACME\HelloWorld\Providers;
+
+        use Illuminate\Support\ServiceProvider;
+
+        /**
+        * HelloWorld service provider
+        *
+        * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
+        */
+        class HelloWorldServiceProvider extends ServiceProvider
+        {
+            /**
+            * Bootstrap services.
+            *
+            * @return void
+            */
+            public function boot()
+            {
+                include __DIR__ . '/../Http/routes.php';
+
+                $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'helloworld');
+
+                $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'helloworld');
+            }
+
+            /**
+            * Register services.
+            *
+            * @return void
+            */
+            public function register()
+            {
+
+            }
+        }
+```
+
+<!-- ```php
 public function boot()
 {
     $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'helloworld');
 }
-```
+``` -->
 
 Now we can write a translation in **_app.php_** like below.
 
@@ -266,15 +379,35 @@ In the same way, we can also add images & js. Inside **assets** folder of **Reso
 Now we need to publish these two also as we did for CSS. We will add this too to our **_webpack.mix.js_**
 
 ```javascript
-mix
-  .js(__dirname + "/src/Resources/assets/js/app.js", "js/helloworld.js")
+const mix = require("laravel-mix");
+require("laravel-mix-merge-manifest");
+
+if (mix.inProduction()) {
+  var publicPath = "publishable/assets";
+} else {
+  var publicPath = "../../../public/vendor/webkul/helloworld/assets";
+}
+
+mix.setPublicPath(publicPath).mergeManifest();
+
+mix.disableNotifications();
+
+mix.js(__dirname + "/src/Resources/assets/js/app.js", "js/helloworld.js")
   .copyDirectory(
     __dirname + "/src/Resources/assets/images",
     publicPath + "/images"
   );
+  .sass(__dirname + "/src/Resources/assets/sass/app.scss", "css/helloworld.css")
+  .options({
+    processCssUrls: false
+  });
+
+if (mix.inProduction()) {
+  mix.version();
+}
 ```
 
-![webpack-mix](assets/images/Bagisto_Docs_Images/PackageDevelopment/webpack-mix.png){: .screenshot-dimension .center}
+<!-- ![webpack-mix](assets/images/Bagisto_Docs_Images/PackageDevelopment/webpack-mix.png){: .screenshot-dimension .center} -->
 
 Once again, we need to run ‘npm run watch’ to compile assets.
 
@@ -295,19 +428,51 @@ After doing this we need to add an event listener so that admin layouts include 
 Initially, add facade 'Event' into your **_HelloWorldServiceProvider.php_** file, else it will throw an error.
 
 ```php
-use Illuminate\Support\Facades\Event;
+        <?php
+
+        namespace ACME\HelloWorld\Providers;
+
+        use Illuminate\Support\ServiceProvider;
+        use Illuminate\Support\Facades\Event;
+
+        /**
+        * HelloWorld service provider
+        *
+        * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
+        */
+        class HelloWorldServiceProvider extends ServiceProvider
+        {
+            /**
+            * Bootstrap services.
+            *
+            * @return void
+            */
+            public function boot()
+            {
+                include __DIR__ . '/../Http/routes.php';
+
+                $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'helloworld');
+
+                $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'helloworld');
+
+                Event::listen('bagisto.admin.layout.head', function($viewRenderEventManager) {
+                    $viewRenderEventManager->addTemplate('helloworld::helloworld.layouts.style');
+                });
+            }
+
+            /**
+            * Register services.
+            *
+            * @return void
+            */
+            public function register()
+            {
+
+            }
+        }
 ```
 
-```php
-public function boot()
-{
-    Event::listen('bagisto.admin.layout.head', function($viewRenderEventManager) {
-        $viewRenderEventManager->addTemplate('helloworld::helloworld.layouts.style');
-    });
-}
-```
-
-![provider](assets/images/Bagisto_Docs_Images/PackageDevelopment/provider-all.png){: .screenshot-dimension .center}
+<!-- ![provider](assets/images/Bagisto_Docs_Images/PackageDevelopment/provider-all.png){: .screenshot-dimension .center} -->
 
 Till now, we configured our package HelloWorld and now we need to extend the default layout of our admin panel by using '@extends('admin::layouts.content')' in file `packages/acme/HelloWorld/src/Resources/views/admin/index.php`. If you don’t want to include this one then you can create your own master file which includes your packages CSS & JS.
 
@@ -322,13 +487,53 @@ Create a **Database** folder inside **src** folder & inside **Database** folder 
 Now, we need to add migrations to our service provider to load them.
 
 ```php
-public function boot()
-{
-    $this->loadMigrationsFrom(__DIR__ .'/../Database/Migrations');
-}
+        <?php
+
+        namespace ACME\HelloWorld\Providers;
+
+        use Illuminate\Support\ServiceProvider;
+        use Illuminate\Support\Facades\Event;
+
+        /**
+        * HelloWorld service provider
+        *
+        * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
+        */
+        class HelloWorldServiceProvider extends ServiceProvider
+        {
+            /**
+            * Bootstrap services.
+            *
+            * @return void
+            */
+            public function boot()
+            {
+                include __DIR__ . '/../Http/routes.php';
+
+                $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'helloworld');
+
+                $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'helloworld');
+
+                Event::listen('bagisto.admin.layout.head', function($viewRenderEventManager) {
+                    $viewRenderEventManager->addTemplate('helloworld::helloworld.layouts.style');
+                });
+
+                $this->loadMigrationsFrom(__DIR__ .'/../Database/Migrations');
+            }
+
+            /**
+            * Register services.
+            *
+            * @return void
+            */
+            public function register()
+            {
+
+            }
+        }
 ```
 
-![merge-config-for-menu](assets/images/Bagisto_Docs_Images/PackageDevelopment/merge-config-for-menu.png){: .screenshot-dimension .center}
+<!-- ![merge-config-for-menu](assets/images/Bagisto_Docs_Images/PackageDevelopment/merge-config-for-menu.png){: .screenshot-dimension .center} -->
 
 ### How to create Migrations ?<a id="create-migrations"></a>
 
@@ -376,43 +581,56 @@ Now for route stated in **_menu.php_**, we need to create a controller to displa
 
 So inside Controllers we will create **_HelloWorldController.php_** and **_controller.php_** as:
 
-![home-controller](assets/images/Bagisto_Docs_Images/PackageDevelopment/home-controller.png){: .screenshot-dimension .center}
+<!-- ![home-controller](assets/images/Bagisto_Docs_Images/PackageDevelopment/home-controller.png){: .screenshot-dimension .center} -->
+
+Controller.php file consists of
 
 ```php
-<?php
+        <?php
 
-namespace ACME\HelloWorld\Http\Controllers;
+        namespace ACME\HelloWorld\Http\Controllers;
 
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+        use Illuminate\Foundation\Bus\DispatchesJobs;
+        use Illuminate\Routing\Controller as BaseController;
+        use Illuminate\Foundation\Validation\ValidatesRequests;
+        use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class Controller extends BaseController
-{
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-}
+        class Controller extends BaseController
+        {
+            use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+        }
 ```
+HelloWorldController.php file consists of
 
 ```php
+        <?php
 
-class HelloWorldController extends Controller
-{
-    protected $_config;
+        namespace ACME\HelloWorld\Http\Controllers;
 
-/**
-* Display a listing of the resource.
-*
-* @return \Illuminate\Http\Response
-*/
+        use Illuminate\Http\Request;
 
-public function index()
-{
-    return view($this->_config['view']);
-}
+        class HelloWorldController extends Controller
+        {
+            protected $_config;
+
+            public function __construct()
+            {
+                $this->_config = request('_config');
+            }
+
+            /**
+            * Display a listing of the resource.
+            *
+            * @return \Illuminate\Http\Response
+            */
+            public function index()
+            {
+                return view($this->_config['view']);
+            }
+        }
 ```
 
-![HelloWorldcontroller](assets/images/Bagisto_Docs_Images/PackageDevelopment/HelloWorldcontroller.png){: .screenshot-dimension .center}
+<!-- ![HelloWorldcontroller](assets/images/Bagisto_Docs_Images/PackageDevelopment/HelloWorldcontroller.png){: .screenshot-dimension .center} -->
 
 For the route, we will create a named route as
 
@@ -423,16 +641,65 @@ Route::get('hello-dashboard', 'ACME\HelloWorld\Http\Controllers\HelloWorldContro
 
 After creating the controller & route we need to merge this **_menu.php_** folder with a core menu file. For this purpose, we will use the method ‘mergeConfigFrom’ method in the register function of the service provider.
 
-```php
+<!-- ```php
 public function register()
 {
     $this->mergeConfigFrom(
         dirname(__DIR__) . '/Config/menu.php', 'menu.admin'
     );
 }
+``` -->
+
+```php
+        <?php
+
+        namespace ACME\HelloWorld\Providers;
+
+        use Illuminate\Support\ServiceProvider;
+        use Illuminate\Support\Facades\Event;
+
+        /**
+        * HelloWorld service provider
+        *
+        * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
+        */
+        class HelloWorldServiceProvider extends ServiceProvider
+        {
+            /**
+            * Bootstrap services.
+            *
+            * @return void
+            */
+            public function boot()
+            {
+                include __DIR__ . '/../Http/routes.php';
+
+                $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'helloworld');
+
+                $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'helloworld');
+
+                Event::listen('bagisto.admin.layout.head', function($viewRenderEventManager) {
+                    $viewRenderEventManager->addTemplate('helloworld::helloworld.layouts.style');
+                });
+
+                $this->loadMigrationsFrom(__DIR__ .'/../Database/Migrations');
+            }
+
+            /**
+            * Register services.
+            *
+            * @return void
+            */
+            public function register()
+            {
+                $this->mergeConfigFrom(
+                    dirname(__DIR__) . '/Config/menu.php', 'menu.admin'
+                );
+            }
+        }
 ```
 
-![merge-config-for-menu](assets/images/Bagisto_Docs_Images/PackageDevelopment/merge-config-for-menu.png){: .screenshot-dimension .center}
+<!-- ![merge-config-for-menu](assets/images/Bagisto_Docs_Images/PackageDevelopment/merge-config-for-menu.png){: .screenshot-dimension .center} -->
 
 And, now we need to extend the default layout of our admin panel by using '@extends('admin::layouts.content')' in our package master file.
 
@@ -446,7 +713,7 @@ In term to manage an eCommerce site becomes clumsy and ambiguous. Here, in bagis
 
 ##### Creating an ACL file
 
-There are some steps that the user has to follow to create ACL. The user has to create a file in the **Config** folder of a module named **_acl.php_**. Below, the image of **_acl.php_** is attached
+There are some steps that the user has to follow to create ACL. The user has to create a file in the **Config** folder of a module named **_acl.php_**.
 
 ```php
 <?php
@@ -491,9 +758,9 @@ return [
 ];
 ```
 
-![ACL](assets/images/Bagisto_Docs_Images/ACL/acl-code.png){: .screenshot-dimension .center}
+<!-- ![ACL](assets/images/Bagisto_Docs_Images/ACL/acl-code.png){: .screenshot-dimension .center} -->
 
-1.  As you can see in the above image, the **_acl.php_** includes some parameters (you can refer to how to add menu in admin/customer section above)
+1. **_acl.php_** includes some parameters (you can refer to how to add menu in admin/customer section above)
 
 2.  The array is created for an individual's menu with the parameters (key, name, route, sort).
     All we need is to define the menu which we want to be included in ACL functionality.
