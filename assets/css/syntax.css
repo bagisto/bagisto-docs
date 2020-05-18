@@ -208,3 +208,17 @@
   background-color: #f8f8f8;
   overflow-x: auto;
 }
+
+p code.highlighter-rouge {
+  color: #ca473f;
+  /* path */
+}
+strong em {
+  /* filename */
+  color: green;
+}
+
+strong {
+  /* folder name */
+  color: steelblue;
+}
