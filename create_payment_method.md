@@ -41,7 +41,7 @@ In this article, we will understand how to create a payment method by own with j
 
 - Within **Config** folder, it contain's application's configuration files. Let's just create two files as **_system.php_** and **_paymentmethods.php_**
 
-   1. system.php
+   1. <b>system.php</b>
 
 
 
@@ -127,7 +127,7 @@ In this article, we will understand how to create a payment method by own with j
         - <b>fields</b> these keys accept the array for the value of the custom configuration.
 
 
-    2. paymentmethods.php
+    2. <b>paymentmethods.php</b>
 
         <!-- ![payment-method-configuration](assets/images/Bagisto_Docs_Images/payment-config-2.png){:  .screenshot-dimension .center} -->
 
