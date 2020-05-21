@@ -120,7 +120,8 @@ To get a quick heads-up on the currently working and recently released features,
 
     ```
     4. php artisan vendor:publish
-    -> Press 0 and then press enter to publish all assets and configurations.
+      -> Press 0 and then press enter to publish all assets and
+      configurations.
     ```
 
     ```
@@ -136,7 +137,8 @@ To get a quick heads-up on the currently working and recently released features,
   - On server:
 
     ```
-      Open the specified entry point in your hosts file in browser or make entry in hosts file if not done.
+      Open the specified entry point in your hosts file in browser
+      or make entry in hosts file if not done.
     ```
 
   - On local:
