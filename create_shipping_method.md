@@ -49,7 +49,11 @@ And, create **Carriers** folder inside the **src** folder. We will now create a 
 
 1. File **_Fedex.php_** will extends AbstractShipping class which is defined at `Webkul\Shipping\Carriers\AbstractShipping`. Inside file **_Fedex.php_**, the methods are defined that you can use while creating a shipping method.
 
-2. Now, you can write all the operations needed for your shipping method in **_Fedex.php_** file
+2. Now, you can write all the operations needed for your shipping method in **_Fedex.php_** file.
+
+3. To render the shipping methods in checkout process, you need to define 'calculate()' within your **_Fedex.php_** and return shipping rate, shipping title, shipping description within an object.
+
+    <b>Note:</b> May refer [FlatRate](https://github.com/bagisto/bagisto/blob/master/packages/Webkul/Shipping/src/Carriers/FlatRate.php#L28) 'calculate()' method.
 
 3. After creating all necessary files and config you need to create the form that will appear on the config section in the next route `packages/Webkul/Shipping/src/Config/system.php`. so you can use them on **_Fedex.php_**
 
