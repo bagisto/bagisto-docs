@@ -102,7 +102,7 @@ By using this API call you can add new products into the cart and also you can a
 > ##### Post data
 
     {
-        "product":"23",
+        "product_id":"23",
         "quantity:"2",
         "is_configurable":false
     }
