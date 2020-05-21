@@ -153,7 +153,7 @@ class AttributeDataGrid extends DataGrid
 }
 ```
 
-![datagrid](assets/images/Bagisto_Docs_Images/DataGrid/datagrid-pic.png){: .screenshot-dimension .center}
+<!-- ![datagrid](assets/images/Bagisto_Docs_Images/DataGrid/datagrid-pic.png){: .screenshot-dimension .center} -->
 
 
 ### Global Properties of DataGrid
@@ -172,19 +172,19 @@ class AttributeDataGrid extends DataGrid
 
 ### Steps for how to create DataGrid
 
-1. Create a folder 'DataGrid' in your package, inside it create a file for your datagrid folder.
+1. Create a folder **DataGrid** in your package, inside **DataGrid** create a file for your datagrid folder.
 
 2. We have created `DataGrid` abstract class in `UI` package. In the DataGrid file, a list of properties and methods are declared. So, while creating Datagrid only you have to extend the DataGrid abstract class and use it in your datagrid file.
 
-3. In DataGrid abstract class, two abstract methods are declared `prepareQueryBuilder()` and `addColumns()` . We can prepare grid by defining these two methods
+3. In DataGrid abstract class, two abstract methods are declared 'prepareQueryBuilder()' and 'addColumns()'. We can prepare grid by defining these two methods
 
-    * **prepareQueryBuilder()** : In this method, records are retrieved through queries that is applicable on database and stored in a array. When records are retrieved,                           `$this->setQueryBuilder($queryBuilder)`
+    - <b>prepareQueryBuilder():</b> In this method, records are retrieved through queries that is applicable on database and stored in a array. When records are retrieved,                           `$this->setQueryBuilder($queryBuilder)`
     setQueryBuilder method is called
 
-       * ***setQueryBuilder()*** : This method is written in DataGrid file of UI package. This is used for setting the `$queryBuilder` array
+       - <b>setQueryBuilder():</b> This method is written in DataGrid file of UI package. This is used for setting the '$queryBuilder' array
 
 
-    * **addColumns()** : In this method, the columns are created to be displayed in grid. Inside this method, `addColumn()` is called to create single column. Inside this function, parameter accepts the array in `"key" => "value"` pairs. Some of the essential keys are described below :
+    - <b>addColumns():</b> In this method, the columns are created to be displayed in grid. Inside this method, `addColumn()` is called to create single column. Inside this function, parameter accepts the array in `"key" => "value"` pairs. Some of the essential keys are described below :
 
     |  Name                     | functionality |
 | ------------------------------- | ------------- |
@@ -198,9 +198,9 @@ class AttributeDataGrid extends DataGrid
 |    wrapper      | perform actions based on condition satisfied  |
 
 
-   * **prepareActions()** : Additionally, this method is defined when there is need to perform any action such as edit or delete on grid. Inside it, `addAction()` is called to define particular action
+   - <b>prepareActions():</b> Additionally, this method is defined when there is need to perform any action such as edit or delete on grid. Inside it, `addAction()` is called to define particular action
 
-       * ***addAction()*** : It is defined when you want to add action a number of times for individual action to be performed on grid
+       - <b>addAction():</b> It is defined when you want to add action a number of times for individual action to be performed on grid
 
     |  Name                     | functionality |
 | ------------------------------- | ------------- |
@@ -213,10 +213,28 @@ class AttributeDataGrid extends DataGrid
 |  label  | The text to be displayed in written here, you may use translation also here  |
 
 
-![add-action](assets/images/Bagisto_Docs_Images/DataGrid/grid-action.png){: .screenshot-dimension .center}
+```php
+    public function prepareActions()
+    {
+        $this->addAction([
+            'type' => 'Edit',
+            'method' => 'GET', //use post only for redirects only
+            'route' => 'admin.catalog.attributes.edit',
+            'icon' => 'icon pencil-lg-icon'
+        ]);
 
-### ***Warning***
+        $this->addAction([
+            'type' => 'Delete',
+            'method' => 'POST', //use post only for requests other than redirects
+            'route' => 'admin.catalog.attributes.delete',
+            'icon' => 'icon trash-icon'
+        ]);
+    }
+```
+<!-- ![add-action](assets/images/Bagisto_Docs_Images/DataGrid/grid-action.png){: .screenshot-dimension .center} -->
 
-* ***Use JavaScript with wrapper property set to true when needed***
+### Warning
 
-* ***Return static blade files loaded with scripts in it with caution***
+- <b>Use JavaScript with wrapper property set to true when needed</b>
+
+- <b>Return static blade files loaded with scripts in it with caution</b>

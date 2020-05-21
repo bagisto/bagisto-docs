@@ -14,41 +14,56 @@ Events are an implementation of observer pattern such that whenever an event tak
 
 ### Manually Registering Events
 
-For the sake of simplicity, in Bagisto, we register events manually in the boot method of your ***EventServiceProvider*** as below:
+For the sake of simplicity, in bagisto, we register events manually in the boot method of your **_EventServiceProvider.php_** as below:
 
 ```php
-/**
-* Register any other events for your application.
-*
-* @return void
-*/
-public function boot()
-{
-    parent::boot();
+    /**
+    * Register any other events for your application.
+    *
+    * @return void
+    */
 
-    Event::listen('event.name', 'path-upto-listener@function');
-}
+    public function boot()
+    {
+        parent::boot();
+
+        Event::listen('event.name', 'path-upto-listener@function');
+    }
 ```
 
-
-![Event](assets/images/Bagisto_Docs_Images/Events/define-event.png){:  .screenshot-dimension .center}
+<!-- ![Event](assets/images/Bagisto_Docs_Images/Events/define-event.png){:  .screenshot-dimension .center} -->
 
 
 #### Manually Registering Listeners
 
-As we have seen above, in registering events we specify listener function to be executed when an event is called so on every event a listener function is to be executed
+In registering events, we specify listener function to be executed when an event is called so on every event a listener function is to be executed
 
+```php
+    class EventServiceProvider extends ServiceProvider
+    {
+        /**
+        * Bootstrap services.
+        *
+        * @return void
+        */
+        public function boot()
+        {
+            Event::listen('checkout.order.save.after',
+            'Webkul\Admin\Listeners\Order@sendNewOrderMail');
+        }
+    }
+```
 
 ### How we specify events?
 
-In most of **CRUD** operation. We had fired an event before and after the execution of function. So, that if some one want to perform any operation after or before product create/update/delete can perform by simply calling a listener function in event registration
+In most of <b>CRUD</b> operation, we had fired an event before and after the execution of function. So, that if some one want to perform any operation after or before product create/update/delete can perform by simply calling a listener function in event registration
 
 
-![create-event](assets/images/Bagisto_Docs_Images/Events/create-event-before-after.png){:  .screenshot-dimension .center}
+<!-- ![create-event](assets/images/Bagisto_Docs_Images/Events/create-event-before-after.png){:  .screenshot-dimension .center} -->
 
 
 
-![delete-event](assets/images/Bagisto_Docs_Images/Events/delete-event-before-after.png){:  .screenshot-dimension .center}
+<!-- ![delete-event](assets/images/Bagisto_Docs_Images/Events/delete-event-before-after.png){:  .screenshot-dimension .center} -->
 
 
 
@@ -229,7 +244,7 @@ class EventServiceProvider extends ServiceProvider
 }
 ```
 
-![event-listen](assets/images/Bagisto_Docs_Images/Events/define-event.png){:  .screenshot-dimension .center}
+<!-- ![event-listen](assets/images/Bagisto_Docs_Images/Events/define-event.png){:  .screenshot-dimension .center} -->
 
 
 

@@ -14,16 +14,17 @@ To upgrade your current version to latest version of bagisto, you need to follow
 
 - Now, after the download has been completed. Run some commands in terminal
 
-1. Run composer create-project
+         composer create-project
 
-2. After the command has been executed. Within your **.env** file, enter your old project database credentials for which you want to upgrade the bagisto.
+- After the command has been executed. Within your **_.env_** file, enter your old project database credentials for which you want to upgrade the bagisto.
 
-3. Run php artisan vendor:publish
+         php artisan vendor:publish
 
-   -> Press 0 and then press enter to publish all assets and configurations.
+        -> Press 0 and then press enter
+        to publish all assets and configurations.
 
-4. Copy storage folder of an older version of bagisto to the latest downloaded bagisto version. You may find storage folder in project root
+- Copy **storage** folder of an older version of bagisto to the latest downloaded bagisto version. You may find **storage** folder in project root.
 
-5. Run php artisan storage:link
+        php artisan storage:link
 
-6. Run composer dump-autoload
+        composer dump-autoload
