@@ -94,7 +94,7 @@ By using this API call you can add new products into the cart and also you can a
 ##### Post data for non-configurable product
 
     {
-        "product":"product_id",
+        "product_id":"product_id",
         "quantity:"quantity",
         "is_configurable":false
     }
