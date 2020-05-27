@@ -16,44 +16,145 @@ In this article, we will understand how to create a payment method by own with j
 
 ### Steps to create a payment method
 
-- Following the module development process, firstly, you must create '**Config**', '**Database**', '**Resources**', '**Providers**', '**Models**', '**Payment**', '**Repositories**', '**Http**', '**Listeners**' folders under src folder of your company's namespace.
+- Create respective directory structure to create your payment method.
 
-- Within **Config** folder, it contains all of your application's configuration files. Let's just create two files as _system.php_ and _paymentmethod.php_
+    - module-name/
+        - src/
+            - Config/
+                - system.php
+                - paymentmethods.php
+            - Database/
+            - Http/
+                - Controllers/
+                - Routes/
+            - Listeners/
+            - Payment/
+            - Models/
+            - Providers/
+                - ModuleServiceProvider.php
+                - EventServiceProvider.php
+            - Repositories/
+            - Resources/
+                - assets/
+                - lang/
+                - views/
 
-  **system.php**
+- Within **Config** folder, it contain's application's configuration files. Let's just create two files as **_system.php_** and **_paymentmethods.php_**
 
-  - Inside the file, you can include the below code as shown in image
-
-    ![system-configuration](assets/images/Bagisto_Docs_Images/payment-config-1.png){: .screenshot-dimension .center}
-
-##### Explanation for the keys:
-
-1. **key** : these values provided are unique and concatenated with '.' (dot) operator. After the creation of two nested, other keys written are display in the browser in the form of accordion
-
-2. **name** : these keys accept the value as a placeholder of your configuration. Generally, in bagisto, we consider writing it using translation.
-
-3. **sort** : these keys accept the sort position for the configuration menu.
-
-4. **fields** : these keys accept the array for the value of the custom configuration.
+   1. <b>system.php</b>
 
 
-    **paymentmethod.php**
 
-    ![payment-method-configuration](assets/images/Bagisto_Docs_Images/payment-config-2.png){:  .screenshot-dimension .center}
+        - Inside the file, you can include the below code as shown in image
 
-##### An Explanation For These Parameters:
+        ```php
+            <?php
 
-1.  **code** : a text to represent payment method
+            return [
+                [
+                    'key'    => 'sales.paymentmethods.paypal_standard',
+                    'name'   => 'admin::app.admin.system.paypal-standard',
+                    'sort'   => 3,
+                    'fields' => [
+                        [
+                            'name'          => 'title',
+                            'title'         => 'admin::app.admin.system.title',
+                            'type'          => 'text',
+                            'validation'    => 'required',
+                            'channel_based' => false,
+                            'locale_based'  => true,
+                        ], [
+                            'name'          => 'description',
+                            'title'         => 'admin::app.admin.system.description',
+                            'type'          => 'textarea',
+                            'channel_based' => false,
+                            'locale_based'  => true,
+                        ],  [
+                            'name'       => 'business_account',
+                            'title'      => 'admin::app.admin.system.business-account',
+                            'type'       => 'select',
+                            'type'       => 'text',
+                            'validation' => 'required',
+                        ],  [
+                            'name'          => 'active',
+                            'title'         => 'admin::app.admin.system.status',
+                            'type'          => 'boolean',
+                            'validation'    => 'required',
+                            'channel_based' => false,
+                            'locale_based'  => true
+                        ], [
+                            'name'          => 'sandbox',
+                            'title'         => 'admin::app.admin.system.sandbox',
+                            'type'          => 'boolean',
+                            'validation'    => 'required',
+                            'channel_based' => false,
+                            'locale_based'  => true,
+                        ], [
+                            'name'    => 'sort',
+                            'title'   => 'admin::app.admin.system.sort_order',
+                            'type'    => 'select',
+                            'options' => [
+                                [
+                                    'title' => '1',
+                                    'value' => 1,
+                                ], [
+                                    'title' => '2',
+                                    'value' => 2,
+                                ], [
+                                    'title' => '3',
+                                    'value' => 3,
+                                ], [
+                                    'title' => '4',
+                                    'value' => 4,
+                                ],
+                            ],
+                        ]
+                    ]
+                ]
+            ]
+        ```
 
-2.  **title** : in this field, the name of payment method is specified
+        <!-- ![system-configuration](assets/images/Bagisto_Docs_Images/payment-config-1.png){: .screenshot-dimension .center} -->
 
-3.  **description** : a brief description of the payment method.
+        <b>Explanation for the keys:</b>
 
-4.  **class** : this field includes the class namespace where all functions of payment method are written
+        - <b>key:</b> these values provided are unique and concatenated with '.' (dot) operator. After the creation of two nested, other keys written are display in the browser in the form of accordion
 
-5.  **sandbox** : this is a custom option of boolean type
+        - <b>name:</b> these keys accept the value as a placeholder of your configuration. Generally, in bagisto, we consider writing it using translation.
 
-6.  **active** : this field accepts true/false to enable or disable the module.
+        - <b>sort:</b> these keys accept the sort position for the configuration menu.
+
+        - <b>fields</b> these keys accept the array for the value of the custom configuration.
+
+
+    2. <b>paymentmethods.php</b>
+
+        <!-- ![payment-method-configuration](assets/images/Bagisto_Docs_Images/payment-config-2.png){:  .screenshot-dimension .center} -->
+
+        ```php
+            <?php
+                return [
+                    'paypal_standard' => [
+                       'code'        => 'paypal_standard',
+                       'title'       => 'Paypal Standard',
+                       'description' => 'Paypal Standard',
+                       'class'       => 'Webkul\Paypal\Payment\Standard',
+                       'sandbox'     => true,
+                       'active'      => true,
+                       'sort'        => 3,
+                    ]
+                ];
+        ```
+
+        <b>Explanation for the keys:</b>
+
+        - <b>code:</b> a text to represent payment method
+        - <b>title:</b> in this field, the name of payment method is specified
+        - <b>description:</b> a brief description of the payment method.
+        - <b>class:</b> this field includes the class namespace where all functions of payment method are written
+        - <b>sandbox:</b> this is a custom option of boolean type
+        - <b>active:</b> this field accepts true/false to enable or disable the module.
+        - <b>sort:</b> these keys accept the sort position for the payment.
 
 - Within **Database** folder, the migration and seeder(if needed) files are stored.
 
@@ -71,7 +172,7 @@ In this article, we will understand how to create a payment method by own with j
 
 * Within **Payment** folder, write the code needed to operate your payment method
 
-* Within **Repositories** folder, create a file as _HelloWorldRepository.php_ which must extend repository class
+* Within **Repositories** folder, create a file as **_HelloWorldRepository.php_** which must extend repository class
 
 * Within **Http** folder, define your routes and controller application.
 

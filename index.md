@@ -46,125 +46,120 @@ Besides the features already available, the Bagisto’s roadmap includes:
 
 To learn more about Bagisto’s features and try a demo, check out [Bagisto](https://bagisto.com){: target="\_blank" .link-color}. You can get started with the source code by checking out the repo on GitHub at [bagisto/bagisto](https://github.com/bagisto/bagisto){: target="\_blank" .link-color}.
 
-To get a quick heads-up on the currently working and recently released features, see [Bagisto roadmap](https://bagisto.com/roadmap/){: target="\_blank" .link-color}. 
+To get a quick heads-up on the currently working and recently released features, see [Bagisto roadmap](https://bagisto.com/roadmap/){: target="\_blank" .link-color}.
 
 ### Requirements <a id="requirements"></a>:
 
-- **OS**:
+- <b>OS:</b>
   1. Windows 7 or above with WAMP/XAMPP environment
   2. Compatible with macOS
   3. Ubuntu 16.04 LTS or higher
-- **SERVER**: Apache 2 or NGINX
-- **RAM**: 3 GB or higher
-- **PHP**: 7.1.17 or higher
-- **Processor**: Clock Cycle 1 Ghz or higher
-- **For MySQL users**: 5.7.23 or higher
-- **For MariaDB users**: 10.2.7 or higher
-- **Node**: 8.11.3 LTS or higher
-- **Composer**: 1.6.5 or higher
-- **RAM**: 3 GB or higher.
-- **PHP**: 7.1.17 or higher.
-- **Processor**: Clock Cycle 1 GHz or higher.
-- **For MySQL users**: 5.7.23 or higher.
-- **For MariaDB users**: 10.2.7 or Higher.
-- **Node**: 8.11.3 LTS or higher.
-- **Composer**: 1.6.5 or higher.
-- **php7.1-intl extension**
-- **php7.1-gd extension**
+- <b>SERVER:</b> Apache 2 or NGINX
+- <b>RAM:</b> 3 GB or higher
+- <b>PHP:</b> 7.1.17 or higher
+- <b>Processor:</b> Clock Cycle 1 Ghz or higher
+- <b>For </b>MySQL users: 5.7.23 or higher
+- <b>For </b>MariaDB users: 10.2.7 or higher
+- <b>Node:</b> 8.11.3 LTS or higher
+- <b>Composer:</b> 1.6.5 or higher
+- <b>RAM:</b> 3 GB or higher.
+- <b>PHP:</b> 7.1.17 or higher.
+- <b>Processor:</b> Clock Cycle 1 GHz or higher.
+- <b>For </b>MySQL users: 5.7.23 or higher.
+- <b>For </b>MariaDB users: 10.2.7 or Higher.
+- <b>Node:</b> 8.11.3 LTS or higher.
+- <b>Composer:</b> 1.6.5 or higher.
+- <b>php7.</b>1-intl extension
+- <b>php7.</b>1-gd extension
 
 ### Installation & Configuration <a id="installation"></a>:
 
-**1. Try our new GUI installer to install Bagisto:**
+1. Try our new GUI installer to install Bagisto:
 
-##### a. Download zip from the link below:
+    - [Download bagisto](https://bagisto.com/en/download/){: target="\_self" .link-color}.
 
-[Download](https://bagisto.com/en/download/){: target="\_self" .link-color}.
+    - Extract the contents of zip and execute the project in browser:
 
-##### b. Extract the contents of zip and execute the project in browser:
+      `http(s)://localhost/bagisto/public`
 
-```
-http(s)://localhost/bagisto/public
-```
+        or
 
-or
+      `http(s)://example.com/public`
 
-```
-http(s)://example.com/public
-```
+2. Try our old fashioned way to install Bagisto:
 
-**2. Try our old fashioned way to install Bagisto:**
+    - Execute these commands below as in their order
 
-##### Execute these commands below as in their order
+    ```
+      1. composer create-project bagisto/bagisto
+    ```
 
-```
-1. composer create-project bagisto/bagisto
-```
+    - Now configure your database:
 
-**Now configure your database:**
+      If the above command was completed successfully, then you'll find directory **bagisto** and all of the code will be inside it.
 
-If the above command was completed successfully, then you'll find directory **bagisto** and all of the code will be inside it.
+      Find file **_.env_** inside **bagisto** directory and set the environment variables listed below:
 
-Find file **.env** inside **bagisto** directory and set the environment variables listed below:
+        - APP_URL
+        - DB_CONNECTION
+        - DB_HOST
+        - DB_PORT
+        - DB_DATABASE
+        - DB_USERNAME
+        - DB_PASSWORD
 
-- **APP_URL**
-- **DB_CONNECTION**
-- **DB_HOST**
-- **DB_PORT**
-- **DB_DATABASE**
-- **DB_USERNAME**
-- **DB_PASSWORD**
+    - Although, mailer environment variables are also required to be set up as **Bagisto** requires emails to send to customers and admins for various built-in functionalities.
 
-Although, mailer environment variables are also required to be set up as **Bagisto** requires emails to send to customers and admins for various built-in functionalities.
+    ```
+    2. php artisan migrate
+    ```
 
-```
-2. php artisan migrate
-```
+    ```
+    3. php artisan db:seed
+    ```
 
-```
-3. php artisan db:seed
-```
+    ```
+    4. php artisan vendor:publish
+      -> Press 0 and then press enter to publish all assets and
+      configurations.
+    ```
 
-```
-4. php artisan vendor:publish
--> Press 0 and then press enter to publish all assets and configurations.
-```
+    ```
+    5. php artisan storage:link
+    ```
 
-```
-5. php artisan storage:link
-```
+    ```
+    6. composer dump-autoload
+    ```
 
-```
-6. composer dump-autoload
-```
+3. To execute Bagisto:
 
-**To execute Bagisto**:
+  - On server:
 
-##### On server:
+    ```
+      Open the specified entry point in your hosts file in browser
+      or make entry in hosts file if not done.
+    ```
 
-```
-Open the specified entry point in your hosts file in browser or make entry in hosts file if not done.
-```
+  - On local:
 
-##### On local:
+    ```
+      php artisan serve
+    ```
 
-```
-php artisan serve
-```
+  - How to login as admin:
 
-**How to log in as admin:**
+      `http(s)://example.com/admin/login`
 
-> _http(s)://example.com/admin/login_
+         email: admin@example.com
 
-```
-email:admin@example.com
-password:admin123
-```
+         password: admin123
 
-**How to log in as customer:**
+  - How to login as customer:
 
-_You can directly register as a customer and then login._
+      You can directly register as a customer and then login.
 
-> _http(s)://example.com/customer/register_
+      `http(s)://example.com/customer/register`
 
 ## Directory Structure <a id="directory_structure"></a>
 

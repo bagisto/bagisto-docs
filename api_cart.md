@@ -94,7 +94,7 @@ By using this API call you can add new products into the cart and also you can a
 ##### Post data for non-configurable product
 
     {
-        "product":"product_id",
+        "product_id":"product_id",
         "quantity:"quantity",
         "is_configurable":false
     }
@@ -102,7 +102,7 @@ By using this API call you can add new products into the cart and also you can a
 > ##### Post data
 
     {
-        "product":"23",
+        "product_id":"23",
         "quantity:"2",
         "is_configurable":false
     }
@@ -114,7 +114,7 @@ By using this API call you can add new products into the cart and also you can a
 ##### Post data for configurable product
 
     {
-        "product" : "product_id",
+        "product_id" : "product_id",
         "quantity" : "1",
         "is_configurable" : "true",
         "selected_configurable_option" : "configurable_product_variant_id",
@@ -124,7 +124,7 @@ By using this API call you can add new products into the cart and also you can a
 > ##### Post data
 
     {
-        "product" : "24",
+        "product_id" : "24",
         "quantity" : "1",
         "is_configurable" : "true",
         "selected_configurable_option" : "26",
