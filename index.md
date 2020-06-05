@@ -62,13 +62,6 @@ To get a quick heads-up on the currently working and recently released features,
 - <b>For </b>MariaDB users: 10.2.7 or higher
 - <b>Node:</b> 8.11.3 LTS or higher
 - <b>Composer:</b> 1.6.5 or higher
-- <b>RAM:</b> 3 GB or higher.
-- <b>PHP:</b> 7.1.17 or higher.
-- <b>Processor:</b> Clock Cycle 1 GHz or higher.
-- <b>For </b>MySQL users: 5.7.23 or higher.
-- <b>For </b>MariaDB users: 10.2.7 or Higher.
-- <b>Node:</b> 8.11.3 LTS or higher.
-- <b>Composer:</b> 1.6.5 or higher.
 - <b>php7.</b>1-intl extension
 - <b>php7.</b>1-gd extension
 
