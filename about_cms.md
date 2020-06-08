@@ -9,7 +9,7 @@ In efforts to make bagisto interactive and user-friendly, we have added a new fe
 
 ### Steps to create pages in CMS
 
-- All necessary fields are provided to create a page, so admin can customize the page by own. As we can see in the below screenshot.
+- All necessary fields are provided to create a page, so admin can customize the page by own. As we can see in the screenshot below.
 
 ![Add page](assets/images/Bagisto_Docs_Images/CMS/add-page.png){: .screenshot-dimension .center}
 
@@ -19,7 +19,7 @@ In efforts to make bagisto interactive and user-friendly, we have added a new fe
 
 #### Helper Classes
 
-To provide admin power build static content using some CSS classes. Here, in the below screenshot, you may find some CSS classes which you may use while writing content and apply style on it.
+To provide admin power build static content using some CSS classes. Here, in the screenshot below, you may find some CSS classes which you may use while writing content and apply style on it.
 
 ![helper classes](assets/images/Bagisto_Docs_Images/CMS/helper-classes.png){: .screenshot-dimension .center}
 

@@ -29,7 +29,7 @@ To Add cart-rule, you need to explore promotions menu -> Cart Rules. Here, we ha
 
 - **Actions**
 
-The section provide actions on cart rules on multiple criteria. For this, we have an multiple form-fields i.e.,
+The section provides actions on cart rules on multiple criteria. For this, we have an multiple form-fields i.e.,
 
 1. **_Apply_**:
 

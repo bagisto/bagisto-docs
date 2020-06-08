@@ -8,9 +8,9 @@ layout: default
 ![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/api_customer_wishlist.md){:class="edit-github" target="\_blank"}
 
-## 1. Get All Wishlists of Customers: <a id="get-wishlists-of-customers"></a>
+## 1. Get All Customer's Wishlists: <a id="get-wishlists-of-customers"></a>
 
-You can get all the wishlists of Bagisto Store's customers. To call this API customer must be login into the Bagisto Store. You can achieve this job by using `wishlist` API call resource.
+You can get all the wishlists of Bagisto Store's customers. To call this API customer must be logged-in to the Bagisto Store. You can achieve this job by using `wishlist` API call resource.
 
 **Note**: _In the `wishlist` resource API call, we used `GET HTTP verb` to get all the wishlist of Bagisto's Store customers._
 
@@ -66,12 +66,12 @@ You can get all the wishlists of Bagisto Store's customers. To call this API cus
 
 ###### Explanation:
 
-- In the above response, you will find the three Objects with below mentioned indexes:
+- In the response above, you will find the three Objects with the indexes mentioned below:
   1. data
   2. link
   3. meta
 
-#### data object:
+#### Data Object:
 
 Under the data object, you will find the collection of many objects which will contain the details of wishlists of the store's customer.
 
@@ -79,7 +79,7 @@ Under the data object, you will find the collection of many objects which will c
 
 ### 1.2 Get Wishlists Without Pagination: <a id="get-wishlists-without-pagination"></a>
 
-You can also get all the wishlists of Store's customers at once without pagination. To get the wishlists, customer must be login into the Bagisto Store. For this you have to pass **`pagination=0`** in the query parameter in API URL.
+You can also get all the wishlists of Store's customers at once without pagination. To get the wishlists, customer must be logged-in to the Bagisto Store. For this you have to pass **`pagination=0`** in the query parameter in API URL.
 
 ###### Request:
 

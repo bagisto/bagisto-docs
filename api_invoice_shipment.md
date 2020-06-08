@@ -14,7 +14,7 @@ layout: default
 
 ## 1. Get All Invoices Of All Orders: <a id="get-all-invoices"></a>
 
-You can get all the invoices of the Bagisto Store's orders. To get the invoices of the store, the customer must be login into the Bagisto Store. You can achieve this job by using **`invoices`** API call resource.
+You can get all the invoices of the Bagisto Store's orders. To get the invoices of the store, the customer must be logged-in to the Bagisto Store. You can achieve this job by using **`invoices`** API call resource.
 Currently, this **`invoices`** resource is helpful for both admin user and customer too.
 
 > _http(s)://example.com/public/api/invoices_
@@ -67,11 +67,11 @@ Currently, this **`invoices`** resource is helpful for both admin user and custo
 
 > _http(s)://example.com/public/api/invoices?pagination=0_
 
-**Note**: _If you didn't want invoices records according to page wise, then you can pass the `pagination=0` query parameter in the API url._
+**Note**: _If you didn't want invoices records according to pagination, then you can pass the `pagination=0` query parameter in the API url._
 
-## 2. Get Specific Order's Invoice Based On Order Id: <a id="get-specific-order-invoices"></a>
+## 2. Get Specific Order's Invoice Based on Order Id: <a id="get-specific-order-invoices"></a>
 
-To get the detail of specific order's invoice, you have to pass an order_id as a query parameter like **`invoies?order_id={id}`** in API url. By using this resource and query parameter, you will get only a single invoice detail regarding the provided `order_id` in response.
+To get the details of a  specific order's invoice, you have to pass an order_id as a query parameter like **`invoies?order_id={id}`** in API url. By using this resource and query parameter, you will get only a single invoice detail regarding the provided `order_id` in response.
 
 > _http(s)://example.com/public/api/invoices?order_id={id}_
 
@@ -110,9 +110,9 @@ To get the detail of specific order's invoice, you have to pass an order_id as a
 
 ![bagisto_invoices_order_id](assets/images/Bagisto_Api/bagisto_invoices_order_id.jpg){:class="screenshot-dimension center"}
 
-## 3. Get Specific Invoice Based On Invoice Id: <a id="get-specific-invoice-id"></a>
+## 3. Get Specific Invoice Based on Invoice Id: <a id="get-specific-invoice-id"></a>
 
-To get the detail of specific invoice, you have to pass an invoice_id as a request payload like **`invoies/{id}`** in API url. By using this resource and request payload, you will get only `a single object` of invoice detail under the **`data object`** in response.
+To get the details of a  specific invoice, you have to pass an invoice_id as a request payload like **`invoies/{id}`** in API url. By using this resource and request payload, you will get only `a single object` of invoice detail under the **`data object`** in response.
 
 > _http(s)://example.com/public/api/invoices/{id}_
 
@@ -208,11 +208,11 @@ Currently, this **`shipments`** resource is helpful for both admin user and cust
 
 > _http(s)://example.com/public/api/shipments?pagination=0_
 
-**Note**: _If you didn't want shipments records according to page wise, then you can pass the `pagination=0` query parameter in the API url_.
+**Note**: _If you didn't want shipments records according to pagination, then you can pass the `pagination=0` query parameter in the API url_.
 
-## 2. Get Specific Order's Shipment Based On Order Id: <a id="get-specific-shipment-order-id"></a>
+## 2. Get Specific Order's Shipment Based on Order Id: <a id="get-specific-shipment-order-id"></a>
 
-To get the detail of specific order's shipment, you have to pass an **`'order_id'`** as a query parameter like **`shipments?order_id={id}`** in API url. By using this resource and query parameter, you will get only a single shipment detail in API response based on the provided `order_id`.
+To get the details of a  specific order's shipment, you have to pass an **`'order_id'`** as a query parameter like **`shipments?order_id={id}`** in API url. By using this resource and query parameter, you will get only a single shipment detail in API response based on the provided `order_id`.
 
 > _http(s)://example.com/public/api/shipments?order_id={id}_
 
@@ -252,9 +252,9 @@ To get the detail of specific order's shipment, you have to pass an **`'order_id
 
 ![bagisto_ship_order_id](assets/images/Bagisto_Api/bagisto_ship_order_id.jpg){:class="screenshot-dimension center"}
 
-## 3. Get Specific Shipment Based On Shipment Id: <a id="get-specific-shipment-shipment-id"></a>
+## 3. Get Specific Shipment Based on Shipment Id: <a id="get-specific-shipment-shipment-id"></a>
 
-To get the detail of specific shipment, you have to pass a **`shipment_id`** as a request payload like **`shipments/{id}`** in API url. By using this resource and request payload, you will get only `a single object` of shipment detail under the **`data object`** in response.
+To get the details of a  specific shipment, you have to pass a **`shipment_id`** as a request payload like **`shipments/{id}`** in API url. By using this resource and request payload, you will get only `a single object` of shipment detail under the **`data object`** in response.
 
 > _http(s)://example.com/public/api/shipments/{id}_
 

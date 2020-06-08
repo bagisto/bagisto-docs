@@ -3,14 +3,14 @@ title: Product Requests | Bagisto Web APIs Documentation
 layout: default
 ---
 
-# How To Create Requests For Products
+# How to Create Requests for Products
 
 <div style="margin-top: -18px; float: right;">
     <img  src="assets/images/icons/Icon-Pencil-Large.svg" alt="edit" height="16px"/>
     <a href="https://github.com/bagisto/bagisto-docs/blob/master/api_product.md" target="_blank">edit on github</a>
 </div>
 
-To get all the Bagisto Store Products with the pagination, you have to place a request by using the below API Call with the resource i.e. `products` :
+To get all the Bagisto Store Products according to pagination, you have to place a request by using the API Call below with the resource i.e. `products` :
 
 ## 1. Get Products With Pagination: <a id="get-products-with-pagination"></a>
 
@@ -53,12 +53,12 @@ To get all the Bagisto Store Products with the pagination, you have to place a r
 
 ##### Explanation:
 
-- In the above response, you will find the three Objects with below mentioned indexes:
+- In the response above, you will find the three Objects with the indexes mentioned below:
   1. data
   2. link
   3. meta
 
-#### data object: <a id="data-object"></a>
+#### Data Object: <a id="data-object"></a>
 
 Under the data object, you will find the collection of many objects containing the details of bagisto store's products. You can use the product's index data by accessing these products sub-objects.
 

@@ -10,7 +10,7 @@ layout: default
 
 ## 1. Get Complete Cart Details: <a id="get-cart"></a>
 
-To get the current cart details, you have to use the **`checkout/cart`** resource in API URL. You will see in all the **`cart`** related API, we used **`checkout prefix`**. This API call will work both with customer's authentication or without customer's authentication. If the customer is not login into the store, then this API resource will return the `Guest's` cart detail.
+To get the current cart details, you have to use the **`checkout/cart`** resource in API URL. You will see in all the **`cart`** related API, we used **`checkout prefix`**. This API call will work both with customer's authentication or without customer's authentication. If the customer is not logged-in to the store, then this API resource will return the `Guest's` cart detail.
 
 **Note**: _In the `checkout/cart` resource API call, we used `GET HTTP verb` to get complete cart details of the customer/guest._
 
@@ -81,7 +81,7 @@ To get the current cart details, you have to use the **`checkout/cart`** resourc
 
 ## 2. Add Product To Cart:
 
-By using this API call you can add new products into the cart and also you can add quantity to the existing product in the cart. To do this task, you have to use the **`checkout/cart/add/{id}`** resource with **`{id} i.e. product_id`** as a request payload in API URL. This API call will work both with customer's authentication or without customer's authentication.
+By using this API call you can add new products into the cart and also you can add quantity to the existing product in the cart. To do this task, you have to use the **`checkout/cart/add/{id}`** resource with **`{id} i.e. product_id`** as a request payload in the API URL. This API call will work both with customer's authentication or without customer's authentication.
 
 > _http(s)://example.com/public/api/checkout/cart/add/{id}_
 
@@ -184,7 +184,7 @@ By using this API call you can remove all the products from the cart. To do this
 
 ## 4. To Update Cart: <a id="update-cart"></a>
 
-By using this API call you can update the cart's product(s) quantity. To do this task, you have to use the **`checkout/cart/update`** resource in API URL. This API call will work both with customer's authentication or without customer's authentication.
+By using this API call you can update the cart's product(s) quantity. To do this task, you have to use the **`checkout/cart/update`** resource in the API URL. This API call will work both with customer's authentication or without customer's authentication.
 
 **Note**: _In the `checkout/cart/update` resource API call, we used `PUT HTTP verb` to update the cart's product(s) quantity for the customer/guest._
 
@@ -319,7 +319,7 @@ You can move a product from cart to wishlist. To do this task, you have to use t
 
 ## 7. Save Addresses To Cart: <a id="save-address-to-cart"></a>
 
-At the checkout step, customers can create new addresses or select from the existing addresses for billing & shipping the cart's item. You can achieve this task by using the **`checkout/save-address`** resource in API URL. This API will work for both login customers and with guest users also.
+At the checkout step, customers can create new addresses or select from the existing addresses for billing & shipping the cart's item. You can achieve this task by using the **`checkout/save-address`** resource in API URL. This API will work for both logged-in customers and with guest users.
 
 **Note: In the `checkout/save-address` resource API call, we used `POST HTTP verb` for choosing the customer's addresses for checkout process.**
 
@@ -432,7 +432,7 @@ At the checkout step, customers can create new addresses or select from the exis
 
 ## 8. Save Shipping Method To Cart: <a id="save-shipping-to-cart"></a>
 
-After saving the customer's addresses to the cart, you have to select a shipping method to proceed for completing the order. You can achieve this task by using the **`checkout/save-shipping`** resource in the API URL. The shipping method and changes will apply to the cart through this API call. This API will work for both login customers and with guest users also.
+After saving the customer's addresses to the cart, you have to select a shipping method to proceed for completing the order. You can achieve this task by using the **`checkout/save-shipping`** resource in the API URL. The shipping method and changes will apply to the cart through this API call. This API will work for both logged-in customers and with guest users.
 
 **Note**: _In the `checkout/save-shipping` resource API call, we used `POST HTTP verb` to apply the shipping method and changes to the cart._
 
@@ -480,7 +480,7 @@ After saving the customer's addresses to the cart, you have to select a shipping
 
 ## 9. Save Payment Method To Cart: <a id="save-payment-to-cart"></a>
 
-After applying the shipping method to the cart, you have to select a payment method to proceed for completing the order. You can achieve this task by using the **`checkout/save-payment`** resource in API URL. By using this API `Payment method` will apply to the cart and will work for both login customers and with guest users also.
+After applying the shipping method to the cart, you have to select a payment method to proceed for completing the order. You can achieve this task by using the **`checkout/save-payment`** resource in API URL. By using this API `Payment method` will apply to the cart and will work for both logged-in customers and with guest users.
 
 **Note**: _In the `checkout/save-payment` resource API call, we used `POST HTTP verb` to apply the payment method to the cart._
 
@@ -524,7 +524,7 @@ After applying the shipping method to the cart, you have to select a payment met
 
 ## 10. Save Order: <a id="save-order"></a>
 
-After applying shipping addresses, shipping methods, and payment methods to the cart, now finally you have to create/save the order. You can achieve this task by using the **`checkout/save-order`** resource in the API URL. By using this API order will be placed and save to the current store and this API will work for both login customers and with guest users also.
+After applying shipping addresses, shipping methods, and payment methods to the cart, now finally you have to create/save the order. You can achieve this task by using the **`checkout/save-order`** resource in the API URL. By using this API order will be placed and save to the current store and this API will work for both logged-in customers and with guest users.
 
 **Note**: _In the `checkout/save-order` resource API call, we used `POST HTTP verb` to create and save order in the current store._
 

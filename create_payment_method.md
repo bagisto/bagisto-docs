@@ -1,5 +1,5 @@
 ---
-title: Creating Payment method-Bagisto
+title: Creating Payment Method-Bagisto
 layout: default
 ---
 
@@ -8,15 +8,15 @@ layout: default
 ![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/create_payment_method.md){:.edit-github target="\_blank"}
 
-I hope that you know how to create package, if not refer [Package development](create_package.md){: target="\_blank" .link-color}.
+I hope that now you know how to create a package, if not refer to [Package development](create_package.md){: target="\_blank" .link-color}.
 
-Bagisto eases the task of creation of payment methods so a novice developer or professional developer can easily create payment methods. As the diversity of payment methods provide the options to customer for payment when they proceed to checkout. On another perspective, multiple payment methods are a great strategy to reach out to the global marketplace.
+Bagisto eases the task of creating payment methods so a novice developer or professional developer can easily create payment methods. As the diversity of payment methods provide the options to customer for payment when they proceed to checkout. On another perspective, multiple payment methods are a great strategy to reach out to the global marketplace.
 
-In this article, we will understand how to create a payment method by own with just the following steps:
+In this article, we will understand how to create a payment method with just the following steps:
 
 ### Steps to create a payment method
 
-- Create respective directory structure to create your payment method.
+- Create respective Directory Structure to create your payment method.
 
     - module-name/
         - src/
@@ -45,7 +45,7 @@ In this article, we will understand how to create a payment method by own with j
 
 
 
-        - Inside the file, you can include the below code as shown in image
+        - Inside the file, you can include the code below as shown in image
 
         ```php
             <?php

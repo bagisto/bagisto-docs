@@ -64,12 +64,12 @@ You can get all the addresses of the customers in Bagisto Store. To get the addr
 
 ###### Explanation:
 
-- In the above response, you will find the three Objects with below mentioned indexes:
+- In the response above, you will find the three Objects with the indexes mentioned below:
   1. data
   2. link
   3. meta
 
-#### data object:
+#### Data Object:
 
 Under the data object, you will find the collection of many objects which will contain the details of address of the logged in customer. You can use the addresses index data by accessing these addresses sub-objects.
 
@@ -113,7 +113,7 @@ You can also get all the addresses at once without pagination of a customer from
 
 ![bagisto_add_no_page](assets/images/Bagisto_Api/bagisto_add_no_pag.jpg){:class="screenshot-dimension center"}
 
-## 2. Get Specific Address Based On Address Id: <a id="get-specific-address"></a>
+## 2. Get Specific Address Based on Address Id: <a id="get-specific-address"></a>
 
 To get the customer's specific address, you have to pass an address_id as a request payload like **`addresses/{address_id}`** in API url. By using this resource and request payload, you will get only `a single object` under **`data object`** in response.
 
@@ -148,7 +148,7 @@ To get the customer's specific address, you have to pass an address_id as a requ
 
 ![bagisto_add_getId](assets/images/Bagisto_Api/bagisto_add_getId.jpg){:class="screenshot-dimension center"}
 
-## 3. Modify Specific Address Based On Address Id: <a id="modify-specific-address"></a>
+## 3. Modify Specific Address Based on Address Id: <a id="modify-specific-address"></a>
 
 To update the customer's specific address, you have to pass an address_id as a request payload like **`addresses/{address_id}`** in API url.
 

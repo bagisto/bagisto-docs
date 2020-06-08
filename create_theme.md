@@ -1,5 +1,5 @@
 ---
-title: Creating themes-Bagisto
+title: Creating Themes-Bagisto
 layout: default
 ---
 
@@ -8,11 +8,11 @@ layout: default
 ![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/create_theme.md){:.edit-github target="\_blank"}
 
-I hope that you know how to create package, if not refer [Package development](create_package.md){: target="\_blank" .link-color}.
+I hope that now you know how to create a package, if not refer to [Package development](create_package.md){: target="\_blank" .link-color}.
 
 Creating a custom theme for Bagisto had been a hot topic lately. More and more users are actively trying our framework and we’re genuinely overwhelmed by it.
 
-Coming on how to create a custom theme for Bagisto. It’s super easy!!!. With just a few lines of configuration code. Similarly following the traditional way of creating view files in Laravel would be enough.
+On the topic of creating a custom theme for Bagisto. It’s super easy!!! With just a few lines of configuration code. Similarly following the traditional way of creating view files in Laravel would be enough.
 
 ### Steps to create a theme
 
@@ -57,7 +57,7 @@ return [
 
 <!-- ![theme-file](assets/images/Bagisto_Docs_Images/theme/theme-file-code.png){: .screenshot-dimension .center} -->
 
-Let’s go through the parameters of **_themes.php_** file. Because the understanding of those parameters will help you in creating a custom theme.
+Let’s go through the parameters of **_themes.php_** file. Because understanding those parameters will help you in creating a custom theme.
 
 ##### An Explanation For These Parameters:
 
@@ -83,7 +83,7 @@ Finally, define your own paths and name of your custom theme inside **_themes.ph
 
 <!-- ![theme-route-file-location](assets/images/Bagisto_Docs_Images/theme/theme-routes.png){: width="30%" height="50%" .center} -->
 
-Make sure the name of the blade file should be same as passed in this GET route file like this:
+Make sure the name of the blade file should be the same one as passed in this GET route file like this:
 
 ```php
 //Store front header nav-menu fetch

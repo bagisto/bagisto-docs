@@ -10,7 +10,7 @@ layout: default
     <a target="_blank" href="https://github.com/bagisto/bagisto-docs/blob/master/api_category.md">edit on github</a>
 </div>
 
-To get all the Bagisto Categories with the pagination, you have to place a request by using the below API Call with the resource i.e. `categories` :
+To get all the Bagisto Categories according to pagination, you have to place a request by using the API Call below with the resource i.e. `categories` :
 
 ## 1. Get Categories With Pagination: <a id="get-categories-with-pagination"></a>
 
@@ -51,18 +51,18 @@ To get all the Bagisto Categories with the pagination, you have to place a reque
 
 ##### Explanation:
 
-- In the above response, you will find the three Objects with below mentioned indexes:
+- In the response above, you will find the three Objects with the indexes mentioned below:
   1. data
   2. link
   3. meta
 
-#### data object: <a id="data-object"></a>
+#### Data Object: <a id="data-object"></a>
 
 Under the data object, you will find the collection of many objects which represent the bagisto store's categories. You can use the category's index data by accessing these categories sub-objects.
 
 #### link object: <a id="link-object"></a>
 
-- Under link object, you will find four indexes, which will be used only with the pagination:
+- Under link object, you will find four indexes, which will be used only according to pagination:
 
 ![bagisto_cat_link](assets/images/Bagisto_Api/bagisto_cat_link.jpg){:class="screenshot-dimension center"}
 

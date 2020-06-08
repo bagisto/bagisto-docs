@@ -1,5 +1,5 @@
 ---
-title: Creating shipping method-Bagisto
+title: Creating Shipping Method-Bagisto
 layout: default
 ---
 
@@ -8,7 +8,7 @@ layout: default
 ![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/create_shipping_method.md){:.edit-github target="\_blank"}
 
-I hope that you know how to create package, if not refer [Package development](create_package.md){: target="\_blank" .link-color}.
+I hope that now you know how to create a package, if not refer to [Package development](create_package.md){: target="\_blank" .link-color}.
 
 ### Steps to create shipping methods
 
@@ -55,7 +55,7 @@ And, create **Carriers** folder inside the **src** folder. We will now create a 
 
     <b>Note:</b> May refer [FlatRate](https://github.com/bagisto/bagisto/blob/master/packages/Webkul/Shipping/src/Carriers/FlatRate.php#L28) 'calculate()' method.
 
-3. After creating all necessary files and config you need to create the form that will appear on the config section in the next route `packages/Webkul/Shipping/src/Config/system.php`. so you can use them on **_Fedex.php_**
+3. After creating all the necessary files and configurations you need to create the form that will appear on the config section in the next route `packages/Webkul/Shipping/src/Config/system.php`. so you can use them on **_Fedex.php_**
 
 4. To get the translations working you need to add them on `packages/Webkul/Admin/src/Resources/lang/en/app.php`
    > 'fedex-shipping'=>' Your title or translation',
