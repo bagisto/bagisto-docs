@@ -5,11 +5,11 @@ layout: default
 
 # Upgrading To bagisto 1.0.0 from 0.2.2
 
-If you want to migrate your project to the bagisto v1.0.0, then you need to follow some guidelines as listed below:
+If you want to migrate your project to bagisto v1.0.0, then you need to follow the guidelines listed below:
 
 1. Make sure you have added git remote of our project `Bagisto`.
 
-2. Ensure you do not have any changes to be committed, if have, then do the respective commit before execution of below process.
+2. Ensure you do not have any changes to be committed, if have, then do the respective commit before executing the commands below.
 
 1. Run command `git reset --hard tag_name`, where  tag_name specifies the tag to which you want your project to be migrated.
 

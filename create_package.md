@@ -235,7 +235,7 @@ Go to `ACME/HelloWorld/src/Http/routes.php` file and create a route to render vi
 
 ![view-route-creation](assets/images/Bagisto_Docs_Images/PackageDevelopment/view-route-creation.png){: .screenshot-dimension .center}
 
-Now run 'composer dump-autoload', so laravel can detects the new route files and works. Otherwise, it won't work and will return NotFound Exception.
+Now run 'composer dump-autoload', so laravel can detect the new route files and works. Otherwise, it won't work and will return NotFound Exception.
 
 Now, you can append ‘hello-world’ to your local path in the browser's URL to see the output.
 
@@ -775,7 +775,7 @@ Creating a custom configuration ease the task for a developer or any non-develop
 
 - To create a custom configuration for your application, you just need to create a **_system.php_** file under the **Config** folder of your package.
 
-- Inside the file, you can include the below code as shown in image
+- Inside the file, you can include the code below as shown in image
 
 ```php
 <?php

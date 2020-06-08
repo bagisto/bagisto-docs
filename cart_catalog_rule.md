@@ -3,9 +3,9 @@ title: Revampment of cart & catalog rule | Bagisto Web APIs Documentation
 layout: default
 ---
 
-## Revampment of Catalog & Cart rule
+## Revamping the Catalog & Cart Rule
 
-There is a revamping of cart & catalog rule at the code level. The user needs to upgrade their bagisto version to v0.1.9 for the usage of our cart & catalog rule. To upgrade the module, below points must be followed:
+There is a revamping of cart & catalog rule at the code level. The user needs to upgrade their bagisto version to v0.1.9 for the usage of our cart & catalog rule. To upgrade the module, the points below must be followed:
 
 1. Initially, the user needs to take a backup of their project database.
 

@@ -46,7 +46,7 @@ As you can see, `bagisto.shop.test` is the event name here that is defined in a 
     }
 ```
 
-As you can see, you have to add the path of the template here that you want to render.
+As you can see, you have to add the path of the template that you want to render.
 
 After that, this will automatically fire and your template will be injected before the content.
 
