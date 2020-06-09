@@ -3,7 +3,7 @@ title: Order Requests | Bagisto Web APIs Documentation
 layout: default
 ---
 
-# How To Create Requests For Orders
+# How To Create Requests for Orders
 
 <div style="margin-top: -18px; float: right;">
     <img  src="assets/images/icons/Icon-Pencil-Large.svg" alt="edit" height="16px"/>
@@ -65,12 +65,12 @@ Currently, this **`orders`** resource is helpful for both admin,user and custome
 
 #### Explanation:
 
-- In the above response, you will find the three Objects with below mentioned indexes:
+- In the response above, you will find the three Objects with the indexes mentioned below:
   1. data
   2. link
   3. meta
 
-#### data object:
+#### Data Object:
 
 Under the data object, you will find an array with multiple objects that contains the details of the orders. You can use the order's index data by accessing these order sub-objects.
 
@@ -114,7 +114,7 @@ You can also get all the orders at once of Bagisto Store without pagination. To 
 
 ## 2. Get All Orders Of Specific Customer: <a id="get-customer-orders"></a>
 
-To get all the orders of a specific customer, you have to pass a customer_id as a query parameter like **`orders?customer_id={id}`** in API url. To use this API call customer authentication is required, means that customer must be login into the store.
+To get all the orders of a specific customer, you have to pass a customer_id as a query parameter like **`orders?customer_id={id}`** in API url. To use this API call customer authentication is required, means that customer must be logged-in to the store.
 
 > _http(s)://example.com/public/api/orders?customer_id={id}_
 
@@ -240,9 +240,9 @@ To get all the orders of a specific customer, you have to pass a customer_id as 
 
 ![bagisto_orders_cust_no_pag](assets/images/Bagisto_Api/bagisto_orders_cust_no_pag.jpg){:class="screenshot-dimension center"}
 
-**Note**: _If you didn't want customer's order data according to page wise, then you can pass the `pagination=0` query parameter with the `customer_id` parameter in the API url._
+**Note**: _If you didn't want customer's order data according to pagination, then you can pass the `pagination=0` query parameter with the `customer_id` parameter in the API url._
 
-## 3. Get Specific Order Based On Order Id: <a id="get-specific-order"></a>
+## 3. Get Specific Order Based on Order Id: <a id="get-specific-order"></a>
 
 To get the specific order details, you have to pass an order_id as a request payload like **`orders/{order_id}`** in API url. By using this resource and request payload, you will get only `a single object` under **`data object`** in response.
 

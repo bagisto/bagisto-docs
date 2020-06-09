@@ -53,7 +53,7 @@ To get all the reviews of a specific customer, you have to pass a **`customer_id
 
 ### 1.1 Get Customer's Reviews With Pagination: <a id="get-customer-reviews-pagination"></a>
 
-You can get customer's reviews according to the pagination. You can define the limit that how many records of reviews you want in each page.
+You can get customer's reviews according to the pagination. You can define the limit as to  how many records of reviews you want in each page.
 
 ###### Request:
 
@@ -97,12 +97,12 @@ You can get customer's reviews according to the pagination. You can define the l
 
 ##### Explanation:
 
-- In the above response, you will find the three Objects with below mentioned indexes:
+- In the response above, you will find the three Objects with the indexes mentioned below:
   1. data
   2. link
   3. meta
 
-#### data object:
+#### Data Object:
 
 Under the data object, you will find a array of multiple objects which contain the details of the customer's reviews. You can use these objects to access the data of each individual customer's review.
 
@@ -141,7 +141,7 @@ To post a review of a specific product, you have to login as customer.{id} = Pro
 
 > *http(s)://example.com/public/api/reviews/{id}/create*
 
-###### Post data:
+###### Post Data:
     {
         "rating" : "3",
         "title" : "This is dummy title",

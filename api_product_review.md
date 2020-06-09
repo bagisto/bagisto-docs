@@ -109,12 +109,12 @@ You can get store's review according to the pagination. You can define the limit
 
 ##### Explanation:
 
-- In the above response, you will find the three Objects with below mentioned indexes:
+- In the response above, you will find the three Objects with the indexes mentioned below:
   1. data
   2. link
   3. meta
 
-#### data object:
+#### Data Object:
 
 Under the data object, you will find a array of multiple objects which contain the details of the store's reviews. You can use these objects to access the data of each individual review.
 
@@ -148,7 +148,7 @@ You can also get all the reviews of Bagisto Store in a single API call without p
 
 ![bagisto_reviews_no_page](assets/images/Bagisto_Api/bagisto_reviews_no_page.jpg){:class="screenshot-dimension center"}
 
-## 2. Get Specific Review Based On Review Id: <a id="get-specific-reviews"></a>
+## 2. Get Specific Review Based on Review Id: <a id="get-specific-reviews"></a>
 
 To get the specific review detail, you have to pass a review id i.e. **`id`** as a request payload like **`reviews/{id}`** in API url. By using this resource and request payload, you will get only `a single object` under **`data object`** in response.
 

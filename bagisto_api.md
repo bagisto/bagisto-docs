@@ -12,7 +12,7 @@ layout: default
 
 ## Introduction <a id="api-introduction"></a>
 
-Bagisto Web Api is a medium to use the features of the core Bagisto System. By using Bagisto Web Api, you can integrate your application with the Bagisto System to serve the default content of Bagisto.
+Bagisto Web API is a medium to use the features of the core Bagisto System. By using Bagisto Web API, you can integrate your application with the Bagisto System to serve the default content of Bagisto.
 
 ##### Key Features:
 

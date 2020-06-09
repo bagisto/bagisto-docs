@@ -8,9 +8,9 @@ layout: default
 ![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon }
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/index.md){:.edit-github target="\_blank"}
 
-Bagisto is a hand-tailored E-Commerce framework designed on some of the hottest opensource technologies such as Laravel a PHP framework, Vue.js a progressive Javascript framework.
+Bagisto is a customized E-Commerce framework designed on some of the hottest opensource technologies such as Laravel, a PHP framework and Vue.js, a progressive Javascript framework.
 
-Bagisto is a viable attempt to cut down your time, cost and workforce for building online stores or migrating from physical stores to the ever demanding online world. Your business whether small or huge it suits all and very simple to set it up. Built on top of Laravel, it is coupled with easy product information management. The framework is very flexible and easy to use even for non-tech users.
+Bagisto is a viable option to reduce your time, cost and workforce for building online stores or migrating from a physical store to an online platform. It suitable for all small or large E-Commerce business demands, with a simple set-up procedure. Built on top of Laravel, it is equipped with easy product information management. The framework is very flexible and easy to use even for non-tech users.
 
 At the time of writing, Bagisto’s main feature list includes:
 
@@ -27,9 +27,9 @@ At the time of writing, Bagisto’s main feature list includes:
 - Customer Cart, Wishlist, Product Reviews
 - Simple and Configurable Products
 
-Bagisto features an administration panel with a Dashboard, sales data, a catalog of products you can manage, and customer management:
+Bagisto features an administration panel with a Dashboard, sales data, a catalog for Products and Customer management:
 
-Besides the features already available, the Bagisto’s roadmap includes:
+Besides the features already available, Bagisto’s roadmap includes:
 
 - API Support (REST and GraphQL)
 - Progressive web application
@@ -46,7 +46,7 @@ Besides the features already available, the Bagisto’s roadmap includes:
 
 To learn more about Bagisto’s features and try a demo, check out [Bagisto](https://bagisto.com){: target="\_blank" .link-color}. You can get started with the source code by checking out the repo on GitHub at [bagisto/bagisto](https://github.com/bagisto/bagisto){: target="\_blank" .link-color}.
 
-To get a quick heads-up on the currently working and recently released features, see [Bagisto roadmap](https://bagisto.com/roadmap/){: target="\_blank" .link-color}.
+To get quickly updated on the current version and recently released features, see [Bagisto roadmap](https://bagisto.com/roadmap/){: target="\_blank" .link-color}.
 
 ### Requirements <a id="requirements"></a>:
 
@@ -96,9 +96,9 @@ To get a quick heads-up on the currently working and recently released features,
 
     - Now configure your database:
 
-      If the above command was completed successfully, then you'll find directory **bagisto** and all of the code will be inside it.
+      If the command above was completed successfully, then you'll find the directory **bagisto** and all of its available code.
 
-      Find file **_.env_** inside **bagisto** directory and set the environment variables listed below:
+      Find file **_.env_** inside the  **bagisto** directory and set the environment variables listed below:
 
         - APP_URL
         - DB_CONNECTION
