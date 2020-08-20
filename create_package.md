@@ -3,12 +3,12 @@ title: Package development-Bagisto
 layout: default
 ---
 
-# Package
+## Package
 
-![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
+![Pencil Icon](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/create_package.md){:.edit-github target="\_blank"}
 
-A package is a unit added to your application for enhancement which includes routes, controllers, views, and configuration specifically. Packages are created to manage your large applications into smaller units. In the bagisto, we have created plenty of packages at path `packages/Webkul/`. You can find a basic tree-structure of package below :
+A package is a unit added to your application for enhancement which includes routes, controllers, views, and configuration specifically. Packages are created to manage your large applications into smaller units. In the bagisto, we have created plenty of packages at path `packages/Webkul/`. You can find a basic tree-structure of package below:
 
 - module-name/
   - src/
@@ -18,27 +18,58 @@ A package is a unit added to your application for enhancement which includes rou
     - Events/
     - Helpers/
     - Http/
-        - Controllers/
-        - Middleware/
-        - Routes/
+      - Controllers/
+      - Middleware/
+      - Routes/
     - Listeners/
     - Models/
     - Providers/
-        - ModuleServiceProvider.php
-        - EventServiceProvider.php
+      - ModuleServiceProvider.php
+      - EventServiceProvider.php
     - Repositories/
     - Resources/
-        - assets/
-        - lang/
-        - views/
+      - assets/
+      - lang/
+      - views/
   - package.json
   - webpack.mix.js
 
 ### How To Create Package <a id="how-to-create-package"></a>
 
+There are two ways to create a package.
+
+1. By using Bagisto Package Generator (**Recommended**)
+2. By manually setting up all files (**Expert Level**)
+
+#### 1. By using Bagisto Package Generator
+
+You need to install Bagisto Package Generator with the help of composer. If you have not installed then you can check [here](https://github.com/bagisto/bagisto-package-generator#3-installation).
+
+So, we are assuming that you have installed Bagisto Package Generator.
+
+Now, to generate your package you need to use this command.
+
+~~~php
+php artisan package:make ACME/HelloWorld`
+~~~
+
+If somehow package directory already present then you can use force command as well. For that you just need to pass the '**--force**' command.
+
+~~~php
+php artisan package:make ACME/HelloWorld --force
+~~~
+
+Now check your package directory, everything is setup for you.
+
+#### 2. By manually setting up all files
+
+By manually setting up package, we assume that you are familiar with packages directory structures and flow. If not then you can check the basic tree structure above.
+
+Let's start with first step by creating the packages folder.
+
 ##### Step-1
 
--  Inside **packages** folder, create a folder with your company name or namespace and inside it create a folder with your package name.
+- Inside **packages** folder, create a folder with your company name or namespace and inside it create a folder with your package name.
   e.g., here namespace is specified as ACME
 
 > `packages/ACME/HelloWorld`

@@ -5,7 +5,7 @@ layout: default
 
 ## Payment Method
 
-![alt Pencil Icon](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
+![Pencil Icon](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/create_payment_method.md){:.edit-github target="\_blank"}
 
 We hope that now you know how to create a package, if not refer to [Package development](create_package.md){: target="\_blank" .link-color}.
@@ -23,6 +23,12 @@ For creating payment method package, you need to use this command in bagisto roo
 
 ~~~php
 php artisan package:make-payment-method ModuleName
+~~~
+
+If somehow package directory already present then you can use force command as well. For that you just need to pass the '**--force**' command.
+
+~~~php
+php artisan package:make-payment-method ModuleName --force
 ~~~
 
 This will generate whole directory structures. You don't need to do manually.
