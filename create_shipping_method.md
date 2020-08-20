@@ -3,14 +3,37 @@ title: Creating Shipping Method-Bagisto
 layout: default
 ---
 
-# Shipping Method
+## Shipping Method
 
-![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
+![Pencil Icon](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/create_shipping_method.md){:.edit-github target="\_blank"}
 
 I hope that now you know how to create a package, if not refer to [Package development](create_package.md){: target="\_blank" .link-color}.
 
-### Steps to create shipping methods
+In this article, we will understand how to create a shipping method. You can create a shipping method in two ways.
+
+1. By using Bagisto Package Generator (**Recommended**)
+2. By manually setting up all files (**Expert Level**)
+
+### 1. By using Bagisto Package Generator
+
+For creating shipping method package, you need to use this command in bagisto root directory,
+
+~~~php
+php artisan package:make-shipping-method ACME/FedEx
+~~~
+
+If somehow package directory already present then you can use force command as well. For that you just need to pass the '**--force**' command.
+
+~~~php
+php artisan package:make-shipping-method ACME/FedEx --force
+~~~
+
+This will generate whole directory structures. You don't need to do manually.
+
+### 2. By manually setting up all files
+
+#### Steps to create shipping methods
 
 - The user needs to create a file named **_carriers.php_** at the `src/config` path in the package (say FedEx). Here, we are going to specify what to include in your **_carriers.php_** file.
 

@@ -3,116 +3,133 @@ title: Creating Payment Method-Bagisto
 layout: default
 ---
 
-# Payment Method
+## Payment Method
 
-![](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
+![Pencil Icon](assets/images/icons/Icon-Pencil-Large.svg){:.pencil-icon}
 [edit on github](https://github.com/bagisto/bagisto-docs/blob/master/create_payment_method.md){:.edit-github target="\_blank"}
 
-I hope that now you know how to create a package, if not refer to [Package development](create_package.md){: target="\_blank" .link-color}.
+We hope that now you know how to create a package, if not refer to [Package development](create_package.md){: target="\_blank" .link-color}.
 
 Bagisto eases the task of creating payment methods so a novice developer or professional developer can easily create payment methods. As the diversity of payment methods provide the options to customer for payment when they proceed to checkout. On another perspective, multiple payment methods are a great strategy to reach out to the global marketplace.
 
-In this article, we will understand how to create a payment method with just the following steps:
+In this article, we will understand how to create a payment method. You can create a payment method in two ways.
 
-### Steps to create a payment method
+1. By using Bagisto Package Generator (**Recommended**)
+2. By manually setting up all files (**Expert Level**)
 
-- Create respective Directory Structure to create your payment method.
+### 1. By using Bagisto Package Generator
 
-    - module-name/
-        - src/
-            - Config/
-                - system.php
-                - paymentmethods.php
-            - Database/
-            - Http/
-                - Controllers/
-                - Routes/
-            - Listeners/
-            - Payment/
-            - Models/
-            - Providers/
-                - ModuleServiceProvider.php
-                - EventServiceProvider.php
-            - Repositories/
-            - Resources/
-                - assets/
-                - lang/
-                - views/
+For creating payment method package, you need to use this command in bagisto root directory,
 
-- Within **Config** folder, it contain's application's configuration files. Let's just create two files as **_system.php_** and **_paymentmethods.php_**
+~~~php
+php artisan package:make-payment-method ModuleName
+~~~
 
-   1. <b>system.php</b>
+If somehow package directory already present then you can use force command as well. For that you just need to pass the '**--force**' command.
 
+~~~php
+php artisan package:make-payment-method ModuleName --force
+~~~
 
+This will generate whole directory structures. You don't need to do manually.
+
+### 2. By manually setting up all files
+
+#### Steps to create a payment method
+
+- Create respective directory structure to create your payment method.
+  - module-name/
+    - src/
+      - Config/
+        - system.php
+        - paymentmethods.php
+      - Database/
+      - Http/
+        - Controllers/
+        - Routes/
+      - Listeners/
+      - Payment/
+      - Models/
+      - Providers/
+        - ModuleServiceProvider.php
+        - EventServiceProvider.php
+      - Repositories/
+      - Resources/
+        - assets/
+        - lang/
+        - views/
+
+- Within **Config** folder, it contains application's configuration files. Let's just create two files as **_system.php_** and **_paymentmethods.php_**
+
+    1. <b>system.php</b>
 
         - Inside the file, you can include the code below as shown in image
 
-        ```php
+        ~~~php
             <?php
-
-            return [
-                [
-                    'key'    => 'sales.paymentmethods.paypal_standard',
-                    'name'   => 'admin::app.admin.system.paypal-standard',
-                    'sort'   => 3,
-                    'fields' => [
-                        [
-                            'name'          => 'title',
-                            'title'         => 'admin::app.admin.system.title',
-                            'type'          => 'text',
-                            'validation'    => 'required',
-                            'channel_based' => false,
-                            'locale_based'  => true,
-                        ], [
-                            'name'          => 'description',
-                            'title'         => 'admin::app.admin.system.description',
-                            'type'          => 'textarea',
-                            'channel_based' => false,
-                            'locale_based'  => true,
-                        ],  [
-                            'name'       => 'business_account',
-                            'title'      => 'admin::app.admin.system.business-account',
-                            'type'       => 'select',
-                            'type'       => 'text',
-                            'validation' => 'required',
-                        ],  [
-                            'name'          => 'active',
-                            'title'         => 'admin::app.admin.system.status',
-                            'type'          => 'boolean',
-                            'validation'    => 'required',
-                            'channel_based' => false,
-                            'locale_based'  => true
-                        ], [
-                            'name'          => 'sandbox',
-                            'title'         => 'admin::app.admin.system.sandbox',
-                            'type'          => 'boolean',
-                            'validation'    => 'required',
-                            'channel_based' => false,
-                            'locale_based'  => true,
-                        ], [
-                            'name'    => 'sort',
-                            'title'   => 'admin::app.admin.system.sort_order',
-                            'type'    => 'select',
-                            'options' => [
-                                [
-                                    'title' => '1',
-                                    'value' => 1,
-                                ], [
-                                    'title' => '2',
-                                    'value' => 2,
-                                ], [
-                                    'title' => '3',
-                                    'value' => 3,
-                                ], [
-                                    'title' => '4',
-                                    'value' => 4,
+                return [
+                    [
+                        'key'    => 'sales.paymentmethods.paypal_standard',
+                        'name'   => 'admin::app.admin.system.paypal-standard',
+                        'sort'   => 3,
+                        'fields' => [
+                            [
+                                'name'          => 'title',
+                                'title'         => 'admin::app.admin.system.title',
+                                'type'          => 'text',
+                                'validation'    => 'required',
+                                'channel_based' => false,
+                                'locale_based'  => true,
+                            ], [
+                                'name'          => 'description',
+                                'title'         => 'admin::app.admin.system.description',
+                                'type'          => 'textarea',
+                                'channel_based' => false,
+                                'locale_based'  => true,
+                            ],  [
+                                'name'       => 'business_account',
+                                'title'      => 'admin::app.admin.system.business-account',
+                                'type'       => 'select',
+                                'type'       => 'text',
+                                'validation' => 'required',
+                            ],  [
+                                'name'          => 'active',
+                                'title'         => 'admin::app.admin.system.status',
+                                'type'          => 'boolean',
+                                'validation'    => 'required',
+                                'channel_based' => false,
+                                'locale_based'  => true
+                            ], [
+                                'name'          => 'sandbox',
+                                'title'         => 'admin::app.admin.system.sandbox',
+                                'type'          => 'boolean',
+                                'validation'    => 'required',
+                                'channel_based' => false,
+                                'locale_based'  => true,
+                            ], [
+                                'name'    => 'sort',
+                                'title'   => 'admin::app.admin.system.sort_order',
+                                'type'    => 'select',
+                                'options' => [
+                                    [
+                                        'title' => '1',
+                                        'value' => 1,
+                                    ], [
+                                        'title' => '2',
+                                        'value' => 2,
+                                    ], [
+                                        'title' => '3',
+                                        'value' => 3,
+                                    ], [
+                                        'title' => '4',
+                                        'value' => 4,
+                                    ],
                                 ],
-                            ],
+                            ]
                         ]
                     ]
-                ]
-            ]
-        ```
+                ];
+        ~~~
 
         <!-- ![system-configuration](assets/images/Bagisto_Docs_Images/payment-config-1.png){: .screenshot-dimension .center} -->
 
@@ -126,12 +143,11 @@ In this article, we will understand how to create a payment method with just the
 
         - <b>fields</b> these keys accept the array for the value of the custom configuration.
 
-
     2. <b>paymentmethods.php</b>
 
         <!-- ![payment-method-configuration](assets/images/Bagisto_Docs_Images/payment-config-2.png){:  .screenshot-dimension .center} -->
 
-        ```php
+        ~~~php
             <?php
                 return [
                     'paypal_standard' => [
@@ -144,7 +160,7 @@ In this article, we will understand how to create a payment method with just the
                        'sort'        => 3,
                     ]
                 ];
-        ```
+        ~~~
 
         <b>Explanation for the keys:</b>
 
@@ -168,12 +184,12 @@ In this article, we will understand how to create a payment method with just the
 
   2. **_PaymentServiceProvider_** : In this file, you may register all your configuration, language, and routes within register and boot methods.
 
-* Within **Models** folder, the models are stored for the application.
+- Within **Models** folder, the models are stored for the application.
 
-* Within **Payment** folder, write the code needed to operate your payment method
+- Within **Payment** folder, write the code needed to operate your payment method
 
-* Within **Repositories** folder, create a file as **_HelloWorldRepository.php_** which must extend repository class
+- Within **Repositories** folder, create a file as **_HelloWorldRepository.php_** which must extend repository class
 
-* Within **Http** folder, define your routes and controller application.
+- Within **Http** folder, define your routes and controller application.
 
-* Within **Listeners** folder, this folder includes listener files to listen to respective events.
+- Within **Listeners** folder, this folder includes listener files to listen to respective events.
