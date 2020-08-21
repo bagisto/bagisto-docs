@@ -50,7 +50,7 @@ So, we are assuming that you have installed Bagisto Package Generator.
 Now, to generate your package you need to use this command.
 
 ~~~php
-php artisan package:make ACME/HelloWorld`
+php artisan package:make ACME/HelloWorld
 ~~~
 
 If somehow package directory already present then you can use force command as well. For that you just need to pass the '**--force**' command.
@@ -72,7 +72,9 @@ Let's start with first step by creating the packages folder.
 - Inside **packages** folder, create a folder with your company name or namespace and inside it create a folder with your package name.
   e.g., here namespace is specified as ACME
 
-> `packages/ACME/HelloWorld`
+  ~~~php
+  packages/ACME/HelloWorld
+  ~~~
 
 ##### Step-2
 
@@ -82,175 +84,162 @@ Let's start with first step by creating the packages folder.
 
 - Inside **src** folder create a folder named as **Providers** and under it create a file named as **_PackagenameServiceProvider.php_**.
 
-  Ex – HelloWorldServiceProvider.php
+  **Example** – HelloWorldServiceProvider.php
 
   The Service Provider consists of two methods.
 
-    - [Boot Method](https://laravel.com/docs/7.x/providers#the-boot-method){: target="\_blank"}
+  - [Boot Method](https://laravel.com/docs/7.x/providers#the-boot-method){: target="\_blank"}
 
-    - [Register Method](https://laravel.com/docs/7.x/providers#the-register-method){: target="\_blank"}
+  - [Register Method](https://laravel.com/docs/7.x/providers#the-register-method){: target="\_blank"}
 
-```php
-     namespace ACME\HelloWorld\Providers;
+   If you have **Bagisto Package Generator** then you need to type this command, this command will generate service provider for you.
 
-     use Illuminate\Support\ServiceProvider;
+  ~~~php
+  php artisan package:make-provider HelloWorldServiceProvider ACME/HelloWorld
+  ~~~
 
-     /**
-     * HelloWorld service provider
-     *
-     * @author    Jane Doe <janedoe@gmail.com>
-     * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
-     */
-    class HelloWorldServiceProvider extends ServiceProvider
-    {
-        /**
-        * Bootstrap services.
-        *
-        * @return void
-        */
-        public function boot()
-        {
+  If somehow you don't have **Bagisto Package Generator**, then you can do manually also.
 
-        }
+  ~~~php
+  namespace ACME\HelloWorld\Providers;
 
-        /**
-        * Register services.
-        *
-        * @return void
-        */
-        public function register()
-        {
+  use Illuminate\Support\ServiceProvider;
 
-        }
-    }
-```
+  /**
+  * HelloWorld service provider
+  *
+  * @author    Jane Doe <janedoe@gmail.com>
+  * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
+  */
+  class HelloWorldServiceProvider extends ServiceProvider
+  {
+      /**
+      * Bootstrap services.
+      *
+      * @return void
+      */
+      public function boot()
+      {
+
+      }
+
+      /**
+      * Register services.
+      *
+      * @return void
+      */
+      public function register()
+      {
+
+      }
+  }
+  ~~~
 
 ##### Step-4
 
 - Now, to register the service provider, go to the **_app.php_** file inside the **config** folder & add your service provider inside the ‘providers’ array.
 
-    ```php
-        ACME\HelloWorld\Providers\HelloWorldServiceProvider::class,
-    ```
-
-<!-- ![provider-registration](assets/images/Bagisto_Docs_Images/PackageDevelopment/provider-registration.png){: .screenshot-dimension .center} -->
+  ~~~php
+  ACME\HelloWorld\Providers\HelloWorldServiceProvider::class,
+  ~~~
 
 ##### Step-5
 
 - Now, we need to add our package to the **_composer.json_** file of project root for autoloading in psr-4.
 
-    ```php
-            "ACME\\HelloWorld\\": "packages/ACME/HelloWorld/src"
-    ```
-
-  <!-- ![psr4](assets/images/Bagisto_Docs_Images/PackageDevelopment/psr4-registration.png){: .screenshot-dimension .center} -->
+  ~~~json
+  "ACME\\HelloWorld\\": "packages/ACME/HelloWorld/src"
+  ~~~
 
 ##### Step-6
 
 - Now, we are going to add routing & views in our package.
 
-  1.  For routes: create an **Http** folder inside **src** folder of your package & inside **Http** create a file name as **_routes.php_** like `YourPackage/src/Http/routes.php`. In this file, we can create routes for the package.
+  1. For routes: create an **Http** folder inside **src** folder of your package & inside **Http** create a file name as **_routes.php_** like `YourPackage/src/Http/routes.php`. In this file, we can create routes for the package.
 
   Now, we need to register our route file to service provider’s boot method i.e. **_HelloWorldServiceProvider.php_**
 
-  <!-- ```php
-  public function boot()
+  ~~~php
+  <?php
+
+  namespace ACME\HelloWorld\Providers;
+
+  use Illuminate\Support\ServiceProvider;
+
+  /**
+  * HelloWorld service provider
+  *
+  * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
+  */
+  class HelloWorldServiceProvider extends ServiceProvider
   {
-      include __DIR__ . '/../Http/routes.php';
+      /**
+      * Bootstrap services.
+      *
+      * @return void
+      */
+      public function boot()
+      {
+          include __DIR__ . '/../Http/routes.php';
+      }
+
+      /**
+      * Register services.
+      *
+      * @return void
+      */
+      public function register()
+      {
+
+      }
   }
-  ``` -->
+  ~~~
 
-```php
-        <?php
+  To load routes, you can also use ‘loadRoutesFrom’ method.
 
-        namespace ACME\HelloWorld\Providers;
+  2. For views: Create a **Resources** folder inside **src** folder of the package. Inside the **Resources** folder create a folder name as **views**. Now, in the **views** folder, we can create a view for the package.
 
-        use Illuminate\Support\ServiceProvider;
+  Right now, we are going to create a folder **helloworld** inside the views. In this **helloworld** folder we will create a file name as **_helloworld.blade.php_**
 
-        /**
-        * HelloWorld service provider
-        *
-        * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
-        */
-        class HelloWorldServiceProvider extends ServiceProvider
-        {
-            /**
-            * Bootstrap services.
-            *
-            * @return void
-            */
-            public function boot()
-            {
-                include __DIR__ . '/../Http/routes.php';
-            }
+  Now just like the route file, we need to register our view folder inside the service provider to specify a path where views are located.
 
-            /**
-            * Register services.
-            *
-            * @return void
-            */
-            public function register()
-            {
+  ~~~php
+  <?php
 
-            }
-        }
-```
-<!-- ![register-route](assets/images/Bagisto_Docs_Images/PackageDevelopment/register-route.png){: .screenshot-dimension .center} -->
+  namespace ACME\HelloWorld\Providers;
 
-To load routes, you can also use ‘loadRoutesFrom’ method.
+  use Illuminate\Support\ServiceProvider;
 
-2. For views: Create a **Resources** folder inside **src** folder of the package. Inside the **Resources** folder create a folder name as **views**. Now, in the **views** folder, we can create a view for the package.
+  /**
+  * HelloWorld service provider
+  *
+  * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
+  */
+  class HelloWorldServiceProvider extends ServiceProvider
+  {
+      /**
+      * Bootstrap services.
+      *
+      * @return void
+      */
+      public function boot()
+      {
+          include __DIR__ . '/../Http/routes.php';
 
-Right now, we are going to create a folder **helloworld** inside the views. In this **helloworld** folder we will create a file name as **_helloworld.blade.php_**
+          $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'helloworld');
+      }
 
-Now just like the route file, we need to register our view folder inside the service provider to specify a path where views are located.
+      /**
+      * Register services.
+      *
+      * @return void
+      */
+      public function register()
+      {
 
-```php
-        <?php
-
-        namespace ACME\HelloWorld\Providers;
-
-        use Illuminate\Support\ServiceProvider;
-
-        /**
-        * HelloWorld service provider
-        *
-        * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
-        */
-        class HelloWorldServiceProvider extends ServiceProvider
-        {
-            /**
-            * Bootstrap services.
-            *
-            * @return void
-            */
-            public function boot()
-            {
-                include __DIR__ . '/../Http/routes.php';
-
-                $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'helloworld');
-            }
-
-            /**
-            * Register services.
-            *
-            * @return void
-            */
-            public function register()
-            {
-
-            }
-        }
-```
-
-<!-- ```php
-public function boot()
-{
-    $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'helloworld');
-}
-``` -->
-
-<!-- ![view-register](assets/images/Bagisto_Docs_Images/PackageDevelopment/view-register.png){: .screenshot-dimension .center} -->
+      }
+  }
+  ~~~
 
 ##### Step-7
 
@@ -321,13 +310,6 @@ Now, we need to register the language file to the service provider.
             }
         }
 ```
-
-<!-- ```php
-public function boot()
-{
-    $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'helloworld');
-}
-``` -->
 
 Now we can write a translation in **_app.php_** like below.
 
