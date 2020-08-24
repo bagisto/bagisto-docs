@@ -1,6 +1,6 @@
 ---
-title: Package development-Bagisto
-layout: default
+title: Package Development - Bagisto
+layout: Default
 ---
 
 ## Package
@@ -617,11 +617,22 @@ class HelloWorldServiceProvider extends ServiceProvider
 
 ### How to create Migrations ?<a id="create-migrations"></a>
 
+You can create migration in two ways,
+
+1. By using Bagisto Package Generator.
+2. By normal laravel command and then manually copy to the respective folder.
+
+#### By using Bagisto Package Generator
+
+This command will create a new migration class in 'packages/ACME/HelloWorld/src/Database/Migrations' directory.
+
+`php artisan package:make-migration CreateUsersTable ACME/HelloWorld`
+
+#### By normal laravel command and then manually copy to the respective folder
+
 To create a migration, use the 'make:migration Artisan command':
 
-```php
-php artisan make:migration create_users_table
-```
+`php artisan make:migration create_users_table`
 
 The new migration will be placed in your `database/migrations` directory. Each migration file name contains a timestamp which allows Laravel to determine the order of the migrations.
 
@@ -629,13 +640,11 @@ The --table and --create options may also be used to indicate the name of the ta
 
 You may also specify a --path option when creating the migration. The path should be relative to the root directory of your installation:
 
-```php
-php artisan make:migration create_demo_table --path=packages/ACME/HelloWorld/src/Database/Migrations
-```
+`php artisan make:migration create_demo_table --path=packages/ACME/HelloWorld/src/Database/Migrations`
 
 ### How to Add Menu in Admin <a id="add-menu"></a>
 
-### Step-1
+#### Step-1
 
 1. Within your package `HelloWorld/src/`, create **Config** folder and create a file as **_menu.php_**'.
 
@@ -900,6 +909,17 @@ return [
 
 ### Creating Models<a id="create_models"></a>
 
+#### Create model by using Bagisto Package Generator
+
+- This command will create a following files,
+  - New model class in '**__packages/ACME/TestPackage/src/Models__**' directory.
+  - New model proxy class in '**__packages/ACME/TestPackage/src/Models__**' directory.
+  - New model contract in '**__packages/ACME/TestPackage/src/Contracts__**' directory.
+
+`php artisan package:make-model User ACME/HelloWorld`
+
+#### Create model by normal laravel commands
+
 Models typically live in the app directory, but you are free to place them anywhere that can be auto-loaded according to your **_composer.json_** file. All Eloquent models extend `Illuminate\Database\Eloquent\Model` class.
 
 The simple way to create a model is executing the command _make:model Artisan command_:
@@ -914,9 +934,9 @@ After creating model, to generate database migration, you may append `--migratio
 
 **Note** : _For more details check_ <a href="https://laravel.com/docs/5.8/eloquent#defining-models" target="_blank" class="bagsito-link"> Laravel Models </a>
 
-#### What is Contracts, Repositories and proxies ?<a id="about"></a>
+### What is Contracts, Repositories and Proxies ?<a id="about"></a>
 
-##### Contracts
+#### Contracts
 
 Laravel's Contracts are a set of interfaces that define the core services provided by the framework. For example, an `Illuminate\Contracts\Queue\Queue` contract defines the methods needed for queueing jobs, while the `Illuminate\Contracts\Mail\Mailer` contract defines the methods needed for sending an e-mail.
 
@@ -926,27 +946,27 @@ All of the Laravel contracts live in their own GitHub repository. This provides 
 
 **Note** : _For more details check_ <a href="https://laravel.com/docs/5.8/contracts" target="_blank" class="bagsito-link"> Laravel Contracts </a>
 
-##### Repositories
+#### Repositories
 
 Generally, we wrote all of our application logic in the controller. There’s an alternative approach of development that abstracts some calls into PHP classes called Repositories. The idea is that we can decouple models from controllers and assign a readable name's to complicated queries.
 
 This file defines our Repository class. Instances of this class have a model property that we tie to an Eloquent model. Once this is bound in the constructor we can call Eloquent methods like findOrFail, update or all from the class methods.
 
-##### Proxies
+#### Proxies
 
 Proxies as their name state will drive you to the actual model class. The concept of model proxies has been introduced to override the functionality of the existing Model. It is a type of model inheritance without creating a new table in the database.
 
-##### Store data through Repository <a id="store-data-through-repository"></a>
+### Store data through Repository <a id="store-data-through-repository"></a>
 
 Steps to store data through repository :
 
 - Beginning with the creation of models, generally, models are created using command stated below.
 
-> php artisan make:model HelloWorld
+`php artisan make:model HelloWorld`
 
 - Now, at the same location create a model proxy file as **_HelloWorldProxy.php_**. This Proxy class will extends ModelProxy. Also, you have to add `use Konekt\Concord\Proxies\ModelProxy;` like below stated
 
-```php
+~~~php
 <?php
 
 namespace Acme\HelloWorld\Models;
@@ -957,14 +977,14 @@ class DataFlowProfileProxy extends ModelProxy
 {
 
 }
-```
+~~~
 
 - Now, make a folder named as **Contracts** and inside it create an interface file named as **_HelloWorld.php_**
 
 - Now, make a **Repository** folder and inside it create a file **_HelloWorldRepository.php_** and
   write the model method for repository class and under the method return path of your contract class.
 
-```php
+~~~php
 <?php
 namespace Acme\HelloWorld\Repositories;
 
@@ -982,11 +1002,11 @@ class HelloWorldRepository extends Repository
         return 'ACME\HelloWorld\Contracts\HelloWorld';
     }
 }
-```
+~~~
 
 After creating all the files stated above for our package, we have to create a provider as **_ModuleServiceProvider.php_** and register it in `config/concord.php`. Inside this file, models used within the package are registered. You may check below code
 
-```php
+~~~php
     <?php
 
     namespace  Acme\HelloWorld\Providers;
@@ -999,11 +1019,11 @@ After creating all the files stated above for our package, we have to create a p
             \Acme\HelloWorld\Models\HelloWorld::class,
         ];
     }
-```
+~~~
 
 **Now**, Registering **_ModuleServiceProvider.php_** in `config/concord.php` file
 
-```php
+~~~php
 <?php
 
 return [
@@ -1018,4 +1038,4 @@ return [
         \Acme\HelloWorld\Providers\ModuleServiceProvider::class
     ]
 ];
-```
+~~~
