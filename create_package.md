@@ -95,12 +95,13 @@ Let's start with first step by creating the packages folder.
    If you want to do with **Bagisto Package Generator** then you need to type this command, this command will generate service provider for you.
 
   ~~~php
-  php artisan package:make-provider HelloWorldServiceProvider ACME/HelloWorld --plain
+  php artisan package:make-provider HelloWorldServiceProvider ACME/HelloWorld
   ~~~
 
   If somehow you don't have **Bagisto Package Generator**, then you can do manually also.
 
   ~~~php
+  <?php
   namespace ACME\HelloWorld\Providers;
 
   use Illuminate\Support\ServiceProvider;
@@ -157,22 +158,40 @@ Let's start with first step by creating the packages folder.
 
   1. **For routes**: Create **Http** folder inside **src** folder of your package & inside **Http** create two files name as **_admin-routes.php_** and **_shop-routes.php_**.
   
-  - **admin-routes.php**: This file is for the admin routes.
+  - **admin-routes.php**: This file is for the admin routes. Add below codes to this file,
 
-  - **shop-routes.php**: This file is for the shop routes.
+  ~~~php
+  <?php
+      Route::group(['middleware' => ['web', 'admin']], function () {
+
+          // all admin routes will place here
+
+      });
+  ~~~
+
+  - **shop-routes.php**: This file is for the shop routes. Add below codes to this file,
+
+  ~~~php
+  <?php
+      Route::group(['middleware' => ['web', 'theme', 'locale', 'currency']], function () {
+
+          // all shop routes will be place here
+
+      });
+  ~~~
 
   Or if you don't want to do it manually then you can use our **Bagisto Package Generator**. For that you need to use this command,
 
   For **admin-routes.php**,
 
   ~~~php
-  php artisan package:make-admin-route ACME/TestPackage
+  php artisan package:make-admin-route ACME/HelloWorld
   ~~~
 
   For **shop-routes.php**,
 
   ~~~php
-  php artisan package:make-shop-route ACME/TestPackage
+  php artisan package:make-shop-route ACME/HelloWorld
   ~~~
 
   Now, we need to register our route file to service provider’s boot method i.e. **_HelloWorldServiceProvider.php_**
@@ -224,7 +243,19 @@ Let's start with first step by creating the packages folder.
           - admin/
           - shop/
 
-  Inside each folder i.e. **admin** and **shop** create a file named as **index.blade.php**.
+  Inside each folder i.e. **admin** and **shop** create a file named as **index.blade.php**. Add some data to **index.blade.php**,
+
+  **__admin/index.blade.php__**
+
+  ~~~php
+  <h2>Hello World Admin</h2>
+  ~~~
+
+  **__shop/index.blade.php__**
+
+  ~~~php
+  <h2>Hello World Shop</h2>
+  ~~~
 
   Now just like the route file, we need to register our view folder inside the service provider to specify a path where views are located.
 
@@ -268,16 +299,23 @@ Let's start with first step by creating the packages folder.
   }
   ~~~
 
+  Now run `composer dump-autoload`, so laravel can detect the new route files.
+
 ##### Step-7
 
 - Now, we need to create a route & render a view on that route.
 
-Go to `packages/ACME/HelloWorld/src/Http/shop-routes.php` file and create a route to render view. If you have auto generated route by using **Bagisto Package Generator**, then skip this step.
+Go to `packages/ACME/HelloWorld/src/Http/shop-routes.php` file and create a route to render view.
 
 ~~~php
 <?php
 
-Route::view('/hello-world', 'helloworld::shop.index');
+Route::group(['middleware' => ['web', 'admin']], function () {
+
+    // all admin routes will place here
+    Route::view('/admin/hello-world', 'helloworld::admin.index');
+
+});
 ~~~
 
 Same for admin routes in file `packages/ACME/HelloWorld/src/Http/admin-routes.php`.
@@ -285,12 +323,13 @@ Same for admin routes in file `packages/ACME/HelloWorld/src/Http/admin-routes.ph
 ~~~php
 <?php
 
-Route::view('/admin/hello-world', 'helloworld::admin.index');
+Route::group(['middleware' => ['web', 'theme', 'locale', 'currency']], function () {
+
+    // all shop routes will be place here
+    Route::view('/hello-world', 'helloworld::shop.index');
+
+});
 ~~~
-
-![view-route-creation](assets/images/Bagisto_Docs_Images/PackageDevelopment/view-route-creation.png){: .screenshot-dimension .center}
-
-Now run 'composer dump-autoload', so laravel can detect the new route files and works. Otherwise, it won't work and will return NotFound Exception.
 
 Now, you can append ‘hello-world’ to your local path in the browser's URL to see the output.
 
