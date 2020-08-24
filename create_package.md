@@ -333,7 +333,11 @@ Route::group(['middleware' => ['web', 'theme', 'locale', 'currency']], function 
 
 Now, you can append ‘hello-world’ to your local path in the browser's URL to see the output.
 
-![helloworld-browser-output](assets/images/Bagisto_Docs_Images/PackageDevelopment/helloworld-browser-output.png){: .screenshot-dimension .center}
+**__Admin Output__**
+![helloworld-admin-browser-output](assets/images/Bagisto_Docs_Images/PackageDevelopment/helloworld-admin-browser-output.png){: .screenshot-dimension .center}
+
+**__Shop Output__**
+![helloworld-shop-browser-output](assets/images/Bagisto_Docs_Images/PackageDevelopment/helloworld-shop-browser-output.png){: .screenshot-dimension .center}
 
 ##### Step-8
 
