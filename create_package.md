@@ -92,7 +92,7 @@ Let's start with first step by creating the packages folder.
 
   - [Register Method](https://laravel.com/docs/7.x/providers#the-register-method){: target="\_blank"}
 
-   If you have **Bagisto Package Generator** then you need to type this command, this command will generate service provider for you.
+   If you want to do with **Bagisto Package Generator** then you need to type this command, this command will generate service provider for you.
 
   ~~~php
   php artisan package:make-provider HelloWorldServiceProvider ACME/HelloWorld
@@ -145,7 +145,7 @@ Let's start with first step by creating the packages folder.
 
 ##### Step-5
 
-- Now, we need to add our package to the **_composer.json_** file of project root for autoloading in psr-4.
+- Now, we need to add our package to the **_composer.json_** file of project root for auto loading in psr-4.
 
   ~~~json
   "ACME\\HelloWorld\\": "packages/ACME/HelloWorld/src"
@@ -155,7 +155,25 @@ Let's start with first step by creating the packages folder.
 
 - Now, we are going to add routing & views in our package.
 
-  1. For routes: create an **Http** folder inside **src** folder of your package & inside **Http** create a file name as **_routes.php_** like `YourPackage/src/Http/routes.php`. In this file, we can create routes for the package.
+  1. **For routes**: Create **Http** folder inside **src** folder of your package & inside **Http** create two files name as **_admin-routes.php_** and **_shop-routes.php_**.
+  
+  - **admin-routes.php**: This file is for the admin routes.
+
+  - **shop-routes.php**: This file is for the shop routes.
+
+  Or if you don't want to do it manually then you can use our **Bagisto Package Generator**. For that you need to use this command,
+
+  For **admin-routes.php**,
+
+  ~~~php
+  php artisan package:make-admin-route ACME/TestPackage
+  ~~~
+
+  For **shop-routes.php**,
+
+  ~~~php
+  php artisan package:make-shop-route ACME/TestPackage
+  ~~~
 
   Now, we need to register our route file to service provider’s boot method i.e. **_HelloWorldServiceProvider.php_**
 
@@ -180,7 +198,9 @@ Let's start with first step by creating the packages folder.
       */
       public function boot()
       {
-          include __DIR__ . '/../Http/routes.php';
+          $this->loadRoutesFrom(__DIR__ . '/../Http/admin-routes.php');
+
+          $this->loadRoutesFrom(__DIR__ . '/../Http/shop-routes.php');
       }
 
       /**
@@ -195,9 +215,7 @@ Let's start with first step by creating the packages folder.
   }
   ~~~
 
-  To load routes, you can also use ‘loadRoutesFrom’ method.
-
-  2. For views: Create a **Resources** folder inside **src** folder of the package. Inside the **Resources** folder create a folder name as **views**. Now, in the **views** folder, we can create a view for the package.
+  2. **For views**: Create **Resources** folder inside **src** folder of the package. Inside the **Resources** folder create a folder name as **views**. Now, in the **views** folder, we can create a view for the package.
 
   Right now, we are going to create a folder **helloworld** inside the views. In this **helloworld** folder we will create a file name as **_helloworld.blade.php_**
 
@@ -224,7 +242,9 @@ Let's start with first step by creating the packages folder.
       */
       public function boot()
       {
-          include __DIR__ . '/../Http/routes.php';
+          $this->loadRoutesFrom(__DIR__ . '/../Http/admin-routes.php');
+
+          $this->loadRoutesFrom(__DIR__ . '/../Http/shop-routes.php');
 
           $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'helloworld');
       }
