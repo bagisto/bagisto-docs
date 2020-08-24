@@ -334,9 +334,11 @@ Route::group(['middleware' => ['web', 'theme', 'locale', 'currency']], function 
 Now, you can append ‘hello-world’ to your local path in the browser's URL to see the output.
 
 **__Admin Output__**
+
 ![helloworld-admin-browser-output](assets/images/Bagisto_Docs_Images/PackageDevelopment/helloworld-admin-browser-output.png){: .screenshot-dimension .center}
 
 **__Shop Output__**
+
 ![helloworld-shop-browser-output](assets/images/Bagisto_Docs_Images/PackageDevelopment/helloworld-shop-browser-output.png){: .screenshot-dimension .center}
 
 ##### Step-8
@@ -349,58 +351,61 @@ Inside the **lang** folder, you can create a different folder for language trans
 
 Now, we need to register the language file to the service provider.
 
-```php
-        <?php
+~~~php
+<?php
 
-        namespace ACME\HelloWorld\Providers;
+namespace ACME\HelloWorld\Providers;
 
-        use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
-        /**
-        * HelloWorld service provider
-        *
-        * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
-        */
-        class HelloWorldServiceProvider extends ServiceProvider
-        {
-            /**
-            * Bootstrap services.
-            *
-            * @return void
-            */
-            public function boot()
-            {
-                include __DIR__ . '/../Http/routes.php';
+/**
+* HelloWorld service provider
+*
+* @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
+*/
+class HelloWorldServiceProvider extends ServiceProvider
+{
+    /**
+    * Bootstrap services.
+    *
+    * @return void
+    */
+    public function boot()
+    {
+        $this->loadRoutesFrom(__DIR__ . '/../Http/admin-routes.php');
 
-                $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'helloworld');
+        $this->loadRoutesFrom(__DIR__ . '/../Http/shop-routes.php');
 
-                $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'helloworld');
-            }
+        $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'helloworld');
 
-            /**
-            * Register services.
-            *
-            * @return void
-            */
-            public function register()
-            {
+        $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'helloworld');
+    }
 
-            }
-        }
-```
+    /**
+    * Register services.
+    *
+    * @return void
+    */
+    public function register()
+    {
+
+    }
+}
+~~~
 
 Now we can write a translation in **_app.php_** like below.
 
-```php
+~~~php
 <?php
+
 return [
     'hello-world' => [
         'name' => 'Prateek Srivastava'
     ]
 ];
-```
+~~~
 
-Add \{\{ \_\_(‘helloworld::app.hello-world.name’) \}\} to your application’s view & it will automatically translate it.
+Add `{{ __('helloworld::app.hello-world.name') }}` to your application’s view & it will automatically translate it.
 
 ![translation-output](assets/images/Bagisto_Docs_Images/PackageDevelopment/translation-output.png){: .screenshot-dimension .center}
 
@@ -410,9 +415,9 @@ Add \{\{ \_\_(‘helloworld::app.hello-world.name’) \}\} to your application�
 
 Create a **Resources** folder inside the **src** folder of your package. Inside **Resources** folder creates a folder name **assets** & inside it create **sass** folder & inside it create a file **_app.scss_** like `package/src/Resources/assets/app.scss`. This **_app.scss_** will consist SASS for a package. In **_package.json_** file, you can mention your npm dependencies. Create a **_webpack.mix.js_** file, this will be used for compiling our assets.
 
-**_package.json_** file consist
+**_package.json_** file consist,
 
-```javascript
+~~~json
 {
     "scripts": {
         "dev": "npm run development",
@@ -430,46 +435,11 @@ Create a **Resources** folder inside the **src** folder of your package. Inside 
         "laravel-mix-merge-manifest": "^0.1.2"
     }
 }
-```
+~~~
 
-![package-json](assets/images/Bagisto_Docs_Images/PackageDevelopment/package-json.png){: .screenshot-dimension .center}
+**_webpack.mix.js_** file consist,
 
-**_webpack.mix.js_** will consist
-
-```javascript
-const mix = require("laravel-mix");
-require("laravel-mix-merge-manifest");
-
-if (mix.inProduction()) {
-  var publicPath = "publishable/assets";
-} else {
-  var publicPath = "../../../public/vendor/webkul/helloworld/assets";
-}
-
-mix.setPublicPath(publicPath).mergeManifest();
-
-mix.disableNotifications();
-
-mix
-  .sass(__dirname + "/src/Resources/assets/sass/app.scss", "css/helloworld.css")
-  .options({
-    processCssUrls: false
-  });
-
-if (mix.inProduction()) {
-  mix.version();
-}
-```
-
-All dependency can be updated according to need.
-
-After doing this go to the root of your package & run ‘npm install’ which will install all dependencies. After installing dependencies run ‘npm run watch’, which will compile all your CSS & publish it inside public folder according to path mention in **_webpack.mix.js_** according to the environment.
-
-In the same way, we can also add images & js. Inside **assets** folder of **Resources**, create two folders **js** & **images** in which create **_app.js_** file for js & inside **images** folder, place the images.
-
-Now we need to publish these two also as we did for CSS. We will add this too to our **_webpack.mix.js_**
-
-```javascript
+~~~javascript
 const mix = require("laravel-mix");
 require("laravel-mix-merge-manifest");
 
@@ -496,21 +466,23 @@ mix.js(__dirname + "/src/Resources/assets/js/app.js", "js/helloworld.js")
 if (mix.inProduction()) {
   mix.version();
 }
-```
+~~~
 
-<!-- ![webpack-mix](assets/images/Bagisto_Docs_Images/PackageDevelopment/webpack-mix.png){: .screenshot-dimension .center} -->
+After doing this go to the root of your package & run ‘npm install’ which will install all dependencies. After installing dependencies run ‘npm run watch’, which will compile all your CSS & publish it inside public folder according to path mention in **_webpack.mix.js_** according to the environment.
+
+In the same way, we can also add images & js. Inside **assets** folder of **Resources**, create two folders **js** & **images** in which create **_app.js_** file for js & inside **images** folder, place the images.
 
 Once again, we need to run ‘npm run watch’ to compile assets.
 
 After doing this we need to add an event listener so that admin layouts include our CSS. For this we need to add an Event Listener in service provider & Inside views create a folder called **layouts** & inside it create a file called **_style.blade.php_** & mention compiled CSS path inside this file.
 
-```html
+~~~html
 <link
   rel="stylesheet"
   href="{% raw %} {{ asset('vendor/webkul/helloworld/assets/css/helloworld.css') }} {% endraw %}"
 />
 ( In style.blade.php)
-```
+~~~
 
 ![style-blade](assets/images/Bagisto_Docs_Images/PackageDevelopment/style-blade.png){: .screenshot-dimension .center}
 
@@ -518,50 +490,50 @@ After doing this we need to add an event listener so that admin layouts include 
 
 Initially, add facade 'Event' into your **_HelloWorldServiceProvider.php_** file, else it will throw an error.
 
-```php
-        <?php
+~~~php
+<?php
 
-        namespace ACME\HelloWorld\Providers;
+namespace ACME\HelloWorld\Providers;
 
-        use Illuminate\Support\ServiceProvider;
-        use Illuminate\Support\Facades\Event;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Event;
 
-        /**
-        * HelloWorld service provider
-        *
-        * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
-        */
-        class HelloWorldServiceProvider extends ServiceProvider
-        {
-            /**
-            * Bootstrap services.
-            *
-            * @return void
-            */
-            public function boot()
-            {
-                include __DIR__ . '/../Http/routes.php';
+/**
+* HelloWorld service provider
+*
+* @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
+*/
+class HelloWorldServiceProvider extends ServiceProvider
+{
+    /**
+    * Bootstrap services.
+    *
+    * @return void
+    */
+    public function boot()
+    {
+        include __DIR__ . '/../Http/routes.php';
 
-                $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'helloworld');
+        $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'helloworld');
 
-                $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'helloworld');
+        $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'helloworld');
 
-                Event::listen('bagisto.admin.layout.head', function($viewRenderEventManager) {
-                    $viewRenderEventManager->addTemplate('helloworld::helloworld.layouts.style');
-                });
-            }
+        Event::listen('bagisto.admin.layout.head', function($viewRenderEventManager) {
+            $viewRenderEventManager->addTemplate('helloworld::helloworld.layouts.style');
+        });
+    }
 
-            /**
-            * Register services.
-            *
-            * @return void
-            */
-            public function register()
-            {
+    /**
+    * Register services.
+    *
+    * @return void
+    */
+    public function register()
+    {
 
-            }
-        }
-```
+    }
+}
+~~~
 
 <!-- ![provider](assets/images/Bagisto_Docs_Images/PackageDevelopment/provider-all.png){: .screenshot-dimension .center} -->
 
