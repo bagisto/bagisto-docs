@@ -964,6 +964,8 @@ Steps to store data through repository :
 
 `php artisan make:model HelloWorld`
 
+Note: If you have created model by using **__Bagisto Package Generator__**, then you can skip the model proxy and contract creation step.
+
 - Now, at the same location create a model proxy file as **_HelloWorldProxy.php_**. This Proxy class will extends ModelProxy. Also, you have to add `use Konekt\Concord\Proxies\ModelProxy;` like below stated
 
 ~~~php
@@ -981,8 +983,11 @@ class DataFlowProfileProxy extends ModelProxy
 
 - Now, make a folder named as **Contracts** and inside it create an interface file named as **_HelloWorld.php_**
 
-- Now, make a **Repository** folder and inside it create a file **_HelloWorldRepository.php_** and
-  write the model method for repository class and under the method return path of your contract class.
+- Now, let's create a Repository, by using this command if you have **__Bagisto Package Generator__**.
+
+`php artisan package:make-repository HelloWorldRepository ACME/HelloWorld`
+
+- Or you can create manually also, make a **Repository** folder and inside it create a file **_HelloWorldRepository.php_** and write the model method for repository class and under the method return path of your contract class.
 
 ~~~php
 <?php
@@ -1004,21 +1009,21 @@ class HelloWorldRepository extends Repository
 }
 ~~~
 
-After creating all the files stated above for our package, we have to create a provider as **_ModuleServiceProvider.php_** and register it in `config/concord.php`. Inside this file, models used within the package are registered. You may check below code
+- After creating all the files stated above for our package, we have to create a provider as **_ModuleServiceProvider.php_** and register it in `config/concord.php`. Inside this file, models used within the package are registered. You may check below code
 
 ~~~php
-    <?php
+<?php
 
-    namespace  Acme\HelloWorld\Providers;
+namespace  Acme\HelloWorld\Providers;
 
-    use Konekt\Concord\BaseModuleServiceProvider;
+use Konekt\Concord\BaseModuleServiceProvider;
 
-    class ModuleServiceProvider extends BaseModuleServiceProvider
-    {
-        protected $models = [
-            \Acme\HelloWorld\Models\HelloWorld::class,
-        ];
-    }
+class ModuleServiceProvider extends BaseModuleServiceProvider
+{
+    protected $models = [
+        \Acme\HelloWorld\Models\HelloWorld::class,
+    ];
+}
 ~~~
 
 **Now**, Registering **_ModuleServiceProvider.php_** in `config/concord.php` file
