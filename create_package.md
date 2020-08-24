@@ -347,7 +347,7 @@ Now, you can append ‘hello-world’ to your local path in the browser's URL to
 
 For this create a **lang** folder inside the **Resources** folder.
 
-Inside the **lang** folder, you can create a different folder for language translations like for English 'en', Hindi ‘hn’ etc. Moving forward, we will create a folder name **en** (`say language code`) & inside **en** folder, create a file name as **_app.php_** to perform language translation
+Inside the **lang** folder, you can create a different folder for language translations like for English 'en', Hindi ‘hn’ etc. Moving forward, we will create a folder name **en** (say language code) & inside **en** folder, create a file name as **_app.php_** to perform language translation
 
 Now, we need to register the language file to the service provider.
 
@@ -411,9 +411,24 @@ Add `{{ __('helloworld::app.hello-world.name') }}` to your application’s view 
 
 ##### Step-9
 
-- Now we will add CSS to our package. To add CSS create **_package.json_** file & **_webpack.mix.js_** file inside the root of your package.
+- Now we will add CSS, JS and images to our package.
 
-Create a **Resources** folder inside the **src** folder of your package. Inside **Resources** folder creates a folder name **assets** & inside it create **sass** folder & inside it create a file **_app.scss_** like `package/src/Resources/assets/app.scss`. This **_app.scss_** will consist SASS for a package. In **_package.json_** file, you can mention your npm dependencies. Create a **_webpack.mix.js_** file, this will be used for compiling our assets.
+- Inside **Resources** folder creates a folder name **assets** & inside it create **sass**, **js** and **images** folder.
+
+  - Inside **sass** folder, add file **_app.scss_**
+  
+  - Inside **js** folder, add file **app.js**
+
+- Final structure will look like this,
+
+  - Resources/
+    - sass/
+      - app.scs
+    - js/
+      - app.js
+    - images/
+
+- To add CSS create **_package.json_** file & **_webpack.mix.js_** file inside the root of your package.
 
 **_package.json_** file consist,
 
@@ -441,6 +456,11 @@ Create a **Resources** folder inside the **src** folder of your package. Inside 
 
 ~~~javascript
 const mix = require("laravel-mix");
+
+if (mix == 'undefined') {
+    const { mix } = require("laravel-mix");
+}
+
 require("laravel-mix-merge-manifest");
 
 if (mix.inProduction()) {
@@ -453,11 +473,8 @@ mix.setPublicPath(publicPath).mergeManifest();
 
 mix.disableNotifications();
 
-mix.js(__dirname + "/src/Resources/assets/js/app.js", "js/helloworld.js")
-  .copyDirectory(
-    __dirname + "/src/Resources/assets/images",
-    publicPath + "/images"
-  );
+mix.js([__dirname + "/src/Resources/assets/js/app.js"], "js/helloworld.js")
+  .copyDirectory(__dirname + "/src/Resources/assets/images", publicPath + "/images")
   .sass(__dirname + "/src/Resources/assets/sass/app.scss", "css/helloworld.css")
   .options({
     processCssUrls: false
@@ -468,25 +485,23 @@ if (mix.inProduction()) {
 }
 ~~~
 
-After doing this go to the root of your package & run ‘npm install’ which will install all dependencies. After installing dependencies run ‘npm run watch’, which will compile all your CSS & publish it inside public folder according to path mention in **_webpack.mix.js_** according to the environment.
+- After doing this go to the root of your package & run ‘npm install’ which will install all dependencies. After installing dependencies run ‘npm run watch’, which will compile all your CSS & publish it inside public folder according to path mention in **_webpack.mix.js_** according to the environment.
 
-In the same way, we can also add images & js. Inside **assets** folder of **Resources**, create two folders **js** & **images** in which create **_app.js_** file for js & inside **images** folder, place the images.
+- Once again, we need to run ‘npm run watch’ to compile assets.
 
-Once again, we need to run ‘npm run watch’ to compile assets.
-
-After doing this we need to add an event listener so that admin layouts include our CSS. For this we need to add an Event Listener in service provider & Inside views create a folder called **layouts** & inside it create a file called **_style.blade.php_** & mention compiled CSS path inside this file.
+- After doing this we need to add an event listener so that admin layouts include our CSS. For this we need to add an Event Listener in service provider & Inside views create a folder called **layouts** & inside it create a file called **_style.blade.php_** & mention compiled CSS path inside this file.
 
 ~~~html
 <link
   rel="stylesheet"
   href="{% raw %} {{ asset('vendor/webkul/helloworld/assets/css/helloworld.css') }} {% endraw %}"
 />
-( In style.blade.php)
+(In style.blade.php)
 ~~~
 
 ![style-blade](assets/images/Bagisto_Docs_Images/PackageDevelopment/style-blade.png){: .screenshot-dimension .center}
 
-**For Event Listener –**
+- **For Event Listener:**
 
 Initially, add facade 'Event' into your **_HelloWorldServiceProvider.php_** file, else it will throw an error.
 
@@ -512,7 +527,9 @@ class HelloWorldServiceProvider extends ServiceProvider
     */
     public function boot()
     {
-        include __DIR__ . '/../Http/routes.php';
+        $this->loadRoutesFrom(__DIR__ . '/../Http/admin-routes.php');
+
+        $this->loadRoutesFrom(__DIR__ . '/../Http/shop-routes.php');
 
         $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'helloworld');
 
@@ -535,9 +552,9 @@ class HelloWorldServiceProvider extends ServiceProvider
 }
 ~~~
 
-<!-- ![provider](assets/images/Bagisto_Docs_Images/PackageDevelopment/provider-all.png){: .screenshot-dimension .center} -->
+- Till now, we configured our package HelloWorld and now we need to extend the default layout of our admin panel by using `@extends('admin::layouts.content')` in file `packages/acme/HelloWorld/src/Resources/views/admin/index.blade.php`.
 
-Till now, we configured our package HelloWorld and now we need to extend the default layout of our admin panel by using '@extends('admin::layouts.content')' in file `packages/acme/HelloWorld/src/Resources/views/admin/index.php`. If you don’t want to include this one then you can create your own master file which includes your packages CSS & JS.
+- If you don’t want to include this one then you can create your own master file which includes your packages CSS & JS.
 
 ![layout-content](assets/images/Bagisto_Docs_Images/PackageDevelopment/layout-content.png){: .screenshot-dimension .center}
 
@@ -549,54 +566,54 @@ Create a **Database** folder inside **src** folder & inside **Database** folder 
 
 Now, we need to add migrations to our service provider to load them.
 
-```php
-        <?php
+~~~php
+<?php
 
-        namespace ACME\HelloWorld\Providers;
+namespace ACME\HelloWorld\Providers;
 
-        use Illuminate\Support\ServiceProvider;
-        use Illuminate\Support\Facades\Event;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Event;
 
-        /**
-        * HelloWorld service provider
-        *
-        * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
-        */
-        class HelloWorldServiceProvider extends ServiceProvider
-        {
-            /**
-            * Bootstrap services.
-            *
-            * @return void
-            */
-            public function boot()
-            {
-                include __DIR__ . '/../Http/routes.php';
+/**
+* HelloWorld service provider
+*
+* @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
+*/
+class HelloWorldServiceProvider extends ServiceProvider
+{
+    /**
+    * Bootstrap services.
+    *
+    * @return void
+    */
+    public function boot()
+    {
+        $this->loadRoutesFrom(__DIR__ . '/../Http/admin-routes.php');
 
-                $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'helloworld');
+        $this->loadRoutesFrom(__DIR__ . '/../Http/shop-routes.php');
 
-                $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'helloworld');
+        $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'helloworld');
 
-                Event::listen('bagisto.admin.layout.head', function($viewRenderEventManager) {
-                    $viewRenderEventManager->addTemplate('helloworld::helloworld.layouts.style');
-                });
+        $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'helloworld');
 
-                $this->loadMigrationsFrom(__DIR__ .'/../Database/Migrations');
-            }
+        Event::listen('bagisto.admin.layout.head', function($viewRenderEventManager) {
+            $viewRenderEventManager->addTemplate('helloworld::helloworld.layouts.style');
+        });
 
-            /**
-            * Register services.
-            *
-            * @return void
-            */
-            public function register()
-            {
+        $this->loadMigrationsFrom(__DIR__ .'/../Database/Migrations');
+    }
 
-            }
-        }
-```
+    /**
+    * Register services.
+    *
+    * @return void
+    */
+    public function register()
+    {
 
-<!-- ![merge-config-for-menu](assets/images/Bagisto_Docs_Images/PackageDevelopment/merge-config-for-menu.png){: .screenshot-dimension .center} -->
+    }
+}
+~~~
 
 ### How to create Migrations ?<a id="create-migrations"></a>
 
