@@ -95,7 +95,7 @@ Let's start with first step by creating the packages folder.
    If you want to do with **Bagisto Package Generator** then you need to type this command, this command will generate service provider for you.
 
   ~~~php
-  php artisan package:make-provider HelloWorldServiceProvider ACME/HelloWorld
+  php artisan package:make-provider HelloWorldServiceProvider ACME/HelloWorld --plain
   ~~~
 
   If somehow you don't have **Bagisto Package Generator**, then you can do manually also.
@@ -215,9 +215,16 @@ Let's start with first step by creating the packages folder.
   }
   ~~~
 
-  2. **For views**: Create **Resources** folder inside **src** folder of the package. Inside the **Resources** folder create a folder name as **views**. Now, in the **views** folder, we can create a view for the package.
+  2. **For views**: Create **Resources** folder inside **src** folder of the package. Inside the **Resources** folder create a folder name as **views**. Now, in the **views** folder, we need to create a two more folder i.e. **admin** and **shop**. So structure will look like this,
 
-  Right now, we are going to create a folder **helloworld** inside the views. In this **helloworld** folder we will create a file name as **_helloworld.blade.php_**
+      - Resources/
+        - assets/
+        - lang/
+        - views/
+          - admin/
+          - shop/
+
+  Inside each folder i.e. **admin** and **shop** create a file named as **index.blade.php**.
 
   Now just like the route file, we need to register our view folder inside the service provider to specify a path where views are located.
 
@@ -265,13 +272,21 @@ Let's start with first step by creating the packages folder.
 
 - Now, we need to create a route & render a view on that route.
 
-Go to `ACME/HelloWorld/src/Http/routes.php` file and create a route to render view
+Go to `packages/ACME/HelloWorld/src/Http/shop-routes.php` file and create a route to render view. If you have auto generated route by using **Bagisto Package Generator**, then skip this step.
 
-```php
+~~~php
 <?php
 
-    Route::view('/hello-world', 'helloworld::helloworld.helloworld');
-```
+Route::view('/hello-world', 'helloworld::shop.index');
+~~~
+
+Same for admin routes in file `packages/ACME/HelloWorld/src/Http/admin-routes.php`.
+
+~~~php
+<?php
+
+Route::view('/admin/hello-world', 'helloworld::admin.index');
+~~~
 
 ![view-route-creation](assets/images/Bagisto_Docs_Images/PackageDevelopment/view-route-creation.png){: .screenshot-dimension .center}
 
