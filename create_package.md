@@ -10,6 +10,7 @@ layout: Default
 
 A package is a unit added to your application for enhancement which includes routes, controllers, views, and configuration specifically. Packages are created to manage your large applications into smaller units. In the bagisto, we have created plenty of packages at path `packages/Webkul/`. You can find a basic tree-structure of package below:
 
+~~~php
 - module-name/
   - src/
     - Config/
@@ -33,6 +34,7 @@ A package is a unit added to your application for enhancement which includes rou
       - views/
   - package.json
   - webpack.mix.js
+~~~
 
 ## How To Create Package <a id="how-to-create-package"></a>
 
@@ -236,12 +238,14 @@ Let's start with first step by creating the packages folder.
 
   - **For views**: Create **Resources** folder inside **src** folder of the package. Inside the **Resources** folder create a folder name as **views**. Now, in the **views** folder, we need to create a two more folder i.e. **admin** and **shop**. So structure will look like this,
 
+    ~~~php
     - Resources/
     - assets/
     - lang/
     - views/
       - admin/
       - shop/
+    ~~~
 
     - Inside each folder i.e. **admin** and **shop** create a file named as **index.blade.php**. Add some data to **index.blade.php**,
 
@@ -419,12 +423,14 @@ Let's start with first step by creating the packages folder.
 
 - Final structure will look like this,
 
+  ~~~php
   - Resources/
     - sass/
       - app.scs
     - js/
       - app.js
     - images/
+  ~~~
 
 - To add CSS create **_package.json_** file & **_webpack.mix.js_** file inside the root of your package.
 
@@ -641,10 +647,10 @@ You may also specify a --path option when creating the migration. The path shoul
 
     return [
         [
-            'key' => 'helloworld',          // uniquely defined key for menu-icon
-            'name' => 'Hello World',        //  name of menu-icon
-            'route' => 'helloworld.index',  // the route for your menu-icon
-            'sort' => 1,                    // Sort number on which your menu-icon should display
+            'key'        => 'helloworld',          // uniquely defined key for menu-icon
+            'name'       => 'Hello World',        //  name of menu-icon
+            'route'      => 'helloworld.index',  // the route for your menu-icon
+            'sort'       => 1,                    // Sort number on which your menu-icon should display
             'icon-class' => 'dashboard-icon',   //class of menu-icon
         ]
     ];
@@ -895,14 +901,14 @@ Creating a custom configuration ease the task for a developer or any non-develop
 
 - The simple way to create a model is executing the command _make:model Artisan command_:
 
-    > `php artisan make:model User`
+    `php artisan make:model User`
 
-- After creating model, to generate database migration, you may append `--migration or -m option` artisan command as stated below
+- After creating model, to generate database migration, you may append `--migration or -m option` artisan command as stated below,
 
-    > `php artisan make:model User --migration`
-    > `php artisan make:model User -m`
+    `php artisan make:model User --migration`
+    `php artisan make:model User -m`
 
-**Note** : _For more details check_ <a href="https://laravel.com/docs/5.8/eloquent#defining-models" target="_blank" class="bagsito-link"> Laravel Models </a>
+> **Note** : _For more details check_ <a href="https://laravel.com/docs/5.8/eloquent#defining-models" target="_blank" class="bagsito-link"> Laravel Models </a>
 
 ## What is Contracts, Repositories and Proxies? <a id="about"></a>
 
@@ -914,7 +920,7 @@ Each contract has a corresponding implementation provided by the framework. For 
 
 All of the Laravel contracts live in their own GitHub repository. This provides a quick reference point for all available contracts, as well as a single, decoupled package that may be utilized by package developers.
 
-**Note** : _For more details check_ <a href="https://laravel.com/docs/5.8/contracts" target="_blank" class="bagsito-link"> Laravel Contracts </a>
+> **Note** : _For more details check_ <a href="https://laravel.com/docs/5.8/contracts" target="_blank" class="bagsito-link"> Laravel Contracts </a>
 
 ### Repositories
 
@@ -934,7 +940,7 @@ Steps to store data through repository:
 
     `php artisan make:model HelloWorld`
 
-Note: If you have created model by using **__Bagisto Package Generator__**, then you can skip the model proxy and contract creation step.
+> Note: If you have created model by using **__Bagisto Package Generator__**, then you can skip the model proxy and contract creation step.
 
 - Now, at the same location create a model proxy file as **_HelloWorldProxy.php_**. This Proxy class will extends ModelProxy. Also, you have to add `use Konekt\Concord\Proxies\ModelProxy;` like below stated
 
