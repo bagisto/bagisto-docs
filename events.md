@@ -10,7 +10,7 @@ layout: default
 
 Events are an implementation of observer pattern such that whenever an event takes place, then one or more listener(s) associated with that event responds. Imagine something like making an announcement to your application, and then actions being taken due to that announcement. All the event classes in Bagisto are stored in the **Providers** folder and the listeners are stored in the **Listeners** folder.
 
-### How to create Event Class
+### How to create Event Class?
 
 If you have Bagisto Package Generator then, you need to used this command which will create a new event class in `packages/ACME/TestPackage/src/Events` directory.
 
@@ -22,7 +22,7 @@ If event class already present then you can use force command for overwriting.
 
 Or if you don't have package generator then, you can create file manually also.
 
-### How to create Listener Class
+### How to create Listener Class?
 
 If you have Bagisto Package Generator then, you need to use this command which will create a new listener class in `packages/ACME/TestPackage/src/Listeners` directory.
 
@@ -82,7 +82,6 @@ Events fired in bagisto but not listened such that if any user wants to perform 
 
 | Events name                  | Functionality|
 | ------------------------------- | ------------- |
-|           :---:                 | :---:         |
 |core.configuration.save.after|This event will be fired after core configuration form data gets saved, then you may create a listener file and perform the respective operation when that event fires  |
 |core.configuration.save.after|This event will be fired after core configuration form data gets saved, then you may create a listener file and perform the respective operation when that event fires|
 |checkout.cart.item.add.before |This event will be fired before saving into the  database of item added in checkout and you may create a listener file and perform the respective operation when that event fires|
@@ -217,7 +216,6 @@ Events fired in bagisto but not listened such that if any user wants to perform 
 
 | Events name                     | functionality |
 | ------------------------------- | ------------- |
-|           :---:                 | :---:         |
 | checkout.order.save.after       | This event will be fired after order creation and listen in `ProductFlat` listener file to send new order mail from `sendNewOrderMail` function  |
 | sales.invoice.save.after        | This event will be fired after invoice details have been saved and listen in `ProductFlat` listener file to send new invoice mail from `sendNewInvoiceMail` function  |
 | sales.shipment.save.after       | This event will be fired after shipment details have been saved and listen in `ProductFlat` listener file to send new shipment mail from `sendNewShipmentMail` function  |
