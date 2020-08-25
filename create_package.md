@@ -893,7 +893,7 @@ Creating a custom configuration ease the task for a developer or any non-develop
   - New model proxy class in '**__packages/ACME/TestPackage/src/Models__**' directory.
   - New model contract in '**__packages/ACME/TestPackage/src/Contracts__**' directory.
 
-    `php artisan package:make-model User ACME/HelloWorld`
+  `php artisan package:make-model User ACME/HelloWorld`
 
 ### Create model by normal laravel commands
 
