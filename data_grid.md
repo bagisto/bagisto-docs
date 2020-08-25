@@ -203,48 +203,50 @@ This will generate whole directory structures. You don't need to do manually.
 
     - `addColumns()`: In this method, the columns are created to be displayed in grid. Inside this method, `addColumn()` is called to create single column. Inside this function, parameter accepts the array in `"key" => "value"` pairs. Some of the essential keys are described below :
 
-    |  Name      | functionality                                                                                                                                                                                         |
-    | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | index      | This variable is defined in grid, and the value assigned to this variable must be unique i.e., id so that data will be uniquely identified and operation perform will be based on your index variable |
-    | label      | In this key, the name of the column is defined                                                                                                                                                        |
-    | type       | This key accepts the type of data in column                                                                                                                                                           |
-    | searchable | This accepts boolean values `true/false` to make the column searchable                                                                                                                                |
-    | sortable   | This accepts boolean values `true/false` to make the column sortable                                                                                                                                  |
-    | filterable | This accepts boolean values `true/false` to make the column filterable                                                                                                                                |
-    | wrapper    | perform actions based on condition satisfied                                                                                                                                                          |
+        |  Name      | functionality                                                                                                                                                                                         |
+        | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+        | index      | This variable is defined in grid, and the value assigned to this variable must be unique i.e., id so that data will be uniquely identified and operation perform will be based on your index variable |
+        | label      | In this key, the name of the column is defined                                                                                                                                                        |
+        | type       | This key accepts the type of data in column                                                                                                                                                           |
+        | searchable | This accepts boolean values `true/false` to make the column searchable                                                                                                                                |
+        | sortable   | This accepts boolean values `true/false` to make the column sortable                                                                                                                                  |
+        | filterable | This accepts boolean values `true/false` to make the column filterable                                                                                                                                |
+        | wrapper    | perform actions based on condition satisfied                                                                                                                                                          |
 
     - `prepareActions()`: Additionally, this method is defined when there is need to perform any action such as edit or delete on grid. Inside it, `addAction()` is called to define particular action
 
     - `addAction()`: It is defined when you want to add action a number of times for individual action to be performed on grid
 
-    |  Name        | Functionality                                                                                                                   |
-    | ------------ | ------------------------------------------------------------------------------------------------------------------------------- |
-    | type         | Edit/delete                                                                                                                     |
-    | method       | HTTP methods are declared                                                                                                       |
-    | route        | This key accepts the route of icon                                                                                              |
-    | icon         | class of icon to be displayed in action column you may prefer text also                                                         |
-    | confirm_text | A confirm box is open on clicking action icon if you want the user to verify or accepts something. You can include message here |
-    | label       | The text to be displayed in written here, you may use translation also here  |
+        |  Name        | Functionality                                                                                                                   |
+        | ------------ | ------------------------------------------------------------------------------------------------------------------------------- |
+        | type         | Edit/delete                                                                                                                     |
+        | method       | HTTP methods are declared                                                                                                       |
+        | route        | This key accepts the route of icon                                                                                              |
+        | icon         | class of icon to be displayed in action column you may prefer text also                                                         |
+        | confirm_text | A confirm box is open on clicking action icon if you want the user to verify or accepts something. You can include message here |
+        | label        | The text to be displayed in written here, you may use translation also here                                                     |
 
-    ~~~php
-        public function prepareActions()
-        {
-            $this->addAction([
-                'type' => 'Edit',
-                'method' => 'GET', //use post only for redirects only
-                'route' => 'admin.catalog.attributes.edit',
-                'icon' => 'icon pencil-lg-icon'
-            ]);
+        ~~~php
+            public function prepareActions()
+            {
+                $this->addAction([
+                    'type' => 'Edit',
+                    'method' => 'GET', //use post only for redirects only
+                    'route' => 'admin.catalog.attributes.edit',
+                    'icon' => 'icon pencil-lg-icon'
+                ]);
 
-            $this->addAction([
-                'type' => 'Delete',
-                'method' => 'POST', //use post only for requests other than redirects
-                'route' => 'admin.catalog.attributes.delete',
-                'icon' => 'icon trash-icon'
-            ]);
-        }
-    ~~~
+                $this->addAction([
+                    'type' => 'Delete',
+                    'method' => 'POST', //use post only for requests other than redirects
+                    'route' => 'admin.catalog.attributes.delete',
+                    'icon' => 'icon trash-icon'
+                ]);
+            }
+        ~~~
 
-    > **Warning**:
-        > Use JavaScript with wrapper property set to true when needed
-        > Return static blade files loaded with scripts in it with caution
+### Warning
+
+- **Use JavaScript with wrapper property set to true when needed**
+
+- **Return static blade files loaded with scripts in it with caution**
