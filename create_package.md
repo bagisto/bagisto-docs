@@ -70,7 +70,7 @@ Let's start with first step by creating the packages folder.
 #### Step-1
 
 - Inside **packages** folder, create a folder with your company name or namespace and inside it create a folder with your package name.
-  e.g., here namespace is specified as ACME
+  e.g., here namespace is specified as ACME,
 
   ~~~php
   packages/ACME/HelloWorld
@@ -86,19 +86,19 @@ Let's start with first step by creating the packages folder.
 
   **Example** – HelloWorldServiceProvider.php
 
-  The Service Provider consists of two methods.
+  - The Service Provider consists of two methods.
 
-  - [Boot Method](https://laravel.com/docs/7.x/providers#the-boot-method){: target="\_blank"}
+    - [Boot Method](https://laravel.com/docs/7.x/providers#the-boot-method){: target="\_blank"}
 
-  - [Register Method](https://laravel.com/docs/7.x/providers#the-register-method){: target="\_blank"}
+    - [Register Method](https://laravel.com/docs/7.x/providers#the-register-method){: target="\_blank"}
 
-   If you want to do with **Bagisto Package Generator** then you need to type this command, this command will generate service provider for you.
+  - If you want to do with **Bagisto Package Generator** then you need to type this command, this command will generate service provider for you.
 
   ~~~php
   php artisan package:make-provider HelloWorldServiceProvider ACME/HelloWorld
   ~~~
 
-  If somehow you don't have **Bagisto Package Generator**, then you can do manually also.
+  - If somehow you don't have **Bagisto Package Generator**, then you can do manually also.
 
   ~~~php
   <?php
@@ -140,166 +140,166 @@ Let's start with first step by creating the packages folder.
 
 - Now, to register the service provider, go to the **_app.php_** file inside the **config** folder & add your service provider inside the ‘providers’ array.
 
-  ~~~php
-  ACME\HelloWorld\Providers\HelloWorldServiceProvider::class,
-  ~~~
+~~~php
+ACME\HelloWorld\Providers\HelloWorldServiceProvider::class,
+~~~
 
 #### Step-5
 
 - Now, we need to add our package to the **_composer.json_** file of project root for auto loading in psr-4.
 
-  ~~~json
-  "ACME\\HelloWorld\\": "packages/ACME/HelloWorld/src"
-  ~~~
+~~~json
+"ACME\\HelloWorld\\": "packages/ACME/HelloWorld/src"
+~~~
 
 #### Step-6
 
 - Now, we are going to add routing & views in our package.
 
-  1. **For routes**: Create **Http** folder inside **src** folder of your package & inside **Http** create two files name as **_admin-routes.php_** and **_shop-routes.php_**.
+  - **For routes**: Create **Http** folder inside **src** folder of your package & inside **Http** create two files name as **_admin-routes.php_** and **_shop-routes.php_**.
   
-  - **admin-routes.php**: This file is for the admin routes. Add below codes to this file,
+    - **admin-routes.php**: This file is for the admin routes. Add below codes to this file,
 
-  ~~~php
-  <?php
-      Route::group(['middleware' => ['web', 'admin']], function () {
+    ~~~php
+    <?php
+        Route::group(['middleware' => ['web', 'admin']], function () {
 
-          // all admin routes will place here
+            // all admin routes will place here
 
-      });
-  ~~~
+        });
+    ~~~
 
-  - **shop-routes.php**: This file is for the shop routes. Add below codes to this file,
+    - **shop-routes.php**: This file is for the shop routes. Add below codes to this file,
 
-  ~~~php
-  <?php
-      Route::group(['middleware' => ['web', 'theme', 'locale', 'currency']], function () {
+    ~~~php
+    <?php
+        Route::group(['middleware' => ['web', 'theme', 'locale', 'currency']], function () {
 
-          // all shop routes will be place here
+            // all shop routes will be place here
 
-      });
-  ~~~
+        });
+    ~~~
 
-  Or if you don't want to do it manually then you can use our **Bagisto Package Generator**. For that you need to use this command,
+    - Or if you don't want to do it manually then you can use our **Bagisto Package Generator**. For that you need to use this command,
 
-  For **admin-routes.php**,
+      - For **admin-routes.php**,
 
-  ~~~php
-  php artisan package:make-admin-route ACME/HelloWorld
-  ~~~
+        ~~~php
+        php artisan package:make-admin-route ACME/HelloWorld
+        ~~~
 
-  For **shop-routes.php**,
+      - For **shop-routes.php**,
 
-  ~~~php
-  php artisan package:make-shop-route ACME/HelloWorld
-  ~~~
+        ~~~php
+        php artisan package:make-shop-route ACME/HelloWorld
+        ~~~
 
-  Now, we need to register our route file to service provider’s boot method i.e. **_HelloWorldServiceProvider.php_**
+    - Now, we need to register our route file to service provider’s boot method i.e. **_HelloWorldServiceProvider.php_**
 
-  ~~~php
-  <?php
+    ~~~php
+    <?php
 
-  namespace ACME\HelloWorld\Providers;
+    namespace ACME\HelloWorld\Providers;
 
-  use Illuminate\Support\ServiceProvider;
+    use Illuminate\Support\ServiceProvider;
 
-  /**
-  * HelloWorld service provider
-  *
-  * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
-  */
-  class HelloWorldServiceProvider extends ServiceProvider
-  {
-      /**
-      * Bootstrap services.
-      *
-      * @return void
-      */
-      public function boot()
-      {
-          $this->loadRoutesFrom(__DIR__ . '/../Http/admin-routes.php');
+    /**
+    * HelloWorld service provider
+    *
+    * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
+    */
+    class HelloWorldServiceProvider extends ServiceProvider
+    {
+        /**
+        * Bootstrap services.
+        *
+        * @return void
+        */
+        public function boot()
+        {
+            $this->loadRoutesFrom(__DIR__ . '/../Http/admin-routes.php');
 
-          $this->loadRoutesFrom(__DIR__ . '/../Http/shop-routes.php');
-      }
+            $this->loadRoutesFrom(__DIR__ . '/../Http/shop-routes.php');
+        }
 
-      /**
-      * Register services.
-      *
-      * @return void
-      */
-      public function register()
-      {
+        /**
+        * Register services.
+        *
+        * @return void
+        */
+        public function register()
+        {
 
-      }
-  }
-  ~~~
+        }
+    }
+    ~~~
 
-  2. **For views**: Create **Resources** folder inside **src** folder of the package. Inside the **Resources** folder create a folder name as **views**. Now, in the **views** folder, we need to create a two more folder i.e. **admin** and **shop**. So structure will look like this,
+  - **For views**: Create **Resources** folder inside **src** folder of the package. Inside the **Resources** folder create a folder name as **views**. Now, in the **views** folder, we need to create a two more folder i.e. **admin** and **shop**. So structure will look like this,
 
-      - Resources/
-        - assets/
-        - lang/
-        - views/
-          - admin/
-          - shop/
+    - Resources/
+    - assets/
+    - lang/
+    - views/
+      - admin/
+      - shop/
 
-  Inside each folder i.e. **admin** and **shop** create a file named as **index.blade.php**. Add some data to **index.blade.php**,
+    - Inside each folder i.e. **admin** and **shop** create a file named as **index.blade.php**. Add some data to **index.blade.php**,
 
-  **__admin/index.blade.php__**
+      - **__admin/index.blade.php__**
 
-  ~~~php
-  <h2>Hello World Admin</h2>
-  ~~~
+        ~~~php
+        <h2>Hello World Admin</h2>
+        ~~~
 
-  **__shop/index.blade.php__**
+      - **__shop/index.blade.php__**
 
-  ~~~php
-  <h2>Hello World Shop</h2>
-  ~~~
+        ~~~php
+        <h2>Hello World Shop</h2>
+        ~~~
 
-  Now just like the route file, we need to register our view folder inside the service provider to specify a path where views are located.
+    - Now just like the route file, we need to register our view folder inside the service provider to specify a path where views are located.
 
-  ~~~php
-  <?php
+    ~~~php
+    <?php
 
-  namespace ACME\HelloWorld\Providers;
+    namespace ACME\HelloWorld\Providers;
 
-  use Illuminate\Support\ServiceProvider;
+    use Illuminate\Support\ServiceProvider;
 
-  /**
-  * HelloWorld service provider
-  *
-  * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
-  */
-  class HelloWorldServiceProvider extends ServiceProvider
-  {
-      /**
-      * Bootstrap services.
-      *
-      * @return void
-      */
-      public function boot()
-      {
-          $this->loadRoutesFrom(__DIR__ . '/../Http/admin-routes.php');
+    /**
+    * HelloWorld service provider
+    *
+    * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
+    */
+    class HelloWorldServiceProvider extends ServiceProvider
+    {
+        /**
+        * Bootstrap services.
+        *
+        * @return void
+        */
+        public function boot()
+        {
+            $this->loadRoutesFrom(__DIR__ . '/../Http/admin-routes.php');
 
-          $this->loadRoutesFrom(__DIR__ . '/../Http/shop-routes.php');
+            $this->loadRoutesFrom(__DIR__ . '/../Http/shop-routes.php');
 
-          $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'helloworld');
-      }
+            $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'helloworld');
+        }
 
-      /**
-      * Register services.
-      *
-      * @return void
-      */
-      public function register()
-      {
+        /**
+        * Register services.
+        *
+        * @return void
+        */
+        public function register()
+        {
 
-      }
-  }
-  ~~~
+        }
+    }
+    ~~~
 
-  Now run `composer dump-autoload`, so laravel can detect the new route files.
+    - Now run `composer dump-autoload`, so laravel can detect the new route files.
 
 #### Step-7
 
