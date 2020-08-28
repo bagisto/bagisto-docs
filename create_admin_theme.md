@@ -33,8 +33,8 @@ We hope that, you know how to create a package, if not refer to [Package Develop
     ];
   ~~~
 
-  - **`admin-default`**: It is use to set the current theme.
-  - **`admin-themes`**: It is use to store list of themes.
+  - **`admin-default`**: It is used to set the current theme.
+  - **`admin-themes`**: It is used to store list of themes.
 
 - Now add one more theme into the `admin-themes`.
 
