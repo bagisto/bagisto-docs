@@ -1,5 +1,5 @@
 ---
-title: Creating Themes-Bagisto
+title: Create Admin Themes-Bagisto
 layout: default
 ---
 
@@ -108,5 +108,3 @@ We hope that, you know how to create a package, if not refer to [Package Develop
 - Now check the dashboard page.
   
   ![dashboard-page](assets/images/Bagisto_Docs_Images/theme/theme-1-sample.png){: width="30%" height="50%" .center}
-
-- This is just a normal output now create your assets and play with it.
