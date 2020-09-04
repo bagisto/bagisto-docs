@@ -1,6 +1,6 @@
 ---
 title: Package Development - Bagisto
-layout: Default
+layout: default
 ---
 
 ## Package
@@ -407,7 +407,7 @@ Let's start with first step by creating the packages folder.
     ];
     ~~~
 
-- Add `{{ __('helloworld::app.hello-world.name') }}` to your application’s view & it will automatically translate it.
+- Add `\{\{ __('helloworld::app.hello-world.name') \}\}` to your application’s view & it will automatically translate it.
 
     ![translation-output](assets/images/Bagisto_Docs_Images/PackageDevelopment/translation-output.png){: .screenshot-dimension .center}
 
