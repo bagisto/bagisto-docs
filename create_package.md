@@ -100,7 +100,7 @@ Let's start with first step by creating the packages folder.
     php artisan package:make-provider HelloWorldServiceProvider ACME/HelloWorld
     ~~~
 
-  - If somehow you don't have **Bagisto Package Generator**, then you can do manually also.
+  - If somehow you don't have **Bagisto Package Generator**, then you can do it manually also.
 
     ~~~php
     <?php
