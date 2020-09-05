@@ -48,6 +48,7 @@ To learn more about Bagisto’s features and try a demo, check out [Bagisto](htt
 
 To get quickly updated on the current version and recently released features, see [Bagisto roadmap](https://bagisto.com/roadmap/){: target="\_blank" .link-color}.
 
+
 ### Requirements <a id="requirements" class="link"></a>:
 
 - <b>OS:</b>
