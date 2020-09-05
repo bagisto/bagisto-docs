@@ -87,6 +87,35 @@ To get quickly updated on the current version and recently released features, se
       1. composer create-project bagisto/bagisto
     ```
 
+      - If you want to execute the command in one go then execute :
+
+        ```
+          php artisan bagisto:install
+        ```
+        Features of this command
+
+         - it will check if .env file not exist then it will create .env and then by asking the below options :
+            -  Please select the default locale or press enter to continue [en]: 
+            -  Please enter the default timezone [Asia/Kolkata]:
+            -  Please enter the default currency [USD]: 
+            -  What is the database name to be used by bagisto?: 
+            -  What is your database username?:
+            -  What is your database password?:
+
+         -  Migrate all tables into database
+
+         -  Seeds basic data for bagisto kickstart
+
+         -  Publish Assets and Configurations
+        
+         -  Link Storage Directory To Public Directory
+        
+         -  Composer Autoload
+
+        after that run php artisan serve to start using Bagisto Cheers!
+
+        or
+
     - Now configure your database:
 
       If the command above was completed successfully, then you'll find the directory **bagisto** and all of its available code.
