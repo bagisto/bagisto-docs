@@ -25,7 +25,7 @@ At the time of writing, Bagisto’s main feature list includes:
 - Multistore Inventory System
 - Orders Management System
 - Customer Cart, Wishlist, Product Reviews
-- Simple and Configurable Products
+- Simple, Configurable, Group, Bundle, Downloadable, Virtual and Booking Products
 
 Bagisto features an administration panel with a Dashboard, sales data, a catalog for Products and Customer management:
 
@@ -56,7 +56,7 @@ To get quickly updated on the current version and recently released features, se
   3. Ubuntu 16.04 LTS or higher
 - <b>SERVER:</b> Apache 2 or NGINX
 - <b>RAM:</b> 3 GB or higher
-- <b>PHP:</b> 7.2.5 or higher
+- <b>PHP:</b> 7.3.0 or higher
 - <b>Processor:</b> Clock Cycle 1 Ghz or higher
 - <b>For </b>MySQL users: 5.7.23 or higher
 - <b>For </b>MariaDB users: 10.2.7 or higher
@@ -79,12 +79,12 @@ To get quickly updated on the current version and recently released features, se
 
       `http(s)://example.com/public`
 
-2. Try our old fashioned way to install Bagisto:
+2. Install Bagisto using command line:
 
     - Execute these commands below as in their order
 
     ```
-      1. composer create-project bagisto/bagisto
+      1. composer create-project bagisto/bagisto-standard
     ```
 
     - Now configure your database:
