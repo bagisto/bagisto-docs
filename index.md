@@ -79,17 +79,61 @@ To get quickly updated on the current version and recently released features, se
 
       `http(s)://example.com/public`
 
+
 2. Try our old fashioned way to install Bagisto:
 
-    - Execute these commands below as in their order
+    - Execute this commands for create project
 
     ```
-      1. composer create-project bagisto/bagisto
+      composer create-project bagisto/bagisto
     ```
 
-    - Now configure your database:
+    - Execute by bagisto commands :
 
-      If the command above was completed successfully, then you'll find the directory **bagisto** and all of its available code.
+        ```
+          php artisan bagisto:install
+        ```
+         **Features of this command**
+
+        #  **Note :** It will check if the .env file is already created or not, if already created then please fill the following details in .env file :
+
+            -   APP_TIMEZONE
+            -   APP_LOCALE
+            -   LOG_CHANNEL
+            -   APP_CURRENCY
+            -   DB_DATABASE
+            -   DB_USERNAME
+            -   DB_PASSWORD
+
+            
+
+         - It will create .env and then by asking the below options :
+            -  Please select the default locale or press enter to continue [en]: 
+            -  Please enter the default timezone [Asia/Kolkata]:
+            -  Please enter the default currency [USD]: 
+            -  What is the database name to be used by bagisto?: 
+            -  What is your database username?:
+            -  What is your database password?:
+
+         -  Migrate all tables into database
+
+         -  Seeds basic data for bagisto kickstart
+
+         -  Publish Assets and Configurations
+        
+         -  Link Storage Directory To Public Directory
+        
+         -  Composer Autoload
+
+        After that run php artisan serve to start using Bagisto Cheers!
+
+  
+
+    - Execute by Composer Command
+
+      - Configure your database:
+
+      If the command (Step 1) above was completed successfully, then you'll find the directory **bagisto** and all of its available code.
 
       Find file **_.env_** inside the  **bagisto** directory and set the environment variables listed below:
 
@@ -103,27 +147,29 @@ To get quickly updated on the current version and recently released features, se
 
     - Although, mailer environment variables are also required to be set up as **Bagisto** requires emails to send to customers and admins for various built-in functionalities.
 
-    ```
-    2. php artisan migrate
-    ```
+    - Execute these command 
 
-    ```
-    3. php artisan db:seed
-    ```
+        ```
+        1. php artisan migrate
+        ```
 
-    ```
-    4. php artisan vendor:publish
-      -> Press 0 and then press enter to publish all assets and
-      configurations.
-    ```
+        ```
+        2. php artisan db:seed
+        ```
 
-    ```
-    5. php artisan storage:link
-    ```
+        ```
+        3. php artisan vendor:publish
+          -> Press 0 and then press enter to publish all assets and
+          configurations.
+        ```
 
-    ```
-    6. composer dump-autoload
-    ```
+        ```
+        4. php artisan storage:link
+        ```
+
+        ```
+        5. composer dump-autoload
+        ```
 
 3. To execute Bagisto:
 
@@ -153,6 +199,7 @@ To get quickly updated on the current version and recently released features, se
       You can directly register as a customer and then login.
 
       `http(s)://example.com/customer/register`
+
 
 ## Directory Structure <a id="directory_structure"></a>
 
