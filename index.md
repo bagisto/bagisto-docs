@@ -129,7 +129,9 @@ To get quickly updated on the current version and recently released features, se
 
   
 
-    - Now configure your database:
+     -  Execute by Composer Command
+      
+        - Now configure your database:
 
       If the command above was completed successfully, then you'll find the directory **bagisto** and all of its available code.
 
