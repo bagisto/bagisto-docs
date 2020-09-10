@@ -1,4 +1,2 @@
-_site
-.sass-cache
-.jekyll-metadata
-Gemfile.lock
+node_modules/
+package-lock.json
