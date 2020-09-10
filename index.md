@@ -82,13 +82,57 @@ To get quickly updated on the current version and recently released features, se
 
 2. Install Bagisto using command line:
 
-    - Execute these commands below as in their order
+    -  Execute this commands for create project 
 
     ```
       1. composer create-project bagisto/bagisto-standard
     ```
 
-    - Now configure your database:
+
+ - Execute by bagisto commands :
+
+        ```
+          php artisan bagisto:install
+        ```
+         **Features of this command**
+
+        #  **Note :** It will check if the .env file is already created or not, if already created then please fill the following details in .env file :
+
+            -   APP_TIMEZONE
+            -   APP_LOCALE
+            -   LOG_CHANNEL
+            -   APP_CURRENCY
+            -   DB_DATABASE
+            -   DB_USERNAME
+            -   DB_PASSWORD
+
+            
+
+         - It will create .env and then by asking the below options :
+            -  Please select the default locale or press enter to continue [en]: 
+            -  Please enter the default timezone [Asia/Kolkata]:
+            -  Please enter the default currency [USD]: 
+            -  What is the database name to be used by bagisto?: 
+            -  What is your database username?:
+            -  What is your database password?:
+
+         -  Migrate all tables into database
+
+         -  Seeds basic data for bagisto kickstart
+
+         -  Publish Assets and Configurations
+        
+         -  Link Storage Directory To Public Directory
+        
+         -  Composer Autoload
+
+        After that run php artisan serve to start using Bagisto Cheers!
+
+  
+
+     -  Execute by Composer Command
+
+        - Now configure your database:
 
       If the command above was completed successfully, then you'll find the directory **bagisto** and all of its available code.
 
