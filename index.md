@@ -48,7 +48,8 @@ To learn more about Bagisto’s features and try a demo, check out [Bagisto](htt
 
 To get quickly updated on the current version and recently released features, see [Bagisto roadmap](https://bagisto.com/roadmap/){: target="\_blank" .link-color}.
 
-### Requirements <a id="requirements"></a>:
+
+### Requirements <a id="requirements" class="link"></a>:
 
 - <b>OS:</b>
   1. Windows 7 or above with WAMP/XAMPP environment
@@ -65,7 +66,7 @@ To get quickly updated on the current version and recently released features, se
 - <b>php7.</b>1-intl extension
 - <b>php7.</b>1-gd extension
 
-### Installation & Configuration <a id="installation"></a>:
+### Installation & Configuration <a id="installation" class="link"></a>:
 
 1. Try our new GUI installer to install Bagisto:
 

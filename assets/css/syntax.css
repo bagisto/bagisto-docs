@@ -222,3 +222,13 @@ strong {
   /* folder name */
   color: steelblue;
 }
+
+
+.link:hover{
+  color: #0031f0;
+}
+
+.active-link{
+  color: #0031f0;
+}
+
