@@ -67,7 +67,7 @@ Let’s go through the parameters of **_themes.php_** file. Because understandin
 
     - Inside 'themes’ there is another array by name 'default' which is your currently active theme containing some key-value pairs.
 
-        - <b>default:</b> Inside array 'default', it holds few more key-value pairs. such as 'view_path', 'assets_path', 'name’ all those are explained below:
+        - <b>default:</b> Inside array 'default', it holds few more key-value pairs. such as 'views_path', 'assets_path', 'name’ all those are explained below:
 
            - <b>views_path:</b> It’ll take the path of your views or blade files that you want to put up in your custom theme.
 
