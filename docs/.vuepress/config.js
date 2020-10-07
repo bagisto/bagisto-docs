@@ -2,6 +2,9 @@ module.exports = {
     base: '/',
     title: 'Documentation',
     description: 'Bagisto Developer Portal',
+    head: [
+        ['link', { rel: "icon", type: "image/png", href: "/favicon.ico"}],
+    ],
     themeConfig: {
         smoothScroll: true,
         lastUpdated: 'Last Updated',
