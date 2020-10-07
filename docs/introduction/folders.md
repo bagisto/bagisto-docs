@@ -1,0 +1,34 @@
+## Directory Structure <a id="directory_structure"></a>
+
+- module-name/
+  - Console/
+    - Commands/
+  - Contracts/
+  - Events/
+  - Exceptions/
+  - Helpers/
+  - Http/
+    - Controllers/
+    - Middleware/
+    - Requests/
+    - Resources/
+  - Jobs/
+  - Listeners/
+  - Models/
+  - Providers/
+    - ModuleServiceProvider.php
+    - EventServiceProvider.php
+  - Services/
+  - resources/
+    - assets/
+    - config/
+      - module.php
+    - database/
+      - migrations/
+      - seeds/
+    - lang/
+    - routes/
+      - api.php
+      - web.php
+    - views/
+    - manifest.php
