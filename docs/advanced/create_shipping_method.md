@@ -1,8 +1,8 @@
 # Create a new shipping method
 
+We hope that now you know how to create a package, if not refer to [Package Development](../packages/create.md).
 
-I hope that now you know how to create a package, if not refer to [Package development](create_package.md).
-In this article, we will understand how to create a shipping method.
+In this section, we will understand how to create a shipping method.
 
 You can create a shipping method in two ways.
 
@@ -27,17 +27,21 @@ This will generate whole directory structures. You don't need to do manually.
 
 ## 2. By manually setting up all files
 
-#### Steps to create shipping methods
+- User needs to create a `carriers.php` file in the `src/Config` path in the package (say FedEx). Here, we are going to specify what to include in your `carriers.php` file.
 
-- The user needs to create a file named **_carriers.php_** at the `src/config` path in the package (say FedEx). Here, we are going to specify what to include in your **_carriers.php_** file.
+  ::: details Directory structure
+  
+  ~~~
+  - ACME/FedEx/
+    - FedEx/
+      - src/
+        - Config/
+          - carriers.php
+  ~~~
 
-  - FedEx/
-    - src/
-      - config/
-        - carriers.php
+  :::
 
-
-  ```php
+  ~~~php
   <?php
 
   return [
@@ -48,83 +52,161 @@ This will generate whole directory structures. You don't need to do manually.
           'active' => true,
           'type' => 'per_unit',
           'class' => 'ACME\FedEx\Carriers\FedEx',
-          ]
+      ]
   ];
-  ```
+  ~~~
 
-##### Parameters needed for explanation
+  - Explanation
+    - **code**: Unique value used for referring the particular menu.
+    - **title**: Label or name to display at the user interface.
+    - **description**: About your shipping method.
+    - **active**: Enable or disable option for shipping method.
+    - **type**: This field specifies that the shipping method applies as `per_unit` or
+      `per_order`.
+    - **class**: Path specified with filename `namespace\package-name\Carriers-folder\filename`
 
-- <b>code:</b> unique value used for referring the particular menu
-- <b>title:</b> label/name to display at the user interface
-- <b>description:</b> about your shipping method.
-- <b>active:</b> enable/disable option for shipping method
-- <b>type:</b> this field specifies that the shipping method applies as per_unit or
-   per_order
-- <b>class:</b> path specified with filename 'namespace\package-name\Carriers-folder\filename'
+- Create `Carriers` folder inside the `src` folder. Now, create `Fedex.php` in `Carriers` folder.
 
-And, create **Carriers** folder inside the **src** folder. We will now create a file name as our shipping method name for better understandability inside **Carriers** folder e.g., **_Fedex.php_**
+  - File `Fedex.php` will extends `AbstractShipping` class which is defined at `Webkul\Shipping\Carriers\AbstractShipping`. In `Fedex.php`, methods are defined that you can use while creating a shipping method.
 
-1. File **_Fedex.php_** will extends AbstractShipping class which is defined at `Webkul\Shipping\Carriers\AbstractShipping`. Inside file **_Fedex.php_**, the methods are defined that you can use while creating a shipping method.
+  - Now, you can write all the operations needed for your shipping method in `Fedex.php` file.
 
-2. Now, you can write all the operations needed for your shipping method in **_Fedex.php_** file.
+  - To render the shipping methods in checkout process, you need to define `calculate()` within your `Fedex.php` and return shipping rate, shipping title, shipping description within an object.
 
-3. To render the shipping methods in checkout process, you need to define 'calculate()' within your **_Fedex.php_** and return shipping rate, shipping title, shipping description within an object.
+    ::: tip
+    May refer [FlatRate](https://github.com/bagisto/bagisto/blob/master/packages/Webkul/Shipping/src/Carriers/FlatRate.php#L28) `calculate()` method.
+    :::
 
-    <b>Note:</b> May refer [FlatRate](https://github.com/bagisto/bagisto/blob/master/packages/Webkul/Shipping/src/Carriers/FlatRate.php#L28) 'calculate()' method.
+- After creating all the necessary files and configurations, you need to create the form which will appear on the config section. So for that create file `system.php` in `src/Config`. Add below code to following file,
 
-3. After creating all the necessary files and configurations you need to create the form that will appear on the config section in the next route `packages/Webkul/Shipping/src/Config/system.php`. so you can use them on **_Fedex.php_**
+  ~~~php
+  <?php
 
-4. To get the translations working you need to add them on `packages/Webkul/Admin/src/Resources/lang/en/app.php`
-   > 'fedex-shipping'=>' Your title or translation',
-
-      ```php
-        [
-          'key'    => 'sales.carriers.Fedex',
-          'name'   => 'admin::app.admin.system.fedex-shipping',
-          'sort'   => 2,
-          'fields' => [
-            [
-              'name'          => 'title',
-              'title'         => 'admin::app.admin.system.title',
-              'type'          => 'text',
+  return [
+      'key'    => 'sales.carriers.Fedex',
+      'name'   => 'admin::app.admin.system.fedex-shipping',
+      'sort'   => 2,
+      'fields' => [
+          [
+            'name'          => 'title',
+            'title'         => 'admin::app.admin.system.title',
+            'type'          => 'text',
+            'validation'    => 'required',
+            'channel_based' => true,
+            'locale_based'  => true
+          ], [
+            'name'          => 'description',
+            'title'         => 'admin::app.admin.system.description',
+            'type'          => 'textarea',
+            'channel_based' => true,
+            'locale_based'  => false
+          ], [
+            'name'          => 'default_rate',
+            'title'         => 'admin::app.admin.system.rate',
+            'type'          => 'text',
+            'channel_based' => true,
+            'locale_based'  => false
+          ], [
+            'name'          => 'base_amount',
+            'title'         => 'admin::app.admin.system.minimum-amount',
+            'type'          => 'text',
+            'channel_based' => true,
+            'locale_based'  => false
+          ], [
+            'name'          => 'active',
+            'title'         => 'admin::app.admin.system.status',
+            'type'          => 'select',
+            'options' => [
+              [
+                'title' => 'Active',
+                'value' => true
+              ], [
+                'title' => 'Inactive',
+                'value' => false
+              ]
+            ],
               'validation'    => 'required',
-              'channel_based' => true,
+              'channel_based' => false,
               'locale_based'  => true
-            ], [
-              'name'          => 'description',
-              'title'         => 'admin::app.admin.system.description',
-              'type'          => 'textarea',
-              'channel_based' => true,
-              'locale_based'  => false
-            ], [
-              'name'          => 'default_rate',
-              'title'         => 'admin::app.admin.system.rate',
-              'type'          => 'text',
-              'channel_based' => true,
-              'locale_based'  => false
-            ], [
-              'name'          => 'base_amount',
-              'title'         => 'admin::app.admin.system.minimum-amount',
-              'type'          => 'text',
-              'channel_based' => true,
-              'locale_based'  => false
-            ], [
-              'name'          => 'active',
-              'title'         => 'admin::app.admin.system.status',
-              'type'          => 'select',
-              'options' => [
-                [
-                  'title' => 'Activo',
-                  'value' => true
-                ], [
-                  'title' => 'Inactivo',
-                  'value' => false
-                ]
-              ],
-                'validation'    => 'required',
-                'channel_based' => false,
-                'locale_based'  => true
-            ]
           ]
-        ]
-      ```
+      ]
+  ]
+  ~~~
+
+- Now merge all your config in `packages/ACME/FedEx/src/Providers/FedExServiceProvider.php`,
+
+  ~~~php
+  <?php
+
+  namespace ACME\FedEx\Providers;
+
+  use Illuminate\Support\ServiceProvider;
+
+  class FedExServiceProvider extends ServiceProvider
+  {
+      /**
+      * Bootstrap services.
+      *
+      * @return void
+      */
+      public function boot()
+      {
+      }
+
+      /**
+      * Register services.
+      *
+      * @return void
+      */
+      public function register()
+      {
+          $this->mergeConfigFrom(
+              dirname(__DIR__) . '/Config/carriers.php', 'carriers'
+          );
+
+          $this->mergeConfigFrom(
+              dirname(__DIR__) . '/Config/system.php', 'core'
+          );
+      }
+  }
+  ~~~
+
+- After that, you need to register your service provider in `config/app.php`.
+
+  ~~~php
+  <?php
+
+  return [
+      ...
+      'providers' => [
+          ...
+          ACME\FedEx\Providers\FedExServiceProvider::class,
+          ...
+      ]
+      ...
+  ];
+  ~~~
+
+- After that, add you shipment method namespace in `psr-4` key in `composer.json` file for auto loading.
+
+  ~~~json
+  "autoload": {
+      ...
+      "psr-4": {
+          ...
+          "ACME\\FedEx\\": "packages/ACME/FedEx/src"
+          ...
+      }
+      ...
+  }
+  ~~~
+
+- Run `composer dump-autoload`.
+
+- After that run `php artisan config:cache`.
+
+::: tip
+
+If `composer dump-autoload` giving some error than in that case delete all files from the `bootstrap/cache` and again run `composer dump-autoload`.
+
+:::

@@ -33,6 +33,11 @@ module.exports = {
                 ]
             },
             {
+                title: "Package Development",
+                path: "/packages/create",
+                collapsable: true,
+            },
+            {
                 title: "Advanced topics",
                 path: "/advanced/",
                 collapsable: true,
@@ -45,28 +50,7 @@ module.exports = {
                     ["advanced/security_practice", "Best Security Practices"],
                     ["advanced/render_event", "View render event"]
                 ]
-            },
-            {
-                title: "Bagisto Web API",
-                path: "/api/",
-                collapsable: true,
-                children: [
-                    ["api/customer_addresses", "Addresses"],
-                    ["api/categories", "Categories"],
-                    ["api/customers", "Customers"],
-                    ["api/customer_review", "Customer reviews"],
-                    ["api/invoice_shipment", "Invoices & Shipments"],
-                    ["api/order", "Orders"],
-                    ["api/products", "Products"],
-                    ["api/product_review", "Product reviews"],
-                    ["api/cart", "Shopping cart"]
-                ]
-            },
-            {
-                title: "Package Development ",
-                path: "/packages/create",
-                collapsable: true,
-            },            
+            },           
             {
                 title: "Themes",
                 path: "/themes",
@@ -88,8 +72,28 @@ module.exports = {
                 children: [
                     ["/user_guides/cart_rule", "Cart rules"],
                 ]
+            }, 
+            {
+                title: "Bagisto Web API",
+                path: "/api/",
+                collapsable: true,
+                children: [
+                    ["api/customers", "Customers"],
+                    ["api/addresses", "Addresses"],
+                    ["api/wishlists", "Wishlists"],
+                    ["api/categories", "Categories"],
+                    ["api/products", "Products"],
+                    ["api/cart", "Shopping Cart"],
+                    ["api/orders", "Orders"],
+                    ["api/invoices", "Invoices"],
+                    ["api/shipments", "Shipments"],
+                    ["api/reviews", "Reviews"]
+                ]
             },
         ]
+    },
+    markdown: {
+        lineNumbers: false
     },
     plugins: ['@vuepress/pwa', 'copy-code', '@vuepress/back-to-top']
 };

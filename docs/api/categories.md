@@ -1,236 +1,307 @@
 # Categories
 
-To get all the categories from Bagisto according to pagination, you have to place a request by using the API Call below with the resource i.e. `categories` :
+In this section, we are using the categories' API. We will fetch all the categories based on `id` and `parent_id` as well.
 
-## Get Categories With Pagination: <a id="get-categories-with-pagination"></a>
+## Get all categories
 
-> _https://example.com/public/api/categories_
+This api request will fetch all the categories.
 
-> _https://example.com/public/api/categories?page=1_
+- Request
 
-::: warning
- _If you didn't use the page(?page=x) filter, then it returns the data of the first page by default._
+  `GET <host>/api/categories(?limit,page,pagination)`
+
+- Params
+
+  | Name          | Info                                         | Type   |
+  | ------------- | -------------------------------------------- | ------ |
+  | limit         | Maximum number of records in each request    | Number |
+  | page          | Records for specific page based on the limit | Number |
+  | pagination    | will display all the records if set to `0`   | Number |
+
+::: tip
+
+If you are using pagination and want to know more info about responses then check the [explanation](./explanation) portion.
+
 :::
 
-##### Response:
+### Examples
 
-```json
+#### 1. Get categories of the specific page,
+
+- Request
+
+  `GET http(s)://example.com/api/categories?page=1`
+
+  ::: tip
+  If you didn't use the page (?page=x) filter, then it returns the data of the first page by default.
+
+  `GET http(s)://example.com/api/categories`
+  :::
+
+::: details Response
+
+~~~json
 {
     "data": [
         {
-            "id": 9,
+            "id": 3,
             "code": null,
-            "name": "Reading Books",
-            "slug": "reading-books",
-            "display_mode": "products_and_description",
-            "description": "<p>Reading Books</p>",
-            "meta_title": "Reading Books",
-            "meta_description": "Reading Books",
-            "meta_keywords": "Reading Books",
+            "name": "Laptops",
+            "slug": "laptops",
+            "display_mode": "products_only",
+            "description": "",
+            "meta_title": "Laptops",
+            "meta_description": "",
+            "meta_keywords": "",
             "status": 1,
             "image_url": null,
-            "created_at": {},
-            "updated_at": {}
-            },
-            {...},
-            {...},
-            {...},
-        ],
-        "links": {},
-        "meta": {}
-        }
-```
-##### Explanation:
-
-- In the response above, you will find the three Objects with the indexes mentioned below:
-  1. data
-  2. link
-  3. meta
-
-#### Data Object: <a id="data-object"></a>
-
-Under the data object, you will find the collection of many objects which represent the bagisto store's categories. You can use the category's index data by accessing these categories sub-objects.
-
-#### link object: <a id="link-object"></a>
-
-- Under link object, you will find four indexes, which will be used only according to pagination:
-
-![bagisto_cat_link](../assets/images/api/bagisto_cat_link.jpg){:class="screenshot-dimension center"}
-
-**1. `first`: It will represent the first url link of the called API with filter variable `page:first_page`**
-
-> _https://example.com/public/api/categories?page=1_
-
-**2. `last`: It will represent the last url link of the called API with filter variable `page:last_page`**
-
-> _https://example.com/public/api/categories?page=10_
-
-**3. `prev`: It will represent the previous url of the currently called API url. For Example:**
-
-- Current_URL -
-
-  > _https://example.com/public/api/categories?page=4_
-
-- prev_URL -
-  > _https://example.com/public/api/categories?page=3_
-
-**4. `next`: It will show you the next url of the currently called API url. If no next url will available then it will contain the `null` value.**
-
-- Current_URL -
-
-  > _https://example.com/public/api/categories?page=4_
-
-- prev_URL -
-  > _https://example.com/public/api/categories?page=5_
-
-#### meta object: <a id="meta-object"></a>
-
-- `meta` object will only used with pagination. Under meta object, you will find seven indexes:
-
-![bagisto_cat_meta](../assets/images/api/bagisto_cat_meta.jpg){:class="screenshot-dimension center"}
-
-**1. `current_page`: It will contain the value of currently called page `current_page:1`**
-
-> _https://example.com/public/api/categories?page=2_
-> {
-
+            "additional": null,
+            "created_at": "2020-09-08T23:41:24.000000Z",
+            "updated_at": "2020-09-08T23:41:24.000000Z"
+        },
+        {...},
+        {...}
+    ],
+    "links": {
+        "first": "https://example.com/api/categories?page=1",
+        "last": "https://example.com/api/categories?page=1",
+        "prev": null,
+        "next": null
+    },
     "meta": {
-        "current_page": 2,
+        "current_page": 1,
+        "from": 1,
+        "last_page": 1,
+        "path": "https://example.com/api/categories",
+        "per_page": 10,
+        "to": 3,
+        "total": 3
     }
-
 }
+~~~
 
-**2. `from`: It will contain the first count of the returned data object based on the provided page and limit filters as parameter `from = (limit * (page-1)) + 1`.**
+:::
 
-- For Example: If you called categories API with page filter 2 `i.e. ?page=2` and a limit filter of 5 `i.e. ?limit=5`, then `from` will contain the value `6`.
+#### 2. Get categories of the specific page with limit,
 
-> _https://example.com/public/api/categories?limit=5&page=2_
+- Request
 
-```
-limit = 5
-page = 2
-from = (5 * (2-1)) + 1  i.e. 6
-```
+  `GET http(s)://example.com/api/categories?page=1&limit=10`
 
+::: details Response
+
+~~~json
+{
+    "data": [
         {
-            "meta": {
-                "current_page": 2,
-                "from": 6,
-            }
-        }
+            "id": 10,
+            "code": null,
+            "name": "Lights",
+            "slug": "lights",
+            "display_mode": "products_only",
+            "description": "",
+            "meta_title": "",
+            "meta_description": "",
+            "meta_keywords": "",
+            "status": 1,
+            "image_url": null,
+            "additional": null,
+            "created_at": "2020-09-24T11:44:42.000000Z",
+            "updated_at": "2020-09-24T11:44:42.000000Z"
+        },
+        {...},
+        {...},
+        {...},
+        {...}
+    ],
+    "links": {
+        "first": "https://example.com/api/categories?limit=5&page=1",
+        "last": "https://example.com/api/categories?limit=5&page=2",
+        "prev": null,
+        "next": "https://example.com/api/categories?limit=5&page=2"
+    },
+    "meta": {
+        "current_page": 1,
+        "from": 1,
+        "last_page": 2,
+        "path": "https://example.com/api/categories",
+        "per_page": "5",
+        "to": 5,
+        "total": 10
+    }
+}
+~~~
 
-**3. `to`: It will return, the last count of the returned data object based on the provided page and limit filters as parameter `to = (limit * page)`.**
+:::
 
-- For Example: If you called categories API with page filter 2 `i.e. ?page=2` and a limit filter of 5 `i.e. ?limit=5`, then `to` will contain the value `10`.
+#### 3. Get all categories without pagination,
 
-> _https://example.com/public/api/categories?limit=5&page=2_
+If you don't want to use the pagination and want to access all the store's categories at once, then you have to send a filter parameter named as`pagination` with value `zero`. By doing this you will get all categories objects at once in the data object and this will not give you link and meta objects.
 
-```
-limit = 5
-page = 2
-from = (5 * 2)  i.e. 10
-```
+- Request
 
+  `GET http(s)://example.com/api/categories?pagination=0`
+
+::: details Response
+
+~~~json
+{
+  "data": [
         {
-            "meta": {
-                "current_page": 2,
-                "from": 6,
-                "to": 10,
-            }
-        }
+            "id": 10,
+            "code": null,
+            "name": "Lights",
+            "slug": "lights",
+            "display_mode": "products_only",
+            "description": "",
+            "meta_title": "",
+            "meta_description": "",
+            "meta_keywords": "",
+            "status": 1,
+            "image_url": null,
+            "additional": null,
+            "created_at": "2020-09-24T11:44:42.000000Z",
+            "updated_at": "2020-09-24T11:44:42.000000Z"
+        },
+        {...},
+        {...},
+        {...},
+        {...},
+        {...},
+        {...},
+        {...},
+        {...},
+        {...}
+    ]
+}
+~~~
 
-**4. `per_page`: It will contain the total of record number that will want in a single page `per_page = limit`.**
+:::
 
-> _https://example.com/public/api/categories?limit=5&page=1_
+## Get category by id
 
-        {
-            "meta": {
-                "current_page": 2,
-                "from": 6,
-                "to": 10,
-                "per_page": 5,
-            }
-        }
+For fetching any specific category, you have to provide the category's id as an input parameter.
 
-**5. `last_page`: It will contain the value of total of pages. This index value will depend on the limit input parameter and the total number of records `last_page = (total number of records / limit)`.**
+  - Request
 
-- For Example: Suppose there are total 50 categies and you want to fetch them in slot of 10 in each pages, then there will be total 5 total pages `last_page = ( ceil(50) / 10)`.
+    `GET <host>/api/categories/{id}`
 
-> _https://example.com/public/api/categories?limit=10&page=1_
+  - Params
 
-        {
-            "meta": {
-                "current_page": 1,
-                "from": 1,
-                "to": 10,
-                "per_page": 10,
-                "last_page": 5,
-            }
-        }
+    | Name | Info          | Type   |
+    | ---- | ------------- | ------ |
+    | id   | Category's id | Number |
 
-**6. `total`: It will contain the value of total number of records in the store. `total = total number of records`.**
+  ### Examples
 
-> _https://example.com/public/api/categories?limit=10&page=1_
+  #### 1. Let's try to fetch category by id,
 
-        {
-            "meta": {
-                "current_page": 1,
-                "from": 1,
-                "to": 10,
-                "per_page": 10,
-                "last_page": 5,
-                "total": 50,
-            }
-        }
+  - Request
 
-**7. `path`: It will contain the current api url without input parameters.**
+    `GET http(s)://example.com/api/categories/6`
 
-> _https://example.com/public/api/categories?limit=10&page=1_
+  ::: details Response
 
-        {
-            "meta": {
-                "current_page": 1,
-                "from": 1,
-                "to": 10,
-                "per_page": 10,
-                "last_page": 5,
-                "total": 50,
-                "path": "https://example.com/public/api/categories",
-            }
-        }
+  ~~~json
+  {
+      "data": {
+          "id": 6,
+          "code": null,
+          "name": "Kitchen Appliances",
+          "slug": "kitchen-appliances",
+          "display_mode": "products_only",
+          "description": "",
+          "meta_title": "",
+          "meta_description": "",
+          "meta_keywords": "",
+          "status": 1,
+          "image_url": null,
+          "additional": null,
+          "created_at": "2020-09-24T11:42:17.000000Z",
+          "updated_at": "2020-09-24T11:42:17.000000Z"
+      }
+  }
+  ~~~
 
-![bagisto_cat_path](../assets/images/api/bagisto_cat_path.jpg){:class="screenshot-dimension center"}
+  :::
 
-## Get All Categories Without Pagination: <a id="get-all-categories-without-pagination"></a>
+## Get descendant categories of specific category
 
-If you don't want to use the pagination and want to access all the store's categories at once, then you have to send a filter parameter named: `pagination` with value `zero`. By doing this you will get all categories objects at once under the data object and will not get the both link and meta objects.
+This api request will fetch all the descendant categories based on the `parent_id`.
 
-> **Like: pagination=0**
+  - Request
 
-> _https://example.com/public/api/categories?pagination=0_
+    `GET <host>/api/descendant-categories(?parent_id)`
 
-![bagisto_cat_no_pagination](../assets/images/api/bagisto_cat_no_pagination.jpg){:class="screenshot-dimension center"}
+  - Params
 
-## Get Specific Category: <a id="get-specific-category"></a>
+    | Name      | Info                                 | Type   |
+    | --------- | ------------------------------------ | ------ |
+    | parent_id | Parent id of the descendant category | Number |
 
-If you want the record of any specific category, then you have to provide the category id as as input parameter in API url.
+### Examples
 
-> _https://example.com/public/api/categories/1_
+#### 1. Get data based on the `parent_id` which have descendant categories,
 
-![bagisto_cat_single](../assets/images/api/bagisto_cat_single.jpg){:class="screenshot-dimension center"}
+  - Request
 
-**Note**: _Here you will see in the API response `data Object` will only contain the single object of category record_
+    `GET http(s)://example.com/api/descendant-categories?parent_id=2`
 
-## Get Direct Descendant Categories Of Specific Category: <a id="get-descendant-category"></a>
+  ::: details Response
 
-If you want to get the direct descendant categories (sub-categories) of any particular category, then you have to follow the below structure of calling the API.
+  ~~~json
+  {
+    "data": [
+          {
+              "id": 3,
+              "code": null,
+              "name": "Bike Accessories",
+              "slug": "bike-accessories",
+              "display_mode": "products_only",
+              "description": "",
+              "meta_title": "",
+              "meta_description": "",
+              "meta_keywords": "",
+              "status": 1,
+              "image_url": null,
+              "additional": null,
+              "created_at": "2020-09-22T07:16:32.000000Z",
+              "updated_at": "2020-09-24T13:08:21.000000Z"
+          },
+          {
+              "id": 11,
+              "code": null,
+              "name": "Bike Tyres",
+              "slug": "bike-tyres",
+              "display_mode": "products_only",
+              "description": "",
+              "meta_title": "",
+              "meta_description": "",
+              "meta_keywords": "",
+              "status": 1,
+              "image_url": null,
+              "additional": null,
+              "created_at": "2020-09-24T13:20:01.000000Z",
+              "updated_at": "2020-09-24T13:20:01.000000Z"
+          }
+      ]
+  }
+  ~~~
 
-> _https://example.com/public/api/descendant-categories?parent_id=1_
+  :::
 
-- In the above API url we passed `parent_id` as an input parameter for which we want to access the direct sub-categories.
+#### 2. Let's try with `parent_id` which have no descendant categories,
 
-- For Example: Suppose there is a category named as `Men's Collection` with `category_id=2` that have two direct sub-categories named as `T-Shirt` and `Men's Shoes`, then the API url will be:
+  - Request
 
-> _https://example.com/public/api/descendant-categories?parent_id=2_
+    `GET http(s)://example.com/api/descendant-categories?parent_id=3`
 
-![bagisto_cat_descendant](../assets/images/api/bagisto_cat_descendant.jpg){:class="screenshot-dimension center"}
+  ::: details Response
+
+  ~~~json
+  {
+      "data": []
+  }
+  ~~~
+
+  :::

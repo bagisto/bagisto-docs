@@ -14,8 +14,6 @@ With the help of `view_render_event()`, you can inject anything before or after 
     @endsection
 ```
 
-<!-- ![View Render Event](assets/images/Bagisto_Docs_Images/render-event/view-render-event.png){: .screenshot-dimension .center} -->
-
 To render any template before or after any function we may use 'view_render_event'.  
 You can define any event view_render_event() in the template by following steps:
 

@@ -1,223 +1,334 @@
 # Products
 
-To get all the products according to pagination, you have to place a request by using the API Call below with the resource i.e. `products` :
+In this section, we will use the product's API. We will start with the fetching of all products. Then we will move forward to query params and filterable query params. In last, we will check the additional and variant information.
 
-## Get Products With Pagination
+## Get all products
 
-> _https://example.com/public/api/products_
+This request will fetch all the products based on `limit` and `page`.
 
-> _https://example.com/public/api/products?page=1_
+- Request
 
-::: warning
- _If you didn't use the page(?page=x) filter, then it returns the data of the first page by default_.
+  `<host>/api/products(?limit,page)`
+
+  ::: tip
+
+  If you didn't use the page(?page=x) filter, then it returns the data of the first page by default.
+
+  :::
+
+- Params
+
+  | Name  | Info                                         | Type   |
+  | ----- | -------------------------------------------- | ------ |
+  | limit | Maximum number of records in each request    | Number |
+  | page  | Records for specific page based on the limit | Number |
+
+::: tip
+
+If you are using pagination and want to know more info about responses then check the [explanation](./explanation) portion.
+
 :::
 
-##### Response:
-```json
+### Examples
+
+#### 1. Get products for specific page,
+
+- Request
+
+  `http(s)://example.com/api/products?page=1`
+
+::: details Response
+
+~~~json
 {
     "data": [
-        {
-            "id": 1,
-            "type": "simple",
-            "name": "Leather Shoes",
-            "url_key": "leather-shoes",
-            "price": "50.0000",
-            "formated_price": "$50.00",
-            "short_description": null,
-            "description": "<p>Leather Shoes</p>",
-            "sku": "men-leather-shoes",
-            "images": [],
-            "base_image": {},
-            "variants": [],
-            "in_stock": true,
-            "reviews": {},
-            "is_saved": false,
-            "created_at": "2019-05-21 12:37:06",
-            "updated_at": "2019-05-21 12:37:06"
-        },
-        {...}
+      {
+        "id": 3,
+        "type": "simple",
+        "name": "Lenovo IdeaPad Yoga 500 15 Hybrid (2-in-1) White",
+        "url_key": "lenovo-ideapad-yoga-500-15-hybrid-2-in-1-white",
+        "price": "600.0000",
+        "formated_price": "$600.00",
+        ...
+        "sku": "5626",
+        "images": [
+          {...}
+        ],
+        "base_image": {...},
+        "variants": [],
+        "in_stock": true,
+        "reviews": {...},
+        "is_saved": false,
+        "created_at": "2020-09-09 03:31:47",
+        "updated_at": "2020-09-09 03:31:47"
+      },
+      {...},
+      {...}
     ],
-    "links": {},
-    "meta": {}
+    "links": {...},
+    "meta": {...}
 }
-```
-
-##### Explanation:
-
-- In the response above, you will find the three Objects with the indexes mentioned below:
-  1. data
-  2. link
-  3. meta
-
-#### Data Object: <a id="data-object"></a>
-
-Under the data object, you will find the collection of many objects containing the details of bagisto store's products. You can use the product's index data by accessing these products sub-objects.
-
-**Note**: _Regarding link and meta objects, we already explained these objects functionality in_ <a href="api_category.html#link-object" target="_blank" class="bagsito-link"> _Category API_ </a> _section_.
-
-### 1.1. Get Product(s) With Query Parameters: <a id="get-product-with-query-parameters"></a>
-
-- <span class="bagsito-link">category_id</span> : You can find out the store products based on any specific category. You can achieve this task by just passing **`category_id`** as the query parameter in API url. **For example: `category_id=1`**
-
-> _https://example.com/public/api/products?category_id=2_
-
-```
-* You can also use the limit and page query parameters with the category_id parameter.
-```
-
-> _https://example.com/public/api/products?category_id=2&limit=5&page=1_
-
-> _https://example.com/public/api/products?category_id=2&limit=5&page=1_
-
-![bagisto_prod_category](../assets/images/api/bagisto_prod_category.jpg){:class="screenshot-dimension center"}
-
-- <span class="bagsito-link">new</span> : If you want to get the store's product(s) those are having new condition then you can use **`new=1`** in the query parameter and if want to get product(s) without new condition then use **`new=0`**.
-
-> _https://example.com/public/api/products?new=1_
-
-```
-* You can also use the limit and page query parameters with the new query parameter:
-```
-
-> _https://example.com/public/api/products?new=1&limit=5&page=1_
-
-> _https://example.com/public/api/products?new=0&limit=5&page=1_
-
-![bagisto_prod_new](../assets/images/api/bagisto_prod_new.jpg){:class="screenshot-dimension center"}
-
-- <span class="bagsito-link">featured</span> : If you want to get the store's product(s) those are featured then you can use **`featured=1`** query parameter and use **`featured=0`** for vice-versa.
-
-> _https://example.com/public/api/products?featured=1_
-
-```
-* You can also use the limit and page in query parameters with featured query parameter:
-```
-
-> _https://example.com/public/api/products?featured=1&limit=5&page=1_
-
-> _https://example.com/public/api/products?featured=0&limit=5&page=1_
-
-![bagisto_prod_new](../assets/images/api/bagisto_prod_new.jpg){:class="screenshot-dimension center"}
-
-- <span class="bagsito-link">name</span> : Suppose you want to find out the data of your product in the Bagisto store, here you can use **`name` query parameter**. You have to provide the product name to the **`name`** query parameter in API url. **For example: `name=<product-name>`**
-
-> _https://example.com/public/api/products?name='Leather Shoes'_
-
-![bagisto_prod_name](../assets/images/api/bagisto_prod_name.jpg){:class="screenshot-dimension center"}
-
-- <span class="bagsito-link">sku</span> : You can also get your product related details with the help of product's sku. Sku will be unique for each product in Bagisto Store. For this you have to use **`sku`** as query parameter in API url. **For example: `sku=<product-sku>`**
-
-> _https://example.com/public/api/products?name='Leather Shoes'_
-
-![bagisto_prod_sku](../assets/images/api/bagisto_prod_sku.jpg){:class="screenshot-dimension center"}
-
-- <span class="bagsito-link">url_key</span> : **`url_key`** is a unique field for every product in Bagisto Store. You can also find out product details by using **`url_key`**. For this you have to pass `url_key` as query parameter in API url. **For example: `url_key=<product-url-key>`**
-
-> _https://example.com/public/api/products?url_key='leather-shoes'_
-
-![bagisto_prod_url_key](../assets/images/api/bagisto_prod_url_key.jpg){:class="screenshot-dimension center"}
-
-### 1.2. Get Product(s) With Filterable Query Parameters: <a id="get-product-with-filter-parameters"></a>
-
-You can also filter your store product(s) by using **`filterable attributes query parameters`**. These filter will only work with the **`category_id`** input query parameter. There are two system defined filterable attributes in the Bagisto E-commerce framework i.e. **`Size`** and **`Color`**. Admin user can also create their own **`Custom Attribute`** and can make these custom attributes as **`filterable`**. By using these filterable attributes, customer can filter the category's product(s) to get the desired result.
-
-- <span class="bagsito-link">size</span> : You can filter bagisto product catalog with the help of `size` filter. `size` filter will work only on the category layout. You can pass the multiple attribute's values to the `size` filterable attributes as a query parameter in API url. Suppose you want to filter **`Men's T-Shirt`** with **`M and L size`**, then you can pass the value of both M & L. **For Example: `size=6,7`**
-
-> _https://example.com/public/api/products?category_id=2&size=6,7_
-
-```
-* You can also use the limit and page in query parameters with category & size filterable parameters:
-```
-
-> _https://example.com/public/api/products?category_id=2&size=6,7&limit=10&page=1_
-
-![bagisto_prod_size](../assets/images/api/bagisto_prod_size.jpg){:class="screenshot-dimension center"}
-
-- <span class="bagsito-link">color</span> : You can also filter bagisto product catalog with the help of `color` filter. `color` filter will work only on the category layout. You can pass the multiple attribute's values to the `color` filterable attributes as a query parameter in API url. Suppose you want to filter **`Men's T-Shirt`** with **`White and Red color`**, then you can pass the value of both White & Red. **For Example: `color=1,2`**
-
-> _https://example.com/public/api/products?category_id=2&color=1,2_
-
-```
-* You can also use the limit and page in query parameters with category & color filterable parameters:
-```
-
-> _https://example.com/public/api/products?category_id=2&color=1,2&limit=10&page=1_
-
-![bagisto_prod_color](../assets/images/api/bagisto_prod_color.jpg){:class="screenshot-dimension center"}
-
-- <span class="bagsito-link">price</span> : You can also filter bagisto product catalog with the help of `price` filter.
-
-#### In case of simple product: <a id="simple-product"></a>
-
-- You can set range of a minimum price and maximum price. Same like **`size and color`**, `price` filter will also work on the category layout only. Suppose you want to filter product(s) those are having price between price range from 50 to 100, then you have to pass value like: **`price=10,50`** as the query parameter in API url.
-
-> _https://example.com/public/api/products?category_id=2&price=50,100_
-
-```
-* You can also use the limit and page in query parameters with category & price filterable parameters:
-```
-
-> _https://example.com/public/api/products?category_id=2&price=50,100&limit=10&page=1_
-
-![bagisto_prod_price_simple](../assets/images/api/bagisto_prod_price_simple.jpg){:class="screenshot-dimension center"}
-
-#### In case of configurable product: <a id="configurable-product"></a>
-
-- **`price`** filter will also work with product's variants. Suppose you want to filter product(s) with the **`40$ min and 100$ max`** price range. And there is configurable product named **`Men's T-shirts`** having price **`30$`** and there is any variant of same product having `45$ price`, then **`Men's T-shirts`** product will show you in the filtered product's list. For Example: **`price=30,100`**.
-
-> _https://example.com/public/api/products?category_id=2&price=30,100_
-
-![bagisto_prod_price_config](../assets/images/api/bagisto_prod_price_config.jpg){:class="screenshot-dimension center"}
-
-**Note**: _The above explained `filter query parameters` (i.e. size,color,price) can be use together_.
-
-## Get Specific Product: <a id="get-specific-product"></a>
-
-If you want the record of any specific product, then you have to provide the product id as as input parameter in API url.
-
-> _https://example.com/public/api/products/1_
-
-![bagisto_prod_id](../assets/images/api/bagisto_prod_id.jpg){:class="screenshot-dimension center"}
-
-**Note**: _Here you will see in the API response `data Object` will only contain the single object of category record_
-
-## Get Product's Additional Information
-
-`Additional Information` relates all the attributes and their values for which Admin set the `'Yes'` value for the **`Visible on Product View Page on Front-end`** field.
-
-Product's additional information means those attributes which describes the product's specification.
-
-![bagisto_attribute](../assets/images/api/bagisto_attribute.jpg){:class="screenshot-dimension center"}
-
-By using this API call, you will get all the attributes (both system defined and custom) of a product those are having `'Yes'` value for the **`Visible on Product View Page on Front-end`** field by providing `product_id` of that product in the API url.
-
-_https://example.com/public/api/product-additional-information/1_
-
-    {
-        "data": [
-            {
-                "code": "description",
-                "label": "Description",
-                "value": "<p>Men's T-shirts</p>",
-                "admin_name": "Description"
-            }
-        ]
+~~~
+
+:::
+
+#### 2. Get products for specific page with limit,
+
+- Request
+
+  `http(s)://example.com/api/products?limit=2&page=1`
+
+::: details Response
+
+~~~json
+{
+    "data": [
+      {...},
+      {...}
+    ],
+    "links": {
+          "first": "https://example.com/api/products?page=1&limit=2",
+          "last": "https://example.com/api/products?page=4&limit=2",
+          "prev": null,
+          "next": "https://example.com/api/products?page=2&limit=2"
+    },
+    "meta": {
+        "current_page": 1,
+        "from": 1,
+        "last_page": 4,
+        "path": "https://example.com/api/products",
+        "per_page": "2", // limit
+        "to": 2,
+        "total": 8
     }
+}
+~~~
 
-![bagisto_add_info](../assets/images/api/bagisto_add_info.jpg){:class="screenshot-dimension center"}
+:::
 
-## Get Product's Variants Information
+## Get products with query parameters
 
-You can get all the configurable attributes of a product by using `product-configurable-config` resource in API call. It will return all the variants of a product with their `label`, `options`, `regular_price` and `final_price` also.
+- Request
 
-Admin can set the `'Yes'` value for the **`Use To Create Configurable Product`** field under the attribute panel to make that attribute as variant.
+  `GET <host>/api/products(?category_id,new,featured,name,sku,url_key,limit,page)`
 
-![bagisto_config](../assets/images/api/bagisto_config.jpg){:class="screenshot-dimension center"}
+- Params
 
-By using this API call, you will get all the configurable attributes (both system defined and custom) of a product those are having `'Yes'` value for the **`Use To Create Configurable Product`** field by providing `product_id` of that product in the API url.
+  | Name        | Info             | Type    |
+  | ----------- | ---------------- | ------- |
+  | category_id | Category's ID    | Number  |
+  | new         | New Product      | Boolean |
+  | featured    | Featured Product | Boolean |
+  | name        | Name             | String  |
+  | sku         | SKU              | String  |
+  | url_key     | URL Key          | String  |
+  | limit       | Limit            | Number  |
+  | page        | Page             | Number  |
 
-_https://example.com/public/api/product-configurable-config/1_
-```json
+### Examples
+
+#### 1. If you want to get the store's products those are having new condition then you can use `new=1` in the query parameter and if want to get the products without new condition then use `new=0`.
+
+- Request
+
+  `GET http(s)://example.com/api/products?new=1`
+
+#### 2. You can also use the `limit` and `page` query parameters with the `new` query parameter
+
+- Request
+
+  `GET http(s)://example.com/api/products?new=1&limit=5&page=1`
+
+  `GET http(s)://example.com/api/products?new=0&limit=5&page=1`
+
+#### 3. If you want to get the store's products those are featured then you can use `featured=1` query parameter.
+
+- Request
+
+  `GET http(s)://example.com/api/products?featured=1`
+
+#### 4. You can also use the `limit` and `page` in query parameters with `featured` query parameter.
+
+- Request
+
+  `GET http(s)://example.com/api/products?featured=1&limit=5&page=1`
+
+  `GET http(s)://example.com/api/products?featured=0&limit=5&page=1`
+
+#### 5. Suppose you want to find out the data of your product in the Bagisto store, here you can use the `name` query parameter. You have to provide the product name to the `name` query parameter in the API URL.
+
+- Request
+
+  `GET http(s)://example.com/api/products?name='Leather Shoes'`
+
+#### 6. You can also get your product-related details with the help of the product's SKU. SKU will be unique for each product in the Bagisto store. For this, you have to use `sku` as a query parameter in the API URL.
+
+- Request
+
+  `GET http(s)://example.com/api/products?sku='1234'`
+
+#### 7. `url_key` is a unique field for every product in Bagisto Store. You can also find out product details by using `url_key`. For this, you have to pass `url_key` as a query parameter in the API URL.
+
+- Request
+
+  `GET http(s)://example.com/api/products?url_key='leather-shoes'`
+
+## Get products with filterable query parameters
+
+You can also filter your store products by using filterable attributes query parameters. These filters will only work with the `category_id` input query parameter. There are two system-defined filterable attributes in the Bagisto E-commerce framework i.e. `size` and `color`. Admin user can also create their own custom attribute and can make these custom attributes as filterable. By using these filterable attributes, customers can filter the category's products to get the desired result.
+
+- Request
+
+  `GET http(s)://example.com/api/products(?category_id,size,color,price)`
+
+- Params
+
+  | Name        | Info          | Type   |
+  | ----------- | ------------- | ------ |
+  | category_id | Category's ID | Number |
+  | size        | Size          | String |
+  | color       | Color         | String |
+  | price       | Price         | String |
+
+### Examples
+
+#### 1. You can filter Bagisto's product catalog with the help of `size` filter. `size` filter will work only on the category layout. You can pass the multiple attribute's values to the `size` filterable attributes as a query parameter in API url. Suppose you want to filter men's T-Shirt with medium and large size, then you can pass the id of both medium & large.
+
+- Request
+
+  `GET http(s)://example.com/api/products?category_id=2&size=6,7`
+
+#### 2. You can also use the limit and page in query parameters with category & size filterable parameters.
+
+- Request
+  
+  `GET http(s)://example.com/api/products?category_id=2&size=6,7&limit=10&page=1`
+
+  ![Bagisto Product Size](../assets/images/api/bagisto_prod_size.jpg)
+
+#### 3. You can also filter the Bagisto product catalog with the help of `color` filter. `color` filter will work only on the category layout. You can pass the multiple attribute's values to the color`s filterable attributes as a query parameter in API URL. Suppose you want to filter men's T-Shirt with white and red color, then you can pass the id of both white & red.
+
+- Request
+
+  `GET http(s)://example.com/api/products?category_id=2&color=1,2`
+
+#### 4. You can also use the limit and page in query parameters with category & color filterable parameters.
+
+- Request
+
+  `GET http(s)://example.com/api/products?category_id=2&color=1,2&limit=10&page=1`
+
+  ![Bagisto Product Color](../assets/images/api/bagisto_prod_color.jpg)
+
+#### 5. In the case of a simple product, You can set a range of a minimum price and maximum price. Same as `size` and `color`, the `price` filter will also work on the category layout only. Suppose you want to filter products those are having price between price range from 50 to 100, then you have to pass value like `price=10,50` as the query parameter in API URL.
+
+- Request
+
+  `GET http(s)://example.com/api/products?category_id=2&price=50,100`
+
+#### 6. You can also use the `limit` and `page` in query parameters with `category` & `price` filterable parameters.
+
+- Request
+
+  `GET http(s)://example.com/api/products?category_id=2&price=50,100&limit=10&page=1`
+
+  ![Bagisto Product Price Simple](../assets/images/api/bagisto_prod_price_simple.jpg)
+
+#### 7. In the case of a configurable product, the `price` filter will also work with the product's variants. Suppose you want to filter products with the 40$ min and 100$ max price range. And there is a configurable product named men's T-shirts having a price 30$ and there is any variant of the same product having 45$ price, then men's T-shirts product will show you in the filtered product's list.
+
+- Request
+
+  `GET http(s)://example.com/api/products?category_id=2&price=30,100`
+
+  ![Bagisto Product Price Config](../assets/images/api/bagisto_prod_price_config.jpg)
+
+::: tip
+
+The above-explained filter query parameters (i.e. size, color, price) can be used together.
+
+:::
+
+## Get product by id
+
+If you want the record of any specific product, then you have to provide the product id as an input parameter in the API URL.
+
+- Request
+
+  `GET <host>/api/products/{product_id}`
+
+- Params
+
+  | Name       | Info          | Type   |
+  | ---------- | ------------- | ------ |
+  | product_id | Product's ID | Number |
+
+### Examples
+
+- Request
+
+  `GET http(s)://example.com/api/products/1`
+
+::: details Response
+
+~~~json
+{
+  "data": {
+    "id": 1,
+    "type": "simple",
+    "name": "Adorable Cream Teddy Bear",
+    "url_key": "adorable-cream-teddy-bear",
+    "price": "10.0000",
+    "formated_price": "$10.00",
+    "short_description": "<p>Buy Adorable Cream Teddy Bear online at best price</p>",
+    "description": "<p>Buy Adorable Cream Teddy Bear online at best price</p>",
+    "sku": "80971254",
+    "images": [
+      {...}
+    ],
+    "base_image": {...},
+    "variants": [],
+    "in_stock": true,
+    "reviews": {...},
+    "is_saved": false,
+    "created_at": "2020-09-08T23:52:02.000000Z",
+    "updated_at": "2020-09-08T23:52:02.000000Z"
+  }
+}
+~~~
+
+:::
+
+## Get product's additional information
+
+Additional information relates to all the attributes and their values for which admin sets the `Yes` value for the `Visible on Product View Page on Front-end`. The product's additional information means those attributes which describe the product's specification.
+
+![Bagisto Attribute](../assets/images/api/bagisto_attribute.jpg)
+
+- Request
+
+  `GET http(s)://example.com/api/product-additional-information/1`
+
+::: details Response
+
+![Bagisto Additional Info](../assets/images/api/bagisto_add_info.jpg)
+
+:::
+
+## Get product's variants information
+
+You can get all the configurable attributes of a product by using `product-configurable-config` resource in API calls. It will return all the variants of a product with their `label`, `options`, `regular_price` and `final_price` also.
+
+Admin can set the `Yes` value for the `Use To Create Configurable Product` field under the attribute panel to make that attribute as variant.
+
+![Bagisto Config](../assets/images/api/bagisto_config.jpg)
+
+- Request
+
+  `GET http(s)://example.com/api/product-configurable-config/1`
+
+::: details Response
+
+~~~json
 {
     "data": {
         "attributes": [
@@ -252,5 +363,8 @@ _https://example.com/public/api/product-configurable-config/1_
         }
     }
 }
-```
-![bagisto_config_attr](../assets/images/api/bagisto_config_attr.jpg){:class="screenshot-dimension center"}
+~~~
+
+![Bagisto Config Attributes](../assets/images/api/bagisto_config_attr.jpg)
+
+:::
