@@ -63,7 +63,7 @@ return [
   }
   ~~~
 
-- Now, menu will display in the admin panel. You can change the icon according to your needs.
+- Now, the menu will display in the admin panel. You can change the icon according to your needs.
 
   ::: details Output
 
