@@ -3,7 +3,7 @@ home: true
 heroText: Bagisto Developer Portal
 tagline: Find detailed documentation and code examples.
 actionText: Get Started →
-actionLink: /introduction/
+actionLink: /1.x/introduction/
 features:
 - title: Package creation
   details: Learn how to create a new package for Bagisto.

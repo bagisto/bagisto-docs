@@ -88,6 +88,6 @@ Creating a custom configuration ease the task for a developer or any non-develop
 
   ::: details Output
 
-    ![Admin ACL Output](../assets/images/package-development/admin-custom-config-output.png)
+    ![Admin ACL Output](../../assets/images/package-development/admin-custom-config-output.png)
 
   :::

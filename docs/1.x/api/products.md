@@ -204,7 +204,7 @@ You can also filter your store products by using filterable attributes query par
   
   `GET http(s)://example.com/api/products?category_id=2&size=6,7&limit=10&page=1`
 
-  ![Bagisto Product Size](../assets/images/api/bagisto_prod_size.jpg)
+  ![Bagisto Product Size](../../assets/images/api/bagisto_prod_size.jpg)
 
 #### 3. You can also filter the Bagisto product catalog with the help of `color` filter. `color` filter will work only on the category layout. You can pass the multiple attribute's values to the color`s filterable attributes as a query parameter in API URL. Suppose you want to filter men's T-Shirt with white and red color, then you can pass the id of both white & red.
 
@@ -218,7 +218,7 @@ You can also filter your store products by using filterable attributes query par
 
   `GET http(s)://example.com/api/products?category_id=2&color=1,2&limit=10&page=1`
 
-  ![Bagisto Product Color](../assets/images/api/bagisto_prod_color.jpg)
+  ![Bagisto Product Color](../../assets/images/api/bagisto_prod_color.jpg)
 
 #### 5. In the case of a simple product, You can set a range of a minimum price and maximum price. Same as `size` and `color`, the `price` filter will also work on the category layout only. Suppose you want to filter products those are having price between price range from 50 to 100, then you have to pass value like `price=10,50` as the query parameter in API URL.
 
@@ -232,7 +232,7 @@ You can also filter your store products by using filterable attributes query par
 
   `GET http(s)://example.com/api/products?category_id=2&price=50,100&limit=10&page=1`
 
-  ![Bagisto Product Price Simple](../assets/images/api/bagisto_prod_price_simple.jpg)
+  ![Bagisto Product Price Simple](../../assets/images/api/bagisto_prod_price_simple.jpg)
 
 #### 7. In the case of a configurable product, the `price` filter will also work with the product's variants. Suppose you want to filter products with the 40$ min and 100$ max price range. And there is a configurable product named men's T-shirts having a price 30$ and there is any variant of the same product having 45$ price, then men's T-shirts product will show you in the filtered product's list.
 
@@ -240,7 +240,7 @@ You can also filter your store products by using filterable attributes query par
 
   `GET http(s)://example.com/api/products?category_id=2&price=30,100`
 
-  ![Bagisto Product Price Config](../assets/images/api/bagisto_prod_price_config.jpg)
+  ![Bagisto Product Price Config](../../assets/images/api/bagisto_prod_price_config.jpg)
 
 ::: tip
 
@@ -302,7 +302,7 @@ If you want the record of any specific product, then you have to provide the pro
 
 Additional information relates to all the attributes and their values for which admin sets the `Yes` value for the `Visible on Product View Page on Front-end`. The product's additional information means those attributes which describe the product's specification.
 
-![Bagisto Attribute](../assets/images/api/bagisto_attribute.jpg)
+![Bagisto Attribute](../../assets/images/api/bagisto_attribute.jpg)
 
 - Request
 
@@ -310,7 +310,7 @@ Additional information relates to all the attributes and their values for which 
 
 ::: details Response
 
-![Bagisto Additional Info](../assets/images/api/bagisto_add_info.jpg)
+![Bagisto Additional Info](../../assets/images/api/bagisto_add_info.jpg)
 
 :::
 
@@ -320,7 +320,7 @@ You can get all the configurable attributes of a product by using `product-confi
 
 Admin can set the `Yes` value for the `Use To Create Configurable Product` field under the attribute panel to make that attribute as variant.
 
-![Bagisto Config](../assets/images/api/bagisto_config.jpg)
+![Bagisto Config](../../assets/images/api/bagisto_config.jpg)
 
 - Request
 
@@ -365,6 +365,6 @@ Admin can set the `Yes` value for the `Use To Create Configurable Product` field
 }
 ~~~
 
-![Bagisto Config Attributes](../assets/images/api/bagisto_config_attr.jpg)
+![Bagisto Config Attributes](../../assets/images/api/bagisto_config_attr.jpg)
 
 :::

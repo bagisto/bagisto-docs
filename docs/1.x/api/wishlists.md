@@ -40,7 +40,7 @@ If you are using pagination and want to know more info about responses then chec
 
 ::: details Response (Example 1 & 2)
 
-![bagisto_wishlist_page](../assets/images/api/bagisto_wishlist_page.jpg)
+![bagisto_wishlist_page](../../assets/images/api/bagisto_wishlist_page.jpg)
 
 :::
 

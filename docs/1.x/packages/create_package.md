@@ -65,7 +65,7 @@ There are two ways to create a package.
 
 ::: details Check output in the browser
 
-![helloworld-admin-browser-output](../assets/images/package-development/hello-world-package-output.png)
+![helloworld-admin-browser-output](../../assets/images/package-development/hello-world-package-output.png)
 
 :::
 
@@ -415,13 +415,13 @@ Let's start with first step by creating the packages folder.
 
   ::: details Admin Output
 
-    ![Admin Browser Output](../assets/images/package-development/helloworld-admin-browser-output.png)
+    ![Admin Browser Output](../../assets/images/package-development/helloworld-admin-browser-output.png)
   
   :::
 
   ::: details Shop Output
   
-    ![Shop Browser Output](../assets/images/package-development/helloworld-shop-browser-output.png)
+    ![Shop Browser Output](../../assets/images/package-development/helloworld-shop-browser-output.png)
 
   :::
 
@@ -511,13 +511,13 @@ Let's start with first step by creating the packages folder.
 
   ::: details Admin Output
 
-    ![Translation Output](../assets/images/package-development/hello-world-admin-translation-output.png)
+    ![Translation Output](../../assets/images/package-development/hello-world-admin-translation-output.png)
 
   :::
 
   ::: details Shop Output
 
-    ![Translation Output](../assets/images/package-development/hello-world-shop-translation-output.png)
+    ![Translation Output](../../assets/images/package-development/hello-world-shop-translation-output.png)
 
   :::
 

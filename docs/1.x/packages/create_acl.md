@@ -58,6 +58,6 @@ return [
 
   ::: details Output
 
-    ![Admin ACL Output](../assets/images/package-development/admin-acl-output.png)
+    ![Admin ACL Output](../../assets/images/package-development/admin-acl-output.png)
 
   :::
