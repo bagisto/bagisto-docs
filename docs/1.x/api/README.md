@@ -33,4 +33,4 @@ You want to get all the store products according to pagination, then you just si
 
 > **https://example.com/public/api/products**
 
-![demo_products](../assets/images/api/demo_products.jpg)
+![demo_products](../../assets/images/api/demo_products.jpg)

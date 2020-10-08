@@ -70,7 +70,7 @@ If you are using pagination and want to know more info about responses then chec
 }
 ~~~
 
-![bagisto_shipments](../assets/images/api/bagisto_shipments.jpg)
+![bagisto_shipments](../../assets/images/api/bagisto_shipments.jpg)
 
 :::
 
@@ -182,7 +182,7 @@ To get the details of a  specific order's shipment, you have to pass an `order_i
 
 ::: details Response
 
-![bagisto_ship_order_id](../assets/images/api/bagisto_ship_order_id.jpg)
+![bagisto_ship_order_id](../../assets/images/api/bagisto_ship_order_id.jpg)
 
 :::
 

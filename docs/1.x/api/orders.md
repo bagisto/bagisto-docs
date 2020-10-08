@@ -127,7 +127,7 @@ You can also get all the orders at once from the Bagisto store without paginatio
 }
 ~~~
 
-![bagisto_orders_no_pag](../assets/images/api/bagisto_orders_no_pag.jpg){:class="screenshot-dimension center"}
+![bagisto_orders_no_pag](../../assets/images/api/bagisto_orders_no_pag.jpg){:class="screenshot-dimension center"}
 
 :::
 
@@ -184,7 +184,7 @@ Let's fetch specific order,
 }
 ~~~
 
-![bagisto_orders_id](../assets/images/api/bagisto_orders_id.jpg)
+![bagisto_orders_id](../../assets/images/api/bagisto_orders_id.jpg)
 
 :::
 

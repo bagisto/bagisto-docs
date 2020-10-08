@@ -67,6 +67,6 @@ return [
 
   ::: details Output
 
-    ![Admin Menu Output](../assets/images/package-development/admin-menu-output.png)
+    ![Admin Menu Output](../../assets/images/package-development/admin-menu-output.png)
 
   :::
