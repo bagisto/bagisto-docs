@@ -37,8 +37,17 @@ module.exports = {
             },
             {
                 title: "Package Development",
-                path: "/packages/create",
+                path: "/packages/",
                 collapsable: true,
+                children: [
+                    ["packages/create_package", "Create a new package"],
+                    ["packages/create_migrations", "Create migrations"],
+                    ["packages/add_menu_in_admin", "Add menu in admin"],
+                    ["packages/create_acl", "Create ACL"],
+                    ["packages/create_custom_configuration", "Create Custom Configuration"],
+                    ["packages/create_models", "Create models"],
+                    ["packages/store_data_through_repositories", "Store data through repositories"],
+                ]
             },
             {
                 title: "Advanced topics",
@@ -56,7 +65,7 @@ module.exports = {
             },           
             {
                 title: "Themes",
-                path: "/themes",
+                path: "/themes/",
                 collapsable: true,
                 children: [
                     ["themes/create_theme", "Create a store theme"],
@@ -65,8 +74,12 @@ module.exports = {
             },
             {
                 title: "Translations",
-                path: "/translations/",
+                path: "/translations/translation_based_on_locale",
                 collapsable: true,
+                children: [
+                    ["translations/translation_based_on_locale", "Translation based on locale"],
+                    ["translations/change_the_language_of_error_validations_on_your_store", "Change the language of error validations on your store"]
+                ]
             },
             {
                 title: "User guides",
