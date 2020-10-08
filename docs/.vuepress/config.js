@@ -16,14 +16,14 @@ module.exports = {
         editLinks: true,
         editLinkText: 'Help us improve this page on Github.',
 
-        logo: '../logo.png',
+        logo: '/logo.png',
         nav: [
             { text: 'Home', link: '/' },
             { text: 'Extensions', link: 'https://bagisto.com/en/extensions/' },
             { text: 'Community Forum', link: 'https://forums.bagisto.com/' }
         ],
         sidebar: {
-            '/1.x/': require('./1.x')
+            '/1.x/': require('./version-configs/1.x')
         }
     },
     markdown: {
