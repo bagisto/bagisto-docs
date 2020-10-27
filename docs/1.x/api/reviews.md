@@ -4,7 +4,7 @@ In this section, we will check all the reviews' API based on customers as well a
 
 ## Get all reviews
 
-You can get all the reviews of the Bagisto store. You can achieve this job by using `reviews` API call resource. This `reviews` resource is helpful for both admin user and customer too. There is no need of customer authentication.
+You can get all the reviews of the Bagisto store. You can achieve this job by using `reviews` API call resource. There is no need of customer authentication.
 
 - Request
 
