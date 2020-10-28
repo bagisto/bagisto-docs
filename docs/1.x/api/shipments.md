@@ -4,7 +4,7 @@ In this section, we will check all the shipments' API.
 
 ## Get shipments from all orders
 
-You can get all the shipments of the Bagisto store. To get the shipments of the store, the customer must be logged in to the Bagisto store. You can achieve this job by using the `shipments` API call resource. This `shipments` resource is helpful for both admin users and customers too.
+You can get all the shipments of the Bagisto store. To get the shipments of the store, the customer must be logged in to the Bagisto store. You can achieve this job by using the `shipments` API call resource.
 
 - Request
 

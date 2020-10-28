@@ -4,7 +4,7 @@ In this section, we will see all the APIs which are related to order. As after o
 
 ## Get all orders
 
-You can get all the orders of the Bagisto store. To get the orders of the store, the customer must be logged in to the Bagisto Store. You can achieve this job by using `orders` API call resource. This `orders` resource is helpful for both admin, user and customer too.
+You can get all the orders of the Bagisto store. To get the orders of the store, the customer must be logged in to the Bagisto Store. You can achieve this job by using `orders` API call resource.
 
 - Request
 
