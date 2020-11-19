@@ -35,10 +35,6 @@
 
 - Add “ServerTokens Prod” to display Apache as product only.
 
-- Besides this, review your server for development leftovers and also make sure that there are.
-
-- No accessible “log files”, “.git directories”, “database dumps” and “.zip files”.
-
 ## Allow admin access to certain IPs
 
 - Edit your .htaccess file with the following code
