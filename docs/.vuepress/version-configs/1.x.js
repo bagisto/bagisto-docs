@@ -46,6 +46,7 @@ module.exports = [
         children: setVersionPrefix([
             ['advanced/create_shipping_method', 'Create a shipping method'],
             ['advanced/create_payment_method', 'Create a payment method'],
+            ['advanced/create_product_type', 'Create your own product type'],
             ['advanced/datagrid', 'Data grid'],
             ['advanced/events', 'Events'],
             ['advanced/override-core-model', 'Override core models'],
