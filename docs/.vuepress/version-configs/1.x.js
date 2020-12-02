@@ -85,16 +85,16 @@ module.exports = [
         path: setVersionPrefix('api'),
         collapsable: true,
         children: setVersionPrefix([
-            ['api/customers', 'Customers'],
             ['api/addresses', 'Addresses'],
-            ['api/wishlists', 'Wishlists'],
             ['api/categories', 'Categories'],
-            ['api/products', 'Products'],
-            ['api/cart', 'Shopping Cart'],
-            ['api/orders', 'Orders'],
+            ['api/customers', 'Customers'],
             ['api/invoices', 'Invoices'],
+            ['api/orders', 'Orders'],
+            ['api/products', 'Products'],
+            ['api/reviews', 'Reviews'],
             ['api/shipments', 'Shipments'],
-            ['api/reviews', 'Reviews']
+            ['api/cart', 'Shopping Cart'],
+            ['api/wishlists', 'Wishlists'],
         ])
     },
 ]
