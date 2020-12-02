@@ -3,7 +3,7 @@ Events are an implementation of observer pattern such that whenever an event tak
 
 ## How to create Event Class?
 
-If you have the Bagisto Package Generator installed then, you need to used this command which will create a new event class in `packages/ACME/TestPackage/src/Events` directory.
+If you have the Bagisto Package Generator installed, then you can use the following command which will create a new event class in `packages/ACME/TestPackage/src/Events` directory.
 
 `php artisan package:make-event TestEvent ACME/TestPackage`
 
@@ -15,7 +15,7 @@ Or if you don't have package generator then, you can create file manually also.
 
 ## How to create Listener Class?
 
-If you have Bagisto Package Generator then, you need to use this command which will create a new listener class in `packages/ACME/TestPackage/src/Listeners` directory.
+If you have the Bagisto Package Generator installed, then you can use the following command which will create a new listener class in `packages/ACME/TestPackage/src/Listeners` directory.
 
 `php artisan package:make-listener TestListener ACME/TestPackage`
 
