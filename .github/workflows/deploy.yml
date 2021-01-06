@@ -1,0 +1,29 @@
+name: Deploy to GitHub pages
+
+on:
+  push:
+    # this might change depending on whether you are publishing a site for a normal repo or a user/organization repo
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Generate static vuepress files
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+    - run: npm ci
+    - run: npm run build
+    
+    - name: Init new repo in dist folder and commit generated files
+      run: |
+        cd docs/.vuepress/dist
+        git init
+        git add -A
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git commit -m 'deploy'
