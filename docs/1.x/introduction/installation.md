@@ -9,12 +9,6 @@
 
 
 ## Install Bagisto using command line:
-
-- Get Bagisto by using composer
-
-```sh
-composer create-project bagisto/bagisto-standard
-```
   
 - Start the installation script
 ```sh
