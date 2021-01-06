@@ -7,6 +7,11 @@
     - `https://localhost/bagisto/public`
     - `https://example.com/public`
 
+## Install Bagisto using composer:
+  
+```
+composer create-project bagisto/bagisto
+```
 
 ## Install Bagisto using command line:
   
