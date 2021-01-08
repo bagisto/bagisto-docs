@@ -173,8 +173,16 @@ Bagisto has been installed and is ready. Browse your server IP address or domain
 ### Configure Apache
 The Apache documentroot is by default assigned to **/var/www/html/public_html**. while the **app** directory on host is mapped with the **html** directory inside the container, we need to create a symlink of `bagisto/public` in `app` directory to `/var/www/html/public_html`.
 
-> `cd app; ln -snf bagisto/public public_html`
+Run the following command on Linux or MacOS 
+```shell
+cd app; ln -snf bagisto/public public_html
+```
 
+Run the following command on Windows
+```command-line
+cd app
+mklink bagisto/public public_html
+```
 ### Ready
 
 #### Login as a administrator:
