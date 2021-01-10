@@ -125,11 +125,17 @@ CONTAINER ID   IMAGE                      COMMAND                  CREATED      
 Once our environment is ready we can start installing Bagisto. You can either install Bagisto from [Github](#install-without-composer) or with [composer](#install-with-composer)
 
 ### Install without composer 
-Clone [bagisto](https://github.com/bagisto/bagisto) inside `app/public_html` directory and mention your system or system IP on browser and begin with installaton process. 
-Mention the database details same as docker-compose.yml and admin details.
+Download the [latest release](https://bagisto.com/en/download) inside `app/bagisto` directory.  
+Open the `.env` file inside **app/bagisto** and set the following environment variables listed below:
 
-```shell
-git clone https://github.com/bagisto/bagisto app/public_html
+```editorconfig
+APP_URL=https://127.0.0.1
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=
+DB_USERNAME=
+DB_PASSWORD=
 ```
 
 Run the following commands to install Bagisto.
@@ -141,6 +147,9 @@ docker exec -i apache2 bash -c "su - www-data -s /bin/bash -c 'php bagisto/artis
 docker exec -i apache2 bash -c "su - www-data -s /bin/bash -c 'composer dump-autoload -d bagisto'"
 ```
 
+Mention the database details same as docker-compose.yml and admin details.
+
+
 ### Install with composer
 The following commands will be exexcuted within the docker container
 ```shell
@@ -150,10 +159,10 @@ docker exec -i apache2 bash -c "su - www-data -s /bin/bash -c 'composer create-p
 Open the .env file inside `app/bagisto` directory and set the following environment variables listed below:
 
 ```editorconfig
-APP_URL=
-DB_CONNECTION=
+APP_URL=https://127.0.0.1
+DB_CONNECTION=mysql
 DB_HOST=mysql
-DB_PORT=
+DB_PORT=3306
 DB_DATABASE=
 DB_USERNAME=
 DB_PASSWORD=
@@ -171,10 +180,11 @@ docker exec -i apache2 bash -c "su - www-data -s /bin/bash -c 'composer dump-aut
 Bagisto has been installed and is ready. Browse your server IP address or domain name on the web browser.
 
 ### Configure Apache
-The Apache documentroot is by default assigned to **/var/www/html/public_html**. while the **app** directory on host is mapped with the **html** directory inside the container, we need to create a symlink of `bagisto/public` in `app` directory to `/var/www/html/public_html`.
+The Apache documentroot is by default assigned to **/var/www/html/public_html**. while the **app** directory on host is mapped with the **html** directory inside the container.
+We need to create a symlink of `bagisto/public` in `app` directory to `/var/www/html/public_html`.
 
 Run the following command on Linux or MacOS 
-```shell
+```bash
 cd app; ln -snf bagisto/public public_html
 ```
 
@@ -186,12 +196,11 @@ mklink bagisto/public public_html
 ### Ready
 
 #### Login as a administrator:
-```
-http(s)://your_server_endpoint/admin/login
+You can directly visit the admin interface [http://your_server_endpoint/admin](http://your_server_endpoint/admin/) and authenticate with the following credentials.
 
-email: admin@example.com
-password: admin123
-```
+| Email | Password |
+| --------- | ------- |
+| admin@example.com | admin123 |
 
 #### Login as a customer
-You can directly visit your store on [http(s):/your_server_endpoint/](http(s):/your_server_endpoint/).
+You can directly visit your store on [http://your_server_endpoint/](http://your_server_endpoint/).
