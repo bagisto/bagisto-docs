@@ -1,12 +1,15 @@
-# Create ACL
+# Access Control List
 
-In term to manage an eCommerce site becomes clumsy and ambiguous. Here, in Bagisto, it has been taken care of, Bagisto has provided a functionality **ACL** (Access Control List). Mainly, with ACL, admin has the power to disable the menu whatever not in use for admin.
+[[toc]]
 
-## Creating an ACL file
+## Introduction
+In addition to providing authentication services out of the box, Bagisto also provides a functionality **ACL** (Access Control List).  
+With this feature the administrator can allow/disallow other users to access parts of Bagisto.
 
+## Create a new ACL file
 There are some steps that the user has to follow to create ACL. The user has to create a file in the `packages/ACME/HelloWorld/src/Config` path named as `acl.php`,
 
-~~~php
+````php
 <?php
 
 return [
@@ -17,13 +20,11 @@ return [
         'sort' => 2
     ]
 ];
-~~~
+````
+The array is created for an individual's menu with the parameters (key, name, route, sort). All we need to do is define the menu which we want to include with our ACL.
+After that for changes, we need to merge the acl config also just like we have done with menu items,
 
-- The array is created for an individual's menu with the parameters (key, name, route, sort). All we need is to define the menu which we want to include in ACL functionality.
-
-- After that for changes, we need to merge the acl config also just like we have done with menu items,
-
-  ~~~php
+  ````php
   <?php
 
   namespace ACME\HelloWorld\Providers;
@@ -54,10 +55,7 @@ return [
           );
       }
   }
-  ~~~
-
-  ::: details Output
-
-    ![Admin ACL Output](../../assets/images/package-development/admin-acl-output.png)
-
-  :::
+  ````
+::: details Output
+![Admin ACL Output](../../assets/images/package-development/admin-acl-output.png)
+:::

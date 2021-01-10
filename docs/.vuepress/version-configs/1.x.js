@@ -35,7 +35,7 @@ module.exports = [
             ['packages/create_package', 'Create a new package'],
             ['packages/create_migrations', 'Create migrations'],
             ['packages/add_menu_in_admin', 'Add menu in admin'],
-            ['packages/create_acl', 'Create ACL'],
+            ['packages/create_acl', 'Access Control List'],
             ['packages/create_custom_configuration', 'Create Custom Configuration'],
             ['packages/create_models', 'Create models'],
             ['packages/store_data_through_repositories', 'Store data through repositories'],
