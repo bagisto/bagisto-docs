@@ -7,7 +7,7 @@ In addition to providing authentication services out of the box, Bagisto also pr
 With this feature the administrator can allow/disallow other users to access parts of Bagisto.
 
 ## Create a new ACL file
-There are some steps that the user has to follow to create ACL. The user has to create a file in the `packages/ACME/HelloWorld/src/Config` path named as `acl.php`,
+Create a new file named as `acl.php` inside your package **config** folder, for example `packages/ACME/HelloWorld/src/Config` and add the following code.
 
 ````php
 <?php
@@ -21,6 +21,7 @@ return [
     ]
 ];
 ````
+
 The array is created for an individual's menu with the parameters (key, name, route, sort). All we need to do is define the menu which we want to include with our ACL.
 After that for changes, we need to merge the acl config also just like we have done with menu items,
 
