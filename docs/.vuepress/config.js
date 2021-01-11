@@ -1,6 +1,6 @@
 module.exports = {
     base: '/',
-    port: '8081',
+    port: '8080',
     title: 'Documentation',
     description: 'Bagisto Developer Portal',
     head: [
