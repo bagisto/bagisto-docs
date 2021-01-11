@@ -17,13 +17,13 @@ There are two ways to create a package.
 
 - Now, to generate your package you need to use the following command,
 
-  - If package directory not present,
+  - If the package directory does not exist,
 
     ~~~php
     php artisan package:make ACME/HelloWorld
     ~~~
 
-  - If somehow package directory already present then you can use force command as well. For that you just need to pass the '**--force**' command.
+  - If somehow the package directory is already present then you can use the force command as well. For that you just need to pass the '**--force**' command.
 
     ~~~php
     php artisan package:make ACME/HelloWorld --force
@@ -163,13 +163,13 @@ Let's start with first step by creating the packages folder.
 - In `src` folder, create a folder named as `Providers` and inside that folder, create a file named as `PackagenameServiceProvider.php`. Let's say `HelloWorldServiceProvider.php`.
 
     ::: tip
-    If you want to do with **Bagisto Package Generator** then you need to type this command, this command will generate service provider for you.
+    If you want to do this with the **Bagisto Package Generator** then you need to type the following command, it will generate the service provider for you.
 
     ~~~php
     php artisan package:make-provider HelloWorldServiceProvider ACME/HelloWorld
     ~~~
 
-    If somehow file already present then you can use `--force` to overwrite the file.
+    If somehow the file already exists then you can use `--force` to overwrite the file.
     :::
 
 - Copy the below code and paste it in `HelloWorldServiceProvider.php`,
@@ -247,9 +247,9 @@ Let's start with first step by creating the packages folder.
 
 ### Step-6
 
-- Now, we are going to add routing & views in our package.
+- Now, you need to add routing & views in your package.
 
-  - **For routes**: Create `Http` folder in `packages/ACME/HelloWorld/src` path and create two files named as `admin-routes.php` and `shop-routes.php`. So updated structure will look like this,
+  - **For routes**: Create a `Http` folder in `packages/ACME/HelloWorld/src` and create two files named as `admin-routes.php` and `shop-routes.php`. So the updated structure will look like below,
 
     ::: details Updated directory structure
 
