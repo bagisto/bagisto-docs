@@ -81,6 +81,7 @@ module.exports = [
         collapsable: true,
         children: setVersionPrefix([
             ['user_guides/cart_rule', 'Cart rules'],
+            ['user_guides/social_auth', 'Social Authentication']
         ])
     }, 
     {
