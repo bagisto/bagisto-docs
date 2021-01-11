@@ -271,9 +271,10 @@ Let's start with first step by creating the packages folder.
         <?php
 
         Route::group(['middleware' => ['web', 'admin']], function () {
+          Route::prefix(config('app.admin_url'))->group(function () {
 
             // all admin routes will place here
-
+          });
         });
         ~~~
 
