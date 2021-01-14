@@ -1,10 +1,18 @@
 # Customers
 
-In this section, we will use all APIs which relates to customer like registration, authentication, details and reset password. Let's start with registration first,
+In this section, we will use all APIs which relates to customer like registration, authentication, details and reset password.
+
+Let's start with registration first,
 
 ## Registration
 
 You can create/register a new customer in the Bagisto store. To achieve this task, you can use the `customer/register` API call resource.
+
+- Headers
+
+  | Key                   | Value            |
+  | --------------------- | ---------------- |
+  | Accept                | application/json |
 
 - Request
 
@@ -22,7 +30,13 @@ You can create/register a new customer in the Bagisto store. To achieve this tas
 
 ### Examples
 
-#### 1. Let's register/create a new customer.
+#### 1. Let's register/create a new customer
+
+- Headers
+
+  | Key                   | Value            |
+  | --------------------- | ---------------- |
+  | Accept                | application/json |
 
 - Request
 
@@ -48,7 +62,7 @@ You can create/register a new customer in the Bagisto store. To achieve this tas
 
 :::
 
-#### 2. If customer is already in the Bagisto store with the same email address.
+#### 2. If customer is already in the Bagisto store with the same email address
 
 Now, hit the above request one more time.
 
