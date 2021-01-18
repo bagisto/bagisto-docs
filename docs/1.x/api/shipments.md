@@ -6,6 +6,13 @@ In this section, we will check all the shipments' API.
 
 You can get all the shipments of the Bagisto store. To get the shipments of the store, the customer must be logged in to the Bagisto store. You can achieve this job by using the `shipments` API call resource.
 
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
+
 - Request
 
   `GET <host>/api/shipments(?limit,page,pagination)`
@@ -20,61 +27,77 @@ You can get all the shipments of the Bagisto store. To get the shipments of the 
 
 ::: tip
 
-If you are using pagination and want to know more info about responses then check the [explanation](./explanation) portion.
+  If you are using pagination and want to know more info about responses then check the [explanation](./explanation) portion.
 
 :::
 
 ### Examples
 
-#### 1. Get all shipments with pagination,
+#### 1. Get all shipments with pagination
+
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
 
 - Request
 
   `GET http(s)://example.com/api/shipments?page=1`
 
   ::: tip
-  If you didn't use the page (?page=x) filter, then it returns the data of the first page by default.
 
-  `GET http(s)://example.com/api/shipments`
+    If you didn't use the page (?page=x) filter, then it returns the data of the first page by default.
+
+    `GET http(s)://example.com/api/shipments`
+  
   :::
 
 ::: details Response
 
-~~~json
-{
-    "data": [
-        {
-            "id": 1,
-            "total_qty": 2,
-            "total_weight": null,
-            "carrier_title": "DHL Shipping",
-            "track_number": "1234566",
-            "customer": {...},
-            "inventory_source": {
-                "id": 1,
-                "name": "Default",
-                "contact_name": "Detroit Warehouse",
-                "contact_email": "warehouse@example.com",
-                "contact_number": "1234567899",
-                "country": "US",
-                "state": "MI",
-                "city": "Detroit",
-                "street": "12th Street",
-                "postcode": "48127",
-            },
-            "items": [{...},{...}]
-        }
-    ],
-    "links": {...},
-    "meta": {...}
-}
-~~~
+  ~~~json
+  {
+      "data": [
+          {
+              "id": 1,
+              "total_qty": 2,
+              "total_weight": null,
+              "carrier_title": "DHL Shipping",
+              "track_number": "1234566",
+              "customer": {...},
+              "inventory_source": {
+                  "id": 1,
+                  "name": "Default",
+                  "contact_name": "Detroit Warehouse",
+                  "contact_email": "warehouse@example.com",
+                  "contact_number": "1234567899",
+                  "country": "US",
+                  "state": "MI",
+                  "city": "Detroit",
+                  "street": "12th Street",
+                  "postcode": "48127",
+              },
+              "items": [{...},{...}]
+          }
+      ],
+      "links": {...},
+      "meta": {...}
+  }
+  ~~~
 
-![bagisto_shipments](../../assets/images/api/bagisto_shipments.jpg)
+  ![bagisto_shipments](../../assets/images/api/bagisto_shipments.jpg)
 
 :::
 
-#### 2. Get all shipments without pagination,
+#### 2. Get all shipments without pagination
+
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
 
 - Request
 
@@ -82,45 +105,51 @@ If you are using pagination and want to know more info about responses then chec
 
 ::: details Response
 
-~~~json
-{
-    "data": [
-        {
-            "id": 1,
-            "total_qty": 2,
-            "total_weight": null,
-            "carrier_title": "DHL Shipping",
-            "track_number": "1234566",
-            "customer": {...},
-            "inventory_source": {
-                "id": 1,
-                "name": "Default",
-                "contact_name": "Detroit Warehouse",
-                "contact_email": "warehouse@example.com",
-                "contact_number": "1234567899",
-                "country": "US",
-                "state": "MI",
-                "city": "Detroit",
-                "street": "12th Street",
-                "postcode": "48127",
-            },
-            "items": [{...},{...}]
-        },
-        {...},
-        {...},
-        {...},
-         ...
-        {...}
-    ]
-}
-~~~
+  ~~~json
+  {
+      "data": [
+          {
+              "id": 1,
+              "total_qty": 2,
+              "total_weight": null,
+              "carrier_title": "DHL Shipping",
+              "track_number": "1234566",
+              "customer": {...},
+              "inventory_source": {
+                  "id": 1,
+                  "name": "Default",
+                  "contact_name": "Detroit Warehouse",
+                  "contact_email": "warehouse@example.com",
+                  "contact_number": "1234567899",
+                  "country": "US",
+                  "state": "MI",
+                  "city": "Detroit",
+                  "street": "12th Street",
+                  "postcode": "48127",
+              },
+              "items": [{...},{...}]
+          },
+          {...},
+          {...},
+          {...},
+          ...
+          {...}
+      ]
+  }
+  ~~~
 
 :::
-
 
 ## Get shipments by order's id
 
 To get the details of a  specific order's shipment, you have to pass an `order_id` as a query parameter in API URL. By using this resource and query parameter, you will get only a single shipment detail in API response based on the provided `order_id`.
+
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
 
 - Request
 
@@ -137,7 +166,14 @@ To get the details of a  specific order's shipment, you have to pass an `order_i
 
 ### Examples
 
-#### 1. Get all shipments by order's id,
+#### 1. Get all shipments by order's id
+
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
 
 - Request
 
@@ -145,44 +181,53 @@ To get the details of a  specific order's shipment, you have to pass an `order_i
 
 ::: details Response
 
-~~~json
-{
-    "data": [
-        {
-            "id": 1,
-            "total_qty": 2,
-            "total_weight": null,
-            "carrier_code": null,
-            "carrier_title": "DHL Shipping",
-            "track_number": "1234566",
-            "customer": {...},
-            "inventory_source": {...},
-            "items": [
-                {...},
-                {...}
-            ]
-        }
-    ],
-}
-~~~
+  ~~~json
+  {
+      "data": [
+          {
+              "id": 1,
+              "total_qty": 2,
+              "total_weight": null,
+              "carrier_code": null,
+              "carrier_title": "DHL Shipping",
+              "track_number": "1234566",
+              "customer": {...},
+              "inventory_source": {...},
+              "items": [
+                  {...},
+                  {...}
+              ]
+          }
+      ],
+  }
+  ~~~
 
 :::
 
-#### 2. Get all shipments by order's id for specific page,
+#### 2. Get all shipments by order's id for specific page
+
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
 
 - Request
 
   `GET http(s)://example.com/api/shipments?order_id=3&page=1`
 
   ::: tip
-  If you didn't use the page (?page=x) filter, then it returns the data of the first page by default.
 
-  `GET http(s)://example.com/api/shipments?order_id=3`
+    If you didn't use the page (?page=x) filter, then it returns the data of the first page by default.
+
+    `GET http(s)://example.com/api/shipments?order_id=3`
+  
   :::
 
 ::: details Response
 
-![bagisto_ship_order_id](../../assets/images/api/bagisto_ship_order_id.jpg)
+  ![bagisto_ship_order_id](../../assets/images/api/bagisto_ship_order_id.jpg)
 
 :::
 
@@ -190,13 +235,27 @@ To get the details of a  specific order's shipment, you have to pass an `order_i
 
 To get the details of a specific shipment, you have to pass a `shipment_id` as a request payload in the API URL.
 
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
+
 - Request
 
   `GET http(s)://example.com/api/shipments/{id}`
 
 ### Examples
 
-#### 1. Let's fetch specific shipment,
+#### 1. Let's fetch specific shipment
+
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
 
 - Request
 
@@ -204,24 +263,24 @@ To get the details of a specific shipment, you have to pass a `shipment_id` as a
 
 ::: details Response
 
-~~~json
-{
-    "data": {
-        "id": 1,
-        "total_qty": 2,
-        "total_weight": null,
-        "carrier_code": null,
-        "carrier_title": "DHL Shipping",
-        "track_number": "1234566",
-        "email_sent": 0,
-        "customer": {...},
-        "inventory_source": {...},
-        "items": [
-            {...},
-            {...}
-        ]
-    }
-}
-~~~ 
+  ~~~json
+  {
+      "data": {
+          "id": 1,
+          "total_qty": 2,
+          "total_weight": null,
+          "carrier_code": null,
+          "carrier_title": "DHL Shipping",
+          "track_number": "1234566",
+          "email_sent": 0,
+          "customer": {...},
+          "inventory_source": {...},
+          "items": [
+              {...},
+              {...}
+          ]
+      }
+  }
+  ~~~
 
 :::

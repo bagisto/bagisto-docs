@@ -6,6 +6,13 @@ In this section, we will use all the addresses' API. We will check the creation 
 
 To add an address, you have to use the `addresses/create` endpoint url and have to pass the address fields in the request payload. This `addresses/create` API call resource will create a new address of the customer, only if that customer has logged in the store.
 
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
+
 - Request
 
   `POST <host>/api/addresses/create`
@@ -25,6 +32,13 @@ To add an address, you have to use the `addresses/create` endpoint url and have 
 ### Examples
 
 Let's take an example of creating an address,
+
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
 
 - Request
 
@@ -58,17 +72,25 @@ Let's take an example of creating an address,
 
 ::: details Response
 
-~~~json
-{
-    "message":"Address has been created successfully.",
-    "data": {...} // This contains the data you send to the api.
-}
-~~~
+  ~~~json
+  {
+      "message":"Address has been created successfully.",
+      "data": {...} // This contains the data you send to the api.
+  }
+  ~~~
+
 :::
 
 ## Get all addresses
 
 To get all the address of a customer, that customer must be logged in to the store. You can achieve this job by using `addresses` API call resource.
+
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
 
 - Request
 
@@ -78,44 +100,58 @@ To get all the address of a customer, that customer must be logged in to the sto
 
 Let's take an example,
 
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
+
 - Request
 
   `GET http(s)://example.com/api/addresses`
 
 ::: details Response
 
-~~~json
-{
-    "data": [
-        {
-            "id": 3,
-            "address1": [...],
-            "country": "IN",
-            "country_name": "India",
-            "state": "UT",
-            "city": "Dehradun",
-            "postcode": 248001,
-            "phone": "01345679",
-        },
-        {
-            "id": 2,
-            "address1": [...],
-            "country": "IN",
-            "country_name": "India",
-            "state": "UP",
-            "city": "Noida",
-            "postcode": 201301,
-            "phone": "012345679",
-        },
-    ]
-}
-~~~
+  ~~~json
+  {
+      "data": [
+          {
+              "id": 3,
+              "address1": [...],
+              "country": "IN",
+              "country_name": "India",
+              "state": "UT",
+              "city": "Dehradun",
+              "postcode": 248001,
+              "phone": "01345679",
+          },
+          {
+              "id": 2,
+              "address1": [...],
+              "country": "IN",
+              "country_name": "India",
+              "state": "UP",
+              "city": "Noida",
+              "postcode": 201301,
+              "phone": "012345679",
+          },
+      ]
+  }
+  ~~~
 
 :::
 
 ## Get address by id
 
 To get the customer's specific address, you have to pass an `address_id` as a request payload like `addresses/{address_id}` in API URL. By using this resource and request payload, you will get only a single object under the `data` object in response.
+
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
 
 - Request
 
@@ -131,44 +167,58 @@ To get the customer's specific address, you have to pass an `address_id` as a re
 
 Let's take an example,
 
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
+
 - Request
 
   `GET http(s)://example.com/api/addresses/1`
 
 ::: details Response
 
-~~~json
-{
-    "data": {
-        "id": 1,
-        "address1": [
-            "Block H-ARP Park, Sector 63 "
-        ],
-        "country": "IN",
-        "country_name": "India",
-        "state": "UP",
-        "city": "Noida",
-        "postcode": 201301,
-        "phone": "0132456789",
-        "created_at": {
-            "date": "",
-            "timezone_type": 3,
-            "timezone": "Asia/Kolkata"
-        },
-        "updated_at": {
-            "date": "",
-            "timezone_type": 3,
-            "timezone": "Asia/Kolkata"
-        },
-    }
-}
-~~~
+  ~~~json
+  {
+      "data": {
+          "id": 1,
+          "address1": [
+              "Block H-ARP Park, Sector 63 "
+          ],
+          "country": "IN",
+          "country_name": "India",
+          "state": "UP",
+          "city": "Noida",
+          "postcode": 201301,
+          "phone": "0132456789",
+          "created_at": {
+              "date": "",
+              "timezone_type": 3,
+              "timezone": "Asia/Kolkata"
+          },
+          "updated_at": {
+              "date": "",
+              "timezone_type": 3,
+              "timezone": "Asia/Kolkata"
+          },
+      }
+  }
+  ~~~
 
 :::
 
 ## Update address
 
 To update the customer's specific address, you have to pass an `address_id` as a request payload like `addresses/{address_id}` in API URL.
+
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
 
 - Request
 
@@ -187,6 +237,13 @@ To update the customer's specific address, you have to pass an `address_id` as a
   | state        | State        | String |
 
 ### Examples
+
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
 
 - Request
 
@@ -211,11 +268,11 @@ To update the customer's specific address, you have to pass an `address_id` as a
 
 ::: details Response
 
-~~~json
-{
-    "message":"Your address has been updated successfully.",
-    "data": {...} // Address' detail.
-}
-~~~
+  ~~~json
+  {
+      "message":"Your address has been updated successfully.",
+      "data": {...} // Address' detail.
+  }
+  ~~~
 
 :::
