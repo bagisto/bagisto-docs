@@ -6,13 +6,19 @@ In this section, we will use the product's API. We will start with the fetching 
 
 This request will fetch all the products based on `limit` and `page`.
 
+- Headers
+
+  | Key           | Value            |
+  | ------------- | ---------------- |
+  | Accept        | application/json |
+
 - Request
 
   `<host>/api/products(?limit,page)`
 
   ::: tip
 
-  If you didn't use the page(?page=x) filter, then it returns the data of the first page by default.
+    If you didn't use the page(?page=x) filter, then it returns the data of the first page by default.
 
   :::
 
@@ -25,13 +31,19 @@ This request will fetch all the products based on `limit` and `page`.
 
 ::: tip
 
-If you are using pagination and want to know more info about responses then check the [explanation](./explanation) portion.
+  If you are using pagination and want to know more info about responses then check the [explanation](./explanation) portion.
 
 :::
 
 ### Examples
 
-#### 1. Get products for specific page,
+#### 1. Get products for specific page
+
+- Headers
+
+  | Key           | Value            |
+  | ------------- | ---------------- |
+  | Accept        | application/json |
 
 - Request
 
@@ -39,40 +51,46 @@ If you are using pagination and want to know more info about responses then chec
 
 ::: details Response
 
-~~~json
-{
-    "data": [
-      {
-        "id": 3,
-        "type": "simple",
-        "name": "Lenovo IdeaPad Yoga 500 15 Hybrid (2-in-1) White",
-        "url_key": "lenovo-ideapad-yoga-500-15-hybrid-2-in-1-white",
-        "price": "600.0000",
-        "formated_price": "$600.00",
-        ...
-        "sku": "5626",
-        "images": [
-          {...}
-        ],
-        "base_image": {...},
-        "variants": [],
-        "in_stock": true,
-        "reviews": {...},
-        "is_saved": false,
-        "created_at": "2020-09-09 03:31:47",
-        "updated_at": "2020-09-09 03:31:47"
-      },
-      {...},
-      {...}
-    ],
-    "links": {...},
-    "meta": {...}
-}
-~~~
+  ~~~json
+  {
+      "data": [
+        {
+          "id": 3,
+          "type": "simple",
+          "name": "Lenovo IdeaPad Yoga 500 15 Hybrid (2-in-1) White",
+          "url_key": "lenovo-ideapad-yoga-500-15-hybrid-2-in-1-white",
+          "price": "600.0000",
+          "formated_price": "$600.00",
+          ...
+          "sku": "5626",
+          "images": [
+            {...}
+          ],
+          "base_image": {...},
+          "variants": [],
+          "in_stock": true,
+          "reviews": {...},
+          "is_saved": false,
+          "created_at": "2020-09-09 03:31:47",
+          "updated_at": "2020-09-09 03:31:47"
+        },
+        {...},
+        {...}
+      ],
+      "links": {...},
+      "meta": {...}
+  }
+  ~~~
 
 :::
 
-#### 2. Get products for specific page with limit,
+#### 2. Get products for specific page with limit
+
+- Headers
+
+  | Key           | Value            |
+  | ------------- | ---------------- |
+  | Accept        | application/json |
 
 - Request
 
@@ -80,33 +98,39 @@ If you are using pagination and want to know more info about responses then chec
 
 ::: details Response
 
-~~~json
-{
-    "data": [
-      {...},
-      {...}
-    ],
-    "links": {
-          "first": "https://example.com/api/products?page=1&limit=2",
-          "last": "https://example.com/api/products?page=4&limit=2",
-          "prev": null,
-          "next": "https://example.com/api/products?page=2&limit=2"
-    },
-    "meta": {
-        "current_page": 1,
-        "from": 1,
-        "last_page": 4,
-        "path": "https://example.com/api/products",
-        "per_page": "2", // limit
-        "to": 2,
-        "total": 8
-    }
-}
-~~~
+  ~~~json
+  {
+      "data": [
+        {...},
+        {...}
+      ],
+      "links": {
+            "first": "https://example.com/api/products?page=1&limit=2",
+            "last": "https://example.com/api/products?page=4&limit=2",
+            "prev": null,
+            "next": "https://example.com/api/products?page=2&limit=2"
+      },
+      "meta": {
+          "current_page": 1,
+          "from": 1,
+          "last_page": 4,
+          "path": "https://example.com/api/products",
+          "per_page": "2", // limit
+          "to": 2,
+          "total": 8
+      }
+  }
+  ~~~
 
 :::
 
 ## Get products with query parameters
+
+- Headers
+
+  | Key           | Value            |
+  | ------------- | ---------------- |
+  | Accept        | application/json |
 
 - Request
 
@@ -127,7 +151,13 @@ If you are using pagination and want to know more info about responses then chec
 
 ### Examples
 
-#### 1. If you want to get the store's products those are having new condition then you can use `new=1` in the query parameter and if want to get the products without new condition then use `new=0`.
+#### 1. If you want to get the store's products those are having new condition then you can use `new=1` in the query parameter and if want to get the products without new condition then use `new=0`
+
+- Headers
+
+  | Key           | Value            |
+  | ------------- | ---------------- |
+  | Accept        | application/json |
 
 - Request
 
@@ -135,19 +165,37 @@ If you are using pagination and want to know more info about responses then chec
 
 #### 2. You can also use the `limit` and `page` query parameters with the `new` query parameter
 
+- Headers
+
+  | Key           | Value            |
+  | ------------- | ---------------- |
+  | Accept        | application/json |
+
 - Request
 
   `GET http(s)://example.com/api/products?new=1&limit=5&page=1`
 
   `GET http(s)://example.com/api/products?new=0&limit=5&page=1`
 
-#### 3. If you want to get the store's products those are featured then you can use `featured=1` query parameter.
+#### 3. If you want to get the store's products those are featured then you can use `featured=1` query parameter
+
+- Headers
+
+  | Key           | Value            |
+  | ------------- | ---------------- |
+  | Accept        | application/json |
 
 - Request
 
   `GET http(s)://example.com/api/products?featured=1`
 
-#### 4. You can also use the `limit` and `page` in query parameters with `featured` query parameter.
+#### 4. You can also use the `limit` and `page` in query parameters with `featured` query parameter
+
+- Headers
+
+  | Key           | Value            |
+  | ------------- | ---------------- |
+  | Accept        | application/json |
 
 - Request
 
@@ -155,19 +203,37 @@ If you are using pagination and want to know more info about responses then chec
 
   `GET http(s)://example.com/api/products?featured=0&limit=5&page=1`
 
-#### 5. Suppose you want to find out the data of your product in the Bagisto store, here you can use the `name` query parameter. You have to provide the product name to the `name` query parameter in the API URL.
+#### 5. Suppose you want to find out the data of your product in the Bagisto store, here you can use the `name` query parameter. You have to provide the product name to the `name` query parameter in the API URL
+
+- Headers
+
+  | Key           | Value            |
+  | ------------- | ---------------- |
+  | Accept        | application/json |
 
 - Request
 
   `GET http(s)://example.com/api/products?name='Leather Shoes'`
 
-#### 6. You can also get your product-related details with the help of the product's SKU. SKU will be unique for each product in the Bagisto store. For this, you have to use `sku` as a query parameter in the API URL.
+#### 6. You can also get your product-related details with the help of the product's SKU. SKU will be unique for each product in the Bagisto store. For this, you have to use `sku` as a query parameter in the API URL
+
+- Headers
+
+  | Key           | Value            |
+  | ------------- | ---------------- |
+  | Accept        | application/json |
 
 - Request
 
   `GET http(s)://example.com/api/products?sku='1234'`
 
-#### 7. `url_key` is a unique field for every product in Bagisto Store. You can also find out product details by using `url_key`. For this, you have to pass `url_key` as a query parameter in the API URL.
+#### 7. `url_key` is a unique field for every product in Bagisto Store. You can also find out product details by using `url_key`. For this, you have to pass `url_key` as a query parameter in the API URL
+
+- Headers
+
+  | Key           | Value            |
+  | ------------- | ---------------- |
+  | Accept        | application/json |
 
 - Request
 
@@ -176,6 +242,12 @@ If you are using pagination and want to know more info about responses then chec
 ## Get products with filterable query parameters
 
 You can also filter your store products by using filterable attributes query parameters. These filters will only work with the `category_id` input query parameter. There are two system-defined filterable attributes in the Bagisto E-commerce framework i.e. `size` and `color`. Admin user can also create their own custom attribute and can make these custom attributes as filterable. By using these filterable attributes, customers can filter the category's products to get the desired result.
+
+- Headers
+
+  | Key           | Value            |
+  | ------------- | ---------------- |
+  | Accept        | application/json |
 
 - Request
 
@@ -192,13 +264,25 @@ You can also filter your store products by using filterable attributes query par
 
 ### Examples
 
-#### 1. You can filter Bagisto's product catalog with the help of `size` filter. `size` filter will work only on the category layout. You can pass the multiple attribute's values to the `size` filterable attributes as a query parameter in API url. Suppose you want to filter men's T-Shirt with medium and large size, then you can pass the id of both medium & large.
+#### 1. You can filter Bagisto's product catalog with the help of `size` filter. `size` filter will work only on the category layout. You can pass the multiple attribute's values to the `size` filterable attributes as a query parameter in API url. Suppose you want to filter men's T-Shirt with medium and large size, then you can pass the id of both medium & large
+
+- Headers
+
+  | Key           | Value            |
+  | ------------- | ---------------- |
+  | Accept        | application/json |
 
 - Request
 
   `GET http(s)://example.com/api/products?category_id=2&size=6,7`
 
-#### 2. You can also use the limit and page in query parameters with category & size filterable parameters.
+#### 2. You can also use the limit and page in query parameters with category & size filterable parameters
+
+- Headers
+
+  | Key           | Value            |
+  | ------------- | ---------------- |
+  | Accept        | application/json |
 
 - Request
   
@@ -206,13 +290,25 @@ You can also filter your store products by using filterable attributes query par
 
   ![Bagisto Product Size](../../assets/images/api/bagisto_prod_size.jpg)
 
-#### 3. You can also filter the Bagisto product catalog with the help of `color` filter. `color` filter will work only on the category layout. You can pass the multiple attribute's values to the color`s filterable attributes as a query parameter in API URL. Suppose you want to filter men's T-Shirt with white and red color, then you can pass the id of both white & red.
+#### 3. You can also filter the Bagisto product catalog with the help of `color` filter. `color` filter will work only on the category layout. You can pass the multiple attribute's values to the color`s filterable attributes as a query parameter in API URL. Suppose you want to filter men's T-Shirt with white and red color, then you can pass the id of both white & red
+
+- Headers
+
+  | Key           | Value            |
+  | ------------- | ---------------- |
+  | Accept        | application/json |
 
 - Request
 
   `GET http(s)://example.com/api/products?category_id=2&color=1,2`
 
-#### 4. You can also use the limit and page in query parameters with category & color filterable parameters.
+#### 4. You can also use the limit and page in query parameters with category & color filterable parameters
+
+- Headers
+
+  | Key           | Value            |
+  | ------------- | ---------------- |
+  | Accept        | application/json |
 
 - Request
 
@@ -220,13 +316,25 @@ You can also filter your store products by using filterable attributes query par
 
   ![Bagisto Product Color](../../assets/images/api/bagisto_prod_color.jpg)
 
-#### 5. In the case of a simple product, You can set a range of a minimum price and maximum price. Same as `size` and `color`, the `price` filter will also work on the category layout only. Suppose you want to filter products those are having price between price range from 50 to 100, then you have to pass value like `price=10,50` as the query parameter in API URL.
+#### 5. In the case of a simple product, You can set a range of a minimum price and maximum price. Same as `size` and `color`, the `price` filter will also work on the category layout only. Suppose you want to filter products those are having price between price range from 50 to 100, then you have to pass value like `price=10,50` as the query parameter in API URL
+
+- Headers
+
+  | Key           | Value            |
+  | ------------- | ---------------- |
+  | Accept        | application/json |
 
 - Request
 
   `GET http(s)://example.com/api/products?category_id=2&price=50,100`
 
-#### 6. You can also use the `limit` and `page` in query parameters with `category` & `price` filterable parameters.
+#### 6. You can also use the `limit` and `page` in query parameters with `category` & `price` filterable parameters
+
+- Headers
+
+  | Key           | Value            |
+  | ------------- | ---------------- |
+  | Accept        | application/json |
 
 - Request
 
@@ -234,7 +342,13 @@ You can also filter your store products by using filterable attributes query par
 
   ![Bagisto Product Price Simple](../../assets/images/api/bagisto_prod_price_simple.jpg)
 
-#### 7. In the case of a configurable product, the `price` filter will also work with the product's variants. Suppose you want to filter products with the 40$ min and 100$ max price range. And there is a configurable product named men's T-shirts having a price 30$ and there is any variant of the same product having 45$ price, then men's T-shirts product will show you in the filtered product's list.
+#### 7. In the case of a configurable product, the `price` filter will also work with the product's variants. Suppose you want to filter products with the 40$ min and 100$ max price range. And there is a configurable product named men's T-shirts having a price 30$ and there is any variant of the same product having 45$ price, then men's T-shirts product will show you in the filtered product's list
+
+- Headers
+
+  | Key           | Value            |
+  | ------------- | ---------------- |
+  | Accept        | application/json |
 
 - Request
 
@@ -244,13 +358,19 @@ You can also filter your store products by using filterable attributes query par
 
 ::: tip
 
-The above-explained filter query parameters (i.e. size, color, price) can be used together.
+  The above-explained filter query parameters (i.e. size, color, price) can be used together.
 
 :::
 
 ## Get product by id
 
 If you want the record of any specific product, then you have to provide the product id as an input parameter in the API URL.
+
+- Headers
+
+  | Key           | Value            |
+  | ------------- | ---------------- |
+  | Accept        | application/json |
 
 - Request
 
@@ -264,37 +384,43 @@ If you want the record of any specific product, then you have to provide the pro
 
 ### Examples
 
+- Headers
+
+  | Key           | Value            |
+  | ------------- | ---------------- |
+  | Accept        | application/json |
+
 - Request
 
   `GET http(s)://example.com/api/products/1`
 
 ::: details Response
 
-~~~json
-{
-  "data": {
-    "id": 1,
-    "type": "simple",
-    "name": "Adorable Cream Teddy Bear",
-    "url_key": "adorable-cream-teddy-bear",
-    "price": "10.0000",
-    "formated_price": "$10.00",
-    "short_description": "<p>Buy Adorable Cream Teddy Bear online at best price</p>",
-    "description": "<p>Buy Adorable Cream Teddy Bear online at best price</p>",
-    "sku": "80971254",
-    "images": [
-      {...}
-    ],
-    "base_image": {...},
-    "variants": [],
-    "in_stock": true,
-    "reviews": {...},
-    "is_saved": false,
-    "created_at": "2020-09-08T23:52:02.000000Z",
-    "updated_at": "2020-09-08T23:52:02.000000Z"
+  ~~~json
+  {
+    "data": {
+      "id": 1,
+      "type": "simple",
+      "name": "Adorable Cream Teddy Bear",
+      "url_key": "adorable-cream-teddy-bear",
+      "price": "10.0000",
+      "formated_price": "$10.00",
+      "short_description": "<p>Buy Adorable Cream Teddy Bear online at best price</p>",
+      "description": "<p>Buy Adorable Cream Teddy Bear online at best price</p>",
+      "sku": "80971254",
+      "images": [
+        {...}
+      ],
+      "base_image": {...},
+      "variants": [],
+      "in_stock": true,
+      "reviews": {...},
+      "is_saved": false,
+      "created_at": "2020-09-08T23:52:02.000000Z",
+      "updated_at": "2020-09-08T23:52:02.000000Z"
+    }
   }
-}
-~~~
+  ~~~
 
 :::
 
@@ -304,13 +430,19 @@ Additional information relates to all the attributes and their values for which 
 
 ![Bagisto Attribute](../../assets/images/api/bagisto_attribute.jpg)
 
+- Headers
+
+  | Key           | Value            |
+  | ------------- | ---------------- |
+  | Accept        | application/json |
+
 - Request
 
   `GET http(s)://example.com/api/product-additional-information/1`
 
 ::: details Response
 
-![Bagisto Additional Info](../../assets/images/api/bagisto_add_info.jpg)
+  ![Bagisto Additional Info](../../assets/images/api/bagisto_add_info.jpg)
 
 :::
 
@@ -322,49 +454,55 @@ Admin can set the `Yes` value for the `Use To Create Configurable Product` field
 
 ![Bagisto Config](../../assets/images/api/bagisto_config.jpg)
 
+- Headers
+
+  | Key           | Value            |
+  | ------------- | ---------------- |
+  | Accept        | application/json |
+
 - Request
 
   `GET http(s)://example.com/api/product-configurable-config/1`
 
 ::: details Response
 
-~~~json
-{
-    "data": {
-        "attributes": [
-            {
-                "id": 24,
-                "code": "size",
-                "label": "Size",
-                "swatch_type": null,
-                "options": [
-                    {
-                        "id": 7,
-                        "label": "M",
-                        "swatch_value": null,
-                        "products": [
-                            4
-                        ]
-                    }
-                ]
-            }
-        ],
-        "variant_prices": {
-            "4": {
-                "regular_price": {
-                    "formated_price": "$45.00",
-                    "price": 45
-                },
-                "final_price": {
-                    "formated_price": "$45.00",
-                    "price": 45
-                }
-            }
-        }
-    }
-}
-~~~
+  ~~~json
+  {
+      "data": {
+          "attributes": [
+              {
+                  "id": 24,
+                  "code": "size",
+                  "label": "Size",
+                  "swatch_type": null,
+                  "options": [
+                      {
+                          "id": 7,
+                          "label": "M",
+                          "swatch_value": null,
+                          "products": [
+                              4
+                          ]
+                      }
+                  ]
+              }
+          ],
+          "variant_prices": {
+              "4": {
+                  "regular_price": {
+                      "formated_price": "$45.00",
+                      "price": 45
+                  },
+                  "final_price": {
+                      "formated_price": "$45.00",
+                      "price": 45
+                  }
+              }
+          }
+      }
+  }
+  ~~~
 
-![Bagisto Config Attributes](../../assets/images/api/bagisto_config_attr.jpg)
+  ![Bagisto Config Attributes](../../assets/images/api/bagisto_config_attr.jpg)
 
 :::

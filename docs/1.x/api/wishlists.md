@@ -6,6 +6,13 @@ In this section, we will see how wishlists' API works.
 
 You can also get all the wishlists of store's customers. To get the wishlists, customer must be logged-in to the Bagisto store.
 
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
+
 - Request
 
   `GET <host>/api/wishlist(?limit,page,pagination)`
@@ -20,19 +27,33 @@ You can also get all the wishlists of store's customers. To get the wishlists, c
 
 ::: tip
 
-If you are using pagination and want to know more info about responses then check the [explanation](./explanation) portion.
+  If you are using pagination and want to know more info about responses then check the [explanation](./explanation) portion.
 
 :::
 
 ### Examples
 
-#### 1. Get wishlists for specific page,
+#### 1. Get wishlists for specific page
+
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
 
 - Request
 
   `GET http(s)://example.com/api/wishlist?page=1`
 
-#### 2. Get wishlists for specific page with limit,
+#### 2. Get wishlists for specific page with limit
+
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
 
 - Request
 
@@ -40,11 +61,18 @@ If you are using pagination and want to know more info about responses then chec
 
 ::: details Response (Example 1 & 2)
 
-![bagisto_wishlist_page](../../assets/images/api/bagisto_wishlist_page.jpg)
+  ![bagisto_wishlist_page](../../assets/images/api/bagisto_wishlist_page.jpg)
 
 :::
 
-#### 3. Get all wishlists without pagination,
+#### 3. Get all wishlists without pagination
+
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
 
 - Request
 
@@ -52,40 +80,47 @@ If you are using pagination and want to know more info about responses then chec
 
 ::: details Response
 
-~~~json
-{
-    "data": [
-        {
-            "id": 9,
-            "product": {
-                "id": 5,
-                "type": "simple",
-                "name": "Home Decor Bottles",
-                "url_key": "home-decor-bottles",
-                "price": 10,
-                "formated_price": "$10.00",
-                "short_description": "<p>Home Decor Bottles</p>",
-                "description": "<p>Home Decor Bottles</p>",
-                "sku": "bottles",
-            }
-        },
-        {
-            "id": 8,
-            "product": {...}
-        },
-        {
-            "id": 7,
-            "product": {...}
-        }
-    ]
-}
-~~~
+  ~~~json
+  {
+      "data": [
+          {
+              "id": 9,
+              "product": {
+                  "id": 5,
+                  "type": "simple",
+                  "name": "Home Decor Bottles",
+                  "url_key": "home-decor-bottles",
+                  "price": 10,
+                  "formated_price": "$10.00",
+                  "short_description": "<p>Home Decor Bottles</p>",
+                  "description": "<p>Home Decor Bottles</p>",
+                  "sku": "bottles",
+              }
+          },
+          {
+              "id": 8,
+              "product": {...}
+          },
+          {
+              "id": 7,
+              "product": {...}
+          }
+      ]
+  }
+  ~~~
 
 :::
 
 ## Get wishlists by customer's id
 
 To get all wishlists of a specific customer, you have to pass a `customer_id` as a query parameter in API url.
+
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
 
 - Request
 
@@ -102,7 +137,14 @@ To get all wishlists of a specific customer, you have to pass a `customer_id` as
 
 ### Examples
 
-#### 1. If you want all the wishlists by `customer_id`,
+#### 1. If you want all the wishlists by `customer_id`
+
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
 
 - Request
 
@@ -110,25 +152,32 @@ To get all wishlists of a specific customer, you have to pass a `customer_id` as
 
 ::: details Response:
 
-~~~json
-{
-    "data": [
-        {
-            "id": 7,
-            "product": {...},
-        },
-        {...},
-        {...},
-        {...},
-         ...
-        {...}
-    ]
-}
-~~~
+  ~~~json
+  {
+      "data": [
+          {
+              "id": 7,
+              "product": {...},
+          },
+          {...},
+          {...},
+          {...},
+          ...
+          {...}
+      ]
+  }
+  ~~~
 
 :::
 
-#### 2. If you want wishlists for specific page by `customer_id`,
+#### 2. If you want wishlists for specific page by `customer_id`
+
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
 
 - Request
 
@@ -136,42 +185,49 @@ To get all wishlists of a specific customer, you have to pass a `customer_id` as
 
 ::: details Response:
 
-~~~json
-{
-    "data": [
-        {
-            "id": 7,
-            "product": {...},
-        },
-        {...},
-        {...},
-        {...},
-         ...
-        {...}
-    ],
-    "links": {
-        "first": "https://example.com/api/wishlist?customer_id=1&page=1",
-        "last": "https://example.com/api/wishlist?customer_id=1&page=1",
-        "prev": null,
-        "next": null
-    },
-    "meta": {
-        "current_page": 1,
-        "from": 1,
-        "last_page": 1,
-        "path": "https://example.com/api/wishlist",
-        "per_page": 10,
-        "to": 2,
-        "total": 9
-    }
-}
-~~~
+  ~~~json
+  {
+      "data": [
+          {
+              "id": 7,
+              "product": {...},
+          },
+          {...},
+          {...},
+          {...},
+          ...
+          {...}
+      ],
+      "links": {
+          "first": "https://example.com/api/wishlist?customer_id=1&page=1",
+          "last": "https://example.com/api/wishlist?customer_id=1&page=1",
+          "prev": null,
+          "next": null
+      },
+      "meta": {
+          "current_page": 1,
+          "from": 1,
+          "last_page": 1,
+          "path": "https://example.com/api/wishlist",
+          "per_page": 10,
+          "to": 2,
+          "total": 9
+      }
+  }
+  ~~~
 
 :::
 
 ## Add product to wishlist
 
 To add a product to customer's wishlist, you have to pass a `product_id` as a request payload like `wishlist/add/{product_id}` in API URL.
+
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
 
 - Request
 
@@ -187,31 +243,37 @@ To add a product to customer's wishlist, you have to pass a `product_id` as a re
 
 Let's add one product to wishlist,
 
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
+
 - Request
 
   `GET http(s)://example.com/api/wishlist/add/11`
 
 ::: details Response
 
-~~~json
-{
-    "data": {
-        "id": 11,
-        "product": {
-            "id": 1,
-            "type": "simple",
-            "name": "Leather Shoes",
-            "url_key": "leather-shoes",
-            "price": 50,
-            "formated_price": "$50.00",
-            "short_description": "<p>Leather Shoes</p>",
-            "description": "<p>Leather Shoes</p>",
-            "sku": "men-leather-shoes"
-        }
-    },
-    "message": "Item Successfully Added To Wishlist"
-}
-~~~
+  ~~~json
+  {
+      "data": {
+          "id": 11,
+          "product": {
+              "id": 1,
+              "type": "simple",
+              "name": "Leather Shoes",
+              "url_key": "leather-shoes",
+              "price": 50,
+              "formated_price": "$50.00",
+              "short_description": "<p>Leather Shoes</p>",
+              "description": "<p>Leather Shoes</p>",
+              "sku": "men-leather-shoes"
+          }
+      },
+      "message": "Item Successfully Added To Wishlist"
+  }
+  ~~~
 
 :::
-

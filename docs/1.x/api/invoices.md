@@ -6,6 +6,13 @@ In this section, we will check all the invoices' API.
 
 You can get all the invoices for the Bagisto store's orders. To get the invoices of the store, the customer must be logged-in to the Bagisto store. You can achieve this job by using the `invoices` API call resource.
 
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
+
 - Request
   
   `GET <host>/api/invoices(?limit,page,pagination)`
@@ -20,61 +27,77 @@ You can get all the invoices for the Bagisto store's orders. To get the invoices
 
 ::: tip
 
-If you are using pagination and want to know more info about responses then check the [explanation](./explanation) portion.
+  If you are using pagination and want to know more info about responses then check the [explanation](./explanation) portion.
 
 :::
 
 ### Examples
 
-#### 1. Get invoices with pagination,
+#### 1. Get invoices with pagination
+
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
 
 - Request
 
   `GET http(s)://example.com/api/invoices?page=1`
 
   ::: tip
-  If you didn't use the page (?page=x) filter, then it returns the data of the first page by default.
 
-  `GET http(s)://example.com/api/invoices`
+    If you didn't use the page (?page=x) filter, then it returns the data of the first page by default.
+
+    `GET http(s)://example.com/api/invoices`
+
   :::
 
 ::: details Response
 
-~~~json
-{
-    "data": [
-        {
-            "id": 8,
-            "state": "paid",
-            "email_sent": 0,
-            "total_qty": 4,
-            "sub_total": "190.0000",
-            "base_sub_total": "190.0000",
-            "grand_total": "230.0000",
-            "order_address": {...},
-            "transaction_id": null,
-            "items": [
-                {...},
-                {...}
-            ],
-        },
-        {...},
-         ...
-        {...}
-    ],
-    "links": {
-        "first": "https://example.com/api/invoices?page=1",
-        "last": "https://example.com/api/invoices?page=1",
-        "prev": null,
-        "next": null
-    },
-    "meta": {...}
-}
-~~~ 
+  ~~~json
+  {
+      "data": [
+          {
+              "id": 8,
+              "state": "paid",
+              "email_sent": 0,
+              "total_qty": 4,
+              "sub_total": "190.0000",
+              "base_sub_total": "190.0000",
+              "grand_total": "230.0000",
+              "order_address": {...},
+              "transaction_id": null,
+              "items": [
+                  {...},
+                  {...}
+              ],
+          },
+          {...},
+          ...
+          {...}
+      ],
+      "links": {
+          "first": "https://example.com/api/invoices?page=1",
+          "last": "https://example.com/api/invoices?page=1",
+          "prev": null,
+          "next": null
+      },
+      "meta": {...}
+  }
+  ~~~
 
 :::
 
-#### 2. Get all invoices without pagination,
+#### 2. Get all invoices without pagination
+
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
 
 - Request
 
@@ -82,36 +105,43 @@ If you are using pagination and want to know more info about responses then chec
 
 ::: details Response
 
-~~~json
-{
-    "data": [
-        {
-            "id": 8,
-            "state": "paid",
-            "email_sent": 0,
-            "total_qty": 4,
-            "sub_total": "190.0000",
-            "base_sub_total": "190.0000",
-            "grand_total": "230.0000",
-            "order_address": {...},
-            "transaction_id": null,
-            "items": [
-                {...},
-                {...}
-            ],
-        },
-        {...},
-         ...
-        {...}
-    ]
-}
-~~~
+  ~~~json
+  {
+      "data": [
+          {
+              "id": 8,
+              "state": "paid",
+              "email_sent": 0,
+              "total_qty": 4,
+              "sub_total": "190.0000",
+              "base_sub_total": "190.0000",
+              "grand_total": "230.0000",
+              "order_address": {...},
+              "transaction_id": null,
+              "items": [
+                  {...},
+                  {...}
+              ],
+          },
+          {...},
+          ...
+          {...}
+      ]
+  }
+  ~~~
 
 :::
 
 ## Get invoices by order's id
 
 To get the details of a specific order's invoice, you have to pass an `order_id` as a query parameter like `invoices?order_id={id}` in API URL. By using this resource and query parameter, you will get only a single invoice detail regarding the provided `order_id` in response.
+
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
 
 - Request
 
@@ -128,7 +158,14 @@ To get the details of a specific order's invoice, you have to pass an `order_id`
 
 ### Examples
 
-#### 1. Get all invoices by order's id,
+#### 1. Get all invoices by order's id
+
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
 
 - Request
 
@@ -136,31 +173,38 @@ To get the details of a specific order's invoice, you have to pass an `order_id`
 
 ::: details Response
 
-~~~json
-{
-    "data": [
-        {
-            "id": 1,
-            "state": "paid",
-            "email_sent": 0,
-            "total_qty": 2,
-            "sub_total": "60.0000",
-            "grand_total": "80.0000",
-            "shipping_amount": "20.0000",
-            "items": [
-                {...},
-                {...}
-            ],
-        }
-    ]
-}
-~~~
+  ~~~json
+  {
+      "data": [
+          {
+              "id": 1,
+              "state": "paid",
+              "email_sent": 0,
+              "total_qty": 2,
+              "sub_total": "60.0000",
+              "grand_total": "80.0000",
+              "shipping_amount": "20.0000",
+              "items": [
+                  {...},
+                  {...}
+              ],
+          }
+      ]
+  }
+  ~~~
 
 :::
 
 ## Get invoice by id
 
 To get the details of a specific invoice, you have to pass an `invoice_id` as a request payload in API URL.
+
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
 
 - Request
 
@@ -174,7 +218,14 @@ To get the details of a specific invoice, you have to pass an `invoice_id` as a 
   
 ### Examples
 
-#### 1. Let's fetch specific invoice,
+#### 1. Let's fetch specific invoice
+
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
 
 - Request
 
@@ -182,26 +233,26 @@ To get the details of a specific invoice, you have to pass an `invoice_id` as a 
 
 ::: details Response
 
-~~~json
-{
-    "data": {
-        "id": 2,
-        "state": "paid",
-        "email_sent": 0,
-        "total_qty": 4,
-        "sub_total": "190.0000",
-        "grand_total": "230.0000",
-        "shipping_amount": "40.0000",
-        "tax_amount": "0.0000",
-        "discount_amount": "0.0000",
-        "order_address": {...},
-        "transaction_id": null,
-        "items": [
-            {...},
-            {...}
-        ],
-    }
-}
-~~~
+  ~~~json
+  {
+      "data": {
+          "id": 2,
+          "state": "paid",
+          "email_sent": 0,
+          "total_qty": 4,
+          "sub_total": "190.0000",
+          "grand_total": "230.0000",
+          "shipping_amount": "40.0000",
+          "tax_amount": "0.0000",
+          "discount_amount": "0.0000",
+          "order_address": {...},
+          "transaction_id": null,
+          "items": [
+              {...},
+              {...}
+          ],
+      }
+  }
+  ~~~
 
 :::
