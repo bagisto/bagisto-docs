@@ -89,7 +89,7 @@ module.exports = [
         path: setVersionPrefix('api'),
         collapsable: true,
         children: setVersionPrefix([
-            ['api/getting-started-with-the-api.md', 'Getting started with the API'],
+            ['api/getting-started-with-the-api.md', 'Authentication'],
             ['api/customers', 'Customers'],
             ['api/addresses', 'Addresses'],
             ['api/categories', 'Categories'],

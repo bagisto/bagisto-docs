@@ -1,7 +1,8 @@
 module.exports = {
     base: '/',
     port: '8080',
-    title: 'Documentation',
+    cache: false,
+    title: 'Bagisto Documentation',
     description: 'Bagisto Developer Portal',
     head: [
         ['link', { rel: "icon", type: "image/png", href: "/favicon.ico"}],
