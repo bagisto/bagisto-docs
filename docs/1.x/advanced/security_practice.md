@@ -27,7 +27,7 @@
 
 ## Limiting error messages
 
-![limiting-error-messages](../../assets/images/best-security-practices/limiting-error-messages.png)
+![limiting-error-messages](../../assets/images/advanced-topics/best-security-practices/limiting-error-messages.png)
 
 - Edit your apache configuration file to avoid displaying server and os details.
 
