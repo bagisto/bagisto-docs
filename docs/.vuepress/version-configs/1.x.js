@@ -53,7 +53,8 @@ module.exports = [
             ['advanced/events', 'Events'],
             ['advanced/override-core-model', 'Override core models'],
             ['advanced/security_practice', 'Best Security Practices'],
-            ['advanced/render_event', 'View render event']
+            ['advanced/render_event', 'View render event'],
+            ['advanced/indexing-products-to-elasticsearch.md', 'Indexing products to Elasticsearch'],
         ])
     },           
     {
