@@ -1,12 +1,12 @@
 # Integrate image search in theme
 
-In this section, we will show you how you can integrate image search with your new theme. If you check our default theme and velocity theme, you will come to know that we are using the Tensorflow JS and loading the model named Tensorflow MobileNet.
+In this section, we will show you how you can integrate image search with your new theme. If you check our **default theme** and **velocity theme**, you will come to know that we are using the [Tensorflow](https://www.tensorflow.org/js) JS and loading the model named **Tensorflow** MobileNet.
 
-The TensorFlow JS model does not need any knowledge for machine learning. You just need to pass any browser-based image elements `<img>` and it will return an array that is best suited according to their predictions and their confidences.
+The **Tensorflow** JS model does not need any knowledge for machine learning. You just need to pass any browser-based image elements `<img>` and it will return an array that is best suited according to their predictions and their confidences.
 
 ## Usage
 
-Make sure all your scripts are loaded in the footer, if you check the default theme and velocity theme we are using the yielding. So you can also use the same yielding. So we are assuming that you have added `scripts` yield in your main layouts.
+Make sure all your scripts are loaded in the footer, if you check the **default theme** and **velocity theme** we are using the yielding. So you can also use the same yielding. So we are assuming that you have added `scripts` yield in your main layouts.
 
 - Let's start with the loading of the library and model,
 
@@ -17,7 +17,7 @@ Make sure all your scripts are loaded in the footer, if you check the default th
   @endpush
   ~~~
 
-- As tensorflow model only need the image element. So, we are just taking the sample image element.
+- As **Tensorflow** model only need the image element. So, we are just taking the sample image element.
 
   ~~~php
   @push('scripts')
@@ -69,4 +69,4 @@ Make sure all your scripts are loaded in the footer, if you check the default th
 
 ## Conclusion
 
-If you check the whole flow, you will come to know that we are passing an image element to Tensorflow's model in return we are getting the array of predictions and from that predictions, we are making the query strings and redirecting to the search route.
+If you check the whole flow, you will come to know that we are passing an image element to **Tensorflow**'s model in return we are getting the array of predictions and from that predictions, we are making the query strings and redirecting to the search route.
