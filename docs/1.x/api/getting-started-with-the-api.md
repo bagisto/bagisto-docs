@@ -24,7 +24,6 @@ To activate the **JWT** authentication, you just need to pass one extra key-valu
 
 This will tell the Bagisto api to use the **JWT API guard**. If you are not passing this, the normal **customer guard** will be activated.  
 
-
 So, let's try to authenticate the user by using **JWT**. Please send valid **User Agent** header in your request whether you are using postman, curl or some other clients.
 
 ::: tip Reminder
@@ -41,7 +40,7 @@ So, let's try to authenticate the user by using **JWT**. Please send valid **Use
 
 - Request
 
-  `GET http(s)://example.com/api/customer/login?token=true`
+  `POST http(s)://example.com/api/customer/login?token=true`
 
 - Params
 
@@ -92,7 +91,7 @@ By removing the token key from your request the **customer guard** will be activ
 
 - Request
 
-  `GET http(s)://example.com/api/customer/login`
+  `POST http(s)://example.com/api/customer/login`
 
 #### Params
 
@@ -102,9 +101,10 @@ By removing the token key from your request the **customer guard** will be activ
   | password | john123          |
 
 #### Response
+
 Once you send the request, you will get data without any token because now the **customer guard** is active.
 
-```json
+~~~json
 {
   "token": true,
   "message": "Logged in successfully.",
@@ -128,7 +128,7 @@ Once you send the request, you will get data without any token because now the *
       "updated_at": "2020-09-28T05:13:42.000000Z"
   }
 }
-```
+~~~
 
 ## Accessing Data
 
@@ -138,6 +138,7 @@ Once you are authenticated, try to access the current customer data by using **J
 
 Here we are just showing a example of how to collect data from the API with the usage of a **JWT** token.
 If you are familiar with all these things you can start with the [Customer](./customers) API section.
+
 :::
 
 #### Headers
@@ -164,29 +165,29 @@ As you check the **JWT** authentication we got some token string, we just need t
 
 ::: details Response
 
-```json
-  {
-      "data": {
-          "id": 1,
-          "email": "john@example.com",
-          "first_name": "John",
-          "last_name": "Doe",
-          "name": "John Doe",
-          "gender": null,
-          "date_of_birth": null,
-          "phone": null,
-          "status": 1,
-          "group": {
-              "id": 2,
-              "name": "General",
-              "created_at": null,
-              "updated_at": null
-          },
-          "created_at": "2020-09-28T05:13:42.000000Z",
-          "updated_at": "2020-09-28T05:13:42.000000Z"
-      }
-  }
-```
+~~~json
+{
+    "data": {
+        "id": 1,
+        "email": "john@example.com",
+        "first_name": "John",
+        "last_name": "Doe",
+        "name": "John Doe",
+        "gender": null,
+        "date_of_birth": null,
+        "phone": null,
+        "status": 1,
+        "group": {
+            "id": 2,
+            "name": "General",
+            "created_at": null,
+            "updated_at": null
+        },
+        "created_at": "2020-09-28T05:13:42.000000Z",
+        "updated_at": "2020-09-28T05:13:42.000000Z"
+    }
+}
+~~~
 
 :::
 
