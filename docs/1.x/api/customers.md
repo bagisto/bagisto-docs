@@ -40,7 +40,7 @@ You can create/register a new customer in the Bagisto store. To achieve this tas
 
 - Request
 
-  `GET http(s)://example.com/api/customer/register`
+  `POST http(s)://example.com/api/customer/register`
 
 - Params
 
@@ -126,7 +126,7 @@ To authenticate at the Bagisto store, the customer needs a valid email address a
 
 - Request
 
-  `GET http(s)://example.com/api/customer/login?token=true`
+  `POST http(s)://example.com/api/customer/login?token=true`
 
 - Params
 
@@ -179,7 +179,7 @@ By removing the token key from request will activate the **customer guard**.
 
 - Request
 
-  `GET http(s)://example.com/api/customer/login`
+  `POST http(s)://example.com/api/customer/login`
 
 - Params
 
