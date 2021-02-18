@@ -17,6 +17,10 @@ composer create-project
 ```
 
 After the command has been executed, within your **_.env_** file, enter your old project database credentials for which you want to upgrade bagisto.
+Upgrade the database tables
+```
+php artisan migrate
+```
 
 Once this is finished run the following command
 ```
