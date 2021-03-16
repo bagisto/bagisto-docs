@@ -64,7 +64,8 @@ module.exports = [
         children: setVersionPrefix([
             ['themes/tracer', 'Blade file tracer'],
             ['themes/create_theme', 'Create a store theme'],
-            ['themes/create_admin_theme', 'Create a admin theme'],
+            ['themes/create_admin_theme', 'Create an admin theme'],
+            ['themes/change-email-template.md', 'Change email template'],
             ['themes/integrate-image-search-in-theme', 'Integrate image search in theme']
         ])
     },
