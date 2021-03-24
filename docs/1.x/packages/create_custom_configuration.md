@@ -91,3 +91,177 @@ Creating a custom configuration ease the task for a developer or any non-develop
     ![Admin ACL Output](../../assets/images/package-development/admin-custom-config-output.png)
 
   :::
+
+## Supported Field Types
+
+There are several field types supported by the Bagisto. Let us know all of them,
+
+- Text Type
+- Number Type
+- Boolean Type
+- Select Type
+- Textarea Type
+- Image Type
+
+Let's get started with the first one.
+
+### Text Type
+
+This field type will give you the input field of type text.
+
+#### Example
+
+~~~php
+return [
+    ...
+    [
+        'key'    => 'general.general.custom-types',
+        'name'   => 'admin::app.admin.system.custom-types',
+        'sort'   => 1,
+        'fields' => [
+            [
+                'name'          => 'text_type',
+                'title'         => 'admin::app.admin.system.text-type',
+                'type'          => 'text',
+                'default_value' => '',
+            ],
+        ],
+    ],
+    ...
+];
+~~~
+
+### Number Type
+
+This field type will give you the input field of type number.
+
+#### Example
+
+~~~php
+return [
+    ...
+    [
+        'key'    => 'general.general.custom-types',
+        'name'   => 'admin::app.admin.system.custom-types',
+        'sort'   => 1,
+        'fields' => [
+            [
+                'name'  => 'number_type',
+                'title' => 'admin::app.admin.system.number-type',
+                'type'  => 'number',
+            ],
+        ],
+    ],
+    ...
+];
+~~~
+
+### Boolean Type
+
+This field type will give you the enable/disable switch.
+
+#### Example
+
+~~~php
+return [
+    ...
+    [
+        'key'    => 'general.general.custom-types',
+        'name'   => 'admin::app.admin.system.custom-types',
+        'sort'   => 1,
+        'fields' => [
+            [
+                'name'          => 'boolean_type',
+                'title'         => 'admin::app.admin.system.boolean-type',
+                'type'          => 'boolean',
+            ],
+        ],
+    ],
+    ...
+];
+~~~
+
+### Select Type
+
+This field type will give you the select field with mentioned options.
+
+#### Example
+
+~~~php
+return [
+    ...
+    [
+        'key'    => 'general.general.custom-types',
+        'name'   => 'admin::app.admin.system.custom-types',
+        'sort'   => 1,
+        'fields' => [
+            [
+                'name'          => 'select_type',
+                'title'         => 'admin::app.admin.system.select-type',
+                'type'          => 'select',
+                'options'       => [
+                    [
+                        'title' => 'option_1',
+                        'value' => 'value_1',
+                    ], [
+                        'title' => 'option_2',
+                        'value' => 'vallue_2',
+                    ],
+                ],
+            ],
+        ],
+    ],
+    ...
+];
+~~~
+
+### Textarea Type
+
+This field type will give you the textarea field mostly used for long text.
+
+#### Example
+
+~~~php
+return [
+    ...
+    [
+        'key'    => 'general.general.custom-types',
+        'name'   => 'admin::app.admin.system.custom-types',
+        'sort'   => 1,
+        'fields' => [
+            [
+                'name'          => 'textarea_type',
+                'title'         => 'admin::app.admin.system.textarea-type',
+                'type'          => 'textarea'
+            ],
+        ],
+    ],
+    ...
+];
+~~~
+
+### Image Type
+
+This field type will give you the file upload option for uploading the images.
+
+#### Example
+
+~~~php
+return [
+    ...
+    [
+        'key'    => 'general.general.custom-types',
+        'name'   => 'admin::app.admin.system.custom-types',
+        'sort'   => 1,
+        'fields' => [
+            [
+                'name'          => 'image_type',
+                'title'         => 'admin::app.admin.system.image-type',
+                'type'          => 'image',
+                'validation'    => 'mimes:bmp,jpeg,jpg,png,webp',
+            ],
+        ],
+    ],
+    ...
+];
+~~~
