@@ -141,6 +141,31 @@ By using this API call you can add new products to the cart and also you can add
 
 :::
 
+#### 3. Adding more products to the same cart
+
+For this, you need to pass the `product_id` in the request body also.
+
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
+
+- Request
+
+  `POST http(s)://example.com/api/checkout/cart/add/25`
+
+- Params
+
+  ~~~json
+  {
+      "product_id": 25,
+      "quantity": "2",
+      "is_configurable": false
+  }
+  ~~~
+
 ## Get complete cart details
 
 To get the current cart details, you have to use the `checkout/cart` resource in the API URL. You will see in all the `cart` related API, we used the `checkout` prefix. This API call will work with both customer's authentication or without customer's authentication. If the customer is not logged-in to the store, then this API resource will return the guest's cart detail.
