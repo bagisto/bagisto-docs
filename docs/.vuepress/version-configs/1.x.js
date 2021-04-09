@@ -42,7 +42,7 @@ module.exports = [
         ])
     },
     {
-        title: 'Advanced topics',
+        title: 'Advanced Topics',
         path: setVersionPrefix('advanced'),
         collapsable: true,
         children: setVersionPrefix([
@@ -66,6 +66,7 @@ module.exports = [
             ['themes/create_theme', 'Create a store theme'],
             ['themes/create_admin_theme', 'Create an admin theme'],
             ['themes/change-email-template.md', 'Change email template'],
+            ['themes/customize-hompepage-menu.md', 'Customize homepage menu'],
             ['themes/integrate-image-search-in-theme', 'Integrate image search in theme']
         ])
     },
@@ -79,7 +80,7 @@ module.exports = [
         ])
     },
     {
-        title: 'User guides',
+        title: 'User Guides',
         path: setVersionPrefix('user_guides'),
         collapsable: true,
         children: setVersionPrefix([
