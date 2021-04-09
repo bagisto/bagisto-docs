@@ -94,6 +94,7 @@ module.exports = [
         children: setVersionPrefix([
             ['api/getting-started-with-the-api.md', 'Authentication'],
             ['api/customers', 'Customers'],
+            ['api/locales', 'Locales'],
             ['api/addresses', 'Addresses'],
             ['api/categories', 'Categories'],
             ['api/products', 'Products'],
