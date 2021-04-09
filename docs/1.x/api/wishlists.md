@@ -277,3 +277,33 @@ Let's add one product to wishlist,
   ~~~
 
 :::
+
+## Remove product from wishlist
+
+For removing the product from the wishlist, you need to hit the same add API again. Just like a toggle. It will remove if the wishlist is already added.
+
+### Examples
+
+Hitting the same add API again,
+
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
+
+- Request
+
+  `GET http(s)://example.com/api/wishlist/add/11`
+
+::: details Response
+
+  ~~~json
+  {
+      "data": null,
+      "message": "Item removed from wishlist successfully."
+  }
+  ~~~
+
+:::
