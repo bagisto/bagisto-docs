@@ -101,6 +101,7 @@ module.exports = [
             ['api/orders', 'Orders'],
             ['api/invoices', 'Invoices'],
             ['api/shipments', 'Shipments'],
+            ['api/transactions', 'Transactions'],
             ['api/reviews', 'Reviews'],
             ['api/wishlists', 'Wishlists'],
         ])
