@@ -1,4 +1,4 @@
-# Create Models
+# Create models
 
 ## Create model by using Bagisto Package Generator
 

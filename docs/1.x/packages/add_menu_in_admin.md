@@ -1,6 +1,6 @@
 # Add menu in admin
 
-- Within your package `packages/ACME/HelloWorld/src`, create **Config** folder and create a file named as `admin-menu.php`.
+- In your package's source directory i.e. `packages/ACME/HelloWorld/src`, create the `Config` folder and create a file named `admin-menu.php`.
 
 ~~~php
 <?php
@@ -32,7 +32,7 @@ return [
   Route::view('/admin/hello-world', 'helloworld::admin.index')->name('helloworld.admin.index');
   ~~~
 
-- After that we need to merge this `menu.php` folder with a core menu file. For this, we use the method `mergeConfigFrom()` in the register method of the service provider.
+- After that, we need to merge this `menu.php` folder with a core menu file. For this, we use the method `mergeConfigFrom()` in the register method of the service provider.
 
   ~~~php
   <?php
@@ -63,10 +63,8 @@ return [
   }
   ~~~
 
+- Run this command i.e. `php artisan optimize`.
+
 - Now, the menu will display in the admin panel. You can change the icon according to your needs.
 
-  ::: details Output
-
-    ![Admin Menu Output](../../assets/images/package-development/admin-menu-output.png)
-
-  :::
+![Admin Menu Output](../../assets/images/package-development/admin-menu-output.png)
