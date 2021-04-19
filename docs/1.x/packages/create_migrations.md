@@ -1,4 +1,4 @@
-# Create Migrations
+# Create migrations
 
 You can create migration in two ways,
 

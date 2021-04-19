@@ -1,4 +1,4 @@
-# Create Custom Configuration
+# Create custom configuration
 
 Creating a custom configuration ease the task for a developer or any non-developer person. Generally, in Bagisto, you can find it in admin panel **Configuration Menu**.
 
@@ -47,7 +47,7 @@ Creating a custom configuration ease the task for a developer or any non-develop
 
 - **fields** : This key accept the array for the value of the custom configuration.
 
-- We need to merge the these custom config also,
+- We need to merge these custom config also,
 
   ~~~php
   <?php
@@ -86,11 +86,11 @@ Creating a custom configuration ease the task for a developer or any non-develop
   }
   ~~~
 
-  ::: details Output
+- Run this command i.e. `php artisan optimize`.
 
-    ![Admin ACL Output](../../assets/images/package-development/admin-custom-config-output.png)
+- Now, check the configuration,
 
-  :::
+  ![Admin ACL Output](../../assets/images/package-development/admin-custom-config-output.png)
 
 ## Supported Field Types
 

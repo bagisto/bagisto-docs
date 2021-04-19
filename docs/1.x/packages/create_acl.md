@@ -1,15 +1,14 @@
-# Access Control List
+# Access control list
 
-[[toc]]
+In addition to providing authentication services out of the box, Bagisto also provides a functionality **ACL** (Access Control List).
 
-## Introduction
-In addition to providing authentication services out of the box, Bagisto also provides a functionality **ACL** (Access Control List).  
 With this feature the administrator can allow/disallow other users to access parts of Bagisto.
 
 ## Create a new ACL file
-Create a new file named as `acl.php` inside your package **config** folder, for example `packages/ACME/HelloWorld/src/Config` and add the following code.
 
-````php
+Create a new file named `acl.php` in your package **Config** folder, for example, `packages/ACME/HelloWorld/src/Config` and add the following code.
+
+~~~php
 <?php
 
 return [
@@ -20,12 +19,17 @@ return [
         'sort' => 2
     ]
 ];
-````
+~~~
 
-The array is created for an individual's menu with the parameters (key, name, route, sort). All we need to do is define the menu which we want to include with our ACL.
-After that for changes, we need to merge the acl config also just like we have done with menu items,
+If you check the above code we have created an array for an individual's menu with the parameters (key, name, route & sort).
 
-  ````php
+Just like that, we need to define the menu here which we want to include in our ACL.
+
+## Merge configuration
+
+After that, we need to merge the ACL config also just like we have done with menu items,
+
+  ~~~php
   <?php
 
   namespace ACME\HelloWorld\Providers;
@@ -56,7 +60,10 @@ After that for changes, we need to merge the acl config also just like we have d
           );
       }
   }
-  ````
-::: details Output
+  ~~~
+
+After setting up, just run this command `php artisan optimize` to cached the latest changes.
+
+Now check the latest ACL.
+
 ![Admin ACL Output](../../assets/images/package-development/admin-acl-output.png)
-:::
