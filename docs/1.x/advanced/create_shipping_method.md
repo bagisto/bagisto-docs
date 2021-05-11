@@ -1,6 +1,6 @@
 # Create a new shipping method
 
-We hope that now you know how to create a package, if not refer to [Package Development](../packages/create.md).
+We hope that now you know how to create a package, if not refer to [Package Development](../packages).
 
 In this section, we will understand how to create a shipping method.
 
