@@ -31,8 +31,8 @@ As you can see, `bagisto.shop.test` is the event name here that is defined in a 
 
 ```php
     Event::listen('bagisto.shop.test.before', function($viewRenderEventManager) {
-        $viewRenderEventManager->addTemplate('template file path that you want to inject);'
-    }
+        $viewRenderEventManager->addTemplate('template file path that you want to inject);
+    });
 ```
 
 As you can see, you have to add the path of the template that you want to render.
