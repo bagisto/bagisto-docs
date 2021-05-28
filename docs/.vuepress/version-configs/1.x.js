@@ -110,4 +110,40 @@ module.exports = [
             ['api/wishlists', 'Wishlists'],
         ])
     },
+    {
+        title: 'Bagisto GraphQL Admin API',
+        path: setVersionPrefix('graphql_admin_api'),
+        collapsable: true,
+        children: setVersionPrefix([
+            ['graphql_admin_api/getting-started-with-the-api.md', 'Authentication'],
+            ['graphql_admin_api/settings.md', 'Settings'],
+            ['graphql_admin_api/cms.md', 'CMS'],
+            ['graphql_admin_api/velocity.md', 'Velocity'],
+            ['graphql_admin_api/customers.md', 'Customers'],
+            ['graphql_admin_api/promotions.md', 'Promotions'],
+            ['graphql_admin_api/products.md', 'Products'],
+            ['graphql_admin_api/categories.md', 'Categories'],
+            ['graphql_admin_api/attributes.md', 'Attributes'],
+            ['graphql_admin_api/attribute_groups.md', 'Attribute Groups'],
+            ['graphql_admin_api/attribute_families.md', 'Attribute Families'],
+            ['graphql_admin_api/sales.md', 'Sales'],
+        ])
+    },
+    {
+        title: 'Bagisto GraphQL Shop API',
+        path: setVersionPrefix('graphql_shop_api'),
+        collapsable: true,
+        children: setVersionPrefix([
+            ['graphql_shop_api/getting-started-with-the-api.md', 'Authentication'],
+            ['graphql_shop_api/addresses.md', 'Addresses'],
+            ['graphql_shop_api/orders.md', 'Orders'],
+            ['graphql_shop_api/reviews.md', 'Reviews'],
+            ['graphql_shop_api/wishlists.md', 'Wishlists'],
+            ['graphql_shop_api/compare.md', 'Compare'],
+            ['graphql_shop_api/downloadable_links.md', 'Downloadable Links'],
+            ['graphql_shop_api/cart.md', 'Cart'],
+            ['graphql_shop_api/checkout.md', 'Checkout Process'],
+            ['graphql_shop_api/homepage.md', 'Home Page'],
+        ])
+    },
 ]
