@@ -304,3 +304,72 @@ This will generate whole directory structures. You don't need to do manually.
 - Return static blade files loaded with scripts in it with caution.
 
 :::
+
+## Multiple DataGrids
+
+As the default Datagrid will handle only a single request at a time which means filtration, sorting and many other operations will get conflicted when you try to implement the multiple DataGrids. To overcome this we have provided a trait `ProvideDataGridPlus` in the namespace `Webkul\Ui\DataGrid\Traits`.
+
+- Just take any of the Datagrid, let say `ProductDataGrid` in the namespace `Webkul\Admin\DataGrids`,
+
+    ~~~php
+    namespace Webkul\Admin\DataGrids;
+
+    class ProductDataGrid extends DataGrid
+    {
+        ...
+    }
+    ~~~
+
+- Import the `ProvideDataGridPlus` trait in the mentioned class,
+
+    ~~~php
+    namespace Webkul\Admin\DataGrids;
+
+    use Webkul\Ui\DataGrid\Traits\ProvideDataGridPlus;
+
+    class ProductDataGrid extends DataGrid
+    {
+        use ProvideDataGridPlus;
+
+        ...
+    }
+    ~~~
+
+- After that `toJson()` method will be available in the Datagrid instance which will provide data to the component.
+
+- Now you need to create one route and method from where the response will come. Let us take an example of the product listing page. Now go to `ProductController` in the namespace `Webkul\Product\Http\Controllers`, there is an index method, just use the `toJson`.
+
+    ~~~php
+    use Webkul\Admin\DataGrids\ProductDataGrid;
+
+    class ProductController extends Controller
+    {
+        /**
+         * Display a listing of the resource.
+         *
+         * @return \Illuminate\View\View
+         */
+        public function index()
+        {
+            if (request()->ajax()) {
+                return app(ProductDataGrid::class)->toJson();
+            }
+
+            return view($this->_config['view']);
+        }
+
+        ...
+    }
+    ~~~
+
+- Now, in the view portion use this component i.e. `datagrid-plus` and add the url from where it will load the json data,
+
+    ~~~php
+    <div class="page-content">
+        ...
+
+        <datagrid-plus src="{{ route('admin.catalog.products.index') }}"></datagrid-plus>
+
+        ...
+    </div>
+    ~~~

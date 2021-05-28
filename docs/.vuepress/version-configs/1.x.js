@@ -49,7 +49,7 @@ module.exports = [
             ['advanced/create_shipping_method', 'Create a shipping method'],
             ['advanced/create_payment_method', 'Create a payment method'],
             ['advanced/create_product_type', 'Create your own product type'],
-            ['advanced/datagrid', 'Data grid'],
+            ['advanced/datagrid', 'DataGrid'],
             ['advanced/events', 'Events'],
             ['advanced/override-core-model', 'Override core models'],
             ['advanced/security_practice', 'Best Security Practices'],
