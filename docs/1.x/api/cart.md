@@ -397,6 +397,104 @@ By using this API call you can update the cart's product(s) quantity. To do this
 
 :::
 
+## Apply coupon
+
+You can also apply the coupon by using the `checkout/cart/coupon` endpoint.
+
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
+
+- Request
+
+  `POST <host>/api/checkout/cart/coupon`
+
+- Params
+
+  ~~~json
+  {
+    "code": "OFFER20"
+  }
+  ~~~
+
+### Examples
+
+Now, let's apply the coupon and check the responses,
+
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
+
+- Request
+
+  `POST http(s)://example.com/api/checkout/cart/coupon`
+
+- Params
+
+  ~~~json
+  {
+    "code": "OFFER20"
+  }
+  ~~~
+
+::: details Response
+
+  ~~~json
+  {
+    "success": true,
+    "message": "Coupon code applied successfully."
+  }
+  ~~~
+
+:::
+
+## Remove coupon
+
+For removing the coupon, you just need to hit the `checkout/cart/coupon` endpoint with the `DELETE` method.
+
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
+
+- Request
+
+  `DELETE <host>/api/checkout/cart/coupon`
+
+### Examples
+
+Let's remove the coupon and check the responses,
+
+- Headers
+
+  | Key           | Value                 | Info                                 |
+  | ------------- | --------------------- | ------------------------------------ |
+  | Accept        | application/json      |                                      |
+  | Authorization | Bearer `token-string` | Use only when you pass `?token=true` |
+
+- Request
+
+  `DELETE http(s)://example.com/api/checkout/cart/coupon`
+
+::: details Response
+
+  ~~~json
+  {
+      "success": true,
+      "message": "Remove Coupon"
+  }
+  ~~~
+
+:::
+
 ## Remove specific product from cart
 
 You can remove any particular product from the cart. To do this task, you have to use the `checkout/cart/remove-item/{cart_item_id}` as request payload in the API URL. This API call will work with both customer's authentication or without customer's authentication.
