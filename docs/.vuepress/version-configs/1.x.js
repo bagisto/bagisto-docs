@@ -84,6 +84,7 @@ module.exports = [
         path: setVersionPrefix('user_guides'),
         collapsable: true,
         children: setVersionPrefix([
+            ['user_guides/tax-rates', 'Tax Rates'],
             ['user_guides/cart_rule', 'Cart rules'],
             ['user_guides/social_auth', 'Social Authentication']
         ])
