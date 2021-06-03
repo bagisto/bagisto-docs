@@ -22,7 +22,6 @@ module.exports = [
             ['introduction/requirements', 'Requirements'],
             ['introduction/installation', 'Installation'],
             ['introduction/upgrade_to_latest_bagisto', 'Upgrade Bagisto'],
-            ['introduction/folders', 'Directory structure'],
             ['introduction/docker', 'Docker']
             
         ])
