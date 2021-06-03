@@ -185,11 +185,14 @@ To get the current cart details, you have to use the `checkout/cart` resource in
 
 #### 1. In case of guest customer
 
+In, Bagisto guest cart is handled by session, and Laravel handles session by cookies. So you need to save the cookies for the guest cart when you are adding product to the cart and then send it as a header when you want to fetch.
+
 - Headers
 
-  | Key    | Value            |
-  | ------ | ---------------- |
-  | Accept | application/json |
+  | Key    | Value                       |
+  | ------ | --------------------------- |
+  | Accept | application/json            |
+  | Cookie | bagisto_session=key         |
 
 - Request
 
@@ -229,6 +232,8 @@ To get the current cart details, you have to use the `checkout/cart` resource in
 :::
 
 #### 2. In case of logged in customer
+
+In the case of the logged-in user, no need for cookies as the cart is in the database and linked with the customer.
 
 - Headers
 
