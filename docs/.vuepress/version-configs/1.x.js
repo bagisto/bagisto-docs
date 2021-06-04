@@ -21,7 +21,7 @@ module.exports = [
         children: setVersionPrefix([
             ['introduction/requirements', 'Requirements'],
             ['introduction/installation', 'Installation'],
-            ['introduction/upgrade_to_latest_bagisto', 'Upgrade Bagisto'],
+            ['introduction/upgrade-to-latest-bagisto', 'Upgrade Bagisto'],
             ['introduction/docker', 'Docker']
             
         ])
@@ -31,13 +31,13 @@ module.exports = [
         path: setVersionPrefix('packages'),
         collapsable: true,
         children: setVersionPrefix([
-            ['packages/create_package', 'Create a new package'],
-            ['packages/create_migrations', 'Create migrations'],
-            ['packages/add_menu_in_admin', 'Add menu in admin'],
-            ['packages/create_acl', 'Access control list'],
-            ['packages/create_custom_configuration', 'Create custom configuration'],
-            ['packages/create_models', 'Create models'],
-            ['packages/store_data_through_repositories', 'Store data through repositories'],
+            ['packages/create-package', 'Create a new package'],
+            ['packages/create-migrations', 'Create migrations'],
+            ['packages/add-menu-in-admin', 'Add menu in admin'],
+            ['packages/create-acl', 'Access control list'],
+            ['packages/create-custom-configuration', 'Create custom configuration'],
+            ['packages/create-models', 'Create models'],
+            ['packages/store-data-through-repositories', 'Store data through repositories'],
         ])
     },
     {
@@ -45,14 +45,14 @@ module.exports = [
         path: setVersionPrefix('advanced'),
         collapsable: true,
         children: setVersionPrefix([
-            ['advanced/create_shipping_method', 'Create a shipping method'],
-            ['advanced/create_payment_method', 'Create a payment method'],
-            ['advanced/create_product_type', 'Create your own product type'],
+            ['advanced/create-shipping-method', 'Create a shipping method'],
+            ['advanced/create-payment-method', 'Create a payment method'],
+            ['advanced/create-product-type', 'Create your own product type'],
             ['advanced/datagrid', 'DataGrid'],
             ['advanced/events', 'Events'],
             ['advanced/override-core-model', 'Override core models'],
-            ['advanced/security_practice', 'Best Security Practices'],
-            ['advanced/render_event', 'View render event'],
+            ['advanced/security-practice', 'Best Security Practices'],
+            ['advanced/render-event', 'View render event'],
             ['advanced/indexing-products-to-elasticsearch.md', 'Indexing products to Elasticsearch'],
         ])
     },           
@@ -62,8 +62,8 @@ module.exports = [
         collapsable: true,
         children: setVersionPrefix([
             ['themes/tracer', 'Blade file tracer'],
-            ['themes/create_theme', 'Create a store theme'],
-            ['themes/create_admin_theme', 'Create an admin theme'],
+            ['themes/create-theme', 'Create a store theme'],
+            ['themes/create-admin-theme', 'Create an admin theme'],
             ['themes/change-email-template.md', 'Change email template'],
             ['themes/customize-hompepage-menu.md', 'Customize homepage menu'],
             ['themes/integrate-image-search-in-theme', 'Integrate image search in theme']
@@ -71,21 +71,21 @@ module.exports = [
     },
     {
         title: 'Translations',
-        path: setVersionPrefix('translations/translation_based_on_locale'),
+        path: setVersionPrefix('translations/translation-based-on-locale'),
         collapsable: true,
         children: setVersionPrefix([
-            ['translations/translation_based_on_locale', 'Translation based on locale'],
-            ['translations/change_the_language_of_error_validations_on_your_store', 'Change the language of error validations on your store']
+            ['translations/translation-based-on-locale', 'Translation based on locale'],
+            ['translations/change-the-language-of-error-validations-on-your-store', 'Change the language of error validations on your store']
         ])
     },
     {
         title: 'User Guides',
-        path: setVersionPrefix('user_guides'),
+        path: setVersionPrefix('user-guides'),
         collapsable: true,
         children: setVersionPrefix([
-            ['user_guides/tax-rates', 'Tax Rates'],
-            ['user_guides/cart_rule', 'Cart rules'],
-            ['user_guides/social_auth', 'Social Authentication']
+            ['user-guides/tax-rates', 'Tax Rates'],
+            ['user-guides/cart-rule', 'Cart rules'],
+            ['user-guides/social-auth', 'Social Authentication']
         ])
     }, 
     {
@@ -112,38 +112,38 @@ module.exports = [
     },
     {
         title: 'Bagisto GraphQL Admin API',
-        path: setVersionPrefix('graphql_admin_api'),
+        path: setVersionPrefix('graphql-admin-api'),
         collapsable: true,
         children: setVersionPrefix([
-            ['graphql_admin_api/getting-started-with-the-api.md', 'Authentication'],
-            ['graphql_admin_api/settings.md', 'Settings'],
-            ['graphql_admin_api/cms.md', 'CMS'],
-            ['graphql_admin_api/velocity.md', 'Velocity'],
-            ['graphql_admin_api/customers.md', 'Customers'],
-            ['graphql_admin_api/promotions.md', 'Promotions'],
-            ['graphql_admin_api/products.md', 'Products'],
-            ['graphql_admin_api/categories.md', 'Categories'],
-            ['graphql_admin_api/attributes.md', 'Attributes'],
-            ['graphql_admin_api/attribute_groups.md', 'Attribute Groups'],
-            ['graphql_admin_api/attribute_families.md', 'Attribute Families'],
-            ['graphql_admin_api/sales.md', 'Sales'],
+            ['graphql-admin-api/getting-started-with-the-api.md', 'Authentication'],
+            ['graphql-admin-api/settings.md', 'Settings'],
+            ['graphql-admin-api/cms.md', 'CMS'],
+            ['graphql-admin-api/velocity.md', 'Velocity'],
+            ['graphql-admin-api/customers.md', 'Customers'],
+            ['graphql-admin-api/promotions.md', 'Promotions'],
+            ['graphql-admin-api/products.md', 'Products'],
+            ['graphql-admin-api/categories.md', 'Categories'],
+            ['graphql-admin-api/attributes.md', 'Attributes'],
+            ['graphql-admin-api/attribute-groups.md', 'Attribute Groups'],
+            ['graphql-admin-api/attribute-families.md', 'Attribute Families'],
+            ['graphql-admin-api/sales.md', 'Sales'],
         ])
     },
     {
         title: 'Bagisto GraphQL Shop API',
-        path: setVersionPrefix('graphql_shop_api'),
+        path: setVersionPrefix('graphql-shop-api'),
         collapsable: true,
         children: setVersionPrefix([
-            ['graphql_shop_api/getting-started-with-the-api.md', 'Authentication'],
-            ['graphql_shop_api/addresses.md', 'Addresses'],
-            ['graphql_shop_api/orders.md', 'Orders'],
-            ['graphql_shop_api/reviews.md', 'Reviews'],
-            ['graphql_shop_api/wishlists.md', 'Wishlists'],
-            ['graphql_shop_api/compare.md', 'Compare'],
-            ['graphql_shop_api/downloadable_links.md', 'Downloadable Links'],
-            ['graphql_shop_api/cart.md', 'Cart'],
-            ['graphql_shop_api/checkout.md', 'Checkout Process'],
-            ['graphql_shop_api/homepage.md', 'Home Page'],
+            ['graphql-shop-api/getting-started-with-the-api.md', 'Authentication'],
+            ['graphql-shop-api/addresses.md', 'Addresses'],
+            ['graphql-shop-api/orders.md', 'Orders'],
+            ['graphql-shop-api/reviews.md', 'Reviews'],
+            ['graphql-shop-api/wishlists.md', 'Wishlists'],
+            ['graphql-shop-api/compare.md', 'Compare'],
+            ['graphql-shop-api/downloadable-links.md', 'Downloadable Links'],
+            ['graphql-shop-api/cart.md', 'Cart'],
+            ['graphql-shop-api/checkout.md', 'Checkout Process'],
+            ['graphql-shop-api/homepage.md', 'Home Page'],
         ])
     },
 ]
