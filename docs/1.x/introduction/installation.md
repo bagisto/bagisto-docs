@@ -1,19 +1,19 @@
 # Installation
 
-## Use our GUI installer
-- [Download bagisto](https://bagisto.com/en/download/)
-- Extract the contents of zip and execute the project in your browser for example:
+## Use Our GUI Installer
+1. [Download bagisto](https://bagisto.com/en/download/)
+2. Extract the contents of the zip file, and then execute the project on your browser.</br>For example:
     - `https://example.com/`
     - `https://localhost/bagisto/public`
     - `https://example.com/public`
 
-## Install Bagisto using composer:
+## Install Bagisto Using _composer_:
   
 ```
 composer create-project bagisto/bagisto
 ```
 
-## Install Bagisto using command line:
+## Install Bagisto Using Command Line:
   
 - Start the installation script
 ```sh
@@ -36,7 +36,7 @@ It will check if the .env file is already created or not.
 -   DB_PASSWORD
 ```
 
-- After asking the following options it will start the installation
+- To start the installation, provide the details of the following command prompts: 
 ```sh
 -  Please select the default locale or press enter to continue [en]: 
 -  Please enter the default timezone [Asia/Kolkata]:
@@ -46,11 +46,11 @@ It will check if the .env file is already created or not.
 -  What is your database password?:
 ```
 
-# Start using Bagisto
+# Start Using Bagisto
 
 ### On a production server
 
-- Go to your domain for example:
+- Open your domain on the browser.</br> For example:
     - `https://example.com/`
     - `https://localhost/bagisto/public`
     - `https://example.com/public`
@@ -61,13 +61,13 @@ It will check if the .env file is already created or not.
 php artisan serve
 ```
 
-### How to login as admin:
+### How to log in to your domain as an admin:
 
-Go to `https://example.com/admin/`, in case you used `php artisan bagisto:install` use the following credentials
+Go to `https://example.com/admin/`, in case `php artisan bagisto:install` is opted, use the following credentials.
 ```
 email: admin@example.com
 password: admin123
 ```
 
-### How to login as customer
-You can directly register `https://example.com/customer/register` as a customer and then login.
+### How to log in to your domain as a customer
+You can directly register on `https://example.com/customer/register` as a customer, and then log in to your domain.
