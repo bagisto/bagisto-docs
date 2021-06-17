@@ -4,17 +4,13 @@
 1. [Download bagisto](https://bagisto.com/en/download/)
 2. Extract the contents of the zip file, and then execute the project on your browser.</br>For example:
     - `https://example.com/`
-    - `https://localhost/bagisto/public`
-    - `https://example.com/public`
 
 ## Install Bagisto Using _composer_:
   
 ```
 composer create-project bagisto/bagisto
 ```
-
-## Install Bagisto Using Command Line:
-  
+ 
 - Start the installation script
 ```sh
 php artisan bagisto:install
