@@ -8,12 +8,12 @@ By using this API call you can add new products to the cart and also you can add
 
 Currently,Bagisto support the following types of product,
 
-- Simple
-- Configurable
-- Bundle
-- Grouped
-- Downloadable
-- Virtual
+- [Simple](#simple-and-virtual-product)
+- [Configurable](#configurable-product)
+- [Bundle](#bundle-product)
+- [Grouped](#grouped-product)
+- [Downloadable](#downloadable-product)
+- [Virtual](#simple-and-virtual-product)
 
 Let us discuss each product,
 
@@ -197,7 +197,7 @@ Downloadable product allows you to sell digital products, such as eBooks, softwa
 
 ### Examples
 
-#### 1. For non configurable product
+#### 1. For simple product
 
 - Headers
 
@@ -214,8 +214,8 @@ Downloadable product allows you to sell digital products, such as eBooks, softwa
 
   ```json
   {
-    "quantity": "2",
-    "is_configurable": false
+    "product_id": 24,
+    "quantity": 2
   }
   ```
 
@@ -236,8 +236,8 @@ Downloadable product allows you to sell digital products, such as eBooks, softwa
 
   ```json
   {
+    "product_id": 6,
     "quantity": 1,
-    "is_configurable": true,
     "selected_configurable_option": 26,
     "super_attribute": {
       "23": 2,
@@ -266,7 +266,7 @@ Downloadable product allows you to sell digital products, such as eBooks, softwa
         "is_guest": 0,
         "items": [
             {...}, // Cart Item 1
-            {...} // Cart Item 2
+            {...}, // Cart Item 2
         ],
         "selected_shipping_rate": null,
         "payment": null,
@@ -300,8 +300,7 @@ For this, you need to pass the `product_id` in the request body also.
   ```json
   {
     "product_id": 25,
-    "quantity": "2",
-    "is_configurable": false
+    "quantity": 2
   }
   ```
 
