@@ -47,9 +47,7 @@ It will check if the .env file is already created or not.
 ### On a production server
 
 - Open your domain on the browser.</br> For example:
-    - `https://example.com/`
-    - `https://localhost/bagisto/public`
-    - `https://example.com/public`
+    - `https://example.com/``
 
 ### On your local device
 
