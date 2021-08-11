@@ -67,3 +67,13 @@ After setting up, just run this command `php artisan optimize` to cached the lat
 Now check the latest ACL.
 
 ![Admin ACL Output](../../assets/images/package-development/admin-acl-output.png)
+
+## Checking roles and permissions
+
+- If you check the `Admin` model in the namespace `Webkul\User\Models`, you will see the relationship binding with the `Role` model in the same namespace. From here you can grab all the permissions of the current user.
+
+- We have provided the `bouncer()` helper, which helps you to check the permissions. Let's check the current user has permission or not,
+
+  ~~~php
+  bouncer()->hasPermission($permission)
+  ~~~
