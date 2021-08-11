@@ -50,10 +50,11 @@ module.exports = [
             ['advanced/create-product-type', 'Create your own product type'],
             ['advanced/datagrid', 'DataGrid'],
             ['advanced/events', 'Events'],
+            ['advanced/helpers', 'Helpers'],
             ['advanced/override-core-model', 'Override core models'],
-            ['advanced/security-practice', 'Best Security Practices'],
             ['advanced/render-event', 'View render event'],
             ['advanced/indexing-products-to-elasticsearch.md', 'Indexing products to Elasticsearch'],
+            ['advanced/security-practice', 'Best Security Practices'],
         ])
     },           
     {
