@@ -1,17 +1,19 @@
 # Installation
 
 ## Use Our GUI Installer
-1. [Download bagisto](https://bagisto.com/en/download/)
-2. Extract the contents of the zip file, and then execute the project on your browser.</br>For example:
+1. [Download Bagisto](https://bagisto.com/en/download/)
+2. Extract the contents of the zip file.
+3. Point your HTTP server to the public/ directory of the project and open it on your browser.</br>For example:
     - `https://example.com/`
+4. This will detect Bagisto and start the installer.
 
-## Install Bagisto Using _composer_:
+## Install Bagisto Using _composer_
   
 ```
 composer create-project bagisto/bagisto
 ```
  
-- Start the installation script
+- Start the installation script.
 ```sh
 php artisan bagisto:install
 ```
@@ -37,7 +39,7 @@ It will check if the .env file is already created or not.
 -  Please select the default locale or press enter to continue [en]: 
 -  Please enter the default timezone [Asia/Kolkata]:
 -  Please enter the default currency [USD]: 
--  What is the database name to be used by bagisto?: 
+-  What is the database name to be used by Bagisto?: 
 -  What is your database username?:
 -  What is your database password?:
 ```
@@ -55,7 +57,7 @@ It will check if the .env file is already created or not.
 php artisan serve
 ```
 
-### How to log in to your domain as an admin:
+### How to log in to your domain as an admin
 
 Go to `https://example.com/admin/`, in case `php artisan bagisto:install` is opted, use the following credentials.
 ```
