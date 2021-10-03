@@ -982,7 +982,7 @@ After applying the shipping method to the cart, you have to select a payment met
 
 - Request
 
-  `POST <api>/api/checkout/save-payment`
+  `POST <host>/api/checkout/save-payment`
 
 - Params
 
