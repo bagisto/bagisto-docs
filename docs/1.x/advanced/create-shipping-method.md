@@ -203,7 +203,7 @@ Then, add your shipment method namespace in the `psr-4` key in the `composer.jso
 
 - Run `composer dump-autoload.
 
-- After that, run `php artisan config: cache`.
+- After that, run `php artisan config:cache`.
 
 ::: tip
 
