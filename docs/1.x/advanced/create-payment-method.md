@@ -63,7 +63,7 @@ In this section, we will explain how to create a payment method. You can create 
 
 - Run `composer dump-autoload.
 
-- After that, run `php artisan config: cache`.
+- After that, run `php artisan config:cache`.
 
 - This will set up the configuration in the admin panel. Now start creating routes, controllers and make some cool stuff.
 
