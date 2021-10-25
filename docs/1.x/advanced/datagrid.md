@@ -179,13 +179,13 @@ As you see the above sample Datagrid, now let us discuss some properties,
 |  Name             | Functionality                                                                                                                                                                                                  |
 | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | index             | This property is defined in the grid. The value assigned to this property must be unique, i.e., `id,` so that data will be uniquely identified and operations performed based on your index value.   |
-| sortOrder         | The `sortOrder` key is used to arrange the results in ascending or descending order. We have to set the sort order variable to `asc` or `desc.`                                                                |
-| query builder      | It is used to performing database operations in your application.                                                                                                                                                 |
+| sortOrder         | The `sortOrder` key is used to arrange the results in ascending or descending order. We have to set the sort order variable to `asc` or `desc`.                                                                |
+| queryBuilder      | It is used to perform database operations in your application.                                                                                                                                                 |
 | enableMassAction  | This accepts boolean values `true` or `false` to enable or disable the mass action in Datagrid.                                                                                                                |
 | allow movement | This takes boolean values `true` or `false` to enable or disable the action column of Datagrid.                                                                                                              |
-| paginate          | While creating your grid file, you have to declare paginate property and set it to `true` to allow pagination on your page.                                                                                     |
-| items per page      | The `itemsPerPage` key is used to display the number of items per page.                                                                                                                                        |
-| enableFilterMap   | This accepts boolean values `true` or `false` to enable or disable the filter based on columns.                                                                                                         |
+| paginate          | While creating your grid file you have to declare paginate property and set it to `true` to allow pagination on your page.                                                                                     |
+| itemsPerPage      | The `itemsPerPage` key is used to display the number of items per page.                                                                                                                                        |
+| enableFilterMap   | This accepts boolean values `true` or `false` to enable or disable the filter on the basis of columns.                                                                                                         |                                                  |                                         |
 
 ## Steps to create DataGrid
 
@@ -220,7 +220,7 @@ This will generate whole directory structures. You don't need to do it manually.
 
     - `prepareQueryBuilder()`: In this method, records are retrieved through queries applicable to the database and stored in a collection. When records are retrieved, `$this->setQueryBuilder($queryBuilder)` set query builder method is called.
 
-    - `set query builder()`: This method is written in the DataGrid file of the UI package. This is used for setting the `$queryBuilder`.
+    - `setQueryBuilder()`: This method is written in the DataGrid file of the UI package. This is used for setting the `$queryBuilder`.
 
         ~~~php
         public function prepareQueryBuilder()
@@ -233,7 +233,7 @@ This will generate whole directory structures. You don't need to do it manually.
         }
         ~~~
 
-    - `add columns()`: In this method, the columns are created, which are displayed in the grid. In this method, the parameter accepts the array in key-value pairs. Some of the essential keys are described below,
+    - `addColumns()`: In this method, the columns are created, which are displayed in the grid. In this method, the parameter accepts the array in key-value pairs. Some of the essential keys are described below,
 
         |  Name      | functionality                                                                                                                                                                            |
         | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -241,8 +241,8 @@ This will generate whole directory structures. You don't need to do it manually.
         | label      | In this key, the name of the column is defined.                                                                                                                                          |
         | type       | This key accepts the kind of data in a column.                                                                                                                                             |
         | searchable | This takes boolean values `true` or `false` to make the column searchable.                                                                                                             |
-        | sortable   | This takes boolean values `true` or `false` to make the column sortable.                                                                                                               |
-        | filterable | This takes boolean values `true` or `false` to make the column filterable.                                                                                                             |
+        | sortable   | This accepts boolean values `true` or `false` to make the column sortable.                                                                                                               |
+        | filterable | This accepts boolean values `true` or `false` to make the column filterable.                                                                                                             |                                                                                                            |
         | wrapper    | Perform actions based on condition satisfied or some customization to value.                                                                                                             |
 
         ~~~php
