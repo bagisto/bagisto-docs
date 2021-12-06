@@ -116,6 +116,7 @@ module.exports = [
         path: setVersionPrefix('graphql-admin-api'),
         collapsable: true,
         children: setVersionPrefix([
+            ['graphql-admin-api/installation', 'Installation'],
             ['graphql-admin-api/getting-started-with-the-api.md', 'Authentication'],
             ['graphql-admin-api/settings.md', 'Settings'],
             ['graphql-admin-api/cms.md', 'CMS'],
@@ -135,6 +136,7 @@ module.exports = [
         path: setVersionPrefix('graphql-shop-api'),
         collapsable: true,
         children: setVersionPrefix([
+            ['graphql-admin-api/installation', 'Installation'],
             ['graphql-shop-api/getting-started-with-the-api.md', 'Authentication'],
             ['graphql-shop-api/addresses.md', 'Addresses'],
             ['graphql-shop-api/orders.md', 'Orders'],
