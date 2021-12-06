@@ -2,6 +2,7 @@
 
 Bagisto GraphQL Shop API is a medium to use the features of the core Bagisto Shop System. By using Bagisto GraphQL Shop API, you can integrate your application to serve the default content of Bagisto.
 
+**To download and contribute: [Bagisto GraphQL API GitHub](https://github.com/bagisto/headless-ecommerce/)**
 
 
 ## Key Features
