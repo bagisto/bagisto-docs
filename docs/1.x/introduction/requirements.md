@@ -7,7 +7,7 @@ Before installing Bagisto, make sure the server meets the following requirements
 - **SERVER**: Apache 2 or NGINX
 - **RAM**: 4GB or higher
 - **Node**: 8.11.3 LTS or higher
-- **PHP**: 7.3.0 or higher
+- **PHP**: 7.4 or higher
 - **Composer**: 1.6.5 or higher
 
 ## PHP Extensions
