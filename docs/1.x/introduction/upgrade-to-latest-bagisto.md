@@ -61,9 +61,45 @@ You are now at the latest version. Still, we want to mention that if you have do
 
 ## Bagisto Changes
 
-These are the changes from the version 1.3.1 to 1.3.2,
+### These are the changes from the version 1.3.3 to 1.4.0
 
-### Changes from the web vital (Medium Severity)
+#### Added one composer dependency (High Severity)
+
+- Added `diglactic/laravel-breadcrumbs` for breadcrumbs in the frontend shop. Make sure to run the `composer install`, if you are upgrading the existing project.
+- Moved all the old APIs to a separate package i.e. `bagisto/legacy-api`. If you are getting exceptions then just go to `bootstrap/cache` and delete all the files and then run `composer install`. After the installation, run `php artisan optimize`.
+
+#### Changes from the datagrid (High Severity)
+
+- Implemented the ajaxified datagrid, see [#5756](https://github.com/bagisto/bagisto/pull/5756)
+
+#### Revamped admin theme (High Severity)
+
+- Added a new admin theme with features of multi-locale switcher, real time notification for admin upon order creation or updation and dark theme for admin panel.
+
+#### Changes in factories (Medium Severity)
+
+- Dropped laravel legacy factories dependencies and refactored all models to use Laravel 8 class factories. If you have used it in modules try to upgrade or just install the dependency when needed.
+
+#### Changes in routes (Medium Severity)
+
+- In admin, shop and velocity packages, this file `packages/Webkul/<package-name>/src/Http/routes.php` is moved to `packages/Webkul/<package-name>/src/Routes/web.php` this path. So if you are upgrading the existing project just make sure the provider registry is updated.
+
+#### Multiple locales Added
+
+- Added more locales for admin as well as shop packages,
+  - Hebrew
+  - Bengali
+  - Sinhalese
+  - Russia
+  - Hindi
+
+#### Added configuration for WYSIWYG editor
+
+- Added an configuration for converting textarea to wysiwyg editor.
+
+### These are the changes from the version 1.3.1 to 1.3.2
+
+#### Changes from the web vital (Medium Severity)
 
 - For the velocity theme, the `velocity.js` file is divided into two files i.e. `velocity-core.js` and the `velocity.js` file. In `velocity-core.js`, all core dependencies like jQuery, bootstrap js, Vue js are added and in `velocity.js` all the components are present which is bootstrapped by the `velocity-core.js`.
 
@@ -77,25 +113,25 @@ These are the changes from the version 1.3.1 to 1.3.2,
 
 - In this folder i.e. `packages/Webkul/Velocity/src/Resources/views/shop/layouts/particals` three files (`compare.blade.php`, `wishlist.blade.php` and `search-bar.blade.php`) are given. All these files are having individual components. For `compare.blade.php` and `wislist.blade.php`, you can use the `isText` prop to disable the text for mobile.
 
-- Refernece PR: [#5020](https://github.com/bagisto/bagisto/pull/5020)
+- Reference PR: [#5020](https://github.com/bagisto/bagisto/pull/5020)
 
-### Changes from security fixes (High Severity)
+#### Changes from security fixes (High Severity)
 
 - These routes i.e. `address.delete`, `customer.orders.cancel`, `customer.review.delete`, `customer.review.deleteall`, `shop.movetowishlist`, `customer.wishlist.add`, `customer.wishlist.remove` and `customer.wishlist.removeall` methods are changed from `GET` to `DELETE` and `POST` respectively. `GET` is only use for retrieving data.
 
 - Maybe if you forgot to change then surely this will impact your project. Make sure it should be updated and also run `php artisan optimize` command.
 
-- Refernece PR: [#4996](https://github.com/bagisto/bagisto/pull/4996), [#4998](https://github.com/bagisto/bagisto/pull/4998) and [#5052](https://github.com/bagisto/bagisto/pull/5052)
+- Reference PR: [#4996](https://github.com/bagisto/bagisto/pull/4996), [#4998](https://github.com/bagisto/bagisto/pull/4998) and [#5052](https://github.com/bagisto/bagisto/pull/5052)
 
-### Downloadable product medias are moved to private disk (Medium Severity)
+#### Downloadable product medias are moved to private disk (Medium Severity)
 
 - If someone facing broken downloadale links, this is because of the privatization of the paid links, in this case move your downloadable links folder to a private disk, and the broken link got fixed.
 
 - If still broken then take a reference from the below PR and adjust the storage data.
 
-- Refernece PR: [#4966](https://github.com/bagisto/bagisto/pull/4966)
+- Reference PR: [#4966](https://github.com/bagisto/bagisto/pull/4966)
 
-### Changes from invoice prefixes (Medium Severity)
+#### Changes from invoice prefixes (Medium Severity)
 
 - Moved sequencer class from shop package to sales package, as orders and invoices are part of the sales. This will not impact as there is only one key and that one is in the repository.
 
@@ -105,9 +141,9 @@ These are the changes from the version 1.3.1 to 1.3.2,
 
 - In the core config, moved all the invoice settings to the new tab name `Invoice Settings` so make sure reset the value for the `Invoice Slip Design`.
 
-- Refernece PR: [#4956](https://github.com/bagisto/bagisto/pull/4956)
+- Reference PR: [#4956](https://github.com/bagisto/bagisto/pull/4956)
 
-### Changes from `.env` (Low Severity)
+#### Changes from `.env` (Low Severity)
 
 - Just capitalized the  `fixer_api_key` in `.env` to have consistency and `.env` standard.
 
