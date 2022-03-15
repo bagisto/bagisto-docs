@@ -84,19 +84,6 @@ You are now at the latest version. Still, we want to mention that if you have do
 
 - In admin, shop and velocity packages, this file `packages/Webkul/<package-name>/src/Http/routes.php` is moved to `packages/Webkul/<package-name>/src/Routes/web.php` this path. So if you are upgrading the existing project just make sure the provider registry is updated.
 
-#### Multiple locales Added
-
-- Added more locales for admin as well as shop packages,
-  - Hebrew
-  - Bengali
-  - Sinhalese
-  - Russia
-  - Hindi
-
-#### Added configuration for WYSIWYG editor
-
-- Added an configuration for converting textarea to wysiwyg editor.
-
 ### These are the changes from the version 1.3.1 to 1.3.2
 
 #### Changes from the web vital (Medium Severity)
