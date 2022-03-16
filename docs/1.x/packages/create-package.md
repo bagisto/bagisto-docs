@@ -11,29 +11,29 @@ There are two ways to create a package.
 
 - If you have not installed this package then you need to go to the root folder of **Bagisto** and run the following command
 
-  ~~~php
+  ```php
   composer require bagisto/bagisto-package-generator
-  ~~~
+  ```
 
 - Now, to generate your package you need to use the following command,
 
   - If the package directory does not exist,
 
-    ~~~php
+    ```php
     php artisan package:make ACME/HelloWorld
-    ~~~
+    ```
 
   - If somehow the package directory is already present then you can use the force command as well. For that you just need to pass the '**--force**' command.
 
-    ~~~php
+    ```php
     php artisan package:make ACME/HelloWorld --force
-    ~~~
+    ```
 
 - Now check your `packages` directory, everything is setup for you.
 
 - After that, you need to register your service provider in `config/app.php`.
 
-  ~~~php
+  ```php
   <?php
 
   return [
@@ -45,11 +45,11 @@ There are two ways to create a package.
       ]
       ...
   ];
-  ~~~
+  ```
 
 - Add you package namespace in `psr-4` key in `composer.json` file for auto loading.
 
-  ~~~json
+  ```json
   "autoload": {
       ...
       "psr-4": {
@@ -59,9 +59,20 @@ There are two ways to create a package.
       }
       ...
   }
-  ~~~
+  ```
 
-- Run `composer dump-autoload`.
+- Run the below listed command:
+
+  ```php
+  composer dump-autoload
+  php artisan optimize
+  ```
+
+  ```php
+  php artisan vendor:publish --force
+
+  -> Press the number before "ACME\HelloWorld\Providers\HelloWorldServiceProvider" and then press enter to publish all assets and configurations.
+  ```
 
 ::: details Check output in the browser
 
@@ -75,67 +86,67 @@ There are two ways to create a package.
 
 By manually setting up package, we assume that you are familiar with packages directory structures and flow. If not then you can find a basic tree structure of package below,
 
-  ::: details Basic tree structure of the package
+::: details Basic tree structure of the package
 
-  ~~~
-  - ACME/HelloWorld/
-    - publishable/assets
-      - css/
-      - images/
-      - js/
-    - src/
-      - Config/
-        - acl.php
-        - admin-menu.php
-      - Console/
-        - Commands/
-      - Contracts/
-      - Database/
-        - Migrations/
-        - Seeders/
-      - Events/
-      - Http/
-        - Controllers/
-          - Admin/
-            - HelloWorldController.php
-          - Shop/
-            - HelloWorldController.php
-        - Middleware/
-        - Requests/
-        - admin-routes.php
-        - shop-routes.php
-      - Listeners/
-      - Mail/
-      - Models/
-      - Providers/
-        - HelloWorldServiceProvider.php
-        - ModuleServiceProvider.php
-      - Repositories/
-      - Resources/
-        - assets/
-          - images/
-          - js/
-            - app.js
-          - sass/
-            - admin.scss
-            - default.scss
-            - velocity.scss
-        - lang/
-        - views/
-          - admin/
-            - layouts/
-              - style.blade.php
+```
+- ACME/HelloWorld/
+  - publishable/assets
+    - css/
+    - images/
+    - js/
+  - src/
+    - Config/
+      - acl.php
+      - admin-menu.php
+    - Console/
+      - Commands/
+    - Contracts/
+    - Database/
+      - Migrations/
+      - Seeders/
+    - Events/
+    - Http/
+      - Controllers/
+        - Admin/
+          - HelloWorldController.php
+        - Shop/
+          - HelloWorldController.php
+      - Middleware/
+      - Requests/
+      - admin-routes.php
+      - shop-routes.php
+    - Listeners/
+    - Mail/
+    - Models/
+    - Providers/
+      - HelloWorldServiceProvider.php
+      - ModuleServiceProvider.php
+    - Repositories/
+    - Resources/
+      - assets/
+        - images/
+        - js/
+          - app.js
+        - sass/
+          - admin.scss
+          - default.scss
+          - velocity.scss
+      - lang/
+      - views/
+        - admin/
+          - layouts/
+            - style.blade.php
+          - index.blade.php
+        - shop/
+          - default/
             - index.blade.php
-          - shop/
-            - default/
-              - index.blade.php
-            - velocity/
-              - index.blade.php
-    - package.json
-    - webpack.mix.js
-  ~~~
+          - velocity/
+            - index.blade.php
+  - package.json
+  - webpack.mix.js
+```
 
-  :::
+:::
 
 Let's start with first step by creating the packages folder.
 
@@ -143,38 +154,38 @@ Let's start with first step by creating the packages folder.
 
 - In `packages` folder, create a folder with your company name and inside that create a folder with your package name. Let's say `ACME/HelloWorld`. So, your basic structure will look like this,
 
-  ~~~
+  ```
   - packages/
     - ACME/HelloWorld/
-  ~~~
+  ```
 
 ### Step-2
 
 - In your package folder, create a folder named as `src`. This is the place where you need to put all your files related to your package. Now, your updated structure will look like this,
 
-  ~~~
+  ```
   - packages/
     - ACME/HelloWorld/
       - src/
-  ~~~
+  ```
 
 ### Step-3
 
 - In `src` folder, create a folder named as `Providers` and inside that folder, create a file named as `PackagenameServiceProvider.php`. Let's say `HelloWorldServiceProvider.php`.
 
-    ::: tip
-    If you want to do this with the **Bagisto Package Generator** then you need to type the following command, it will generate the service provider for you.
+  ::: tip
+  If you want to do this with the **Bagisto Package Generator** then you need to type the following command, it will generate the service provider for you.
 
-    ~~~php
-    php artisan package:make-provider HelloWorldServiceProvider ACME/HelloWorld
-    ~~~
+  ```php
+  php artisan package:make-provider HelloWorldServiceProvider ACME/HelloWorld
+  ```
 
-    If somehow the file already exists then you can use `--force` to overwrite the file.
-    :::
+  If somehow the file already exists then you can use `--force` to overwrite the file.
+  :::
 
 - Copy the below code and paste it in `HelloWorldServiceProvider.php`,
 
-  ~~~php
+  ```php
   <?php
   namespace ACME\HelloWorld\Providers;
 
@@ -207,13 +218,13 @@ Let's start with first step by creating the packages folder.
 
       }
   }
-  ~~~
+  ```
 
 ### Step-4
 
 - Now, register your service provider in `config/app.php`.
 
-  ~~~php
+  ```php
   <?php
 
   return [
@@ -225,13 +236,13 @@ Let's start with first step by creating the packages folder.
       ]
       ...
   ];
-  ~~~
+  ```
 
 ### Step-5
 
 - Add you package namespace in `psr-4` key in `composer.json` file for auto loading.
 
-  ~~~json
+  ```json
   "autoload": {
       ...
       "psr-4": {
@@ -241,7 +252,7 @@ Let's start with first step by creating the packages folder.
       }
       ...
   }
-  ~~~
+  ```
 
 - Run `composer dump-autoload`.
 
@@ -253,7 +264,7 @@ Let's start with first step by creating the packages folder.
 
     ::: details Updated directory structure
 
-    ~~~
+    ```
     - packages/
       - ACME/HelloWorld/
         - src/
@@ -261,34 +272,34 @@ Let's start with first step by creating the packages folder.
           - Http/
             - admin-routes.php
             - shop-routes.php
-    ~~~
+    ```
 
     :::
-  
+
     - `admin-routes.php`: This file is for the admin routes. Add below codes to this file,
 
-        ~~~php
-        <?php
+      ```php
+      <?php
 
-        Route::group(['middleware' => ['web', 'admin']], function () {
-          Route::prefix(config('app.admin_url'))->group(function () {
+      Route::group(['middleware' => ['web', 'admin']], function () {
+        Route::prefix(config('app.admin_url'))->group(function () {
 
-            // all admin routes will place here
-          });
+          // all admin routes will place here
         });
-        ~~~
+      });
+      ```
 
     - `shop-routes.php`: This file is for the shop routes. Add below codes to this file,
 
-        ~~~php
-        <?php
+      ```php
+      <?php
 
-        Route::group(['middleware' => ['web', 'theme', 'locale', 'currency']], function () {
+      Route::group(['middleware' => ['web', 'theme', 'locale', 'currency']], function () {
 
-            // all shop routes will be place here
+          // all shop routes will be place here
 
-        });
-        ~~~
+      });
+      ```
 
     ::: tip
 
@@ -296,15 +307,15 @@ Let's start with first step by creating the packages folder.
 
       - For **admin-routes.php**,
 
-        ~~~php
+        ```php
         php artisan package:make-admin-route ACME/HelloWorld
-        ~~~
+        ```
 
       - For **shop-routes.php**,
 
-        ~~~php
+        ```php
         php artisan package:make-shop-route ACME/HelloWorld
-        ~~~
+        ```
 
     :::
 
@@ -312,7 +323,7 @@ Let's start with first step by creating the packages folder.
 
     ::: details Updated directory structure
 
-    ~~~
+    ```
     - packages/
       - ACME/HelloWorld/
         - src/
@@ -322,7 +333,7 @@ Let's start with first step by creating the packages folder.
             - views/
               - admin/
               - shop/
-    ~~~
+    ```
 
     :::
 
@@ -330,19 +341,19 @@ Let's start with first step by creating the packages folder.
 
       - `admin/index.blade.php`
 
-        ~~~html
+        ```html
         <h2>Hello World Admin</h2>
-        ~~~
+        ```
 
       - `shop/index.blade.php`
 
-        ~~~html
+        ```html
         <h2>Hello World Shop</h2>
-        ~~~
+        ```
 
 - Now, we need to register our routes and views to service provider’s boot method i.e. `packages/ACME/HelloWorld/src/Providers/HelloWorldServiceProvider.php`
 
-  ~~~php
+  ```php
   <?php
 
   namespace ACME\HelloWorld\Providers;
@@ -380,7 +391,7 @@ Let's start with first step by creating the packages folder.
 
       }
   }
-  ~~~
+  ```
 
 ### Step-7
 
@@ -388,7 +399,7 @@ Let's start with first step by creating the packages folder.
 
 - Go to `packages/ACME/HelloWorld/src/Http/shop-routes.php` file and create a route to render view.
 
-  ~~~php
+  ```php
   <?php
 
   Route::group(['middleware' => ['web', 'theme', 'locale', 'currency']], function () {
@@ -397,11 +408,11 @@ Let's start with first step by creating the packages folder.
       Route::view('/hello-world', 'helloworld::shop.index');
 
   });
-  ~~~
+  ```
 
 - Same for admin routes in file `packages/ACME/HelloWorld/src/Http/admin-routes.php`.
 
-  ~~~php
+  ```php
   <?php
 
   Route::group(['middleware' => ['web', 'admin']], function () {
@@ -410,19 +421,19 @@ Let's start with first step by creating the packages folder.
       Route::view('/admin/hello-world', 'helloworld::admin.index');
 
   });
-  ~~~
+  ```
 
 - Now, check your route in your browser,
 
   ::: details Admin Output
 
-    ![Admin Browser Output](../../assets/images/package-development/helloworld-admin-browser-output.png)
-  
+  ![Admin Browser Output](../../assets/images/package-development/helloworld-admin-browser-output.png)
+
   :::
 
   ::: details Shop Output
-  
-    ![Shop Browser Output](../../assets/images/package-development/helloworld-shop-browser-output.png)
+
+  ![Shop Browser Output](../../assets/images/package-development/helloworld-shop-browser-output.png)
 
   :::
 
@@ -434,23 +445,23 @@ Let's start with first step by creating the packages folder.
 
   ::: details Updated directory structure
 
-    ~~~
-    - packages/
-      - ACME/HelloWorld/
-        - src/
+  ```
+  - packages/
+    - ACME/HelloWorld/
+      - src/
+        ...
+        - Resources/
           ...
-          - Resources/
-            ...
-            - lang/
-              - en/
-                - app.php
-    ~~~
+          - lang/
+            - en/
+              - app.php
+  ```
 
   :::
 
 - Now, we need to register the language file to the service provider.
 
-  ~~~php
+  ```php
   <?php
 
   namespace ACME\HelloWorld\Providers;
@@ -490,11 +501,11 @@ Let's start with first step by creating the packages folder.
 
       }
   }
-  ~~~
+  ```
 
 - Now we can write a translation in `app.php` like below,
 
-  ~~~php
+  ```php
   <?php
 
   return [
@@ -502,23 +513,23 @@ Let's start with first step by creating the packages folder.
           'name' => 'Prateek Srivastava'
       ]
   ];
-  ~~~
+  ```
 
 - Add below code to your blade file.
 
-  ~~~html
+  ```html
   {{ __('helloworld::app.hello-world.name') }}
-  ~~~
+  ```
 
   ::: details Admin Output
 
-    ![Translation Output](../../assets/images/package-development/hello-world-admin-translation-output.png)
+  ![Translation Output](../../assets/images/package-development/hello-world-admin-translation-output.png)
 
   :::
 
   ::: details Shop Output
 
-    ![Translation Output](../../assets/images/package-development/hello-world-shop-translation-output.png)
+  ![Translation Output](../../assets/images/package-development/hello-world-shop-translation-output.png)
 
   :::
 
@@ -529,24 +540,24 @@ Let's start with first step by creating the packages folder.
 - In `Resources` folder creates a folder name `assets` & create `sass`, `js` and `images` folder.
 
   - In **sass** folder, add file **_app.scss_**
-  
+
   - In **js** folder, add file **app.js**
 
 ::: details Updated directory structure
 
-  ~~~php
-  - packages/
-      - ACME/HelloWorld/
-        - src/
-          ...
-          - Resources/
-            - assets/
-              - sass/
-                - app.scss
-              - js/
-                - app.js
-              - images/
-  ~~~
+```php
+- packages/
+    - ACME/HelloWorld/
+      - src/
+        ...
+        - Resources/
+          - assets/
+            - sass/
+              - app.scss
+            - js/
+              - app.js
+            - images/
+```
 
 :::
 
@@ -554,64 +565,65 @@ Let's start with first step by creating the packages folder.
 
 - Copy below code to `package.json`,
 
-  ~~~json
+  ```json
   {
-      "scripts": {
-          "dev": "npm run development",
-          "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-          "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-          "watch-poll": "npm run watch -- --watch-poll",
-          "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
-          "prod": "npm run production",
-          "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
-      },
+    "scripts": {
+      "dev": "npm run development",
+      "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+      "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+      "watch-poll": "npm run watch -- --watch-poll",
+      "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+      "prod": "npm run production",
+      "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+    },
 
-      "devDependencies": {
-          "cross-env": "^7.0.2",
-          "laravel-mix": "^5.0.1",
-          "laravel-mix-merge-manifest": "^0.1.2"
-      }
+    "devDependencies": {
+      "cross-env": "^7.0.2",
+      "laravel-mix": "^5.0.1",
+      "laravel-mix-merge-manifest": "^0.1.2"
+    }
   }
-  ~~~
+  ```
 
 - Copy below code to `webpack.mix.js`,
 
-  ~~~javascript
+  ```javascript
   const mix = require("laravel-mix");
 
   if (mix == "undefined") {
-      const { mix } = require("laravel-mix");
+    const { mix } = require("laravel-mix");
   }
 
   require("laravel-mix-merge-manifest");
 
   if (mix.inProduction()) {
-      var publicPath = "publishable/assets";
+    var publicPath = "publishable/assets";
   } else {
-      var publicPath = "../../../public/vendor/webkul/helloworld/assets";
+    var publicPath = "../../../public/vendor/webkul/helloworld/assets";
   }
 
   mix.setPublicPath(publicPath).mergeManifest();
 
   mix.disableNotifications();
 
-  mix.js([__dirname + "/src/Resources/assets/js/app.js"], "js/helloworld.js")
-      .copyDirectory(
-          __dirname + "/src/Resources/assets/images",
-          publicPath + "/images"
-      )
-      .sass(
-          __dirname + "/src/Resources/assets/sass/app.scss",
-          "css/helloworld.css"
-      )
-      .options({
-          processCssUrls: false
-      });
+  mix
+    .js([__dirname + "/src/Resources/assets/js/app.js"], "js/helloworld.js")
+    .copyDirectory(
+      __dirname + "/src/Resources/assets/images",
+      publicPath + "/images"
+    )
+    .sass(
+      __dirname + "/src/Resources/assets/sass/app.scss",
+      "css/helloworld.css"
+    )
+    .options({
+      processCssUrls: false,
+    });
 
   if (mix.inProduction()) {
-      mix.version();
+    mix.version();
   }
-  ~~~
+  ```
 
 - After doing this go to the root of your package i.e. `packages/ACME/HelloWorld` and run `npm install` which will install all dependencies.
 
@@ -625,7 +637,7 @@ Let's start with first step by creating the packages folder.
 
   :::
 
-  ~~~php
+  ```php
   <?php
 
   namespace ACME\HelloWorld\Providers;
@@ -669,17 +681,20 @@ Let's start with first step by creating the packages folder.
 
       }
   }
-  ~~~
+  ```
 
 - After doing this we need to add an event listener so that admin layouts include our CSS. For this we need to add an Event Listener in service provider. But before adding event, let's create a `layouts` folder in `packages/ACME/Test/src/Resources/views/admin` and inside that create a file called `style.blade.php` & mention compiled CSS path inside this file.
 
-    ~~~html
-    <link rel="stylesheet" href="{{ asset('vendor/webkul/helloworld/assets/css/helloworld.css') }}">
-    ~~~
+  ```html
+  <link
+    rel="stylesheet"
+    href="{{ asset('vendor/webkul/helloworld/assets/css/helloworld.css') }}"
+  />
+  ```
 
 - **For Event Listener:** Add facade 'Event' into your `HelloWorldServiceProvider.php` file,
 
-  ~~~php
+  ```php
   <?php
 
   namespace ACME\HelloWorld\Providers;
@@ -728,35 +743,28 @@ Let's start with first step by creating the packages folder.
 
       }
   }
-  ~~~
+  ```
 
 - Till now, we configured our package HelloWorld and now we need to extend the default layout of our admin panel by using `@extends('admin::layouts.master')` in file `packages/ACME/HelloWorld/src/Resources/views/admin/index.blade.php`. Below is the simple template which you can copy to your `index.blade.php` file,
 
-  ~~~html
-  @extends('admin::layouts.master')
+  ```html
+  @extends('admin::layouts.master') @section('page_title') Package HelloWorld
+  @stop @section('content-wrapper')
 
-  @section('page_title')
-      Package HelloWorld
-  @stop
-
-  @section('content-wrapper')
-
-      <div class="content full-page dashboard">
-          <div class="page-header">
-              <div class="page-title">
-                  <h1>Package HelloWorld</h1>
-              </div>
-
-              <div class="page-action">
-              </div>
-          </div>
-
-          <div class="page-content">
-          </div>
+  <div class="content full-page dashboard">
+    <div class="page-header">
+      <div class="page-title">
+        <h1>Package HelloWorld</h1>
       </div>
 
+      <div class="page-action"></div>
+    </div>
+
+    <div class="page-content"></div>
+  </div>
+
   @stop
-  ~~~
+  ```
 
 - If you don’t want to include this one then you can create your own master file which includes your packages CSS & JS.
 
@@ -768,7 +776,7 @@ Let's start with first step by creating the packages folder.
 
 - Now, we need to add migrations to our service provider to load them.
 
-  ~~~php
+  ```php
   <?php
 
   namespace ACME\HelloWorld\Providers;
@@ -819,6 +827,6 @@ Let's start with first step by creating the packages folder.
 
       }
   }
-  ~~~
+  ```
 
 - Now start adding your migration files.
