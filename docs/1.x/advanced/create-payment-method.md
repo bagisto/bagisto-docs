@@ -1,6 +1,6 @@
 # Create a new payment method
 
-We hope that now you know how to create a package, if not refer to [Package Development](../packages/create.md).
+We hope that now you know how to create a package, if not refer to [Package Development](../packages).
 
 Bagisto eases the task of creating payment methods. So, a novice developer or a professional developer can easily create payment methods.
 
@@ -19,21 +19,21 @@ In this section, we will explain how to create a payment method. You can create 
 
   - If package directory not present,
 
-    ~~~php
+    ```php
     php artisan package:make-payment-method ACME/Stripe
-    ~~~
+    ```
 
   - If somehow package directory already present then you can use force command as well. For that you just need to pass the '**--force**' command.
 
-    ~~~php
+    ```php
     php artisan package:make-payment-method ACME/Stripe --force
-    ~~~
+    ```
 
   - This will generate whole directory structures. You don't need to do manually.
 
 - After that, you need to register your service provider in `config/app.php`.
 
-  ~~~php
+  ```php
   <?php
 
   return [
@@ -45,11 +45,11 @@ In this section, we will explain how to create a payment method. You can create 
       ]
       ...
   ];
-  ~~~
+  ```
 
 - After that, add you payment method namespace in `psr-4` key in `composer.json` file for auto loading.
 
-  ~~~json
+  ```json
   "autoload": {
       ...
       "psr-4": {
@@ -59,7 +59,7 @@ In this section, we will explain how to create a payment method. You can create 
       }
       ...
   }
-  ~~~
+  ```
 
 - Run `composer dump-autoload`.
 
@@ -72,8 +72,8 @@ In this section, we will explain how to create a payment method. You can create 
 ### Steps to create a payment method
 
 - Create respective directory structure to create your payment method.
-  
-  ~~~file-structure
+
+  ```file-structure
   - ACME/Stripe/src/
     - Config/
       - system.php
@@ -82,11 +82,11 @@ In this section, we will explain how to create a payment method. You can create 
       - Stripe.php
     - Providers/
       - StripeServiceProvider.php
-  ~~~
+  ```
 
 - Within `Config` folder, it contains application's configuration files. Let's just create two files i.e. `system.php` and `paymentmethods.php`. In `system.php` file, you have to include the array keys in the file as shown below,
 
-  ~~~php
+  ```php
   <?php
 
   return [
@@ -119,9 +119,10 @@ In this section, we will explain how to create a payment method. You can create 
           ]
       ]
   ];
-  ~~~
+  ```
 
   - Let's discuss what these keys are,
+
     - `key`: Value which is provided in this key should be unique and concatenated with '.' (dot) operator.
 
     - `name`: This key accept the value as a placeholder for your configuration. Generally, in Bagisto, we consider writing it using translation.
@@ -132,7 +133,7 @@ In this section, we will explain how to create a payment method. You can create 
 
 - Similarly in `paymentmethods.php`,
 
-  ~~~php
+  ```php
   <?php
 
   return [
@@ -145,7 +146,7 @@ In this section, we will explain how to create a payment method. You can create 
           'sort'        => 1,
       ],
   ];
-  ~~~
+  ```
 
   - Now, let's look into this what these keys are,
     - `code`: A text to represent payment method.
@@ -157,7 +158,7 @@ In this section, we will explain how to create a payment method. You can create 
 
 - If you check the above point, we have discussed the key `class` which includes the class namespace. So let's create that class in the respective file. In `Stripe.php`, add the below code,
 
-  ~~~php
+  ```php
   <?php
 
   namespace ACME\Stripe\Payment;
@@ -177,11 +178,11 @@ In this section, we will explain how to create a payment method. You can create 
       {
       }
   }
-  ~~~
+  ```
 
 - Now we need to create the provider, in `StripeServiceProvider.php` add the below code,
 
-  ~~~php
+  ```php
   <?php
 
   namespace ACME\Stripe\Providers;
@@ -225,11 +226,11 @@ In this section, we will explain how to create a payment method. You can create 
           );
       }
   }
-  ~~~
+  ```
 
 - After that, you need to register your service provider in `config/app.php`.
 
-  ~~~php
+  ```php
   <?php
 
   return [
@@ -241,11 +242,11 @@ In this section, we will explain how to create a payment method. You can create 
       ]
       ...
   ];
-  ~~~
+  ```
 
 - After that, add you payment method namespace in `psr-4` key in `composer.json` file for auto loading.
 
-  ~~~json
+  ```json
   "autoload": {
       ...
       "psr-4": {
@@ -255,7 +256,7 @@ In this section, we will explain how to create a payment method. You can create 
       }
       ...
   }
-  ~~~
+  ```
 
 - Run `composer dump-autoload`.
 
