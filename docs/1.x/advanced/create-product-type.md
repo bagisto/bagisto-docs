@@ -34,4 +34,8 @@ You may access this super-functionality of creating your own product-types by fo
        );
    ```
 
-5. Create "`Type`" folder within your package, inside the "`type`" folder create a file with your product-type name "`Coupon.php`". Basic functions that a product will make use of are declared in "product" package `type/AbstractType.php` file. Besides, the user needs some extra functionality then they can define their functions in "`Coupon.php`" file.
+5. In the point 3rd above, you have an mentioned key `class` which loads for every product type coupon. So, you need to create a file `Coupon.php` within your package under Type folder.
+
+6. After successfully completion of above steps, your product type will get created. But, still we don't have any code written for coupon type product in the `Type/Coupon.php`. To inherit basic functionality of any product to your product type, we need to inherit the classes from the Product package `type/AbstractType.php` file.
+
+7. Extending the classes within your product_type (coupon) class let you to provide some core functionality of product. But, in addition, if user need to defined it's own custom methods, then he can define within their `Coupon.php` file.
