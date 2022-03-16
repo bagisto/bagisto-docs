@@ -23,7 +23,7 @@ module.exports = [
             ['introduction/installation', 'Installation'],
             ['introduction/upgrade-to-latest-bagisto', 'Upgrade Bagisto'],
             ['introduction/docker', 'Docker']
-            
+
         ])
     },
     {
@@ -56,7 +56,7 @@ module.exports = [
             ['advanced/indexing-products-to-elasticsearch.md', 'Indexing products to Elasticsearch'],
             ['advanced/security-practice', 'Best Security Practices'],
         ])
-    },           
+    },
     {
         title: 'Themes',
         path: setVersionPrefix('themes'),
@@ -69,8 +69,14 @@ module.exports = [
             ['themes/customize-hompepage-menu.md', 'Customize homepage menu'],
             ['themes/integrate-image-search-in-theme', 'Integrate image search in theme']
         ])
-    },
-    {
+    },{
+        title: 'Admin Theme',
+        path: setVersionPrefix('admin-theme'),
+        collapsable: true,
+        children: setVersionPrefix([
+            ['admin-theme/notification', 'Enable real time notification'],
+        ])
+    },{
         title: 'Translations',
         path: setVersionPrefix('translations/translation-based-on-locale'),
         collapsable: true,
@@ -88,7 +94,7 @@ module.exports = [
             ['user-guides/cart-rule', 'Cart rules'],
             ['user-guides/social-auth', 'Social Authentication']
         ])
-    }, 
+    },
     {
         title: 'Bagisto Web API',
         path: setVersionPrefix('api'),
