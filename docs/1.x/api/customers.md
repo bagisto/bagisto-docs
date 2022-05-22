@@ -472,7 +472,7 @@ You can also use the API to reset the customer's password by providing the valid
 
 - Request
 
-  `GET http(s)://example.com/api/customer/forgot-password`
+  `POST http(s)://example.com/api/customer/forgot-password`
 
 - Params
 
