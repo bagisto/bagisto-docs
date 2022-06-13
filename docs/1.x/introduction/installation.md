@@ -18,10 +18,9 @@ composer create-project bagisto/bagisto
 php artisan bagisto:install
 ```
 
-### Features of this command
+### Features of above installation command
 ::: warning
-It will check if the .env file is already created or not.  
-**Only if the .env file already exists then please provide the following details**
+It will check existance of the .env file, if it exists then please update the file manually with the below details.  
 ::: 
 
 ```
@@ -34,6 +33,10 @@ It will check if the .env file is already created or not.
 -   DB_PASSWORD
 ```
 
+::: warning
+If the .env file does not exists then it will ask to provide the details on command prompts.  
+
+::: 
 - To start the installation, provide the details of the following command prompts: 
 ```sh
 -  Please select the default locale or press enter to continue [en]: 

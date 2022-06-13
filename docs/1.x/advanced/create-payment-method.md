@@ -31,7 +31,7 @@ In this section, we will explain how to create a payment method. You can create 
 
   - This will generate whole directory structures. You don't need to do manually.
 
-- After that, you need to register your service provider in `config/app.php`.
+- After that, you need to register your service provider in `config/app.php` which is located Bagisto root directory.
 
   ```php
   <?php
@@ -47,7 +47,7 @@ In this section, we will explain how to create a payment method. You can create 
   ];
   ```
 
-- After that, add you payment method namespace in `psr-4` key in `composer.json` file for auto loading.
+- After that, add you payment method namespace in `psr-4` key in `composer.json` file for auto loading which is located Bagisto root directory.
 
   ```json
   "autoload": {
@@ -228,7 +228,7 @@ In this section, we will explain how to create a payment method. You can create 
   }
   ```
 
-- After that, you need to register your service provider in `config/app.php`.
+- After that, you need to register your service provider in `config/app.php` which is located Bagisto root directory.
 
   ```php
   <?php
@@ -244,7 +244,7 @@ In this section, we will explain how to create a payment method. You can create 
   ];
   ```
 
-- After that, add you payment method namespace in `psr-4` key in `composer.json` file for auto loading.
+- After that, add you payment method namespace in `psr-4` key in `composer.json` file for auto loading which is located Bagisto root directory.
 
   ```json
   "autoload": {

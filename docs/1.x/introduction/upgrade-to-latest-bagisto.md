@@ -9,7 +9,8 @@ To upgrade your current version to the latest version of Bagisto, you need to fo
   - [Download From Official Bagisto Site](https://bagisto.com/en/download/)
   - [Download From Github](https://github.com/bagisto/bagisto)
 
-- After downloading the latest version, run the specified commands in the terminal,
+- After downloading the Bagisto zip file, you need to extract where you want to deploy it. 
+- After extract the file, you need to go to the root folder of the extracted folder and run the below command in the terminal.
 
   ~~~sh
   composer create-project
