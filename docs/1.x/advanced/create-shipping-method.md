@@ -65,7 +65,52 @@ This will generate whole directory structures. You don't need to do manually.
       `per_order`.
     - **class**: Path specified with filename `namespace\package-name\Carriers-folder\filename`
 
-- Create `Carriers` folder inside the `src` folder. Now, create `Fedex.php` in `Carriers` folder.
+- Create `Carriers` folder inside the `src` folder. Now, create `Fedex.php` in `Carriers` folder and add the below code to `Fedex.php` file.
+
+~~~php
+  <?php
+
+    namespace ACME\FedEx\Carriers;
+
+    use Config;
+    use Webkul\Shipping\Carriers\AbstractShipping;
+    use Webkul\Checkout\Models\CartShippingRate;
+    use Webkul\Shipping\Facades\Shipping;
+
+    class FedEx extends AbstractShipping
+    {
+        /**
+         * Shipping method code
+         *
+         * @var string
+         */
+        protected $code  = 'fedex';
+
+        /**
+         * Returns rate for shipping method
+         *
+         * @return CartShippingRate|false
+         */
+        public function calculate()
+        {
+            if (! $this->isAvailable()) {
+                return false;
+            }
+
+            $object = new CartShippingRate;
+
+            $object->carrier = 'fedex';
+            $object->carrier_title = $this->getConfigData('title');
+            $object->method = 'fedex_fedex';
+            $object->method_title = $this->getConfigData('title');
+            $object->method_description = $this->getConfigData('description');
+            $object->price = 0;
+            $object->base_price = 0;
+
+            return $object;
+        }
+    }
+  ~~~
 
   - File `Fedex.php` will extends `AbstractShipping` class which is defined at `Webkul\Shipping\Carriers\AbstractShipping`. In `Fedex.php`, methods are defined that you can use while creating a shipping method.
 
@@ -171,7 +216,7 @@ This will generate whole directory structures. You don't need to do manually.
   }
   ~~~
 
-- After that, you need to register your service provider in `config/app.php`.
+- After that, you need to register your service provider in `config/app.php` which is located in Bagisto root directory.
 
   ~~~php
   <?php
@@ -187,7 +232,7 @@ This will generate whole directory structures. You don't need to do manually.
   ];
   ~~~
 
-- After that, add you shipment method namespace in `psr-4` key in `composer.json` file for auto loading.
+- After that, add you shipment method namespace in `psr-4` key in `composer.json` file for auto loading which is located in Bagisto root directory.
 
   ~~~json
   "autoload": {

@@ -211,16 +211,73 @@ php artisan package:make-datagrid TestDataGrid ACME/TestPackage --force
 This will generate whole directory structures. You don't need to do manually.
 
 ### 2. By manually setting up all files
+1. We assume that you have created package  let's say `ACME\TestPackage` with the below directory structure.
+~~~directory-structure
+- ACME/TestPackage/
+  - publishable/assets
+    - css/
+    - images/
+    - js/
+  - src/
+    - Config/
+      - acl.php
+      - admin-menu.php
+    - Console/
+      - Commands/
+    - Contracts/
+    - Database/
+      - Migrations/
+      - Seeders/
+    - Events/
+    - Http/
+      - Controllers/
+        - Admin/
+          - TestPackageController.php
+        - Shop/
+          - TestPackageController.php
+      - Middleware/
+      - Requests/
+      - admin-routes.php
+      - shop-routes.php
+    - Listeners/
+    - Mail/
+    - Models/
+    - Providers/
+      - TestPackageServiceProvider.php
+      - TestPackageProvider.php
+    - Repositories/
+    - Resources/
+      - assets/
+        - images/
+        - js/
+          - app.js
+        - sass/
+          - admin.scss
+          - default.scss
+          - velocity.scss
+      - lang/
+      - views/
+        - admin/
+          - layouts/
+            - style.blade.php
+          - index.blade.php
+        - shop/
+          - default/
+            - index.blade.php
+          - velocity/
+            - index.blade.php
+  - package.json
+  - webpack.mix.js
+~~~
+2. Create a folder **Datagrids** in your package inside `src` folder, inside **Datagrids** folder, create a class let's say `TestDataGrid.php` that extends DataGrid class from Webkul `Ui` package.
 
-1. Create a folder **DataGrid** in your package, inside **DataGrid** create a file for your datagrid folder.
+3. We have created `DataGrid` abstract class in Webkul `Ui` package. In the DataGrid abstract class, a list of properties and methods are declared. So, while creating your own DataGrid you need to only extends the `Webkul\Ui\DataGrid\DataGrid` abstract class inside your `TestDataGrid.php` class.
 
-2. We have created `DataGrid` abstract class in `UI` package. In the DataGrid file, a list of properties and methods are declared. So, while creating DataGrid only you have to extend the DataGrid abstract class and use it in your datagrid file.
-
-3. In DataGrid abstract class, two abstract methods are declared `prepareQueryBuilder()` and `addColumns()`. We can prepare grid by defining these two methods
+4. In `Webkul\Ui\DataGrid\DataGrid.php` abstract class, two abstract methods are declared `prepareQueryBuilder()` and `addColumns()`. We can prepare grid by defining these two methods
 
     - `prepareQueryBuilder()`: In this method, records are retrieved through queries that is applicable on database and stored in a collection. When records are retrieved, `$this->setQueryBuilder($queryBuilder)` setQueryBuilder method is called.
 
-    - `setQueryBuilder()`: This method is written in DataGrid file of UI package. This is used for setting the `$queryBuilder`.
+    - `setQueryBuilder()`: This method is written in DataGrid abstract class of Webkul `Ui` package. This is used for setting the `$queryBuilder`.
 
         ~~~php
         public function prepareQueryBuilder()
@@ -373,3 +430,46 @@ As the default Datagrid will handle only a single request at a time which means 
         ...
     </div>
     ~~~
+
+- Now, all set you need register your `TestPackageServiceProvider.php` service provider in `config/app.php` which is located in the Bagisto root directory.
+
+    ```php
+    <?php 
+    return [
+        ...
+        'providers' => [
+            ...
+            ACME\TestPackage\Providers\TestPackageServiceProvider::class,
+            ...
+        ]
+        ...
+    ];
+    ?>
+
+    ```
+- Add you package namespace in psr-4 key in `composer.json` file for auto loading which is located in Bagisto root directory.
+
+  ```json
+  "autoload": {
+      ...
+      "psr-4": {
+          ...
+          "ACME\\TestPackage\\": "packages/ACME/TestPackage/src"
+          ...
+      }
+      ...
+  }
+  ```
+
+- Run the below listed command:
+
+  ```php
+  composer dump-autoload
+  php artisan optimize
+  ```
+
+  ```php
+  php artisan vendor:publish --force
+
+  -> Press the number before "ACME\TestPackage\Providers\TestPackageServiceProvider" and then press enter to publish all assets and configurations.
+  ```

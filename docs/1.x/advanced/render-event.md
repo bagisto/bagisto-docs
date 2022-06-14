@@ -22,7 +22,7 @@ You can define any event view_render_event() in the template by following steps:
 - Create an event in the blade file in which you want to render any content before or after any content of that template:
 
 ```php
-    { !! view_render_event('bagisto.shop.test.before') !! }
+    {!! view_render_event('bagisto.shop.test.before') !!}
 ```
 
 As you can see, `bagisto.shop.test` is the event name here that is defined in a random blade file of the project.

@@ -47,7 +47,7 @@ There are two ways to create a package.
   ];
   ```
 
-- Add you package namespace in `psr-4` key in `composer.json` file for auto loading.
+- Add you package namespace in `psr-4` key in `composer.json` file for auto loading which is located in Bagisto root directory.
 
   ```json
   "autoload": {
@@ -222,7 +222,7 @@ Let's start with first step by creating the packages folder.
 
 ### Step-4
 
-- Now, register your service provider in `config/app.php`.
+- Now, register your service provider in `config/app.php` which is located in Bagisto root directory.
 
   ```php
   <?php
@@ -240,7 +240,7 @@ Let's start with first step by creating the packages folder.
 
 ### Step-5
 
-- Add you package namespace in `psr-4` key in `composer.json` file for auto loading.
+- Add your package namespace in `psr-4` key in `composer.json` file for auto loading which is located in Bagisto root directory.
 
   ```json
   "autoload": {
