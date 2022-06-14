@@ -244,7 +244,7 @@ In this section, we will explain how to create a payment method. You can create 
   ];
   ```
 
-- After that, add you payment method namespace in `psr-4` key in `composer.json` file for auto loading which is located Bagisto root directory.
+- After that, add payment method namespace in `psr-4` key in `composer.json` file for auto loading which is located Bagisto root directory.
 
   ```json
   "autoload": {

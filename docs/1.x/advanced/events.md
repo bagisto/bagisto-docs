@@ -5,9 +5,17 @@ Events are an implementation of observer pattern such that whenever an event tak
 
 If you have the Bagisto Package Generator installed, then you can use the following command which will create a new event class in `packages/ACME/TestPackage/src/Events` directory.
 
+Please follow the following steps to create a new event class in your `packages/ACME/TestPackage`
+
+1. We assume that you have created a new TestPackage using Bagisto Package Generator like the below command.
+
+`php artisan package:make ACME/TestPackage`
+
+2. Now, you can create a event `Events\TestEvent.php` class using the below command.
+
 `php artisan package:make-event TestEvent ACME/TestPackage`
 
-If event class already present then you can use force command for overwriting.
+If event class already present then you can use force command for overwriting by passing `--force` option.
 
 `php artisan package:make-event TestEvent ACME/TestPackage --force`
 
