@@ -430,46 +430,5 @@ As the default Datagrid will handle only a single request at a time which means 
         ...
     </div>
     ~~~
-
-- Now, all set you need register your `TestPackageServiceProvider.php` service provider in `config/app.php` which is located in the Bagisto root directory.
-
-    ```php
-    <?php 
-    return [
-        ...
-        'providers' => [
-            ...
-            ACME\TestPackage\Providers\TestPackageServiceProvider::class,
-            ...
-        ]
-        ...
-    ];
-    ?>
-
-    ```
-- Add you package namespace in psr-4 key in `composer.json` file for auto loading which is located in Bagisto root directory.
-
-  ```json
-  "autoload": {
-      ...
-      "psr-4": {
-          ...
-          "ACME\\TestPackage\\": "packages/ACME/TestPackage/src"
-          ...
-      }
-      ...
-  }
-  ```
-
-- Run the below listed command:
-
-  ```php
-  composer dump-autoload
-  php artisan optimize
-  ```
-
-  ```php
-  php artisan vendor:publish --force
-
-  -> Press the number before "ACME\TestPackage\Providers\TestPackageServiceProvider" and then press enter to publish all assets and configurations.
-  ```
+    
+- Done, your datagrid is ready.
