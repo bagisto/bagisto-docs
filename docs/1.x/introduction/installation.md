@@ -20,7 +20,7 @@ php artisan bagisto:install
 
 ### Features of above installation command
 ::: warning
-It will check existance of the .env file, if it exists then please update the file manually with the below details.  
+It will check existence of the .env file, if it exists then please update the file manually with the below details.  
 ::: 
 
 ```
