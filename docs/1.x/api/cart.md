@@ -4,7 +4,7 @@ In this section, we will use the cart's API. We will see how to add the product 
 
 ## Add product to cart
 
-By using this API call you can add new products to the cart and also you can add quantity to the existing product in the cart. To do this task, you have to use the `checkout/cart/add/{product_id}` as a request payload in the API URL. This API call will work with both customer's authentication or without customer's authentication.
+By using this API call, you can add new products to the cart, and also you can add quantity to the existing product in the cart. To do this task, you have to use the `checkout/cart/add/{product_id}` as a request payload in the API URL. This API call will work with both customer's authentication or without customer's authentication.
 
 Currently,Bagisto support the following types of product,
 
