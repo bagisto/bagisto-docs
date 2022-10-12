@@ -1,6 +1,6 @@
 # Themes
 
-We hope that you now know how to create a package. If not, you may refer to the Package Development section.
+We hope that you now know how to create a package. If not, you may refer to the Package Development(../packages) section.
 
 Creating a custom admin theme for Bagisto has been a hot topic lately. More and more users are actively trying our framework and we’re genuinely overwhelmed by it.
 
