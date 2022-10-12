@@ -1,6 +1,6 @@
 # DataGrid
 
-DataGrid is just a concept of displaying your database records in tabular format. We have implemented this in Bagisto either you can use it to display data in tabular format or write code from scratch to display data in tabular format. In addition to DataGrid, we have implemented additional features such as sorting, filtering, mass action. You may refer to the table below for detailed information about the features.
+DataGrid is just a concept of displaying your database records in tabular format. We have implemented this in Bagisto. You can either use it to display data in tabular format or write code from scratch to display data in tabular format. In addition to DataGrid, we have implemented additional features such as sorting, filtering, and mass action. You may refer to the table below for detailed information about the features.
 
 Let us take a sample of one DataGrid,
 
