@@ -4,7 +4,7 @@ In this section, we are using the categories' API. We will fetch all the categor
 
 ## Get all categories
 
-This api request will fetch all the categories.
+This API request will fetch all the categories.
 
 - Headers
 
