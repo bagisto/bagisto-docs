@@ -4,9 +4,9 @@ We hope that now you know how to create a package, if not refer to [Package Deve
 
 Bagisto eases the task of creating payment methods. So, a novice developer or a professional developer can easily create payment methods.
 
-As the diversity of payment methods provide the options to customer for payment when they proceed to checkout.
+As the diversity of payment methods provide options to customer for payment when they proceed to checkout.
 
-On another perspective, multiple payment methods are a great strategy to reach out to the global marketplace.
+From another perspective, multiple payment methods are a great strategy to reach out to the global marketplace.
 
 In this section, we will explain how to create a payment method. You can create a payment method in two ways.
 
@@ -29,7 +29,7 @@ In this section, we will explain how to create a payment method. You can create 
     php artisan package:make-payment-method ACME/Stripe --force
     ```
 
-  - This will generate whole directory structures. You don't need to do manually.
+  - This will generate whole directory structures. You don't need to do it manually.
 
 - After that, you need to register your service provider in `config/app.php` which is located Bagisto root directory.
 
