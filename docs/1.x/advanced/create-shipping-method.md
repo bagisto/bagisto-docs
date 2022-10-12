@@ -252,6 +252,6 @@ This will generate whole directory structures. You don't need to do manually.
 
 ::: tip
 
-If `composer dump-autoload` giving some error than in that case delete all files from the `bootstrap/cache` and again run `composer dump-autoload`.
+If `composer dump-autoload` gives some error, then, in that case, delete all files from the `bootstrap/cache` and again run `composer dump-autoload`.
 
 :::
