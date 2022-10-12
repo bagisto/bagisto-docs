@@ -4,7 +4,7 @@ In this section, we are using the attributes' API. An Attribute is a specificati
 
 ## Get all attributes
 
-This api request will fetch all the attributes.
+This API request will fetch all the attributes.
 
 - Headers
 
