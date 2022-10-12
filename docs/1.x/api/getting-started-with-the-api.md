@@ -6,7 +6,7 @@
 
 By default the [Bagisto](https://bagisto.com) API makes use of the [JWT package](https://jwt.io/) for token-based authentication.  
 You can however choose either if you want to authenticate via. **JWT API guard** or with the normal **customer guard**.  
-When you are going through the api documentation, you will see one of the examples i.e. with or without tokens. Let discuss both of them.
+When you are going through the API documentation, you will see one of the examples i.e. with or without tokens. Let discuss both of them.
 
 ## Auth Guards
 
