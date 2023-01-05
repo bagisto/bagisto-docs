@@ -103,7 +103,7 @@ RewriteRule ^(.*)\$ - [R=403,L]
 
   ::: tip
 
-  Use password generator. ([Password Generator](https://passwordsgenerator.net/))
+  Use password generator. ([Password Generator](https://passwords-generator.org/))
   
   :::
 
