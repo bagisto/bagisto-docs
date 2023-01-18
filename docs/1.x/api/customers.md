@@ -13,10 +13,11 @@ You can create/register a new customer in the Bagisto store. To achieve this tas
   | Key                   | Value            |
   | --------------------- | ---------------- |
   | Accept                | application/json |
+  | Content-Type          | application/json |
 
 - Request
 
-  `POST <host>/api/customer/register`
+  `POST <host>/api/v1/customer/register`
 
 - Params
 
@@ -37,20 +38,21 @@ You can create/register a new customer in the Bagisto store. To achieve this tas
   | Key                   | Value            |
   | --------------------- | ---------------- |
   | Accept                | application/json |
+  | Content-Type          | application/json |
 
 - Request
 
-  `POST http(s)://example.com/api/customer/register`
+  `POST http(s)://example.com/api/v1/customer/register`
 
 - Params
 
-  | Name                  | Value                 |
-  | --------------------- | --------------------- |
-  | email                 | john@example.com      |
-  | first_name            | John                  |
-  | last_name             | Doe                   |
-  | password              | john123               |
-  | password_confirmation | john123               |
+  | Name                  | Value                     |
+  | --------------------- | ------------------------- |
+  | email                 | customer@example.com      |
+  | first_name            | John                      |
+  | last_name             | Doe                       |
+  | password              | customer123               |
+  | password_confirmation | customer123               |
 
 ::: details Response
 
@@ -64,30 +66,33 @@ You can create/register a new customer in the Bagisto store. To achieve this tas
 
 #### 2. If customer is already in the Bagisto store with the same email address
 
-Now, hit the above request one more time.
+Now, hit the above request one more time. Now, we are going to see the following response.
 
 ::: details Response
 
   ~~~json
   {
-      message: "The given data was invalid.",
-      errors: {
-          email: ["The email has already been taken."]
-      }
-  }
+    "message": "The email has already been taken.",
+    "errors": {
+        "email": [
+            "The email has already been taken."
+        ]
+    }
+}
   ~~~
 
 :::
 
 ## Authentication
 
-To authenticate at the Bagisto store, the customer needs a valid email address and password.
+To authenticate any customer at the Bagisto store, the customer needs to have a  valid email address and password.
 
 - Headers
 
-  | Key    | Value            |
-  | ------ | ---------------- |
-  | Accept | application/json |
+  | Key                   | Value            |
+  | --------------------- | ---------------- |
+  | Accept                | application/json |
+  | Content-Type          | application/json |
 
 - Request
   
