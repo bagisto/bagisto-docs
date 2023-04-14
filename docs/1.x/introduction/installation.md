@@ -3,20 +3,15 @@
 ## Use Our GUI Installer
 1. [Download Bagisto](https://bagisto.com/en/download/)
 2. Extract the contents of the zip file.
-3. Point your HTTP server to the public/ directory of the project and open it on your browser.</br>For example:
-    - `https://example.com/`
-4. This will detect Bagisto and start the installer.
+3. Go to project root directory and run a command `composer install`
+4. Point your HTTP server to the public/ directory of the project and open it on your browser.</br>For example:
+    -`https://example.com/`
+5. This will detect Bagisto and start the installer.
 
 ## Install Bagisto Using _composer_
-  
-```
-composer create-project bagisto/bagisto
-```
- 
-- Start the installation script.
-```sh
-php artisan bagisto:install
-```
+1. Run command `composer create-project bagisto/bagisto`
+2. Go to project root directory and add database credentials in .env like - **DB_DATABASE**, **DB_USERNAME**, **DB_PASSWORD**
+3. Run command `php artisan bagisto:install`
 
 ### Features of above installation command
 ::: warning

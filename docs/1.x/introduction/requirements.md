@@ -6,9 +6,9 @@ Before installing Bagisto, make sure the server meets the following requirements
 
 - **SERVER**: Apache 2 or NGINX
 - **RAM**: 4GB or higher
-- **Node**: 8.11.3 LTS or higher
-- **PHP**: 7.4 or higher
-- **Composer**: 1.6.5 or higher
+- **Node**: 16.19.1 LTS or higher
+- **PHP**: 8.1 or higher
+- **Composer**: 2.3 or higher
 
 ## PHP Extensions
 
@@ -38,5 +38,5 @@ Open your php configuration file **php.ini** and change the following settings.
 
 ## Supported Database Servers
 
-- **MySQL**: 5.7.23 or higher
+- **MySQL**: 8.0.32 or higher
 - **MariaDB**: 10.2.7 or higher
