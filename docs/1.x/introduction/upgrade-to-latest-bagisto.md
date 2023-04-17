@@ -64,49 +64,51 @@ You are now at the latest version. Still, we want to mention that if you have do
 
 ### These are the changes from the version 1.4.5 to 1.5.0
 
-- Implemented Elasticsearch
-- Added count of selected products in Datagrid
-- Change the checkbox in dark mode
+- Implemented Elasticsearch.
+- Added count of selected products in Datagrid [#7437](https://github.com/bagisto/bagisto/pull/7437).
+- Change the checkbox in dark mode [#7304](https://github.com/bagisto/bagisto/pull/7304).
+- Changed the routes in Packages, see [#7345](https://github.com/bagisto/bagisto/pull/7345).
+- Removed Triggers [#7334](https://github.com/bagisto/bagisto/pull/).
 ### These are the changes from the version 1.4.4 to 1.4.5
 
-- Invoice Design is enhanced
-- Now there is an option to filter suspended customers
+- Invoice Design is enhanced.
+- Now there is an option to filter suspended customers.
 
 ### These are the changes from the version 1.4.3 to 1.4.4
 
-- Preview option in the CMS pages
-- Added clear all filters in Datagrid
-- Optimized product
-- Image icon of user profile image
+- Preview option in the CMS pages.
+- Added clear all filters in Datagrid.
+- Optimized product.
+- Image icon of user profile image.
 
 ### These are the changes from the version 1.4.2 to 1.4.3
 
-- Command For Bagisto Publish
-- Give option to enable WYSIWYG editor in configuration
-- Option to remove all cart items at once
-- Improvement on products listing
-- Option for a sitemap generator
+- Command For Bagisto Publish.
+- Give option to enable WYSIWYG editor in configuration.
+- Option to remove all cart items at once.
+- Improvement on products listing.
+- Option for a sitemap generator.
 
 ### These are the changes from the version 1.4.1 to 1.4.2
 
-- Added Back to Top Button
-- Process to checkout button is disabled if the product is out of stock
+- Added Back to Top Button.
+- Process to checkout button is disabled if the product is out of stock.
 
 ### These are the changes from the version 1.4.0 to 1.4.1
 
-- Option to export selected product
-- Colors of checkboxes is now according to the theme
+- Option to export selected product.
+- Colors of checkboxes is now according to the theme.
 
 ### These are the changes from the version 1.3.3 to 1.4.0
 
-- Now send duplicate invoice to the customer
-- Address is in horizontal format
-- Now you can Suspend customers
-- Rest API Enhancement In Sanctum
-- Written All Factories In Laravel 8 Pattern
-- Now you can use AWS storage
-- Feature to share Wishlist
-- API for customers to cancel order
+- Now send duplicate invoice to the customer.
+- Address is in horizontal format.
+- Now you can Suspend customers.
+- Rest API Enhancement In Sanctum.
+- Written All Factories In Laravel 8 Pattern.
+- Now you can use AWS storage.
+- Feature to share Wishlist.
+- API for customers to cancel order.
 
 ### These are the changes from the version 1.3.3 to 1.4.0
 
