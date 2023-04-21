@@ -15,15 +15,22 @@ function setVersionPrefix(children) {
 /* module export */
 module.exports = [
     {
-        title: 'Introduction',
-        path: setVersionPrefix('introduction'),
+        title: 'Prologue',
+        path: setVersionPrefix('prologue'),
         collapsable: true,
         children: setVersionPrefix([
-            ['introduction/requirements', 'Requirements'],
-            ['introduction/installation', 'Installation'],
-            ['introduction/upgrade-to-latest-bagisto', 'Upgrade Bagisto'],
-            ['introduction/docker', 'Docker']
-
+            ['prologue/upgrade-guide', 'Upgrade Guide'],
+            ['prologue/contribution-guide', ' Contribution Guide']
+        ])
+    },
+    {
+        title: 'Getting Started',
+        path: setVersionPrefix('getting-started'),
+        collapsable: true,
+        children: setVersionPrefix([
+            ['getting-started/requirements', 'Requirements'],
+            ['getting-started/installation', 'Installation'],
+            ['getting-started/docker', 'Docker']
         ])
     },
     {
