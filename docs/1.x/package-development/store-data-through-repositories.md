@@ -20,97 +20,115 @@ This file defines our Repository class. Instances of this class have a model pro
 
 Proxies as their name state will drive you to the actual model class. The concept of model proxies has been introduced to override the functionality of the existing Model. It is a type of model inheritance without creating a new table in the database.
 
-## Steps to store data through repository
+### Step-1
 
-- For creating models, create a file named as `HelloWorld.php` in `packages/ACME/HelloWorld/src/Models`, and copy the below code in file,
+- Create a file named as `Post.php` in `packages/Webkul/Blog/src/Models`, and copy the below code in file,
 
   ~~~php
   <?php
 
-  namespace ACME\HelloWorld\Models;
+  namespace Webkul\Blog\Models;
 
   use Illuminate\Database\Eloquent\Model;
-  use ACME\HelloWorld\Contracts\HelloWorld as HelloWorldContract;
+  use Illuminate\Database\Eloquent\Factories\HasFactory;
+  use Illuminate\Database\Eloquent\Relations\BelongsTo;
+  use Webkul\User\Models\Admin;
+  use Webkul\Blog\Contracts\Post as PostContract;
 
-  class HelloWorld extends Model implements HelloWorldContract
+  class Post extends Model implements PostContract
   {
-      protected $fillable = [];
-  }
-  ~~~
+      use HasFactory;
 
-> Note: If you have created model by using **Bagisto Package Generator**, then you can skip the model proxy and contract creation step.
-
-- Now, at the same location create a model proxy file as `HelloWorldProxy.php`. This Proxy class will extends `Konekt\Concord\Proxies\ModelProxy`. Copy the below code in file,
-
-  ~~~php
-  <?php
-
-  namespace ACME\HelloWorld\Models;
-
-  use Konekt\Concord\Proxies\ModelProxy;
-
-  class HelloWorldProxy extends ModelProxy
-  {
-
-  }
-  ~~~
-
-- Now, create a folder named as `Contracts` and create an interface file named as `HelloWorld.php`,
-
-  ~~~php
-  <?php
-
-  namespace ACME\HelloWorld\Contracts;
-
-  interface HelloWorld
-  {
-  }
-  ~~~
-
-- Create a `Repository` folder and create a file `HelloWorldRepository.php` and create the `model()` method in repository class which returns the path of your contract class.
-
-  ~~~php
-  <?php
-
-  namespace ACME\HelloWorld\Repositories;
-
-  use Webkul\Core\Eloquent\Repository;
-
-  class HelloWorldRepository extends Repository
-  {
       /**
-      * Specify Model class name
-      *
-      * @return mixed
-      */
-      function model()
+       * The attributes that are mass assignable.
+       *
+       * @var $fillable
+       */
+      protected $fillable = [
+          'title',
+          'description',
+          'user_id',
+          'status'
+      ];
+
+      /**
+       * Get the user that owns the post.
+       */
+      public function author(): BelongsTo
       {
-          return 'ACME/HelloWorld/Contracts/HelloWorld';
+          return $this->belongsTo(Admin::class, 'user_id');
       }
   }
   ~~~
 
-  ::: tip
+### Step-2
 
-  - You can use **Bagisto Package Generator** also,
-
-    `php artisan package:make-repository HelloWorldRepository ACME/HelloWorld`
-
-  :::
-
-- After creating all the files stated above, we have to create a provider as  `ModuleServiceProvider.php`. In this file, models which are used in this package are registered. You may check below code,
+- Now, at the same location create a model proxy file as `PostProxy.php`. This Proxy class will extends `Konekt\Concord\Proxies\ModelProxy`. Copy the below code in file,
 
   ~~~php
   <?php
 
-  namespace ACME\HelloWorld\Providers;
+  namespace Webkul\Blog\Models;
+
+  use Konekt\Concord\Proxies\ModelProxy;
+
+  class PostProxy extends ModelProxy
+  {
+  }
+  ~~~
+
+### Ste-3
+
+- Now, create a folder named as `Contracts` inside `Webkul/Blog/src/` and create an interface file named as `Post.php`,
+
+  ~~~php
+  <?php
+
+  namespace Webkul\Blog\Contracts;
+
+  interface Post
+  {
+  }
+  ~~~
+
+### Step-4 
+
+- Create a `Repository` folder inside `Webkul/Blog/src/` and create a file `PostRepository.php` and create the `model()` method in repository class which returns the path of your contract class.
+
+  ~~~php
+  <?php
+
+  namespace Webkul\Blog\Repository;
+
+  use Webkul\Core\Eloquent\Repository;
+
+  class PostRepository extends Repository
+  {
+      /**
+      * Specify Model class name
+      *
+      * @return string
+      */
+      function model(): string
+      {
+          return 'Webkul\Blog\Contracts\Post';
+      }
+  }
+  ~~~
+
+- After creating all the files stated above, we have to create a provider as  `ModuleServiceProvider.php` inside `Webkul/Blog/src/Providers`. In this file, models which are used in this package are registered. You may check below code,
+
+  ~~~php
+  <?php
+
+  namespace Webkul\Blog\Providers;
 
   use Konekt\Concord\BaseModuleServiceProvider;
 
   class ModuleServiceProvider extends BaseModuleServiceProvider
   {
       protected $models = [
-          ACME\HelloWorld\Models\HelloWorld::class,
+          \Webkul\Blog\Models\Post::class,
       ];
   }
   ~~~
@@ -122,7 +140,7 @@ Proxies as their name state will drive you to the actual model class. The concep
 
     return [
         'modules' => [
-            ACME\HelloWorld\Providers\ModuleServiceProvider::class
+            \Webkul\Blog\Providers\ModuleServiceProvider::class,
         ]
     ];
     ~~~
