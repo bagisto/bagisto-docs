@@ -1,21 +1,19 @@
 # Access control list
 
-In addition to providing authentication services out of the box, Bagisto also provides a functionality **ACL** (Access Control List).
+In addition to providing authentication services out of the box, Bagisto also provides a functionality **ACL** (Access Control List). With this feature the administrator can allow/disallow other users to access parts of Bagisto.
 
-With this feature the administrator can allow/disallow other users to access parts of Bagisto.
+### Step-1
 
-## Create a new ACL file
-
-Create a new file named `acl.php` in your package **Config** folder, for example, `packages/ACME/HelloWorld/src/Config` and add the following code.
+Create a new file named `acl.php` in your package **Config** folder, for example, `packages/Webkul/Blog/src/Config` and add the following code.
 
 ~~~php
 <?php
 
 return [
     [
-        'key' => 'helloworld',
-        'name' => 'HelloWorld',
-        'route' => 'helloworld.admin.index',
+        'key' => 'blog',
+        'name' => 'blog',
+        'route' => 'blog.admin.index',
         'sort' => 2
     ]
 ];
@@ -25,24 +23,24 @@ If you check the above code we have created an array for an individual's menu wi
 
 Just like that, we need to define the menu here which we want to include in our ACL.
 
-## Merge configuration
+### Step-2
 
 After that, we need to merge the ACL config also just like we have done with menu items,
 
   ~~~php
   <?php
 
-  namespace ACME\HelloWorld\Providers;
+  namespace Webkul\Blog\Providers;
 
   use Illuminate\Support\Facades\Event;
   use Illuminate\Support\ServiceProvider;
 
   /**
-  * HelloWorldServiceProvider
+  * BlogServiceProvider
   *
   * @copyright 2020 Webkul Software Pvt. Ltd. (http://www.webkul.com)
   */
-  class HelloWorldServiceProvider extends ServiceProvider
+  class BlogServiceProvider extends ServiceProvider
   {
       /**
       * Register services.

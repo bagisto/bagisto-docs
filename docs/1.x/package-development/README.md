@@ -5,7 +5,7 @@ A package is a unit added to your application for enhancement which includes rou
 In Bagisto, we have created plenty of packages at path `packages/Webkul/`. You can find a basic tree-structure of the package below:
 
 ~~~directory-structure
-- ACME/HelloWorld/
+- Webkul/Blog/
   - publishable/assets
     - css/
     - images/
@@ -24,9 +24,9 @@ In Bagisto, we have created plenty of packages at path `packages/Webkul/`. You c
     - Http/
       - Controllers/
         - Admin/
-          - HelloWorldController.php
+          - AdminController.php
         - Shop/
-          - HelloWorldController.php
+          - ShopController.php
       - Middleware/
       - Requests/
       - admin-routes.php
@@ -35,7 +35,7 @@ In Bagisto, we have created plenty of packages at path `packages/Webkul/`. You c
     - Mail/
     - Models/
     - Providers/
-      - HelloWorldServiceProvider.php
+      - BlogServiceProvider.php
       - ModuleServiceProvider.php
     - Repositories/
     - Resources/
