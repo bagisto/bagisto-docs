@@ -24,39 +24,39 @@ module.exports = [
         ])
     },
     {
-        title: 'Getting Started',
-        path: setVersionPrefix('getting-started'),
+        title: 'Introduction',
+        path: setVersionPrefix('introduction'),
         collapsable: true,
         children: setVersionPrefix([
-            ['getting-started/requirements', 'Requirements'],
-            ['getting-started/installation', 'Installation'],
-            ['getting-started/docker', 'Docker']
+            ['introduction/requirements', 'Requirements'],
+            ['introduction/installation', 'Installation'],
+            ['introduction/docker', 'Docker']
         ])
     },
     {
         title: 'Package Development',
-        path: setVersionPrefix('package-development'),
+        path: setVersionPrefix('package'),
         collapsable: true,
         children: setVersionPrefix([
-            ['package-development/initial-setup', 'Initial Setups'],
-            ['package-development/routes', 'Routes'],
-            ['package-development/controllers', 'Controllers'],
-            ['package-development/views', 'Views'],
-            ['package-development/lang', 'Lang'],
-            ['package-development/assets', 'Assets'],
-            ['package-development/layouts', 'Layouts'],
-            ['package-development/database', 'Database'],
-            ['package-development/admin-menu', 'Admin Menu'],
-            ['package-development/acl', 'Access Control List'],
-            ['package-development/custom-configuration', 'Custom Configuration'],
-            ['package-development/models', 'Models'],
-            ['package-development/repositories', 'Repositories'],
-            ['package-development/datagrid', 'DataGrid'],
-            ['package-development/crud-through-repository', 'CRUD Through Repository'],
+            ['package/create-package', 'Getting Started'],
+            ['package/create-migrations', 'Migrations'],
+            ['package/create-models', 'Models'],
+            ['package/store-data-through-repositories', 'Repository'],
+            ['package/routes', 'Routes'],
+            ['package/controllers', 'Controllers'],
+            ['package/add-menu-in-admin', 'Admin Menu'],
+            ['package/views', 'Views'],
+            ['package/lang', 'Lang'],
+            ['package/datagrid', 'DataGrid'],
+            ['package/assets', 'Assets'],
+            ['package/layouts', 'Layouts'],
+            ['package/create-acl', 'Access Control List'],
+            ['package/create-custom-configuration', 'Custom Configuration'],
+            ['package/crud-through-repository', 'CRUD Through Repository'],
         ])
     },
     {
-        title: 'Advanced Topics',
+        title: 'Digging Deeper',
         path: setVersionPrefix('advanced'),
         collapsable: true,
         children: setVersionPrefix([
