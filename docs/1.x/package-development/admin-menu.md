@@ -33,9 +33,7 @@ return [
 - For the route, just add the named route which specified above i.e. `blog.admin.index`,
 
   ~~~php
-  Route::get('/', 'index')->defaults('_config', [
-    'view' => 'blog::admin.index',
-  ])->name('blog.admin.index');
+  Route::get('/blogs', [AdminController::class, 'index'])->name('blog.admin.index');
   ~~~
 
 ### Step-3
@@ -73,7 +71,7 @@ return [
 
 ### Step-4
 
-- We are using `blog-icon` for `icon-class` which was previously not available in Bagisto. So we added some css to file `assets/scss/app.scss` inside your package. Add below code to this file.
+- We are using `blog-icon` for `icon-class` which was previously not available in Bagisto. So we added some css to file `assets/scss/admin.scss` inside your package. Add below code to this file.
 
 ```css
 .blog-icon {
@@ -91,12 +89,11 @@ return [
     }
 }
 ```
+- run `npm run watch` to see the changes. 
 
 ::: warning
   You can notice two `.png` files. So, you have to add these two files manualy inside `assets/images` folder.
 :::
-
-- Run this command i.e. `php artisan optimize`.
 
 - Now, the menu will display in the admin panel. You can change the icon according to your needs.
 

@@ -22,7 +22,7 @@ Proxies as their name state will drive you to the actual model class. The concep
 
 ### Step-1
 
-- Create a file named as `Post.php` in `packages/Webkul/Blog/src/Models`, and copy the below code in file,
+- Create a `Models` folder inside `packages/Webkul/Blog/src/`. After that create a file named as `Post.php` in this folder, and copy the below code to the `Post.php` file,
 
   ~~~php
   <?php
@@ -116,6 +116,8 @@ Proxies as their name state will drive you to the actual model class. The concep
   }
   ~~~
 
+### Step-5
+
 - After creating all the files stated above, we have to create a provider as  `ModuleServiceProvider.php` inside `Webkul/Blog/src/Providers`. In this file, models which are used in this package are registered. You may check below code,
 
   ~~~php
@@ -133,6 +135,8 @@ Proxies as their name state will drive you to the actual model class. The concep
   }
   ~~~
 
+### Step-6
+
 - Now, Register your `ModuleServiceProvider.php` in `config/concord.php` file,
 
     ~~~php
@@ -140,9 +144,11 @@ Proxies as their name state will drive you to the actual model class. The concep
 
     return [
         'modules' => [
+            ...
             \Webkul\Blog\Providers\ModuleServiceProvider::class,
+            ...
         ]
     ];
     ~~~
 
-- Now, you are all set to go.
+- Now, You your `PostRepository` is ready to use.

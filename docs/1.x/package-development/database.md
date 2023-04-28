@@ -59,6 +59,14 @@
               $viewRenderEventManager->addTemplate('blog::admin.layouts.style');
           });
 
+          Event::listen('bagisto.shop.layout.head', function($viewRenderEventManager) {
+              $viewRenderEventManager->addTemplate('blog::shop.default.layouts.style');
+          });
+
+          Event::listen('bagisto.shop.layout.head', function($viewRenderEventManager) {
+              $viewRenderEventManager->addTemplate('blog::shop.velocity.layouts.style');
+          });
+          
           $this->loadMigrationsFrom(__DIR__ .'/../Database/Migrations');
       }
 
@@ -118,7 +126,7 @@
 
   ```
 
-- Now run `php artisan migrate`. Now `posts` table is created inside your database.
+- Now run `php artisan migrate`. Now `posts` table is created inside your database. We will use this table later.
 
 ::: warning
   Before that provide your database credentials in your `.env` file respectively.

@@ -6,6 +6,10 @@
 
     `php artisan make:model Post`
 
+::: tip
+Do not make a model here. We will make a model later in this tutorial.
+:::
+
 - After creating model, to generate database migration, you may append `--migration or -m option` artisan command as stated below,
 
     `php artisan make:model Post --migration`
@@ -13,6 +17,5 @@
 
 ::: warning
 
-  We are already made a file for migration so we don't need to make a migration for the `Post` Model. But, If you wish you can make new migration through the above command and you have to copy older migration code to a newer migration file.
-
+  We have already created a migration for the `posts` table, so we don't need to create a migration for it. But, if you want you can do another migration through above command.
 :::  

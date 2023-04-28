@@ -38,7 +38,7 @@ module.exports = [
         path: setVersionPrefix('package-development'),
         collapsable: true,
         children: setVersionPrefix([
-            ['package-development/initial-setup', 'Initial Setup'],
+            ['package-development/initial-setup', 'Initial Setups'],
             ['package-development/routes', 'Routes'],
             ['package-development/controllers', 'Controllers'],
             ['package-development/views', 'Views'],
@@ -50,7 +50,9 @@ module.exports = [
             ['package-development/acl', 'Access Control List'],
             ['package-development/custom-configuration', 'Custom Configuration'],
             ['package-development/models', 'Models'],
-            ['package-development/store-data-through-repositories', 'Store Data Through Repositories'],
+            ['package-development/repositories', 'Repositories'],
+            ['package-development/datagrid', 'DataGrid'],
+            ['package-development/crud-through-repository', 'CRUD Through Repository'],
         ])
     },
     {
@@ -61,7 +63,6 @@ module.exports = [
             ['advanced/create-shipping-method', 'Create a shipping method'],
             ['advanced/create-payment-method', 'Create a payment method'],
             ['advanced/create-product-type', 'Create your own product type'],
-            ['advanced/datagrid', 'DataGrid'],
             ['advanced/events', 'Events'],
             ['advanced/helpers', 'Helpers'],
             ['advanced/override-core-model', 'Override core models'],

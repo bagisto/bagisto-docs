@@ -1,4 +1,4 @@
-# Create a new package Manually
+# Create a new package manually
 
 By manually setting up package, we assume that you are familiar with packages directory structures and flow. In Bagisto we are already created multiple packages so let's start with bagisto default `package` folder.
 
@@ -9,7 +9,9 @@ By manually setting up package, we assume that you are familiar with packages di
   ```
   - packages/
     - Webkul/
+        ...
       - Blog/
+        ...
   ```
 
 ### Step-2

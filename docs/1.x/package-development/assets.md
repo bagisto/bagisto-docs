@@ -6,13 +6,13 @@
 
 - In `Resources` folder creates a folder name `assets` & create `sass`, `js` and `images` folder.
 
-  - In **sass** folder, add file **_app.scss_**
+  - In **sass** folder, add file **_admin.scss_**, **_default.scss_**, and **_velocity.scss_**
 
   - In **js** folder, add file **app.js**
 
 ::: details Updated directory structure
 
-```php
+```text
 - packages/
     - Webkul/Blog/
       - src/
@@ -20,7 +20,9 @@
         - Resources/
           - assets/
             - sass/
-              - app.scss
+              - admin.scss
+              - default.scss
+              - velocity.scss
             - js/
               - app.js
             - images/
@@ -85,7 +87,15 @@
     )
     .sass(
         __dirname + "/src/Resources/assets/sass/app.scss",
-        "css/blog.css"
+        "css/admin.css"
+    )
+    .sass(
+        __dirname + '/src/Resources/assets/sass/default.scss',
+        'css/default.css'
+    )
+    .sass(
+        __dirname + '/src/Resources/assets/sass/velocity.scss',
+        'css/velocity.css'
     )
     .options({
         processCssUrls: false,
@@ -98,7 +108,7 @@
 
 - After doing this go to the root of your package i.e. `packages/Webkul/Blog` and run `npm install` which will install all dependencies.
 
-- Now, `app.js` and `app.scss` is ready. Write all your css and js here.
+- Now, your all `scss` and `js` files is ready to use. Write all your css and js here.
 
 - When you done with your changes, then run `npm run prod` which will compiled all your css, js and images to the publishable folder. Then register your publishable in `BlogServiceProvider`,
 
@@ -158,11 +168,52 @@
 
 ### Step-4
 
-- After doing this we need to add an event listener so that admin layouts include our CSS. For this we need to add an Event Listener in service provider. But before adding event, let's create a `layouts` folder in `packages/Webkul/Blog/src/Resources/views/admin` and inside that create a file called `style.blade.php` & mention compiled CSS path inside this file.
+- After doing this we need to add an event listener so that admin layouts include our CSS. For this we need to add an Event Listener in service provider. But before adding event, let's create a `layouts` folder within `/Resources/views/admin`, `/Resources/views/shop/default`, and `/Resources/views/shop/velocity`. 
+
+::: details Updated directory structure
+
+```text
+- packages/
+    - Webkul/Blog/
+      - src/
+        ...
+        - Resources/
+            ...
+          - views
+            - admin
+              - layouts/
+            - shop/
+              - default/
+                - layouts
+              - velocity/
+                - layouts
+```
+:::
+
+- And inside each layouts folder create a file called `style.blade.php` & mention compiled CSS path inside this file.
+
+- Copy below code to `admin/layouts/style.blade.php`
 
   ```html
-  <link rel="stylesheet" href="{{ asset('vendor/webkul/blog/assets/css/blog.css') }}"/>
+
+  <link rel="stylesheet" href="{{ asset('vendor/webkul/blog/assets/css/admin.css') }}"/>
   ```
+
+- Copy below code to `shop/default/layouts/style.blade.php`
+
+  ```html
+
+  <link rel="stylesheet" href="{{ asset('vendor/webkul/blog/assets/css/default.css') }}"/>
+  ```
+
+- Copy below code to `shop/velocity/layouts/style.blade.php`
+
+  ```html
+
+  <link rel="stylesheet" href="{{ asset('vendor/webkul/blog/assets/css/velocity.css') }}"/>
+  ```
+
+### Step-5
 
 - **For Event Listener:** Add facade 'Event' into your `BlogServiceProvider.php` file,
 
@@ -202,6 +253,14 @@
 
           Event::listen('bagisto.admin.layout.head', function($viewRenderEventManager) {
               $viewRenderEventManager->addTemplate('blog::admin.layouts.style');
+          });
+
+          Event::listen('bagisto.shop.layout.head', function($viewRenderEventManager) {
+              $viewRenderEventManager->addTemplate('blog::shop.default.layouts.style');
+          });
+
+          Event::listen('bagisto.shop.layout.head', function($viewRenderEventManager) {
+              $viewRenderEventManager->addTemplate('blog::shop.velocity.layouts.style');
           });
       }
 

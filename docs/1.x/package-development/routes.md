@@ -46,7 +46,7 @@
 
 ### Step-2
 
-- Now, we need to register our routes to service provider’s boot method i.e. `packages/Webkul/Blog/src/Providers/BlogServiceProvider.php`
+- Now, we need to register our routes to service provider’s boot method i.e. `BlogServiceProvider.php`
 
   ```php
   <?php

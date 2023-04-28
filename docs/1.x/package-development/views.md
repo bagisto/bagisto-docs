@@ -95,9 +95,9 @@
 
 ### Step-3
 
-- Now, we need to add a route for the view.
+- Now, let's test our view.
 
-- Go to `packages/Webkul/Blog/src/Routes/shop-routes.php` file and create a route to render view.
+- Go to `shop-routes.php` file and create a route to render view.
 
   ```php
   <?php
@@ -106,14 +106,11 @@
   use Webkul\Blog\Http\Controllers\Shop\ShopController;
 
   Route::group(['middleware' => ['web', 'theme', 'locale', 'currency']], function () {
-
-      Route::get('/blogs', [ShopController::class, 'index'])->defaults('_config', [
-          'view' => 'blog::shop.index',
-      ]);
+      Route::get('/blogs', [ShopController::class, 'index']);
   });
   ```
 
-- Same for admin routes in file `packages/Webkul/Blog/src/Routes/admin-routes.php`.
+- Same for admin routes in file `admin-routes.php`.
 
   ```php
   <?php
@@ -122,22 +119,13 @@
   use Webkul\Blog\Http\Controllers\Admin\AdminController;
 
   Route::group(['middleware' => ['web', 'admin'], 'prefix' => config('app.admin_url')], function () {
-
-      Route::group(['prefix' => 'blogs'], function () {
-
-          Route::controller(AdminController::class)->group(function () {
-
-              Route::get('/', 'index')->defaults('_config', [
-                  'view' => 'blog::admin.index',
-              ]);
-          });
-      });
+      Route::get('/blogs', [AdminController::class, 'index']);
   });
   ```
 
 ### Step-4
 
-- Go to `packages/Webkul/Blog/src/Http/Controllers/Shop/ShopController.php` file and update the file.
+- Go to `ShopController.php` file and update the file.
 
   ```php
   <?php
@@ -148,26 +136,14 @@
 
   class ShopController extends Controller
   {
-    /**
-     * Display a listing of the resource.
-     *
-     * @var array
-     */
-    protected $_config;
+      public function index() {
 
-    public function __construct()
-    {
-        $this->_config = request('_config');
-    }
-
-    public function index() {
-
-        return view($this->_config['view']);
-    }
+          return view('blog::shop.index');
+      }
   }
   ```
 
-- Same for AdminController in file `packages/Webkul/Blog/src/Http/Controllers/Admin/AdminController.php`.
+- Same for AdminController in file `AdminController.php`.
 
   ```php
   <?php
@@ -178,35 +154,23 @@
 
   class AdminController extends Controller
   {
-    /**
-     * Display a listing of the resource.
-     *
-     * @var array
-     */
-    protected $_config;
+      public function index() {
 
-    public function __construct()
-    {
-        $this->_config = request('_config');
-    }
-
-    public function index() {
-
-        return view($this->_config['view']);
-    }
+          return view('blog::admin.index');
+      }
   }
   ```  
 
 - Now, check your route in your browser,
 
-  ::: details Admin Output
-
-  ![Admin Browser Output](../../assets/images/package-development/blog-admin-output.png)
-
-  :::
-
   ::: details Shop Output
 
   ![Shop Browser Output](../../assets/images/package-development/blog-shop-output.png)
+
+  :::
+
+  ::: details Admin Output
+
+  ![Admin Browser Output](../../assets/images/package-development/blog-admin-output.png)
 
   :::

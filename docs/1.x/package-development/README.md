@@ -2,6 +2,11 @@
 
 A package is a unit added to your application for enhancement which includes routes, controllers, views, and configuration specifically. Packages are created to manage your large applications into smaller units.
 
+There are two ways to create a package.
+
+1. By using Bagisto Package Generator (**Recommended**)
+2. By manually setting up all files (**Expert Level**)
+
 In Bagisto, we have created plenty of packages at path `packages/Webkul/`. You can find a basic tree-structure of the package below:
 
 ~~~directory-structure
@@ -29,14 +34,15 @@ In Bagisto, we have created plenty of packages at path `packages/Webkul/`. You c
           - ShopController.php
       - Middleware/
       - Requests/
-      - admin-routes.php
-      - shop-routes.php
     - Listeners/
     - Mail/
     - Models/
     - Providers/
       - BlogServiceProvider.php
       - ModuleServiceProvider.php
+    - Routes
+      - admin-routes.php
+      - shop-routes.php
     - Repositories/
     - Resources/
       - assets/
