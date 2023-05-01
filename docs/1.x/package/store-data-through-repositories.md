@@ -4,7 +4,20 @@ Generally, we wrote all of our application logic in the controller. There’s an
 
 This file defines our Repository class. Instances of this class have a model property that we tie to an Eloquent model. Once this is bound in the constructor we can call Eloquent methods like findOrFail, update or all from the class methods.
 
-### Step-1
+There are two ways to create a Repository in **Bagisto**.
+
+1. Using Bagisto Package Generator (**Recommended**)
+2. By manually setting up all files (**Expert Level**)
+
+## 1. Using Bagisto Package Generator
+
+This command will create a new Repository class in `packages/Webkul/Blog/src/Repository` directory.
+
+`php artisan package:make-repository PostRepository Webkul/Blog`
+
+After that we have to create a [Module Service Provider](#module-service-provider).
+
+## 2. By manually setting up all files
 
 - Create a `Repository` folder inside `Webkul/Blog/src/` and create a file `PostRepository.php` and create the `model()` method in repository class which returns the path of your contract class.
 
@@ -29,13 +42,10 @@ This file defines our Repository class. Instances of this class have a model pro
   }
   ~~~
 
-::: tip You can use Bagisto Package Generator
-php artisan package:make-repository PostRepository Webkul/Blog
-:::
 
-### Step-2
+### Module Service Provider
 
-- After creating all the files stated above, we have to create a provider as  `ModuleServiceProvider.php` inside `Webkul/Blog/src/Providers`. In this file, models which are used in this package are registered. You may check below code,
+- After creating Model, Proxy and Repository, we have to create a provider as  `ModuleServiceProvider.php` inside `Webkul/Blog/src/Providers`. In this file, models which are used in this package are registered. You may check below code,
 
   ~~~php
   <?php
@@ -51,8 +61,6 @@ php artisan package:make-repository PostRepository Webkul/Blog
       ];
   }
   ~~~
-
-### Step-3
 
 - Now, Register your `ModuleServiceProvider.php` in `config/concord.php` file,
 

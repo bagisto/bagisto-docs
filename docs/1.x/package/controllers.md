@@ -1,6 +1,4 @@
-# Creating Controller
-
-### Step-1
+# Controller
 
   - **For Controller**: Create `Http` folder in `packages/Webkul/Blog/src` path. In `Http` folder, create another folder name as `Controllers`. Now, in the `Controllers` folder, we need to create one file `Controller.php` and two folders i.e. `Admin` and `Shop`. Inside `Admin` folder create `AdminController.php`, and within `Shop` folder create `ShopController.php`. So updated structure will look like this.
 

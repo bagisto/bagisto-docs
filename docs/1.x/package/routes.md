@@ -1,6 +1,4 @@
-# Creating Routes
-
-### Step-1
+# Routes
 
 - **For routes**: Create a `Routes` folder in `packages/Webkul/Blog/src` and create two files named as `admin-routes.php` and `shop-routes.php`. So the updated structure will look like below.
 
@@ -44,8 +42,6 @@
       });
       ```
 
-### Step-2
-
 - Now, we need to register our routes to service provider’s boot method i.e. `BlogServiceProvider.php`
 
   ```php
@@ -69,6 +65,8 @@
       */
       public function boot()
       {
+          $this->loadMigrationsFrom(__DIR__ .'/../Database/Migrations');
+          
           $this->loadRoutesFrom(__DIR__ . '/../Routes/admin-routes.php');
 
           $this->loadRoutesFrom(__DIR__ . '/../Routes/shop-routes.php');

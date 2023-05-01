@@ -2,7 +2,7 @@
 
 Now, we are very much familiar with your package and we created all the necessary things we needed. So, Let's see the simple crud example. So, let's see the example.
 
-### Step-1
+## Routes
 
 - Update `shop-routes.php`.
 
@@ -67,7 +67,7 @@ Route::group(['middleware' => ['web', 'admin'], 'prefix' => config('app.admin_ur
 });
 ```
 
-### Step-2
+## Controller
 
 - Update `ShopController.php`.
 
@@ -237,7 +237,7 @@ class AdminController extends Controller
 }
 ```
 
-### Step-3
+## Blade File
 
 - Update your blade file `index.blade.php` inside `Resources/views/admin` folder.
 
@@ -419,8 +419,6 @@ class AdminController extends Controller
 @stop
 ```
 
-### Step-4
-
 - Now, Update `index.blade.php` inside `Resources/views/shop/velocity` folder.
 
 ```html
@@ -503,6 +501,7 @@ class AdminController extends Controller
 
 @stop
 ```
+## Menu Icon
 
 - Now all done. But , Before that let's add some `css` to our package.
 
@@ -542,6 +541,15 @@ class AdminController extends Controller
 .card-text {
     height: 10vh;
 }
+```
+
+::: tip Admin Menu Icon
+Here we added some css for `blog-icon`. Now, You can use this icon for admin menu so simply update `admin-menu.php` like below.
+:::
+
+```diff
+'icon-class' => 'catelog-icon', to
+'icon-class' => 'blog-icon'
 ```
 
 - Now everything is up-to-date. So, Go and test your `Blog` package.

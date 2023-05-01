@@ -1,4 +1,4 @@
-# Create custom configuration
+# Custom configuration
 
 Creating a custom configuration ease the task for a developer or any non-developer person. Generally, in Bagisto, you can find it in admin panel **Configuration Menu**.
 

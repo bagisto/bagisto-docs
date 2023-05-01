@@ -1,18 +1,9 @@
-# Introduction
-**Bagisto** is a E-Commerce framework built on top of the hottest opensource technologies such as [Laravel](https://laravel.com), a [PHP](https://php.net) framework and [Vue.js](https://vuejs.org/), a progressive Javascript framework.
+# Prologue
 
-**Bagisto** is a viable option to reduce your time, cost and workforce for building online stores or migrating from a physical store to an online platform.
+[bagisto](https://bagisto.com) is an open-source eCommerce platform that offers a modern and efficient solution for building online stores. Developed by [Laravel](https://laravel.com) eCommerce, [bagisto](https://bagisto.com) provides a comprehensive set of features that can be easily customized and tailored to meet the specific needs of any online business.
 
-It is suitable for all small or large E-Commerce business demands using a simple set-up procedure.  
-Built on top of [Laravel](https://laravel.com) and equipped with an easy product information management.  
+The platform is built on top of the [Laravel](https://laravel.com) framework and [Vue.js](https://vuejs.org/), a progressive Javascript framework, which provides a solid foundation for building robust and scalable web applications. With its intuitive user interface and powerful set of tools, [bagisto](https://bagisto.com) makes it easy for businesses to manage their online stores, handle inventory and order management, and offer a seamless shopping experience to their customers.
 
-The framework is very flexible and easy to use even for non-tech users.
-**Bagisto** features an administration panel with a dashboard, sales data, a catalog for products and customer management.
+[bagisto](https://bagisto.com) also supports multiple languages and currencies, making it ideal for businesses that operate in multiple regions around the world. The platform is highly customizable, allowing developers to easily add new features and functionalities to suit the needs of their business.
 
-To learn more about **Bagisto's** features and try a demo, check out our website [https://bagisto.com](https://bagisto.com).  
-Get quickly updated on the current version and recently released features, see [Bagisto roadmap](https://bagisto.com/roadmap/).  
-You can get started with the source code by checking out the repo on GitHub at [bagisto/bagisto](https://github.com/bagisto/bagisto).
-
-
-
-
+In summary, [bagisto](https://bagisto.com) is a powerful and flexible eCommerce platform that offers businesses a modern and efficient solution for building and managing online stores. With its comprehensive set of features, intuitive user interface, and robust framework, [bagisto](https://bagisto.com) is an ideal choice for businesses looking to establish a strong online presence and grow their sales.

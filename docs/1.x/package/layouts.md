@@ -1,4 +1,4 @@
-# Adding Layouts
+# Layouts
 
 ### Step-1
 

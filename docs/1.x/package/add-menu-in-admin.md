@@ -1,4 +1,4 @@
-# Add menu in admin
+# Admin Menu
 
 ### Step-1
 
@@ -13,7 +13,7 @@ return [
       'name'       => 'Blogs',
       'route'      => 'blog.admin.index',
       'sort'       => 2,
-      'icon-class' => 'blog-icon',
+      'icon-class' => 'temp-icon',
     ]
 ];
 ~~~
@@ -69,32 +69,10 @@ return [
   }
   ~~~
 
-### Step-4
-
-- We are using `blog-icon` for `icon-class` which was previously not available in Bagisto. So we added some css to file `assets/scss/admin.scss` inside your package. Add below code to this file.
-
-```css
-.blog-icon {
-    background-image: url("../images/blog.png");
-    width: 45px;
-    height: 45px;
-    opacity: 0.6;
-    margin-left: 4px !important;
-}
-
-.active {
-    .blog-icon {
-        opacity: 1;
-        background-image: url("../images/blog-active.png");
-    }
-}
-```
-- run `npm run watch` to see the changes. 
-
-::: warning
-  You can notice two `.png` files. So, you have to add these two files manualy inside `assets/images` folder.
-:::
-
 - Now, the menu will display in the admin panel. You can change the icon according to your needs.
 
-![Admin Menu Output](../../assets/images/package-development/admin-menu-output.png)
+  ::: details Admin Menu Output
+
+  ![Admin Menu Output](../../assets/images/package-development/admin-menu-output.png)
+
+  :::

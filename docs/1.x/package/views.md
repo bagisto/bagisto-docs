@@ -1,8 +1,8 @@
-# Creating Views
+# Views
 
 ### Step-1
 
-  - **For views**: Create `Resources` folder in `packages/Webkul/Blog/src` path. In `Resources` folder, create another folder named as `views`. Now, in the `views` folder, we need to create a two more folder i.e. `admin` and `shop`. And finally, we need to create two more folder i.e. `default` and `velocity` under the shop folder. So updated structure will look like this.
+  - **For views**: Create `Resources` folder in `packages/Webkul/Blog/src` path. In `Resources` folder, create another folder named as `views`. Now, in the `views` folder, we need to create two folder i.e. `admin` and `shop`. And finally, we need to create two more folder i.e. `default` and `velocity` under the `shop` folder. So updated structure will look like this.
 
     ::: details Updated directory structure
 
@@ -21,18 +21,12 @@
     ```
     :::
 
-    ::: tip Default and Velocity folders
-    **Note:-** Whenever you are creating a blade file for the shop front then you have to keep the same file in the both folder i.e. `default` and `velocity`.
-    
-    **Reason:-** We are using `theme` middleware, So whenever we used the `default` theme `view` will be called from the `default` folder, and whenever we used the `velocity` theme `view` will be called from the `velocity` folder. 
-    
-    **If you don't want to do this stuff then simply remove the `theme` middleware from `shop-routes.php` and then your blade file will be called from the `shop` folder directly.**
-
-    In this tutorial, We are using the `theme` middleware and `velocity` theme so we have to use `velocity` folder. But, we are not going to create the same files for the default theme.
+    ::: tip The default and velocity folders
+    Whenever you are creating a blade file for the shop front then you have to keep the same file in the both folder i.e. `default` and `velocity`. Because, We are using `theme` middleware, So whenever we used the `default` theme `view` will be called from the `default` folder, and whenever we used the `velocity` theme `view` will be called from the `velocity` folder.
     :::
 
-    ::: tip Theme Change
-    Simply visit admin>settings>channels in Bagisto admin panel.
+    ::: warning
+    In this tutorial, We are using the `theme` middleware and `velocity` theme. So, It is necessary to keep files in the `velocity` folder. But, If we are not using the `default` theme then this is not necessary to keep the same files in the `default` folder also.
     :::
     
     - Inside each folder i.e. `admin` and `velocity` create a file named as `index.blade.php`. And add some html to it.
@@ -74,6 +68,8 @@
       */
       public function boot()
       {
+          $this->loadMigrationsFrom(__DIR__ .'/../Database/Migrations');
+
           $this->loadRoutesFrom(__DIR__ . '/../Routes/admin-routes.php');
 
           $this->loadRoutesFrom(__DIR__ . '/../Routes/shop-routes.php');
@@ -106,7 +102,7 @@
   use Webkul\Blog\Http\Controllers\Shop\ShopController;
 
   Route::group(['middleware' => ['web', 'theme', 'locale', 'currency']], function () {
-      Route::get('/blogs', [ShopController::class, 'index']);
+      Route::get('/blogs', [ShopController::class, 'index'])->name('blog.shop.index');
   });
   ```
 
@@ -119,7 +115,7 @@
   use Webkul\Blog\Http\Controllers\Admin\AdminController;
 
   Route::group(['middleware' => ['web', 'admin'], 'prefix' => config('app.admin_url')], function () {
-      Route::get('/blogs', [AdminController::class, 'index']);
+      Route::get('/blogs', [AdminController::class, 'index'])->name('blog.admin.index');
   });
   ```
 

@@ -1,4 +1,4 @@
-# Adding Assets
+# Assets
 
 ### Step-1
 
@@ -141,6 +141,8 @@
       */
       public function boot()
       {
+          $this->loadMigrationsFrom(__DIR__ .'/../Database/Migrations');
+          
           $this->loadRoutesFrom(__DIR__ . '/../Routes/admin-routes.php');
 
           $this->loadRoutesFrom(__DIR__ . '/../Routes/shop-routes.php');
