@@ -86,11 +86,10 @@ module.exports = [
         ])
     },{
         title: 'Translations',
-        path: setVersionPrefix('translations/translation-based-on-locale'),
+        path: setVersionPrefix('translations'),
         collapsable: true,
         children: setVersionPrefix([
-            ['translations/translation-based-on-locale', 'Translation based on locale'],
-            ['translations/change-the-language-of-error-validations-on-your-store', 'Change the language of error validations on your store']
+            ['translations/translation-based-on-locale', 'Translation Based on Locale']
         ])
     },
     {
