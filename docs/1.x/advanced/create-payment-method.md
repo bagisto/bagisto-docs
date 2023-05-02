@@ -1,6 +1,4 @@
-# Create a new payment method
-
-We hope that now you know how to create a package, if not refer to [Package Development](../packages).
+# Payment Method
 
 Bagisto eases the task of creating payment methods. So, a novice developer or a professional developer can easily create payment methods.
 
@@ -20,13 +18,13 @@ In this section, we will explain how to create a payment method. You can create 
   - If package directory not present,
 
     ```php
-    php artisan package:make-payment-method ACME/Stripe
+    php artisan package:make-payment-method Webkul/Blog
     ```
 
   - If somehow package directory already present then you can use force command as well. For that you just need to pass the '**--force**' command.
 
     ```php
-    php artisan package:make-payment-method ACME/Stripe --force
+    php artisan package:make-payment-method Webkul/Blog --force
     ```
 
   - This will generate whole directory structures. You don't need to do manually.
@@ -40,7 +38,7 @@ In this section, we will explain how to create a payment method. You can create 
       ...
       'providers' => [
           ...
-          ACME\Stripe\Providers\StripeServiceProvider::class,
+          Webkul\Blog\Providers\StripeServiceProvider::class,
           ...
       ]
       ...
@@ -54,7 +52,7 @@ In this section, we will explain how to create a payment method. You can create 
       ...
       "psr-4": {
           ...
-          "ACME\\Stripe\\": "packages/ACME/Stripe/src"
+          "Webkul\\Blog\\": "packages/Webkul/Blog/src"
           ...
       }
       ...
@@ -73,8 +71,9 @@ In this section, we will explain how to create a payment method. You can create 
 
 - Create respective directory structure to create your payment method.
 
-  ```file-structure
-  - ACME/Stripe/src/
+  ::: details Directory structure  
+  ```
+  - Webkul/Blog/src/
     - Config/
       - system.php
       - paymentmethods.php
@@ -83,6 +82,7 @@ In this section, we will explain how to create a payment method. You can create 
     - Providers/
       - StripeServiceProvider.php
   ```
+  :::
 
 - Within `Config` folder, it contains application's configuration files. Let's just create two files i.e. `system.php` and `paymentmethods.php`. In `system.php` file, you have to include the array keys in the file as shown below,
 
@@ -141,7 +141,7 @@ In this section, we will explain how to create a payment method. You can create 
           'code'        => 'stripe',
           'title'       => 'Stripe',
           'description' => 'Stripe',
-          'class'       => 'ACME\Stripe\Payment\Stripe',
+          'class'       => 'Webkul\Blog\Payment\Stripe',
           'active'      => true,
           'sort'        => 1,
       ],
@@ -161,7 +161,7 @@ In this section, we will explain how to create a payment method. You can create 
   ```php
   <?php
 
-  namespace ACME\Stripe\Payment;
+  namespace Webkul\Blog\Payment;
 
   use Webkul\Payment\Payment\Payment;
 
@@ -185,7 +185,7 @@ In this section, we will explain how to create a payment method. You can create 
   ```php
   <?php
 
-  namespace ACME\Stripe\Providers;
+  namespace Webkul\Blog\Providers;
 
   use Illuminate\Support\ServiceProvider;
 
@@ -237,7 +237,7 @@ In this section, we will explain how to create a payment method. You can create 
       ...
       'providers' => [
           ...
-          ACME\Stripe\Providers\StripeServiceProvider::class,
+          Webkul\Blog\Providers\StripeServiceProvider::class,
           ...
       ]
       ...
@@ -251,7 +251,7 @@ In this section, we will explain how to create a payment method. You can create 
       ...
       "psr-4": {
           ...
-          "ACME\\Stripe\\": "packages/ACME/Stripe/src"
+          "Webkul\\Blog\\": "packages/Webkul/Blog/src"
           ...
       }
       ...

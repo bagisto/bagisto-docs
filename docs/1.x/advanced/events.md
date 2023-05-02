@@ -1,35 +1,36 @@
-# Events
+# Events Listeners 
+
 Events are an implementation of observer pattern such that whenever an event takes place, then one or more listener(s) associated with that event responds. Imagine something like making an announcement to your application, and then actions being taken due to that announcement. All the event classes in Bagisto are stored in the **Providers** folder and the listeners are stored in the **Listeners** folder.
 
 ## How to create Event Class?
 
-If you have the Bagisto Package Generator installed, then you can use the following command which will create a new event class in `packages/ACME/TestPackage/src/Events` directory.
+If you have the Bagisto Package Generator installed, then you can use the following command which will create a new event class in `packages/Webkul/Blog/src/Events` directory.
 
-Please follow the following steps to create a new event class in your `packages/ACME/TestPackage`
+Please follow the following steps to create a new event class in your `packages/Webkul/Blog`
 
-1. We assume that you have created a new TestPackage using Bagisto Package Generator like the below command.
+1. We assume that you have created a new Blog using Bagisto Package Generator like the below command.
 
-`php artisan package:make ACME/TestPackage`
+`php artisan package:make Webkul/Blog`
 
-2. Now, you can create a event `Events\TestEvent.php` class using the below command.
+2. Now, you can create a event `Events\BlogEvent.php` class using the below command.
 
-`php artisan package:make-event TestEvent ACME/TestPackage`
+`php artisan package:make-event BlogEvent Webkul/Blog`
 
 If event class already present then you can use force command for overwriting by passing `--force` option.
 
-`php artisan package:make-event TestEvent ACME/TestPackage --force`
+`php artisan package:make-event BlogEvent Webkul/Blog --force`
 
 Or if you don't have package generator then, you can create file manually also.
 
 ## How to create Listener Class?
 
-If you have the Bagisto Package Generator installed, then you can use the following command which will create a new listener class in `packages/ACME/TestPackage/src/Listeners` directory.
+If you have the Bagisto Package Generator installed, then you can use the following command which will create a new listener class in `packages/Webkul/Blog/src/Listeners` directory.
 
-`php artisan package:make-listener TestListener ACME/TestPackage`
+`php artisan package:make-listener BlogListener Webkul/Blog`
 
 If listener class already present then you can use force command for overwriting.
 
-`php artisan package:make-listener TestListener ACME/TestPackage --force`
+`php artisan package:make-listener BlogListener Webkul/Blog --force`
 
 Or if you don't have package generator then, you can create file manually also.
 

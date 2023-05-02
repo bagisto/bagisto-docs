@@ -1,4 +1,4 @@
-### Real time notification
+### Real Time Notification
 
 In the updated admin theme, we have introduced an option of getting real time notifications upon order creation and updation. For the real time notification, you need to have some of the configuration within your project as mentioned below:
 

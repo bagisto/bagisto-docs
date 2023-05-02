@@ -1,9 +1,7 @@
-# Blade file tracer
+# Blade File Tracer
 
-[[toc]]
-
-## Introduction
 When you want to change or create a theme it can become difficult to find out which part contains the code that you need to work on.  
+
 This is why we added the blade file tracer as it will help developers, contributors & partners who deal with Bagisto to find the blade file of the templates/views and understand the structure of the project.
 
 ## Configuration
