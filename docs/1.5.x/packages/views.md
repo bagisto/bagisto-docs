@@ -161,12 +161,12 @@
 
   ::: details Shop Output
 
-  ![Shop Browser Output](../../assets/images/package-development/blog-shop-output.png)
+  ![Shop Browser Output](../../assets/images/1.5.x/package-development/blog-shop-output.png)
 
   :::
 
   ::: details Admin Output
 
-  ![Admin Browser Output](../../assets/images/package-development/blog-admin-output.png)
+  ![Admin Browser Output](../../assets/images/1.5.x/package-development/blog-admin-output.png)
 
   :::

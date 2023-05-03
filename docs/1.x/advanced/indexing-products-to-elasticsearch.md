@@ -1,4 +1,4 @@
-# Indexing Products To Elasticsearch
+# Indexing products to Elasticsearch
 
 In this section, we will explain the indexing of products from the database to the Elasticsearch engine.
 
@@ -8,9 +8,7 @@ To continue with this make sure you have [Elasticseach](https://www.elastic.co/g
 
 Just hit this route `http://localhost:9200`, if you see the below image then Elasticsearch is successfully installed on your system,
 
-  ::: details Output
-  ![Elasticsearch Installation Info](../..//assets/images/advanced-topics/elastic-search/installed-elastic-info.png)
-  :::
+![Elasticsearch Installation Info](../..//assets/images/advanced-topics/elastic-search/installed-elastic-info.png)
 
 ::: tip
 
@@ -32,7 +30,7 @@ The most simple way to set up your environment is by just setting the key in the
 
   ~~~env
   SCOUT_DRIVER=elastic
-  ELASTICSEARCH_HOST=localhost
+  ELASTIC_HOST="localhost:9200"
   ~~~
 
 - After that run `php artisan config:cache`.
@@ -43,18 +41,14 @@ The most simple way to set up your environment is by just setting the key in the
 
 If still it is not working, then you can directly set your config in the following files i.e.,
 
-- `config/elasticsearch.php`
+- `config/elastic.client.php`
 
   ~~~php
   ...
 
   'hosts' => [
-      [
-          'host'              => env('ELASTICSEARCH_HOST', 'localhost'),
-          'port'              => env('ELASTICSEARCH_PORT', 9200),
-          ...
-      ]
-   ]
+      env('ELASTIC_HOST', 'localhost:9200'),
+  ]
 
   ...
   ~~~
@@ -80,7 +74,7 @@ Now, after setting up the environment and config, your product gets automaticall
 If you want to index the existing products, then you need to run the below command,
 
 ~~~php
-php artisan indexer:index
+php artisan scout:import Webkul\\Product\\Models\\ProductFlat
 ~~~
 
 This command will index all your data from `product_flat` table to Elasticsearch index.
@@ -89,9 +83,7 @@ This command will index all your data from `product_flat` table to Elasticsearch
 
 Now, let's check our imported index in the Elasticsearch by hitting this URL `http://localhost:9200/_cat/indices?v`,
 
-  ::: details Output
-  ![Product Index Info](../../assets/images/advanced-topics/elastic-search/product-index.png)
-  :::
+![Product Index Info](../../assets/images/advanced-topics/elastic-search/product-index.png)
 
 ::: tip
 

@@ -1,4 +1,4 @@
-# Homepage Menu
+# Customize homepage menu
 
 In this section, we will give you an overview of the menu items. How you can access the menu items and how it can be used for customization. In both themes i.e. default and velocity, we are displaying the categories in the menu items.
 

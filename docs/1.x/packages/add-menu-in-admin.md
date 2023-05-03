@@ -1,19 +1,17 @@
-# Admin Menu
+# Add menu in admin
 
-### Step-1
-
-- In your package's source directory i.e. `packages/Webkul/Blog/src`, create the `Config` folder and create a file named `admin-menu.php`.
+- In your package's source directory i.e. `packages/ACME/HelloWorld/src`, create the `Config` folder and create a file named `admin-menu.php`.
 
 ~~~php
 <?php
 
 return [
     [
-      'key'        => 'blogs',
-      'name'       => 'Blogs',
-      'route'      => 'blog.admin.index',
-      'sort'       => 2,
-      'icon-class' => 'temp-icon',
+      'key'        => 'helloworld',
+      'name'       => 'Hello World',
+      'route'      => 'helloworld.admin.index',
+      'sort'       => 1,
+      'icon-class' => 'dashboard-icon',
     ]
 ];
 ~~~
@@ -28,32 +26,28 @@ return [
 | sort       | Sort number on which your menu icon should display. |
 | icon-class | Class for menu icon.                                |
 
-### Step-2
-
-- For the route, just add the named route which specified above i.e. `blog.admin.index`,
+- For the route, just add the named route which specified above i.e. `helloworld.admin.index`,
 
   ~~~php
-  Route::get('/blogs', [AdminController::class, 'index'])->name('blog.admin.index');
+  Route::view('/admin/hello-world', 'helloworld::admin.index')->name('helloworld.admin.index');
   ~~~
 
-### Step-3
-
-- After that, we need to merge this `admin-menu.php` folder with a core menu file. For this, we use the method `mergeConfigFrom()` in the register method of the service provider.
+- After that, we need to merge this `menu.php` folder with a core menu file. For this, we use the method `mergeConfigFrom()` in the register method of the service provider.
 
   ~~~php
   <?php
 
-  namespace Webkul\Blog\Providers;
+  namespace ACME\HelloWorld\Providers;
 
   use Illuminate\Support\Facades\Event;
   use Illuminate\Support\ServiceProvider;
 
   /**
-  * BlogServiceProvider
+  * HelloWorldServiceProvider
   *
   * @copyright 2020 Webkul Software Pvt. Ltd. (http://www.webkul.com)
   */
-  class BlogServiceProvider extends ServiceProvider
+  class HelloWorldServiceProvider extends ServiceProvider
   {
       /**
       * Register services.
@@ -69,10 +63,8 @@ return [
   }
   ~~~
 
+- Run this command i.e. `php artisan optimize`.
+
 - Now, the menu will display in the admin panel. You can change the icon according to your needs.
 
-  ::: details Admin Menu Output
-
-  ![Admin Menu Output](../../assets/images/package-development/admin-menu-output.png)
-
-  :::
+![Admin Menu Output](../../assets/images/package-development/admin-menu-output.png)

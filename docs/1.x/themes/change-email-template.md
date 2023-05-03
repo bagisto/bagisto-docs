@@ -1,4 +1,4 @@
-# Email Template
+# Change email template
 
 In this section, we are explaining how to change the email templates in Bagisto. As we all know, everyone wants some customization according to their own taste that's why knowing about changing the email template is also quite helpful for some users.
 

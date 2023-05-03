@@ -7,9 +7,9 @@ actionLink: /1.x/prologue/
 features:
 - title: Package creation
   details: Learn how to create a new package for Bagisto.
+- title: Digging Deeper
+  details: Learn advanced topics like payment methods, shipping methods.
 - title: Custom theme
   details: Learn how to create or customize a theme for Bagisto.
-- title: API documentation
-  details: Learn how to connect your existing systems with the Bagisto API.
 footer: Copyright © 2023 Bagisto
 ---

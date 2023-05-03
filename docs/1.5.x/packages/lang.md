@@ -94,12 +94,12 @@
 
   ::: details Admin Output
 
-  ![Translation Output](../../assets/images/package-development/blog-admin-lang-output.png)
+  ![Translation Output](../../assets/images/1.5.x/package-development/blog-admin-lang-output.png)
 
   :::
 
   ::: details Shop Output
 
-  ![Translation Output](../../assets/images/package-development/blog-shop-lang-output.png)
+  ![Translation Output](../../assets/images/1.5.x/package-development/blog-shop-lang-output.png)
 
   :::

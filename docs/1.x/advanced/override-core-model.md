@@ -1,4 +1,4 @@
-# Override Core Model
+# Override core model
 
 Concord is a Laravel Extension that helps building modules on top of Laravel's built-in Service Providers.
 Bagisto uses Concord for managing their modules.

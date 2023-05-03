@@ -1,11 +1,13 @@
-# Store Theme
+---
+title: Create a store theme
+---
 
-Please follow the steps mentioned below to create a custom store theme in Bagisto.
+# Create a store theme
+Please follow the steps mentioned below that how to create a custom theme in Bagisto.
 
 Go to your project’s root directory and check for **config** folder.  
 Inside **config** folder, you will find a file called **_themes.php_** like directory below:
 
-  ::: details Folder Structure
         - app/
         - bin/
         - bootstrap/
@@ -13,7 +15,8 @@ Inside **config** folder, you will find a file called **_themes.php_** like dire
            - themes.php
         - database/
         - packages/Webkul
-  :::
+
+<!-- ![theme-file-location](../../assets/images//theme/theme-file-location.png){: width="30%" height="50%" .center} -->
 
 Check contents of **_themes.php_** file, it holds all necessary information of creating a custom theme.
 
@@ -30,15 +33,17 @@ return [
             'name' => 'Default'
         ],
 
-        'velocity' => [
-            'views_path' => 'resources/themes/velocity/views',
-            'assets_path' => 'public/themes/velocity/assets',
-            'name' => 'Velocity',
-            'parent' => 'default'
-        ],
-    ],
+        // 'bliss' => [
+        //     'views_path' => 'resources/themes/bliss/views',
+        //     'assets_path' => 'public/themes/bliss/assets',
+        //     'name' => 'Bliss',
+        //     'parent' => 'default'
+        // ]
+    ]
 ];
 ```
+
+<!-- ![theme-file](../../assets/images//theme/theme-file-code.png) -->
 
 Let’s go through the parameters of **_themes.php_** file. Because understanding those parameters will help you in creating a custom theme.
 
@@ -60,7 +65,11 @@ Let’s go through the parameters of **_themes.php_** file. Because understandin
 
            - <b>parent:</b> This is a magic parameter that you can find in the commented code below the sub-array 'default'. Using            this parameter you can make use of existing themes inside Bagisto and just customize them even further. This        parameter will take the value of the 'name’ parameter listed in the 3rd point above.
 
+<!-- ![bliss-theme](../../assets/images//theme/bliss-array.png) -->
+
 Finally, define your own paths and name of your custom theme inside **_themes.php_** file, and start creating view files. Do not forget to cover all get routes of shop package having a parameter called 'view’. You can get route file of shop package located at `packages/Webkul/Shop/src/Http/routes.php`
+
+<!-- ![theme-route-file-location](../../assets/images//theme/theme-routes.png){: width="30%" height="50%" .center} -->
 
 Make sure the name of the blade file should be the same one as passed in this GET route file like this:
 
@@ -71,5 +80,7 @@ Make sure the name of the blade file should be the same one as passed in this GE
         'view' => 'shop::products.index'
     ])->name('shop.categories.index');
 ```
+
+<!-- ![theme-route](../../assets/images//theme/route.png) -->
 
 For all views check all GET routes as they hold a view parameter with the value of view to be used.

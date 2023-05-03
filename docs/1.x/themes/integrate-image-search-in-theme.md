@@ -1,4 +1,4 @@
-# Image Search
+# Integrate image search in theme
 
 In this section, we will show you how you can integrate image search with your new theme. If you check our **default theme** and **velocity theme**, you will come to know that we are using the [Tensorflow](https://www.tensorflow.org/js) JS and loading the model named **Tensorflow** MobileNet.
 

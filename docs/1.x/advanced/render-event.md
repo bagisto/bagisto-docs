@@ -1,5 +1,4 @@
-# View Render Event
-
+# View render event
 With the help of `view_render_event()`, you can inject anything before or after the content of a template.
 
 ```php

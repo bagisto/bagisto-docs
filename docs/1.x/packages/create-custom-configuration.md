@@ -1,8 +1,8 @@
-# Custom configuration
+# Create custom configuration
 
 Creating a custom configuration ease the task for a developer or any non-developer person. Generally, in Bagisto, you can find it in admin panel **Configuration Menu**.
 
-### Step-1
+## Steps to create custom configuration
 
 - To create a custom configuration for your application, you just need to create a `system.php` file in the `Config` folder of your package.
 
@@ -13,57 +13,31 @@ Creating a custom configuration ease the task for a developer or any non-develop
 
   return [
       [
-          'key' => 'blog',
-          'name' => 'Blog',
+          'key' => 'helloworld',
+          'name' => 'Hello World',
           'sort' => 1
       ], [
-          'key' => 'blog.settings',
-          'name' => 'Blog Settings',
+          'key' => 'helloworld.settings',
+          'name' => 'Custom Settings',
           'sort' => 1,
       ], [
-          'key' => 'blog.settings.package',
-          'name' => 'Package Status',
+          'key' => 'helloworld.settings.settings',
+          'name' => 'Custom Groupings',
           'sort' => 1,
           'fields' => [
               [
                   'name' => 'status',
                   'title' => 'Status',
                   'type' => 'boolean',
-                  'validation' => 'required'
-              ]
-          ]
-      ], [
-          'key'    => 'blog.settings.blog-setting',
-          'name'   => 'blog::app.admin.system.blog-setting',
-          'sort'   => 2,
-          'fields' => [
-              [
-                  'name'          => 'pagination',
-                  'title'         => 'blog::app.admin.system.pagination',
-                  'type'          => 'select',
-                  'validation' => 'required',
-                  'options'       => [
-                      [
-                          'title' => 'Yes',
-                          'value' => 1,
-                      ], [
-                          'title' => 'No',
-                          'value' => 0,
-                      ],
-                  ]
-              ],
-              [
-                  'name'  => 'items',
-                  'title' => 'blog::app.admin.system.items',
-                  'type'  => 'number',
-                  'validation' => 'numeric'
+                  'channel_based' => true,
+                  'locale_based' => false
               ]
           ]
       ]
   ];
   ~~~
 
-#### Explanation for the keys
+### Explanation for the keys
 
 - **key**    : This key accept the unique value and nested with '.' (dot) operator.
 
@@ -75,22 +49,20 @@ Creating a custom configuration ease the task for a developer or any non-develop
 
 - We need to merge these custom config also,
 
-### Step-2
-
   ~~~php
   <?php
 
-  namespace Webkul\Blog\Providers;
+  namespace ACME\HelloWorld\Providers;
 
   use Illuminate\Support\Facades\Event;
   use Illuminate\Support\ServiceProvider;
 
   /**
-  * BlogServiceProvider
+  * HelloWorldServiceProvider
   *
   * @copyright 2020 Webkul Software Pvt. Ltd. (http://www.webkul.com)
   */
-  class BlogServiceProvider extends ServiceProvider
+  class HelloWorldServiceProvider extends ServiceProvider
   {
       /**
       * Register services.
@@ -118,7 +90,7 @@ Creating a custom configuration ease the task for a developer or any non-develop
 
 - Now, check the configuration,
 
-  ![Admin ACL Output](../../assets/images/package-development/custom-config-output.png)
+  ![Admin ACL Output](../../assets/images/package-development/admin-custom-config-output.png)
 
 ## Supported Field Types
 

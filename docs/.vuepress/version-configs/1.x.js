@@ -15,22 +15,15 @@ function setVersionPrefix(children) {
 /* module export */
 module.exports = [
     {
-        title: 'Prologue',
-        path: setVersionPrefix('prologue'),
-        collapsable: true,
-        children: setVersionPrefix([
-            ['prologue/upgrade-guide', 'Upgrade Guide'],
-            ['prologue/contribution-guide', ' Contribution Guide']
-        ])
-    },
-    {
         title: 'Introduction',
         path: setVersionPrefix('introduction'),
         collapsable: true,
         children: setVersionPrefix([
             ['introduction/requirements', 'Requirements'],
             ['introduction/installation', 'Installation'],
+            ['introduction/upgrade-to-latest-bagisto', 'Upgrade Bagisto'],
             ['introduction/docker', 'Docker']
+
         ])
     },
     {
@@ -38,36 +31,29 @@ module.exports = [
         path: setVersionPrefix('packages'),
         collapsable: true,
         children: setVersionPrefix([
-            ['packages/create-package', 'Getting Started'],
-            ['packages/create-migrations', 'Migrations'],
-            ['packages/create-models', 'Models'],
-            ['packages/store-data-through-repositories', 'Repository'],
-            ['packages/routes', 'Routes'],
-            ['packages/controllers', 'Controllers'],
-            ['packages/add-menu-in-admin', 'Admin Menu'],
-            ['packages/views', 'Views'],
-            ['packages/lang', 'Lang'],
-            ['packages/datagrid', 'DataGrid'],
-            ['packages/assets', 'Assets'],
-            ['packages/layouts', 'Layouts'],
-            ['packages/create-acl', 'Access Control List'],
-            ['packages/create-custom-configuration', 'Custom Configuration'],
-            ['packages/crud-through-repository', 'CRUD Through Repository'],
+            ['packages/create-package', 'Create a new package'],
+            ['packages/create-migrations', 'Create migrations'],
+            ['packages/add-menu-in-admin', 'Add menu in admin'],
+            ['packages/create-acl', 'Access control list'],
+            ['packages/create-custom-configuration', 'Create custom configuration'],
+            ['packages/create-models', 'Create models'],
+            ['packages/store-data-through-repositories', 'Store data through repositories'],
         ])
     },
     {
-        title: 'Digging Deeper',
+        title: 'Advanced Topics',
         path: setVersionPrefix('advanced'),
         collapsable: true,
         children: setVersionPrefix([
-            ['advanced/create-shipping-method', 'Shipping Method'],
-            ['advanced/create-payment-method', 'Payment Method'],
-            ['advanced/create-product-type', 'Product Type'],
-            ['advanced/events', 'Events Listeners'],
+            ['advanced/create-shipping-method', 'Create a shipping method'],
+            ['advanced/create-payment-method', 'Create a payment method'],
+            ['advanced/create-product-type', 'Create your own product type'],
+            ['advanced/datagrid', 'DataGrid'],
+            ['advanced/events', 'Events'],
             ['advanced/helpers', 'Helpers'],
-            ['advanced/override-core-model', 'Override Core Models'],
-            ['advanced/render-event', 'View Render Event'],
-            ['advanced/indexing-products-to-elasticsearch.md', 'Indexing Products To Elasticsearch'],
+            ['advanced/override-core-model', 'Override core models'],
+            ['advanced/render-event', 'View render event'],
+            ['advanced/indexing-products-to-elasticsearch.md', 'Indexing products to Elasticsearch'],
             ['advanced/security-practice', 'Best Security Practices'],
         ])
     },
@@ -76,20 +62,59 @@ module.exports = [
         path: setVersionPrefix('themes'),
         collapsable: true,
         children: setVersionPrefix([
-            ['themes/tracer', 'Blade File Tracer'],
-            ['themes/create-theme', 'Store Theme'],
-            ['themes/create-admin-theme', 'Admin Theme'],
-            ['themes/notification', 'Real Time Notification'],
-            ['themes/change-email-template.md', 'Email Template'],
-            ['themes/customize-hompepage-menu.md', 'Homepage Menu'],
-            ['themes/integrate-image-search-in-theme', 'Image Search']
+            ['themes/tracer', 'Blade file tracer'],
+            ['themes/create-theme', 'Create a store theme'],
+            ['themes/create-admin-theme', 'Create an admin theme'],
+            ['themes/change-email-template.md', 'Change email template'],
+            ['themes/customize-hompepage-menu.md', 'Customize homepage menu'],
+            ['themes/integrate-image-search-in-theme', 'Integrate image search in theme']
+        ])
+    },{
+        title: 'Admin Theme',
+        path: setVersionPrefix('admin-theme'),
+        collapsable: true,
+        children: setVersionPrefix([
+            ['admin-theme/notification', 'Enable real time notification'],
         ])
     },{
         title: 'Translations',
-        path: setVersionPrefix('translations'),
+        path: setVersionPrefix('translations/translation-based-on-locale'),
         collapsable: true,
         children: setVersionPrefix([
-            ['translations/translation-based-on-locale', 'Translation Based on Locale']
+            ['translations/translation-based-on-locale', 'Translation based on locale'],
+            ['translations/change-the-language-of-error-validations-on-your-store', 'Change the language of error validations on your store']
+        ])
+    },
+    {
+        title: 'User Guides',
+        path: setVersionPrefix('user-guides'),
+        collapsable: true,
+        children: setVersionPrefix([
+            ['user-guides/tax-rates', 'Tax Rates'],
+            ['user-guides/cart-rule', 'Cart rules'],
+            ['user-guides/social-auth', 'Social Authentication']
+        ])
+    },
+    {
+        title: 'Bagisto Web API',
+        path: setVersionPrefix('api'),
+        collapsable: true,
+        children: setVersionPrefix([
+            ['api/getting-started-with-the-api', 'Authentication'],
+            ['api/customers', 'Customers'],
+            ['api/locales', 'Locales'],
+            ['api/addresses', 'Addresses'],
+            ['api/products', 'Products'],
+            ['api/categories', 'Categories'],
+            ['api/attributes', 'Attributes'],
+            ['api/attribute-families', 'Attribute Families'],
+            ['api/cart', 'Shopping Cart'],
+            ['api/orders', 'Orders'],
+            ['api/invoices', 'Invoices'],
+            ['api/shipments', 'Shipments'],
+            ['api/transactions', 'Transactions'],
+            ['api/reviews', 'Reviews'],
+            ['api/wishlists', 'Wishlists'],
         ])
     },
     {
