@@ -1,10 +1,22 @@
 # Custom configuration
 
+[[TOC]]
+
 Creating a custom configuration ease the task for a developer or any non-developer person. Generally, in Bagisto, you can find it in admin panel **Configuration Menu**.
 
-### Step-1
+### Directory Structure
 
-- To create a custom configuration for your application, you just need to create a `system.php` file in the `Config` folder of your package.
+- To create a custom configuration for your application, you just need to create a **`system.php`** file in the **`Config`** folder of your package.
+
+    ```
+    - packages/
+        - Webkul/Blog/
+        - src/
+          ...
+          - Config/
+            - system.php
+          ...
+    ```
 
 - Inside the file, you can include the code below,
 
@@ -63,7 +75,7 @@ Creating a custom configuration ease the task for a developer or any non-develop
   ];
   ~~~
 
-#### Explanation for the keys
+### Explanation for the keys
 
 - **key**    : This key accept the unique value and nested with '.' (dot) operator.
 
@@ -75,50 +87,56 @@ Creating a custom configuration ease the task for a developer or any non-develop
 
 - We need to merge these custom config also,
 
-### Step-2
+### Merge Configuration
 
-  ~~~php
-  <?php
+- After that, we need to merge the config also just like we have done with menu items.
 
-  namespace Webkul\Blog\Providers;
+    ~~~php
+    <?php
 
-  use Illuminate\Support\Facades\Event;
-  use Illuminate\Support\ServiceProvider;
+    namespace Webkul\Blog\Providers;
 
-  /**
-  * BlogServiceProvider
-  *
-  * @copyright 2020 Webkul Software Pvt. Ltd. (http://www.webkul.com)
-  */
-  class BlogServiceProvider extends ServiceProvider
-  {
-      /**
-      * Register services.
-      *
-      * @return void
-      */
-      public function register()
-      {
-          $this->mergeConfigFrom(
-              dirname(__DIR__) . '/Config/admin-menu.php', 'menu.admin'
-          );
+    use Illuminate\Support\Facades\Event;
+    use Illuminate\Support\ServiceProvider;
 
-          $this->mergeConfigFrom(
-              dirname(__DIR__) . '/Config/acl.php', 'acl'
-          );
+    /**
+     * BlogServiceProvider
+    *
+    * @copyright 2020 Webkul Software Pvt. Ltd. (http://www.webkul.com)
+    */
+    class BlogServiceProvider extends ServiceProvider
+    {
+        /**
+         * Register services.
+        *
+        * @return void
+        */
+        public function register()
+        {
+            $this->mergeConfigFrom(
+                dirname(__DIR__) . '/Config/admin-menu.php', 'menu.admin'
+            );
 
-          $this->mergeConfigFrom(
-              dirname(__DIR__) . '/Config/system.php', 'core'
-          );
-      }
-  }
-  ~~~
+            $this->mergeConfigFrom(
+                dirname(__DIR__) . '/Config/acl.php', 'acl'
+            );
 
-- Run this command i.e. `php artisan optimize`.
+            $this->mergeConfigFrom(
+                dirname(__DIR__) . '/Config/system.php', 'core'
+            );
+        }
+    }
+    ~~~
+
+- After setting up, just run the below command to cached the latest changes.
+
+    ```sh
+    php artisan optimize
+    ```
 
 - Now, check the configuration,
 
-  ![Admin ACL Output](../../assets/images/1.5.x/package-development/custom-config-output.png)
+  ![Admin ACL Output](../../assets/1.5.x/images/package-development/custom-config-output.png)
 
 ## Supported Field Types
 

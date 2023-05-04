@@ -44,15 +44,16 @@ module.exports = [
             ['packages/store-data-through-repositories', 'Repository'],
             ['packages/routes', 'Routes'],
             ['packages/controllers', 'Controllers'],
-            ['packages/add-menu-in-admin', 'Admin Menu'],
             ['packages/views', 'Views'],
             ['packages/lang', 'Lang'],
-            ['packages/datagrid', 'DataGrid'],
-            ['packages/assets', 'Assets'],
             ['packages/layouts', 'Layouts'],
+            ['packages/assets', 'Assets'],
+            ['packages/add-menu-in-admin', 'Admin Menu'],
+            ['packages/customize-hompepage-menu.md', 'Homepage Menu'],
+            ['packages/validation', 'Validation'],
+            ['packages/datagrid', 'DataGrid'],
             ['packages/create-acl', 'Access Control List'],
-            ['packages/create-custom-configuration', 'Custom Configuration'],
-            ['packages/crud-through-repository', 'CRUD Through Repository'],
+            ['packages/create-custom-configuration', 'Custom Configuration']
         ])
     },
     {
@@ -67,7 +68,8 @@ module.exports = [
             ['advanced/helpers', 'Helpers'],
             ['advanced/override-core-model', 'Override Core Models'],
             ['advanced/render-event', 'View Render Event'],
-            ['advanced/indexing-products-to-elasticsearch.md', 'Indexing Products To Elasticsearch'],
+            ['advanced/change-email-template.md', 'Email Template'],
+            ['advanced/indexing-products-to-elasticsearch.md', 'Configure Elasticsearch'],
             ['advanced/security-practice', 'Best Security Practices'],
         ])
     },
@@ -76,20 +78,10 @@ module.exports = [
         path: setVersionPrefix('themes'),
         collapsable: true,
         children: setVersionPrefix([
-            ['themes/tracer', 'Blade File Tracer'],
             ['themes/create-theme', 'Store Theme'],
             ['themes/create-admin-theme', 'Admin Theme'],
             ['themes/notification', 'Real Time Notification'],
-            ['themes/change-email-template.md', 'Email Template'],
-            ['themes/customize-hompepage-menu.md', 'Homepage Menu'],
             ['themes/integrate-image-search-in-theme', 'Image Search']
-        ])
-    },{
-        title: 'Translations',
-        path: setVersionPrefix('translations'),
-        collapsable: true,
-        children: setVersionPrefix([
-            ['translations/translation-based-on-locale', 'Translation Based on Locale']
         ])
     },
     {

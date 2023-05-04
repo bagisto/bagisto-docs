@@ -1,8 +1,6 @@
 # Contribution Guide
 
-We are writing this guide to help you with the process of contributing to Bagisto (open-source) projects. We assume that you have a good understanding of Git and PHP Laravel.
-
-[Github Link](https://github.com/bagisto/bagisto/)
+[[TOC]]
 
 ## Bug Reports
 

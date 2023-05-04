@@ -1,8 +1,12 @@
 # Layouts
 
-### Step-1
+[[TOC]]
 
-- Till now, we configured our package `Blog` and now we need to extend the default layout of our admin panel by using `@extends('admin::layouts.master')` in file `packages/Webkul/Blog/src/Resources/views/admin/index.blade.php`. Below is the simple template which you can copy to your `index.blade.php` file.
+To learn in detail about Layouts you can visit Laravel doc from [here](https://laravel.com/docs/10.x/blade)
+
+## Extend Admin Layout
+
+- Now, We can extend the default layout of Bagisto admin panel by using **`@extends('admin::layouts.master')`** in file **`packages/Webkul/Blog/src/Resources/views/admin/index.blade.php`**. Below is the simple template which you can copy to your **`index.blade.php`** file.
 
   ```html
   @extends('admin::layouts.master')
@@ -25,8 +29,10 @@
 
   @stop
   ```
+  
+## Extend Shop Layout
 
-- Same for file in file `packages/Webkul/Blog/src/Resources/views/shop/velocity/index.blade.php`. Below is the simple template which you can copy to your `index.blade.php`.
+- Same for file in file **`packages/Webkul/Blog/src/Resources/views/shop/velocity/index.blade.php`**. Below is the simple template which you can copy to your **`index.blade.php`**.
 
  ```html
   @extends('shop::layouts.master')
@@ -44,9 +50,7 @@
   ```
 
 ::: warning
-  You can notice translation in the blade file so you also have to add translation in `lang/app.php` respectively.
+  You can notice translation in the blade file so you also have to add translation in **`lang/app.php`** respectively.
 :::
 
-- If you don’t want to include this one then you can create your own master file which includes your packages CSS & JS.
-
-- Run `php artisan vendor:publish --all --force`. This will move all your publishable assets to their respective directory which you mentioned in the service provider.
+- If you don’t want to include this one then you can create your own master file.

@@ -1,12 +1,14 @@
-# Lang
+# Localization
 
-### Step-1
+[[TOC]]
 
-- Now, we are going to create a language file for our package. For this create a `lang` folder in the `packages/Webkul/Blog/src/Resources` path.
+To learn in detail about Localization you can visit Laravel doc from [here](https://laravel.com/docs/10.x/localization)
 
-- In `lang` folder, you can create a different folder for language translations like for English 'en', Hindi ‘hn’ etc. Moving forward, we will create a folder name `en` (say language code) and in that folder, create a file name as `app.php` to perform language translation.
+## Directory Structure
 
-  ::: details Updated directory structure
+- Now, we are going to create a language file for our package. For this create a **`lang`** folder in the **`packages/Webkul/Blog/src/Resources`** path.
+
+- In **`lang`** folder, you can create a different folder for language translations like for English 'en', Hindi ‘hi’ etc. Moving forward, we will create a folder name **`en`** (say language code) and in that folder, create a file name as **`app.php`** to perform language translation.
 
   ```
   - packages/
@@ -20,9 +22,19 @@
               - app.php
   ```
 
-  :::
+- Now we can write a translation in **`app.php`** like below,
 
-### Step-2
+  ```php
+  <?php
+
+  return [
+      'admin' => [
+          'name' => 'John Doe'
+      ]
+  ];
+  ```
+
+## Load translation from Package
 
 - Now, we need to register the language file to the service provider.
 
@@ -70,22 +82,6 @@
   }
   ```
 
-### Step-3
-
-- Now we can write a translation in `app.php` like below,
-
-  ```php
-  <?php
-
-  return [
-      'admin' => [
-          'name' => 'John Doe'
-      ]
-  ];
-  ```
-
-### Step-4
-
 - Add below code to your blade file.
 
   ```html
@@ -94,12 +90,12 @@
 
   ::: details Admin Output
 
-  ![Translation Output](../../assets/images/1.5.x/package-development/blog-admin-lang-output.png)
+  ![Translation Output](../../assets/1.5.x/images/package-development/blog-admin-lang-output.png)
 
   :::
 
   ::: details Shop Output
 
-  ![Translation Output](../../assets/images/1.5.x/package-development/blog-shop-lang-output.png)
+  ![Translation Output](../../assets/1.5.x/images/package-development/blog-shop-lang-output.png)
 
   :::

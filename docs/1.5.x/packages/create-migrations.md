@@ -1,29 +1,20 @@
 # Migrations
 
-There are two ways to create a migration in **Bagisto**.
+[[TOC]]
 
-1. Using Bagisto Package Generator (**Recommended**)
-2. By normal laravel command. (**Expert Level**)
+To learn in detail about Migrations you can visit Laravel doc from [here](https://laravel.com/docs/10.x/migrations)
 
-## 1. Using Bagisto Package Generator
+## Using Bagisto Package Generator
 
-This command will create a new migration class in `packages/Webkul/Blog/src/Database/Migrations` directory.
+This command will create a new migration class in **`packages/Webkul/Blog/src/Database/Migrations`** directory.
 
-`php artisan package:make-migration CreatePostsTable Webkul/Blog`
+```sh
+php artisan package:make-migration CreatePostsTable Webkul/Blog
+```
 
-## 2. By normal laravel command
+## By Laravel artisan Command
 
-To create a migration, use the `make:migration` artisan command:
-
-`php artisan make:migration create_posts_table`
-
-The new migration will be placed in your `database/migrations` directory. Each migration file name contains a timestamp which allows Laravel to determine the order of the migrations.
-
-- Now, Create a `Database` folder in `packages/Webkul/Blog/src` path and inside `Database` folder create `Migrations` and `Seeders` folder.
-
-- After that move your migration file from `database/migration` to `packages/Webkul/Blog/src/Database/Migration/`
-
-    ::: details Updated directory structure
+- Create a **`Database`** folder in **`packages/Webkul/Blog/src`** path and inside **`Database`** folder create **`Migrations`** and **`Seeders`** folder.
 
     ```
     - packages/
@@ -32,18 +23,56 @@ The new migration will be placed in your `database/migrations` directory. Each m
           ...
           - Database/
             - Migrations/
-              - 2023_04_28_173207_create_posts_table.php
             - Seeders/
     ```
-    :::
+- Now run the below command with the **`--path`** option to determine where your migration file will be placed.
 
-The --table and --create options may also be used to indicate the name of the table and whether the migration will be creating a new table.
+  ```sh
+  php artisan make:migration create_posts_table --path=packages/Webkul/Blog/src/Database/Migrations
+  ```
 
-You may also specify a --path option when creating the migration. The path should be relative to the root directory of your installation:
+- You can copy the code from here and paste it into your migration file.
 
-`php artisan make:migration create_posts_table --path=packages/Webkul/Blog/src/Database/Migrations`
+  ```php
+  <?php
 
-- Now, we need to add migrations to our service provider to load them.
+  use Illuminate\Database\Migrations\Migration;
+  use Illuminate\Database\Schema\Blueprint;
+  use Illuminate\Support\Facades\Schema;
+
+  return new class extends Migration
+  {
+      /**
+      * Run the migrations.
+      *
+      * @return void
+      */
+      public function up()
+      {
+          Schema::create('posts', function (Blueprint $table) {
+              $table->id();
+              $table->string('title')->nullable();
+              $table->longText('description')->nullable();
+              $table->integer('user_id');
+              $table->tinyInteger('status')->default(1);
+              $table->timestamps();
+          });
+      }
+
+      /**
+      * Reverse the migrations.
+      *
+      * @return void
+      */
+      public function down()
+      {
+          Schema::dropIfExists('posts');
+      }
+  };
+  ```
+### Load Migration From Package
+
+- Here, we need to add migrations to our service provider to load them.
 
   ```php
   <?php
@@ -80,5 +109,11 @@ You may also specify a --path option when creating the migration. The path shoul
       }
   }
   ```
+### Create Table From Migration
 
+- Now run below command to create **`posts`** table inside your database.
+
+  ```sh
+  php artisan migrate
+  ```
 

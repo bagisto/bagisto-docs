@@ -1,25 +1,56 @@
 # Repository
 
+[[TOC]]
+
+## Introduction
+
 Generally, we wrote all of our application logic in the controller. There’s an alternative approach of development that abstracts some calls into PHP classes called Repositories. The idea is that we can decouple models from controllers and assign a readable name's to complicated queries.
 
 This file defines our Repository class. Instances of this class have a model property that we tie to an Eloquent model. Once this is bound in the constructor we can call Eloquent methods like findOrFail, update or all from the class methods.
 
-There are two ways to create a Repository in **Bagisto**.
+- We are using Prettus Repository. You can find all available methods in the Prettus repository from [here](https://github.com/andersao/l5-repository). For now, We are giving some examples below.
 
-1. Using Bagisto Package Generator (**Recommended**)
-2. By manually setting up all files (**Expert Level**)
+  Examples: 
 
-## 1. Using Bagisto Package Generator
+  Sl. no. |  Method               | Description
+  ------- |  ------               | ----------- 
+  1       | all                   | Find all results in Repository
+  2       | paginate              | Find all results in Repository with pagination
+  3       | find                  | Find result by id
+  4       | with(['table_name'])  | Loading the Model relationships
+  5       | findWhereIn           | Find by result by multiple values in one field
 
-This command will create a new Repository class in `packages/Webkul/Blog/src/Repository` directory.
+  ```php
+  // bound in constructor
+  public function __construct(protected PostRepository $postRepository) {}
+  ```
 
-`php artisan package:make-repository PostRepository Webkul/Blog`
+    ```php
+    // Find all results in Repository
+    $posts = $this->postRepository->all();
+    ```
 
-After that we have to create a [Module Service Provider](#module-service-provider).
+## Using Bagisto Package Generator
 
-## 2. By manually setting up all files
+- This command will create a new Repository class in **`packages/Webkul/Blog/src/Repository`** directory.
 
-- Create a `Repository` folder inside `Webkul/Blog/src/` and create a file `PostRepository.php` and create the `model()` method in repository class which returns the path of your contract class.
+  ```sh
+  php artisan package:make-repository PostRepository Webkul/Blog
+  ```
+
+## By Manually Setting up all Files
+
+- Create a **`Repository`** folder inside **`Webkul/Blog/src/`** and create a file **`PostRepository.php`** and create the **`model()`** method in repository class which returns the path of your contract class.
+
+  ```
+    - packages/
+      - Webkul/Blog/
+        - src/
+          ...
+          - Repository/
+            - PostRepository.php
+    ```
+- After that copy the below code to your newly created repository file. 
 
   ~~~php
   <?php
@@ -42,38 +73,4 @@ After that we have to create a [Module Service Provider](#module-service-provide
   }
   ~~~
 
-
-### Module Service Provider
-
-- After creating Model, Proxy and Repository, we have to create a provider as  `ModuleServiceProvider.php` inside `Webkul/Blog/src/Providers`. In this file, models which are used in this package are registered. You may check below code,
-
-  ~~~php
-  <?php
-
-  namespace Webkul\Blog\Providers;
-
-  use Konekt\Concord\BaseModuleServiceProvider;
-
-  class ModuleServiceProvider extends BaseModuleServiceProvider
-  {
-      protected $models = [
-          \Webkul\Blog\Models\Post::class,
-      ];
-  }
-  ~~~
-
-- Now, Register your `ModuleServiceProvider.php` in `config/concord.php` file,
-
-    ~~~php
-    <?php
-
-    return [
-        'modules' => [
-            ...
-            \Webkul\Blog\Providers\ModuleServiceProvider::class,
-            ...
-        ]
-    ];
-    ~~~
-
-- Now, You your `PostRepository` is ready to use.
+- Now, You your **`PostRepository`** is ready to use.

@@ -1,8 +1,12 @@
 # Routes
 
-- **For routes**: Create a `Routes` folder in `packages/Webkul/Blog/src` and create two files named as `admin-routes.php` and `shop-routes.php`. So the updated structure will look like below.
+[[TOC]]
 
-    ::: details Updated directory structure
+To learn in detail about Routes you can visit Laravel doc from [here](https://laravel.com/docs/10.x/routing)
+
+## Directory Structure
+
+- Create a **`Routes`** folder in **`packages/Webkul/Blog/src`** and create two files named as **`admin-routes.php`** and **`shop-routes.php`**. So the updated structure will look like below.
 
     ```
     - packages/
@@ -14,35 +18,36 @@
             - shop-routes.php
     ```
 
-    :::
+- `admin-routes.php`: This file is for the admin routes. Add below codes to this file,
 
-    - `admin-routes.php`: This file is for the admin routes. Add below codes to this file,
+  ```php
+  <?php
 
-      ```php
-      <?php
+  use Illuminate\Support\Facades\Route;
+  use Webkul\Blog\Http\Controllers\Admin\PostController;
 
-      use Illuminate\Support\Facades\Route;
+  Route::group(['middleware' => ['web', 'admin'], 'prefix' => config('app.admin_url')], function () {
 
-      Route::group(['middleware' => ['web', 'admin'], 'prefix' => config('app.admin_url')], function () {
+      Route::get('/blog', [PostController::class, 'index']);
+  });
+  ```
 
-          // all admin routes will place here
-      });
-      ```
+- `shop-routes.php`: This file is for the shop routes. Add below codes to this file,
 
-    - `shop-routes.php`: This file is for the shop routes. Add below codes to this file,
+  ```php
+  <?php
 
-      ```php
-      <?php
+  use Illuminate\Support\Facades\Route;
+  use Webkul\Blog\Http\Controllers\Shop\PostController;
 
-      use Illuminate\Support\Facades\Route;
+  Route::group(['middleware' => ['web', 'theme', 'locale', 'currency']], function () {
 
-      Route::group(['middleware' => ['web', 'theme', 'locale', 'currency']], function () {
+      Route::get('/blogs', [PostController::class, 'index']);
+  });
+  ```
+## Loading Routes
 
-          // all shop routes will be place here
-      });
-      ```
-
-- Now, we need to register our routes to service provider’s boot method i.e. `BlogServiceProvider.php`
+- Now, we need to register our routes to service provider’s boot method i.e. **`BlogServiceProvider.php`**
 
   ```php
   <?php

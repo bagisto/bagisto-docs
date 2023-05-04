@@ -1,6 +1,6 @@
 # Requirements
 
-Before installing Bagisto, make sure the server meets the following requirements:
+[[TOC]]
 
 ## Server configuration
 
@@ -40,4 +40,4 @@ Open your php configuration file **php.ini** and change the following settings.
 
 - **MySQL**: 8.0.32 or higher
 - **MariaDB**: 10.3 or higher
-- **Database Collation** : utf8mb4_0900_ai_ci
+- **Database Collation** : utf8mb4_unicode_ci

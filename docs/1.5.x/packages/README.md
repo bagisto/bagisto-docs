@@ -26,15 +26,15 @@ In Bagisto, we have created plenty of packages at path `packages/Webkul/`. You c
       - Post.php
     - Database/
       - Migrations/
-        - create_posts_table.php
+        - 2023_04_21_173057_create_posts_table
       - Seeders/
     - Events/
     - Http/
       - Controllers/
         - Admin/
-          - AdminController.php
+          - PostController.php
         - Shop/
-          - ShopController.php
+          - PostController.php
       - Middleware/
       - Requests/
     - Listeners/

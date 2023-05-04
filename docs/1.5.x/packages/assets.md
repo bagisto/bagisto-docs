@@ -1,37 +1,43 @@
 # Assets
 
-### Step-1
+[[TOC]]
+
+## Directory Structure
 
 - Now we will add CSS, JS and images to our package.
 
-- In `Resources` folder creates a folder name `assets` & create `sass`, `js` and `images` folder.
+- In **`Resources`** folder creates a folder name **`assets`** & create **`sass`**, **`js`** and **`images`** folder.
 
   - In **sass** folder, add file **_admin.scss_**, **_default.scss_**, and **_velocity.scss_**
 
   - In **js** folder, add file **app.js**
 
-::: details Updated directory structure
+  ```
+  - packages/
+      - Webkul/Blog/
+        - src/
+          ...
+          - Resources/
+            - assets/
+              - sass/
+                - admin.scss
+                - default.scss
+                - velocity.scss
+              - js/
+                - app.js
+              - images/
+  ```
 
-```text
-- packages/
-    - Webkul/Blog/
-      - src/
-        ...
-        - Resources/
-          - assets/
-            - sass/
-              - admin.scss
-              - default.scss
-              - velocity.scss
-            - js/
-              - app.js
-            - images/
-```
-:::
+## Compiling Assets
 
-### Step-2
+- To add assets, create **`package.json`** and **`webpack.mix.js`** file inside the root of your package i.e. **`packages/Webkul/Blog`**.
 
-- To add assets, create `package.json` and `webpack.mix.js` file inside the root of your package i.e. `packages/Webkul/Blog`.
+  ```
+  - packages/
+      - Webkul/Blog/
+        - package.json
+        - webpack.mix.js
+  ```
 
 - Copy below code to `package.json`,
 
@@ -58,7 +64,7 @@
 
   ```
 
-- Copy below code to `webpack.mix.js`,
+- Copy below code to **`webpack.mix.js`**.
 
   ```javascript
   const mix = require("laravel-mix");
@@ -106,19 +112,19 @@
     }
   ```
 
-- After doing this go to the root of your package i.e. `packages/Webkul/Blog` and run `npm install` which will install all dependencies.
+- After doing this go to the root of your package i.e. **`packages/Webkul/Blog`** and run **`npm install`** which will install all dependencies.
 
-- Now, your all `scss` and `js` files is ready to use. Write all your css and js here.
+- Now, your all **`scss`** and **`js`** files is ready to use. Write all your css and js here.
 
-- When you done with your changes, then run `npm run prod` which will compiled all your css, js and images to the publishable folder. Then register your publishable in `BlogServiceProvider`,
+- When you done with your changes, then run **`npm run prod`** which will compiled all your css, js and images to the publishable folder. Then register your publishable in **`BlogServiceProvider`**.
 
   ::: tip
 
-  You can use `npm run watch` also, this will watch all your changes and put all your changes to the public path. When you done with all your changes then run `npm run prod` to compile all your changes and move to publishable folder.
+  You can use **`npm run watch`** also, this will watch all your changes and put all your changes to the public path. When you done with all your changes then run **`npm run prod`** to compile all your changes and move to publishable folder.
 
   :::
 
-### Step-3
+## Load Assets From Package
 
   ```php
   <?php
@@ -168,13 +174,13 @@
   }
   ```
 
-### Step-4
+### Linking Stylesheets
 
-- After doing this we need to add an event listener so that admin layouts include our CSS. For this we need to add an Event Listener in service provider. But before adding event, let's create a `layouts` folder within `/Resources/views/admin`, `/Resources/views/shop/default`, and `/Resources/views/shop/velocity`. 
+- After doing this we need to add an event listener so that admin layouts include our CSS. For this we need to add an Event Listener in service provider. But before adding event, let's create a **`layouts`** folder within **`/Resources/views/admin`**, **`/Resources/views/shop/default`**, and **`/Resources/views/shop/velocity`**. 
 
-::: details Updated directory structure
+- And inside each layouts folder create a file called **`style.blade.php`** & mention compiled CSS path inside this file.
 
-```text
+```
 - packages/
     - Webkul/Blog/
       - src/
@@ -184,40 +190,40 @@
           - views
             - admin
               - layouts/
+                - style.blade.php
             - shop/
               - default/
                 - layouts
+                  - style.blade.php
               - velocity/
                 - layouts
+                  - style.blade.php
 ```
-:::
 
-- And inside each layouts folder create a file called `style.blade.php` & mention compiled CSS path inside this file.
-
-- Copy below code to `admin/layouts/style.blade.php`
+- Copy below code to **`admin/layouts/style.blade.php`**
 
   ```html
 
   <link rel="stylesheet" href="{{ asset('vendor/webkul/blog/assets/css/admin.css') }}"/>
   ```
 
-- Copy below code to `shop/default/layouts/style.blade.php`
+- Copy below code to **`shop/default/layouts/style.blade.php`**
 
   ```html
 
   <link rel="stylesheet" href="{{ asset('vendor/webkul/blog/assets/css/default.css') }}"/>
   ```
 
-- Copy below code to `shop/velocity/layouts/style.blade.php`
+- Copy below code to **`shop/velocity/layouts/style.blade.php`**
 
   ```html
 
   <link rel="stylesheet" href="{{ asset('vendor/webkul/blog/assets/css/velocity.css') }}"/>
   ```
 
-### Step-5
+### Event Listener
 
-- **For Event Listener:** Add facade 'Event' into your `BlogServiceProvider.php` file,
+- For Event Listener add facade 'Event' into your **`BlogServiceProvider.php`** file.
 
   ```php
   <?php

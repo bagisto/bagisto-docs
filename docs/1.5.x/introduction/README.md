@@ -4,7 +4,7 @@
 **Bagisto** is a viable option to reduce your time, cost and workforce for building online stores or migrating from a physical store to an online platform.
 
 It is suitable for all small or large E-Commerce business demands using a simple set-up procedure.  
-Built on top of [Laravel](https://laravel.com) and equipped with an easy product information management.  
+Built on top of Laravel and equipped with an easy product information management.  
 
 The framework is very flexible and easy to use even for non-tech users.
 **Bagisto** features an administration panel with a dashboard, sales data, a catalog for products and customer management.

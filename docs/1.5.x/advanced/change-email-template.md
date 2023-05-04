@@ -95,4 +95,4 @@ Now, test the mail.
 
 ## Mail Sample
 
-![Mail Sample](../../assets/images/themes/mail-sample.png)
+![Mail Sample](../../assets/1.5.x/images/advanced-topics/mail-sample.png)
