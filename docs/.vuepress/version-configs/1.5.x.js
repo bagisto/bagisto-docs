@@ -83,43 +83,5 @@ module.exports = [
             ['themes/notification', 'Real Time Notification'],
             ['themes/integrate-image-search-in-theme', 'Image Search']
         ])
-    },
-    {
-        title: 'Bagisto GraphQL Admin API',
-        path: setVersionPrefix('graphql-admin-api'),
-        collapsable: true,
-        children: setVersionPrefix([
-            ['graphql-admin-api/installation', 'Installation'],
-            ['graphql-admin-api/getting-started-with-the-api.md', 'Authentication'],
-            ['graphql-admin-api/settings.md', 'Settings'],
-            ['graphql-admin-api/cms.md', 'CMS'],
-            ['graphql-admin-api/velocity.md', 'Velocity'],
-            ['graphql-admin-api/customers.md', 'Customers'],
-            ['graphql-admin-api/promotions.md', 'Promotions'],
-            ['graphql-admin-api/products.md', 'Products'],
-            ['graphql-admin-api/categories.md', 'Categories'],
-            ['graphql-admin-api/attributes.md', 'Attributes'],
-            ['graphql-admin-api/attribute-groups.md', 'Attribute Groups'],
-            ['graphql-admin-api/attribute-families.md', 'Attribute Families'],
-            ['graphql-admin-api/sales.md', 'Sales'],
-        ])
-    },
-    {
-        title: 'Bagisto GraphQL Shop API',
-        path: setVersionPrefix('graphql-shop-api'),
-        collapsable: true,
-        children: setVersionPrefix([
-            ['graphql-admin-api/installation', 'Installation'],
-            ['graphql-shop-api/getting-started-with-the-api.md', 'Authentication'],
-            ['graphql-shop-api/addresses.md', 'Addresses'],
-            ['graphql-shop-api/orders.md', 'Orders'],
-            ['graphql-shop-api/reviews.md', 'Reviews'],
-            ['graphql-shop-api/wishlists.md', 'Wishlists'],
-            ['graphql-shop-api/compare.md', 'Compare'],
-            ['graphql-shop-api/downloadable-links.md', 'Downloadable Links'],
-            ['graphql-shop-api/cart.md', 'Cart'],
-            ['graphql-shop-api/checkout.md', 'Checkout Process'],
-            ['graphql-shop-api/homepage.md', 'Home Page'],
-        ])
-    },
+    }
 ]

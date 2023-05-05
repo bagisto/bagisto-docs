@@ -67,4 +67,4 @@ return [
 
 - Now, the menu will display in the admin panel. You can change the icon according to your needs.
 
-![Admin Menu Output](../../assets/images/package-development/admin-menu-output.png)
+![Admin Menu Output](../../assets/1.x/images/package-development/admin-menu-output.png)

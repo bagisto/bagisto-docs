@@ -4,7 +4,7 @@
 
 In this section, we will explain the indexing of products from the database to the Elasticsearch engine.
 
-## Setting up environment
+## Setting up Environment
 
 - To continue with this make sure you have [Elasticseach](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html) installed on your system. By default, Elasticsearch uses the **`9200`** port. So, we are using the same port.
 
@@ -43,7 +43,7 @@ In this section, we will explain the indexing of products from the database to t
 
 - You can use [Kibana](https://www.elastic.co/kibana/) for visualization also, but in this section, we are using only the Elasticsearch engine.
 
-## Setting up config
+## Setting up Config
 
 The most simple way to set up your environment is by just setting the key in the **`.env`** file.
 
@@ -91,7 +91,7 @@ php artisan indexer:index
 
 This command will index all your data from **`product_flat`** table to Elasticsearch index.
 
-## Checking index
+## Checking Indexes
 
 Now, let's check our imported index in the Elasticsearch by hitting this URL `http://localhost:9200/_cat/indices?v`,
 

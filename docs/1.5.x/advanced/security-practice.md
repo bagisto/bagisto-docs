@@ -1,6 +1,8 @@
 # Best Security Practices
 
-## Keep your software up-to-date
+[[TOC]]
+
+## Software Updates
 
 - Using HTTPS (Google now uses HTTPS as a ranking factor).
 
@@ -25,7 +27,7 @@
 
 - Use a properly configured and updated firewall between the payment card data and the public network.
 
-## Limiting error messages
+## Limiting Error Messages
 
 ![limiting-error-messages](../../assets/1.5.x/images/advanced-topics/limiting-error-messages.png)
 
@@ -35,7 +37,7 @@
 
 - Add “ServerTokens Prod” to display Apache as product only.
 
-## Allow admin access to certain IPs
+## Limiting Admin Access
 
 - Edit your .htaccess file with the following code
 
@@ -49,9 +51,9 @@ RewriteRule ^(.*)\$ - [R=403,L]
 
 - Review your server for development leftovers. Make sure there are no accessible "log files", ".git directories", "database dumps", "zip files".
 
-## Restrict files with .git, .zip, .gz, and .sql extensions
+## Restrict Unnecessary Files
 
-- Edit your .htaccess file
+- Edit your .htaccess file. Restrict files with .git, .zip, .gz, and .sql extensions.
 
 ~~~
 <FilesMatch "\.(git|zip|tar|sql)\$">
@@ -64,9 +66,9 @@ RewriteRule ^(.*)\$ - [R=403,L]
 - Make sure only port 80 and 443 are publicly accessible and the rest of the ports are restricted.
 
 
-## Restrict php execution inside storage directory
+## Restrict php Execution Inside Storage
 
-- Edit your apache configuration file
+- Edit your apache configuration file. Restrict php execution inside storage directory
 
   ~~~
   <Directory "~/www/bagisto/public/storage/">
@@ -97,7 +99,7 @@ RewriteRule ^(.*)\$ - [R=403,L]
 
 - Take regular backup of important files and also save them remotely in a secure environment.
 
-## Use strong and unique passwords
+## Strong Passwords
 
 - Use strong and unique passwords, and change them periodically.
 

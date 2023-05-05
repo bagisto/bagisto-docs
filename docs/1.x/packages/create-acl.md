@@ -66,7 +66,7 @@ After setting up, just run this command `php artisan optimize` to cached the lat
 
 Now check the latest ACL.
 
-![Admin ACL Output](../../assets/images/package-development/admin-acl-output.png)
+![Admin ACL Output](../../assets/1.x/images/package-development/admin-acl-output.png)
 
 ## Checking roles and permissions
 

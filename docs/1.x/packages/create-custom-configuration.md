@@ -90,7 +90,7 @@ Creating a custom configuration ease the task for a developer or any non-develop
 
 - Now, check the configuration,
 
-  ![Admin ACL Output](../../assets/images/package-development/admin-custom-config-output.png)
+  ![Admin ACL Output](../../assets/1.x/images/package-development/admin-custom-config-output.png)
 
 ## Supported Field Types
 

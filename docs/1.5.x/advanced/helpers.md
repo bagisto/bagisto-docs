@@ -1,10 +1,14 @@
 # Helpers
 
+[[TOC]]
+
+## Introduction
+
 In Bagisto, there are several packages have been used. We have provided useful helper methods in the packages which can help developers to develop their projects with ease.
 
 ## Core Helpers
 
-All the mentioned helper methods are from Bagisto's core package class named `Core` in the `Webkul\Core` namespace. Let's discuss some common methods,
+All the mentioned helper methods are from Bagisto's core package class named **`Core`** in the **`Webkul\Core`** namespace. Let's discuss some common methods,
 
 - Get all the channels,
 
@@ -18,7 +22,7 @@ All the mentioned helper methods are from Bagisto's core package class named `Co
   core()->getCurrentChannel();
   ~~~
 
-- Set the current channel, this method will take one argument i.e. instance of this class `Webkul\Core\Models\Channel`,
+- Set the current channel, this method will take one argument i.e. instance of this class **`Webkul\Core\Models\Channel`**,
 
   ~~~php
   core()->setCurrentChannel($channel);
@@ -42,13 +46,13 @@ All the mentioned helper methods are from Bagisto's core package class named `Co
   core()->getDefaultChannelCode();
   ~~~
 
-- Get requested channel code, this method is useful when you need to fetch the channel from the request, and no need to worry about the fallback as well. This method also has the optional parameter `$fallback`, which means the developer can use this with or without fallback,
+- Get requested channel code, this method is useful when you need to fetch the channel from the request, and no need to worry about the fallback as well. This method also has the optional parameter **`$fallback`**, which means the developer can use this with or without fallback,
 
   ~~~php
   core()->getRequestedChannelCode();
   ~~~
 
-- Get the channel name, yeah we know that you can chain it with the `Channel` instance but the purpose of this method is to handle the fallback case as well. This method will first check the name in the property, if not found then it will proceed further with app locale code, if still not found then it will check from the config key name as `app.fallback_locale`,
+- Get the channel name, yeah we know that you can chain it with the **`Channel`** instance but the purpose of this method is to handle the fallback case as well. This method will first check the name in the property, if not found then it will proceed further with app locale code, if still not found then it will check from the config key name as **`app.fallback_locale`**,
 
   ~~~php
   core()->getChannelName($channel);
@@ -72,7 +76,7 @@ All the mentioned helper methods are from Bagisto's core package class named `Co
   core()->getCurrentLocale();
   ~~~
 
-- Get the requested locale code, this method is useful when you need to fetch the locale code from the request, and no need to worry about the fallback as well. This method also has the optional parameter `$localeKey` and `$fallback`, which means the developer can use this with or without fallback,
+- Get the requested locale code, this method is useful when you need to fetch the locale code from the request, and no need to worry about the fallback as well. This method also has the optional parameter **`$localeKey`** and **`$fallback`**, which means the developer can use this with or without fallback,
 
   ~~~php
   core()->getRequestedLocaleCode();

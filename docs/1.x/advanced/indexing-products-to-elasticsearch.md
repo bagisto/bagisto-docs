@@ -8,7 +8,7 @@ To continue with this make sure you have [Elasticseach](https://www.elastic.co/g
 
 Just hit this route `http://localhost:9200`, if you see the below image then Elasticsearch is successfully installed on your system,
 
-![Elasticsearch Installation Info](../..//assets/images/advanced-topics/elastic-search/installed-elastic-info.png)
+![Elasticsearch Installation Info](../../assets/1.x/images/advanced-topics/elastic-search/installed-elastic-info.png)
 
 ::: tip
 
@@ -83,7 +83,7 @@ This command will index all your data from `product_flat` table to Elasticsearch
 
 Now, let's check our imported index in the Elasticsearch by hitting this URL `http://localhost:9200/_cat/indices?v`,
 
-![Product Index Info](../../assets/images/advanced-topics/elastic-search/product-index.png)
+![Product Index Info](../../assets/1.x/images/advanced-topics/elastic-search/product-index.png)
 
 ::: tip
 
