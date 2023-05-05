@@ -12,14 +12,14 @@
 
 ## PHP Extensions
 
-Make sure the following extensions are installed and enabled. You can check using the `phpinfo()` page or the `php -m` command.
+Make sure the following extensions are installed and enabled. You can check using the **`phpinfo()`** page or the **`php -m`** command.
 
 - php-intl extension
 
 - php-gd extension
 
   ::: tip
-    You must install the `php-gd` extension properly otherwise, the image does not work properly in the project.
+    You must install the **`php-gd`** extension properly otherwise, the image does not work properly in the project.
   :::
 
 ## PHP Configuration

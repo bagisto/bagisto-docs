@@ -20,7 +20,7 @@ To upgrade your current version to the latest version of Bagisto, you need to fo
   composer create-project
   ~~~
 
-- After the command has been executed, now go to your `.env` file, provide your old project database credentials for which you want to upgrade Bagisto, and run the following command,
+- After the command has been executed, now go to your **`.env`** file, provide your old project database credentials for which you want to upgrade Bagisto, and run the following command,
 
   ~~~sh
   php artisan optimize
@@ -46,7 +46,7 @@ To upgrade your current version to the latest version of Bagisto, you need to fo
   php artisan storage:link
   ~~~
 
-- Copy all the content of the previous version's folder (e.g. `old-project/storage/app/public`) to the latest version's folder (e.g. `new-project/storage/app/public`).
+- Copy all the content of the previous version's folder (e.g. **`old-project/storage/app/public`**) to the latest version's folder (e.g. **`new-project/storage/app/public`**).
 
   ::: tip
     If your existing project also depends on some local storage, or you have changed some paths, or you want previous logs also then make sure you add all those also.
@@ -59,10 +59,10 @@ To upgrade your current version to the latest version of Bagisto, you need to fo
   ~~~
 
   ::: warning
-    Don't use the `--force` flag, this will reset all your views. Use only when you know what you are doing.
+    Don't use the **`--force`** flag, this will reset all your views. Use only when you know what you are doing.
   :::
 
-You are now at the latest version. Still, we want to mention that if you have done a lot of customizations then that portion of compatibility should be handled at your end.
+- You are now at the latest version. Still, we want to mention that if you have done a lot of customizations then that portion of compatibility should be handled at your end.
 
 ## New Changes
 
@@ -73,3 +73,5 @@ You are now at the latest version. Still, we want to mention that if you have do
 - Change the checkbox in dark mode [#7304](https://github.com/bagisto/bagisto/pull/7304).
 - Changed the routes in Packages, see [#7345](https://github.com/bagisto/bagisto/pull/7345).
 - Removed Triggers [#7334](https://github.com/bagisto/bagisto/pull/).
+- Consistent mail as per the laravel config [#7509](https://github.com/bagisto/bagisto/pull/7509)
+- REST API and JWT package related dependencies removed [7546](https://github.com/bagisto/bagisto/pull/7546)

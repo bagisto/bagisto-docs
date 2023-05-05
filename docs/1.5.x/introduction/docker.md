@@ -10,7 +10,7 @@ You can also add multiple servers and services just by adding them to docker-com
 
 #### Application Data and Database Volume Persistance
 It is recommended to keep your application files and database data volume on the docker host and mount them on the running container, this to ensure that the application and database data persistance even in the case of containers' failure or termination, In this way even if you destroy containers, your data won't get lost unless you remove them forcefully.
-This compose configuration file mounts the application directory `app` and database volume `dbvolume` from host to running docker containers at the time of containers launch.
+This compose configuration file mounts the application directory **`app`** and database volume **`dbvolume`** from host to running docker containers at the time of containers launch.
 
 ## Installation & Setup
 
@@ -26,14 +26,14 @@ Once Docker and docker-compose have been installed, we need to create a **docker
 The **docker-compose.yml** configuration file requires following inputs from the user:
 
 #### Webserver configuration
-In the `web_server` service block, assign your system working user uid to the `USER_UID` enviroment variable.  
-Run the following command `id -u` on linux or Macos to get your user id
+In the **`web_server`** service block, assign your system working user uid to the **`USER_UID`** enviroment variable.  
+Run the following command **`id -u`** on linux or Macos to get your user id
 ```shell
 id -u
 ```
 
 #### Database configuration
-In the `database_server` service block, assign mysql database name, mysql database user name, mysql database user password and mysql root password to `MYSQL_DATABASE`, `MYSQL_USER`, `MYSQL_PASSWORD` and `MYSQL_ROOT_PASSWORD` environment.
+In the **`database_server`** service block, assign mysql database name, mysql database user name, mysql database user password and mysql root password to **`MYSQL_DATABASE`**, **`MYSQL_USER`**, **`MYSQL_PASSWORD`** and **`MYSQL_ROOT_PASSWORD`** environment.
 
 
 #### Clone configuration from Github
@@ -94,7 +94,7 @@ volumes:
 
 networks:
   bagisto-network:
-  ```
+  **```
 
 #### Download the docker image
 The following command will download the docker images for apache-php version 7.3 and mysql version 5.7.
@@ -103,9 +103,9 @@ docker-compose pull
 ```
 
 ### Launching the docker container
-The following command will create a network, launch a webserver and database containers with names `apache2` and `mysql`.
-It will also create a new `app` and `dbvolume` directory inside your current directory and mount it to respective docker containers as mentioned in docker-compose.yml. 
-It binds your `host port 80` with the apache2 container port 80 and `host port 3306` with mysql container port 3306. If you want to run containers on ports other than 80 and 3306, modify their values in **docker-compose.yml** file. 
+The following command will create a network, launch a webserver and database containers with names **`apache2`** and **`mysql`**.
+It will also create a new **`app`** and **`dbvolume`** directory inside your current directory and mount it to respective docker containers as mentioned in docker-compose.yml. 
+It binds your **`host port 80`** with the apache2 container port 80 and **`host port 3306`** with mysql container port 3306. If you want to run containers on ports other than 80 and 3306, modify their values in **docker-compose.yml** file. 
 
 ```
 docker-compose up -d
@@ -114,7 +114,7 @@ docker-compose up -d
 ### Monitor your container(s):
 Check your running docker containers with the following commands
 
-`docker ps` OR `docker-compose ps`
+**`docker ps`** OR **`docker-compose ps`**
 ```shell
 CONTAINER ID   IMAGE                      COMMAND                  CREATED             STATUS             PORTS                               NAMES
 62a10346b84a   webkul/apache-php:latest   "/usr/bin/supervisord"   About an hour ago   Up About an hour   0.0.0.0:80->80/tcp                  apache2
@@ -125,8 +125,8 @@ CONTAINER ID   IMAGE                      COMMAND                  CREATED      
 Once our environment is ready we can start installing Bagisto. You can either install Bagisto from [Github](#install-without-composer) or with [composer](#install-with-composer)
 
 ### Install without composer 
-Download the [latest release](https://bagisto.com/en/download) inside `app/bagisto` directory.  
-Open the `.env` file inside **app/bagisto** and set the following environment variables listed below:
+Download the [latest release](https://bagisto.com/en/download) inside **`app/bagisto`** directory.  
+Open the **`.env`** file inside **app/bagisto** and set the following environment variables listed below:
 
 ```editorconfig
 APP_URL=https://127.0.0.1
@@ -156,7 +156,7 @@ The following commands will be exexcuted within the docker container
 docker exec -i apache2 bash -c "su - www-data -s /bin/bash -c 'composer create-project bagisto/bagisto'"
 ```
 
-Open the .env file inside `app/bagisto` directory and set the following environment variables listed below:
+Open the .env file inside **`app/bagisto`** directory and set the following environment variables listed below:
 
 ```editorconfig
 APP_URL=https://127.0.0.1
@@ -181,7 +181,7 @@ Bagisto has been installed and is ready. Browse your server IP address or domain
 
 ### Configure Apache
 The Apache documentroot is by default assigned to **/var/www/html/public_html**. while the **app** directory on host is mapped with the **html** directory inside the container.
-We need to create a symlink of `bagisto/public` in `app` directory to `/var/www/html/public_html`.
+We need to create a symlink of **`bagisto/public`** in **`app`** directory to **`/var/www/html/public_html`**.
 
 Run the following command on Linux or MacOS 
 ```bash
