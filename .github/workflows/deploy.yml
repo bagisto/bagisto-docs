@@ -15,9 +15,12 @@ jobs:
 
       - name: NPM install 📦
         uses: bahmutov/npm-install@v1
+        
+      - name: Update Browserlist 🏗
+        run: npx browserslist@latest --update-db
 
       - name: Build docs 🏗
-        run: npm run docs:build --no-cache
+        run: npm run docs:build
 
       # https://github.com/marketplace/actions/github-pages-action
       - name: Deploy 🚀
