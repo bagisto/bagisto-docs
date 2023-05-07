@@ -8,7 +8,7 @@ In this section, we will focus only on the tax configuration. If you want to kno
 
 If you check the configuration in the backend i.e. **Configuration > Taxes > Catalog**, you will see the '**Tax Inclusive**' button in the pricing section,
 
-  ![Pricing Config](../../assets/images/user-guide/tax-rates/pricing-config.png)
+  ![Pricing Config](../../assets/1.x/images/user-guide/tax-rates/pricing-config.png)
 
 If this button is enabled then all the products in the shop will show tax-inclusive rates.
 
@@ -16,7 +16,7 @@ If this button is enabled then all the products in the shop will show tax-inclus
 
 Now, in the same configuration, you will also see the '**Default Location Calculation**' with some fields, let us discuss all of them,
 
-  ![Default Location Calculation Config](../../assets/images/user-guide/tax-rates/default-location-calculation-config.png)
+  ![Default Location Calculation Config](../../assets/1.x/images/user-guide/tax-rates/default-location-calculation-config.png)
 
 These are the default fields that can be handled by the admin. Let's say if the address of the customer or guest is not found, then in last, it will select the value from these configs.
 

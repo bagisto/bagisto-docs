@@ -1,10 +1,22 @@
-# Create custom configuration
+# Custom configuration
+
+[[TOC]]
 
 Creating a custom configuration ease the task for a developer or any non-developer person. Generally, in Bagisto, you can find it in admin panel **Configuration Menu**.
 
-## Steps to create custom configuration
+### Directory Structure
 
-- To create a custom configuration for your application, you just need to create a `system.php` file in the `Config` folder of your package.
+- To create a custom configuration for your application, you just need to create a **`system.php`** file in the **`Config`** folder of your package.
+
+    ```
+    - packages/
+        - Webkul/Blog/
+        - src/
+          ...
+          - Config/
+            - system.php
+          ...
+    ```
 
 - Inside the file, you can include the code below,
 
@@ -13,24 +25,50 @@ Creating a custom configuration ease the task for a developer or any non-develop
 
   return [
       [
-          'key' => 'helloworld',
-          'name' => 'Hello World',
+          'key' => 'blog',
+          'name' => 'Blog',
           'sort' => 1
       ], [
-          'key' => 'helloworld.settings',
-          'name' => 'Custom Settings',
+          'key' => 'blog.settings',
+          'name' => 'Blog Settings',
           'sort' => 1,
       ], [
-          'key' => 'helloworld.settings.settings',
-          'name' => 'Custom Groupings',
+          'key' => 'blog.settings.package',
+          'name' => 'Package Status',
           'sort' => 1,
           'fields' => [
               [
                   'name' => 'status',
                   'title' => 'Status',
                   'type' => 'boolean',
-                  'channel_based' => true,
-                  'locale_based' => false
+                  'validation' => 'required'
+              ]
+          ]
+      ], [
+          'key'    => 'blog.settings.blog-setting',
+          'name'   => 'blog::app.admin.system.blog-setting',
+          'sort'   => 2,
+          'fields' => [
+              [
+                  'name'          => 'pagination',
+                  'title'         => 'blog::app.admin.system.pagination',
+                  'type'          => 'select',
+                  'validation' => 'required',
+                  'options'       => [
+                      [
+                          'title' => 'Yes',
+                          'value' => 1,
+                      ], [
+                          'title' => 'No',
+                          'value' => 0,
+                      ],
+                  ]
+              ],
+              [
+                  'name'  => 'items',
+                  'title' => 'blog::app.admin.system.items',
+                  'type'  => 'number',
+                  'validation' => 'numeric'
               ]
           ]
       ]
@@ -49,48 +87,56 @@ Creating a custom configuration ease the task for a developer or any non-develop
 
 - We need to merge these custom config also,
 
-  ~~~php
-  <?php
+### Merge Configuration
 
-  namespace ACME\HelloWorld\Providers;
+- After that, we need to merge the config also just like we have done with menu items.
 
-  use Illuminate\Support\Facades\Event;
-  use Illuminate\Support\ServiceProvider;
+    ~~~php
+    <?php
 
-  /**
-  * HelloWorldServiceProvider
-  *
-  * @copyright 2020 Webkul Software Pvt. Ltd. (http://www.webkul.com)
-  */
-  class HelloWorldServiceProvider extends ServiceProvider
-  {
-      /**
-      * Register services.
-      *
-      * @return void
-      */
-      public function register()
-      {
-          $this->mergeConfigFrom(
-              dirname(__DIR__) . '/Config/admin-menu.php', 'menu.admin'
-          );
+    namespace Webkul\Blog\Providers;
 
-          $this->mergeConfigFrom(
-              dirname(__DIR__) . '/Config/acl.php', 'acl'
-          );
+    use Illuminate\Support\Facades\Event;
+    use Illuminate\Support\ServiceProvider;
 
-          $this->mergeConfigFrom(
-              dirname(__DIR__) . '/Config/system.php', 'core'
-          );
-      }
-  }
-  ~~~
+    /**
+     * BlogServiceProvider
+    *
+    * @copyright 2020 Webkul Software Pvt. Ltd. (http://www.webkul.com)
+    */
+    class BlogServiceProvider extends ServiceProvider
+    {
+        /**
+         * Register services.
+        *
+        * @return void
+        */
+        public function register()
+        {
+            $this->mergeConfigFrom(
+                dirname(__DIR__) . '/Config/admin-menu.php', 'menu.admin'
+            );
 
-- Run this command i.e. `php artisan optimize`.
+            $this->mergeConfigFrom(
+                dirname(__DIR__) . '/Config/acl.php', 'acl'
+            );
+
+            $this->mergeConfigFrom(
+                dirname(__DIR__) . '/Config/system.php', 'core'
+            );
+        }
+    }
+    ~~~
+
+- After setting up, just run the below command to cached the latest changes.
+
+    ```sh
+    php artisan optimize
+    ```
 
 - Now, check the configuration,
 
-  ![Admin ACL Output](../../assets/1.x/images/package-development/admin-custom-config-output.png)
+  ![Admin ACL Output](../../assets/1.5.x/images/package-development/custom-config-output.png)
 
 ## Supported Field Types
 

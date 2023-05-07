@@ -14,7 +14,7 @@ Your customer can easily translate your whole website just by a single click whi
 
 2. define your error translation for your locale code as shown below in the screenshot
 
-  ![error-translation](../../assets/images/locale-trans.png)
+  ![error-translation](../../assets/1.x/images/user-guide/locale-trans.png)
 
 3. Now, within **app.js**, add `ar: { messages: locales.messages.ar }` for your locale code in dictionary property such as ar for arabic
 
