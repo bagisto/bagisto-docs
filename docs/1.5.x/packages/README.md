@@ -1,8 +1,8 @@
-# Package development
+## Package Development
 
-A package is a unit added to your application for enhancement which includes routes, controllers, views, and configuration specifically. Packages are created to manage your large applications into smaller units.
+A package is a unit added to your application to enhance its functionality, including routes, controllers, views, and specific configurations. Packages are created to manage large applications by breaking them down into smaller units.
 
-In Bagisto, we have created plenty of packages at path `packages/Webkul/`. You can find a basic tree-structure of the package below:
+In Bagisto, we have created numerous packages located at **`packages/Webkul/`**. Below is a basic tree structure of a package:
 
 ~~~directory-structure
 - Webkul/Blog/

@@ -2,13 +2,13 @@
 
 [[TOC]]
 
-To learn in detail about Localization you can visit Laravel doc from [here](https://laravel.com/docs/10.x/localization)
+To learn in detail about Localization, you can visit the Laravel documentation [here](https://laravel.com/docs/10.x/localization).
 
 ## Directory Structure
 
-- Now, we are going to create a language file for our package. For this create a **`lang`** folder in the **`packages/Webkul/Blog/src/Resources`** path.
+- Now, let's create a language file for our package. Create a **`lang`** folder in the **`packages/Webkul/Blog/src/Resources`** path.
 
-- In **`lang`** folder, you can create a different folder for language translations like for English 'en', Hindi ‘hi’ etc. Moving forward, we will create a folder name **`en`** (say language code) and in that folder, create a file name as **`app.php`** to perform language translation.
+- Inside the **`lang`** folder, you can create different folders for language translations. For example, you can create folders for English ('en'), Hindi ('hi'), etc. For now, let's create a folder named **`en`** (representing the language code). Inside the **`en`** folder, create a file named **`app.php`** for language translation.
 
   ```
   - packages/
@@ -22,7 +22,7 @@ To learn in detail about Localization you can visit Laravel doc from [here](http
               - app.php
   ```
 
-- Now we can write a translation in **`app.php`** like below,
+- Now, let's write a translation in **`app.php`** as follows:
 
   ```php
   <?php
@@ -34,9 +34,9 @@ To learn in detail about Localization you can visit Laravel doc from [here](http
   ];
   ```
 
-## Load translation from Package
+## Load Translation from Package
 
-- Now, we need to register the language file to the service provider.
+- We need to register the language file in the service provider.
 
   ```php
   <?php
@@ -59,13 +59,7 @@ To learn in detail about Localization you can visit Laravel doc from [here](http
       */
       public function boot()
       {
-          $this->loadMigrationsFrom(__DIR__ .'/../Database/Migrations');
-          
-          $this->loadRoutesFrom(__DIR__ . '/../Routes/admin-routes.php');
-
-          $this->loadRoutesFrom(__DIR__ . '/../Routes/shop-routes.php');
-
-          $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'blog');
+          ...
 
           $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'blog');
       }
@@ -82,7 +76,7 @@ To learn in detail about Localization you can visit Laravel doc from [here](http
   }
   ```
 
-- Add below code to your blade file.
+- Add the following code to your Blade file:
 
   ```html
   {{ __('blog::app.admin.name') }}

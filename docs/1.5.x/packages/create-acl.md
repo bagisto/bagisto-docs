@@ -1,97 +1,90 @@
-# Access control list
+# Access Control List
 
 [[TOC]]
 
 ## Introduction
 
-In addition to providing authentication services out of the box, Bagisto also provides a functionality **ACL** (Access Control List). With this feature the administrator can allow/disallow other users to access parts of Bagisto.
+In addition to providing authentication services out of the box, Bagisto also offers an Access Control List (ACL) functionality. This feature allows administrators to control user access to different parts of Bagisto.
 
 ## Directory Structure
 
-- Create a new file named **`acl.php`** in your package **Config** folder, for example, **`packages/Webkul/Blog/src/Config`**.
+To configure the ACL, follow these steps:
 
-    ```
-    - packages/
-        - Webkul/Blog/
-        - src/
-          ...
-          - Config/
-            - acl.php
-          ...
-    ```
+1. Create a new file named **`acl.php`** in the **`packages/Webkul/Blog/src/Config`** folder of your package. 
 
-- Add the following code to **`acl.php`**.
+   ```
+   - packages/
+     - Webkul/Blog/
+       - src/
+         ...
+         - Config/
+           - acl.php
+         ...
+   ```
 
-    ~~~php
-    <?php
+2. Add the following code to **`acl.php`**:
 
-    return [
-        [
-            'key' => 'blog',
-            'name' => 'blog',
-            'route' => 'blog.admin.index',
-            'sort' => 2
-        ]
-    ];
-    ~~~
+   ```php
+   <?php
 
-    - If you check the above code we have created an array for an individual's menu with the parameters (key, name, route & sort).
+   return [
+       [
+           'key' => 'blog',
+           'name' => 'blog',
+           'route' => 'blog.admin.index',
+           'sort' => 2
+       ]
+   ];
+   ```
 
-    - Just like that, we need to define the menu here which we want to include in our ACL.
+   In the above code, we have defined an array for each menu item with the parameters (key, name, route, and sort). You need to define the menus you want to include in the ACL here.
 
 ## Merge Configuration
 
-- After that, we need to merge the ACL config also just like we have done with menu items.
+To merge the ACL configuration, follow these steps:
 
-  ~~~php
-  <?php
+1. Open the **`BlogServiceProvider`** class in the **`Webkul\Blog\Providers`** namespace.
 
-  namespace Webkul\Blog\Providers;
+2. In the **`register`** method, add the following code to merge the ACL configuration:
 
-  use Illuminate\Support\Facades\Event;
-  use Illuminate\Support\ServiceProvider;
+   ```php
+   $this->mergeConfigFrom(
+       dirname(__DIR__) . '/Config/acl.php', 'acl'
+   );
+   ```
 
-  /**
-  * BlogServiceProvider
-  *
-  * @copyright 2020 Webkul Software Pvt. Ltd. (http://www.webkul.com)
-  */
-  class BlogServiceProvider extends ServiceProvider
-  {
-      /**
-      * Register services.
-      *
-      * @return void
-      */
-      public function register()
-      {
-          $this->mergeConfigFrom(
-              dirname(__DIR__) . '/Config/admin-menu.php', 'menu.admin'
-          );
+   This will merge the ACL configuration with the existing configuration.
 
-          $this->mergeConfigFrom(
-              dirname(__DIR__) . '/Config/acl.php', 'acl'
-          );
-      }
-  }
-  ~~~
+3. After making the changes, run the following command to cache the latest changes:
 
-    - After setting up, just run the below command to cached the latest changes.
+   ```sh
+   php artisan optimize
+   ```
 
-    ```sh
-    php artisan optimize
-    ```
+   This will ensure that the latest ACL configuration is used.
 
-    - Now check the latest ACL.
+4. You can now check the updated ACL configuration in the admin panel:
 
-        ![Admin ACL Output](../../assets/1.5.x/images/package-development/admin-acl-output.png)
+   :::details Admin ACL Output
 
-## Checking roles and permissions
+   ![Admin ACL Output](../../assets/1.5.x/images/package-development/admin-acl-output.png)
 
-- If you check the **`Admin`** model in the namespace **`Webkul\User\Models`**, you will see the relationship binding with the **`Role`** model in the same namespace. From here you can grab all the permissions of the current user.
+   :::
 
-- We have provided the **`bouncer()`** helper, which helps you to check the permissions. Let's check the current user has permission or not,
+## Checking Roles and Permissions
 
-  ~~~php
-  bouncer()->hasPermission($permission)
-  ~~~
+To check roles and permissions, follow these steps:
+
+1. Open the **`Admin`** model in the **`Webkul\User\Models`** namespace.
+
+2. In this model, you will find a relationship binding with the **`Role`** model in the same namespace. You can use this relationship to access all the permissions of the current user.
+
+3. We have provided the **`bouncer()`** helper function, which allows you to check permissions. Use the following code to check if the current user has a specific permission:
+
+   ```php
+   bouncer()->hasPermission($permission)
+   ```
+
+   Replace `$permission` with the actual permission you want to check.
+
+By following these steps, you can configure and manage the Access Control List (ACL) in Bagisto.

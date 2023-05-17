@@ -1,77 +1,83 @@
-# Upgrade to the latest version of Bagisto
+# Upgrade Guide
 
 [[TOC]]
 
 ## Upgrade Steps
 
-To upgrade your current version to the latest version of Bagisto, you need to follow some steps.
+To upgrade your current version to the latest version of Bagisto, follow these steps:
 
-- First, you need to download the latest version of Bagisto.
+1. Download the latest version of Bagisto from one of the following links:
+   - [Download From Official Bagisto Site](https://bagisto.com/en/download/)
+   - [Download From GitHub](https://github.com/bagisto/bagisto)
 
-- You can download Bagisto from the following links,
+2. Extract the downloaded Bagisto zip file to the desired deployment location.
 
-  - [Download From Official Bagisto Site](https://bagisto.com/en/download/)
-  - [Download From Github](https://github.com/bagisto/bagisto)
+3. Open the terminal and navigate to the root folder of the extracted Bagisto folder.
 
-- If you downloaded the Bagisto zip file, you need to extract where you want to deploy it. 
-- After that, you need to go to the root folder of the extracted folder and run the below command in the terminal.
+4. Run the following command in the terminal:
 
-  ~~~sh
-  composer create-project
-  ~~~
+   ```sh
+   composer create-project
+   ```
 
-- After the command has been executed, now go to your **`.env`** file, provide your old project database credentials for which you want to upgrade Bagisto, and run the following command,
+   This command will install the necessary dependencies for the latest version of Bagisto.
 
-  ~~~sh
-  php artisan optimize
+5. Open the **`.env`** file in your project's root folder. Provide the database credentials of your old project, which you want to upgrade using Bagisto.
 
-  # -- OR
+6. Run one of the following commands to cache the new changes:
 
-  php artisan config:cache
-  ~~~
+   ```sh
+   php artisan optimize
 
-- Now, your new changes have been cached and now your project is ready to run the migrate command,
+   # -- OR --
 
-  ~~~sh
-  php artisan migrate
-  ~~~
+   php artisan config:cache
+   ```
 
-  ::: danger
-    Here we have not provided you the seeder command because the seeder command always resets all the settings, categories and etc. If some tables need default settings then we advise you to add manually.
-  :::
+   These commands will cache the configuration files and optimize the project.
 
-- Now, its time to create a symlink so that public assets can be linked to storage,
+7. Now, your project is ready to run the migration command. Execute the following command in the terminal:
 
-  ~~~sh
-  php artisan storage:link
-  ~~~
+   ```sh
+   php artisan migrate
+   ```
 
-- Copy all the content of the previous version's folder (e.g. **`old-project/storage/app/public`**) to the latest version's folder (e.g. **`new-project/storage/app/public`**).
+   ::: danger
+   Be cautious when using the seeder command as it may reset settings and categories. Add default settings manually if necessary.
+   :::
 
-  ::: tip
-    If your existing project also depends on some local storage, or you have changed some paths, or you want previous logs also then make sure you add all those also.
-  :::
+8. Create a symbolic link to link public assets to the storage folder by running the following command:
 
-- Once this is finished run the following command to publish your new files,
+   ```sh
+   php artisan storage:link
+   ```
 
-  ~~~sh
-  php artisan vendor:publish --all
-  ~~~
+9. Copy the contents of the previous version's folder (e.g., **`old-project/storage/app/public`**) to the corresponding folder in the latest version (e.g., **`new-project/storage/app/public`**).
 
-  ::: warning
-    Don't use the **`--force`** flag, this will reset all your views. Use only when you know what you are doing.
-  :::
+   ::: tip
+   If your existing project depends on local storage, has changed paths, or requires previous logs, ensure to include those as well.
+   :::
 
-- You are now at the latest version. Still, we want to mention that if you have done a lot of customizations then that portion of compatibility should be handled at your end.
+10. Once the copying is complete, publish the new files by running the following command:
+
+    ```sh
+    php artisan vendor:publish --all
+    ```
+
+    ::: warning
+    Avoid using the **`--force`** flag, as it will reset all your views. Only use it if you understand the consequences.
+    :::
+
+11. Congratulations! Your project is now upgraded to the latest version of Bagisto. However, keep in mind that if you have made significant customizations, ensure compatibility with the latest version.
 
 ## New Changes
 
-- These are the changes from the version 1.4.5 to 1.5.1
+The following changes have been implemented in Bagisto from version 1.4.5 to 1.5.1:
 
-- Implemented Elasticsearch.
-- Added count of selected products in Datagrid [#7437](https://github.com/bagisto/bagisto/pull/7437).
-- Change the checkbox in dark mode [#7304](https://github.com/bagisto/bagisto/pull/7304).
-- Changed the routes in Packages, see [#7345](https://github.com/bagisto/bagisto/pull/7345).
-- Removed Triggers [#7334](https://github.com/bagisto/bagisto/pull/).
-- Consistent mail as per the laravel config [#7509](https://github.com/bagisto/bagisto/pull/7509)
-- REST API and JWT package related dependencies removed [7546](https://github.com/bagisto/bagisto/pull/7546)
+- Implemented Elasticsearch for improved search functionality.
+- Added a count of selected products in Datagrid. ([GitHub](https://github.com/bagisto/bagisto/pull/7437))
+- Changed the appearance of checkboxes in dark mode. ([GitHub](https://github.com/bagisto/bagisto/pull/7304))
+- Modified routes in Packages. ([GitHub](https://github.com/bagisto/bagisto/pull/7345))
+- Removed Triggers feature. ([GitHub](https://github.com/bagisto/bagisto/pull/7334))
+- Consistent mail configuration as per Laravel standards. ([GitHub](https://github.com/bagisto/bagisto/pull/7509))
+- Removed REST API and JWT package related dependencies. ([GitHub](https://github.com/bagisto/bagisto/pull/7546))

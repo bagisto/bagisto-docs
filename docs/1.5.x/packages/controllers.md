@@ -2,13 +2,13 @@
 
 [[TOC]]
 
-To learn in detail about Controllers you can visit Laravel doc from [here](https://laravel.com/docs/10.x/controllers)
+To learn in detail about Controllers, you can visit the Laravel documentation [here](https://laravel.com/docs/10.x/controllers).
 
 ## Directory Structure
 
-- Create **`Http`** folder in **`packages/Webkul/Blog/src`** path. In **`Http`** folder, create another folder name as **`Controllers`**. Now, in the **`Controllers`** folder, we need to create one file **`Controller.php`** and two folders i.e. **`Admin`** and **`Shop`**.
+- Create an **`Http`** folder in the **`packages/Webkul/Blog/src`** path. Inside the **`Http`** folder, create another folder named **`Controllers`**. Inside the **`Controllers`** folder, we need to create one file named **`Controller.php`** and two folders, namely **`Admin`** and **`Shop`**.
 
-- Inside both **`Admin`** and **`Shop`** folder create **`PostController.php`**. So updated structure will look like this.
+- Inside both the **`Admin`** and **`Shop`** folders, create a **`PostController.php`** file. The updated directory structure will look like this:
 
   ```
   - packages/
@@ -27,7 +27,7 @@ To learn in detail about Controllers you can visit Laravel doc from [here](https
 
 ## Base Controller
 
-- **`Controller.php`**: This is base controller, Add below codes to this file.
+- **`Controller.php`**: This is the base controller. Add the following code to this file:
 
   ```php
   <?php
@@ -47,7 +47,7 @@ To learn in detail about Controllers you can visit Laravel doc from [here](https
 
 ## Controllers
 
-- **`Admin/PostController.php`**: This file is for the admin usage. Add below codes to this file.
+- **`Admin/PostController.php`**: This file is for admin usage. Add the following code to this file:
 
   ```php
   <?php
@@ -85,7 +85,7 @@ To learn in detail about Controllers you can visit Laravel doc from [here](https
   }
   ```
 
-- **`Shop/PostController`**: This file is for the shop usage. Add below codes to this file.
+- **`Shop/PostController.php`**: This file is for shop usage. Add the following code to this file:
 
   ```php
   <?php

@@ -1,170 +1,140 @@
-# Custom configuration
+# Custom Configuration
 
 [[TOC]]
 
-Creating a custom configuration ease the task for a developer or any non-developer person. Generally, in Bagisto, you can find it in admin panel **Configuration Menu**.
+Creating a custom configuration makes it easier for developers or non-developers to manage settings in Bagisto. In Bagisto, custom configurations can be found in the admin panel under the **Configuration Menu**.
 
-### Directory Structure
+## Directory Structure
 
-- To create a custom configuration for your application, you just need to create a **`system.php`** file in the **`Config`** folder of your package.
+To create a custom configuration for your application, follow these steps:
 
-    ```
-    - packages/
-        - Webkul/Blog/
-        - src/
-          ...
-          - Config/
-            - system.php
-          ...
-    ```
+1. Create a **`system.php`** file in the **`Config`** folder of your package:
 
-- Inside the file, you can include the code below,
+   ```
+   - packages/
+     - Webkul/Blog/
+     - src/
+       ...
+       - Config/
+         - system.php
+       ...
+   ```
 
-  ~~~php
-  <?php
+2. Inside the **`system.php`** file, include the following code:
 
-  return [
-      [
-          'key' => 'blog',
-          'name' => 'Blog',
-          'sort' => 1
-      ], [
-          'key' => 'blog.settings',
-          'name' => 'Blog Settings',
-          'sort' => 1,
-      ], [
-          'key' => 'blog.settings.package',
-          'name' => 'Package Status',
-          'sort' => 1,
-          'fields' => [
-              [
-                  'name' => 'status',
-                  'title' => 'Status',
-                  'type' => 'boolean',
-                  'validation' => 'required'
-              ]
-          ]
-      ], [
-          'key'    => 'blog.settings.blog-setting',
-          'name'   => 'blog::app.admin.system.blog-setting',
-          'sort'   => 2,
-          'fields' => [
-              [
-                  'name'          => 'pagination',
-                  'title'         => 'blog::app.admin.system.pagination',
-                  'type'          => 'select',
-                  'validation' => 'required',
-                  'options'       => [
-                      [
-                          'title' => 'Yes',
-                          'value' => 1,
-                      ], [
-                          'title' => 'No',
-                          'value' => 0,
-                      ],
-                  ]
-              ],
-              [
-                  'name'  => 'items',
-                  'title' => 'blog::app.admin.system.items',
-                  'type'  => 'number',
-                  'validation' => 'numeric'
-              ]
-          ]
-      ]
-  ];
-  ~~~
+   ```php
+   <?php
 
-### Explanation for the keys
+   return [
+       [
+           'key' => 'blog',
+           'name' => 'Blog',
+           'sort' => 1
+       ],
+       [
+           'key' => 'blog.settings',
+           'name' => 'Blog Settings',
+           'sort' => 1,
+       ],
+       [
+           'key' => 'blog.settings.package',
+           'name' => 'Package Status',
+           'sort' => 1,
+           'fields' => [
+               [
+                   'name' => 'status',
+                   'title' => 'Status',
+                   'type' => 'boolean',
+                   'validation' => 'required'
+               ]
+           ]
+       ],
+       [
+           'key'    => 'blog.settings.blog-setting',
+           'name'   => 'blog::app.admin.system.blog-setting',
+           'sort'   => 2,
+           'fields' => [
+               [
+                   'name'          => 'pagination',
+                   'title'         => 'blog::app.admin.system.pagination',
+                   'type'          => 'select',
+                   'validation' => 'required',
+                   'options'       => [
+                       [
+                           'title' => 'Yes',
+                           'value' => 1,
+                       ],
+                       [
+                           'title' => 'No',
+                           'value' => 0,
+                       ],
+                   ]
+               ],
+               [
+                   'name'  => 'items',
+                   'title' => 'blog::app.admin.system.items',
+                   'type'  => 'number',
+                   'validation' => 'numeric'
+               ]
+           ]
+       ]
+   ];
+   ```
 
-- **key**    : This key accept the unique value and nested with '.' (dot) operator.
+   This code defines the custom configuration settings. Each configuration has a key, name, sort, and fields (if applicable).
 
-- **name**   : This key accept the value as a placeholder for your configuration. Generally, in Bagisto, we consider writing it using translation.
+## Merge Configuration
 
-- **sort**   : This key accept the sort position for the configuration menu.
+To merge the custom configuration, follow these steps:
 
-- **fields** : This key accept the array for the value of the custom configuration.
+1. Open the **`BlogServiceProvider`** class in the **`Webkul\Blog\Providers`** namespace.
 
-- We need to merge these custom config also,
+2. In the **`register`** method, add the following code to merge the custom configuration:
 
-### Merge Configuration
+   ```php
+   $this->mergeConfigFrom(
+       dirname(__DIR__) . '/Config/system.php', 'core'
+   );
+   ```
 
-- After that, we need to merge the config also just like we have done with menu items.
+   This code merges the custom configuration with the existing configuration.
 
-    ~~~php
-    <?php
+3. After making the changes, run the following command to cache the latest changes:
 
-    namespace Webkul\Blog\Providers;
+   ```sh
+   php artisan optimize
+   ```
 
-    use Illuminate\Support\Facades\Event;
-    use Illuminate\Support\ServiceProvider;
+   This ensures that the latest custom configuration is used.
 
-    /**
-     * BlogServiceProvider
-    *
-    * @copyright 2020 Webkul Software Pvt. Ltd. (http://www.webkul.com)
-    */
-    class BlogServiceProvider extends ServiceProvider
-    {
-        /**
-         * Register services.
-        *
-        * @return void
-        */
-        public function register()
-        {
-            $this->mergeConfigFrom(
-                dirname(__DIR__) . '/Config/admin-menu.php', 'menu.admin'
-            );
+4. You can now check the updated configuration in the admin panel:
 
-            $this->mergeConfigFrom(
-                dirname(__DIR__) . '/Config/acl.php', 'acl'
-            );
+    :::details Custom Configuration
 
-            $this->mergeConfigFrom(
-                dirname(__DIR__) . '/Config/system.php', 'core'
-            );
-        }
-    }
-    ~~~
-
-- After setting up, just run the below command to cached the latest changes.
-
-    ```sh
-    php artisan optimize
-    ```
-
-- Now, check the configuration,
-
-  ![Admin ACL Output](../../assets/1.5.x/images/package-development/custom-config-output.png)
+   ![Admin Custom Config Output](../../assets/1.5.x/images/package-development/custom-config-output.png)
+   
+   :::
 
 ## Supported Field Types
 
-There are several field types supported by the Bagisto. Let us know all of them,
-
-- Text Type
-- Number Type
-- Boolean Type
-- Select Type
-- Textarea Type
-- Image Type
-
-Let's get started with the first one.
+Bagisto supports several field types for custom configurations. Let's explore each of them:
 
 ### Text Type
 
-This field type will give you the input field of type text.
+This field type provides an input field of type text.
 
 #### Example
 
-~~~php
+```php
 return [
-    ...
+    // ...
     [
         'key'    => 'general.general.custom-types',
         'name'   => 'admin::app.admin.system.custom-types',
         'sort'   => 1,
         'fields' => [
+
+
             [
                 'name'          => 'text_type',
                 'title'         => 'admin::app.admin.system.text-type',
@@ -173,19 +143,19 @@ return [
             ],
         ],
     ],
-    ...
+    // ...
 ];
-~~~
+```
 
 ### Number Type
 
-This field type will give you the input field of type number.
+This field type provides an input field of type number.
 
 #### Example
 
-~~~php
+```php
 return [
-    ...
+    // ...
     [
         'key'    => 'general.general.custom-types',
         'name'   => 'admin::app.admin.system.custom-types',
@@ -198,19 +168,19 @@ return [
             ],
         ],
     ],
-    ...
+    // ...
 ];
-~~~
+```
 
 ### Boolean Type
 
-This field type will give you the enable/disable switch.
+This field type provides an enable/disable switch.
 
 #### Example
 
-~~~php
+```php
 return [
-    ...
+    // ...
     [
         'key'    => 'general.general.custom-types',
         'name'   => 'admin::app.admin.system.custom-types',
@@ -223,19 +193,19 @@ return [
             ],
         ],
     ],
-    ...
+    // ...
 ];
-~~~
+```
 
 ### Select Type
 
-This field type will give you the select field with mentioned options.
+This field type provides a select field with specified options.
 
 #### Example
 
-~~~php
+```php
 return [
-    ...
+    // ...
     [
         'key'    => 'general.general.custom-types',
         'name'   => 'admin::app.admin.system.custom-types',
@@ -249,7 +219,8 @@ return [
                     [
                         'title' => 'option_1',
                         'value' => 'value_1',
-                    ], [
+                    ],
+                    [
                         'title' => 'option_2',
                         'value' => 'vallue_2',
                     ],
@@ -257,19 +228,19 @@ return [
             ],
         ],
     ],
-    ...
+    // ...
 ];
-~~~
+```
 
 ### Textarea Type
 
-This field type will give you the textarea field mostly used for long text.
+This field type provides a textarea field, mostly used for long text.
 
 #### Example
 
-~~~php
+```php
 return [
-    ...
+    // ...
     [
         'key'    => 'general.general.custom-types',
         'name'   => 'admin::app.admin.system.custom-types',
@@ -282,19 +253,19 @@ return [
             ],
         ],
     ],
-    ...
+    // ...
 ];
-~~~
+```
 
 ### Image Type
 
-This field type will give you the file upload option for uploading the images.
+This field type provides a file upload option for uploading images.
 
 #### Example
 
-~~~php
+```php
 return [
-    ...
+    // ...
     [
         'key'    => 'general.general.custom-types',
         'name'   => 'admin::app.admin.system.custom-types',
@@ -308,6 +279,6 @@ return [
             ],
         ],
     ],
-    ...
+    // ...
 ];
-~~~
+```
