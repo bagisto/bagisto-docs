@@ -34,12 +34,13 @@ All Laravel contracts are stored in their own GitHub repository. This provides a
 - Now, create a folder named **`Contracts`** inside **`Webkul/Blog/src/`** and create an interface file named **`Post.php`**.
 
   ```
-  - packages/
-    - Webkul/Blog/
-      - src/
-        ...
-        - Contracts/
-          - Post.php
+  packages
+  └── Webkul
+      └── Blog
+          └── src
+              ├── ...
+              └── Contracts
+                  └── Post.php
   ```
 
 - Copy the following code into the **`Post.php`** file.
@@ -61,14 +62,15 @@ Proxies, as their name suggests, lead you to the actual model class. The concept
 - Now, create a **`Models`** folder inside **`packages/Webkul/Blog/src/`**. Inside the **`Models`** folder, create a model proxy file named **`PostProxy.php`**. This Proxy class will extend **`Konekt\Concord\Proxies\ModelProxy`**.
 
   ```
-  - packages/
-    - Webkul/Blog/
-      - src/
-        ...
-        - Contracts/
-          - Post.php
-        - Models/
-          - PostProxy.php
+  └── packages
+      └── Webkul
+          └── Blog
+              └── src
+                  ├── ...
+                  ├── Contracts
+                  │   └── Post.php
+                  └── Models
+                      └── PostProxy.php
   ```
 
 - Copy the following code into the **`PostProxy.php`** file.
@@ -96,15 +98,16 @@ Proxies, as their name suggests, lead you to the actual model class. The concept
 - Now, move your **`Post`** model from the project root directory (i.e., **`App/Models`**) to the **`packages/Webkul/Blog/src/Models`** folder.
 
   ```
-  - packages/
-    - Webkul/Blog/
-      - src/
-        ...
-        - Contracts/
-          - Post.php
-        - Models/
-          - Post.php
-          - PostProxy.php
+  └── packages
+      └── Webkul
+          └── Blog
+              └── src
+                  ├── ...
+                  ├── Contracts
+                  │   └── Post.php
+                  └── Models
+                      ├── Post.php
+                      └── PostProxy.php
   ```
 
 - Copy the following code into the **`Post.php`** file.
@@ -148,12 +151,14 @@ Proxies, as their name suggests, lead you to the actual model class. The concept
 - Now, we need to create a provider named **`ModuleServiceProvider.php`** inside **`Webkul/Blog/src/Providers`**.
 
   ```
-  - packages/
-    - Webkul/Blog/
-      - src/
-        - Providers/
-          - BlogServiceProvider.php
-          - ModuleServiceProvider.php
+  └── packages
+    └── Webkul
+        └── Blog
+            └── src
+                ├── ...
+                └── Providers
+                    ├── BlogServiceProvider.php
+                    └── ModuleServiceProvider.php
   ```
 
 - In this file, we register the models used in this package. You can see the code below.
@@ -180,9 +185,8 @@ Proxies, as their name suggests, lead you to the actual model class. The concept
 
   return [
       'modules' => [
-          ...
+          // Other service providers
           \Webkul\Blog\Providers\ModuleServiceProvider::class,
-          ...
       ]
   ];
   ```

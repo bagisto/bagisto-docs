@@ -9,13 +9,14 @@ To learn in detail about Routes, you can visit the Laravel documentation [here](
 - Create a **`Routes`** folder inside **`packages/Webkul/Blog/src`** and create two files named **`admin-routes.php`** and **`shop-routes.php`**. The updated directory structure will look like this:
 
     ```
-    - packages/
-      - Webkul/Blog/
-        - src/
-          ...
-          - Routes/
-            - admin-routes.php
-            - shop-routes.php
+    └── packages
+        └── Webkul
+            └── Blog
+                └── src
+                    ├── ...
+                    └── Routes
+                        ├── admin-routes.php
+                        └── shop-routes.php
     ```
 
 - **`admin-routes.php`**: This file is for admin routes. Add the following code to this file:
@@ -69,21 +70,11 @@ To learn in detail about Routes, you can visit the Laravel documentation [here](
        */
       public function boot()
       {
-          ...
+          //... 
           
           $this->loadRoutesFrom(__DIR__ . '/../Routes/admin-routes.php');
 
           $this->loadRoutesFrom(__DIR__ . '/../Routes/shop-routes.php');
-      }
-
-      /**
-       * Register services.
-       *
-       * @return void
-       */
-      public function register()
-      {
-
       }
   }
   ```

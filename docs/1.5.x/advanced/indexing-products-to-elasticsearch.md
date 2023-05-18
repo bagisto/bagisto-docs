@@ -2,109 +2,99 @@
 
 [[TOC]]
 
-In this section, we will explain the indexing of products from the database to the Elasticsearch engine.
+In this section, we will explain how to configure Elasticsearch for indexing products from the database.
 
-## Setting up Environment
+## Environment Setup
 
-- To continue with this make sure you have [Elasticseach](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html) installed on your system. By default, Elasticsearch uses the **`9200`** port. So, we are using the same port.
+Before we proceed, make sure you have [Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html) installed on your system. By default, Elasticsearch uses port **`9200`**. We will be using the same port for our configuration.
 
-- Just hit this route **`http://localhost:9200`**, if you see the like below then Elasticsearch is successfully installed on your system,
+To verify if Elasticsearch is installed successfully on your system, open your browser and navigate to **`http://localhost:9200`**. If you see the following output, it means Elasticsearch is installed:
 
-  ::: details Output
-  ```
-  {
-    "name" : "webkul-pc",
-    "cluster_name" : "elasticsearch",
-    "cluster_uuid" : "suPotT8zQjCOlq9dteWKyQ",
-    "version" : {
-      "number" : "8.6.2",
-      "build_flavor" : "default",
-      "build_type" : "deb",
-      "build_hash" : "2d58d0f136141f03239816a4e360a8d17b6d8f29",
-      "build_date" : "2023-02-13T09:35:20.314882762Z",
-      "build_snapshot" : false,
-      "lucene_version" : "9.4.2",
-      "minimum_wire_compatibility_version" : "7.17.0",
-      "minimum_index_compatibility_version" : "7.0.0"
-    },
-    "tagline" : "You Know, for Search"
-  }
-  ```
-  :::
+```json
+{
+  "name" : "webkul-pc",
+  "cluster_name" : "elasticsearch",
+  "cluster_uuid" : "suPotT8zQjCOlq9dteWKyQ",
+  "version" : {
+    "number" : "8.6.2",
+    "build_flavor" : "default",
+    "build_type" : "deb",
+    "build_hash" : "2d58d0f136141f03239816a4e360a8d17b6d8f29",
+    "build_date" : "2023-02-13T09:35:20.314882762Z",
+    "build_snapshot" : false,
+    "lucene_version" : "9.4.2",
+    "minimum_wire_compatibility_version" : "7.17.0",
+    "minimum_index_compatibility_version" : "7.0.0"
+  },
+  "tagline" : "You Know, for Search"
+}
+```
 
-  ::: tip
+Alternatively, you can use the curl command:
 
-  If you want to use curl, you can hit this command,
+```sh
+curl -X GET 'http://localhost:9200'
+```
 
-  ~~~sh
-  curl -X GET 'http://localhost:9200'
-  ~~~
-  :::
+## Configuration Setup
 
-- You can use [Kibana](https://www.elastic.co/kibana/) for visualization also, but in this section, we are using only the Elasticsearch engine.
+To configure Elasticsearch, you can set the necessary key-value pairs in the **`.env`** file of your project.
 
-## Setting up Config
+Open the **`.env`** file and add the following lines:
 
-The most simple way to set up your environment is by just setting the key in the **`.env`** file.
+```env
+ELASTICSEARCH_PORT=9200
+ELASTICSEARCH_HOST=localhost
+```
 
-- Now, open the **`.env`** file in your project and this line,
+Save the file and run the following command to cache the configuration:
 
-  ~~~env
-  ELASTICSEARCH_PORT=9200
-  ELASTICSEARCH_HOST=localhost
-  ~~~
+```sh
+php artisan config:cache
+```
 
-- After that run below the command.
- 
-  ```sh
-  php artisan config:cache
-  ```
+Now your environment is set up and ready to index products.
 
-- Done! Now you are all set to index your products.
+If you encounter any issues, you can directly set the configuration in the **`config/elasticsearch.php`** file:
 
-  ::: tip
-
-  If still it is not working, then you can directly set your config in file i.e. **`config/elasticsearch.php`**
-
-    ~~~php
-    ...
-    'hosts' => [
-        [
-            'host'              => env('ELASTICSEARCH_HOST', 'localhost'),
-            'port'              => env('ELASTICSEARCH_PORT', 9200),
-            ...
-        ]
+```php
+'hosts' => [
+    [
+        'host' => env('ELASTICSEARCH_HOST', 'localhost'),
+        'port' => env('ELASTICSEARCH_PORT', 9200),
+        // Additional configuration options can be added here
     ]
-    ...
-    ~~~
-  :::
+]
+```
 
 ## Indexing
 
-Now, after setting up the environment and config, your product gets automatically indexed when you create a new one.
+After setting up the environment and configuration, new products will be automatically indexed when created.
 
-If you want to index the existing products, then you need to run the below command,
+To index existing products, run the following command:
 
-~~~sh
+```sh
 php artisan indexer:index
-~~~
+```
 
-This command will index all your data from **`product_flat`** table to Elasticsearch index.
+This command will index all the data from the **`product_flat`** table to the Elasticsearch index.
 
 ## Checking Indexes
 
-Now, let's check our imported index in the Elasticsearch by hitting this URL `http://localhost:9200/_cat/indices?v`,
+To check if your products have been indexed successfully, open your browser and navigate to **`http://localhost:9200/_cat/indices?v`**. You should see information about the imported index.
 
-  ::: details Output
-  ![Product Index Info](../../assets/1.5.x/images/advanced-topics/product-index.png)
-  :::
+Alternatively, you can use the curl command:
 
-::: tip
-
-If you want to use curl, you can hit this command,
-
-~~~sh
+```sh
 curl -X GET 'http://localhost:9200/_cat/indices?v'
-~~~
+```
+
+The output will provide details about the product index:
+
+:::details Output
+
+![Product Index Information](../../assets/1.5.x/images/advanced-topics/product-index.png)
 
 :::
+
+By following these steps, you have successfully configured Elasticsearch and indexed your products.

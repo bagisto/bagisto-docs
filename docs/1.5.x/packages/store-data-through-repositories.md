@@ -43,12 +43,13 @@ $posts = $this->postRepository->all();
 - Create a **`Repository`** folder inside **`Webkul/Blog/src/`** and create a file named **`PostRepository.php`**. In the repository class, create the **`model()`** method that returns the path of your contract class.
 
   ```
-  - packages/
-    - Webkul/Blog/
-      - src/
-        ...
-        - Repository/
-          - PostRepository.php
+  └── packages
+      └── Webkul
+          └── Blog
+              └── src
+                  ├── ...
+                  └── Repository
+                      └── PostRepository.php
   ```
 
 - Copy the following code into your newly created repository file.

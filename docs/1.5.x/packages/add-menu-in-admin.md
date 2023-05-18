@@ -8,12 +8,13 @@ To ensure that the admin menu includes the necessary configuration, follow these
 
 1. In your package's source directory, which is typically located at **`packages/Webkul/Blog/src`**, create a new folder named **`Config`** if it doesn't already exist.
    ```
-    - packages/
-      - Webkul/Blog/
-        - src/
-          ...
-          - Config/
-            - admin-menu.php
+    └── packages
+        └── Webkul
+            └── Blog
+                └── src
+                    ├── ...
+                    └── Config
+                        └── admin-menu.php
    ```
 
 2. Inside the newly created **`Config`** folder, create a file named **`admin-menu.php`**.

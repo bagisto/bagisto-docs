@@ -13,13 +13,14 @@ To configure the ACL, follow these steps:
 1. Create a new file named **`acl.php`** in the **`packages/Webkul/Blog/src/Config`** folder of your package. 
 
    ```
-   - packages/
-     - Webkul/Blog/
-       - src/
-         ...
-         - Config/
-           - acl.php
-         ...
+   └── packages
+       └── Webkul
+           └── Blog
+               └── src
+                   ├── ...
+                   └── Config
+                       ├── acl.php
+                       └── ...
    ```
 
 2. Add the following code to **`acl.php`**:
@@ -48,10 +49,29 @@ To merge the ACL configuration, follow these steps:
 2. In the **`register`** method, add the following code to merge the ACL configuration:
 
    ```php
-   $this->mergeConfigFrom(
-       dirname(__DIR__) . '/Config/acl.php', 'acl'
-   );
-   ```
+    <?php
+
+    namespace Webkul\Blog\Providers;
+
+    use Illuminate\Support\ServiceProvider;
+
+    class StripeServiceProvider extends ServiceProvider
+    {
+        /**
+         * Register services.
+         *
+         * @return void
+         */
+        public function register()
+        {
+            //...
+            
+            $this->mergeConfigFrom(
+               dirname(__DIR__) . '/Config/acl.php', 'acl'
+            );
+        }
+    }
+    ```
 
    This will merge the ACL configuration with the existing configuration.
 

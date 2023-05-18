@@ -17,13 +17,14 @@ php artisan package:make-migration CreatePostsTable Webkul/Blog
 - Create a **`Database`** folder in the **`packages/Webkul/Blog/src`** path. Inside the **`Database`** folder, create **`Migrations`** and **`Seeders`** folders.
 
     ```
-    - packages/
-      - Webkul/Blog/
-        - src/
-          ...
-          - Database/
-            - Migrations/
-            - Seeders/
+    └── packages
+        └── Webkul
+            └── Blog
+                └── src
+                    ├── ...
+                    └── Database
+                        ├── Migrations
+                        └── Seeders
     ```
 
 - Run the following command with the **`--path`** option to specify where your migration file will be placed.
@@ -98,16 +99,6 @@ php artisan package:make-migration CreatePostsTable Webkul/Blog
       public function boot()
       {          
           $this->loadMigrationsFrom(__DIR__ .'/../Database/Migrations');
-      }
-
-      /**
-      * Register services.
-      *
-      * @return void
-      */
-      public function register()
-      {
-
       }
   }
   ```

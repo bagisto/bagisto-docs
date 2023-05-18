@@ -9,17 +9,17 @@ To learn in detail about Views, you can visit the Laravel documentation [here](h
 - Create a **`Resources`** folder in the **`packages/Webkul/Blog/src`** path. Inside the **`Resources`** folder, create another folder named **`views`**. Now, inside the **`views`** folder, we need to create two folders, namely **`admin`** and **`shop`**. Finally, we need to create two more folders, namely **`default`** and **`velocity`**, under the **`shop`** folder. The updated directory structure will look like this:
 
   ```
-  - packages/
-    - Webkul/Blog/
-      - src/
-        ...
-        - Resources/
-          ...
-          - views/
-            - admin/
-            - shop/
-              - default/
-              - velocity/
+  └── packages
+      └── Webkul
+          └── Blog
+              └── src
+                  ├── ...
+                  └── Resources
+                      └── views
+                          ├── admin
+                          └── shop
+                              ├── default
+                              └── velocity
   ```
 
   ::: tip The default and velocity folders
@@ -33,19 +33,20 @@ To learn in detail about Views, you can visit the Laravel documentation [here](h
 - Inside each folder, **`admin`** and **`velocity`**, create a file named **`index.blade.php`** and add some HTML to it.
 
   ```
-  - packages/
-    - Webkul/Blog/
-      - src/
-        ...
-        - Resources/
-          ...
-          - views/
-            - admin/
-              - index.blade.php
-            - shop/
-              - default/
-              - velocity/
-                - index.blade.php
+  └── packages
+      └── Webkul
+          └── Blog
+              └── src
+                  ├── ...
+                  └── Resources
+                      └── views
+                          ├── admin
+                          │   └── index.blade.php
+                          └── shop
+                              ├── default
+                              └── velocity
+                                  └── index.blade.php
+
   ```
 
   - **`admin/index.blade.php`**
@@ -85,19 +86,9 @@ To learn in detail about Views, you can visit the Laravel documentation [here](h
       */
       public function boot()
       {
-          ...
+          //... 
 
           $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'blog');
-      }     
-
-      /**
-      * Register services.
-      *
-      * @return void
-      */
-      public function register()
-      {
-
       }
   }
   ```

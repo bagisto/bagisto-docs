@@ -4,20 +4,23 @@
 
 ## Configuration
 
-- Go to your project’s root directory and check for **`config`** folder. Inside **`config`** folder, you will find a file called **_`themes.php`_** like directory below:
+To configure the store theme in Bagisto, follow these steps:
+
+1. Go to your project's root directory and locate the **`config`** folder. Inside the **`config`** folder, you will find a file named **`themes.php`**.
 
     ```
-        - app/
-        - bin/
-        - bootstrap/
-        - config/
-           ...
-           - themes.php
-        - database/
-        - packages/Webkul
+    - app
+    - bin
+    - bootstrap
+    - config
+      ├── ...
+      └── themes.php
+    - database
+    - packages
+      └── Webkul
     ```
 
-- Check contents of **_`themes.php`_** file, it holds all necessary information of creating a custom theme.
+2. Open the **`themes.php`** file to examine its contents. This file contains all the necessary information for creating a custom theme in Bagisto.
 
     ```php
     <?php
@@ -42,36 +45,38 @@
     ];
     ```
 
-- Let’s go through the parameters of **_themes.php_** file. Because understanding those parameters will help you in creating a custom theme.
+3. Let's go through the parameters defined in the **`themes.php`** file as understanding them will help you in creating a custom theme.
 
-### Explanation For Parameters:
+### Explanation of Parameters:
 
-- default: Declared at the top signifies the currently active or default theme in Bagisto. It is assigned with the value 'default’. The default(string) indicates the name of the currently active theme.
+- **default**: This parameter at the top of the file indicates the currently active or default theme in Bagisto. It is set to **`'default'`**, representing the name of the currently active theme.
 
-- themes: This parameter is where you’ve to define all essentials for your own custom theme. Multiple themes can also be created and used at the same time in Bagisto.
+- **themes**: This parameter allows you to define the configurations for your custom themes. You can create and use multiple themes simultaneously in Bagisto.
 
-    - Inside 'themes’ there is another array by name 'default' which is your currently active theme containing some key-value pairs.
+    - Inside the **`'themes'`** array, there is another array named **`'default'`**, which represents your currently active theme. It contains several key-value pairs that are explained below:
 
-        - **default:** Inside array 'default', it holds few more key-value pairs. such as 'views_path', 'assets_path', 'name’ all those are explained below:
+        - **views_path**: This parameter specifies the path to the views or blade files for your custom theme.
 
-           - **views_path:** It’ll take the path of your views or blade files that you want to put up in your custom theme.
+        - **assets_path**: It determines the path to the assets such as images, CSS files, and JavaScript files for your theme.
 
-           - **assets_path:** Responsible for your assets i.e. images, CSS and javascript files, etc.
+        - **name**: This parameter defines a global name for your theme inside Bagisto.
 
-           - **name:** Defines a global name for your theme inside Bagisto.
+        - **parent**: This is an optional parameter that allows you to customize existing themes in Bagisto. By setting the **`'parent'`** parameter to the value of the **`'name'`** parameter listed above, you can inherit the configuration of the parent theme and make further customizations.
 
-           - **parent:** This is a magic parameter that you can find in the commented code below the sub-array 'default'. Using            this parameter you can make use of existing themes inside Bagisto and just customize them even further. This        parameter will take the value of the 'name’ parameter listed in the 3rd point above.
+4. Once you have defined the paths and names for your custom theme in the **`themes.php`** file, you can start creating your view files. Make sure to cover all the GET routes of the shop package that include a parameter called **`'view'`**. You can find the route file of the shop package located at **`packages/Webkul/Shop/src/Http/routes.php`**.
 
-- Finally, define your own paths and name of your custom theme inside **_themes.php_** file, and start creating view files. Do not forget to cover all get routes of shop package having a parameter called 'view’. You can get route file of shop package located at `packages/Webkul/Shop/src/Http/routes.php`
-
-- Make sure the name of the blade file should be the same one as passed in this GET route file like this:
+5. Ensure that the name of your blade file matches the value passed in the GET route file. For example:
 
     ```php
-    //Store front header nav-menu fetch
-        Route::get('/categories/{slug}', 'Webkul\Shop\Http\Controllers\CategoryController@index')
-        ->defaults('_config', [
-            'view' => 'shop::products.index'
-        ])->name('shop.categories.index');
+    // Store front header nav-menu fetch
+    Route::get('/categories/{slug}', 'Webkul\Shop\Http\Controllers\CategoryController@index')
+    ->defaults('_config', [
+        'view' => 'shop::products.index'
+    ])->name('shop.categories.index');
     ```
 
-- For all views check all GET routes as they hold a view parameter with the value of view to be used.
+    In this example, the view file should be named **`index.blade.php`** and placed in the appropriate directory within your custom theme.
+
+6. For all the views, check all the GET routes as they include a **`'view'`** parameter with the corresponding value to be used.
+
+By following these steps, you can configure and create custom view files for your store theme in Bagisto. This allows you to personalize the appearance and layout of your storefront to align with your branding and provide an enhanced user experience.

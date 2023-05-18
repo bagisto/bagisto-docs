@@ -38,11 +38,9 @@ To register your package, follow these steps:
    "autoload": {
        ...
        "psr-4": {
-           ...
+           // Other PSR-4 namespaces
            "Webkul\\Blog\\": "packages/Webkul/Blog/src"
-           ...
        }
-       ...
    }
    ```
 
@@ -52,13 +50,15 @@ To register your package, follow these steps:
     <?php
 
     return [
-        ...
+        
+        // Other configuration options
+
         'providers' => ServiceProvider::defaultProviders()->merge([
-            ...
+            // Other service providers
             Webkul\Blog\Providers\BlogServiceProvider::class,
-            ...
         ])->toArray(),
-        ...
+        
+        // Other configuration options
     ];
     ```
 
@@ -89,19 +89,18 @@ If you prefer to set up your package manually, follow these steps assuming you a
 1. Inside the **`packages/Webkul`** folder, create a folder with your package name. Your structure should look like this:
 
    ```
-   - packages/
-     - Webkul/
-         ...
-       - Blog/
-         ...
+   └── packages
+       └── Webkul
+           └── Blog
    ```
 
 2. In your package folder, create a folder named as **`src`**. This is where you'll put all your package-related files. Your updated structure will look like this:
 
    ```
-   - packages/
-     - Webkul/Blog/
-       - src/
+   └── packages
+       └── Webkul
+           └── Blog
+               └── src
    ```
 
 ### Create Service Provider
@@ -109,11 +108,12 @@ If you prefer to set up your package manually, follow these steps assuming you a
 1. In the **`src`** folder, create a folder named as **`Providers`**. Inside that folder, create a file named as **`BlogServiceProvider.php`**. Your structure should look like this:
 
    ```
-   - packages/
-     - Webkul/Blog/
-       - src/
-         - Providers
-           - BlogServiceProvider.php
+   └── packages
+       └── Webkul
+           └── Blog
+               └── src
+                   └── Providers
+                       └── BlogServiceProvider.php
    ```
 
 2. Copy the following code and paste it into **`BlogServiceProvider.php`**:
@@ -162,11 +162,9 @@ If you prefer to set up your package manually, follow these steps assuming you a
    "autoload": {
        ...
        "psr-4": {
-           ...
+           // Other PSR-4 namespaces
            "Webkul\\Blog\\": "packages/Webkul/Blog/src"
-           ...
        }
-       ...
    }
    ```
 
@@ -176,13 +174,15 @@ If you prefer to set up your package manually, follow these steps assuming you a
     <?php
 
     return [
-        ...
+        
+        // Other configuration options
+
         'providers' => ServiceProvider::defaultProviders()->merge([
-            ...
+            // Other service providers
             Webkul\Blog\Providers\BlogServiceProvider::class,
-            ...
         ])->toArray(),
-        ...
+        
+        // Other configuration options
     ];
     ```
 

@@ -11,15 +11,16 @@ To learn in detail about Localization, you can visit the Laravel documentation [
 - Inside the **`lang`** folder, you can create different folders for language translations. For example, you can create folders for English ('en'), Hindi ('hi'), etc. For now, let's create a folder named **`en`** (representing the language code). Inside the **`en`** folder, create a file named **`app.php`** for language translation.
 
   ```
-  - packages/
-    - Webkul/Blog/
-      - src/
-        ...
-        - Resources/
-          ...
-          - lang/
-            - en/
-              - app.php
+  └── packages
+      └── Webkul
+          └── Blog
+              └── src
+                  ├── ...
+                  └── Resources
+                      ├── ...
+                      └── lang
+                          └── en
+                              └── app.php
   ```
 
 - Now, let's write a translation in **`app.php`** as follows:
@@ -59,19 +60,9 @@ To learn in detail about Localization, you can visit the Laravel documentation [
       */
       public function boot()
       {
-          ...
+          //... 
 
           $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'blog');
-      }
-
-      /**
-      * Register services.
-      *
-      * @return void
-      */
-      public function register()
-      {
-
       }
   }
   ```

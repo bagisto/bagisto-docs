@@ -100,12 +100,13 @@ Follow the steps below to implement multiple DataGrids:
 1. Create a folder called **`DataGrids`** inside the **`src`** folder of your package. Within the **`DataGrids`** folder, create a file called **`PostDataGrid.php`** that extends the **`DataGrid`** class from the **`Webkul\Ui`** package. The directory structure will be as follows:
 
     ```
-    - packages/
-      - Webkul/Blog/
-        - src/
-          ...
-          - DataGrids/
-            - PostDataGrid.php
+    └── packages
+        └── Webkul
+            └── Blog
+                └── src
+                    ├── ...
+                    └── DataGrids
+                        └── PostDataGrid.php
     ```
 
 2. Add the following code to your DataGrid file, i.e., **`PostDataGrid.php`**:

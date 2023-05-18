@@ -11,18 +11,18 @@ To learn in detail about Controllers, you can visit the Laravel documentation [h
 - Inside both the **`Admin`** and **`Shop`** folders, create a **`PostController.php`** file. The updated directory structure will look like this:
 
   ```
-  - packages/
-    - Webkul/Blog/
-      - src/
-        ...
-        - Http/
-          ...
-          - Controllers/
-            - Controller.php
-            - Admin/
-              - PostController.php
-            - Shop
-              - PostController.php
+  └── packages
+      └── Webkul
+          └── Blog
+              └── src
+                  ├── ...
+                  └── Http
+                      └── Controllers
+                          ├── Controller.php
+                          ├── Admin
+                          │   └── PostController.php
+                          └── Shop
+                              └── PostController.php
   ```
 
 ## Base Controller

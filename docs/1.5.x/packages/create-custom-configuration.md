@@ -11,13 +11,15 @@ To create a custom configuration for your application, follow these steps:
 1. Create a **`system.php`** file in the **`Config`** folder of your package:
 
    ```
-   - packages/
-     - Webkul/Blog/
-     - src/
-       ...
-       - Config/
-         - system.php
-       ...
+    └── packages
+        └── Webkul
+            └── Blog
+                ├── ...
+                └── src
+                    └── ...
+                    └── Config
+                    └── system.php
+                
    ```
 
 2. Inside the **`system.php`** file, include the following code:
@@ -92,10 +94,29 @@ To merge the custom configuration, follow these steps:
 2. In the **`register`** method, add the following code to merge the custom configuration:
 
    ```php
-   $this->mergeConfigFrom(
-       dirname(__DIR__) . '/Config/system.php', 'core'
-   );
-   ```
+    <?php
+
+    namespace Webkul\Blog\Providers;
+
+    use Illuminate\Support\ServiceProvider;
+
+    class StripeServiceProvider extends ServiceProvider
+    {
+        /**
+         * Register services.
+         *
+         * @return void
+         */
+        public function register()
+        {
+            //...
+            
+            $this->mergeConfigFrom(
+               dirname(__DIR__) . '/Config/system.php', 'core'
+            );
+        }
+    }
+    ```
 
    This code merges the custom configuration with the existing configuration.
 

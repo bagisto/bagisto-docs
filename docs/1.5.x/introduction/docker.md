@@ -112,7 +112,7 @@ docker-compose pull
 
 ### Launching the Docker Container
 
-Execute the following command to create a network and launch web server and database containers with the names **`apache2`** and **`mysql`** respectively. It will also create new directories **`app`** and **`dbvolume`** within your current directory and mount them to the respective Docker containers as specified in the `docker-compose.yml` file. Additionally, it binds your **`host port 80`** to the Apache2 container's port 80, and your **`host port 3306`** to the MySQL container's port 3306. If you wish to use different ports for the containers, modify their values in the `docker-compose.yml` file.
+Execute the following command to create a network and launch web server and database containers with the names **`apache2`** and **`mysql`** respectively. It will also create new directories **`app`** and **`dbvolume`** within your current directory and mount them to the respective Docker containers as specified in the **`docker-compose.yml`** file. Additionally, it binds your **`host port 80`** to the Apache2 container's port 80, and your **`host port 3306`** to the MySQL container's port 3306. If you wish to use different ports for the containers, modify their values in the **`docker-compose.yml`** file.
 
 ```
 docker-compose up -d

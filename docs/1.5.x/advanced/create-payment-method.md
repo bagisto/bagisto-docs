@@ -4,234 +4,212 @@
 
 ## Introduction
 
-Bagisto eases the task of creating payment methods. So, a novice developer or a professional developer can easily create payment methods.
+Bagisto eases the task of creating payment methods, making it simple for both novice and professional developers.
 
-As the diversity of payment methods provide the options to customer for payment when they proceed to checkout.
-
-On another perspective, multiple payment methods are a great strategy to reach out to the global marketplace.
+The diversity of payment methods provides customers with various options for payment when they proceed to checkout. Moreover, offering multiple payment methods is a great strategy to reach out to the global marketplace.
 
 ## Using Bagisto Package Generator
 
-- For creating payment method package, you need to use these commands in bagisto root directory,
+To create a payment method package, follow these commands in the Bagisto root directory:
 
-  - If package directory not present,
+- If the package directory is not present:
 
-    ```sh
-    php artisan package:make-payment-method Webkul/Blog
+  ```sh
+  php artisan package:make-payment-method Webkul/Blog
+  ```
+
+- If the package directory is already present, you can use the force command to overwrite it. Simply add the **`--force`** flag:
+
+  ```sh
+  php artisan package:make-payment-method Webkul/Blog --force
+  ```
+
+  These commands will generate the entire directory structure automatically, saving you from manual setup.
+
+## Manually Setting Up All Files
+
+1. To create your payment method, follow these steps to set up the respective directory structure:
+
+    ```
+    - Webkul/
+      └── Blog/
+          └── src/
+              ├── ...
+              ├── Config/
+              │   ├── system.php
+              │   └── paymentmethods.php
+              ├── Payment/
+              │   └── Stripe.php
+              └── Providers/
+                  └── StripeServiceProvider.php
     ```
 
-  - If somehow package directory already present then you can use force command as well. For that you just need to pass the '**--force**' command.
+2. The **`Config`** folder contains application configuration files. Create two files, **`system.php`** and **`paymentmethods.php`**, within the **`Config`** folder. In the **`system.php`** file, include the following array keys:
 
-    ```sh
-    php artisan package:make-payment-method Webkul/Blog --force
+    ```php
+    <?php
+
+    return [
+        [
+            'key'    => 'sales.paymentmethods.stripe',
+            'name'   => 'Stripe',
+            'sort'   => 1,
+            'fields' => [
+                [
+                    'name'          => 'title',
+                    'title'         => 'admin::app.admin.system.title',
+                    'type'          => 'text',
+                    'validation'    => 'required',
+                    'channel_based' => false,
+                    'locale_based'  => true,
+                ], [
+                    'name'          => 'description',
+                    'title'         => 'admin::app.admin.system.description',
+                    'type'          => 'textarea',
+                    'channel_based' => false,
+                    'locale_based'  => true,
+                ], [
+                    'name'          => 'active',
+                    'title'         => 'admin::app.admin.system.status',
+                    'type'          => 'boolean',
+                    'validation'    => 'required',
+                    'channel_based' => false,
+                    'locale_based'  => true,
+                ]
+            ]
+        ]
+    ];
     ```
+    - **`key`**: A unique value for the configuration, concatenated with a dot (`.`) operator.
+    - **`name`**: The placeholder value for the configuration. It is recommended to use translations in Bagisto.
+    - **`sort`**: The position of the configuration menu.
+    - **`fields`**: An array containing the custom configurations and fields for the payment method. The example includes three arrays for **`title`**, **`description`**, and **`status`**. You can add more arrays for additional settings.
 
-- This will generate whole directory structures. You don't need to do manually.
+3. In the **`paymentmethods.php`** file, add the following content:
 
-## By Manually Setting up all Files
+    ```php
+    <?php
 
-- Create respective directory structure to create your payment method.
-
-  ```
-  - Webkul/Blog/src/
-    - Config/
-      - system.php
-      - paymentmethods.php
-    - Payment/
-      - Stripe.php
-    - Providers/
-      - StripeServiceProvider.php
-  ```
-
-- Within **`Config`** folder, it contains application's configuration files. Let's just create two files i.e. **`system.php`** and **`paymentmethods.php`**. In **`system.php`** file, you have to include the array keys in the file as shown below,
-
-  ```php
-  <?php
-
-  return [
-      [
-          'key'    => 'sales.paymentmethods.stripe',
-          'name'   => 'Stripe',
-          'sort'   => 1,
-          'fields' => [
-              [
-                  'name'          => 'title',
-                  'title'         => 'admin::app.admin.system.title',
-                  'type'          => 'text',
-                  'validation'    => 'required',
-                  'channel_based' => false,
-                  'locale_based'  => true,
-              ], [
-                  'name'          => 'description',
-                  'title'         => 'admin::app.admin.system.description',
-                  'type'          => 'textarea',
-                  'channel_based' => false,
-                  'locale_based'  => true,
-              ], [
-                  'name'          => 'active',
-                  'title'         => 'admin::app.admin.system.status',
-                  'type'          => 'boolean',
-                  'validation'    => 'required',
-                  'channel_based' => false,
-                  'locale_based'  => true,
-              ]
-          ]
-      ]
-  ];
-  ```
-
-  - Let's discuss what these keys are,
-
-    - **`key`**: Value which is provided in this key should be unique and concatenated with '.' (dot) operator.
-
-    - **`name`**: This key accept the value as a placeholder for your configuration. Generally, in Bagisto, we consider writing it using translation.
-
-    - **`sort`**: This key accept the sort position for your configuration menu.
-
-    - **`fields`**: This key accept the list of arrays representing your custom configurations and fields. Right now you are seeing that it only holding 3 array i.e. title, description and status. If you need some other settings than you can add one more array to this.
-
-- Similarly in **`paymentmethods.php`**,
-
-  ```php
-  <?php
-
-  return [
-      'stripe'  => [
-          'code'        => 'stripe',
-          'title'       => 'Stripe',
-          'description' => 'Stripe',
-          'class'       => 'Webkul\Blog\Payment\Stripe',
-          'active'      => true,
-          'sort'        => 1,
-      ],
-  ];
-  ```
-
-  - Now, let's look into this what these keys are,
-    - **`code`**: A text to represent payment method.
-    - **`title`**: Name of the payment method.
+    return [
+        'stripe'  => [
+            'code'        => 'stripe',
+            'title'       => 'Stripe',
+            'description' => 'Stripe',
+            'class'       => 'Webkul\Blog\Payment\Stripe',
+            'active'      => true,
+            'sort'        => 1,
+        ],
+    ];
+    ```
+    - **`code`**: A text representing the payment method.
+    - **`title`**: The name of the payment method.
     - **`description`**: A brief description of the payment method.
-    - **`class`**: This key includes the class namespace where all functions of payment method are written.
-    - **`active`**: This key accepts true/false to enable or disable the module.
-    - **`sort`**: This key accept the sort position of the payment.
+    - **`class`**: The namespace of the class where the payment method functions are defined.
+    - **`active`**: A boolean value (`true` or `false`) to enable or disable the module.
+    - **`sort`**: The position of the payment method.
 
-- If you check the above point, we have discussed the key **`class`** which includes the class namespace. So let's create that class in the respective file. In **`Stripe.php`**, add the below code.
+4. In the **`Stripe.php`** file within the **`Payment`** directory, add the following code:
 
-  ```php
-  <?php
+    ```php
+    <?php
 
-  namespace Webkul\Blog\Payment;
+    namespace Webkul\Blog\Payment;
 
-  use Webkul\Payment\Payment\Payment;
+    use Webkul\Payment\Payment\Payment;
 
-  class Stripe extends Payment
-  {
-      /**
-      * Payment method code
-      *
-      * @var string
-      */
-      protected $code  = 'stripe';
+    class Stripe extends Payment
+    {
+        /**
+        * Payment method code
+        *
+        * @var string
+        */
+        protected $code  = 'stripe';
 
-      public function getRedirectUrl()
-      {
-      }
-  }
-  ```
-
+        public function getRedirectUrl()
+        {
+            // Implementation code goes here
+        }
+    }
+    ```
 ## Merge Configuration
 
-- Now we need to create the provider, in **`StripeServiceProvider.php`** add the below code.
+1. To merge the configuration, create the provider in **`StripeServiceProvider.php`**:
 
-  ```php
-  <?php
+    ```php
+    <?php
 
-  namespace Webkul\Blog\Providers;
+    namespace Webkul\Blog\Providers;
 
-  use Illuminate\Support\ServiceProvider;
+    use Illuminate\Support\ServiceProvider;
 
-  class StripeServiceProvider extends ServiceProvider
-  {
-      /**
-      * Bootstrap services.
-      *
-      * @return void
-      */
-      public function boot()
-      {
-      }
+    class StripeServiceProvider extends ServiceProvider
+    {
+        /**
+         * Register services.
+         *
+         * @return void
+         */
+        public function register()
+        {
+            $this->registerConfig();
+        }
 
-      /**
-      * Register services.
-      *
-      * @return void
-      */
-      public function register()
-      {
-          $this->registerConfig();
-      }
+        /**
+         * Register package config.
+         *
+         * @return void
+         */
+        protected function registerConfig()
+        {
+            $this->mergeConfigFrom(
+                dirname(__DIR__) . '/Config/paymentmethods.php', 'paymentmethods'
+            );
 
-      /**
-      * Register package config.
-      *
-      * @return void
-      */
-      protected function registerConfig()
-      {
-          $this->mergeConfigFrom(
-              dirname(__DIR__) . '/Config/paymentmethods.php', 'paymentmethods'
-          );
+            $this->mergeConfigFrom(
+                dirname(__DIR__) . '/Config/system.php', 'core'
+            );
+        }
+    }
+    ```
 
-          $this->mergeConfigFrom(
-              dirname(__DIR__) . '/Config/system.php', 'core'
-          );
-      }
-  }
-  ```
+2. Next, add your payment method namespace to the **`psr-4`** key in the **`composer.json`** file located in the Bagisto root directory:
 
-## Service Provider
+    ```json
+    "autoload": {
+        ...
+        "psr-4": {
+            // Other PSR-4 namespaces
+            "Webkul\\Blog\\": "packages/Webkul/Blog/src"
+        }
+    }
+    ```
 
-- After that, add you payment method namespace in **`psr-4`** key in **`composer.json`** file for auto loading which is located Bagisto root directory.
+3. Register your service provider in the **`config/app.php`** file, also located in the Bagisto root directory:
 
-  ```json
-  "autoload": {
-      ...
-      "psr-4": {
-          ...
-          "Webkul\\Blog\\": "packages/Webkul/Blog/src"
-          ...
-      }
-      ...
-  }
-  ```
+    ```php
+    <?php
 
-- Then, you need to register your service provider in **`config/app.php`** which is located Bagisto root directory.
+    return [
+        // Other configuration options
 
-  ```php
-  <?php
+        'providers' => ServiceProvider::defaultProviders()->merge([
+            // Other service providers
+            Webkul\Blog\Providers\StripeServiceProvider::class,
+        ])->toArray(),
+        
+        // Other configuration options
+    ];
+    ```
 
-  return [
-      ...
-      'providers' => [
-          ...
-          Webkul\Blog\Providers\StripeServiceProvider::class,
-          ...
-      ]
-      ...
-  ];
-  ```
+4. After making these changes, run the following commands:
 
-- After that run the below commands.
+    ```sh
+    composer dump-autoload
+    ```
 
-  ```sh
-  composer dump-autoload
-  ```
-  ```sh
-  php artisan config:cache
-  ```
+    ```sh
+    php artisan config:cache
+    ```
 
-  ::: tip
-
-  If **`composer dump-autoload`** giving some error than in that case delete all files from the **`bootstrap/cache`** and again run **`composer dump-autoload`**.
-
-  :::
+    If you encounter any issues with **`composer dump-autoload`**, delete all files from the **`bootstrap/cache`** directory and run **`composer dump-autoload`** again.
