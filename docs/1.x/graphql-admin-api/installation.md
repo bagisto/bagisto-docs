@@ -1,79 +1,48 @@
 
 # Installation:
 
-* Unzip the respective extension zip and then merge "packages" folder into project root directory.
-
-### Goto config/app.php file and add following line under 'providers'
+* You can clone the package from the GitHub [open-source headless laravel](https://bagisto.com/en/headless-ecommerce/) repository.
 
 ~~~
-    Webkul\GraphQLAPI\Providers\GraphQLAPIServiceProvider::class
+composer require bagisto/graphql-api dev-main
 ~~~
 
-### Goto composer.json file and add following line under 'psr-4'
+* Add the below-line inside the **modules** index in **config/concord.php** file:
 
 ~~~
-    "Webkul\\GraphQLAPI\\": "packages/Webkul/GraphQLAPI"
+\Webkul\GraphQLAPI\Providers\ModuleServiceProvider::class,
 ~~~
 
-### Run the below mentioned commands from the root directory in terminal:
+* Find a file **app/Http/Kernel.php** from root and add these two **middlewares** inside the **$middleware** array:
 
 ~~~
-    composer dump-autoload
-~~~
-~~~
-    php artisan optimize
-~~~
-```sh
-    php artisan bagisto_graphql:install
-```
-
-### Find a file config/lighthouse.php from root and do the following changes:
-
-* change the **guard** index value from **api** to **admin-api** like below mentioned:
-
-~~~
-    'guard' => 'admin-api',
+\Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+\Illuminate\Session\Middleware\StartSession::class,
 ~~~
 
-* change the path from *'graphql/schema.graphql'* to **'packages/Webkul/GraphQLAPI/graphql/schema.graphql'** for the **register** index under **schema** array index like below mentioned:
+* Add the **JWT_TTL (JWT time to live)** & **JWT_SHOW_BLACKLIST_EXCEPTION** entries in the **.env** file:
 
 ~~~
-    'schema' => [
-        'register' => base_path('packages/Webkul/GraphQLAPI/graphql/schema.graphql'),
-    ],
+JWT_TTL=525600
+JWT_SHOW_BLACKLIST_EXCEPTION=true
 ~~~
 
-* change the *App\\GraphQL\\* path to **Webkul\\GraphQLAPI\\** in all the indexes of **namespace** index:
+#### To install and publish the assests and configurations, run below command from the root in terminal:
 
 ~~~
-    'namespaces' => [
-        'models' => ['App', 'Webkul\\GraphQLAPI\\Models'],
-        'queries' => 'Webkul\\GraphQLAPI\\Queries',
-        'mutations' => 'Webkul\\GraphQLAPI\\Mutations',
-        'subscriptions' => 'Webkul\\GraphQLAPI\\Subscriptions',
-        'interfaces' => 'Webkul\\GraphQLAPI\\Interfaces',
-        'unions' => 'Webkul\\GraphQLAPI\\Unions',
-        'scalars' => 'Webkul\\GraphQLAPI\\Scalars',
-        'directives' => ['Webkul\\GraphQLAPI\\Directives'],
-        'validators' => ['Webkul\\GraphQLAPI\\Validators'],
-    ],
-~~~
-
-* Add the **JWT_TTL** (JWT time to live) entry in the **.env** file under the **JWT_SECRET** key:
-
-~~~
-    JWT_TTL=525600
+php artisan bagisto-graphql:install
 ~~~
 
 ### Now to use the graphql-playground for testing the APIs:
 
 ~~~
-    http://example.com/graphql-playground
+http://your-domain.com/graphql-playground
 ~~~
 
 ### Or you can also use the Postmen for testing the APIs:
 
 ~~~
-    http://example.com/graphql
+http://your-domain.com/graphql
 ~~~
+
 > That's it, now just execute the project on your specified domain.
