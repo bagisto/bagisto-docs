@@ -34,6 +34,17 @@ module.exports = [
         ])
     },
     {
+        title: 'Architecture concepts',
+        path: setVersionPrefix('architecture'),
+        collapsable: true,
+        children: setVersionPrefix([
+            ['architecture/packages', 'Packages'],
+            ['architecture/vue-and-sass', 'Vue and Sass'],
+            ['architecture/theme', 'Theme'],
+            ['architecture/performance', 'Performance']
+        ])
+    },
+    {
         title: 'Package Development',
         path: setVersionPrefix('packages'),
         collapsable: true,

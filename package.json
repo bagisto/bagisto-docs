@@ -16,9 +16,9 @@
   "author": "Bagisto",
   "license": "MIT",
   "devDependencies": {
-    "@vuepress/plugin-back-to-top": "^1.9.5",
-    "@vuepress/plugin-pwa": "^1.9.5",
-    "vuepress": "^1.9.5",
+    "@vuepress/plugin-back-to-top": "^1.9.9",
+    "@vuepress/plugin-pwa": "^1.9.9",
+    "vuepress": "^1.9.9",
     "vuepress-plugin-auto-sidebar": "^2.3.2",
     "vuepress-plugin-copy-code": "0.0.1"
   },
