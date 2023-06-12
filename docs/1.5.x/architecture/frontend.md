@@ -7,3 +7,7 @@
 **Bagisto** is using [Vue.js](https://vuejs.org/) and [Sass](https://sass-lang.com/), webpack compiles all of CSS and JavaScript assets that are placed into public directory.
 
 In **webpack.mix.js** file, just define your [Vue.js](https://vuejs.org/) and [Sass](https://sass-lang.com/) assets, [webpack](https://webpack.js.org/) will be responsible to compile all the assets on defined location.
+
+# Blade
+
+**Bagisto** uses blade template engine that is included with **Laravel**. It does not restrict you from using plain PHP code in your templates. [This documentation](http://localhost:8080/1.5.x/packages/views.html#directory-structure) provides an explanation of directory structure and package configuration for implementations.

@@ -39,9 +39,11 @@ module.exports = [
         collapsable: true,
         children: setVersionPrefix([
             ['architecture/packages', 'Packages'],
-            ['architecture/vue-and-sass', 'Vue and Sass'],
+            ['architecture/frontend', 'Frontend'],
             ['architecture/theme', 'Theme'],
-            ['architecture/performance', 'Performance']
+            ['architecture/performance', 'Performance'],
+            ['architecture/repository', 'Repository'],
+            ['architecture/modular', 'Modular Architecture']
         ])
     },
     {
