@@ -42,8 +42,8 @@ module.exports = [
             ['architecture/frontend', 'Frontend'],
             ['architecture/theme', 'Theme'],
             ['architecture/performance', 'Performance'],
-            ['architecture/repository', 'Repository'],
-            ['architecture/modular', 'Modular Architecture']
+            ['architecture/repository-pattern', 'Repository Pattern'],
+            ['architecture/modular-design', 'Modular Design']
         ])
     },
     {

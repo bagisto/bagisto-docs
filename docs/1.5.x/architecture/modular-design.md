@@ -1,6 +1,6 @@
-# Modular Architecture
+# Modular Design
 
-**Modular architecture** is the preferred approach for e-commerce software, as it enables the separation of each package and empowers users to work with self-contained modules.
+**Modular design** is the preferred approach for e-commerce software, as it enables the separation of each package and empowers users to work with self-contained modules.
 
 This architectural style effectively manages the complexity of the system by breaking down problems into smaller, more manageable modules.
 

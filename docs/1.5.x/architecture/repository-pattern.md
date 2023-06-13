@@ -1,4 +1,4 @@
-# Repository 
+# Repository Pattern
 
 [Eloquent](https://laravel.com/docs/10.x/eloquent), the [ORM](https://en.wikipedia.org/wiki/Object%E2%80%93relational_mapping) in **Laravel**, provide a higher level of abstraction and make working with databases more convenient, as you can focus on manipulating objects rather than dealing with raw SQL queries.
 
