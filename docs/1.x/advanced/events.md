@@ -81,7 +81,7 @@ Events fired in bagisto but not listened such that if any user wants to perform 
 
 | Events name                  | Functionality|
 | ------------------------------- | ------------- |
-|core.configuration.save.after|This event will be fired after core configuration form data gets saved, then you may create a listener file and perform the respective operation when that event fires  |
+|core.configuration.save.before|This event will be fired before core configuration form data gets saved, then you may create a listener file and perform the respective operation when that event fires  |
 |core.configuration.save.after|This event will be fired after core configuration form data gets saved, then you may create a listener file and perform the respective operation when that event fires|
 |checkout.cart.item.add.before |This event will be fired before saving into the  database of item added in checkout and you may create a listener file and perform the respective operation when that event fires|
 |checkout.cart.item.add.after|This event will be fired after saving into the  database of item added in checkout and you may create a listener file and perform the respective operation when that event fires|
