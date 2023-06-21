@@ -5,7 +5,7 @@ module.exports = {
     title: 'Bagisto Documentation',
     description: 'Bagisto Developer Portal',
     head: [
-        ['link', { rel: "icon", type: "image/png", href: "/favicon.ico"}],
+        ['link', { rel: "icon", type: "image/png", href: "/favicon.ico" }],
     ],
     themeConfig: {
         smoothScroll: true,
@@ -22,6 +22,12 @@ module.exports = {
         nav: [
             { text: 'Home', link: '/' },
             { text: 'Extensions', link: 'https://bagisto.com/en/extensions/' },
+            {
+                text: 'Version', items: [
+                    { text: '1.5.x', link: '/1.5.x/prologue/' },
+                    { text: '1.x', link: '/1.x/introduction/' }
+                ]
+            },
             { text: 'Community Forum', link: 'https://forums.bagisto.com/' }
         ],
         sidebar: {
