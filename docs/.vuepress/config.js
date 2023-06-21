@@ -22,12 +22,6 @@ module.exports = {
         nav: [
             { text: 'Home', link: '/' },
             { text: 'Extensions', link: 'https://bagisto.com/en/extensions/' },
-            {
-                text: 'Version', items: [
-                    { text: '1.5.x', link: '/1.5.x/prologue/' },
-                    { text: '1.x', link: '/1.x/introduction/' }
-                ]
-            },
             { text: 'Community Forum', link: 'https://forums.bagisto.com/' }
         ],
         sidebar: {

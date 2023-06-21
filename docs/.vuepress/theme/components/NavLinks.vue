@@ -30,6 +30,13 @@
       {{ repoLabel }}
       <OutboundLink />
     </a>
+
+    <div class="nav-item" v-if="this.$route.path.split('/')[1] != ''">
+      <select v-model="version" @change="changeVersion">
+        <option value="1.x">1.x</option>
+        <option value="1.5.x">1.5.x</option>
+      </select>
+    </div>
   </nav>
 </template>
 
@@ -44,6 +51,12 @@ export default {
   components: {
     NavLink,
     DropdownLink
+  },
+
+  data() {
+    return {
+      version: '1.5.x',
+    };
   },
 
   computed: {
@@ -118,7 +131,17 @@ export default {
 
       return 'Source'
     }
-  }
+  },
+
+  methods: {
+    changeVersion() {
+      let currentPath = this.$route.path.split('/');
+
+      currentPath[1] = this.version;
+
+      this.$router.push(currentPath.join('/'));
+    },
+  },
 }
 </script>
 
