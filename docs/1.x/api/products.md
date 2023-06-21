@@ -8,9 +8,9 @@ This request will fetch all the products based on `limit` and `page`.
 
 - Headers
 
-  | Key           | Value            |
-  | ------------- | ---------------- |
-  | Accept        | application/json |
+  | Key    | Value            |
+  | ------ | ---------------- |
+  | Accept | application/json |
 
 - Request
 
@@ -18,7 +18,7 @@ This request will fetch all the products based on `limit` and `page`.
 
   ::: tip
 
-    If you didn't use the page(?page=x) filter, then it returns the data of the first page by default.
+  If you didn't use the page(?page=x) filter, then it returns the data of the first page by default.
 
   :::
 
@@ -31,7 +31,7 @@ This request will fetch all the products based on `limit` and `page`.
 
 ::: tip
 
-  If you are using pagination and want to know more info about responses then check the [explanation](./explanation) portion.
+If you are using pagination and want to know more info about responses then check the [explanation](./explanation) portion.
 
 :::
 
@@ -41,9 +41,9 @@ This request will fetch all the products based on `limit` and `page`.
 
 - Headers
 
-  | Key           | Value            |
-  | ------------- | ---------------- |
-  | Accept        | application/json |
+  | Key    | Value            |
+  | ------ | ---------------- |
+  | Accept | application/json |
 
 - Request
 
@@ -51,36 +51,36 @@ This request will fetch all the products based on `limit` and `page`.
 
 ::: details Response
 
-  ~~~json
-  {
-      "data": [
-        {
-          "id": 3,
-          "type": "simple",
-          "name": "Lenovo IdeaPad Yoga 500 15 Hybrid (2-in-1) White",
-          "url_key": "lenovo-ideapad-yoga-500-15-hybrid-2-in-1-white",
-          "price": "600.0000",
-          "formated_price": "$600.00",
-          ...
-          "sku": "5626",
-          "images": [
-            {...}
-          ],
-          "base_image": {...},
-          "variants": [],
-          "in_stock": true,
-          "reviews": {...},
-          "is_saved": false,
-          "created_at": "2020-09-09 03:31:47",
-          "updated_at": "2020-09-09 03:31:47"
-        },
-        {...},
-        {...}
-      ],
-      "links": {...},
-      "meta": {...}
-  }
-  ~~~
+```json
+{
+    "data": [
+      {
+        "id": 3,
+        "type": "simple",
+        "name": "Lenovo IdeaPad Yoga 500 15 Hybrid (2-in-1) White",
+        "url_key": "lenovo-ideapad-yoga-500-15-hybrid-2-in-1-white",
+        "price": "600.0000",
+        "formated_price": "$600.00",
+        ...
+        "sku": "5626",
+        "images": [
+          {...}
+        ],
+        "base_image": {...},
+        "variants": [],
+        "in_stock": true,
+        "reviews": {...},
+        "is_saved": false,
+        "created_at": "2020-09-09 03:31:47",
+        "updated_at": "2020-09-09 03:31:47"
+      },
+      {...},
+      {...}
+    ],
+    "links": {...},
+    "meta": {...}
+}
+```
 
 :::
 
@@ -88,9 +88,9 @@ This request will fetch all the products based on `limit` and `page`.
 
 - Headers
 
-  | Key           | Value            |
-  | ------------- | ---------------- |
-  | Accept        | application/json |
+  | Key    | Value            |
+  | ------ | ---------------- |
+  | Accept | application/json |
 
 - Request
 
@@ -98,29 +98,29 @@ This request will fetch all the products based on `limit` and `page`.
 
 ::: details Response
 
-  ~~~json
-  {
-      "data": [
-        {...},
-        {...}
-      ],
-      "links": {
-            "first": "https://example.com/api/products?page=1&limit=2",
-            "last": "https://example.com/api/products?page=4&limit=2",
-            "prev": null,
-            "next": "https://example.com/api/products?page=2&limit=2"
-      },
-      "meta": {
-          "current_page": 1,
-          "from": 1,
-          "last_page": 4,
-          "path": "https://example.com/api/products",
-          "per_page": "2", // limit
-          "to": 2,
-          "total": 8
-      }
-  }
-  ~~~
+```json
+{
+    "data": [
+      {...},
+      {...}
+    ],
+    "links": {
+          "first": "https://example.com/api/products?page=1&limit=2",
+          "last": "https://example.com/api/products?page=4&limit=2",
+          "prev": null,
+          "next": "https://example.com/api/products?page=2&limit=2"
+    },
+    "meta": {
+        "current_page": 1,
+        "from": 1,
+        "last_page": 4,
+        "path": "https://example.com/api/products",
+        "per_page": "2", // limit
+        "to": 2,
+        "total": 8
+    }
+}
+```
 
 :::
 
@@ -128,9 +128,9 @@ This request will fetch all the products based on `limit` and `page`.
 
 - Headers
 
-  | Key           | Value            |
-  | ------------- | ---------------- |
-  | Accept        | application/json |
+  | Key    | Value            |
+  | ------ | ---------------- |
+  | Accept | application/json |
 
 - Request
 
@@ -155,9 +155,9 @@ This request will fetch all the products based on `limit` and `page`.
 
 - Headers
 
-  | Key           | Value            |
-  | ------------- | ---------------- |
-  | Accept        | application/json |
+  | Key    | Value            |
+  | ------ | ---------------- |
+  | Accept | application/json |
 
 - Request
 
@@ -167,9 +167,9 @@ This request will fetch all the products based on `limit` and `page`.
 
 - Headers
 
-  | Key           | Value            |
-  | ------------- | ---------------- |
-  | Accept        | application/json |
+  | Key    | Value            |
+  | ------ | ---------------- |
+  | Accept | application/json |
 
 - Request
 
@@ -181,9 +181,9 @@ This request will fetch all the products based on `limit` and `page`.
 
 - Headers
 
-  | Key           | Value            |
-  | ------------- | ---------------- |
-  | Accept        | application/json |
+  | Key    | Value            |
+  | ------ | ---------------- |
+  | Accept | application/json |
 
 - Request
 
@@ -193,9 +193,9 @@ This request will fetch all the products based on `limit` and `page`.
 
 - Headers
 
-  | Key           | Value            |
-  | ------------- | ---------------- |
-  | Accept        | application/json |
+  | Key    | Value            |
+  | ------ | ---------------- |
+  | Accept | application/json |
 
 - Request
 
@@ -207,9 +207,9 @@ This request will fetch all the products based on `limit` and `page`.
 
 - Headers
 
-  | Key           | Value            |
-  | ------------- | ---------------- |
-  | Accept        | application/json |
+  | Key    | Value            |
+  | ------ | ---------------- |
+  | Accept | application/json |
 
 - Request
 
@@ -219,9 +219,9 @@ This request will fetch all the products based on `limit` and `page`.
 
 - Headers
 
-  | Key           | Value            |
-  | ------------- | ---------------- |
-  | Accept        | application/json |
+  | Key    | Value            |
+  | ------ | ---------------- |
+  | Accept | application/json |
 
 - Request
 
@@ -231,9 +231,9 @@ This request will fetch all the products based on `limit` and `page`.
 
 - Headers
 
-  | Key           | Value            |
-  | ------------- | ---------------- |
-  | Accept        | application/json |
+  | Key    | Value            |
+  | ------ | ---------------- |
+  | Accept | application/json |
 
 - Request
 
@@ -245,9 +245,9 @@ You can also filter your store products by using filterable attributes query par
 
 - Headers
 
-  | Key           | Value            |
-  | ------------- | ---------------- |
-  | Accept        | application/json |
+  | Key    | Value            |
+  | ------ | ---------------- |
+  | Accept | application/json |
 
 - Request
 
@@ -268,9 +268,9 @@ You can also filter your store products by using filterable attributes query par
 
 - Headers
 
-  | Key           | Value            |
-  | ------------- | ---------------- |
-  | Accept        | application/json |
+  | Key    | Value            |
+  | ------ | ---------------- |
+  | Accept | application/json |
 
 - Request
 
@@ -280,23 +280,23 @@ You can also filter your store products by using filterable attributes query par
 
 - Headers
 
-  | Key           | Value            |
-  | ------------- | ---------------- |
-  | Accept        | application/json |
+  | Key    | Value            |
+  | ------ | ---------------- |
+  | Accept | application/json |
 
 - Request
-  
+
   `GET http(s)://example.com/api/products?category_id=2&size=6,7&limit=10&page=1`
 
-  ![Bagisto Product Size](../../assets/images/api/bagisto_prod_size.jpg)
+  ![Bagisto Product Size](../../assets/1.x/images/api/bagisto_prod_size.jpg)
 
 #### 3. You can also filter the Bagisto product catalog with the help of `color` filter. `color` filter will work only on the category layout. You can pass the multiple attribute's values to the color`s filterable attributes as a query parameter in API URL. Suppose you want to filter men's T-Shirt with white and red color, then you can pass the id of both white & red
 
 - Headers
 
-  | Key           | Value            |
-  | ------------- | ---------------- |
-  | Accept        | application/json |
+  | Key    | Value            |
+  | ------ | ---------------- |
+  | Accept | application/json |
 
 - Request
 
@@ -306,23 +306,23 @@ You can also filter your store products by using filterable attributes query par
 
 - Headers
 
-  | Key           | Value            |
-  | ------------- | ---------------- |
-  | Accept        | application/json |
+  | Key    | Value            |
+  | ------ | ---------------- |
+  | Accept | application/json |
 
 - Request
 
   `GET http(s)://example.com/api/products?category_id=2&color=1,2&limit=10&page=1`
 
-  ![Bagisto Product Color](../../assets/images/api/bagisto_prod_color.jpg)
+  ![Bagisto Product Color](../../assets/1.x/images/api/bagisto_prod_color.jpg)
 
 #### 5. In the case of a simple product, You can set a range of a minimum price and maximum price. Same as `size` and `color`, the `price` filter will also work on the category layout only. Suppose you want to filter products those are having price between price range from 50 to 100, then you have to pass value like `price=10,50` as the query parameter in API URL
 
 - Headers
 
-  | Key           | Value            |
-  | ------------- | ---------------- |
-  | Accept        | application/json |
+  | Key    | Value            |
+  | ------ | ---------------- |
+  | Accept | application/json |
 
 - Request
 
@@ -332,33 +332,33 @@ You can also filter your store products by using filterable attributes query par
 
 - Headers
 
-  | Key           | Value            |
-  | ------------- | ---------------- |
-  | Accept        | application/json |
+  | Key    | Value            |
+  | ------ | ---------------- |
+  | Accept | application/json |
 
 - Request
 
   `GET http(s)://example.com/api/products?category_id=2&price=50,100&limit=10&page=1`
 
-  ![Bagisto Product Price Simple](../../assets/images/api/bagisto_prod_price_simple.jpg)
+  ![Bagisto Product Price Simple](../../assets/1.x/images/api/bagisto_prod_price_simple.jpg)
 
 #### 7. In the case of a configurable product, the `price` filter will also work with the product's variants. Suppose you want to filter products with the 40$ min and 100$ max price range. And there is a configurable product named men's T-shirts having a price 30$ and there is any variant of the same product having 45$ price, then men's T-shirts product will show you in the filtered product's list
 
 - Headers
 
-  | Key           | Value            |
-  | ------------- | ---------------- |
-  | Accept        | application/json |
+  | Key    | Value            |
+  | ------ | ---------------- |
+  | Accept | application/json |
 
 - Request
 
   `GET http(s)://example.com/api/products?category_id=2&price=30,100`
 
-  ![Bagisto Product Price Config](../../assets/images/api/bagisto_prod_price_config.jpg)
+  ![Bagisto Product Price Config](../../assets/1.x/images/api/bagisto_prod_price_config.jpg)
 
 ::: tip
 
-  The above-explained filter query parameters (i.e. size, color, price) can be used together.
+The above-explained filter query parameters (i.e. size, color, price) can be used together.
 
 :::
 
@@ -368,9 +368,9 @@ If you want the record of any specific product, then you have to provide the pro
 
 - Headers
 
-  | Key           | Value            |
-  | ------------- | ---------------- |
-  | Accept        | application/json |
+  | Key    | Value            |
+  | ------ | ---------------- |
+  | Accept | application/json |
 
 - Request
 
@@ -378,17 +378,17 @@ If you want the record of any specific product, then you have to provide the pro
 
 - Params
 
-  | Name       | Info          | Type   |
-  | ---------- | ------------- | ------ |
+  | Name       | Info         | Type   |
+  | ---------- | ------------ | ------ |
   | product_id | Product's ID | Number |
 
 ### Examples
 
 - Headers
 
-  | Key           | Value            |
-  | ------------- | ---------------- |
-  | Accept        | application/json |
+  | Key    | Value            |
+  | ------ | ---------------- |
+  | Accept | application/json |
 
 - Request
 
@@ -396,31 +396,31 @@ If you want the record of any specific product, then you have to provide the pro
 
 ::: details Response
 
-  ~~~json
-  {
-    "data": {
-      "id": 1,
-      "type": "simple",
-      "name": "Adorable Cream Teddy Bear",
-      "url_key": "adorable-cream-teddy-bear",
-      "price": "10.0000",
-      "formated_price": "$10.00",
-      "short_description": "<p>Buy Adorable Cream Teddy Bear online at best price</p>",
-      "description": "<p>Buy Adorable Cream Teddy Bear online at best price</p>",
-      "sku": "80971254",
-      "images": [
-        {...}
-      ],
-      "base_image": {...},
-      "variants": [],
-      "in_stock": true,
-      "reviews": {...},
-      "is_saved": false,
-      "created_at": "2020-09-08T23:52:02.000000Z",
-      "updated_at": "2020-09-08T23:52:02.000000Z"
-    }
+```json
+{
+  "data": {
+    "id": 1,
+    "type": "simple",
+    "name": "Adorable Cream Teddy Bear",
+    "url_key": "adorable-cream-teddy-bear",
+    "price": "10.0000",
+    "formated_price": "$10.00",
+    "short_description": "<p>Buy Adorable Cream Teddy Bear online at best price</p>",
+    "description": "<p>Buy Adorable Cream Teddy Bear online at best price</p>",
+    "sku": "80971254",
+    "images": [
+      {...}
+    ],
+    "base_image": {...},
+    "variants": [],
+    "in_stock": true,
+    "reviews": {...},
+    "is_saved": false,
+    "created_at": "2020-09-08T23:52:02.000000Z",
+    "updated_at": "2020-09-08T23:52:02.000000Z"
   }
-  ~~~
+}
+```
 
 :::
 
@@ -428,13 +428,13 @@ If you want the record of any specific product, then you have to provide the pro
 
 Additional information relates to all the attributes and their values for which admin sets the `Yes` value for the `Visible on Product View Page on Front-end`. The product's additional information means those attributes which describe the product's specification.
 
-![Bagisto Attribute](../../assets/images/api/bagisto_attribute.jpg)
+![Bagisto Attribute](../../assets/1.x/images/api/bagisto_attribute.jpg)
 
 - Headers
 
-  | Key           | Value            |
-  | ------------- | ---------------- |
-  | Accept        | application/json |
+  | Key    | Value            |
+  | ------ | ---------------- |
+  | Accept | application/json |
 
 - Request
 
@@ -442,7 +442,7 @@ Additional information relates to all the attributes and their values for which 
 
 ::: details Response
 
-  ![Bagisto Additional Info](../../assets/images/api/bagisto_add_info.jpg)
+![Bagisto Additional Info](../../assets/1.x/images/api/bagisto_add_info.jpg)
 
 :::
 
@@ -452,13 +452,13 @@ You can get all the configurable attributes of a product by using `product-confi
 
 Admin can set the `Yes` value for the `Use To Create Configurable Product` field under the attribute panel to make that attribute as variant.
 
-![Bagisto Config](../../assets/images/api/bagisto_config.jpg)
+![Bagisto Config](../../assets/1.x/images/api/bagisto_config.jpg)
 
 - Headers
 
-  | Key           | Value            |
-  | ------------- | ---------------- |
-  | Accept        | application/json |
+  | Key    | Value            |
+  | ------ | ---------------- |
+  | Accept | application/json |
 
 - Request
 
@@ -466,43 +466,41 @@ Admin can set the `Yes` value for the `Use To Create Configurable Product` field
 
 ::: details Response
 
-  ~~~json
-  {
-      "data": {
-          "attributes": [
-              {
-                  "id": 24,
-                  "code": "size",
-                  "label": "Size",
-                  "swatch_type": null,
-                  "options": [
-                      {
-                          "id": 7,
-                          "label": "M",
-                          "swatch_value": null,
-                          "products": [
-                              4
-                          ]
-                      }
-                  ]
-              }
-          ],
-          "variant_prices": {
-              "4": {
-                  "regular_price": {
-                      "formated_price": "$45.00",
-                      "price": 45
-                  },
-                  "final_price": {
-                      "formated_price": "$45.00",
-                      "price": 45
-                  }
-              }
+```json
+{
+  "data": {
+    "attributes": [
+      {
+        "id": 24,
+        "code": "size",
+        "label": "Size",
+        "swatch_type": null,
+        "options": [
+          {
+            "id": 7,
+            "label": "M",
+            "swatch_value": null,
+            "products": [4]
           }
+        ]
       }
+    ],
+    "variant_prices": {
+      "4": {
+        "regular_price": {
+          "formated_price": "$45.00",
+          "price": 45
+        },
+        "final_price": {
+          "formated_price": "$45.00",
+          "price": 45
+        }
+      }
+    }
   }
-  ~~~
+}
+```
 
-  ![Bagisto Config Attributes](../../assets/images/api/bagisto_config_attr.jpg)
+![Bagisto Config Attributes](../../assets/1.x/images/api/bagisto_config_attr.jpg)
 
 :::

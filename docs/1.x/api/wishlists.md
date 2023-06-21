@@ -27,7 +27,7 @@ You can also get all the wishlists of store's customers. To get the wishlists, c
 
 ::: tip
 
-  If you are using pagination and want to know more info about responses then check the [explanation](./explanation) portion.
+If you are using pagination and want to know more info about responses then check the [explanation](./explanation) portion.
 
 :::
 
@@ -61,7 +61,7 @@ You can also get all the wishlists of store's customers. To get the wishlists, c
 
 ::: details Response (Example 1 & 2)
 
-  ![bagisto_wishlist_page](../../assets/images/api/bagisto_wishlist_page.jpg)
+![bagisto_wishlist_page](../../assets/1.x/images/api/bagisto_wishlist_page.jpg)
 
 :::
 
@@ -80,34 +80,34 @@ You can also get all the wishlists of store's customers. To get the wishlists, c
 
 ::: details Response
 
-  ~~~json
-  {
-      "data": [
-          {
-              "id": 9,
-              "product": {
-                  "id": 5,
-                  "type": "simple",
-                  "name": "Home Decor Bottles",
-                  "url_key": "home-decor-bottles",
-                  "price": 10,
-                  "formated_price": "$10.00",
-                  "short_description": "<p>Home Decor Bottles</p>",
-                  "description": "<p>Home Decor Bottles</p>",
-                  "sku": "bottles",
-              }
-          },
-          {
-              "id": 8,
-              "product": {...}
-          },
-          {
-              "id": 7,
-              "product": {...}
-          }
-      ]
-  }
-  ~~~
+```json
+{
+    "data": [
+        {
+            "id": 9,
+            "product": {
+                "id": 5,
+                "type": "simple",
+                "name": "Home Decor Bottles",
+                "url_key": "home-decor-bottles",
+                "price": 10,
+                "formated_price": "$10.00",
+                "short_description": "<p>Home Decor Bottles</p>",
+                "description": "<p>Home Decor Bottles</p>",
+                "sku": "bottles",
+            }
+        },
+        {
+            "id": 8,
+            "product": {...}
+        },
+        {
+            "id": 7,
+            "product": {...}
+        }
+    ]
+}
+```
 
 :::
 
@@ -152,21 +152,21 @@ To get all wishlists of a specific customer, you have to pass a `customer_id` as
 
 ::: details Response:
 
-  ~~~json
-  {
-      "data": [
-          {
-              "id": 7,
-              "product": {...},
-          },
-          {...},
-          {...},
-          {...},
-          ...
-          {...}
-      ]
-  }
-  ~~~
+```json
+{
+    "data": [
+        {
+            "id": 7,
+            "product": {...},
+        },
+        {...},
+        {...},
+        {...},
+        ...
+        {...}
+    ]
+}
+```
 
 :::
 
@@ -185,36 +185,36 @@ To get all wishlists of a specific customer, you have to pass a `customer_id` as
 
 ::: details Response:
 
-  ~~~json
-  {
-      "data": [
-          {
-              "id": 7,
-              "product": {...},
-          },
-          {...},
-          {...},
-          {...},
-          ...
-          {...}
-      ],
-      "links": {
-          "first": "https://example.com/api/wishlist?customer_id=1&page=1",
-          "last": "https://example.com/api/wishlist?customer_id=1&page=1",
-          "prev": null,
-          "next": null
-      },
-      "meta": {
-          "current_page": 1,
-          "from": 1,
-          "last_page": 1,
-          "path": "https://example.com/api/wishlist",
-          "per_page": 10,
-          "to": 2,
-          "total": 9
-      }
-  }
-  ~~~
+```json
+{
+    "data": [
+        {
+            "id": 7,
+            "product": {...},
+        },
+        {...},
+        {...},
+        {...},
+        ...
+        {...}
+    ],
+    "links": {
+        "first": "https://example.com/api/wishlist?customer_id=1&page=1",
+        "last": "https://example.com/api/wishlist?customer_id=1&page=1",
+        "prev": null,
+        "next": null
+    },
+    "meta": {
+        "current_page": 1,
+        "from": 1,
+        "last_page": 1,
+        "path": "https://example.com/api/wishlist",
+        "per_page": 10,
+        "to": 2,
+        "total": 9
+    }
+}
+```
 
 :::
 
@@ -256,25 +256,25 @@ Let's add one product to wishlist,
 
 ::: details Response
 
-  ~~~json
-  {
-      "data": {
-          "id": 11,
-          "product": {
-              "id": 1,
-              "type": "simple",
-              "name": "Leather Shoes",
-              "url_key": "leather-shoes",
-              "price": 50,
-              "formated_price": "$50.00",
-              "short_description": "<p>Leather Shoes</p>",
-              "description": "<p>Leather Shoes</p>",
-              "sku": "men-leather-shoes"
-          }
-      },
-      "message": "Item Successfully Added To Wishlist"
-  }
-  ~~~
+```json
+{
+  "data": {
+    "id": 11,
+    "product": {
+      "id": 1,
+      "type": "simple",
+      "name": "Leather Shoes",
+      "url_key": "leather-shoes",
+      "price": 50,
+      "formated_price": "$50.00",
+      "short_description": "<p>Leather Shoes</p>",
+      "description": "<p>Leather Shoes</p>",
+      "sku": "men-leather-shoes"
+    }
+  },
+  "message": "Item Successfully Added To Wishlist"
+}
+```
 
 :::
 
@@ -299,11 +299,11 @@ Hitting the same add API again,
 
 ::: details Response
 
-  ~~~json
-  {
-      "data": null,
-      "message": "Item removed from wishlist successfully."
-  }
-  ~~~
+```json
+{
+  "data": null,
+  "message": "Item removed from wishlist successfully."
+}
+```
 
 :::
