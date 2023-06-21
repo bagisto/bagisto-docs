@@ -231,7 +231,6 @@ To link the stylesheets to the layouts, follow these steps:
          */
         public function register()
         {
-
         }
     }
     ```

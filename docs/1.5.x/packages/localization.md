@@ -53,7 +53,7 @@ To learn in detail about Localization, you can visit the Laravel documentation [
   */
   class BlogServiceProvider extends ServiceProvider
   {
-      /**
+     /**
       * Bootstrap services.
       *
       * @return void

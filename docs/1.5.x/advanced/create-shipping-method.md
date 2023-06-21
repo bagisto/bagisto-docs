@@ -91,10 +91,20 @@ Alternatively, you can manually set up all the files for your shipping method pa
 
    class Blog extends AbstractShipping
    {
-       protected $code  = 'blog';
+        /**
+         * Code.
+         *
+         * @var string
+         */
+        protected $code  = 'blog';
 
-       public function calculate()
-       {
+        /**
+         * Calculate.
+         *
+         * @return mixed
+         */
+        public function calculate()
+        {
           if (! $this->isAvailable()) {
               return false;
           }

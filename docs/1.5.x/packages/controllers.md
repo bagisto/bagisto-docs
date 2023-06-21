@@ -61,24 +61,41 @@ To learn in detail about Controllers, you can visit the Laravel documentation [h
   class PostController extends Controller
   {
       /**
-       * @param  \Webkul\Blog\Repository\PostRepository $postRepository
-       *
-       * @var array
+       * Create a controller instance.
+       * 
+       * @param  \Webkul\Blog\Repository\PostRepository  $postRepository
+       * @return void
        */
-      public function __construct(protected PostRepository $postRepository) {
-
+      public function __construct(protected PostRepository $postRepository)
+      {
       }
 
+      /**
+       * Index.
+       * 
+       * @return \Illuminate\View\View
+       */
       public function index() {
           $blogs = $this->postRepository->all();
 
           return view('blog::admin.index', ['blogs' => $blogs]);
       }
 
+      /**
+       * Create.
+       * 
+       * @return \Illuminate\View\View
+       */
       public function create() {
           //
       }
 
+      /**
+       * Store.
+       * 
+       * @param  \Illuminate\Http\Request  $request
+       * @return \Illuminate\View\View
+       */
       public function store(Request $request) {
           //
       }
@@ -98,21 +115,34 @@ To learn in detail about Controllers, you can visit the Laravel documentation [h
   class PostController extends Controller
   {
       /**
-       * @param  \Webkul\Blog\Repository\PostRepository $postRepository
-       *
-       * @var array
+       * Create a controller instance.
+       * 
+       * @param  \Webkul\Blog\Repository\PostRepository  $postRepository
+       * @return void
        */
-      public function __construct(protected PostRepository $postRepository) {
-
+      public function __construct(protected PostRepository $postRepository)
+      {
       }
 
-      public function index() {
+      /**
+       * Index.
+       * 
+       * @return \Illuminate\View\View
+       */
+      public function index()
+      {
           $blogs = $this->postRepository->with(['author'])->all();
 
           return view('blog::shop.index', ['blogs' => $blogs]);
       }
 
-      public function blogDetails($id) {
+      /**
+       * Blog details.
+       * 
+       * @return \Illuminate\View\View
+       */
+      public function blogDetails($id) 
+      {
           //
       }
   }
