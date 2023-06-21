@@ -276,7 +276,7 @@ Downloadable product allows you to sell digital products, such as eBooks, softwa
 }
 ```
 
-![bagisto_cart_add](../../assets/images/api/bagisto_cart_add.jpg)
+![bagisto_cart_add](../../assets/1.x/images/api/bagisto_cart_add.jpg)
 
 :::
 
@@ -365,7 +365,7 @@ In, Bagisto guest cart is handled by session, and Laravel handles session by coo
 }
 ```
 
-![bagisto_cart_guest](../../assets/images/api/bagisto_cart_guest.jpg)
+![bagisto_cart_guest](../../assets/1.x/images/api/bagisto_cart_guest.jpg)
 
 :::
 
@@ -414,7 +414,7 @@ In the case of the logged-in user, no need for cookies as the cart is in the dat
 }
 ```
 
-![bagisto_cart](../../assets/images/api/bagisto_cart.jpg)
+![bagisto_cart](../../assets/1.x/images/api/bagisto_cart.jpg)
 
 :::
 
@@ -536,7 +536,7 @@ By using this API call you can update the cart's product(s) quantity. To do this
 }
 ```
 
-![Bagisto Cart Update](../../assets/images/api/bagisto_cart_update.jpg)
+![Bagisto Cart Update](../../assets/1.x/images/api/bagisto_cart_update.jpg)
 
 :::
 
@@ -696,7 +696,7 @@ You can remove any particular product from the cart. To do this task, you have t
 }
 ```
 
-![bagisto_cart_remove_item](../../assets/images/api/bagisto_cart_remove_item.jpg){:class="screenshot-dimension center"}
+![bagisto_cart_remove_item](../../assets/1.x/images/api/bagisto_cart_remove_item.jpg){:class="screenshot-dimension center"}
 
 :::
 
@@ -756,7 +756,7 @@ You can move a product from cart to wishlist. To do this task, you have to use t
 }
 ```
 
-![bagisto_move_to_wishlist](../../assets/images/api/bagisto_move_to_wishlist.jpg)
+![bagisto_move_to_wishlist](../../assets/1.x/images/api/bagisto_move_to_wishlist.jpg)
 
 :::
 
@@ -887,7 +887,7 @@ At the checkout step, customers can create new addresses or select from the exis
 }
 ```
 
-![bagisto_save_address](../../assets/images/api/bagisto_save_address.jpg)
+![bagisto_save_address](../../assets/1.x/images/api/bagisto_save_address.jpg)
 
 :::
 
@@ -965,7 +965,7 @@ After saving the customer's addresses to the cart, you have to select a shipping
 }
 ```
 
-![bagisto_save_shipping](../../assets/images/api/bagisto_save_shipping.jpg)
+![bagisto_save_shipping](../../assets/1.x/images/api/bagisto_save_shipping.jpg)
 
 :::
 
@@ -1042,7 +1042,7 @@ After applying the shipping method to the cart, you have to select a payment met
 }
 ```
 
-![bagisto_save_payment](../../assets/images/api/bagisto_save_payment.jpg)
+![bagisto_save_payment](../../assets/1.x/images/api/bagisto_save_payment.jpg)
 
 :::
 
@@ -1099,6 +1099,6 @@ After applying shipping addresses, shipping methods, and payment methods to the 
 }
 ```
 
-![bagisto_save_order](../../assets/images/api/bagisto_save_order.jpg)
+![bagisto_save_order](../../assets/1.x/images/api/bagisto_save_order.jpg)
 
 :::
