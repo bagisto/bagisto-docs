@@ -119,13 +119,18 @@ To create a payment method package, follow these commands in the Bagisto root di
 
     class Stripe extends Payment
     {
-        /**
+       /**
         * Payment method code
         *
         * @var string
         */
         protected $code  = 'stripe';
 
+       /**
+        * Get redirect url.
+        *
+        * @var string
+        */
         public function getRedirectUrl()
         {
             // Implementation code goes here

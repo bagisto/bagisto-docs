@@ -44,6 +44,11 @@ To create a new product type in Bagisto, follow these steps:
 
    class CouponServiceProvider extends ServiceProvider
    {
+      /**
+       * Register services.
+       *
+       * @return void
+       */
        public function register()
        {
            //...

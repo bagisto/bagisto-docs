@@ -44,7 +44,7 @@ php artisan package:make-migration CreatePostsTable Webkul/Blog
 
   return new class extends Migration
   {
-      /**
+     /**
       * Run the migrations.
       *
       * @return void
@@ -61,7 +61,7 @@ php artisan package:make-migration CreatePostsTable Webkul/Blog
           });
       }
 
-      /**
+     /**
       * Reverse the migrations.
       *
       * @return void
@@ -91,7 +91,7 @@ php artisan package:make-migration CreatePostsTable Webkul/Blog
   */
   class BlogServiceProvider extends ServiceProvider
   {
-      /**
+     /**
       * Bootstrap services.
       *
       * @return void

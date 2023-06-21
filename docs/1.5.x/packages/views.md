@@ -79,7 +79,7 @@ To learn in detail about Views, you can visit the Laravel documentation [here](h
   */
   class BlogServiceProvider extends ServiceProvider
   {
-      /**
+     /**
       * Bootstrap services.
       *
       * @return void

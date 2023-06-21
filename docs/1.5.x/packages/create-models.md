@@ -124,7 +124,7 @@ Proxies, as their name suggests, lead you to the actual model class. The concept
 
   class Post extends Model implements PostContract
   {
-      /**
+     /**
       * The attributes that are mass assignable.
       *
       * @var $fillable
@@ -136,7 +136,7 @@ Proxies, as their name suggests, lead you to the actual model class. The concept
           'status'
       ];
 
-      /**
+     /**
       * Get the user that owns the post.
       */
       public function author(): BelongsTo

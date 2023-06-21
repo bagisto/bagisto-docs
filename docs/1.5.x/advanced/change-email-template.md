@@ -43,6 +43,11 @@ class CancelOrderAdminNotification extends Mailable
         $this->order = $order;
     }
 
+    /**
+     * Build.
+     *
+     * @return void
+     */
     public function build()
     {
         return $this->from(core()->getSenderEmailDetails()['email'], core()->getSenderEmailDetails()['name'])
