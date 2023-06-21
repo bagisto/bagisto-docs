@@ -27,8 +27,8 @@ We welcome proposals for new features and enhancements to the existing Bagisto a
 Before submitting a pull request, it's important to consider the following points to help you choose the appropriate branch:
 
 - **Bug Fixes**: If you're fixing a bug, make sure to port the fix to the latest version that supports it (currently v1.5.1).
-- **Minor Feature Requests**: For minor features compatible with the current release, push your changes to the latest stable branch (currently v1.5.1).
-- **Major Feature Requests**: If your request involves a major new feature with potential breaking changes, send it to the master branch, which corresponds to the upcoming release (v2.0.0).
+- **Minor Feature Requests**: For minor features compatible with the current release, push your changes to the latest stable branch (currently v1.x).
+- **Major Feature Requests**: If your request involves a major new feature with potential breaking changes, send it to the master branch, which corresponds to the upcoming release (v2.x).
 
 ## Compiled Assets
 
@@ -50,10 +50,11 @@ Below is an example of a valid Bagisto doc block that follows the coding style:
 /**
  * Register a service with CoreServiceProvider.
  *
- * @param string|array             $loader
- * @param \Closure|string|null     $concrete
- * @param bool                     $shared
+ * @param  string|array  $loader
+ * @param  \Closure|string|null  $concrete
+ * @param  bool  $shared
  * @return void
+ * 
  * @throws \Exception
  */
 protected function registerFacades($loader, $concrete = null, $shared = false)
