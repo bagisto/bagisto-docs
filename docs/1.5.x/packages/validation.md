@@ -6,110 +6,108 @@
 
 ### Introduction
 
-- Laravel provides several different approaches to validate your application's incoming data. It is most common to use the **`validate`** method available on all incoming HTTP requests.
+Laravel provides various approaches to validate incoming data in your application. The most common method is to use the **`validate`** method available on incoming HTTP requests.
 
-- To learn in detail about validation in Laravel you can visit Laravel doc from [here](https://laravel.com/docs/10.x/validation)
+For detailed information about validation in Laravel, refer to the [Laravel documentation](https://laravel.com/docs/10.x/validation).
 
 ### Usage
 
-- Understanding of the validate method.
+To use the **`validate`** method, you can follow this example:
 
-    ```php
+```php
+/**
+ * Store a new blog post.
+ */
+public function store(Request $request)
+{
+    $validated = $request->validate([
+        'title' => 'required|unique:posts|max:255',
+        'body' => 'required',
+    ]);
+}
+```
+
+Alternatively, you can manually create a validator instance using the Validator facade, as shown in this example:
+
+```php
+<?php
+ 
+namespace App\Http\Controllers;
+    
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+    
+class PostController extends Controller
+{
     /**
      * Store a new blog post.
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|unique:posts|max:255',
-            'body' => 'required',
-        ]);
+        $rules = [
+            'name' => 'required',
+            'email' => 'required|email',
+            'message' => 'required|max:250',
+        ];
+
+        $customMessages = [
+            'required' => 'The :attribute field is required.',
+        ];
+
+        $this->validate($request, $rules, $customMessages);
     }
-    ```
-- If you do not want to use the validate method on the request, you may create a validator instance manually using the Validator facade.
-
-    ```php
-    <?php
- 
-    namespace App\Http\Controllers;
-    
-    use App\Http\Controllers\Controller;
-    use Illuminate\Http\Request;
-    use Illuminate\Support\Facades\Validator;
-    
-    class PostController extends Controller
-    {
-        /**
-        * Store a new blog post.
-        */
-        public function store(Request $request): RedirectResponse
-        {
-            $rules = [
-                'name' => 'required',
-                'email' => 'required|email',
-                'message' => 'required|max:250',
-            ];
-
-            $customMessages = [
-                'required' => 'The :attribute field is required.'
-            ];
-
-            $this->validate($request, $rules, $customMessages);
-        }
-    }
-    ```
+}
+```
 
 ## Validation Using Vue
 
 ### Introduction
 
-- VeeValidate is a validation library for Vue.js. It has plenty of validation rules out of the box and support for custom ones as well. It is template based so it is similar and familiar with the HTML5 validation API. You can validate HTML5 inputs as well as custom Vue components.
+VeeValidate is a validation library for Vue.js that provides plenty of validation rules out of the box, along with support for custom rules. It is template-based and similar to the HTML5 validation API, making it easy to validate HTML5 inputs as well as custom Vue components. VeeValidate also supports localization with 44 languages maintained by the community.
 
-- It is also built with localization in mind, in fact VeeValidate have about 44 languages supported and maintained by the wonderful community members
-
-- To learn in detail about validation in vue.js you can visit Laravel doc from [here](https://vee-validate.logaretm.com/v2/guide/)
+For detailed information about validation in Vue.js using VeeValidate, refer to the [VeeValidate documentation](https://vee-validate.logaretm.com/v2/guide/).
 
 ### Installation
 
-- Bagisto already come with veeValidate library. So, You don't need to install this.
-
-    ```sh
-    npm install vee-validate --save
-    ```
+Bagisto already comes with the VeeValidate library, so there is no need to install it separately.
 
 ### Configuration
 
-- Bagisto already come with **`vee-validate`** configuration. For example, You can verify in path i.e. **`bagisto/packages/Webkul/Admin/src/Resources/assets/js/app.js`**.
+Bagisto includes the configuration for **`vee-validate`**. For example, you can find the configuration in the following path: **`bagisto/packages/Webkul/Admin/src/Resources/assets/js/app.js`**.
 
-    ```js
-    import Vue from 'vue';
-    import VeeValidate from 'vee-validate';
+```js
+import Vue from 'vue';
+import VeeValidate from 'vee-validate';
 
-    /**
-     * Lang imports.
-    */
-    import de from 'vee-validate/dist/locale/de';
-    import fa from 'vee-validate/dist/locale/fa';
+/**
+ * Language imports.
+*/
+import de from 'vee-validate/dist/locale/en';
+import de from 'vee-validate/dist/locale/de';
+import fa from 'vee-validate/dist/locale/fa';
 
-    /**
-     * Vue plugins.
-    */
-    Vue.use(VeeValidate, {
-        dictionary: {
-            de: de,
-            fa: fa,
-        },
-        events: 'input|change|blur'
-    });
-    ```
+/**
+ * Vue plugins.
+*/
+Vue.use(VeeValidate, {
+    dictionary: {
+        en: en,
+        de: de,
+        fa: fa,
+    },
+    events: 'input|change|blur'
+});
+```
+
 ### Examples
 
-- Some examples of vue validation. 
+Here are some examples of Vue validation using VeeValidate:
 
-    ```html
-    <input v-validate="'alpha'" type="text" name="username">
+```html
+<input v-validate="'alpha'" type="text" name="username">
 
-    <input v-validate="'required|email'" name="email" type="text">
+<input v-validate="'required|email'" name="email" type="text">
 
-    <input v-validate="'required|min:6'" type="password" name="password">
-    ```
+<input v-validate="'required|min:6'" type="password" name="password">
+```

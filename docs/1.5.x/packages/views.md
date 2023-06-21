@@ -2,51 +2,51 @@
 
 [[TOC]]
 
-To learn in detail about Views you can visit Laravel doc from [here](https://laravel.com/docs/10.x/views)
+To learn in detail about Views, you can visit the Laravel documentation [here](https://laravel.com/docs/10.x/views).
 
 ## Directory Structure
 
-- Create **`Resources`** folder in **`packages/Webkul/Blog/src`** path. In **`Resources`** folder, create another folder named as **`views`**. Now, in the **`views`** folder, we need to create two folder i.e. **`admin`** and **`shop`**. And finally, we need to create two more folder i.e. **`default`** and **`velocity`** under the **`shop`** folder. So updated structure will look like this.
+- Create a **`Resources`** folder in the **`packages/Webkul/Blog/src`** path. Inside the **`Resources`** folder, create another folder named **`views`**. Now, inside the **`views`** folder, we need to create two folders, namely **`admin`** and **`shop`**. Finally, we need to create two more folders, namely **`default`** and **`velocity`**, under the **`shop`** folder. The updated directory structure will look like this:
 
   ```
-  - packages/
-    - Webkul/Blog/
-      - src/
-        ...
-        - Resources/
-          ...
-          - views/
-            - admin/
-            - shop/
-              - default/
-              - velocity/
+  └── packages
+      └── Webkul
+          └── Blog
+              └── src
+                  ├── ...
+                  └── Resources
+                      └── views
+                          ├── admin
+                          └── shop
+                              ├── default
+                              └── velocity
   ```
 
   ::: tip The default and velocity folders
-  Whenever you are creating a blade file for the shop front then you have to keep the same file in the both folder i.e. **`default`** and **`velocity`**. Because, We are using **`theme`** middleware, So whenever we used the **`default`** theme files will be called from the **`default`** folder, and whenever we used the **`velocity`** theme files will be called from the **`velocity`** folder.
+  Whenever you create a Blade file for the shop front, you need to keep the same file in both the **`default`** and **`velocity`** folders. This is because we are using the **`theme`** middleware. When we use the **`default`** theme, the files will be called from the **`default`** folder, and when we use the **`velocity`** theme, the files will be called from the **`velocity`** folder.
   :::
 
   ::: warning
-  In this tutorial, We are using the **`theme`** middleware and **`velocity`** theme. So, It is necessary to keep files in the **`velocity`** folder. But, If we are not using the **`default`** theme then this is not necessary to keep the same files in the **`default`** folder also.
+  In this tutorial, we are using the **`theme`** middleware and the **`velocity`** theme. Therefore, it is necessary to keep the files in the **`velocity`** folder. However, if we are not using the **`default`** theme, it is not necessary to keep the same files in the **`default`** folder.
   :::
-    
-- Inside each folder i.e. **`admin`** and **`velocity`** create a file named as **`index.blade.php`**. And add some html to it.
 
+- Inside each folder, **`admin`** and **`velocity`**, create a file named **`index.blade.php`** and add some HTML to it.
 
   ```
-  - packages/
-    - Webkul/Blog/
-      - src/
-        ...
-        - Resources/
-          ...
-          - views/
-            - admin/
-              - index.blade.php
-            - shop/
-              - default/
-              - velocity/
-                - index.blade.php
+  └── packages
+      └── Webkul
+          └── Blog
+              └── src
+                  ├── ...
+                  └── Resources
+                      └── views
+                          ├── admin
+                          │   └── index.blade.php
+                          └── shop
+                              ├── default
+                              └── velocity
+                                  └── index.blade.php
+
   ```
 
   - **`admin/index.blade.php`**
@@ -59,11 +59,11 @@ To learn in detail about Views you can visit Laravel doc from [here](https://lar
 
     ```html
     <h2>Blog Shop Page</h2>
-      ```
+    ```
 
 ## Load Views from Package
 
-- Now, we need to register our views to service provider’s boot method i.e. **`packages/Webkul/Blog/src/Providers/BlogServiceProvider.php`**.
+- Now, we need to register our views in the service provider's `boot` method. Open the file **`packages/Webkul/Blog/src/Providers/BlogServiceProvider.php`** and update it as follows:
 
   ```php
   <?php
@@ -86,28 +86,14 @@ To learn in detail about Views you can visit Laravel doc from [here](https://lar
       */
       public function boot()
       {
-          $this->loadMigrationsFrom(__DIR__ .'/../Database/Migrations');
-
-          $this->loadRoutesFrom(__DIR__ . '/../Routes/admin-routes.php');
-
-          $this->loadRoutesFrom(__DIR__ . '/../Routes/shop-routes.php');
+          //... 
 
           $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'blog');
-      }
-
-      /**
-      * Register services.
-      *
-      * @return void
-      */
-      public function register()
-      {
-
       }
   }
   ```
 
-- Now, check your route in your browser,
+- Now, check the routes in your browser.
 
   ::: details Shop Output
 

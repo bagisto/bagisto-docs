@@ -1,75 +1,63 @@
 # Contribution Guide
 
-[[TOC]]
+[[Toc]]
 
 ## Bug Reports
 
-To encourage active collaboration, Bagisto encourages pull requests, not just bug reports. "Bug reports" may also be sent in the form of a pull request containing a negative test.
+To encourage active collaboration, Bagisto welcomes both bug reports and pull requests. Instead of just reporting bugs, we encourage you to submit pull requests that include fixes or negative test cases demonstrating the issue. When filing a bug report, please provide a clear title and description of the problem. Include as much relevant information as possible, along with a code sample that reproduces the bug. The goal is to make it easy for everyone to understand and fix the issue.
 
-However, when filing a bug report, your issue should contain a title and a clear description of the issue. You should also include as much relevant information as possible and a code sample that demonstrates the issue. The goal of a bug report is to make it easy for yourself - and others - to replicate the bug and develop a fix.
+Bug reports are meant to foster collaboration and find solutions. By reporting bugs, you can engage others in solving the problem and contribute to the project's improvement.
 
-Remember, bug reports are created in the hope that others with the same problem will collaborate with you on solving it. Creating a bug report serves to help yourself and others start on the path of fixing the problem.
+## Projects to Contribute
 
-## Project To Contribute
+You can contribute to the following projects:
 
 - Bagisto
-
 - Bagisto docs
-
 - Laravel-aliexpress-dropship
-
 - Laravel-aliexpress-dropship-chrome-extension
-
 - Bagisto-custom-style-extension
 
-## Feature Request
+## Feature Requests
 
-You can propose new features and improvements to the existing Bagisto app. If you propose a new feature, please be prepared to contribute some of the code that will be required to complete the feature you propose.
+We welcome proposals for new features and enhancements to the existing Bagisto app. If you have a new feature in mind, please be prepared to contribute some of the code required to implement it.
 
 ## Branch Selection
 
-There are a few points you should know before making a pull request. Because it is necessary and will help you to choose a branch before giving a pull request.
+Before submitting a pull request, it's important to consider the following points to help you choose the appropriate branch:
 
-::: tip Bug fixes
-  All bug fixes should be ported to the latest version that supports the bug fix. (currently 1.5.0).
-:::
-
-::: tip Minor features request
-  Minor features that are compatible with the current release can be pushed to the latest stable branch. (current:- v1.5.0).
-:::
-
-::: tip Major features request
-  Major new feature requests that may include breaking changes should always be sent to the master branch, which includes the upcoming release.
-:::
+- **Bug Fixes**: If you're fixing a bug, make sure to port the fix to the latest version that supports it (currently v1.5.1).
+- **Minor Feature Requests**: For minor features compatible with the current release, push your changes to the latest stable branch (currently v1.5.1).
+- **Major Feature Requests**: If your request involves a major new feature with potential breaking changes, send it to the master branch, which corresponds to the upcoming release (v2.0.0).
 
 ## Compiled Assets
 
-If you are submitting a change that contains a compiled file, do not commit the compiled files. Because this is very unrealistic to review by the maintainer and may contain malicious code. In order to prevent this problem, all the compiled files will be generated and committed by Bagisto maintainers.
+When submitting a change that includes compiled files, please avoid committing the compiled files directly. Maintainers find it difficult to review compiled files, and they may contain malicious code. To prevent this issue, the Bagisto maintainers will generate and commit the compiled files themselves.
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability within Bagisto, please send an email to Jitendra Singh at [jitendra@webkul.in](mailto:jitendra@webkul.in). All security vulnerabilities will be addressed immediately.
+If you discover a security vulnerability within Bagisto, please notify us immediately by sending an email to Jitendra Singh at [jitendra@webkul.in](mailto:jitendra@webkul.in). We take security vulnerabilities seriously and will address them promptly.
 
 ## Coding Style
 
-Like Laravel, Bagisto follows the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) coding standard and the [PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md) autoloading standard.
+Bagisto follows the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) coding standard and the [PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md) autoloading standard. These standards ensure consistency and readability in the codebase, similar to Laravel.
 
 ## PHPDoc
 
-Below is an example of a valid Bagisto doc block. Note that the @param attribute is followed by two spaces, the argument type, two more spaces, and finally, the variable name:
+Below is an example of a valid Bagisto doc block that follows the coding style:
 
-~~~ ini
-  /**
-  * Register a service with CoreServiceProvider.
-  *
-  * @param  string|array  $loader
-  * @param  \Closure|string|null  $concrete
-  * @param  bool  $shared
-  * @return void
-  * @throws \Exception
-  */
-  protected function registerFacades($loader, $concrete = null, $shared = false)
-  {
-      //
-  }
-~~~
+```php
+/**
+ * Register a service with CoreServiceProvider.
+ *
+ * @param string|array             $loader
+ * @param \Closure|string|null     $concrete
+ * @param bool                     $shared
+ * @return void
+ * @throws \Exception
+ */
+protected function registerFacades($loader, $concrete = null, $shared = false)
+{
+    //
+}
+```

@@ -4,114 +4,103 @@
 
 ## Directory Structure
 
-- In your package's source directory i.e. **`packages/Webkul/Blog/src`**, create the **`Config`** folder and create a file named **`admin-menu.php`**.
+To ensure that the admin menu includes the necessary configuration, follow these steps:
 
-  ```
-    - packages/
-      - Webkul/Blog/
-        - src/
-          ...
-          - Config/
-            - admin-menu.php
-  ```
-- Copy Below content to your **`admin-menu.php`**.
+1. In your package's source directory, which is typically located at **`packages/Webkul/Blog/src`**, create a new folder named **`Config`** if it doesn't already exist.
+   ```
+    └── packages
+        └── Webkul
+            └── Blog
+                └── src
+                    ├── ...
+                    └── Config
+                        └── admin-menu.php
+   ```
 
-  ~~~php
-  <?php
+2. Inside the newly created **`Config`** folder, create a file named **`admin-menu.php`**.
 
-  return [
-      [
-        'key'        => 'blogs',
-        'name'       => 'Blogs',
-        'route'      => 'blog.admin.index',
-        'sort'       => 2,
-        'icon-class' => 'blog-icon',
-      ]
-  ];
-  ~~~
+3. Copy and paste the following code into the **`admin-menu.php`** file:
 
-- For the route, just add the named route to **`admin-routes.php`** which specified above i.e. **`blog.admin.index`**.
+    ```php
+    <?php
 
-  ~~~php
-  Route::get('/blog', [PostController::class, 'index'])->name('blog.admin.index');
-  ~~~
+    return [
+        [
+            'key'        => 'blogs',
+            'name'       => 'Blogs',
+            'route'      => 'blog.admin.index',
+            'sort'       => 2,
+            'icon-class' => 'blog-icon',
+        ],
+    ];
+    ```
 
-- In this file, we provide the name of the menu, route & its icon.
+4. In your **`admin-routes.php`** file (located in the same package's source directory), add the named route **`blog.admin.index`** as follows:
 
-  | Params     | Description                                         |
-  | ---------- | --------------------------------------------------- |
-  | key        | Unique key for menu icon.                           |
-  | name       | Name of menu icon.                                  |
-  | route      | Route name for your menu icon.                      |
-  | sort       | Sort number on which your menu icon should display. |
-  | icon-class | Class for menu icon.                                |
+    ```php
+    Route::get('/blog', [PostController::class, 'index'])->name('blog.admin.index');
+    ```
 
-## Adding Menu Icon
+    In this step, we define the route that corresponds to the menu item added in the previous step.
 
-- We are using **`blog-icon`** for **`icon-class`** which CSS was previously not available in Bagisto. So we added some css to file **`assets/scss/admin.scss`** inside your package. Add below code to this file.
+## Add Menu Icon
 
-  ```css
-  .blog-icon {
-      background-image: url("../images/blog.png");
-      width: 45px;
-      height: 45px;
-      opacity: 0.6;
-      margin-left: 4px !important;
-  }
-  .active {
-      .blog-icon {
-          opacity: 1;
-          background-image: url("../images/blog-active.png");
-      }
-  }
-  ```
+5. To add the menu icon styling, open the **`assets/scss/admin.scss`** file within your package and add the following code:
 
-  ::: warning
-    You can notice two **`.png`** files. So, you have to add these two files manualy inside **`assets/images`** folder.
-  :::
+    ```css
+    .blog-icon {
+        background-image: url("../images/blog.png");
+        width: 45px;
+        height: 45px;
+        opacity: 0.6;
+        margin-left: 4px !important;
+    }
 
-## Merge Config
+    .active {
+        .blog-icon {
+            opacity: 1;
+            background-image: url("../images/blog-active.png");
+        }
+    }
+    ```
 
-- After that, we need to merge this **`admin-menu.php`** folder with a core menu file. For this, we use the method **`mergeConfigFrom()`** in the register method of the service provider.
+    Ensure that you have the necessary **`.png`** image files (**`blog.png`** and **`blog-active.png`**) and manually place them inside the **`assets/images`** folder of your package.
 
-  ~~~php
-  <?php
+6. To merge the **`admin-menu.php`** configuration with the core menu file, use the **`mergeConfigFrom()`** method in the **`register()`** method of your package's service provider. Here's an example:
 
-  namespace Webkul\Blog\Providers;
+    ```php
+    <?php
 
-  use Illuminate\Support\Facades\Event;
-  use Illuminate\Support\ServiceProvider;
+    namespace Webkul\Blog\Providers;
 
-  /**
-  * BlogServiceProvider
-  *
-  * @copyright 2020 Webkul Software Pvt. Ltd. (http://www.webkul.com)
-  */
-  class BlogServiceProvider extends ServiceProvider
-  {
-      /**
-      * Register services.
-      *
-      * @return void
-      */
-      public function register()
-      {
-          $this->mergeConfigFrom(
-              dirname(__DIR__) . '/Config/admin-menu.php', 'menu.admin'
-          );
-      }
-  }
-  ~~~
+    use Illuminate\Support\ServiceProvider;
 
-- Now, Run the below command i.e.
-  ```
-  php artisan optimize
-  ```
+    class BlogServiceProvider extends ServiceProvider
+    {
+        /**
+         * Register services.
+         *
+         * @return void
+         */
+        public function register()
+        {
+            $this->mergeConfigFrom(
+                dirname(__DIR__) . '/Config/admin-menu.php', 'menu.admin'
+            );
+        }
+    }
+    ```
 
-- Now, the menu will display in the admin panel. You can change the icon according to your needs.
+7. Finally, run the following command to optimize your application:
 
-  ::: details Admin Menu Output
+    ```
+    php artisan optimize
+    ```
 
-  ![Admin Menu Output](../../assets/1.5.x/images/package-development/admin-menu-output.png)
+    After completing these steps, the menu item should appear in the admin panel.
 
-  :::
+    ::: details Admin Menu Output
+
+    ![Admin Menu Output](../../assets/1.5.x/images/package-development/admin-menu-output.png)
+
+    :::

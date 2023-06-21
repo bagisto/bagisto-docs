@@ -34,6 +34,19 @@ module.exports = [
         ])
     },
     {
+        title: 'Architecture concepts',
+        path: setVersionPrefix('architecture'),
+        collapsable: true,
+        children: setVersionPrefix([
+            ['architecture/packages', 'Packages'],
+            ['architecture/frontend', 'Frontend'],
+            ['architecture/theme', 'Theme'],
+            ['architecture/performance', 'Performance'],
+            ['architecture/repository-pattern', 'Repository Pattern'],
+            ['architecture/modular-design', 'Modular Design']
+        ])
+    },
+    {
         title: 'Package Development',
         path: setVersionPrefix('packages'),
         collapsable: true,
@@ -45,7 +58,7 @@ module.exports = [
             ['packages/routes', 'Routes'],
             ['packages/controllers', 'Controllers'],
             ['packages/views', 'Views'],
-            ['packages/lang', 'Lang'],
+            ['packages/localization', 'Localization'],
             ['packages/layouts', 'Layouts'],
             ['packages/assets', 'Assets'],
             ['packages/add-menu-in-admin', 'Admin Menu'],

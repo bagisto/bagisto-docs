@@ -4,182 +4,184 @@
 
 ## Introduction
 
-In Bagisto, there are several packages have been used. We have provided useful helper methods in the packages which can help developers to develop their projects with ease.
+Bagisto provides several helper methods in its packages, which are designed to assist developers in building their projects more efficiently.
 
 ## Core Helpers
 
-All the mentioned helper methods are from Bagisto's core package class named **`Core`** in the **`Webkul\Core`** namespace. Let's discuss some common methods,
+The core helper methods mentioned below are part of the `Core` class in the `Webkul\Core` namespace. Let's explore some common methods:
 
-- Get all the channels,
+- **Get all channels:**
 
-  ~~~php
+  ```php
   core()->getAllChannels();
-  ~~~
+  ```
 
-- Get the current channel,
+- **Get the current channel:**
 
-  ~~~php
+  ```php
   core()->getCurrentChannel();
-  ~~~
+  ```
 
-- Set the current channel, this method will take one argument i.e. instance of this class **`Webkul\Core\Models\Channel`**,
+- **Set the current channel:** This method takes an instance of the `Webkul\Core\Models\Channel` class as an argument.
 
-  ~~~php
+  ```php
   core()->setCurrentChannel($channel);
-  ~~~
+  ```
 
-- Get the current channel code,
+- **Get the current channel code:**
 
-  ~~~php
+  ```php
   core()->getCurrentChannelCode();
-  ~~~
+  ```
 
-- Get the default channel,
+- **Get the default channel:**
 
-  ~~~php
+  ```php
   core()->getDefaultChannel();
-  ~~~
+  ```
 
-- Get the default channel code,
+- **Get the default channel code:**
 
-  ~~~php
+  ```php
   core()->getDefaultChannelCode();
-  ~~~
+  ```
 
-- Get requested channel code, this method is useful when you need to fetch the channel from the request, and no need to worry about the fallback as well. This method also has the optional parameter **`$fallback`**, which means the developer can use this with or without fallback,
+- **Get the requested channel code:** This method is useful when you need to retrieve the channel from the request, with an optional fallback parameter.
 
-  ~~~php
-  core()->getRequestedChannelCode();
-  ~~~
+  ```php
+  core()->getRequestedChannelCode($fallback = true);
+  ```
 
-- Get the channel name, yeah we know that you can chain it with the **`Channel`** instance but the purpose of this method is to handle the fallback case as well. This method will first check the name in the property, if not found then it will proceed further with app locale code, if still not found then it will check from the config key name as **`app.fallback_locale`**,
+- **Get the channel name:** This method retrieves the name of the channel. It handles fallback cases by checking the name in the property, app locale code, and the `app.fallback_locale` config key.
 
-  ~~~php
+  ```php
   core()->getChannelName($channel);
-  ~~~
+  ```
 
-- Get all the locales,
+- **Get all locales:**
 
-  ~~~php
+  ```php
   core()->getAllLocales();
-  ~~~
+  ```
 
-- Get all locales by requested channel, this method will provide you all the locales associated with the requested channel,
+- **Get all locales by requested channel:** This method provides all the locales associated with the requested channel.
 
-  ~~~php
+  ```php
   core()->getAllLocalesByRequestedChannel();
-  ~~~
+  ```
 
-- Get the current locale,
+- **Get the current locale:**
 
-  ~~~php
+  ```php
   core()->getCurrentLocale();
-  ~~~
+  ```
 
-- Get the requested locale code, this method is useful when you need to fetch the locale code from the request, and no need to worry about the fallback as well. This method also has the optional parameter **`$localeKey`** and **`$fallback`**, which means the developer can use this with or without fallback,
+- **Get the requested locale code:** This method retrieves the locale code from the request, with optional parameters for specifying the locale key and fallback behavior.
 
-  ~~~php
-  core()->getRequestedLocaleCode();
-  ~~~
+  ```php
+  core()->getRequestedLocaleCode($localeKey = null, $fallback = true);
+  ```
 
-- Get all the customer groups,
+- **Get all customer groups:**
 
-  ~~~php
+  ```php
   core()->getAllCustomerGroups();
-  ~~~
+  ```
 
-- Get requested customer group code, this method will fetch you customer group code from the request,
+- **Get the requested customer group code:** This method fetches the customer group code from the request.
 
-  ~~~php
+  ```php
   core()->getRequestedCustomerGroupCode();
-  ~~~
+  ```
 
-- Get all the currencies,
+- **Get all currencies:**
 
-  ~~~php
+  ```php
   core()->getAllCurrencies();
-  ~~~
+  ```
 
-- Get the base currency,
+- **Get the base currency:**
 
-  ~~~php
+  ```php
   core()->getBaseCurrency();
-  ~~~
+  ```
 
-- Get the base currency code,
+- **Get the base currency code:**
 
-  ~~~php
+  ```php
   core()->getBaseCurrencyCode();
-  ~~~
+  ```
 
-- Get the channel based currency,
+- **Get the channel-based currency:**
 
-  ~~~php
+  ```php
   core()->getChannelBaseCurrency();
-  ~~~
+  ```
 
-- Get the channel based currency code,
+- **Get the channel-based currency code:**
 
-  ~~~php
+  ```php
   core()->getChannelBaseCurrencyCode();
-  ~~~
+  ```
 
-- Get the current currency,
+- **Get the current currency:**
 
-  ~~~php
+  ```php
   core()->getCurrentCurrency();
-  ~~~
+  ```
 
-- Get the current currency code,
+- **Get the current currency code:**
 
-  ~~~php
+  ```php
   core()->getCurrentCurrencyCode();
-  ~~~
+  ```
 
-- Get the exchange rate based on the currency id,
+- **Get the exchange rate based on the currency ID:**
 
-  ~~~php
+  ```php
   core()->getExchangeRate($targetCurrencyId);
-  ~~~
+  ```
 
-- Get the formatted amount,
+- **Get the formatted amount:**
 
-  ~~~php
+  ```php
   core()->currency($amount = 0);
-  ~~~
+  ```
 
-- Get the configuration date based on the key, channel and locale,
+- **Get the configuration data based on the key, channel, and locale:**
 
-  ~~~php
+  ```php
   core()->getConfigData($field, $channel = null, $locale = null);
-  ~~~
+  ```
 
-- Get all the countries,
+- **Get all countries:**
 
-  ~~~php
+  ```php
   core()->countries();
-  ~~~
+  ```
 
-- Get the country name by country code,
+- **Get the country name by country code:**
 
-  ~~~php
+  ```php
   core()->country_name($countryCode);
-  ~~~
+  ```
 
-- Get all the country's state,
+- **Get all states of a country:**
 
-  ~~~php
+  ```php
   core()->states($countryCode);
-  ~~~
+  ```
 
-- Get sender email details,
+- **Get sender email details:**
 
-  ~~~php
+  ```php
   core()->getSenderEmailDetails();
-  ~~~
+  ```
 
-- Get admin email details,
+- **Get admin email details:**
 
-  ~~~php
+  ```php
   core()->getAdminEmailDetails();
-  ~~~
+  ```
+
+These core helper methods provide various functionalities to simplify common tasks and streamline development in Bagisto.

@@ -2,28 +2,28 @@
 
 [[TOC]]
 
-In this section, we will give you an overview of the menu items. How you can access the menu items and how it can be used for customization. In both themes i.e. **`default`** and **`velocity`**, we are displaying the categories in the menu items.
+This section provides an overview of menu items, how to access them, and how they can be customized. Both the **`default`** and **`velocity`** themes display categories in the menu items.
 
 ## Accessing Categories
 
-If you check the shop package, you will come to know that we have used the **`CategoryRepository`** class in the namespace **`Webkul\Category\Repositories\CategoryRepository`**.
+To access the menu categories, you can utilize the **`CategoryRepository`** class located in the **`Webkul\Category\Repositories\CategoryRepository`** namespace. This repository class provides useful methods for retrieving and managing categories.
 
-In this class, there is a method named **`getVisibleCategoryTree`**. This method will give you the listing of all the categories. You just need to pass the main root category id.
+One such method is **`getVisibleCategoryTree`**, which returns a list of all visible categories under the specified root category. You can pass the ID of the main root category as a parameter to this method.
 
-## Sample From Default Theme
+## Example from the Default Theme
 
-If you check the blade file in the default theme, here is the below code,
+In the default theme's blade file, you can find the following code snippet:
 
-~~~php
-foreach (app('Webkul\Category\Repositories\CategoryRepository')->getVisibleCategoryTree(core()->getCurrentChannel()->root_category_id) as $category) {
-    ...
-}
-~~~
+```php
+@foreach (app('Webkul\Category\Repositories\CategoryRepository')->getVisibleCategoryTree(core()->getCurrentChannel()->root_category_id) as $category)
+    // ...
+@endforeach
+```
 
-Now loop through these and customize your menu according to your needs.
+You can iterate through the retrieved categories and customize the menu according to your specific requirements.
 
 ::: tip
 
-There are several more categories methods present in the repository. Just go ahead explore those also.
+The **`CategoryRepository`** class provides several other methods for working with categories. Take some time to explore and utilize those methods as needed.
 
 :::

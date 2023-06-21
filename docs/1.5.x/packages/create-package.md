@@ -4,187 +4,192 @@
 
 ## Using Bagisto Package Generator
 
-- You need to install [Bagisto Package Generator](https://github.com/bagisto/bagisto-package-generator).
+To facilitate package development, you can use the [Bagisto Package Generator](https://github.com/bagisto/bagisto-package-generator). Follow the steps below to install it:
 
-- If you have not installed this package then you need to go to the root folder of **Bagisto** and run the following command
+1. Install the Bagisto Package Generator by running the following command in the root folder of your Bagisto application:
 
-  ```php
-  composer require bagisto/bagisto-package-generator
-  ```
+   ```shell
+   composer require bagisto/bagisto-package-generator
+   ```
 
-- Now, to generate your package you need to use the following command,
+2. Once installed, you can generate your package using the following command:
 
-  - If the package directory does not exist,
+   - If the package directory does not exist:
+
+     ```shell
+     php artisan package:make Webkul/Blog
+     ```
+
+   - If the package directory already exists, you can use the **`--force`** option to overwrite it:
+
+     ```shell
+     php artisan package:make Webkul/Blog --force
+     ```
+
+   This command will set up the necessary files and directories in the **`packages`** directory.
+
+### Registering Your Package
+
+To register your package, follow these steps:
+
+1. Add your package's namespace to the **`psr-4`** section in the **`composer.json`** file located in the root directory of your Bagisto application. Update it as follows:
+
+   ```json
+   "autoload": {
+       ...
+       "psr-4": {
+           // Other PSR-4 namespaces
+           "Webkul\\Blog\\": "packages/Webkul/Blog/src"
+       }
+   }
+   ```
+
+2. Register your package's service provider in the **`config/app.php`** file located in the root directory of your Bagisto application. Add the following line to the **`providers`** array:
 
     ```php
-    php artisan package:make Webkul/Blog
+    <?php
+
+    return [
+        
+        // Other configuration options
+
+        'providers' => ServiceProvider::defaultProviders()->merge([
+            // Other service providers
+            Webkul\Blog\Providers\BlogServiceProvider::class,
+        ])->toArray(),
+        
+        // Other configuration options
+    ];
     ```
 
-  - If somehow the package directory is already present then you can use the force command as well. For that you just need to pass the '**--force**' command.
+3. Run the following commands to autoload your package and publish its assets and configurations:
 
-    ```php
-    php artisan package:make Webkul/Blog --force
-    ```
+   ```shell
+   composer dump-autoload
+   php artisan optimize
+   php artisan vendor:publish --force
+   ```
 
-- Now check your **`packages`** directory, everything is setup for you.
+   When prompted to select which items to publish, choose the number corresponding to **`"Webkul\Blog\Providers\BlogServiceProvider"`** and press enter to publish all assets and configurations.
 
-### Register Your Package
-
-- Add you package namespace in **`psr-4`** key in **`composer.json`** file for auto loading which is located in Bagisto root directory.
-
-  ```json
-  "autoload": {
-      ...
-      "psr-4": {
-          ...
-          "Webkul\\Blog\\": "packages/Webkul/Blog/src"
-          ...
-      }
-      ...
-  }
-  ```
-
-- After that, you need to register your service provider in **`config/app.php`**.
-
-  ```php
-  <?php
-
-  return [
-      ...
-      'providers' => [
-          ...
-          Webkul\Blog\Providers\BlogServiceProvider::class,
-          ...
-      ]
-      ...
-  ];
-  ```
-
-- Run the below listed command:
-
-  ```php
-  composer dump-autoload
-  php artisan optimize
-  ```
-
-  ```php
-  php artisan vendor:publish --force
-
-  -> Press the number before "Webkul\Blog\Providers\BlogServiceProvider" and then press enter to publish all assets and configurations.
-  ```
-
-::: details Check output in the browser
+::: details Example Output in the Browser
 
 ![helloworld-admin-browser-output](../../assets/1.5.x/images/package-development/blog-package-output.png)
 
 :::
 
-- Now start creating something cool.
+Congratulations! Your package is now registered and ready to use. Start creating something cool!
 
-## By Manually Setting up all Files
+## Manual Setup of Files
 
-By manually setting up package, we assume that you are familiar with packages directory structures and flow. In Bagisto we are already created multiple packages so let's start with bagisto default **`package`** folder.
+If you prefer to set up your package manually, follow these steps assuming you are familiar with package directory structures and workflows. We'll use the default **`package`** folder in Bagisto as an example.
 
 ### Create Package Directory
 
-- In **`packages/Webkul`** folder, create a folder with your package name. So, your basic structure will look like this,
+1. Inside the **`packages/Webkul`** folder, create a folder with your package name. Your structure should look like this:
 
-  ```
-  - packages/
-    - Webkul/
-        ...
-      - Blog/
-        ...
-  ```
+   ```
+   └── packages
+       └── Webkul
+           └── Blog
+   ```
 
-- In your package folder, create a folder named as **`src`**. This is the place where you need to put all your files related to your package. Now, your updated structure will look like this,
+2. In your package folder, create a folder named as **`src`**. This is where you'll put all your package-related files. Your updated structure will look like this:
 
-  ```
-  - packages/
-    - Webkul/Blog/
-      - src/
-  ```
+   ```
+   └── packages
+       └── Webkul
+           └── Blog
+               └── src
+   ```
 
-### Make Service Provider
+### Create Service Provider
 
-- In **`src`** folder, create a folder named as **`Providers`** and inside that folder, create a file named as **`BlogServiceProvider.php`**.
+1. In the **`src`** folder, create a folder named as **`Providers`**. Inside that folder, create a file named as **`BlogServiceProvider.php`**. Your structure should look like this:
 
-  ```
-  - packages/
-    - Webkul/Blog/
-      - src/
-        - Providers
-          - BlogServiceProvider.php
-  ```
+   ```
+   └── packages
+       └── Webkul
+           └── Blog
+               └── src
+                   └── Providers
+                       └── BlogServiceProvider.php
+   ```
 
-- Copy the below code and paste it in **`BlogServiceProvider.php`**.
+2. Copy the following code and paste it into **`BlogServiceProvider.php`**:
 
-  ```php
-  <?php
+   ```php
+   <?php
 
-  namespace Webkul\Blog\Providers;
+   namespace Webkul\Blog\Providers;
 
-  use Illuminate\Support\ServiceProvider;
+   use Illuminate\Support\ServiceProvider;
 
-  /**
-  * BlogServiceProvider
-  *
-  * @copyright 2023 Webkul Software Pvt. Ltd. (http://www.webkul.com)
-  */
-  class BlogServiceProvider extends ServiceProvider
-  {
-      /**
-      * Bootstrap services.
-      *
-      * @return void
-      */
-      public function boot()
-      {
+   /**
+    * BlogServiceProvider
+    *
+    * @copyright 2023 Webkul Software Pvt. Ltd.
+    */
+   class BlogServiceProvider extends ServiceProvider
+   {
+       /**
+        * Bootstrap services.
+        *
+        * @return void
+        */
+       public function boot()
+       {
+           //
+       }
 
-      }
-
-      /**
-      * Register services.
-      *
-      * @return void
-      */
-      public function register()
-      {
-
-      }
-  }
-  ```
+       /**
+        * Register services.
+        *
+        * @return void
+        */
+       public function register()
+       {
+           //
+       }
+   }
+   ```
 
 ### Register Your Package
 
-- Add your package namespace in **`psr-4`** key in **`composer.json`** file for auto loading which is located in Bagisto root directory.
+1. Add your package's namespace to the **`psr-4`** section in the **`composer.json`** file located in the root directory of your Bagisto application. Update it as follows:
 
-  ```json
-  "autoload": {
-      ...
-      "psr-4": {
-          ...
-          "Webkul\\Blog\\": "packages/Webkul/Blog/src"
-          ...
-      }
-      ...
-  }
-  ```
+   ```json
+   "autoload": {
+       ...
+       "psr-4": {
+           // Other PSR-4 namespaces
+           "Webkul\\Blog\\": "packages/Webkul/Blog/src"
+       }
+   }
+   ```
 
-- Now, register your service provider in **`config/app.php`** which is located in Bagisto root directory.
+2. Register your package's service provider in the **`config/app.php`** file located in the root directory of your Bagisto application. Add the following line to the **`providers`** array:
 
-  ```php
-  <?php
+    ```php
+    <?php
 
-  return [
-      ...
-      'providers' => [
-          ...
-          Webkul\Blog\Providers\BlogServiceProvider::class,
-          ...
-      ]
-      ...
-  ];
-  ```
+    return [
+        
+        // Other configuration options
 
-- Run **`composer dump-autoload`** to load your package. Now your package is ready to use.
+        'providers' => ServiceProvider::defaultProviders()->merge([
+            // Other service providers
+            Webkul\Blog\Providers\BlogServiceProvider::class,
+        ])->toArray(),
+        
+        // Other configuration options
+    ];
+    ```
+
+3. Run the following command to autoload your package:
+
+   ```shell
+   composer dump-autoload
+   ```
+
+   Your package is now ready to use!

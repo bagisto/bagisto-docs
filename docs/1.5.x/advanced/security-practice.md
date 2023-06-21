@@ -4,150 +4,132 @@
 
 ## Software Updates
 
-- Using HTTPS (Google now uses HTTPS as a ranking factor).
+To ensure the security of your system, follow these best practices:
 
-- Keep all software on the server up-to-date.
-  - Bagisto
-  - Database
-  - Adminer/phpMyAdmin
-  - Apache
-  - Redis, etc.
-
-- Make sure the server operating system is up-to-date for available security patches.
-
-- Manage files only with secure communication protocols (SSH/ SFTP/ HTTPs), disable FTP.
-
-- [ .htaccess ] file to protect system files, when using apache webserver.
-
-- Disable unused ports, and stop services running unnecessarily.
-
-- Restrict access to certain IPs to the admin panel and use Admin logins with two-factor authorization.
-
-- Use of strong and unique passwords.
-
-- Use a properly configured and updated firewall between the payment card data and the public network.
+- Use HTTPS to encrypt communication. Google now considers HTTPS as a ranking factor.
+- Keep all software on the server up-to-date, including Bagisto, the database, Adminer/phpMyAdmin, Apache, Redis, etc.
+- Regularly update the server operating system to apply available security patches.
+- Manage files only through secure communication protocols like SSH, SFTP, or HTTPS. Disable FTP.
+- Use the **`.htaccess`** file to protect system files when using the Apache web server.
+- Disable unused ports and stop unnecessary services running on the server.
+- Restrict access to the admin panel by allowing only specific IP addresses and enforcing two-factor authorization for admin logins.
+- Ensure the use of strong and unique passwords.
+- Configure and update the firewall properly to secure the connection between payment card data and the public network.
 
 ## Limiting Error Messages
 
+To limit the exposure of sensitive information in error messages, follow these steps:
+
+- Edit your Apache configuration file to avoid displaying server and operating system details.
+- Set **`ServerSignature`** to **`Off`** (by default, it is **`On`**).
+- Add **`ServerTokens Prod`** to display Apache only as the product.
+
+:::details Screenshot
+
 ![limiting-error-messages](../../assets/1.5.x/images/advanced-topics/limiting-error-messages.png)
 
-- Edit your apache configuration file to avoid displaying server and os details.
-
-- Set “ServerSignature” to OFF as by default it is ON.
-
-- Add “ServerTokens Prod” to display Apache as product only.
+:::
 
 ## Limiting Admin Access
 
-- Edit your .htaccess file with the following code
+To restrict access to the admin area, modify the **`.htaccess`** file with the following code:
 
-~~~
+```apacheconf
 RewriteEngine On
-RewriteCond %{REQUEST*URI} .*/admin
-RewriteCond %{REMOTE*ADDR} !=<IP address>
+RewriteCond %{REQUEST_URI} .*/admin
 RewriteCond %{REMOTE_ADDR} !=<IP address>
-RewriteRule ^(.*)\$ - [R=403,L]
-~~~
+RewriteCond %{REMOTE_ADDR} !=<IP address>
+RewriteRule ^(.*)$ - [R=403,L]
+```
 
-- Review your server for development leftovers. Make sure there are no accessible "log files", ".git directories", "database dumps", "zip files".
+Ensure that there are no accessible development leftovers on the server, such as "log files," ".git directories," "database dumps," or "zip files."
 
-## Restrict Unnecessary Files
+## Restricting Unnecessary Files
 
-- Edit your .htaccess file. Restrict files with .git, .zip, .gz, and .sql extensions.
+To restrict access to unnecessary files, add the following code to your **`.htaccess`** file:
 
-~~~
-<FilesMatch "\.(git|zip|tar|sql)\$">
+```apacheconf
+<FilesMatch "\.(git|zip|tar|sql)$">
     Require all denied
 </FilesMatch>
-~~~
+```
 
-- Use a Web application firewall to analyze traffic and discover suspicious patterns such as credit card information being sent to an attacker.  
+Consider using a Web Application Firewall (WAF) to analyze traffic and detect suspicious patterns, such as credit card information being sent to attackers. Additionally, restrict public access to only ports 80 (HTTP) and 443 (HTTPS), while blocking other ports.
 
-- Make sure only port 80 and 443 are publicly accessible and the rest of the ports are restricted.
+## Restricting PHP Execution Inside Storage
 
+To restrict PHP execution inside the storage directory, modify your Apache configuration file:
 
-## Restrict php Execution Inside Storage
+```apacheconf
+<Directory "~/www/bagisto/public/storage/">
+    <FilesMatch "\.php$">
+        Require all denied
+    </FilesMatch>
+    php_flag engine off
+</Directory>
+```
 
-- Edit your apache configuration file. Restrict php execution inside storage directory
+Don't forget to restart Apache after making these changes.
 
-  ~~~
-  <Directory "~/www/bagisto/public/storage/">
-      <FilesMatch "\.php\$">
-          Require all denied
-      </FilesMatch>
-      php_flag engine off
-  </Directory>
-  ~~~
+## Server Hardening
 
-  ::: tip
+Take the following measures to harden your server:
 
-  Don't forget to restart apache.
-
-  :::
-
-## Harden your server
-
-- Use of mod_security module to detect and prevent intrusions.
-
-- Use of mod_passive module to prevent brute force attack.
-
-- Allow only specific users to login.
-
-- Disable login to users with empty passwords.
-
-- Check iptable rules to prevent unauthorized access and activity.
-
-- Take regular backup of important files and also save them remotely in a secure environment.
+- Use the **`mod_security`** module to detect and prevent intrusions.
+- Implement the **`mod_passive`** module to prevent brute force attacks.
+- Allow only specific users to log in.
+- Disable login for users with empty passwords.
+- Review and configure iptable rules to prevent unauthorized access and activity.
+- Regularly back up important files and store them remotely in a secure environment.
 
 ## Strong Passwords
 
-- Use strong and unique passwords, and change them periodically.
+Ensure the use of strong and unique passwords and encourage periodic password changes. You can use a password generator tool ([Password Generator](https://passwords-generator.org/)) to create strong passwords. Limit access to the Bagisto admin
 
-  ::: tip
-
-  Use password generator. ([Password Generator](https://passwords-generator.org/))
-  
-  :::
-
-- Limit access to the Bagisto admin by updating the whitelist with the IP address of each computer that is authorized to use the admin.
+ panel by updating the whitelist with authorized IP addresses.
 
 ## Implementation of HTTP Security Headers
 
-- In addition, Headers play a key role in communication between the client and the server, some of
-them have been mentioned in order to enhance the web security.
+Implementing the following HTTP security headers enhances web security:
 
 ### HTTP Strict Transport Security (HSTS)
 
-- This response header will tell the browser that the application is only to be accessed using https instead of http.
+Set the **`Strict-Transport-Security`** response header to instruct the browser to only access the application using HTTPS:
 
-  `Strict-Transport-Security: max-age=<expire-time>`
+```
+Strict-Transport-Security: max-age=<expire-time>
+```
 
-### Cross Site Scripting Protection (X-XSS Protection)
+### Cross-Site Scripting Protection (X-XSS Protection)
 
-- This response header will enforce browsers to detect cross site scripting attacks and not to execute malicious js script in response.
+Set the **`X-XSS-Protection`** response header to enable browsers to detect and prevent cross-site scripting (XSS) attacks:
 
-  `X-XSS-Protection: 1; mode=block`
+```
+X-XSS-Protection: 1; mode=block
+```
 
 ### X-Frame-Options​
 
-- This response header enables the protection of applications against clickjacking. It tells the browser whether the content can be displayed within frames.
+The **`X-Frame-Options`** response header protects applications against clickjacking. It specifies whether the content can be displayed within frames:
 
-  `X-Frame-Options: deny`
+```
+X-Frame-Options: deny
+```
 
 ### X-Content-Type-Options​
 
-- This header will force the browser to disable MIME sniffing.
+The **`X-Content-Type-Options`** response header forces the browser to disable MIME sniffing, preventing MIME sniffing vulnerabilities:
 
-- MIME sniffing vulnerability occurs when an attacker uploads an HTML file as a different file type such as jpg.
-
-  `X-Content-Type-Options: nosniff`
+```
+X-Content-Type-Options: nosniff
+```
 
 ### Content Security Policy (CSP)
 
-- This response header allows application administrators to control resources that can be loaded in users' browsers and helps to detect and mitigate attacks such as xss, clickjacking.
+Implement a Content Security Policy (CSP) response header to control resources that can be loaded in users' browsers. CSP helps detect and mitigate attacks such as XSS and clickjacking.
 
 ### Continuous Logging And Monitoring
 
-- Likewise, monitor all access to the network and cardholder data environment.
-- Keep an eye on large volume orders for a single item from a new customer.
-- A series of orders, shipped to the same address using different payment methods.
+Maintain continuous logging and monitoring of all network access and cardholder data activities. Keep an eye out for large volume orders of a single item from new customers, a series of orders shipped to the same address but using different payment methods.
+
+By implementing these best security practices, you can enhance the security of your system and protect it from potential threats.

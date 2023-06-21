@@ -4,73 +4,69 @@
 
 ## Introduction
 
-- In this section, we will show you how you can integrate image search with your new theme. If you check our **`Default Theme`** and **`Velocity Theme`**, you will come to know that we are using the [Tensorflow](https://www.tensorflow.org/js) JS and loading the model named **`Tensorflow`** MobileNet.
+In this section, we will guide you on integrating image search with your new theme. Our **`Default Theme`** and **`Velocity Theme`** utilize [TensorFlow.js](https://www.tensorflow.org/js) and load the **`TensorFlow`** MobileNet model.
 
-- The **`Tensorflow`** JS model does not need any knowledge for machine learning. You just need to pass any browser-based image elements **`<img>`** and it will return an array that is best suited according to their predictions and their confidences.
+The **`TensorFlow`** JS model doesn't require any machine learning expertise. You simply need to pass browser-based image elements, such as **`<img>`**, and it will return an array containing the best predictions along with their confidences.
 
 ## Usage
 
-Make sure all your scripts are loaded in the footer, if you check the **`default theme`** and **`velocity theme`** we are using the yielding. So you can also use the same yielding. So we are assuming that you have added **`scripts`** yield in your main layouts.
+Ensure that all your scripts are loaded in the footer. If you examine the **`default theme`** and **`velocity theme`**, you will notice that we use the `yielding` feature. You can also use the same approach by including a `scripts` yield in your main layouts.
 
-- Let's start with the loading of the library and model,
+Let's begin by loading the library and model:
 
-  ~~~php
-  @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet" defer></script>
-  @endpush
-  ~~~
+```php
+@push('scripts')
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet" defer></script>
+@endpush
+```
 
-- As **`Tensorflow`** model only need the image element. So, we are just taking the sample image element.
+Since the **`TensorFlow`** model only requires an image element, we will use a sample image element:
 
-  ~~~php
-  @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet" defer></script>
+```php
+@push('scripts')
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet" defer></script>
 
-    <img id="imageElement" src="random-image.jpg"></img>
-  @endpush
-  ~~~
+  <img id="imageElement" src="random-image.jpg"></img>
+@endpush
+```
 
-  ::: tip
+::: tip
+This is a sample image element. You can add a file input to allow users to select an image.
+:::
 
-  This is the sample image element, you can add file input to get the image from the user.
+Now, for the main part, pass your image element to the model:
 
-  :::
+```php
+@push('scripts')
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet" defer></script>
 
-- Now, the main part just pass your image element to the model,
+  <img id="imageElement" src="random-image.jpg"></img>
 
-  ~~~php
-  @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet" defer></script>
+  <script>
+    /* Get the image element */
+    const imageElement = document.getElementById('imageElement');
 
-    <img id="imageElement" src="random-image.jpg"></img>
-
-    <script>
-      /* getting image element */
-      const imageElement = document.getElementById('imageElement');
-
-      /* loading model */
-      mobilenet.load().then(model => {
-        /* classifying the image */
-        model.classify(imageElement).then(predictions => {
-          /* use predictions according to your need */
-          console.log(predictions);
-        });
+    /* Load the model */
+    mobilenet.load().then(model => {
+      /* Classify the image */
+      model.classify(imageElement).then(predictions => {
+        /* Use the predictions according to your needs */
+        console.log(predictions);
       });
-    </script>
-  @endpush
-  ~~~
+    });
+  </script>
+@endpush
+```
 
-- Now you have all the predictions. Just pass all your predictions to your search input.
+Now you have all the predictions. Simply pass your predictions to your search input.
 
-  ::: tip
-
-  Make query string from the predictions and redirect to the search route.
-
-  :::
+::: tip
+Create a query string from the predictions and redirect to the search route.
+:::
 
 ## Conclusion
 
-If you check the whole flow, you will come to know that we are passing an image element to **`Tensorflow`**'s model in return we are getting the array of predictions and from that predictions, we are making the query strings and redirecting to the search route.
+By following the entire flow, you can see that we pass an image element to the **`TensorFlow`** model. In return, we receive an array of predictions. From these predictions, we can generate query strings and redirect to the search route.

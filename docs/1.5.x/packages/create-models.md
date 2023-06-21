@@ -2,48 +2,50 @@
 
 [[TOC]]
 
-To learn in detail about Models you can visit Laravel doc from [here](https://laravel.com/docs/10.x/eloquent)
+To understand Models in detail, you can visit the Laravel documentation [here](https://laravel.com/docs/10.x/eloquent).
 
-We are using [konekt/concord](https://packagist.org/packages/konekt/concord) package here. That is an extension of Laravel. This helps in building modular Laravel application.
+We are using the [konekt/concord](https://packagist.org/packages/konekt/concord) package, which is an extension of Laravel. It helps in building modular Laravel applications.
 
 ## Using Bagisto Package Generator
 
-- This command will create a new **`Post`** Model inside your package.
+- This command creates a new **`Post`** Model inside your package.
 
   ```sh
   php artisan package:make-model Post Webkul/Blog
   ```
-- This command will create a following files.
 
-  - New model **`Post.php`** in **`packages/Webkul/Blog/src/Models`** directory.
-  - New model proxy **`PostProxy.php`** in **`packages/Webkul/Blog/src/Models`** directory.
-  - New model contract **`Post.php*`** in **`packages/Webkul/Blog/src/Contracts`** directory.
+- This command creates the following files:
+  - New model **`Post.php`** in the **`packages/Webkul/Blog/src/Models`** directory.
+  - New model proxy **`PostProxy.php`** in the **`packages/Webkul/Blog/src/Models`** directory.
+  - New model contract **`Post.php*`** in the **`packages/Webkul/Blog/src/Contracts`** directory.
 
-## By Laravel artisan Command
+## Using Laravel Artisan Command
 
-- Before ctreating model class we have to create two things i.e. **`Contract`** and **`Proxy`**.
+Before creating the model class, we need to create two things: the **`Contract`** and the **`Proxy`**.
 
 ### Contract
 
-Laravel's Contract are a set of interfaces that define the core services provided by the framework. For example, an **`Illuminate\Contracts\Queue\Queue`** contract defines the methods needed for queueing jobs, while the **`Illuminate\Contracts\Mail\Mailer`** contract defines the methods needed for sending an e-mail.
+Laravel's Contracts are a set of interfaces that define the core services provided by the framework. For example, the **`Illuminate\Contracts\Queue\Queue`** contract defines the methods needed for queueing jobs, while the **`Illuminate\Contracts\Mail\Mailer`** contract defines the methods needed for sending an email.
 
-Each contract has a corresponding implementation provided by the framework. For example, Laravel provides a queue implementation with a variety of drivers, and a mailer implementation that is powered by SwiftMailer.
+Each contract has a corresponding implementation provided by the framework. For example, Laravel provides a queue implementation with various drivers and a mailer implementation powered by SwiftMailer.
 
-All of the Laravel contracts live in their own GitHub repository. This provides a quick reference point for all available contracts, as well as a single, decoupled package that may be utilized by package developers.
+All Laravel contracts are stored in their own GitHub repository. This provides a quick reference for all available contracts and a single, decoupled package that can be used by package developers.
 
-- Now, create a folder named as **`Contracts`** inside **`Webkul/Blog/src/`** and create an interface file named as **`Post.php`**
+- Now, create a folder named **`Contracts`** inside **`Webkul/Blog/src/`** and create an interface file named **`Post.php`**.
 
   ```
-    - packages/
-      - Webkul/Blog/
-        - src/
-          ...
-          - Contracts/
-            - Post.php
-    ```
-- Copy the below code in file **`Post.php`**.
+  packages
+  └── Webkul
+      └── Blog
+          └── src
+              ├── ...
+              └── Contracts
+                  └── Post.php
+  ```
 
-  ~~~php
+- Copy the following code into the **`Post.php`** file.
+
+  ```php
   <?php
 
   namespace Webkul\Blog\Contracts;
@@ -51,27 +53,29 @@ All of the Laravel contracts live in their own GitHub repository. This provides 
   interface Post
   {
   }
-  ~~~
+  ```
 
 ### Proxy
 
-Proxies as their name state will drive you to the actual model class. The concept of model proxies has been introduced to override the functionality of the existing Model. It is a type of model inheritance without creating a new table in the database.
+Proxies, as their name suggests, lead you to the actual model class. The concept of model proxies has been introduced to override the functionality of the existing Model. It is a type of model inheritance without creating a new table in the database.
 
-- Now, Create a **`Models`** folder inside **`packages/Webkul/Blog/src/`**. After that create a model proxy file as **`PostProxy.php`**. This Proxy class will extends **`Konekt\Concord\Proxies\ModelProxy`**.
+- Now, create a **`Models`** folder inside **`packages/Webkul/Blog/src/`**. Inside the **`Models`** folder, create a model proxy file named **`PostProxy.php`**. This Proxy class will extend **`Konekt\Concord\Proxies\ModelProxy`**.
 
   ```
-    - packages/
-      - Webkul/Blog/
-        - src/
-          ...
-          - Contracts/
-            - Post.php
-          - Models
-            - PostProxy.php
-    ```
-- Copy the below code in file **`PostProxy.php`**.
+  └── packages
+      └── Webkul
+          └── Blog
+              └── src
+                  ├── ...
+                  ├── Contracts
+                  │   └── Post.php
+                  └── Models
+                      └── PostProxy.php
+  ```
 
-  ~~~php
+- Copy the following code into the **`PostProxy.php`** file.
+
+  ```php
   <?php
 
   namespace Webkul\Blog\Models;
@@ -81,32 +85,34 @@ Proxies as their name state will drive you to the actual model class. The concep
   class PostProxy extends ModelProxy
   {
   }
-  ~~~
+  ```
 
 ### Model
 
-- The simple way to create a model is executing the command **`make:model`** artisan command,
+- The simple way to create a model is to execute the `make:model` artisan command:
 
-  ```php 
+  ```sh
   php artisan make:model Post
   ```
 
-- Now, move your **`Post`** model from project root directory i.e. **`App/Models`** to **`packages/Webkul/Blog/src/Models`** folder.
+- Now, move your **`Post`** model from the project root directory (i.e., **`App/Models`**) to the **`packages/Webkul/Blog/src/Models`** folder.
 
   ```
-    - packages/
-      - Webkul/Blog/
-        - src/
-          ...
-          - Contracts/
-            - Post.php
-          - Models
-            - Post.php
-            - PostProxy.php
-    ```
-- Copy the below code in file **`Post.php`**.
+  └── packages
+      └── Webkul
+          └── Blog
+              └── src
+                  ├── ...
+                  ├── Contracts
+                  │   └── Post.php
+                  └── Models
+                      ├── Post.php
+                      └── PostProxy.php
+  ```
 
-  ~~~php
+- Copy the following code into the **`Post.php`** file.
+
+  ```php
   <?php
 
   namespace Webkul\Blog\Models;
@@ -138,25 +144,26 @@ Proxies as their name state will drive you to the actual model class. The concep
           return $this->belongsTo(Admin::class, 'user_id');
       }
   }
-  ~~~
-
+  ```
 
 ### Module Service Provider
 
-- Now, We have to create a provider as **`ModuleServiceProvider.php`** inside **`Webkul/Blog/src/Providers`**.
+- Now, we need to create a provider named **`ModuleServiceProvider.php`** inside **`Webkul/Blog/src/Providers`**.
 
   ```
-  - packages/
-    - Webkul/Blog/
-      - src/
-        - Providers
-          - BlogServiceProvider.php
-          - ModuleServiceProvider.php
+  └── packages
+    └── Webkul
+        └── Blog
+            └── src
+                ├── ...
+                └── Providers
+                    ├── BlogServiceProvider.php
+                    └── ModuleServiceProvider.php
   ```
 
-- In this file, models which are used in this package are registered. You may check below code.
+- In this file, we register the models used in this package. You can see the code below.
 
-  ~~~php
+  ```php
   <?php
 
   namespace Webkul\Blog\Providers;
@@ -169,18 +176,17 @@ Proxies as their name state will drive you to the actual model class. The concep
           \Webkul\Blog\Models\Post::class,
       ];
   }
-  ~~~
+  ```
 
-- Now, Register your **`ModuleServiceProvider.php`** in **`config/concord.php`** file,
+- Finally, register your **`ModuleServiceProvider.php`** in the **`config/concord.php`** file.
 
-    ~~~php
-    <?php
+  ```php
+  <?php
 
-    return [
-        'modules' => [
-            ...
-            \Webkul\Blog\Providers\ModuleServiceProvider::class,
-            ...
-        ]
-    ];
-    ~~~
+  return [
+      'modules' => [
+          // Other service providers
+          \Webkul\Blog\Providers\ModuleServiceProvider::class,
+      ]
+  ];
+  ```

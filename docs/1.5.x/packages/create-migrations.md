@@ -2,36 +2,38 @@
 
 [[TOC]]
 
-To learn in detail about Migrations you can visit Laravel doc from [here](https://laravel.com/docs/10.x/migrations)
+To understand Migrations in detail, you can visit the Laravel documentation [here](https://laravel.com/docs/10.x/migrations).
 
 ## Using Bagisto Package Generator
 
-This command will create a new migration class in **`packages/Webkul/Blog/src/Database/Migrations`** directory.
+This command creates a new migration class in the **`packages/Webkul/Blog/src/Database/Migrations`** directory.
 
 ```sh
 php artisan package:make-migration CreatePostsTable Webkul/Blog
 ```
 
-## By Laravel artisan Command
+## Using Laravel Artisan Command
 
-- Create a **`Database`** folder in **`packages/Webkul/Blog/src`** path and inside **`Database`** folder create **`Migrations`** and **`Seeders`** folder.
+- Create a **`Database`** folder in the **`packages/Webkul/Blog/src`** path. Inside the **`Database`** folder, create **`Migrations`** and **`Seeders`** folders.
 
     ```
-    - packages/
-      - Webkul/Blog/
-        - src/
-          ...
-          - Database/
-            - Migrations/
-            - Seeders/
+    └── packages
+        └── Webkul
+            └── Blog
+                └── src
+                    ├── ...
+                    └── Database
+                        ├── Migrations
+                        └── Seeders
     ```
-- Now run the below command with the **`--path`** option to determine where your migration file will be placed.
+
+- Run the following command with the **`--path`** option to specify where your migration file will be placed.
 
   ```sh
   php artisan make:migration create_posts_table --path=packages/Webkul/Blog/src/Database/Migrations
   ```
 
-- You can copy the code from here and paste it into your migration file.
+- Copy the code provided here and paste it into your migration file.
 
   ```php
   <?php
@@ -70,9 +72,10 @@ php artisan package:make-migration CreatePostsTable Webkul/Blog
       }
   };
   ```
-### Load Migration From Package
 
-- Here, we need to add migrations to our service provider to load them.
+### Loading Migration from Package
+
+- We need to add the migrations to our service provider to load them.
 
   ```php
   <?php
@@ -97,23 +100,13 @@ php artisan package:make-migration CreatePostsTable Webkul/Blog
       {          
           $this->loadMigrationsFrom(__DIR__ .'/../Database/Migrations');
       }
-
-      /**
-      * Register services.
-      *
-      * @return void
-      */
-      public function register()
-      {
-
-      }
   }
   ```
-### Create Table From Migration
 
-- Now run below command to create **`posts`** table inside your database.
+### Creating Tables from Migrations
+
+- Run the following command to create the **`posts`** table in your database.
 
   ```sh
   php artisan migrate
   ```
-

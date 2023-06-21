@@ -1,94 +1,71 @@
-# Events Listeners
+# Event Listeners
 
 [[TOC]]
 
 ## Introduction
 
-Events are an implementation of observer pattern such that whenever an event takes place, then one or more listener(s) associated with that event responds. Imagine something like making an announcement to your application, and then actions being taken due to that announcement. All the event classes in Bagisto are stored in the **Providers** folder and the listeners are stored in the **Listeners** folder.
+Event Listeners in Bagisto are a way to implement the observer pattern, where listeners respond to events that occur in the application. Events can be thought of as announcements made by the application, and listeners are the actions taken in response to those announcements. All event classes in Bagisto are stored in the **Providers** folder, and the listeners are stored in the **Listeners** folder.
 
-## Creating Event Class
+## Creating an Event Class
 
-- If you have the Bagisto Package Generator installed, then you can use the following command which will create a new event class in **`packages/Webkul/Blog/src/Events`** directory.
+If you have the Bagisto Package Generator installed, you can use the following command to create a new event class in the **`packages/Webkul/Blog/src/Events`** directory:
 
-- Please follow the following steps to create a new event class in your **`packages/Webkul/Blog`**.
+```sh
+php artisan package:make-event BlogEvent Webkul/Blog
+```
 
-- We assume that you have created a new Blog using Bagisto Package Generator like the below command.
+If the event class already exists, you can use the **`--force`** option to overwrite it:
 
-    ```sh
-    php artisan package:make Webkul/Blog
-    ```
+```sh
+php artisan package:make-event BlogEvent Webkul/Blog --force
+```
 
-- Now, you can create a event **`Events\BlogEvent.php`** class using the below command.
-
-    ```sh
-    php artisan package:make-event BlogEvent Webkul/Blog
-    ```
-
-- If event class already present then you can use force command for overwriting by passing **`--force`** option.
-
-    ```sh
-    php artisan package:make-event BlogEvent Webkul/Blog --force
-    ```
-
-- Or if you don't have package generator then, you can create file manually also.
-
-## Creating Listener Class
-
-- If you have the Bagisto Package Generator installed, then you can use the following command which will create a new listener class in **`packages/Webkul/Blog/src/Listeners`** directory.
-
-    ```sh
-    php artisan package:make-listener BlogListener Webkul/Blog
-    ```
-
-- If listener class already present then you can use force command for overwriting.
-
-    ```sh
-    php artisan package:make-listener BlogListener Webkul/Blog --force
-    ```
-
-- Or if you don't have package generator then, you can create file manually also.
+Alternatively, if you don't have the package generator, you can create the file manually.
 
 ## Manually Registering Events
 
-- For the sake of simplicity, in bagisto, we register events manually in the boot method of your **_EventServiceProvider.php_** as below:
+In Bagisto, events are manually registered in the **`boot`** method of your **`EventServiceProvider.php`** file. Here is an example of how to register events:
 
-    ~~~php
-    /**
-    * Register any other events for your application.
-    *
-    * @return void
-    */
+```php
+/**
+ * Register any other events for your application.
+ *
+ * @return void
+ */
+public function boot()
+{
+    //...
+    
+    parent::boot();
 
-    public function boot()
-    {
-        parent::boot();
-
-        Event::listen('event.name', 'path-upto-listener@function');
-    }
-    ~~~
+    Event::listen('event.name', 'path-upto-listener@function');
+}
+```
 
 ## Manually Registering Listeners
 
-- In registering events, we specify listener function to be executed when an event is called so on every event a listener function is to be executed
+When registering events, you specify the listener function to be executed when an event is called. Here is an example of how to register a listener:
 
-    ~~~php
-    class EventServiceProvider extends ServiceProvider
+```php
+class EventServiceProvider extends ServiceProvider
+{
+    /**
+     * Bootstrap services.
+     *
+     * @return void
+     */
+    public function boot()
     {
-        /**
-        * Bootstrap services.
-        *
-        * @return void
-        */
-        public function boot()
-        {
-            Event::listen('checkout.order.save.after', 'Webkul\Admin\Listeners\Order@sendNewOrderMail');
-        }
+        //...
+
+        Event::listen('checkout.order.save.after', 'Webkul\Admin\Listeners\Order@sendNewOrderMail');
     }
-    ~~~
+}
+```
 
-## Specifing events
+## Specifying Events
 
-- In most of **CRUD** operation, we had fired an event before and after the execution of function. So, that if some one want to perform any operation after or before product create/update/delete can perform by simply calling a listener function in event registration
+In most CRUD operations, events are fired before and after the execution of a function. This allows listeners to perform additional operations before or after certain actions, such as product creation, update, or deletion.
 
 ## Events Fired in Bagisto
 
@@ -100,12 +77,12 @@ Events are an implementation of observer pattern such that whenever an event tak
     |core.configuration.save.after|This event will be fired after core configuration form data gets saved, then you may create a listener file and perform the respective operation when that event fires|
     |checkout.cart.item.add.before |This event will be fired before saving into the  database of item added in checkout and you may create a listener file and perform the respective operation when that event fires|
     |checkout.cart.item.add.after|This event will be fired after saving into the  database of item added in checkout and you may create a listener file and perform the respective operation when that event fires|
-    |checkout.cart.item.update.before|This event will be fired before updating the database item of checkout table of respective passed `id` and you may create a listener file and perform the respective operation when that event fires  |
-    |checkout.cart.item.update.after|This event will be fired after updating the database item of checkout table of respective passed `id` and you may create a listener file and perform the respective operation when that event fires|
-    |checkout.cart.delete.before|This event will be fired before deleting the database item of checkout table of respective passed `id` and you may create a listener file and perform the respective operation when that event fires|
-    |checkout.cart.delete.after|This event will be fired after deleting the database item of checkout table of respective passed `id` and you may create a listener file and perform the respective operation when that event fires|
-    |checkout.cart.item.delete.before|This event will be fired before deleting the database item of checkout table of respective passed `id` and you may create a listener file and perform the respective operation when that event fires|
-    |checkout.cart.item.delete.after|This event will be fired after deleting the database item of checkout table of respective passed `id` and you may create a listener file and perform the respective operation when that event fires|
+    |checkout.cart.item.update.before|This event will be fired before updating the database item of checkout table of respective passed **`id`** and you may create a listener file and perform the respective operation when that event fires  |
+    |checkout.cart.item.update.after|This event will be fired after updating the database item of checkout table of respective passed **`id`** and you may create a listener file and perform the respective operation when that event fires|
+    |checkout.cart.delete.before|This event will be fired before deleting the database item of checkout table of respective passed **`id`** and you may create a listener file and perform the respective operation when that event fires|
+    |checkout.cart.delete.after|This event will be fired after deleting the database item of checkout table of respective passed **`id`** and you may create a listener file and perform the respective operation when that event fires|
+    |checkout.cart.item.delete.before|This event will be fired before deleting the database item of checkout table of respective passed **`id`** and you may create a listener file and perform the respective operation when that event fires|
+    |checkout.cart.item.delete.after|This event will be fired after deleting the database item of checkout table of respective passed **`id`** and you may create a listener file and perform the respective operation when that event fires|
     |checkout.cart.item.move-to-wishlist.before|This event will be fired before adding cart item to wishlist added in checkout and you may create a listener file and perform the respective operation when that event fires|
     |checkout.cart.item.move-to-wishlist.after|This event will be fired after adding cart item to wishlist added in checkout and you may create a listener file and perform the respective operation when that event fires|
     |customer.registration.before|This event will be fired before registration of customer details and you may create a listener file and perform the respective operation when that event fires|
@@ -242,21 +219,20 @@ Events are an implementation of observer pattern such that whenever an event tak
     | catalog.product.create.after    | This event will be fired after product has been creation and listen in **`ProductFlat`** listener file  from **`afterProductCreatedUpdated`** function  |
     | catalog.product.update.after    | This event will be fired after product has been updated and listen in **`ProductFlat`** listener file  from **`afterProductCreatedUpdated`** function  |
 
-## Listen Existing Event
+## Listening to Existing Events
 
-- As above, all events used in bagisto are listed here so you may change or edit the listener function such as- **`sendNewOrderMail`** that is defined in **`productFlat`** listener file, so you can edit and perform the required operation
+To listen to an existing event in Bagisto, you can follow these steps:
 
-    ~~~php
-    class EventServiceProvider extends ServiceProvider
-    {
-        /**
-         * Bootstrap services.
-         *
-         * @return void
-         */
-        public function boot()
-        {
-            Event::listen('checkout.order.save.after', 'Webkul\Admin\Listeners\Order@sendNewOrderMail');
-        }
-    }
-    ~~~
+1. Open the **`EventServiceProvider.php`** file located in the **`Providers`** folder.
+
+2. Inside the **`boot`** method, you can register your listener by calling the **`Event::listen`** method and providing the event name and the listener function.
+
+   ```php
+   Event::listen('checkout.order.save.after', 'Webkul\Admin\Listeners\Order@sendNewOrderMail');
+   ```
+
+   In the example above, we are listening to the **`checkout.order.save.after`** event and specifying the **`sendNewOrderMail`** function from the **`Order`** listener class in the **`Webkul\Admin\Listeners`** namespace.
+
+By registering the listener, you have associated the **`sendNewOrderMail`** function with the **`checkout.order.save.after`** event. Whenever this event is triggered, the specified function will be executed.
+
+You can modify the listener function according to your requirements to perform the desired operation.
