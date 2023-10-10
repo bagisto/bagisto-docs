@@ -31,10 +31,11 @@
       <OutboundLink />
     </a>
 
-    <div class="nav-item" v-if="this.$route.path.split('/')[1] != ''">
+    <div class="nav-item" v-if="$route.path.split('/')[1] !== ''">
       <select v-model="version" @change="changeVersion">
         <option value="1.x">1.x</option>
         <option value="1.5.x">1.5.x</option>
+        <option value="2.x">2.x</option>
       </select>
     </div>
   </nav>
@@ -55,7 +56,7 @@ export default {
 
   data() {
     return {
-      version: '1.5.x',
+      version: '2.x',
     };
   },
 

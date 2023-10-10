@@ -26,7 +26,8 @@ module.exports = {
         ],
         sidebar: {
             '/1.x/': require('./version-configs/1.x'),
-            '/1.5.x/': require('./version-configs/1.5.x')
+            '/1.5.x/': require('./version-configs/1.5.x'),
+            '/2.x/': require('./version-configs/2.x')
         }
     },
     markdown: {
