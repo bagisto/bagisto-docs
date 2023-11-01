@@ -72,12 +72,24 @@ To upgrade your current version to the latest version of Bagisto, follow these s
 
 ## New Changes
 
-The following changes have been implemented in Bagisto from version 1.4.5 to 1.5.1:
+The following changes have been implemented in Bagisto from version 1.x to 2.x:
+
+#### Performance
 
 - Implemented Elasticsearch for improved search functionality.
-- Added a count of selected products in Datagrid. ([GitHub](https://github.com/bagisto/bagisto/pull/7437))
-- Changed the appearance of checkboxes in dark mode. ([GitHub](https://github.com/bagisto/bagisto/pull/7304))
-- Modified routes in Packages. ([GitHub](https://github.com/bagisto/bagisto/pull/7345))
-- Removed Triggers feature. ([GitHub](https://github.com/bagisto/bagisto/pull/7334))
-- Consistent mail configuration as per Laravel standards. ([GitHub](https://github.com/bagisto/bagisto/pull/7509))
-- Removed REST API and JWT package related dependencies. ([GitHub](https://github.com/bagisto/bagisto/pull/7546))
+
+- Implemented Full Page Cache support to improve performance.
+
+- Added support of Laravel Octane to enhance application speed and efficiency.
+
+#### UI/UX
+
+- Integrated Tailwind CSS: We've migrated our styling approach from traditional CSS to the powerful Tailwind CSS framework, resulting in a more utility-first and responsive design system.
+
+- Blade Components Integration: Our application now features Blade components for enhanced UI rendering.
+
+- Reusable Blade Components: Introducing a new set of reusable Blade components, providing extensive customization options.
+
+- Implemented customized data grids for improved data visualization and interaction.
+
+For more information, please visit the [Bagisto changelog on GitHub](https://github.com/bagisto/bagisto/blob/master/CHANGELOG_v2.x.x.md).

@@ -159,6 +159,24 @@ In **`Webkul\DataGrid\DataGrid\DataGrid.php`** abstract class, two abstract meth
 Make sure to copy the sample code provided below to your own **`PostDataGrid.php`** file, as we have already included all the necessary methods and functions there. This code can be used later as an example for your implementation.
 :::
 
+## DataGrid Customization
+
+In **`Bagisto`**, we have the flexibility to tailor DataGrids to your specific needs, allowing you to achieve the desired layout and functionality. Follow these straightforward steps to customize your DataGrid:
+
+1. Start by extending the DataGrid template:
+
+```html
+<x-admin::datagrid src="{{ route('admin.catalog.products.index') }}" :isMultiRow="true">
+    <template #header="{ columns, records, sortPage, selectAllRecords, applied, isLoading}">
+    </template>
+
+    <template #body="{ columns, records, setCurrentSelectionMode, applied, isLoading }">
+    </template>
+</x-admin::datagrid>
+```
+
+2. Once you've completed this step, all the data within the DataGrid becomes accessible inside the template. At this point, you have the freedom to modify the DataGrid's functionality and its user interface to suit your preferences.
+
 ## Sample DataGrid
 
 Here's an improved version of the provided DataGrid sample:

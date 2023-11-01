@@ -66,11 +66,11 @@ class PostController extends Controller
 
 VeeValidate is a validation library for Vue.js that provides plenty of validation rules out of the box, along with support for custom rules. It is template-based and similar to the HTML5 validation API, making it easy to validate HTML5 inputs as well as custom Vue components. VeeValidate also supports localization with 44 languages maintained by the community.
 
-For detailed information about validation in Vue.js using VeeValidate, refer to the [VeeValidate documentation](https://vee-validate.logaretm.com/v4/guide/overview/).
+For detailed information about validation in Vue.js using VeeValidate v4, refer to the [VeeValidate documentation](https://vee-validate.logaretm.com/v4/guide/overview/).
 
 ### Installation
 
-Bagisto already comes with the VeeValidate library, so there is no need to install it separately.
+Bagisto already comes with the VeeValidate v4 library, so there is no need to install it separately.
 
 ### Configuration
 
@@ -175,7 +175,7 @@ configure({
 
 Here are some examples of Vue validation using VeeValidate:
 
-```php
+```html
 <x-admin::form.control-group class="w-full mb-[10px]">
     <x-admin::form.control-group.label class="required">
         @lang('blog::app.admin.blog.create.title')

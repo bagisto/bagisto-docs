@@ -73,135 +73,196 @@ In most CRUD operations, events are fired before and after the execution of a fu
 
     | Events name                  | Functionality|
     | ------------------------------- | ------------- |
-    |core.configuration.save.after|This event will be fired after core configuration form data gets saved, then you may create a listener file and perform the respective operation when that event fires  |
-    |core.configuration.save.after|This event will be fired after core configuration form data gets saved, then you may create a listener file and perform the respective operation when that event fires|
-    |checkout.cart.item.add.before |This event will be fired before saving into the  database of item added in checkout and you may create a listener file and perform the respective operation when that event fires|
-    |checkout.cart.item.add.after|This event will be fired after saving into the  database of item added in checkout and you may create a listener file and perform the respective operation when that event fires|
-    |checkout.cart.item.update.before|This event will be fired before updating the database item of checkout table of respective passed **`id`** and you may create a listener file and perform the respective operation when that event fires  |
-    |checkout.cart.item.update.after|This event will be fired after updating the database item of checkout table of respective passed **`id`** and you may create a listener file and perform the respective operation when that event fires|
-    |checkout.cart.delete.before|This event will be fired before deleting the database item of checkout table of respective passed **`id`** and you may create a listener file and perform the respective operation when that event fires|
-    |checkout.cart.delete.after|This event will be fired after deleting the database item of checkout table of respective passed **`id`** and you may create a listener file and perform the respective operation when that event fires|
-    |checkout.cart.item.delete.before|This event will be fired before deleting the database item of checkout table of respective passed **`id`** and you may create a listener file and perform the respective operation when that event fires|
-    |checkout.cart.item.delete.after|This event will be fired after deleting the database item of checkout table of respective passed **`id`** and you may create a listener file and perform the respective operation when that event fires|
-    |checkout.cart.item.move-to-wishlist.before|This event will be fired before adding cart item to wishlist added in checkout and you may create a listener file and perform the respective operation when that event fires|
-    |checkout.cart.item.move-to-wishlist.after|This event will be fired after adding cart item to wishlist added in checkout and you may create a listener file and perform the respective operation when that event fires|
-    |customer.registration.before|This event will be fired before registration of customer details and you may create a listener file and perform the respective operation when that event fires|
-    |customer.registration.after|This event will be fired after registration of customer details and you may create a listener file and perform the respective operation when that event fires|
-    |customer.after.login|This event will be fired after login of customer and you may create a listener file and perform the respective operation when that event fires|
-    |catalog.attribute_family.create.before|This event will be fired before attribute family gets created and you may create a listener file and perform the respective operation when that event fires|
-    |catalog.attribute_family.create.after|This event will be fired after attribute family gets created and you may create a listener file and perform the respective operation when that event fires|
-    |catalog.attribute_family.update.before|This event will be fired before updating attribute family and you may create a listener file and perform the respective operation when that event fires|
-    |catalog.attribute_family.update.after|This event will be fired after updating attribute family and you may create a listener file and perform the respective operation when that event fires|
-    |catalog.attribute_family.delete.before|This event will be fired before deleting attribute family and you may create a listener file and perform the respective operation when that event fires|
-    |catalog.attribute_family.delete.after|This event will be fired after deleting attribute family and you may create a listener file and perform the respective operation when that event fires|
-    |catalog.attribute.create.before|This event will be fired before attribute gets created and you may create a listener file and perform the respective operation when that event fires|
-    |catalog.attribute.create.after|This event will be fired after attribute gets created and you may create a listener file and perform the respective operation when that event fires|
-    |catalog.attribute.update.before|This event will be fired before attribute gets updated and you may create a listener file and perform the respective operation when that event fires|
-    |catalog.attribute.update.after|This event will be fired after attribute gets updated and you may create a listener file and perform the respective operation when that event fires|
-    |catalog.attribute.delete.before|This event will be fired before attribute gets deleted and you may create a listener file and perform the respective operation when that event fires|
-    |catalog.attribute.delete.after|This event will be fired after attribute gets deleted and you may create a listener file and perform the respective operation when that event fires|
-    |catalog.category.delete.after|This event will be fired after deleting category and you may create a listener file and perform the respective operation when that event fires|
-    |catalog.category.delete.before|This event will be fired before deleting category with mass selection and you may create a listener file and perform the respective operation when that event fires|
-    |catalog.category.delete.after|This event will be fired after deleting category with mass selection and you may create a listener file and perform the respective operation when that event fires|
-    |catalog.category.create.before|This event will be fired before creating category and you may create a listener file and perform the respective operation when that event fires|
-    |catalog.category.create.after|This event will be fired after creating category and you may create a listener file and perform the respective operation when that event fires|
-    |catalog.category.update.before|This event will be fired before updating category and you may create a listener file and perform the respective operation when that event fires|
-    |catalog.category.update.after|This event will be fired after updating category and you may create a listener file and perform the respective operation when that event fires|
-    |catalog.category.delete.before|This event will be fired before deleting category and you may create a listener file and perform the respective operation when that event fires|
-    |catalog.category.delete.after|This event will be fired after deleting category and you may create a listener file and perform the respective operation when that event fires|
-    |core.channel.create.before|This event will be fired before channel gets created and you may create a listener file and perform the respective operation when that event fires|
-    |core.channel.create.after|This event will be fired after channel gets created and you may create a listener file and perform the respective operation when that event fires|
-    |core.channel.update.before|This event will be fired before channel gets updated and you may create a listener file and perform the respective operation when that event fires|
-    |core.channel.update.after|This event will be fired after channel gets updated and you may create a listener file and perform the respective operation when that event fires|
-    |core.channel.delete.before|This event will be fired before channel gets deleted and you may create a listener file and perform the respective operation when that event fires|
-    |core.channel.delete.after|This event will be fired after channel gets deleted and you may create a listener file and perform the respective operation when that event fires|
-    |core.currency.create.before|This event will be fired before currency gets created and you may create a listener file and perform the respective operation when that event fires|
-    |core.currency.create.after|This event will be fired after currency gets created and you may create a listener file and perform the respective operation when that event fires|
-    |core.currency.update.before|This event will be fired before currency gets updated and you may create a listener file and perform the respective operation when that event fires|
-    |core.currency.update.after|This event will be fired after currency gets updated and you may create a listener file and perform the respective operation when that event fires|
-    |core.currency.delete.before|This event will be fired before currency gets deleted and you may create a listener file and perform the respective operation when that event fires|
-    |core.currency.delete.after|This event will be fired after currency gets deleted and you may create a listener file and perform the respective operation when that event fires|
-    |core.currency.delete.before|This event will be fired before currency gets deleted with mass selection and you may create a listener file and perform the respective operation when that event fires|
-    |core.currency.delete.after|This event will be fired after currency gets deleted with mass selection and you may create a listener file and perform the respective operation when that event fires|
-    |core.exchange_rate.create.before|This event will be fired before exchange rate gets created and you may create a listener file and perform the respective operation when that event fires|
-    |core.exchange_rate.create.after|This event will be fired after exchange rate gets created and you may create a listener file and perform the respective operation when that event fires|
-    |core.exchange_rate.update.before |This event will be fired before exchange rate gets updated and you may create a listener file and perform the respective operation when that event fires|
-    |core.exchange_rate.update.after|This event will be fired after exchange rate gets updated and you may create a listener file and perform the respective operation when that event fires|
-    |core.exchange_rate.delete.before|This event will be fired before exchange rate gets deleted and you may create a listener file and perform the respective operation when that event fires|
-    |core.exchange_rate.delete.after|This event will be fired after exchange rate gets deleted and you may create a listener file and perform the respective operation when that event fires|
-    |core.locale.create.before|This event will be fired before locale gets created and you may create a listener file and perform the respective operation when that event fires|
-    |core.locale.create.after|This event will be fired after locale gets created and you may create a listener file and perform the respective operation when that event fires|
-    |core.locale.update.before|This event will be fired before locale gets updated and you may create a listener file and perform the respective operation when that event fires|
-    |core.locale.update.after|This event will be fired after locale gets updated and you may create a listener file and perform the respective operation when that event fires|
-    |core.locale.delete.before|This event will be fired before locale gets deleted and you may create a listener file and perform the respective operation when that event fires|
-    |core.locale.delete.after|This event will be fired after locale gets deleted and you may create a listener file and perform the respective operation when that event fires|
-    |customer.registration.before|This event will be fired before customer gets registered and you may create a listener file and perform the respective operation when that event fires|
-    |customer.registration.after|This event will be fired after customer gets registered and you may create a listener file and perform the respective operation when that event fires|
-    |customer.after.login|This event will be fired after customer successfully logins in store and you may create a listener file and perform the respective operation when that event fires|
-    |customer.after.logout|This event will be fired after customer successfully logouts from store and you may create a listener file and perform the respective operation when that event fires|
-    |inventory.inventory_source.create.before|This event will be fired before inventory source gets created and you may create a listener file and perform the respective operation when that event fires|
-    |inventory.inventory_source.create.after|This event will be fired after inventory source gets created and you may create a listener file and perform the respective operation when that event fires|
-    |inventory.inventory_source.update.before|This event will be fired before inventory source gets updated and you may create a listener file and perform the respective operation when that event fires|
-    |inventory.inventory_source.update.after|This event will be fired after inventory source gets updated and you may create a listener file and perform the respective operation when that event fires|
-    |inventory.inventory_source.delete.before|This event will be fired before inventory source gets deleted and you may create a listener file and perform the respective operation when that event fires|
-    |inventory.inventory_source.delete.after|This event will be fired after inventory source gets deleted and you may create a listener file and perform the respective operation when that event fires|
-    |customer.review.update.before|This event will be fired before customer review gets updated and you may create a listener file and perform the respective operation when that event fires|
-    |customer.review.update.after|This event will be fired after customer review gets updated and you may create a listener file and perform the respective operation when that event fires|
-    |customer.review.delete.before|This event will be fired before customer review gets deleted and you may create a listener file and perform the respective operation when that event fires|
-    |customer.review.delete.after|This event will be fired after customer review gets deleted and you may create a listener file and perform the respective operation when that event fires|
-    |customer.review.delete.before|This event will be fired before customer review gets deleted with mass selection and you may create a listener file and perform the respective operation when that event fires|
-    |customer.review.delete.after|This event will be fired after customer review gets deleted with mass selection and you may create a listener file and perform the respective operation when that event fires|
-    |customer.review.update.before|This event will be fired before customer review gets updated with mass selection and you may create a listener file and perform the respective operation when that event fires|
-    |customer.review.update.after|This event will be fired after customer review gets updated with mass selection and you may create a listener file and perform the respective operation when that event fires|
-    |catalog.product.create.before|This event will be fired before product gets created and you may create a listener file and perform the respective operation when that event fires|
-    |catalog.product.create.after|This event will be fired after product gets created and you may create a listener file and perform the respective operation when that event fires|
-    |catalog.product.update.before|This event will be fired before product gets updated and you may create a listener file and perform the respective operation when that event fires|
-    |catalog.product.update.after|This event will be fired after product gets updated and you may create a listener file and perform the respective operation when that event fires|
-    |catalog.product.delete.before|This event will be fired before product gets deleted and you may create a listener file and perform the respective operation when that event fires|
-    |catalog.product.delete.after|This event will be fired after product gets deleted and you may create a listener file and perform the respective operation when that event fires|
-    |sales.invoice.save.before|This event will be fired before invoice gets created and you may create a listener file and perform the respective operation when that event fires|
-    |sales.invoice.save.after|This event will be fired after invoice gets created and you may create a listener file and perform the respective operation when that event fires|
-    |checkout.order.save.before|This event will be fired before order gets created and you may create a listener file and perform the respective operation when that event fires|
-    |checkout.order.save.after|This event will be fired after order gets created and you may create a listener file and perform the respective operation when that event fires|
-    |sales.order.cancel.before|This event will be fired before order gets cancelled and you may create a listener file and perform the respective operation when that event fires|
-    |sales.order.cancel.after|This event will be fired after order gets cancelled and you may create a listener file and perform the respective operation when that event fires|
-    |catalog.product.update.after|This event will be fired after product gets updated and you may create a listener file and perform the respective operation when that event fires|
-    |sales.shipment.save.before|This event will be fired before shipment for product gets created and you may create a listener file and perform the respective operation when that event fires|
-    |sales.shipment.save.after|This event will be fired after shipment for product gets created and you may create a listener file and perform the respective operation when that event fires|
-    |checkout.cart.add.before|This event will be fired before product get added in cart and you may create a listener file and perform the respective operation when that event fires|
-    |checkout.cart.add.after|This event will be fired after product get added in cart and you may create a listener file and perform the respective operation when that event fires|
-    |checkout.cart.delete.before|This event will be fired before product get deleted from cart and you may create a listener file and perform the respective operation when that event fires|
-    |checkout.cart.delete.after|This event will be fired after product get deleted from cart and you may create a listener file and perform the respective operation when that event fires|
-    |checkout.cart.update.before|This event will be fired before cart item get updated and you may create a listener file and perform the respective operation when that event fires|
-    |checkout.cart.update.after|This event will be fired after cart item get updated and you may create a listener file and perform the respective operation when that event fires|
-    |checkout.cart.add.before|This event will be fired before configurable product get added in cart and you may create a listener file and perform the respective operation when that event fires|
-    |checkout.cart.add.after|This event will be fired after configurable product get added in cart and proceeded to but the product and you may create a listener file and perform the respective operation when that event fires|
-    |tax.tax_category.create.before|This event will be fired before tax category gets created and you may create a listener file and perform the respective operation when that event fires|
-    |tax.tax_category.create.after|This event will be fired after tax category gets created and you may create a listener file and perform the respective operation when that event fires|
-    |tax.tax_category.update.before|This event will be fired before tax category gets updated and you may create a listener file and perform the respective operation when that event fires|
-    |tax.tax_category.update.after|This event will be fired after tax category gets updated and you may create a listener file and perform the respective operation when that event fires|
-    |tax.tax_category.delete.before|This event will be fired before tax category gets deleted and you may create a listener file and perform the respective operation when that event fires|
-    |tax.tax_category.delete.after|This event will be fired after tax category gets deleted and you may create a listener file and perform the respective operation when that event fires|
-    |tax.tax_rate.create.before|This event will be fired before tax rate gets created and you may create a listener file and perform the respective operation when that event fires|
-    |tax.tax_rate.create.after|This event will be fired after tax rate gets created and you may create a listener file and perform the respective operation when that event fires|
-    |tax.tax_rate.update.before|This event will be fired before tax rate gets updated and you may create a listener file and perform the respective operation when that event fires|
-    |tax.tax_rate.update.after|This event will be fired after tax rate gets updated and you may create a listener file and perform the respective operation when that event fires|
-    |tax.tax_rate.delete.before|This event will be fired before tax rate gets deleted and you may create a listener file and perform the respective operation when that event fires|
-    |tax.tax_rate.delete.after|This event will be fired after tax rate gets deleted and you may create a listener file and perform the respective operation when that event fires|
-    |user.role.create.before|This event will be fired before user role gets created. The role of user in created from admin panel and you may create a listener file and perform the respective operation when that event fires|
-    |user.role.create.after|This event will be fired after user role gets created. The role of user in created from admin panel and you may create a listener file and perform the respective operation when that event fires|
-    |user.role.update.before|This event will be fired before user role gets updated. The role of user in created from admin panel and you may create a listener file and perform the respective operation when that event fires|
-    |user.role.update.after|This event will be fired after user role gets updated. The role of user in created from admin panel and you may create a listener file and perform the respective operation when that event fires|
-    |user.role.delete.before|This event will be fired before user role gets updated. The role of user in created from admin panel and you may create a listener file and perform the respective operation when that event fires|
-    |user.role.delete.after|This event will be fired after user role gets deleted. The role of user in created from admin panel and you may create a listener file and perform the respective operation when that event fires|
-    |user.admin.create.before|This event will be fired before user gets created. The user gets created from admin panel and you may create a listener file and perform the respective operation when that event fires|
-    |user.admin.delete.after|This event will be fired after user gets deleted. The user gets created from admin panel and you may create a listener file and perform the respective operation when that event fires|
-    |user.admin.update.before|This event will be fired before user gets updated. The user gets created from admin panel and you may create a listener file and perform the respective operation when that event fires|
-    |user.admin.update.after|This event will be fired after user gets updated. The user gets created from admin panel and you may create a listener file and perform the respective operation when that event fires|
-    |user.admin.delete.before|This event will be fired before user gets deleted. The user gets created from admin panel and you may create a listener file and perform the respective operation when that event fires|
-    |user.admin.delete.after|This event will be fired after user gets deleted. The user gets created from admin panel and you may create a listener file and perform the respective operation when that event fires|
-    |user.admin.delete.before|This event will be fired before user gets deleted. The user gets created from admin panel and you may create a listener file and perform the respective operation when that event fires|
-    |user.admin.delete.after|This event will be fired after user gets deleted. The user gets created from admin panel and you may create a listener file and perform the respective operation when that event fires|
+    | catalog.attribute.create.before | |
+    | catalog.attribute.create.after | |
+    | catalog.attribute.update.before | |
+    | catalog.attribute.update.after | |
+    | catalog.attribute.delete.before | |
+    | catalog.attribute.delete.after | |
+    | catalog.attribute_family.create.before | |
+    | catalog.attribute_family.create.after | |
+    | catalog.attribute_family.update.before | |
+    | catalog.attribute_family.update.after | |
+    | catalog.attribute_family.delete.before | |
+    | catalog.attribute_family.delete.after | |
+    | catalog.category.create.before | | 
+    | catalog.category.create.after | |
+    | catalog.category.update.before | |
+    | catalog.category.update.after | |
+    | catalog.category.delete.before | |
+    | catalog.category.delete.after | |
+    | catalog.categories.mass-update.before | |
+    | catalog.categories.mass-update.after | |
+    | catalog.product.create.before | |
+    | catalog.product.create.after | |
+    | catalog.product.update.before | |
+    | catalog.product.update.after | |
+    | catalog.product.delete.before | |
+    | catalog.product.delete.after | | 
+    | products.datagrid.sync | |
+    | cms.pages.create.before | |
+    | cms.pages.create.after | |
+    | cms.pages.update.before | |
+    | cms.pages.update.after | |
+    | cms.pages.delete.before | |
+    | cms.pages.delete.after | |
+    | customer.addresses.create.before | |
+    | customer.addresses.create.after | |
+    | customer.addresses.update.before | |
+    | customer.addresses.update.after | |
+    | customer.addresses.delete.before | |
+    | customer.addresses.delete.after | | 
+    | customer.registration.before | |
+    | customer.login.after | |
+    | customer.logout.after | |
+    | customer.registration.after | |
+    | customer.update.before | |
+    | customer.update.after | |
+    | customer.password.update.after | |
+    | customer.note-created.after | |
+    | customer.subscription.before | |
+    | customer.subscription.after | |
+    | customer.delete.before | |
+    | customer.delete.after | |
+    | customer.customer_group.create.before | |
+    | customer.customer_group.create.after | |
+    | customer.customer_group.update.before | |
+    | customer.customer_group.update.after | |
+    | customer.customer_group.delete.before | |
+    | customer.customer_group.delete.after | |
+    | customer.review.update.before | | 
+    | customer.review.update.after | |
+    | customer.review.delete.before | |
+    | customer.review.delete.after | |
+    | marketing.sitemaps.create.before | |
+    | marketing.sitemaps.create.after | |
+    | marketing.sitemaps.update.before | |
+    | marketing.sitemaps.update.after | | 
+    | marketing.sitemaps.delete.before | |
+    | marketing.sitemaps.delete.after | |
+    | marketing.campaigns.create.before | |
+    | marketing.campaigns.create.after | |
+    | marketing.campaigns.update.before | |
+    | marketing.campaigns.update.after | | 
+    | marketing.campaigns.delete.before | |
+    | marketing.campaigns.delete.after | |
+    | marketing.events.create.before | |
+    | marketing.events.create.after | |
+    | marketing.events.update.before | |
+    | marketing.events.update.after | | 
+    | marketing.events.delete.before | |
+    | marketing.events.delete.after | |
+    | marketing.templates.create.before | |
+    | marketing.templates.create.after | |
+    | marketing.templates.update.before | |
+    | marketing.templates.update.after | | 
+    | marketing.templates.delete.before | |
+    | marketing.templates.delete.after | |
+    | promotions.cart_rule.create.before | |
+    | promotions.cart_rule.create.after | |
+    | promotions.cart_rule.update.before | |
+    | promotions.cart_rule.update.after | |
+    | promotions.cart_rule.delete.before | |
+    | promotions.cart_rule.delete.after | |
+    | promotions.catalog_rule.create.before | |
+    | promotions.catalog_rule.create.after | |
+    | promotions.catalog_rule.update.before | |
+    | promotions.catalog_rule.update.after | |
+    | promotions.catalog_rule.delete.before | |
+    | promotions.catalog_rule.delete.after | |
+    | sales.order.comment.create.before | |
+    | sales.order.comment.create.after | |
+    | core.channel.create.before | |
+    | core.channel.create.after | |
+    | core.channel.update.before | |
+    | core.channel.update.after | |
+    | core.channel.delete.before | |
+    | core.channel.delete.after | |
+    | core.exchange_rate.create.before | |
+    | core.exchange_rate.create.after | |
+    | core.exchange_rate.update.before | |
+    | core.exchange_rate.update.after | |
+    | core.exchange_rate.delete.before | |
+    | core.exchange_rate.delete.after | |
+    | inventory.inventory_source.create.before | |
+    | inventory.inventory_source.create.after | |
+    | inventory.inventory_source.update.before | |
+    | inventory.inventory_source.update.after | |
+    | inventory.inventory_source.delete.before | |
+    | inventory.inventory_source.delete.after | |
+    | user.role.create.before | |
+    | user.role.create.after | |
+    | user.role.update.before | |
+    | user.role.update.after | |
+    | user.role.delete.before | |
+    | user.role.delete.after | |
+    | theme_customization.create.before | |
+    | theme_customization.create.after | |
+    | theme_customization.update.before | |
+    | theme_customization.update.after | |
+    | theme_customization.delete.before | |
+    | theme_customization.delete.after | |
+    | user.admin.create.before | |
+    | user.admin.create.after | |
+    | user.admin.update.before | |
+    | user.admin.update.after | |
+    | admin.password.update.after | |
+    | user.admin.delete.before | |
+    | user.admin.delete.after | |
+    | tax.category.create.before | |
+    | tax.category.create.after | |
+    | tax.category.update.before | |
+    | tax.category.update.after | |
+    | tax.category.delete.before | |
+    | tax.category.delete.after | |
+    | tax.rate.create.before | |
+    | tax.rate.create.after | |
+    | tax.rate.update.before | |
+    | tax.rate.update.after | |
+    | tax.rate.delete.before | |
+    | tax.rate.delete.after | |
+    | checkout.cart.delete.before | |
+    | checkout.cart.delete.after | |
+    | checkout.cart.delete.all.before | |
+    | checkout.cart.delete.all.after | |
+    | checkout.cart.add.before | |
+    | checkout.cart.add.after | |
+    | checkout.cart.update.before | |
+    | checkout.cart.update.after | |
+    | checkout.cart.collect.totals.before | |
+    | checkout.cart.collect.totals.after | |
+    | checkout.cart.calculate.items.tax.before | |
+    | checkout.cart.calculate.items.tax.after | |
+    | core.configuration.save.before | |
+    | core.configuration.save.after | |
+    | core.currency.create.before | |
+    | core.currency.create.after | |
+    | core.currency.update.before | |
+    | core.currency.update.after | |
+    | core.currency.delete.before | |
+    | core.currency.delete.after | |
+    | core.locale.create.before | |
+    | core.locale.create.after | |
+    | core.locale.update.before | |
+    | core.locale.update.after | |
+    | core.locale.delete.before | |
+    | core.locale.delete.after | |
+    | sales.invoice.save.before | |
+    | sales.invoice.save.after | |
+    | checkout.order.save.before | |
+    | checkout.order.save.after | |
+    | checkout.order.orderitem.save.before | |
+    | checkout.order.orderitem.save.after | |
+    | sales.order.cancel.before | |
+    | sales.order.cancel.after | |
+    | sales.order.update-status.before | |
+    | sales.order.update-status.after | |
+    | sales.refund.save.before | |
+    | sales.refund.save.after | |
+    | sales.shipment.save.before | |
+    | sales.shipment.save.after | |
+    | checkout.load.index | |
+    | shop.item.buy-now | |
 
 ## Events Listen in Bagisto
 
@@ -209,15 +270,14 @@ In most CRUD operations, events are fired before and after the execution of a fu
 
     | Events name                     | functionality |
     | ------------------------------- | ------------- |
-    | checkout.order.save.after       | This event will be fired after order creation and listen in **`ProductFlat`** listener file to send new order mail from **`sendNewOrderMail`** function  |
-    | sales.invoice.save.after        | This event will be fired after invoice details have been saved and listen in **`ProductFlat`** listener file to send new invoice mail from **`sendNewInvoiceMail`** function  |
-    | sales.shipment.save.after       | This event will be fired after shipment details have been saved and listen in **`ProductFlat`** listener file to send new shipment mail from **`sendNewShipmentMail`** function  |
-    | checkout.order.save.after       | This event will be fired after order has been created  and will listen in **`ProductFlat`** listener file  to update product inventory from **`updateProductInventory`** function  |
-    | catalog.attribute.create.after  | This event will be fired after attribute has been created and listen in **`ProductFlat`** listener file from **`afterAttributeCreatedUpdated`** function  |
-    | catalog.attribute.update.after  | This event will be fired after attribute has updated and listen in **`ProductFlat`** listener file  from **`afterAttributeCreatedUpdated`** function  |
-    | catalog.attribute.delete.before | This event will be fired before attribute has been delete and listen in **`ProductFlat`** listener file  from **`afterAttributeDeleted`** function  |
-    | catalog.product.create.after    | This event will be fired after product has been creation and listen in **`ProductFlat`** listener file  from **`afterProductCreatedUpdated`** function  |
-    | catalog.product.update.after    | This event will be fired after product has been updated and listen in **`ProductFlat`** listener file  from **`afterProductCreatedUpdated`** function  |
+    | bagisto.shop.layout.body.after | |
+    | bagisto.admin.layout.head | |
+    | checkout.order.save.after | |
+    | sales.order.update-status.after | |
+    | checkout.order.save.after | |
+    | sales.invoice.save.after |  |
+    | bagisto.shop.customers.login_form_controls.before | |
+    | bagisto.shop.products.view.compare.after | |
 
 ## Listening to Existing Events
 
@@ -228,11 +288,11 @@ To listen to an existing event in Bagisto, you can follow these steps:
 2. Inside the **`boot`** method, you can register your listener by calling the **`Event::listen`** method and providing the event name and the listener function.
 
    ```php
-   Event::listen('checkout.order.save.after', 'Webkul\Admin\Listeners\Order@sendNewOrderMail');
+   Event::listen('checkout.order.save.after', 'Webkul\Notification\Listeners\Order@createOrder');
    ```
 
-   In the example above, we are listening to the **`checkout.order.save.after`** event and specifying the **`sendNewOrderMail`** function from the **`Order`** listener class in the **`Webkul\Admin\Listeners`** namespace.
+   In the example above, we are listening to the **`checkout.order.save.after`** event and specifying the **`createOrder`** function from the **`Order`** listener class in the **`Webkul\Notification\Listeners`** namespace.
 
-By registering the listener, you have associated the **`sendNewOrderMail`** function with the **`checkout.order.save.after`** event. Whenever this event is triggered, the specified function will be executed.
+By registering the listener, you have associated the **`createOrder`** function with the **`checkout.order.save.after`** event. Whenever this event is triggered, the specified function will be executed.
 
 You can modify the listener function according to your requirements to perform the desired operation.

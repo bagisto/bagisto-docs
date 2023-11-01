@@ -29,15 +29,7 @@ Here's the updated directory structure:
                     
 ```
 
-1. Copy Below code to the **`app.css`** file.
-
-    ```css
-    @tailwind base;
-    @tailwind components;
-    @tailwind utilities;
-    ```
-
-2. Similarly Copy and paste below code to the `**app.js**`` file.
+1. Similarly Copy and paste below code to the `**app.js**`` file.
 
     ```javascript
     /**

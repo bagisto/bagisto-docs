@@ -15,11 +15,17 @@ To configure the admin theme in Bagisto, follow these steps:
 
         'admin-themes' => [
             'default' => [
-                'views_path' => 'resources/admin-themes/default/views',
-                'assets_path' => 'public/admin-themes/default/assets',
-                'name' => 'Default'
-            ]
-        ]
+                'name'        => 'Default',
+                'assets_path' => 'public/themes/admin/default',
+                'views_path'  => 'resources/admin-themes/default/views',
+
+                'vite'        => [
+                    'hot_file'                 => 'admin-default-vite.hot',
+                    'build_directory'          => 'themes/admin/default/build',
+                    'package_assets_directory' => 'src/Resources/assets',
+                ],
+            ],
+        ],
     ];
     ```
 
@@ -41,17 +47,29 @@ To create a new admin theme, follow these steps:
 
         'admin-themes' => [
             'default' => [
-                'views_path' => 'resources/admin-themes/default/views',
-                'assets_path' => 'public/admin-themes/default/assets',
-                'name' => 'Default'
+                'name'        => 'Default',
+                'assets_path' => 'public/themes/admin/default',
+                'views_path'  => 'resources/admin-themes/default/views',
+
+                'vite'        => [
+                    'hot_file'                 => 'admin-default-vite.hot',
+                    'build_directory'          => 'themes/admin/default/build',
+                    'package_assets_directory' => 'src/Resources/assets',
+                ],
             ],
 
             'theme1' => [
-                'views_path' => 'resources/admin-themes/theme1/views',
-                'assets_path' => 'public/admin-themes/theme1/assets',
-                'name' => 'Theme 1'
-            ]
-        ]
+                'name'        => 'Theme1',
+                'assets_path' => 'public/themes/admin/theme1',
+                'views_path'  => 'resources/admin-themes/theme1/views',
+
+                'vite'        => [
+                    'hot_file'                 => 'admin-theme1-vite.hot',
+                    'build_directory'          => 'themes/admin/theme1/build',
+                    'package_assets_directory' => 'src/Resources/assets',
+                ],
+            ],
+        ],
     ];
     ```
 

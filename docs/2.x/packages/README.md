@@ -21,7 +21,7 @@ In Bagisto, we have created numerous packages located at **`packages/Webkul/`**.
             │   └── Post.php
             ├── Database
             │   ├── Migrations
-            │   │   └── 2023_10_10_122434_create_posts_table
+            │   │   └── 2023_10_10_122434_create_posts_table.php
             │   └── Seeders
             ├── Events
             ├── Http

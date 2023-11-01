@@ -4,64 +4,72 @@
 
 ## Introduction
 
-In this section, we will guide you on integrating image search with your new theme. Our **`Default Theme`** and **`Velocity Theme`** utilize [TensorFlow.js](https://www.tensorflow.org/js) and load the **`TensorFlow`** MobileNet model.
+In this section, we will guide you on integrating image search with your new theme. Our **`Default Theme`** utilize [TensorFlow.js](https://www.tensorflow.org/js) and load the **`TensorFlow`** MobileNet model.
 
 The **`TensorFlow`** JS model doesn't require any machine learning expertise. You simply need to pass browser-based image elements, such as **`<img>`**, and it will return an array containing the best predictions along with their confidences.
 
 ## Usage
 
-Ensure that all your scripts are loaded in the footer. If you examine the **`default theme`** and **`velocity theme`**, you will notice that we use the `yielding` feature. You can also use the same approach by including a `scripts` yield in your main layouts.
+Ensure that all your scripts are loaded in the footer. If you examine the **`default theme`** you will notice that we use the **`yielding`** feature. You can also use the same approach by including a **`scripts`** yield in your main layouts.
 
 Let's begin by loading the library and model:
 
-```php
-@push('scripts')
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet" defer></script>
+```html
+@pushOnce('scripts')
+  <script type="module">
+        app.component('v-image-search', {
+            template: '#v-image-search-template',
+
+            data() {
+                return {
+                    uploadedImageUrl: '',
+
+                    isSearching: false,
+                };
+            },
+
+            methods: {
+                loadLibrary() {
+                    this.$shop.loadDynamicScript(
+                        'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js', () => {
+                            this.$shop.loadDynamicScript(
+                                'https://cdn.jsdelivr.net/npm/tensorflow-models-mobilenet-patch@2.1.1/dist/mobilenet.min.js', () => {
+                                    this.analyzeImage();
+                                }
+                            );
+                        }
+                    );
+                },
+
+                //
+            },
+        });
+    </script>
 @endpush
 ```
 
 Since the **`TensorFlow`** model only requires an image element, we will use a sample image element:
 
-```php
-@push('scripts')
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet" defer></script>
+```html
+  <input
+      type="file"
+      class="hidden"
+      ref="imageSearchInput"
+      id="v-image-search"
+      @change="loadLibrary()"
+  />
 
-  <img id="imageElement" src="random-image.jpg"></img>
-@endpush
+  <img
+      id="uploaded-image-url"
+      class="hidden"
+      :src="uploadedImageUrl"
+      alt="uploaded image url"
+      width="20"
+      height="20"
+  />
 ```
 
-::: tip
-This is a sample image element. You can add a file input to allow users to select an image.
-:::
-
-Now, for the main part, pass your image element to the model:
-
-```php
-@push('scripts')
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet" defer></script>
-
-  <img id="imageElement" src="random-image.jpg"></img>
-
-  <script>
-    /* Get the image element */
-    const imageElement = document.getElementById('imageElement');
-
-    /* Load the model */
-    mobilenet.load().then(model => {
-      /* Classify the image */
-      model.classify(imageElement).then(predictions => {
-        /* Use the predictions according to your needs */
-        console.log(predictions);
-      });
-    });
-  </script>
-@endpush
-```
-
-Now you have all the predictions. Simply pass your predictions to your search input.
+For better understanding, please visit the [Bagisto on GitHub](https://github.com/bagisto/bagisto/blob/master/packages/Webkul/Shop/src/Resources/views/search/images/index.blade.php).
 
 ::: tip
 Create a query string from the predictions and redirect to the search route.

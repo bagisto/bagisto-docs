@@ -4,7 +4,7 @@
 
 ## Introduction
 
-Bagisto provides several default product types, including simple, configurable, virtual, grouped, downloadable, bundled, and bookings. However, if these default product types do not meet your requirements, you can create your own custom product types.
+Bagisto provides several default product types, including simple, configurable, virtual, grouped, downloadable, and bundled. However, if these default product types do not meet your requirements, you can create your own custom product types.
 
 ## Creating a New Product Type
 
@@ -23,10 +23,10 @@ To create a new product type in Bagisto, follow these steps:
 
    return [
        'coupon' => [
-           'key' => 'coupon',
-           'name' => 'Coupon',
+           'key'   => 'coupon',
+           'name'  => 'Coupon',
            'class' => 'Webkul\Blog\Type\Coupon',
-           'sort' => 7
+           'sort'  => 7
        ],
    ];
    ```

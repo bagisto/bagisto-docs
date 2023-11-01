@@ -45,7 +45,7 @@ To ensure that the admin menu includes the necessary configuration, follow these
 
 ## Add Menu Icon
 
-5. To add the menu icon styling, open the **`assets/scss/app.scss`** file within your package and add the following code:
+5. To add the menu icon styling, open the **`assets/scss/app.css`** file within your package and add the following code:
 
     ```css
     .blog-icon {

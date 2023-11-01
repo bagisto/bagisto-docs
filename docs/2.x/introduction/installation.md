@@ -12,7 +12,7 @@ To install Bagisto using our GUI installer, follow these steps:
 4. Run the following command:
 
     ```sh
-    composer install
+    composer create
     ```
 
 5. Configure your HTTP server to point to the **`public/`** directory of the project.

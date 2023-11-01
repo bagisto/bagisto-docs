@@ -30,16 +30,15 @@ To configure the store theme in Bagisto, follow these steps:
 
         'themes' => [
             'default' => [
-                'views_path' => 'resources/themes/default/views',
-                'assets_path' => 'public/themes/default/assets',
-                'name' => 'Default'
-            ],
+                'name'        => 'Default',
+                'assets_path' => 'public/themes/shop/default',
+                'views_path'  => 'resources/themes/default/views',
 
-            'velocity' => [
-                'views_path' => 'resources/themes/velocity/views',
-                'assets_path' => 'public/themes/velocity/assets',
-                'name' => 'Velocity',
-                'parent' => 'default'
+                'vite'        => [
+                    'hot_file'                 => 'shop-default-vite.hot',
+                    'build_directory'          => 'themes/shop/default/build',
+                    'package_assets_directory' => 'src/Resources/assets',
+                ],
             ],
         ],
     ];
@@ -80,3 +79,43 @@ To configure the store theme in Bagisto, follow these steps:
 6. For all the views, check all the GET routes as they include a **`'view'`** parameter with the corresponding value to be used.
 
 By following these steps, you can configure and create custom view files for your store theme in Bagisto. This allows you to personalize the appearance and layout of your storefront to align with your branding and provide an enhanced user experience.
+
+
+## Creating a Theme
+
+To create a new theme, follow these steps:
+
+1. Add a new theme entry to the **`themes`** array in the **`themes.php`** file:
+
+    ```php
+    <?php
+    return [
+        'default' => 'default',
+
+        'themes' => [
+            'default' => [
+                'name'        => 'Default',
+                'assets_path' => 'public/themes/shop/default',
+                'views_path'  => 'resources/themes/default/views',
+
+                'vite'        => [
+                    'hot_file'                 => 'shop-default-vite.hot',
+                    'build_directory'          => 'themes/shop/default/build',
+                    'package_assets_directory' => 'src/Resources/assets',
+                ],
+            ],
+
+            'theme1' => [
+                'name'        => 'Theme1',
+                'assets_path' => 'public/themes/shop/theme1',
+                'views_path'  => 'resources/themes/theme1/views',
+
+                'vite'        => [
+                    'hot_file'                 => 'shop-theme1-vite.hot',
+                    'build_directory'          => 'themes/shop/theme1/build',
+                    'package_assets_directory' => 'src/Resources/assets',
+                ],
+            ],
+        ],
+    ];
+    ```
