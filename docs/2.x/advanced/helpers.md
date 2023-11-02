@@ -10,178 +10,376 @@ Bagisto provides several helper methods in its packages, which are designed to a
 
 The core helper methods mentioned below are part of the `Core` class in the `Webkul\Core` namespace. Let's explore some common methods:
 
-- **Get all channels:**
+- **Get the version number of the Bagisto.**
 
-  ```php
-  core()->getAllChannels();
-  ```
+```php
+core()->version()
+```
 
-- **Get the current channel:**
+- **Get all channels.**
 
-  ```php
-  core()->getCurrentChannel();
-  ```
+```php
+core()->getAllChannels()
+```
 
-- **Set the current channel:** This method takes an instance of the `Webkul\Core\Models\Channel` class as an argument.
+- **Get current channel models.**
 
-  ```php
-  core()->setCurrentChannel($channel);
-  ```
+```php
+core()->getCurrentChannel()
+```
 
-- **Get the current channel code:**
+- **Set the current channel.**
 
-  ```php
-  core()->getCurrentChannelCode();
-  ```
+```php
+core()->setCurrentChannel($channel)
+```
 
-- **Get the default channel:**
+- **Get current channel code.**
 
-  ```php
-  core()->getDefaultChannel();
-  ```
+```php
+core()->getCurrentChannelCode()
+```
 
-- **Get the default channel code:**
+- **Get current channel code.**
 
-  ```php
-  core()->getDefaultChannelCode();
-  ```
+```php
+core()->getCurrentChannelCode()
+```
 
-- **Get the requested channel code:** This method is useful when you need to retrieve the channel from the request, with an optional fallback parameter.
+- **Get default channel models.**
 
-  ```php
-  core()->getRequestedChannelCode($fallback = true);
-  ```
+```php
+core()->getDefaultChannel()
+```
 
-- **Get the channel name:** This method retrieves the name of the channel. It handles fallback cases by checking the name in the property, app locale code, and the `app.fallback_locale` config key.
+- **Set the default channel.**
 
-  ```php
-  core()->getChannelName($channel);
-  ```
+```php
+core()->setDefaultChannel()
+```
 
-- **Get all locales:**
+- **Get the default channel code configured in `config/app.php`.**
 
-  ```php
-  core()->getAllLocales();
-  ```
+```php
+core()->getDefaultChannelCode()
+```
 
-- **Get all locales by requested channel:** This method provides all the locales associated with the requested channel.
+- **Get default locale code from default channel.**
 
-  ```php
-  core()->getAllLocalesByRequestedChannel();
-  ```
+```php
+core()->getDefaultLocaleCodeFromDefaultChannel()
+```
 
-- **Get the current locale:**
+- **Get channel from request.**
 
-  ```php
-  core()->getCurrentLocale();
-  ```
+```php
+core()->getRequestedChannel()
+```
 
-- **Get the requested locale code:** This method retrieves the locale code from the request, with optional parameters for specifying the locale key and fallback behavior.
+- **Get channel code from request.**
 
-  ```php
-  core()->getRequestedLocaleCode($localeKey = null, $fallback = true);
-  ```
+```php
+core()->getRequestedChannelCode()
+```
+  
+- **Get the channel name.**
 
-- **Get all customer groups:**
+```php
+core()->getChannelName()
+```  
 
-  ```php
-  core()->getAllCustomerGroups();
-  ```
+- **Get all locales.**
 
-- **Get the requested customer group code:** This method fetches the customer group code from the request.
+```php
+core()->getAllLocales()
+```
 
-  ```php
-  core()->getRequestedCustomerGroupCode();
-  ```
+- **Get current locale.**
 
-- **Get all currencies:**
+```php
+core()->getCurrentLocale()
+```
 
-  ```php
-  core()->getAllCurrencies();
-  ```
+- **Get locale from request.**
 
-- **Get the base currency:**
+```php
+core()->getRequestedLocale()
+```
 
-  ```php
-  core()->getBaseCurrency();
-  ```
+- **Get locale code from request. Here if you want to use admin locale, you can pass it as an argument.**
 
-- **Get the base currency code:**
+```php
+core()->getRequestedLocaleCode($localeKey = 'locale', $fallback = true)
+```
 
-  ```php
-  core()->getBaseCurrencyCode();
-  ```
+- **Check requested locale code in requested channel. If not found, then set channel default locale code.**
 
-- **Get the channel-based currency:**
+```php
+core()->getRequestedLocaleCodeInRequestedChannel()
+```
 
-  ```php
-  core()->getChannelBaseCurrency();
-  ```
+- **Get all currencies.**
 
-- **Get the channel-based currency code:**
+```php
+core()->getAllCurrencies()
+```
 
-  ```php
-  core()->getChannelBaseCurrencyCode();
-  ```
+- **Get base currency model.**
 
-- **Get the current currency:**
+```php
+core()->getBaseCurrency()
+```
 
-  ```php
-  core()->getCurrentCurrency();
-  ```
+- **Get base channel's currency code.**
 
-- **Get the current currency code:**
+```php
+core()->getBaseCurrencyCode()
+```
 
-  ```php
-  core()->getCurrentCurrencyCode();
-  ```
+- **Get base channel's currency model.**
 
-- **Get the exchange rate based on the currency ID:**
+```php
+core()->getChannelBaseCurrency()
+```
 
-  ```php
-  core()->getExchangeRate($targetCurrencyId);
-  ```
+- **Get base channel's currency code.**
 
-- **Get the formatted amount:**
+```php
+core()->getChannelBaseCurrencyCode()
+```
 
-  ```php
-  core()->currency($amount = 0);
-  ```
+- **Set current currency.**
 
-- **Get the configuration data based on the key, channel, and locale:**
+```php
+core()->setCurrentCurrency()
+```
 
-  ```php
-  core()->getConfigData($field, $channel = null, $locale = null);
-  ```
+- **Get current channel's currency model.**
 
-- **Get all countries:**
+```php
+core()->getCurrentCurrency()
+```
 
-  ```php
-  core()->countries();
-  ```
+- **Get current channel's currency code.**
 
-- **Get the country name by country code:**
+```php
+core()->getCurrentCurrencyCode()
+```
 
-  ```php
-  core()->country_name($countryCode);
-  ```
+- **Get exchange rates.**
 
-- **Get all states of a country:**
+```php
+core()->getExchangeRate()
+```
 
-  ```php
-  core()->states($countryCode);
-  ```
+- **Converts price.**
 
-- **Get sender email details:**
+```php
+core()->convertPrice($amount, $targetCurrencyCode = null)
+```
 
-  ```php
-  core()->getSenderEmailDetails();
-  ```
+- **Converts to base price.**
 
-- **Get admin email details:**
+```php
+core()->convertToBasePrice($amount, $targetCurrencyCode = null)
+```   
 
-  ```php
-  core()->getAdminEmailDetails();
-  ```
+- **Format and convert price with currency symbol.**
+
+```php
+core()->convertToBasePrice($amount)
+```
+
+- **Get currency symbol from currency code.**
+
+```php
+core()->currencySymbol($amount)
+```
+
+- **Format and convert price with currency symbol.**
+
+```php
+core()->formatPrice($price, $currencyCode = null)
+```
+
+- **Format price with base currency symbol. This method also give ability to encode the base currency symbol and its optional.**
+
+```php
+core()->formatBasePrice($price, $isEncoded = false)
+```
+
+- **Checks if current date of the given channel (in the channel timezone) is within the range.**
+
+```php
+core()->isChannelDateInInterval($dateFrom = null, $dateTo = null)
+```
+
+- **Get channel timestamp, timestamp will be builded with channel timezone settings.**
+
+```php
+core()->channelTimeStamp($channel)
+```
+
+- **Check whether sql date is empty.**
+
+```php
+core()->is_empty_date($date)
+```
+
+- **Format date using current channel.**
+
+```php
+core()->formatDate($date = null, $format = 'd-m-Y H:i:s')
+```
+
+- **Retrieve information from configuration.**
+
+```php
+core()->getConfigData($field, $channel = null, $locale = null)
+```
+
+- **Retrieve all countries.**
+
+```php
+core()->countries()
+```
+
+- **Get country name by code.**
+
+```php
+core()->country_name($code)
+```   
+
+- **Retrieve all country states.**
+
+```php
+core()->states($countryCode)
+```
+
+- **Retrieve all grouped states by country code.**
+
+```php
+core()->groupedStatesByCountries()
+```
+
+- **Get states by country code.**
+
+```php
+core()->findStateByCountryCode($countryCode = null, $stateCode = null)
+```
+
+- **Get guest customer group.**
+
+```php
+core()->getGuestCustomerGroup()
+```
+
+- **Is country required.**
+
+```php
+core()->isCountryRequired()
+```
+
+- **Is state required.**
+
+```php
+core()->isStateRequired()
+```
+
+- **Is postcode required.**
+
+```php
+core()->isPostCodeRequired()
+```
+
+- **Week range.**
+
+```php
+core()->xWeekRange($date, $day)
+```
+
+- **Method to sort through the acl items and put them in order.**
+
+```php
+core()->sortItems($items)
+```
+
+- **Get config field.**
+
+```php
+core()->getConfigField($fieldName)
+```   
+
+- **Convert to associative array.**
+
+```php
+core()->convertToAssociativeArray($items)
+```
+
+- **Array set.**
+
+```php
+core()->array_set(&$array, $key, $value)
+```
+
+- **Convert empty strings to null.**
+
+```php
+core()->convertEmptyStringsToNull($array)
+```
+
+- **Create singleton object through single facade.**
+
+```php
+core()->getSingletonInstance($className)
+```
+
+- **Returns a string as selector part for identifying elements in views.**
+
+```php
+core()->taxRateAsIdentifier(float $taxRate)
+```
+
+- **Get tax category through Id.**
+
+```php
+core()->getTaxCategoryById($id)
+```
+
+- **Get Shop email sender details.**
+
+```php
+core()->getSenderEmailDetails()
+```
+
+- **Get Admin email details.**
+
+```php
+core()->getAdminEmailDetails()
+```
+
+- **Array merge.**
+
+```php
+core()->arrayMerge(array &$array1, array &$array2)
+``` 
+
+- **Get core config values.**
+
+```php
+core()->getCoreConfig($field, $channel, $locale)
+```    
+
+- **Get default config.**
+
+```php
+core()->getDefaultConfig($field)
+```     
+
+- **Get max upload size from the php.ini file.**
+
+```php
+core()->getMaxUploadSize()
+```
 
 These core helper methods provide various functionalities to simplify common tasks and streamline development in Bagisto.

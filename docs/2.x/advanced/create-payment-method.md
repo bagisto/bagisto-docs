@@ -51,7 +51,7 @@ To create a payment method package, follow these commands in the Bagisto root di
 
     return [
         [
-            'key'    => 'sales.paymentmethods.stripe',
+            'key'    => 'sales.payment_methods.stripe',
             'name'   => 'Stripe',
             'sort'   => 1,
             'fields' => [
@@ -168,7 +168,7 @@ To create a payment method package, follow these commands in the Bagisto root di
         protected function registerConfig()
         {
             $this->mergeConfigFrom(
-                dirname(__DIR__) . '/Config/paymentmethods.php', 'paymentmethods'
+                dirname(__DIR__) . '/Config/paymentmethods.php', 'payment_methods'
             );
 
             $this->mergeConfigFrom(

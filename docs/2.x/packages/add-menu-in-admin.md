@@ -45,26 +45,15 @@ To ensure that the admin menu includes the necessary configuration, follow these
 
 ## Add Menu Icon
 
-5. To add the menu icon styling, open the **`assets/scss/app.css`** file within your package and add the following code:
+5. To add the menu icon styling, you can write your own css inside **`assets/css/app.css`** file.
+
+- For example
 
     ```css
     .blog-icon {
-        background-image: url("../images/blog.png");
-        width: 45px;
-        height: 45px;
-        opacity: 0.6;
-        margin-left: 4px !important;
-    }
-
-    .active {
-        .blog-icon {
-            opacity: 1;
-            background-image: url("../images/blog-active.png");
-        }
+        background-image: url("../images/blog-icon.svg");
     }
     ```
-
-    Ensure that you have the necessary **`.png`** image files (**`blog.png`** and **`blog-active.png`**) and manually place them inside the **`assets/images`** folder of your package.
 
 6. To merge the **`admin-menu.php`** configuration with the core menu file, use the **`mergeConfigFrom()`** method in the **`register()`** method of your package's service provider. Here's an example:
 

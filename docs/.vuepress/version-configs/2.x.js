@@ -59,6 +59,7 @@ module.exports = [
             ['packages/controllers', 'Controllers'],
             ['packages/views', 'Views'],
             ['packages/localization', 'Localization'],
+            ['packages/blade-components', 'Blade Components'],
             ['packages/layouts', 'Layouts'],
             ['packages/assets', 'Assets'],
             ['packages/add-menu-in-admin', 'Admin Menu'],

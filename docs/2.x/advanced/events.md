@@ -35,8 +35,6 @@ In Bagisto, events are manually registered in the **`boot`** method of your **`E
 public function boot()
 {
     //...
-    
-    parent::boot();
 
     Event::listen('event.name', 'path-upto-listener@function');
 }
@@ -73,196 +71,196 @@ In most CRUD operations, events are fired before and after the execution of a fu
 
     | Events name                  | Functionality|
     | ------------------------------- | ------------- |
-    | catalog.attribute.create.before | |
-    | catalog.attribute.create.after | |
-    | catalog.attribute.update.before | |
-    | catalog.attribute.update.after | |
-    | catalog.attribute.delete.before | |
-    | catalog.attribute.delete.after | |
-    | catalog.attribute_family.create.before | |
-    | catalog.attribute_family.create.after | |
-    | catalog.attribute_family.update.before | |
-    | catalog.attribute_family.update.after | |
-    | catalog.attribute_family.delete.before | |
-    | catalog.attribute_family.delete.after | |
-    | catalog.category.create.before | | 
-    | catalog.category.create.after | |
-    | catalog.category.update.before | |
-    | catalog.category.update.after | |
-    | catalog.category.delete.before | |
-    | catalog.category.delete.after | |
-    | catalog.categories.mass-update.before | |
-    | catalog.categories.mass-update.after | |
-    | catalog.product.create.before | |
-    | catalog.product.create.after | |
-    | catalog.product.update.before | |
-    | catalog.product.update.after | |
-    | catalog.product.delete.before | |
-    | catalog.product.delete.after | | 
-    | products.datagrid.sync | |
-    | cms.pages.create.before | |
-    | cms.pages.create.after | |
-    | cms.pages.update.before | |
-    | cms.pages.update.after | |
-    | cms.pages.delete.before | |
-    | cms.pages.delete.after | |
-    | customer.addresses.create.before | |
-    | customer.addresses.create.after | |
-    | customer.addresses.update.before | |
-    | customer.addresses.update.after | |
-    | customer.addresses.delete.before | |
-    | customer.addresses.delete.after | | 
-    | customer.registration.before | |
-    | customer.login.after | |
-    | customer.logout.after | |
-    | customer.registration.after | |
-    | customer.update.before | |
-    | customer.update.after | |
-    | customer.password.update.after | |
-    | customer.note-created.after | |
-    | customer.subscription.before | |
-    | customer.subscription.after | |
-    | customer.delete.before | |
-    | customer.delete.after | |
-    | customer.customer_group.create.before | |
-    | customer.customer_group.create.after | |
-    | customer.customer_group.update.before | |
-    | customer.customer_group.update.after | |
-    | customer.customer_group.delete.before | |
-    | customer.customer_group.delete.after | |
-    | customer.review.update.before | | 
-    | customer.review.update.after | |
-    | customer.review.delete.before | |
-    | customer.review.delete.after | |
-    | marketing.sitemaps.create.before | |
-    | marketing.sitemaps.create.after | |
-    | marketing.sitemaps.update.before | |
-    | marketing.sitemaps.update.after | | 
-    | marketing.sitemaps.delete.before | |
-    | marketing.sitemaps.delete.after | |
-    | marketing.campaigns.create.before | |
-    | marketing.campaigns.create.after | |
-    | marketing.campaigns.update.before | |
-    | marketing.campaigns.update.after | | 
-    | marketing.campaigns.delete.before | |
-    | marketing.campaigns.delete.after | |
-    | marketing.events.create.before | |
-    | marketing.events.create.after | |
-    | marketing.events.update.before | |
-    | marketing.events.update.after | | 
-    | marketing.events.delete.before | |
-    | marketing.events.delete.after | |
-    | marketing.templates.create.before | |
-    | marketing.templates.create.after | |
-    | marketing.templates.update.before | |
-    | marketing.templates.update.after | | 
-    | marketing.templates.delete.before | |
-    | marketing.templates.delete.after | |
-    | promotions.cart_rule.create.before | |
-    | promotions.cart_rule.create.after | |
-    | promotions.cart_rule.update.before | |
-    | promotions.cart_rule.update.after | |
-    | promotions.cart_rule.delete.before | |
-    | promotions.cart_rule.delete.after | |
-    | promotions.catalog_rule.create.before | |
-    | promotions.catalog_rule.create.after | |
-    | promotions.catalog_rule.update.before | |
-    | promotions.catalog_rule.update.after | |
-    | promotions.catalog_rule.delete.before | |
-    | promotions.catalog_rule.delete.after | |
-    | sales.order.comment.create.before | |
-    | sales.order.comment.create.after | |
-    | core.channel.create.before | |
-    | core.channel.create.after | |
-    | core.channel.update.before | |
-    | core.channel.update.after | |
-    | core.channel.delete.before | |
-    | core.channel.delete.after | |
-    | core.exchange_rate.create.before | |
-    | core.exchange_rate.create.after | |
-    | core.exchange_rate.update.before | |
-    | core.exchange_rate.update.after | |
-    | core.exchange_rate.delete.before | |
-    | core.exchange_rate.delete.after | |
-    | inventory.inventory_source.create.before | |
-    | inventory.inventory_source.create.after | |
-    | inventory.inventory_source.update.before | |
-    | inventory.inventory_source.update.after | |
-    | inventory.inventory_source.delete.before | |
-    | inventory.inventory_source.delete.after | |
-    | user.role.create.before | |
-    | user.role.create.after | |
-    | user.role.update.before | |
-    | user.role.update.after | |
-    | user.role.delete.before | |
-    | user.role.delete.after | |
-    | theme_customization.create.before | |
-    | theme_customization.create.after | |
-    | theme_customization.update.before | |
-    | theme_customization.update.after | |
-    | theme_customization.delete.before | |
-    | theme_customization.delete.after | |
-    | user.admin.create.before | |
-    | user.admin.create.after | |
-    | user.admin.update.before | |
-    | user.admin.update.after | |
-    | admin.password.update.after | |
-    | user.admin.delete.before | |
-    | user.admin.delete.after | |
-    | tax.category.create.before | |
-    | tax.category.create.after | |
-    | tax.category.update.before | |
-    | tax.category.update.after | |
-    | tax.category.delete.before | |
-    | tax.category.delete.after | |
-    | tax.rate.create.before | |
-    | tax.rate.create.after | |
-    | tax.rate.update.before | |
-    | tax.rate.update.after | |
-    | tax.rate.delete.before | |
-    | tax.rate.delete.after | |
-    | checkout.cart.delete.before | |
-    | checkout.cart.delete.after | |
-    | checkout.cart.delete.all.before | |
-    | checkout.cart.delete.all.after | |
-    | checkout.cart.add.before | |
-    | checkout.cart.add.after | |
-    | checkout.cart.update.before | |
-    | checkout.cart.update.after | |
-    | checkout.cart.collect.totals.before | |
-    | checkout.cart.collect.totals.after | |
-    | checkout.cart.calculate.items.tax.before | |
-    | checkout.cart.calculate.items.tax.after | |
-    | core.configuration.save.before | |
-    | core.configuration.save.after | |
-    | core.currency.create.before | |
-    | core.currency.create.after | |
-    | core.currency.update.before | |
-    | core.currency.update.after | |
-    | core.currency.delete.before | |
-    | core.currency.delete.after | |
-    | core.locale.create.before | |
-    | core.locale.create.after | |
-    | core.locale.update.before | |
-    | core.locale.update.after | |
-    | core.locale.delete.before | |
-    | core.locale.delete.after | |
-    | sales.invoice.save.before | |
-    | sales.invoice.save.after | |
-    | checkout.order.save.before | |
-    | checkout.order.save.after | |
-    | checkout.order.orderitem.save.before | |
-    | checkout.order.orderitem.save.after | |
-    | sales.order.cancel.before | |
-    | sales.order.cancel.after | |
-    | sales.order.update-status.before | |
-    | sales.order.update-status.after | |
-    | sales.refund.save.before | |
-    | sales.refund.save.after | |
-    | sales.shipment.save.before | |
-    | sales.shipment.save.after | |
-    | checkout.load.index | |
-    | shop.item.buy-now | |
+    | catalog.attribute.create.before | This event will be fired before attribute gets created. |
+    | catalog.attribute.create.after | This event will be fired after attribute gets created. |
+    | catalog.attribute.update.before | This event will be fired before attribute gets updated. |
+    | catalog.attribute.update.after | This event will be fired after attribute gets updated. |
+    | catalog.attribute.delete.before | This event will be fired before attribute gets deleted. |
+    | catalog.attribute.delete.after | This event will be fired after attribute gets deleted. |
+    | catalog.attribute_family.create.before | This event will be fired before attribute family gets created. |
+    | catalog.attribute_family.create.after | This event will be fired after attribute family gets created. |
+    | catalog.attribute_family.update.before | This event will be fired before updating attribute family. |
+    | catalog.attribute_family.update.after | This event will be fired after updating attribute family. |
+    | catalog.attribute_family.delete.before | This event will be fired before deleting attribute family. |
+    | catalog.attribute_family.delete.after | This event will be fired after deleting attribute family. |
+    | catalog.category.create.before | This event will be fired before creating category. | 
+    | catalog.category.create.after | This event will be fired after creating category. |
+    | catalog.category.update.before | This event will be fired before updating category. |
+    | catalog.category.update.after | This event will be fired after updating category. |
+    | catalog.category.delete.before | This event will be fired before deleting category. |
+    | catalog.category.delete.after | This event will be fired after deleting category. |
+    | catalog.categories.mass-update.before | This event will be fired before bulk category update. |
+    | catalog.categories.mass-update.after | This event will be fired after bulk category update. |
+    | catalog.product.create.before | This event will be fired before product gets created. |
+    | catalog.product.create.after | This event will be fired after product gets created. |
+    | catalog.product.update.before | This event will be fired before product gets updated. |
+    | catalog.product.update.after | This event will be fired after product gets updated. |
+    | catalog.product.delete.before | This event will be fired before product gets deleted. |
+    | catalog.product.delete.after | This event will be fired after product gets deleted. | 
+    | products.datagrid.sync | This event will be fired to synicing datagrid product. |
+    | cms.pages.create.before | This event will be fired before cms page gets created. |
+    | cms.pages.create.after | This event will be fired after cms page gets created. |
+    | cms.pages.update.before | This event will be fired before cms page gets updated. |
+    | cms.pages.update.after | This event will be fired after cms page gets updated. |
+    | cms.pages.delete.before | This event will be fired before cms page gets deleted. |
+    | cms.pages.delete.after | This event will be fired after cms page gets deleted. |
+    | customer.addresses.create.before | This event will be fired before customer address gets created. |
+    | customer.addresses.create.after | This event will be fired after customer address gets created. |
+    | customer.addresses.update.before | This event will be fired before customer address gets updated. |
+    | customer.addresses.update.after | This event will be fired after customer address gets updated. |
+    | customer.addresses.delete.before | This event will be fired before customer address gets deleted. |
+    | customer.addresses.delete.after | This event will be fired after customer address gets deleted. | 
+    | customer.registration.before | This event will be fired before customer gets created. |
+    | customer.registration.after | This event will be fired after customer gets created. |
+    | customer.login.after | This event will be fired after customer gets login. |
+    | customer.logout.after | This event will be fired after customer gets logout. |
+    | customer.update.before | This event will be fired before customer gets updated. |
+    | customer.update.after | This event will be fired after customer gets updated. |
+    | customer.password.update.after | This event will be fired after customer password gets updated. |
+    | customer.note-created.after | This event will be fired after customer note gets created. |
+    | customer.subscription.before | This event will be fired before customer gets subscription. |
+    | customer.subscription.after | This event will be fired after customer gets subscription. |
+    | customer.delete.before | This event will be fired before customer gets deleted. |
+    | customer.delete.after | This event will be fired after customer gets deleted. |
+    | customer.customer_group.create.before | This event will be fired before customer group gets created. |
+    | customer.customer_group.create.after | This event will be fired after customer group gets created. |
+    | customer.customer_group.update.before | This event will be fired before customer group gets updated. |
+    | customer.customer_group.update.after | This event will be fired after customer group gets updated. |
+    | customer.customer_group.delete.before | This event will be fired before customer group gets deleted. |
+    | customer.customer_group.delete.after | This event will be fired after customer group gets deleted. |
+    | customer.review.update.before | This event will be fired before customer review gets updated. | 
+    | customer.review.update.after | This event will be fired after customer review gets updated. |
+    | customer.review.delete.before | This event will be fired before customer review gets deleted. |
+    | customer.review.delete.after | This event will be fired after customer review gets deleted. |
+    | marketing.sitemaps.create.before | This event will be fired before sitemaps gets created. |
+    | marketing.sitemaps.create.after | This event will be fired after sitemaps gets created. |
+    | marketing.sitemaps.update.before | This event will be fired before sitemaps gets updated. |
+    | marketing.sitemaps.update.after | This event will be fired after sitemaps gets updated. | 
+    | marketing.sitemaps.delete.before | This event will be fired before sitemaps gets deleted. |
+    | marketing.sitemaps.delete.after | This event will be fired after sitemaps gets deleted. |
+    | marketing.campaigns.create.before | This event will be fired before campaigns gets created. |
+    | marketing.campaigns.create.after | This event will be fired after campaigns gets created. |
+    | marketing.campaigns.update.before | This event will be fired before campaigns gets updated. |
+    | marketing.campaigns.update.after | This event will be fired after campaigns gets updated. | 
+    | marketing.campaigns.delete.before | This event will be fired before campaigns gets deleted. |
+    | marketing.campaigns.delete.after | This event will be fired after campaigns gets deleted. |
+    | marketing.events.create.before | This event will be fired before marketing event gets created. |
+    | marketing.events.create.after | This event will be fired after marketing event gets created. |
+    | marketing.events.update.before | This event will be fired before marketing event gets updated. |
+    | marketing.events.update.after | This event will be fired after marketing event gets updated. | 
+    | marketing.events.delete.before | This event will be fired before marketing event gets deleted. |
+    | marketing.events.delete.after | This event will be fired after marketing event gets deleted. |
+    | marketing.templates.create.before | This event will be fired before templates gets created. |
+    | marketing.templates.create.after | This event will be fired after templates gets created. |
+    | marketing.templates.update.before | This event will be fired before templates gets updated. |
+    | marketing.templates.update.after | This event will be fired after templates gets updated. | 
+    | marketing.templates.delete.before | This event will be fired before templates gets deleted. |
+    | marketing.templates.delete.after | This event will be fired after templates gets deleted. |
+    | promotions.cart_rule.create.before | This event will be fired before cart rule gets created. |
+    | promotions.cart_rule.create.after | This event will be fired after cart rule gets created. |
+    | promotions.cart_rule.update.before | This event will be fired before cart rule gets updated. |
+    | promotions.cart_rule.update.after | This event will be fired after cart rule gets updated. |
+    | promotions.cart_rule.delete.before | This event will be fired before cart rule gets deleted. |
+    | promotions.cart_rule.delete.after | This event will be fired after cart rule gets deleted. |
+    | promotions.catalog_rule.create.before | This event will be fired before catalog rule gets created. |
+    | promotions.catalog_rule.create.after | This event will be fired after catalog rule gets created. |
+    | promotions.catalog_rule.update.before | This event will be fired before catalog rule gets updated. |
+    | promotions.catalog_rule.update.after | This event will be fired after catalog rule gets updated. |
+    | promotions.catalog_rule.delete.before | This event will be fired before catalog rule gets deleted. |
+    | promotions.catalog_rule.delete.after | This event will be fired after catalog rule gets deleted. |
+    | sales.order.comment.create.before | This event will be fired before order comment gets created. |
+    | sales.order.comment.create.after | This event will be fired after order comment gets created.|
+    | core.channel.create.before | This event will be fired before channel gets created. |
+    | core.channel.create.after | This event will be fired after channel gets created. |
+    | core.channel.update.before | This event will be fired before channel gets updated. |
+    | core.channel.update.after | This event will be fired after channel gets updated. |
+    | core.channel.delete.before | This event will be fired before channel gets deleted. |
+    | core.channel.delete.after | This event will be fired after channel gets deleted. |
+    | core.exchange_rate.create.before | This event will be fired before exchange rate gets created. |
+    | core.exchange_rate.create.after | This event will be fired after exchange rate gets created. |
+    | core.exchange_rate.update.before | This event will be fired before exchange rate gets updated. |
+    | core.exchange_rate.update.after | This event will be fired after exchange rate gets updated. |
+    | core.exchange_rate.delete.before | This event will be fired before exchange rate gets deleted. |
+    | core.exchange_rate.delete.after | This event will be fired after exchange rate gets deleted. |
+    | inventory.inventory_source.create.before | This event will be fired before inventory source gets created. |
+    | inventory.inventory_source.create.after | This event will be fired after inventory source gets created. |
+    | inventory.inventory_source.update.before | This event will be fired before inventory source gets updated. |
+    | inventory.inventory_source.update.after | This event will be fired after inventory source gets updated. |
+    | inventory.inventory_source.delete.before | This event will be fired before inventory source gets deleted. |
+    | inventory.inventory_source.delete.after | This event will be fired after inventory source gets deleted. |
+    | user.role.create.before | This event will be fired before role gets created. |
+    | user.role.create.after | This event will be fired after role gets created. |
+    | user.role.update.before | This event will be fired before role gets updated. |
+    | user.role.update.after | This event will be fired after role gets updated. |
+    | user.role.delete.before | This event will be fired before role gets deleted. |
+    | user.role.delete.after | This event will be fired after role gets deleted. |
+    | theme_customization.create.before | This event will be fired before theme customization gets created. |
+    | theme_customization.create.after | This event will be fired after theme customization gets created. |
+    | theme_customization.update.before | This event will be fired before theme customization gets updated. |
+    | theme_customization.update.after | This event will be fired after theme customization gets updated. |
+    | theme_customization.delete.before | This event will be fired before theme customization gets deleted. |
+    | theme_customization.delete.after | This event will be fired after theme customization gets deleted. |
+    | user.admin.create.before | This event will be fired before admin gets created. |
+    | user.admin.create.after | This event will be fired after admin gets created. |
+    | user.admin.update.before | This event will be fired before admin gets updated. |
+    | user.admin.update.after | This event will be fired after admin gets updated. |
+    | admin.password.update.after | This event will be fired after admin password gets updated. |
+    | user.admin.delete.before | This event will be fired before admin gets deleted. |
+    | user.admin.delete.after | This event will be fired after admin gets deleted. |
+    | tax.category.create.before | This event will be fired before tax category gets created. |
+    | tax.category.create.after | This event will be fired after tax category gets created. |
+    | tax.category.update.before | This event will be fired before tax category gets updated. |
+    | tax.category.update.after | This event will be fired after tax category gets updated. |
+    | tax.category.delete.before | This event will be fired before tax category gets deleted. |
+    | tax.category.delete.after | This event will be fired after tax category gets deleted. |
+    | tax.rate.create.before | This event will be fired before tax rate gets created. |
+    | tax.rate.create.after | This event will be fired after tax rate gets created. |
+    | tax.rate.update.before | This event will be fired before tax rate gets updated. |
+    | tax.rate.update.after | This event will be fired after tax rate gets updated. |
+    | tax.rate.delete.before | This event will be fired before tax rate gets deleted. |
+    | tax.rate.delete.after | This event will be fired after tax rate gets deleted. |
+    | checkout.cart.delete.before | This event will be fired before cart item gets deleted. |
+    | checkout.cart.delete.after | This event will be fired after cart item gets deleted. |
+    | checkout.cart.delete.all.before | This event will be fired before all cart items gets deleted. |
+    | checkout.cart.delete.all.after | This event will be fired after all cart item gets deleted. |
+    | checkout.cart.add.before | This event will be fired before cart item gets created. |
+    | checkout.cart.add.after | This event will be fired after cart item gets created. |
+    | checkout.cart.update.before | This event will be fired before cart item gets updated. |
+    | checkout.cart.update.after | This event will be fired after cart item gets updated. |
+    | checkout.cart.collect.totals.before | This event will be fired before collecting cart totals. |
+    | checkout.cart.collect.totals.after | This event will be fired after collecting cart totals. |
+    | checkout.cart.calculate.items.tax.before | This event will be fired before calculating cart items tax. |
+    | checkout.cart.calculate.items.tax.after | This event will be fired after calculating cart items tax. |
+    | core.configuration.save.before | This event will be fired before core configuration gets saved. |
+    | core.configuration.save.after | This event will be fired after core configuration gets saved. |
+    | core.currency.create.before | This event will be fired before currency gets created. |
+    | core.currency.create.after | This event will be fired after currency gets created. |
+    | core.currency.update.before | This event will be fired before currency gets updated. |
+    | core.currency.update.after | This event will be fired after currency gets updated. |
+    | core.currency.delete.before | This event will be fired before currency gets deleted. |
+    | core.currency.delete.after | This event will be fired after currency gets deleted. |
+    | core.locale.create.before | This event will be fired before locale gets created. |
+    | core.locale.create.after | This event will be fired after locale gets created. |
+    | core.locale.update.before | This event will be fired before locale gets updated. |
+    | core.locale.update.after | This event will be fired after locale gets updated. |
+    | core.locale.delete.before | This event will be fired before locale gets deleted. |
+    | core.locale.delete.after | This event will be fired after locale gets deleted. |
+    | sales.invoice.save.before | This event will be fired before invoice gets saved. |
+    | sales.invoice.save.after | This event will be fired after invoice gets saved. |
+    | checkout.order.save.before | This event will be fired before order gets saved. |
+    | checkout.order.save.after | This event will be fired after order gets saved. |
+    | checkout.order.orderitem.save.before | This event will be fired before order item gets saved. |
+    | checkout.order.orderitem.save.after | This event will be fired after order item gets saved. |
+    | sales.order.cancel.before | This event will be fired before order gets canceled. |
+    | sales.order.cancel.after | This event will be fired after order gets canceled. |
+    | sales.order.update-status.before | This event will be fired before order status gets updated. |
+    | sales.order.update-status.after | This event will be fired after order status gets updated. |
+    | sales.refund.save.before | This event will be fired before order refund gets saved. |
+    | sales.refund.save.after | This event will be fired after order refund gets saved. |
+    | sales.shipment.save.before | This event will be fired before shipment gets saved. |
+    | sales.shipment.save.after | This event will be fired after shipment gets saved. |
+    | checkout.load.index | This event will be fired on checkout page load. |
+    | shop.item.buy-now | This event will be fired directly on the Buy Now product. |
 
 ## Events Listen in Bagisto
 
@@ -270,14 +268,13 @@ In most CRUD operations, events are fired before and after the execution of a fu
 
     | Events name                     | functionality |
     | ------------------------------- | ------------- |
-    | bagisto.shop.layout.body.after | |
-    | bagisto.admin.layout.head | |
-    | checkout.order.save.after | |
-    | sales.order.update-status.after | |
-    | checkout.order.save.after | |
-    | sales.invoice.save.after |  |
-    | bagisto.shop.customers.login_form_controls.before | |
-    | bagisto.shop.products.view.compare.after | |
+    | bagisto.shop.layout.body.after | Listing this event to load css of shop layout. |
+    | bagisto.admin.layout.head | Listing this event to load css of admin layout. |
+    | checkout.order.save.after | Listing this event to send notification of new order. |
+    | sales.order.update-status.after | Listing this event to send notification of when order status is changed. |
+    | sales.invoice.save.after | Listing this event to add paypal smart button. |
+    | bagisto.shop.customers.login_form_controls.before | Listing this event to add social login buttons. |
+    | bagisto.shop.products.view.compare.after | Listing this event to add social share buttons. |
 
 ## Listening to Existing Events
 
