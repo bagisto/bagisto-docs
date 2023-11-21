@@ -54,13 +54,13 @@ Alternatively, you can manually set up all the files for your shipping method pa
    ];
    ```
 
-   - **code**: A unique value used to refer to the particular shipping method.
-   - **title**: The label or name displayed in the user interface.
-   - **description**: Information about your shipping method.
-   - **active**: Enable or disable option for the shipping method.
-   - **default_rate**: The default rate value.
-   - **type**: Specifies whether the shipping method applies per unit or per order.
-   - **class**: The path and filename of the shipping method class (**`namespace\package-name\Carriers-folder\filename`**).
+   - **code** : A unique value used to refer to the particular shipping method.
+   - **title** : The label or name displayed in the user interface.
+   - **description** : Information about your shipping method.
+   - **active** : Enable or disable option for the shipping method.
+   - **default_rate** : The default rate value.
+   - **type** : Specifies whether the shipping method applies per unit or per order.
+   - **class** : The path and filename of the shipping method class (**`namespace\package-name\Carriers-folder\filename`**).
 
 3. Create a **`Carriers`** folder inside the **`src`** folder. Then, create a **`Blog.php`** file inside the **`Carriers`** folder.
 
@@ -237,11 +237,13 @@ Alternatively, you can manually set up all the files for your shipping method pa
         public function register()
         {
             $this->mergeConfigFrom(
-                dirname(__DIR__) . '/Config/carriers.php', 'carriers'
+                dirname(__DIR__) . '/Config/carriers.php',
+                'carriers'
             );
 
             $this->mergeConfigFrom(
-                dirname(__DIR__) . '/Config/system.php', 'core'
+                dirname(__DIR__) . '/Config/system.php',
+                'core'
             );
         }
     }
@@ -281,6 +283,9 @@ Alternatively, you can manually set up all the files for your shipping method pa
 
     ```sh
     composer dump-autoload
+    ```
+
+    ```sh
     php artisan config:cache
     ```
 

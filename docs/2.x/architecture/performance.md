@@ -2,7 +2,7 @@
 
 [[TOC]]
 
-In the realm of online stores, [web vitals](https://web.dev/vitals/) have become increasingly crucial. **Bagisto** prioritizes good [LCP](https://web.dev/lcp/) and [CLS](https://web.dev/cls/) to ensure optimal user experience.
+In the realm of online stores, [web vitals](https://web.dev/vitals/) have become increasingly crucial. **Bagisto** prioritises good [LCP](https://web.dev/lcp/) and [CLS](https://web.dev/cls/) to ensure an optimal user experience.
 
 Additionally, **Bagisto** has seamlessly integrated [ElasticSearch](https://bagisto.com/en/elasticsearch-for-bagisto/) to further enhance user experience.
 
@@ -24,7 +24,7 @@ This indexer focuses on indexing the inventory of the website for various produc
 
 The price indexer manages the prices of the aforementioned product types.
 
-## Laravel Octain 
+## Laravel Octane 
 
 [Laravel Octane](https://laravel.com/docs/10.x/octane) is a performance-boosting package designed to enhance the speed, efficiency, and scalability of Laravel applications, including Bagisto.
 

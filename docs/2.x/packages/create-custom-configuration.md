@@ -93,7 +93,8 @@ To merge the custom configuration, follow these steps:
             //...
             
             $this->mergeConfigFrom(
-               dirname(__DIR__) . '/Config/system.php', 'core'
+               dirname(__DIR__) . '/Config/system.php',
+               'core'
             );
         }
     }
@@ -141,8 +142,6 @@ return [
         'name'   => 'admin::app.admin.system.custom-types',
         'sort'   => 1,
         'fields' => [
-
-
             [
                 'name'          => 'text_type',
                 'title'         => 'admin::app.admin.system.text-type',
@@ -195,9 +194,9 @@ return [
         'sort'   => 1,
         'fields' => [
             [
-                'name'          => 'boolean_type',
-                'title'         => 'admin::app.admin.system.boolean-type',
-                'type'          => 'boolean',
+                'name'  => 'boolean_type',
+                'title' => 'admin::app.admin.system.boolean-type',
+                'type'  => 'boolean',
             ],
         ],
     ],
@@ -227,8 +226,7 @@ return [
                     [
                         'title' => 'option_1',
                         'value' => 'value_1',
-                    ],
-                    [
+                    ], [
                         'title' => 'option_2',
                         'value' => 'vallue_2',
                     ],
@@ -255,9 +253,9 @@ return [
         'sort'   => 1,
         'fields' => [
             [
-                'name'          => 'textarea_type',
-                'title'         => 'admin::app.admin.system.textarea-type',
-                'type'          => 'textarea'
+                'name'  => 'textarea_type',
+                'title' => 'admin::app.admin.system.textarea-type',
+                'type'  => 'textarea'
             ],
         ],
     ],
@@ -280,10 +278,10 @@ return [
         'sort'   => 1,
         'fields' => [
             [
-                'name'          => 'image_type',
-                'title'         => 'admin::app.admin.system.image-type',
-                'type'          => 'image',
-                'validation'    => 'mimes:bmp,jpeg,jpg,png,webp',
+                'name'       => 'image_type',
+                'title'      => 'admin::app.admin.system.image-type',
+                'type'       => 'image',
+                'validation' => 'mimes:bmp,jpeg,jpg,png,webp',
             ],
         ],
     ],
