@@ -103,7 +103,8 @@ module.exports = [
         children: setVersionPrefix([
             ['features/notification', 'Real Time Notification'],
             ['features/integrate-image-search-in-theme', 'Image Search'],
-            ['features/search-and-seo', 'Search & SEO']
+            ['features/search-and-seo', 'Search & SEO'],
+            ['features/reporting', 'Reporting']
         ])
     }
 ]
