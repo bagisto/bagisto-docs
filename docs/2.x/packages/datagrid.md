@@ -297,8 +297,7 @@ class PostDataGrid extends DataGrid
                 [
                     'label'  => trans('blog::app.admin.datagrid.active'),
                     'value' => 1,
-                ],
-                [
+                ], [
                     'label'  => trans('blog::app.admin.datagrid.inactive'),
                     'value' => 0,
                 ],
@@ -322,9 +321,11 @@ In **`Bagisto`**, we have the flexibility to tailor DataGrids to your specific n
 
 ```html
 <x-admin::datagrid src="{{ route('admin.catalog.products.index') }}" :isMultiRow="true">
+    <!-- Datagrid Header-->
     <template #header="{ columns, records, sortPage, selectAllRecords, applied, isLoading}">
     </template>
 
+    <!-- Datagrid Body-->
     <template #body="{ columns, records, setCurrentSelectionMode, applied, isLoading }">
     </template>
 </x-admin::datagrid>

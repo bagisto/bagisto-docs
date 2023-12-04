@@ -10,12 +10,12 @@ Now, let's extend the default layout of the Bagisto admin panel in the file **`p
 
 ```html
 <x-admin::layouts>
-
     <!-- Title of the page -->
     <x-slot:title>
         @lang('blog::app.admin.index.page-title')
     </x-slot:title>
 
+    <!-- Content-->
     <div class="flex gap-[16px] justify-between max-sm:flex-wrap">
         <p class="py-[11px] text-[20px] text-gray-800 dark:text-white font-bold">
             <!-- Section Title -->
@@ -26,7 +26,6 @@ Now, let's extend the default layout of the Bagisto admin panel in the file **`p
             <!-- Action Button -->
         </div>
     </div>
-
 </x-admin::layouts>
 ```
 
@@ -36,18 +35,17 @@ Similarly, for the file **`packages/Webkul/Blog/src/Resources/views/shop/default
 
 ```html
 <x-shop::layouts.account>
-
     <!-- Title of the page -->
     <x-slot:title>
         @lang('blog::app.shop.blogs.page-title')
     </x-slot:title>
 
+    <!-- Content-->
     <div class="flex justify-between items-center">
         <h2 class="text-[26px] font-medium">
             @lang('blog::app.shop.blogs.page-title')
         </h2>
     </div>
-
 </x-shop::layouts.account>
 ```
 

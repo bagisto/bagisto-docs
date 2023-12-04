@@ -47,7 +47,7 @@ To install Bagisto using Composer, use the following steps:
     - Follow the prompts during the installation process to provide the following details:
 
     ```
-    - Please Enter the APP URL or press enter to continue[http://localhost:8000] :
+    - Please Enter the APP URL or press enter to continue [http://localhost:8000] :
     - Please Enter the Application Name or press enter to continue [Bagisto] : 
     - Please select the default locale :
     - Please enter the default currency :
