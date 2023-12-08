@@ -60,6 +60,12 @@ export default {
     };
   },
 
+  mounted() {
+    let currentPath = this.$route.path.split('/');
+
+    this.version = currentPath[1];
+  },
+
   computed: {
     userNav () {
       return this.$themeLocaleConfig.nav || this.$site.themeConfig.nav || []
