@@ -30,7 +30,7 @@ To ensure that the admin menu includes the necessary configuration, follow these
             'name'  => 'Blogs',
             'route' => 'blog.admin.index',
             'sort'  => 2,
-            'icon'  => 'blog-icon',
+            'icon'  => 'icon-blog',
         ],
     ];
     ```
@@ -45,13 +45,15 @@ To ensure that the admin menu includes the necessary configuration, follow these
 
 ## Add Menu Icon
 
-5. To add the menu icon styling, you can write your own css inside **`assets/css/app.css`** file.
+5. To add the menu icon, you need to add the icon font inside the  **`assets/fonts/font.woff`** file and then you need to add the icon code inside the **`assets/css/app.css`** file.
+
+First, open the **`assets/fonts/font.woff`** file and add the menu icon font to it. Then, create a class in the **`assets/css/app.css`** file to use the icon.
 
 - For example
 
     ```css
-    .blog-icon {
-        background-image: url("../images/blog-icon.svg");
+    .icon-blog::before {
+        content: "\e929";  /* Your Icon Code */
     }
     ```
 
