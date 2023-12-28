@@ -24,7 +24,7 @@ This indexer focuses on indexing the inventory of the website for various produc
 
 The price indexer manages the prices of the aforementioned product types.
 
-## Laravel Octain 
+## Laravel Octane 
 
 [Laravel Octane](https://laravel.com/docs/10.x/octane) is a performance-boosting package designed to enhance the speed, efficiency, and scalability of Laravel applications, including Bagisto.
 
