@@ -189,7 +189,18 @@ th, td
     .sidebar
       top 0
 
+.no-custom-navbar
+  display none !important
 
+.custom-navbar-top-height
+  top $topNavHeight !important
+
+.custom-sidebar-top-height
+  top $topNavHeight + $navbarHeight !important
+
+.custom-wrapper
+  padding-top 4rem !important
+  
 @media (min-width: ($MQMobile + 1px))
   .theme-container.no-sidebar
     .sidebar

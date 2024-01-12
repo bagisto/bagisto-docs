@@ -5,6 +5,8 @@
     @touchstart="onTouchStart"
     @touchend="onTouchEnd"
   >
+    <TopNav/>
+
     <Navbar
       v-if="shouldShowNavbar"
       @toggle-sidebar="toggleSidebar"
@@ -45,6 +47,7 @@
 
 <script>
 import Home from '@theme/components/Home.vue'
+import TopNav from '@theme/components/TopNav.vue';
 import Navbar from '@theme/components/Navbar.vue'
 import Page from '@theme/components/Page.vue'
 import Sidebar from '@theme/components/Sidebar.vue'
@@ -57,7 +60,8 @@ export default {
     Home,
     Page,
     Sidebar,
-    Navbar
+    Navbar,
+    TopNav,
   },
 
   data () {
@@ -116,8 +120,42 @@ export default {
   },
 
   mounted () {
+    let currentPath = this.$route.path.split('/');
+
+    let version = currentPath[1];
+
+    if (['2.x', '1.5.x', '1.x'].includes(version)) {
+      document.getElementsByClassName('navbar')[0].classList.add('custom-navbar-top-height');
+      document.getElementsByClassName('sidebar')[0].classList.add('custom-sidebar-top-height');
+      document.getElementsByClassName('theme-default-content')[0].classList.add('custom-wrapper');
+      document.getElementsByClassName('top-nav')[0].classList.remove('no-custom-navbar');
+    } else {
+      document.getElementsByClassName('top-nav')[0].classList.add('no-custom-navbar');
+      document.getElementsByClassName('sidebar')[0].classList.remove('custom-sidebar-top-height');
+      document.getElementsByClassName('theme-default-content')[0].classList.remove('custom-wrapper');
+      document.getElementsByClassName('navbar')[0].classList.remove('custom-navbar-top-height');
+    }
+
     this.$router.afterEach(() => {
       this.isSidebarOpen = false
+
+      let currentPath = this.$route.path.split('/');
+
+      let version = currentPath[1];
+
+      console.log(version);
+
+      if (['2.x', '1.5.x', '1.x'].includes(version)) {
+        document.getElementsByClassName('navbar')[0].classList.add('custom-navbar-top-height');
+        document.getElementsByClassName('sidebar')[0].classList.add('custom-sidebar-top-height');
+        document.getElementsByClassName('theme-default-content')[0].classList.add('custom-wrapper');
+        document.getElementsByClassName('top-nav')[0].classList.remove('no-custom-navbar');
+      } else {
+        document.getElementsByClassName('top-nav')[0].classList.add('no-custom-navbar');
+        document.getElementsByClassName('sidebar')[0].classList.remove('custom-sidebar-top-height');
+        document.getElementsByClassName('theme-default-content')[0].classList.remove('custom-wrapper');
+        document.getElementsByClassName('navbar')[0].classList.remove('custom-navbar-top-height');
+      }
     })
   },
 
