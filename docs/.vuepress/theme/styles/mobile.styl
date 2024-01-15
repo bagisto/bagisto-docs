@@ -4,6 +4,10 @@ $mobileSidebarWidth = $sidebarWidth * 0.82
 
 // narrow desktop / iPad
 @media (max-width: $MQNarrow)
+  .custom-navbar-top-height
+    top 3rem !important
+  .custom-sidebar-top-height
+    top $topNavHeight + $navbarHeight !important
   .sidebar
     font-size 15px
     width $mobileSidebarWidth
@@ -12,6 +16,8 @@ $mobileSidebarWidth = $sidebarWidth * 0.82
 
 // wide mobile
 @media (max-width: $MQMobile)
+  .custom-navbar-top-height
+    top 3rem !important
   .sidebar
     top 0
     padding-top $navbarHeight
@@ -29,6 +35,10 @@ $mobileSidebarWidth = $sidebarWidth * 0.82
 
 // narrow mobile
 @media (max-width: $MQMobileNarrow)
+  .custom-navbar-top-height
+    top 4.5rem !important
+  .custom-wrapper
+    padding-top 6rem !important  
   h1
     font-size 1.9rem
   {$contentClass}

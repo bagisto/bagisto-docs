@@ -120,38 +120,44 @@ export default {
   },
 
   mounted () {
-    this.updateStyles();
+    this.updateTopNavStyles();
 
     this.$router.afterEach(() => {
       this.isSidebarOpen = false;
-      this.updateStyles();
+
+      this.updateTopNavStyles();
     });
   },
 
   methods: {
-    updateStyles() {
+    updateTopNavStyles() {
       let currentPath = this.$route.path.split('/');
+      
       let version = currentPath[1];
 
       if (['2.x', '1.5.x', '1.x'].includes(version)) {
-        this.applyCustomStyles();
+        this.applyTopNavCustomStyles();
       } else {
-        this.removeCustomStyles();
+        this.removeTopNavCustomStyles();
       }
     },
 
-    applyCustomStyles() {
-      document.getElementsByClassName('navbar')[0].classList.add('custom-navbar-top-height');
-      document.getElementsByClassName('sidebar')[0].classList.add('custom-sidebar-top-height');
-      document.getElementsByClassName('theme-default-content')[0].classList.add('custom-wrapper');
-      document.getElementsByClassName('top-nav')[0].classList.remove('no-custom-navbar');
+    applyTopNavCustomStyles() {
+      setTimeout(() => {
+        document.querySelectorAll('.navbar').forEach(element => element.classList.add('custom-navbar-top-height'));
+        document.querySelectorAll('.sidebar').forEach(element => element.classList.add('custom-sidebar-top-height'));
+        document.querySelectorAll('.theme-default-content').forEach(element => element.classList.add('custom-wrapper'));
+        document.querySelectorAll('.top-nav').forEach(element => element.classList.remove('no-custom-navbar'));
+      }, 0);
     },
 
-    removeCustomStyles() {
-      document.getElementsByClassName('top-nav')[0].classList.add('no-custom-navbar');
-      document.getElementsByClassName('sidebar')[0].classList.remove('custom-sidebar-top-height');
-      document.getElementsByClassName('theme-default-content')[0].classList.remove('custom-wrapper');
-      document.getElementsByClassName('navbar')[0].classList.remove('custom-navbar-top-height');
+    removeTopNavCustomStyles() {
+      setTimeout(() => {
+        document.querySelectorAll('.top-nav').forEach(element => element.classList.add('no-custom-navbar'));
+        document.querySelectorAll('.sidebar').forEach(element => element.classList.remove('custom-sidebar-top-height'));
+        document.querySelectorAll('.theme-default-content').forEach(element => element.classList.remove('custom-wrapper'));
+        document.querySelectorAll('.navbar').forEach(element => element.classList.remove('custom-navbar-top-height'));
+      }, 0);
     },
 
     toggleSidebar (to) {
