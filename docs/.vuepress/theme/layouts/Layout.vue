@@ -5,6 +5,8 @@
     @touchstart="onTouchStart"
     @touchend="onTouchEnd"
   >
+    <TopNav/>
+
     <Navbar
       v-if="shouldShowNavbar"
       @toggle-sidebar="toggleSidebar"
@@ -45,6 +47,7 @@
 
 <script>
 import Home from '@theme/components/Home.vue'
+import TopNav from '@theme/components/TopNav.vue';
 import Navbar from '@theme/components/Navbar.vue'
 import Page from '@theme/components/Page.vue'
 import Sidebar from '@theme/components/Sidebar.vue'
@@ -57,7 +60,8 @@ export default {
     Home,
     Page,
     Sidebar,
-    Navbar
+    Navbar,
+    TopNav,
   },
 
   data () {
@@ -116,12 +120,46 @@ export default {
   },
 
   mounted () {
+    this.updateTopNavStyles();
+
     this.$router.afterEach(() => {
-      this.isSidebarOpen = false
-    })
+      this.isSidebarOpen = false;
+
+      this.updateTopNavStyles();
+    });
   },
 
   methods: {
+    updateTopNavStyles() {
+      let currentPath = this.$route.path.split('/');
+      
+      let version = currentPath[1];
+
+      if (['2.x', '1.5.x', '1.x'].includes(version)) {
+        this.applyTopNavCustomStyles();
+      } else {
+        this.removeTopNavCustomStyles();
+      }
+    },
+
+    applyTopNavCustomStyles() {
+      setTimeout(() => {
+        document.querySelectorAll('.navbar').forEach(element => element.classList.add('custom-navbar-top-height'));
+        document.querySelectorAll('.sidebar').forEach(element => element.classList.add('custom-sidebar-top-height'));
+        document.querySelectorAll('.theme-default-content').forEach(element => element.classList.add('custom-wrapper'));
+        document.querySelectorAll('.top-nav').forEach(element => element.classList.remove('no-custom-navbar'));
+      }, 0);
+    },
+
+    removeTopNavCustomStyles() {
+      setTimeout(() => {
+        document.querySelectorAll('.top-nav').forEach(element => element.classList.add('no-custom-navbar'));
+        document.querySelectorAll('.sidebar').forEach(element => element.classList.remove('custom-sidebar-top-height'));
+        document.querySelectorAll('.theme-default-content').forEach(element => element.classList.remove('custom-wrapper'));
+        document.querySelectorAll('.navbar').forEach(element => element.classList.remove('custom-navbar-top-height'));
+      }, 0);
+    },
+
     toggleSidebar (to) {
       this.isSidebarOpen = typeof to === 'boolean' ? to : !this.isSidebarOpen
       this.$emit('toggle-sidebar', this.isSidebarOpen)
