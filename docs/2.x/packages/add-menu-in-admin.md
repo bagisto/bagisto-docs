@@ -52,7 +52,7 @@ First, open the **`assets/fonts/font.woff`** file and add the menu icon font to 
 - For example
 
     ```css
-    .icon-blog::before {
+    .icon-blog:before {
         content: "\e929";  /* Your Icon Code */
     }
     ```
