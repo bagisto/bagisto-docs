@@ -1,30 +1,73 @@
 <template>
-  <div class="theme-container">
+  <div class="theme-container" style="padding-right: 20px;">
     <div class="theme-default-content">
-      <h1>404</h1>
+      <img src="/logo.png" alt="Bagisto Documentation" class="logo" style="height: 86px; width: 200px;">
 
-      <blockquote>{{ getMsg() }}</blockquote>
+      <h1>Page not found.</h1>
 
-      <RouterLink to="/">
-        Take me home.
-      </RouterLink>
+      <div class="warning-container">
+        <div>
+          <strong>! WARNING</strong> You're browsing the documentation for an old version of Bagisto. Consider upgrading your project to Bagisto v2.x.
+        </div>
+
+        <div>
+          <blockquote>{{ getMsg() }}</blockquote>
+        </div>
+      </div>
+
+      <div class="link">
+        <div>
+          <a @click="getCurrentUrl">
+            v2.x.(Latest)
+          </a>
+        </div>
+
+        <div>
+          <a @click="getCurrentUrl">
+            v1.5.x.
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 const msgs = [
-  `There's nothing here.`,
-  `How did we get here?`,
-  `That's a Four-Oh-Four.`,
-  `Looks like we've got some broken links.`
+  `This page does not exist for this version of Bagisto but was found in other versions.`,
 ]
 
 export default {
   methods: {
     getMsg () {
       return msgs[Math.floor(Math.random() * msgs.length)]
+    },
+
+    getCurrentUrl (e) {
+      e.preventDefault();
+      
+      var currentURL = window.location.href;
+
+      var newURL = currentURL.replace('1.x', '2.x');
+
+      window.location.href = newURL;
     }
   }
 }
 </script>
+
+<style scoped>
+  .warning-container {
+    border: 1px solid #E9E9E9; /* Added "solid" to specify the border style and "black" for the color */
+    border-radius: 10px;
+    height: 100%;
+    width: 100%;
+    padding: 20px 10px 10px 10px;
+    margin: 10px 0px 20px 0px;
+  }
+
+  .link {
+    display: grid;
+    gap: 10px;
+  }
+</style>
