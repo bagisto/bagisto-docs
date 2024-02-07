@@ -17,13 +17,12 @@
 
       <div class="link">
         <div>
-          <a @click="getCurrentUrl">
+          <a @click="e => getCurrentUrl(e, '2.x')">
             v2.x.(Latest)
           </a>
         </div>
-
         <div>
-          <a @click="getCurrentUrl">
+          <a @click="e => getCurrentUrl(e, '1.5.x')">
             v1.5.x.
           </a>
         </div>
@@ -43,12 +42,11 @@ export default {
       return msgs[Math.floor(Math.random() * msgs.length)]
     },
 
-    getCurrentUrl (e) {
+    getCurrentUrl(e, version) {
       e.preventDefault();
-      
       var currentURL = window.location.href;
 
-      var newURL = currentURL.replace('1.x', '2.x');
+      var newURL = currentURL.replace('1.x', version);
 
       window.location.href = newURL;
     }
@@ -69,5 +67,6 @@ export default {
   .link {
     display: grid;
     gap: 10px;
+    cursor: pointer;
   }
 </style>
