@@ -97,5 +97,13 @@ module.exports = [
             ['themes/notification', 'Real Time Notification'],
             ['themes/integrate-image-search-in-theme', 'Image Search']
         ])
-    }
+    },
+    {
+        title: 'Bagisto APIs',
+        path: setVersionPrefix('api'),
+        collapsable: true,
+        children: setVersionPrefix([
+            ['api/getting-started-with-the-api', 'Rest API'],
+        ])
+    },
 ]
