@@ -1,8 +1,6 @@
 <template>
   <div class="top-nav">
-    <div class="nav-text">
-      {{ displayText }}
-    </div>
+    <div class="nav-text" v-html="displayText"> </div>
   </div>
 </template>
 
@@ -31,13 +29,12 @@ export default {
       let version = currentPath[1];
 
       if (['2.x'].includes(version)) {
-        this.displayText =  'This is the documentation for the current version (v2.0) of Bagisto. Stay informed and make the most of Bagisto\'s capabilities.';
+        this.displayText =  `This is the documentation for the current version (v2.0) of Bagisto. Stay informed and make the most of Bagisto\'s capabilities.`;
       } else {
-        this.displayText = 'Heads up: You are viewing outdated documentation for Bagisto. Please consider upgrading to v2.0 for the latest information.';
+        this.displayText = `Heads up: You are viewing outdated documentation for Bagisto. Please consider upgrading to <a class="nav-text latest-version-link" href="/2.x/prologue">v2.0</a> for the latest information.`;
       }
     },
   },
-
 }
 </script>
 
@@ -61,6 +58,10 @@ export default {
     text-align: center;
     margin: 0 auto;
     font: bold;
+  }
+
+  .latest-version-link {
+    text-decoration: underline;
   }
 
   /* Responsive Styles */
