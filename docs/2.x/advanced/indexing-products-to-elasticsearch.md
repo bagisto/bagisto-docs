@@ -67,6 +67,86 @@ If you encounter any issues, you can directly set the configuration in the **`co
 ]
 ```
 
+**Note**: This configuration is for the version2.0.0. For latest version, the configuration is as follows:
+
+- **Default Connection**: The `connection` key specifies the default Elasticsearch connection to use when building a client.
+    ```php
+    /**
+     * Here you can specify the connection to use when building a client.
+     */
+    'connection' => 'default',
+    ```
+- **Available Connections**: You can define multiple Elasticsearch connections with different configurations under the connections array.
+
+    ```php
+   /**
+     * These are the available connections parameters that you can use to connect
+     */
+    'default' => [
+        'hosts' => [
+            env('ELASTICSEARCH_HOST', 'http://localhost:9200'),
+        ],
+
+        'user'   => env('ELASTICSEARCH_USER', null),
+        'pass'   => env('ELASTICSEARCH_PASS', null),
+    ],
+    ```
+
+- **API Key Authentication**: You can connect with API key authentication by setting the `api` key instead of the `user` and `pass` keys.
+
+    ```php
+    'api' => [
+        'hosts' => [
+            env('ELASTICSEARCH_HOST', null),
+        ],
+
+        'key'   => env('ELASTICSEARCH_API_KEY', null),
+    ],
+    ```
+
+- **Elasticsearch Cloud**:  You can connect to Elastic Cloud with the Cloud ID using the `cloud` key
+
+    ```php
+    'cloud' => [
+        'id'      => env('ELASTICSEARCH_CLOUD_ID', null),
+
+        /**
+         * If you are authenticating with API KEY then set user and pass as null
+         */
+        'api_key' => env('ELASTICSEARCH_API_KEY', null),
+
+        /**
+         * If you are authenticating with username and password then set api_key as null
+         */
+        'user'    => env('ELASTICSEARCH_USER', null),
+        'pass'    => env('ELASTICSEARCH_PASS', null),
+    ],
+    ```
+- **CA Bundle**:  The `caBundle` option allows you to specify the path to the CA Bundle certificate if required for SSL/TLS connections.
+
+    ```php
+    /**
+     * If you have the http_ca.crt certificate copied during the start of Elasticsearch
+     * then the path here
+     *
+     * @see https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/connecting.html#auth-http
+     */
+    'caBundle' => null,
+    ```
+
+- **Retries**:  The `retries` option controls the number of times the client will retry requests. By default, it retries as many times as there are nodes in the Elasticsearch cluster.
+
+    ```php
+    /**
+     * By default, the client will retry n times, where n = number of nodes in
+     * your cluster. If you would like to disable retries, or change the number,
+     * you can do so here.
+     *
+     * @see https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/set-retries.html
+     */
+    'retries' => null,
+    ```
+
 ## Indexing
 
 After setting up the environment and configuration, new products will be automatically indexed when created.
