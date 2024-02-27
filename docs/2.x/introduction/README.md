@@ -2,7 +2,7 @@
 
 ## Bagisto: A Powerful Open-Source E-Commerce Platform
 
-Bagisto is a popular open-source e-commerce platform built on the combination of the Laravel PHP framework, Vue.js, and the stylish Tailwind CSS framework. It provides a comprehensive set of tools and features to help developers and businesses create and manage their online stores effectively. With its flexible and adaptable nature, Bagisto has gained recognition and support from a growing community of users, as evidenced by its impressive 8.8K+ stars on [GitHub](https://github.com/bagisto/bagisto).
+Bagisto is a popular open-source e-commerce platform built on the combination of the Laravel PHP framework, Vue.js, and the stylish Tailwind CSS framework. It provides a comprehensive set of tools and features to help developers and businesses create and manage their online stores effectively. With its flexible and adaptable nature, Bagisto has gained recognition and support from a growing community of users, as evidenced by its impressive 9.8K+ stars on [GitHub](https://github.com/bagisto/bagisto).
 
 ## Key Features of Bagisto
 
@@ -15,6 +15,12 @@ Bagisto adopts a modular design approach, providing developers with the flexibil
 ### Multi-Channel and Multi-Vendor Support
 
 With Bagisto, you can easily create and manage multiple sales channels, enabling you to expand your reach and cater to different customer segments. It also supports multi-vendor functionality, allowing various vendors to sell their products on your platform.
+
+### Multi-Locals and Currencies Support in Installer
+
+With Bagisto, you can now effortlessly install your application in multiple locales during the installation process. It also supports the functionality of multiple currencies during installation.
+
+By offering such flexibility during installation, applications extend their usability to a wider audience, fostering a more user-centric and globally accessible application ecosystem.
 
 ### Responsive and Mobile-Friendly
 
@@ -40,6 +46,6 @@ Bagisto has a vibrant and supportive community of developers and users who activ
 
 - **Stay Updated**: Refer to the [Bagisto roadmap](https://bagisto.com/roadmap) for the latest version and recently added features.
 
-- **GitHub Repository**: Access the Bagisto repository on [GitHub](https://github.com/bagisto/bagisto) with over 8.8K+ stars, reflecting its popularity and community support.
+- **GitHub Repository**: Access the Bagisto repository on [GitHub](https://github.com/bagisto/bagisto) with over 9.8K+ stars, reflecting its popularity and community support.
 
 Join the Bagisto community today and build and manage your online store with ease.

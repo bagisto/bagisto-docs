@@ -2,7 +2,7 @@
 
 [[TOC]]
 
-In the realm of online stores, [web vitals](https://web.dev/vitals/) have become increasingly crucial. **Bagisto** prioritizes good [LCP](https://web.dev/lcp/) and [CLS](https://web.dev/cls/) to ensure optimal user experience.
+In the realm of online stores, [web vitals](https://web.dev/vitals/) have become increasingly crucial. **Bagisto** prioritizes good [LCP](https://web.dev/lcp/) and [CLS](https://web.dev/cls/) to ensure an optimal user experience.
 
 Additionally, **Bagisto** has seamlessly integrated [ElasticSearch](https://bagisto.com/en/elasticsearch-for-bagisto/) to further enhance user experience.
 
