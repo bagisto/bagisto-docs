@@ -38,36 +38,12 @@ curl -X GET 'http://localhost:9200'
 
 ## Configuration Setup
 
-To configure Elasticsearch, you can set the necessary key-value pairs in the **`.env`** file of your project.
+  ::: tip Note
+This configuration is for the latest version 2.1.0
+  :::
 
-Open the **`.env`** file and add the following lines:
+To configure Elasticsearch, you can set the necessary value in the `config/elasticsearch.php` file of your project.
 
-```env
-ELASTICSEARCH_PORT=9200
-ELASTICSEARCH_HOST=localhost
-```
-
-Save the file and run the following command to cache the configuration:
-
-```sh
-php artisan config:cache
-```
-
-Now your environment is set up and ready to index products.
-
-If you encounter any issues, you can directly set the configuration in the **`config/elasticsearch.php`** file:
-
-```php
-'hosts' => [
-    [
-        'host' => env('ELASTICSEARCH_HOST', 'localhost'),
-        'port' => env('ELASTICSEARCH_PORT', 9200),
-        // Additional configuration options can be added here
-    ]
-]
-```
-
-**Note**: This configuration is for the version2.0.0. For latest version, the configuration is as follows:
 
 - **Default Connection**: The `connection` key specifies the default Elasticsearch connection to use when building a client.
     ```php
@@ -146,6 +122,39 @@ If you encounter any issues, you can directly set the configuration in the **`co
      */
     'retries' => null,
     ```
+
+::: tip Not
+Below are the essential configuration details for setting up Elasticsearch in version 2.0.0
+:::
+
+To configure Elasticsearch, you can set the necessary key-value pairs in the **`.env`** file of your project.
+
+Open the **`.env`** file and add the following lines:
+
+```env
+ELASTICSEARCH_PORT=9200
+ELASTICSEARCH_HOST=localhost
+```
+
+Save the file and run the following command to cache the configuration:
+
+```sh
+php artisan config:cache
+```
+
+Now your environment is set up and ready to index products.
+
+If you encounter any issues, you can directly set the configuration in the **`config/elasticsearch.php`** file:
+
+```php
+'hosts' => [
+    [
+        'host' => env('ELASTICSEARCH_HOST', 'localhost'),
+        'port' => env('ELASTICSEARCH_PORT', 9200),
+        // Additional configuration options can be added here
+    ]
+]
+```
 
 ## Indexing
 
