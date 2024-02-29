@@ -69,9 +69,7 @@ To configure the store theme in Bagisto, follow these steps:
     ```php
     // Store front header nav-menu fetch
     Route::get('/categories/{slug}', 'Webkul\Shop\Http\Controllers\CategoryController@index')
-    ->defaults('_config', [
-        'view' => 'shop::products.index'
-    ])->name('shop.categories.index');
+        ->name('shop.categories.index');
     ```
 
     In this example, the view file should be named **`index.blade.php`** and placed in the appropriate directory within your custom theme.
