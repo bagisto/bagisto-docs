@@ -6,7 +6,7 @@
 
 To configure the store theme in Bagisto, follow these steps:
 
-1. Go to your project's root directory and locate the **`config`** folder. Inside the **`config`** folder, you will find a file named **`themes.php`**.
+1. Locate the **`themes.php`** file inside the **`config`** folder located in your project's root directory.
 
     ```
     - app
@@ -20,15 +20,15 @@ To configure the store theme in Bagisto, follow these steps:
       └── Webkul
     ```
 
-2. Open the **`themes.php`** file to examine its contents. This file contains all the necessary information for creating a custom theme in Bagisto.
+2. Check out the contents of the **`themes.php`** file which contains all the necessary information to create a custom theme in Bagisto.
 
     ```php
     <?php
 
     return [
-        'default' => 'default',
+        'shop-default' => 'default',
 
-        'themes' => [
+        'shop' => [
             'default' => [
                 'name'        => 'Default',
                 'assets_path' => 'public/themes/shop/default',
@@ -48,11 +48,11 @@ To configure the store theme in Bagisto, follow these steps:
 
 ### Explanation of Parameters:
 
-- **default**: This parameter at the top of the file indicates the currently active or default theme in Bagisto. It is set to **`'default'`**, representing the name of the currently active theme.
+- **`shop-default`**: This parameter at the top of the file indicates the currently active or default theme for the shop in Bagisto. It is set to **`'shop-default'`**, representing the name of the currently active theme.
 
-- **themes**: This parameter allows you to define the configurations for your custom themes. You can create and use multiple themes simultaneously in Bagisto.
+- **`shop`**: This parameter allows you to define the configurations for your custom theme for the shop end. You can create and use multiple themes simultaneously in Bagisto.
 
-    - Inside the **`'themes'`** array, there is another array named **`'default'`**, which represents your currently active theme. It contains several key-value pairs that are explained below:
+    - Inside the **`'shop'`** array, there is another array named **`'default'`**, which represents your currently active theme. It contains several key-value pairs that are explained below:
 
         - **views_path**: This parameter specifies the path to the views or blade files for your custom theme.
 
@@ -67,19 +67,17 @@ To configure the store theme in Bagisto, follow these steps:
 5. Ensure that the name of your blade file matches the value passed in the GET route file. For example:
 
     ```php
+    use Webkul\Shop\Http\Controllers\CategoryController;
+
     // Store front header nav-menu fetch
-    Route::get('/categories/{slug}', 'Webkul\Shop\Http\Controllers\CategoryController@index')
-    ->defaults('_config', [
-        'view' => 'shop::products.index'
-    ])->name('shop.categories.index');
+    Route::get('/categories/{slug}', [CategoryController::class, 'index'])->name('shop.categories.index');
     ```
 
-    In this example, the view file should be named **`index.blade.php`** and placed in the appropriate directory within your custom theme.
+    We are using Laravel 10 based routing system, which involves keeping view files inside the controller's section. This allows for the creation of custom view files, as well as redirection in controllers.
 
 6. For all the views, check all the GET routes as they include a **`'view'`** parameter with the corresponding value to be used.
 
 By following these steps, you can configure and create custom view files for your store theme in Bagisto. This allows you to personalize the appearance and layout of your storefront to align with your branding and provide an enhanced user experience.
-
 
 ## Creating a Theme
 
@@ -90,9 +88,9 @@ To create a new theme, follow these steps:
     ```php
     <?php
     return [
-        'default' => 'default',
+        'shop-default' => 'default',
 
-        'themes' => [
+        'shop' => [
             'default' => [
                 'name'        => 'Default',
                 'assets_path' => 'public/themes/shop/default',
@@ -105,14 +103,14 @@ To create a new theme, follow these steps:
                 ],
             ],
 
-            'theme1' => [
-                'name'        => 'Theme1',
-                'assets_path' => 'public/themes/shop/theme1',
-                'views_path'  => 'resources/themes/theme1/views',
+            'new-theme' => [
+                'name'        => 'New Theme',
+                'assets_path' => 'public/themes/shop/new-theme',
+                'views_path'  => 'resources/themes/new-theme/views',
 
                 'vite'        => [
-                    'hot_file'                 => 'shop-theme1-vite.hot',
-                    'build_directory'          => 'themes/shop/theme1/build',
+                    'hot_file'                 => 'shop-new-theme-vite.hot',
+                    'build_directory'          => 'themes/shop/new-theme/build',
                     'package_assets_directory' => 'src/Resources/assets',
                 ],
             ],
