@@ -99,6 +99,14 @@ module.exports = [
         ])
     },
     {
+        title: 'Additional',
+        path: setVersionPrefix('additional'),
+        collapsable: true,
+        children: setVersionPrefix([
+            ['additional/data-transfer', 'Data Transfer'],
+        ])
+    },
+    {
         title: 'Bagisto APIs',
         path: setVersionPrefix('api'),
         collapsable: true,
