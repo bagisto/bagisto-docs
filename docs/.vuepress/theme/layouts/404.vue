@@ -1,29 +1,29 @@
 <template>
-    <div class="theme-container" style="padding-right: 20px;">
-      <div class="theme-default-content">
-        <img src="/logo.png" alt="Bagisto Documentation" class="logo" style="height: 86px; width: 200px;">
+  <div class="theme-container" style="padding-right: 20px;">
+    <div class="theme-default-content">
+      <img src="/logo.png" alt="Bagisto Documentation" class="logo" style="height: 86px; width: 200px;">
 
-        <h1>Page not found.</h1>
+      <h1>Page not found.</h1>
 
-        <div class="warning-container">
-          <div>
-            <strong>! WARNING</strong> Page Not Found
-          </div>
-
-          <div>
-            <blockquote style="color:black">{{ getMsg() }}</blockquote>
-          </div>
+      <div class="warning-container">
+        <div>
+          <strong>! WARNING</strong> Page Not Found
         </div>
 
-        <div class="link">
-          <div v-for="url in availableURLs" :key="url.version">
-            <a @click="e => getCurrentUrl(e, url.objects[0])">
-              {{ url.version.replace(/\//g, '') }}
-            </a>
-          </div>
+        <div>
+          <blockquote style="color:black">{{ getMsg() }}</blockquote>
+        </div>
+      </div>
+
+      <div class="link">
+        <div v-for="url in availableURLs" :key="url.version">
+          <a @click="e => getCurrentUrl(e, url.objects[0])">
+            {{ url.version.replace(/\//g, '') }}
+          </a>
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -37,7 +37,7 @@ export default {
   data() {
     return {
       currentURL: window.location.href,
-      
+
       availableURLs: [],
     }
   },
