@@ -36,14 +36,17 @@ import configurations from '../../config';
 export default {
   data() {
     return {
-      currentURL: window.location.href,
+      currentURL: '',
 
       availableURLs: [],
     }
   },
 
   mounted() {
-    this.findSimilarPaths(`/${this.currentURL.split('/')[3]}/`, this.currentURL.split('/')[4]);
+    if (typeof window !== 'undefined') {
+      this.currentURL = window.location.href;
+      this.findSimilarPaths(`/${this.currentURL.split('/')[3]}/`, this.currentURL.split('/')[4]);
+    }
   },
 
   methods: {
