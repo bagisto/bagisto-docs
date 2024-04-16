@@ -49,7 +49,7 @@ To learn in detail about Localization, you can visit the Laravel documentation [
   /**
   * BlogServiceProvider
   *
-  * @copyright 2023 Webkul Software Pvt. Ltd. (http://www.webkul.com)
+  * @copyright 2024 Webkul Software Pvt. Ltd. (http://www.webkul.com)
   */
   class BlogServiceProvider extends ServiceProvider
   {

@@ -29,9 +29,9 @@ export default {
       let version = currentPath[1];
 
       if (['2.x'].includes(version)) {
-        this.displayText =  `This is the documentation for the current version (v2.0) of Bagisto. Stay informed and make the most of Bagisto\'s capabilities.`;
+        this.displayText =  `This is the documentation for the current version (v2.x) of Bagisto. Stay informed and make the most of Bagisto\'s capabilities.`;
       } else {
-        this.displayText = `Heads up: You are viewing outdated documentation for Bagisto. Please consider upgrading to <a class="nav-text latest-version-link" href="/2.x/prologue">v2.0</a> for the latest information.`;
+        this.displayText = `Heads up: You are viewing outdated documentation for Bagisto. Please consider upgrading to <a class="nav-text latest-version-link" href="/2.x/prologue">v2.x</a> for the latest information.`;
       }
     },
   },
