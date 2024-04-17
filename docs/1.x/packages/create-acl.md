@@ -37,18 +37,13 @@ After that, we need to merge the ACL config also just like we have done with men
   use Illuminate\Support\Facades\Event;
   use Illuminate\Support\ServiceProvider;
 
-  /**
-  * HelloWorldServiceProvider
-  *
-  * @copyright 2020 Webkul Software Pvt. Ltd. (http://www.webkul.com)
-  */
   class HelloWorldServiceProvider extends ServiceProvider
   {
-      /**
-      * Register services.
-      *
-      * @return void
-      */
+    /**
+     * Register services.
+     *
+     * @return void
+     */
       public function register()
       {
           $this->mergeConfigFrom(

@@ -191,28 +191,23 @@ Let's start with first step by creating the packages folder.
 
   use Illuminate\Support\ServiceProvider;
 
-  /**
-  * HelloWorldServiceProvider
-  *
-  * @copyright 2020 Webkul Software Pvt. Ltd. (http://www.webkul.com)
-  */
   class HelloWorldServiceProvider extends ServiceProvider
   {
       /**
-      * Bootstrap services.
-      *
-      * @return void
-      */
+       * Bootstrap services.
+       *
+       * @return void
+       */
       public function boot()
       {
 
       }
 
       /**
-      * Register services.
-      *
-      * @return void
-      */
+       * Register services.
+       *
+       * @return void
+       */
       public function register()
       {
 
@@ -360,18 +355,13 @@ Let's start with first step by creating the packages folder.
 
   use Illuminate\Support\ServiceProvider;
 
-  /**
-  * HelloWorldServiceProvider
-  *
-  * @copyright 2020 Webkul Software Pvt. Ltd. (http://www.webkul.com)
-  */
   class HelloWorldServiceProvider extends ServiceProvider
   {
       /**
-      * Bootstrap services.
-      *
-      * @return void
-      */
+       * Bootstrap services.
+       *
+       * @return void
+       */
       public function boot()
       {
           $this->loadRoutesFrom(__DIR__ . '/../Http/admin-routes.php');
@@ -382,10 +372,10 @@ Let's start with first step by creating the packages folder.
       }
 
       /**
-      * Register services.
-      *
-      * @return void
-      */
+       * Register services.
+       *
+       * @return void
+       */
       public function register()
       {
 
@@ -468,18 +458,13 @@ Let's start with first step by creating the packages folder.
 
   use Illuminate\Support\ServiceProvider;
 
-  /**
-  * HelloWorldServiceProvider
-  *
-  * @copyright 2020 Webkul Software Pvt. Ltd. (http://www.webkul.com)
-  */
   class HelloWorldServiceProvider extends ServiceProvider
   {
       /**
-      * Bootstrap services.
-      *
-      * @return void
-      */
+       * Bootstrap services.
+       * 
+       * @return void
+       */
       public function boot()
       {
           $this->loadRoutesFrom(__DIR__ . '/../Http/admin-routes.php');
@@ -492,10 +477,10 @@ Let's start with first step by creating the packages folder.
       }
 
       /**
-      * Register services.
-      *
-      * @return void
-      */
+       * Register services.
+       *
+       * @return void
+       */
       public function register()
       {
 
@@ -644,18 +629,13 @@ Let's start with first step by creating the packages folder.
 
   use Illuminate\Support\ServiceProvider;
 
-  /**
-  * HelloWorldServiceProvider
-  *
-  * @copyright 2020 Webkul Software Pvt. Ltd. (http://www.webkul.com)
-  */
   class HelloWorldServiceProvider extends ServiceProvider
   {
       /**
-      * Bootstrap services.
-      *
-      * @return void
-      */
+       * Bootstrap services.
+       *
+       * @return void
+       */
       public function boot()
       {
           $this->loadRoutesFrom(__DIR__ . '/../Http/admin-routes.php');
@@ -672,10 +652,10 @@ Let's start with first step by creating the packages folder.
       }
 
       /**
-      * Register services.
-      *
-      * @return void
-      */
+       * Register services.
+       *
+       * @return void
+       */
       public function register()
       {
 
@@ -703,17 +683,15 @@ Let's start with first step by creating the packages folder.
   use Illuminate\Support\ServiceProvider;
 
   /**
-  * HelloWorldServiceProvider
-  *
-  * @copyright 2020 Webkul Software Pvt. Ltd. (http://www.webkul.com)
-  */
+   * HelloWorldServiceProvider
+   */
   class HelloWorldServiceProvider extends ServiceProvider
   {
       /**
-      * Bootstrap services.
-      *
-      * @return void
-      */
+       * Bootstrap services.
+       *
+       * @return void
+       */
       public function boot()
       {
           $this->loadRoutesFrom(__DIR__ . '/../Http/admin-routes.php');
@@ -734,10 +712,10 @@ Let's start with first step by creating the packages folder.
       }
 
       /**
-      * Register services.
-      *
-      * @return void
-      */
+       * Register services.
+       *
+       * @return void
+       */
       public function register()
       {
 
@@ -784,18 +762,13 @@ Let's start with first step by creating the packages folder.
   use Illuminate\Support\Facades\Event;
   use Illuminate\Support\ServiceProvider;
 
-  /**
-  * HelloWorldServiceProvider
-  *
-  * @copyright 2020 Webkul Software Pvt. Ltd. (http://www.webkul.com)
-  */
   class HelloWorldServiceProvider extends ServiceProvider
   {
       /**
-      * Bootstrap services.
-      *
-      * @return void
-      */
+       * Bootstrap services.
+       *
+       * @return void
+       */
       public function boot()
       {
           $this->loadRoutesFrom(__DIR__ . '/../Http/admin-routes.php');
@@ -818,10 +791,10 @@ Let's start with first step by creating the packages folder.
       }
 
       /**
-      * Register services.
-      *
-      * @return void
-      */
+       * Register services.
+       *
+       * @return void
+       */
       public function register()
       {
 

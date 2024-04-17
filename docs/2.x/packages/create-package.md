@@ -125,11 +125,6 @@ If you prefer to set up your package manually, follow these steps assuming you a
 
    use Illuminate\Support\ServiceProvider;
 
-   /**
-    * BlogServiceProvider
-    *
-    * @copyright 2024 Webkul Software Pvt. Ltd.
-    */
    class BlogServiceProvider extends ServiceProvider
    {
        /**
