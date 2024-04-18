@@ -6,5 +6,4 @@ To change your store's theme, go to the admin panel and find the theme section. 
 
 I've added a link to our [Bagisto demo](https://demo.bagisto.com/) website where you can see our default theme in action. Feel free to click the link and try it out. We're always working to make things better, so your feedback is important to us. Thanks for checking out our demo!
 
-If you want to make a new theme, our theme section has guides for both the admin and shop. Whether you're changing your store's look or updating the admin panel, our guides will help you step by step. We want to make theme creation easy, so you can make Bagisto yours. Check out our theme section to start making your custom themes.
-
+If you want to make a new theme, our [theme section](../themes) has guides for both the admin and shop. Whether you're changing your store's look or updating the admin panel, our guides will help you step by step. We want to make theme creation easy, so you can make Bagisto yours. Check out our theme section to start making your custom themes.
