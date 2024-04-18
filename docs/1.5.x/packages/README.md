@@ -30,7 +30,7 @@ In Bagisto, we have created numerous packages located at **`packages/Webkul/`**.
             │   └── Post.php
             ├── Database
             │   ├── Migrations
-            │   │   └── 2023_04_21_173057_create_posts_table
+            │   │   └── 2024_04_21_173057_create_posts_table
             │   └── Seeders
             ├── Events
             ├── Http

@@ -34,16 +34,7 @@ To install Bagisto using Composer, use the following steps:
     composer create-project bagisto/bagisto
     ```
 
-2. Navigate to the project root directory.
-3. Open the **`.env`** file and add your database credentials:
-
-    ```editorconfig
-    DB_DATABASE=
-    DB_USERNAME=
-    DB_PASSWORD=
-    ```
-
-4. Run the following command:
+2. Run the following command:
 
     ```sh
     php artisan bagisto:install
@@ -56,14 +47,26 @@ To install Bagisto using Composer, use the following steps:
     - Follow the prompts during the installation process to provide the following details:
 
     ```
-    - Please Enter the APP URL :
-    - Please Enter the Admin URL : 
-    - Please select the default locale or press enter to continue [en]:
-    - Please enter the default timezone [Asia/Kolkata]:
-    - Please enter the default currency [USD]:
-    - What is the database name to be used by Bagisto?:
-    - What is your database username?:
-    - What is your database password?:
+    - Please Enter the APP URL or press enter to continue [http://localhost:8000] :
+    - Please Enter the Application Name or press enter to continue [Bagisto] : 
+    - Please select the default locale :
+    - Please enter the default currency :
+    - Please choose the Allowed Locales using space key :
+    - Please choose the Allowed Currencies using space key :
+    - Please select the Database Connection or press enter to continue [mysql] :
+    - Please enter the Database Host or press enter to continue [127.0.0.1] :
+    - Please enter the Database Port Number or press enter to continue [3306] :
+    - Please enter the Database Name :
+    - Please enter the Database Prefix or press enter to continue :
+    - Please enter the Database Username :
+    - Please enter the Database Password :
+    ```
+
+- For Create your admin credentials
+    ```
+    - Please enter the Name of Admin User or press enter to continue [Example] :
+    - Please enter the Email of Admin User or press enter to continue [admin@example.com] :
+    - Please enter the Password for admin login or press enter to continue [admin123] :
     ```
 
 ## Start Using Bagisto

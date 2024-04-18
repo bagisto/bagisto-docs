@@ -297,8 +297,7 @@ class PostDataGrid extends DataGrid
                 [
                     'label'  => trans('blog::app.admin.datagrid.active'),
                     'value' => 1,
-                ],
-                [
+                ], [
                     'label'  => trans('blog::app.admin.datagrid.inactive'),
                     'value' => 0,
                 ],

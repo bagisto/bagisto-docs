@@ -59,7 +59,7 @@ To learn in detail about Routes, you can visit the Laravel documentation [here](
   /**
    * BlogServiceProvider
    *
-   * @copyright 2023 Webkul Software Pvt. Ltd. (http://www.webkul.com)
+   * @copyright 2024 Webkul Software Pvt. Ltd. (http://www.webkul.com)
    */
   class BlogServiceProvider extends ServiceProvider
   {

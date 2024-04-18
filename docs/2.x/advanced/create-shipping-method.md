@@ -281,6 +281,9 @@ Alternatively, you can manually set up all the files for your shipping method pa
 
     ```sh
     composer dump-autoload
+    ```
+
+    ```sh
     php artisan config:cache
     ```
 

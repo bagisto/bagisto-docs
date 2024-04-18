@@ -128,7 +128,7 @@ If you prefer to set up your package manually, follow these steps assuming you a
    /**
     * BlogServiceProvider
     *
-    * @copyright 2023 Webkul Software Pvt. Ltd.
+    * @copyright 2024 Webkul Software Pvt. Ltd.
     */
    class BlogServiceProvider extends ServiceProvider
    {

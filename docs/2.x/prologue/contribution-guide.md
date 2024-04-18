@@ -26,13 +26,31 @@ We welcome proposals for new features and enhancements to the existing Bagisto a
 
 Before submitting a pull request, it's important to consider the following points to help you choose the appropriate branch:
 
-- **Bug Fixes**: If you're fixing a bug, make sure to port the fix to the latest version that supports it (currently v1.5.1).
-- **Minor Feature Requests**: For minor features compatible with the current release, push your changes to the latest stable branch (currently v1.x).
-- **Major Feature Requests**: If your request involves a major new feature with potential breaking changes, send it to the master branch, which corresponds to the upcoming release (v2.x).
+- **Bug Fixes**: If you're fixing a bug, make sure to port the fix to the master version. 
+- **Critical Bug Fixes**: If you're fixing a critical bug, make sure to port the fix to the latest stable version that supports it (currently v2.1.2).
+- **Feature Requests**: If your request involves a feature with potential breaking changes, send it to the master branch, which corresponds to the upcoming release (v2.x).
 
 ## Compiled Assets
 
 When submitting a change that includes compiled files, please avoid committing the compiled files directly. Maintainers find it difficult to review compiled files, and they may contain malicious code. To prevent this issue, the Bagisto maintainers will generate and commit the compiled files themselves.
+
+## Tailwind Class Reordering
+
+When making changes to blade files that utilize Tailwind CSS classes, it's essential to maintain consistency and organization. Tailwind CSS classes should be ordered according to a predefined structure to enhance readability and maintain a clean codebase.
+
+To determine how Tailwind CSS classes should be sorted, refer to the official Tailwind CSS documentation for guidelines on class ordering. 
+
+[Class Reordering](https://tailwindcss.com/blog/automatic-class-sorting-with-prettier#how-classes-are-sorted)
+
+
+## Pint Tests
+
+Pint tests are an essential part of ensuring the quality and reliability of code changes in Bagisto. When making changes to the code, ensure that all Pint tests pass before submitting your pull request.Before submitting your changes, run the Pint tests locally to verify that all test cases pass. It is important to confirm that the modifications do not cause any Pint test failures or regressions.
+
+* To run the Pint tests locally, execute the following command in your terminal:
+```php
+vendor/bin/pint
+```
 
 ## Security Vulnerabilities
 
