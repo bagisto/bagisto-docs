@@ -6,7 +6,7 @@ Creating a data import in a custom package makes it very easy to import bulk dat
 
 ## Directory Structure
 
-To create a custom data import for your application, follow these steps:
+Let's create a custom data import for your application. We will assume that the package name is "Blog". Follow these steps:
 
 1. Create a **`Importer.php`** file in the **`Helpers`** folder of your package:
 
@@ -18,12 +18,14 @@ To create a custom data import for your application, follow these steps:
                 └── src
                     └── ...
                     └── Helpers
-                        ├── ...
-                        └── BlogImage
-                            └── Importer.php             
+                        └── ...
+                        └── Importers
+                            ├── ...
+                            └── FileName
+                                └── Importer.php             
 ```
 
-Here inside the Helpers folder, the BlogImage folder is for which section we are implementing the import method.
+Here inside the Helpers/Importers folder, the FileName folder is for which section we are implementing the import method.
 
 2. Inside the **`Importer.php`** file, include the following code:
 
@@ -241,4 +243,10 @@ Here inside the Helpers folder, the BlogImage folder is for which section we are
 
 ```
 
-This code defines the custom data transfer settings. There are two main methods. The first one is ValidateRow, which is validating all the rows of your.csv files. The second one is Import Batch, which is importing all the rows of your.csv files into a batch file and then importing all the rows of your.csv files into the database in queue.     
+This code defines the custom data transfer settings. It consists of two main methods:
+
+1. `validateRow()`: This method is responsible for validating all the rows of your `.csv` files. It checks for required fields, data types, and performs other validation checks.
+
+2. `importBatch()`: This method imports all the rows of your `.csv` files into a batch file and then imports them into the database in a queue. It handles the processing of the data and updates the import batch summary.
+
+These methods play a crucial role in ensuring the integrity and accuracy of the imported data. They help in identifying and handling errors, such as missing or duplicate identifiers, and provide a smooth data transfer process.

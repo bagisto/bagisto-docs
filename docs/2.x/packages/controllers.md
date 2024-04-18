@@ -6,6 +6,8 @@ To learn in detail about Controllers, you can visit the Laravel documentation [h
 
 ## Directory Structure
 
+**Let's start by creating a controller for our blog posts. We will assume that the package name is "Blog".**
+
 - Create an **`Http`** folder in the **`packages/Webkul/Blog/src`** path. Inside the **`Http`** folder, create another folder named **`Controllers`**. Inside the **`Controllers`** folder, we need to create one file named **`Controller.php`** and two folders, namely **`Admin`** and **`Shop`**.
 
 - Inside both the **`Admin`** and **`Shop`** folders, create a **`PostController.php`** file. The updated directory structure will look like this:
@@ -27,7 +29,7 @@ To learn in detail about Controllers, you can visit the Laravel documentation [h
 
 ## Base Controller
 
-- **`Controller.php`**: This is the base controller. Add the following code to this file:
+- **`Controller.php`**: This is the base controller that needs to be extended in all sub-controllers. Add the following code to this file:
 
   ```php
   <?php

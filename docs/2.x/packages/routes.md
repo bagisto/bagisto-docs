@@ -6,7 +6,14 @@ To learn in detail about Routes, you can visit the Laravel documentation [here](
 
 ## Directory Structure
 
-- Create a **`Routes`** folder inside **`packages/Webkul/Blog/src`** and create two files named **`admin-routes.php`** and **`shop-routes.php`**. The updated directory structure will look like this:
+Let's start by creating a route to display the blogs. We will assume that the package name is "Blog". 
+
+To create the route, follow these steps:
+
+1. Create a `Routes` folder inside `packages/Webkul/Blog/src`.
+2. Inside the `Routes` folder, create two files named `admin-routes.php` and `shop-routes.php`. 
+
+The updated directory structure will look like this:
 
     ```
     └── packages
@@ -56,11 +63,6 @@ To learn in detail about Routes, you can visit the Laravel documentation [here](
 
   use Illuminate\Support\ServiceProvider;
 
-  /**
-   * BlogServiceProvider
-   *
-   * @copyright 2024 Webkul Software Pvt. Ltd. (http://www.webkul.com)
-   */
   class BlogServiceProvider extends ServiceProvider
   {
       /**
