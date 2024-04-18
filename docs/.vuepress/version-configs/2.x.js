@@ -95,8 +95,15 @@ module.exports = [
         children: setVersionPrefix([
             ['themes/create-theme', 'Store Theme'],
             ['themes/create-admin-theme', 'Admin Theme'],
-            ['themes/notification', 'Real Time Notification'],
-            ['themes/integrate-image-search-in-theme', 'Image Search']
+        ])
+    },
+    {
+        title: 'Features',
+        path: setVersionPrefix('features'),
+        collapsable: true,
+        children: setVersionPrefix([
+            ['features/notification', 'Real Time Notification'],
+            ['features/integrate-image-search-in-theme', 'Image Search']
         ])
     },
     {

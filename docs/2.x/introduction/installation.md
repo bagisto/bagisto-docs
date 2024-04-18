@@ -47,12 +47,12 @@ To install Bagisto using Composer, use the following steps:
     - Follow the prompts during the installation process to provide the following details:
 
     ```
-    - Please Enter the APP URL or press enter to continue [http://localhost:8000] :
+    - Please Enter the APP URL or press enter to continue[http://localhost:8000] :
     - Please Enter the Application Name or press enter to continue [Bagisto] : 
     - Please select the default locale :
     - Please enter the default currency :
-    - Please choose the Allowed Locales using space key :
-    - Please choose the Allowed Currencies using space key :
+    - Please choose the Allowed Locales along with the comma-separated :
+    - Please choose the Allowed Currencies along with the comma-separated :
     - Please select the Database Connection or press enter to continue [mysql] :
     - Please enter the Database Host or press enter to continue [127.0.0.1] :
     - Please enter the Database Port Number or press enter to continue [3306] :
@@ -62,7 +62,7 @@ To install Bagisto using Composer, use the following steps:
     - Please enter the Database Password :
     ```
 
-- For Create your admin credentials
+    - For Create your admin credentials
     ```
     - Please enter the Name of Admin User or press enter to continue [Example] :
     - Please enter the Email of Admin User or press enter to continue [admin@example.com] :
