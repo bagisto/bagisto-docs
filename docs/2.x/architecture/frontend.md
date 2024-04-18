@@ -12,4 +12,4 @@ In **tailwind.config.js** file, just define your blade file path along with .js 
 
 # Blade
 
-**Bagisto** uses blade template engine that is included with **Laravel**. It does not restrict you from using plain PHP code in your templates. This [documentation](https://devdocs.bagisto.com/2.x/packages/views.html#directory-structure) provides an explanation of directory structure and package configuration for implementations.
+**Bagisto** utilizes the Blade template engine, which comes integrated with **Laravel**. It allows flexibility by permitting the use of both Blade components and plain PHP code within templates. This versatility empowers developers to craft dynamic and efficient solutions. For further insights into Bagisto's directory structure and package configuration, refer to the [documentation](https://devdocs.bagisto.com/2.x/packages/views.html#directory-structure).
