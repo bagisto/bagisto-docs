@@ -13,6 +13,7 @@ Additionally, To learn in detail about blade components, you can visit the Larav
   | Component         | Used For                                                       |
   | ------------- | ------------------------------------------------------------------------ |
   | **`accordion`** | This is used for creating the accordion layout. |
+  | **`button`** | This is used for creating the button layout. |
   | **`charts`** | This is used for creating the chart layout. |
   | **`datagrid`**  | This is used for creating the DataGrid layout. |
   | **`drawer`** | This is used for creating the drawer layout. |
@@ -22,8 +23,8 @@ Additionally, To learn in detail about blade components, you can visit the Larav
   | **`form`** | This is used for creating the form layout. |
   | **`media`** | This is used for creating the image/video layout.  |
   | **`modal`** | This is used for creating the modal layout. |
-  | **`panel`** | This is used for creating the panel layout. |
-  | **`range-slider`**  | This is used for creating the range slider layout. |
+  | **`quantity-changer`**  | This is used for creating the quantity changer layout. |
+  | **`seo`** | This is used for creating the seo layout. |
   | **`shimmer`** | This is used for creating the shimmer layout. |
   | **`star-rating`** | This is used for creating the star rating layout. |
   | **`table`** | This is used for creating the table layout. |
@@ -37,6 +38,7 @@ Additionally, To learn in detail about blade components, you can visit the Larav
   | ------------- | ------------------------------------------------------------------------ |
   | **`accordion`** | This is used for creating the accordion layout. |
   | **`breadcrumbs`** | This is used for creating the breadcrumbs layout. |
+  | **`button`** | This is used for creating the button layout. |
   | **`carousel`** | This is used for creating the carousel layout. |
   | **`categories`** | This is used for creating the categories layout. |
   | **`datagrid`**  | This is used for creating the DataGrid layout. |
@@ -47,7 +49,6 @@ Additionally, To learn in detail about blade components, you can visit the Larav
   | **`form`** | This is used for creating the form layout. |
   | **`media`** | This is used for creating the image/video layout.  |
   | **`modal`** | This is used for creating the modal layout. |
-  | **`panel`** | This is used for creating the panel layout. |
   | **`quantity-changer`** | This is used for creating the quantity changer layout. |
   | **`range-slider`**  | This is used for creating the range slider layout. |
   | **`shimmer`** | This is used for creating the shimmer layout. |
@@ -57,9 +58,9 @@ Additionally, To learn in detail about blade components, you can visit the Larav
 
 ## How To Use
 
-- If you want to use the above component in blade file you can use this something like below. Below are examples of some components.
+If you want to use the above component in a Blade file, you can use the code snippet provided below. Here are examples of some components.
 
-- ***Accordion:-*** Let's assume you want to use the **`accordion`** component then you can call this something like below.
+- ***Accordion:*** Let's assume you want to use the **`accordion`** component; you can call it like this:
 
 ```html
 <!-- Admin Accordion -->
@@ -87,7 +88,7 @@ Additionally, To learn in detail about blade components, you can visit the Larav
     </x-slot>
 </x-shop::accordion>
 ```
-- ***Breadcrumbs:-*** Let's assume you want to use the **`breadcrumbs`** component then you can call this something like below.
+- ***Breadcrumbs:*** Let's assume you want to use the **`breadcrumbs`** component. You can call it like this:
 
 ```html
 <!-- Shop Accordion -->
@@ -97,7 +98,27 @@ Additionally, To learn in detail about blade components, you can visit the Larav
 />
 ```
 
-- ***Charts:-*** Let's assume you want to use the **`charts`** component then you can call this something like below.
+- ***Button:*** Let's assume you want to use the **`button`** component. You can call it like this:
+
+```html
+<!-- Shop Button -->
+<x-shop::button
+    class="primary-button max-w-none flex-auto rounded-2xl px-11 py-3"
+    :title="trans('Button')"
+    ::loading="isStoring"
+    ::disabled="isStoring"
+/>
+
+<!-- Admin Button -->
+<x-admin::button
+    class="primary-button"
+    :title="trans('Button')"
+    ::loading="isStoring"
+    ::disabled="isStoring"
+/>
+```
+
+- ***Charts:-*** Let's assume you want to use the **`charts`** component. You can call it like this.
 
 ```html
 <!-- Admin Charts -->
@@ -106,7 +127,8 @@ Additionally, To learn in detail about blade components, you can visit the Larav
     ::datasets="chartDatasets"
 />
 ```
-- ***Drawer:-*** Let's assume you want to use the **`drawer`** component then you can call this something like below.
+
+- ***Drawer:-*** Let's assume you want to use the **`drawer`** component. You can call it like this.
 
 ```html
 <!-- Admin Drawer -->
@@ -145,7 +167,8 @@ Additionally, To learn in detail about blade components, you can visit the Larav
     </x-slot>
 </x-shop::drawer>
 ```
-- ***Dropdown:-*** Let's assume you want to use the **`dropdown`** component then you can call this something like below.
+
+- ***Dropdown:-*** Let's assume you want to use the **`dropdown`** component. You can call it like this.
 
 ```html
 <!-- Admin Dropdown -->
@@ -170,7 +193,8 @@ Additionally, To learn in detail about blade components, you can visit the Larav
     </x-slot>
 </x-shop::dropdown>
 ```
-- ***Flat-Picker:-*** Let's assume you want to use the **`flat-picker`** component then you can call this something like below.
+
+- ***Flat-Picker:-*** Let's assume you want to use the **`flat-picker`** component. You can call it like this.
 
 ```html
 <!-- Admin flat-picker -->
@@ -196,17 +220,17 @@ Additionally, To learn in detail about blade components, you can visit the Larav
 </x-shop::flat-picker.date>
 ```
 
-- ***Data Grid:-*** Let's assume you want to use the **`DataGrid`** component then you can call this something like below.
+- ***Data Grid:-*** Let's assume you want to use the **`DataGrid`** component. You can call it like this.
 
 ```html
 <!-- Admin Datagrid -->
-<x-admin::datagrid :src="route('admin.catalog.products.index')"></x-admin::datagrid>
+<x-admin::datagrid :src="route('admin.catalog.products.index')" />
 
 <!-- Shop Datagrid -->
-<x-shop::datagrid :src="route('shop.customers.account.orders.index')"></x-shop::datagrid>
+<x-shop::datagrid :src="route('shop.customers.account.orders.index')" />
 ```
 
-- ***Tab:-*** Let's assume you want to use the **`Tab`** component on shop then you can call this something like below.
+- ***Tab:-*** Let's assume you want to use the **`Tab`** component on shop. You can call it like this.
 
 ```html
 <!-- Shop Tab -->
@@ -236,7 +260,7 @@ Additionally, To learn in detail about blade components, you can visit the Larav
 </x-shop::tabs>
 ```
 
-- ***Tinymce:-*** Let's assume you want to use the **`Tinymce`** component on shop then you can call this something like below.
+- ***Tinymce:-*** Let's assume you want to use the **`Tinymce`** component on shop. You can call it like this.
 
 ```html
 <!-- Admin Tinymce -->
@@ -263,7 +287,8 @@ Additionally, To learn in detail about blade components, you can visit the Larav
     :tinymce="true"
 />
 ```
-- ***Shimmer:-*** Let's assume you want to use the **`Shimmer`** component on shop then you can call this something like below.
+
+- ***Shimmer:-*** Let's assume you want to use the **`Shimmer`** component on shop. You can call it like this.
 
 ```html
 <!-- Admin shimmer -->
@@ -271,17 +296,33 @@ Additionally, To learn in detail about blade components, you can visit the Larav
 
 <!-- Shop shimmer -->
 <x-shop::shimmer.datagrid />
+
 ```
-- ***Quantity Changer:-*** Let's assume you want to use the **`Quantity Changer`** component on shop then you can call this something like below.
+- ***SEO:-*** Let's assume you want to use the **`SEO`** component. You can call it like this,
+
+```html 
+    <x-admin::seo />
+```
+
+- ***Quantity Changer:-*** Let's assume you want to use the **`Quantity Changer`** component on shop. You can call it like this.
 
 ```html
+<!-- Shop Quantity changer -->
 <x-shop::quantity-changer
     name="quantity"
     value="1"
     class="gap-x-4 rounded-xl px-7 py-4"
 />
+
+<!-- Admin Quantity changer -->
+<x-admin::quantity-changer
+    name="quantity"
+    value="1"
+    class="w-max gap-x-4 rounded-l px-4 py-1"
+/>
 ```
-- ***Table:-*** Let's assume you want to use the **`Table`** component on shop then you can call this something like below.
+
+- ***Table:-*** Let's assume you want to use the **`Table`** component on shop. You can call it like this.
 
 ```html
 <!-- Admin Table -->

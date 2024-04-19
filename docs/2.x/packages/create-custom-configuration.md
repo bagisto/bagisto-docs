@@ -93,7 +93,8 @@ To merge the custom configuration, follow these steps:
             //...
             
             $this->mergeConfigFrom(
-               dirname(__DIR__) . '/Config/system.php', 'core'
+               dirname(__DIR__) . '/Config/system.php',
+               'core'
             );
         }
     }
@@ -196,6 +197,9 @@ return [
                 'name'  => 'boolean_type',
                 'title' => 'admin::app.admin.system.boolean-type',
                 'type'  => 'boolean',
+                'name'  => 'boolean_type',
+                'title' => 'admin::app.admin.system.boolean-type',
+                'type'  => 'boolean',
             ],
         ],
     ],
@@ -226,6 +230,7 @@ return [
                         'title' => 'option_1',
                         'value' => 'value_1',
                     ], [
+                    ], [
                         'title' => 'option_2',
                         'value' => 'vallue_2',
                     ],
@@ -252,6 +257,9 @@ return [
         'sort'   => 1,
         'fields' => [
             [
+                'name'  => 'textarea_type',
+                'title' => 'admin::app.admin.system.textarea-type',
+                'type'  => 'textarea'
                 'name'  => 'textarea_type',
                 'title' => 'admin::app.admin.system.textarea-type',
                 'type'  => 'textarea'

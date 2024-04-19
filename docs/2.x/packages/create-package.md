@@ -14,6 +14,8 @@ To facilitate package development, you can use the [Bagisto Package Generator](h
 
 2. Once installed, you can generate your package using the following command:
 
+    We will assume that the package name is "**Blog**".
+
    - If the package directory does not exist:
 
      ```shell
@@ -71,12 +73,6 @@ To register your package, follow these steps:
    ```
 
    When prompted to select which items to publish, choose the number corresponding to **`"Webkul\Blog\Providers\BlogServiceProvider"`** and press enter to publish all assets and configurations.
-
-::: details Example Output in the Browser
-
-![helloworld-admin-browser-output](../../assets/2.x/images/package-development/blog-package-output.png)
-
-:::
 
 Congratulations! Your package is now registered and ready to use. Start creating something cool!
 

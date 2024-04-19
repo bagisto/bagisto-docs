@@ -6,6 +6,8 @@ To understand Models in detail, you can visit the Laravel documentation [here](h
 
 We are using the [konekt/concord](https://packagist.org/packages/konekt/concord) package, which is an extension of Laravel. It helps in building modular Laravel applications.
 
+Let's create a new model for your application. We will assume that the package name is "**Blog**". Follow these steps:
+
 ## Using Bagisto Package Generator
 
 - This command creates a new **`Post`** Model inside your package.

@@ -14,7 +14,7 @@ To create a new product type in Bagisto, follow these steps:
 
 1. Create your own package. If you need assistance with package development, you can refer to the [Package Development](../packages) section.
 
-2. Inside the **Config** folder of your package, create a file named **`product_types.php`**.
+2. Inside the **`Config`** folder of your package, create a file named **`product_types.php`**.
 
 3. Add the following code to the **`product_types.php`** file. This code will define the new product type and its properties:
 
@@ -54,7 +54,8 @@ To create a new product type in Bagisto, follow these steps:
            //...
 
            $this->mergeConfigFrom(
-               dirname(__DIR__) . '/Config/product_types.php', 'product_types'
+               dirname(__DIR__) . '/Config/product_types.php',
+               'product_types'
            );
        }
    }

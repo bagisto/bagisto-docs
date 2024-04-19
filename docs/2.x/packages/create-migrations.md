@@ -4,6 +4,8 @@
 
 To understand Migrations in detail, you can visit the Laravel documentation [here](https://laravel.com/docs/10.x/migrations).
 
+Let's create a new migration file for your application. We will assume that the package name is "**Blog**". Follow these steps:
+
 ## Using Bagisto Package Generator
 
 This command creates a new migration class in the **`packages/Webkul/Blog/src/Database/Migrations`** directory.
