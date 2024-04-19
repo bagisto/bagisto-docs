@@ -62,14 +62,19 @@ If you want to use the above component in a Blade file, you can use the code sni
 
 - ***Accordion:*** Let's assume you want to use the **`accordion`** component; you can call it like this:
 
+You can customize the appearance of the accordion `header` and `content` by passing additional CSS classes to the header and `content` slots, respectively.
+
 ```html
 <!-- Admin Accordion -->
-<x-admin::accordion title="Admin Accordion">
-    <x-slot:header>
+<x-admin::accordion 
+    title="Admin Accordion" 
+    class="px-5"
+>
+    <x-slot:header class="bg-gray-200">
         Accordion Header
     </x-slot>
 
-    <x-slot:content>
+    <x-slot:content class="bg-green-200">
         Accordion Content
     </x-slot>
 </x-admin::accordion>
@@ -88,6 +93,7 @@ If you want to use the above component in a Blade file, you can use the code sni
     </x-slot>
 </x-shop::accordion>
 ```
+
 - ***Breadcrumbs:*** Let's assume you want to use the **`breadcrumbs`** component. You can call it like this:
 
 ```html
@@ -100,31 +106,57 @@ If you want to use the above component in a Blade file, you can use the code sni
 
 - ***Button:*** Let's assume you want to use the **`button`** component. You can call it like this:
 
-```html
-<!-- Shop Button -->
-<x-shop::button
-    class="primary-button max-w-none flex-auto rounded-2xl px-11 py-3"
-    :title="trans('Button')"
-    ::loading="isStoring"
-    ::disabled="isStoring"
-/>
+You can customize the appearance of the button by passing additional props `loading`  `buttonType`  `buttonClass` respectively. 
 
+
+```html
 <!-- Admin Button -->
 <x-admin::button
     class="primary-button"
     :title="trans('Button')"
-    ::loading="isStoring"
-    ::disabled="isStoring"
+    ::loading="true"
+    ::disabled="true"
+/>
+
+<!-- Shop Button -->
+<x-shop::button
+    class="primary-button max-w-none flex-auto rounded-2xl px-11 py-3"
+    :title="trans('Button')"
+    ::loading="true"
+    ::disabled="true"
 />
 ```
 
 - ***Charts:-*** Let's assume you want to use the **`charts`** component. You can call it like this.
 
+You can customize the appearance of the bar chart by providing different datasets with colors, labels, and data points. Additionally, you can adjust the aspect ratio of the chart by setting the aspect-ratio prop.
+
+***Props:-*** 
+
+***labels*** (array, required): An array of labels for the x-axis of the chart.
+
+***datasets*** (array, required): An array of datasets containing data points for the chart.
+
 ```html
-<!-- Admin Charts -->
+<!--
+    Chart | Line Chart Component
+
+    Note: To use charts, you need to require the Chart.js library.
+-->
 <x-admin::charts.line
     ::labels="chartLabels"
     ::datasets="chartDatasets"
+/>
+
+<!--
+    Chart | Bar Chart Component
+
+    Note: To use charts, you need to require the Chart.js library.
+-->
+<x-admin::charts.bar
+    ::labels="chartLabels"
+    ::datasets="chartDatasets"
+    ::aspect-ratio="1.41"
 />
 ```
 
