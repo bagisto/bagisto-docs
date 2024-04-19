@@ -34,18 +34,13 @@ You may access this super-functionality of creating your own product-types by fo
 
         use Illuminate\Support\ServiceProvider;
 
-        /**
-        * CouponServiceProvider
-        *
-        * @copyright 2020 Webkul Software Pvt. Ltd. (http://www.webkul.com)
-        */
         class CouponServiceProvider extends ServiceProvider
         {
             /**
-            * Register services.
-            *
-            * @return void
-            */
+             * Register services.
+             *
+             * @return void
+             */
             public function register()
             {
                $this->mergeConfigFrom(

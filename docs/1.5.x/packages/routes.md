@@ -56,11 +56,6 @@ To learn in detail about Routes, you can visit the Laravel documentation [here](
 
   use Illuminate\Support\ServiceProvider;
 
-  /**
-   * BlogServiceProvider
-   *
-   * @copyright 2024 Webkul Software Pvt. Ltd. (http://www.webkul.com)
-   */
   class BlogServiceProvider extends ServiceProvider
   {
       /**

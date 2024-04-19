@@ -62,11 +62,6 @@ To learn in detail about Views, you can visit the Laravel documentation [here](h
 
   use Illuminate\Support\ServiceProvider;
 
-  /**
-  * BlogServiceProvider
-  *
-  * @copyright 2024 Webkul Software Pvt. Ltd. (http://www.webkul.com)
-  */
   class BlogServiceProvider extends ServiceProvider
   {
      /**
