@@ -86,9 +86,6 @@ php artisan package:make-migration CreatePostsTable Webkul/Blog
 
   use Illuminate\Support\ServiceProvider;
 
-  /**
-  * BlogServiceProvider
-  */
   class BlogServiceProvider extends ServiceProvider
   {
      /**

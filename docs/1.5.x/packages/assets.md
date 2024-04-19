@@ -130,11 +130,6 @@ You can also use **`npm run watch`**, which watches for changes in your assets a
 
     use Illuminate\Support\ServiceProvider;
 
-    /**
-     * BlogServiceProvider
-    *
-    * @copyright 2024 Webkul Software Pvt. Ltd.
-    */
     class BlogServiceProvider extends ServiceProvider
     {
         /**
@@ -191,11 +186,6 @@ To link the stylesheets to the layouts, follow these steps:
     use Illuminate\Support\ServiceProvider;
     use Illuminate\Support\Facades\Event;
 
-    /**
-     * BlogServiceProvider
-    *
-    * @copyright 2024 Webkul Software Pvt. Ltd.
-    */
     class BlogServiceProvider extends ServiceProvider
     {
         /**
