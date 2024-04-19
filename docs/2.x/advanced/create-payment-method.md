@@ -80,10 +80,10 @@ To create a payment method package, follow these commands in the Bagisto root di
         ]
     ];
     ```
-    - **`key`**: A unique value for the configuration, concatenated with a dot (`.`) operator.
-    - **`name`**: The placeholder value for the configuration. It is recommended to use translations in Bagisto.
-    - **`sort`**: The position of the configuration menu.
-    - **`fields`**: An array containing the custom configurations and fields for the payment method. The example includes three arrays for **`title`**, **`description`**, and **`status`**. You can add more arrays for additional settings.
+    - **key** : A unique value for the configuration, concatenated with a dot (`.`) operator.
+    - **name** : The placeholder value for the configuration. It is recommended to use translations in Bagisto.
+    - **sort** : The position of the configuration menu.
+    - **fields** : An array containing the custom configurations and fields for the payment method. The example includes three arrays for **`title`**, **`description`**, and **`status`**. You can add more arrays for additional settings.
 
 3. In the **`paymentmethods.php`** file, add the following content:
 
@@ -101,12 +101,12 @@ To create a payment method package, follow these commands in the Bagisto root di
         ],
     ];
     ```
-    - **`code`**: A text representing the payment method.
-    - **`title`**: The name of the payment method.
-    - **`description`**: A brief description of the payment method.
-    - **`class`**: The namespace of the class where the payment method functions are defined.
-    - **`active`**: A boolean value (`true` or `false`) to enable or disable the module.
-    - **`sort`**: The position of the payment method.
+    - **code** : A text representing the payment method.
+    - **title** : The name of the payment method.
+    - **description** : A brief description of the payment method.
+    - **class** : The namespace of the class where the payment method functions are defined.
+    - **active** : A boolean value (`true` or `false`) to enable or disable the module.
+    - **sort** : The position of the payment method.
 
 4. In the **`Stripe.php`** file within the **`Payment`** directory, add the following code:
 
@@ -168,11 +168,13 @@ To create a payment method package, follow these commands in the Bagisto root di
         protected function registerConfig()
         {
             $this->mergeConfigFrom(
-                dirname(__DIR__) . '/Config/paymentmethods.php', 'payment_methods'
+                dirname(__DIR__) . '/Config/paymentmethods.php',
+                'payment_methods'
             );
 
             $this->mergeConfigFrom(
-                dirname(__DIR__) . '/Config/system.php', 'core'
+                dirname(__DIR__) . '/Config/system.php',
+                'core'
             );
         }
     }

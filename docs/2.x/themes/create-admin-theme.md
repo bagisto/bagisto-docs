@@ -6,14 +6,14 @@
 
 To configure the admin theme in Bagisto, follow these steps:
 
-1. In the Bagisto root directory, navigate to the **config** folder and open the **`themes.php`** file. Look for the keys **`admin-default`** and **`admin-themes`**. The configuration will appear as follows:
+1. Locate the **themes.php** file inside the **config** folder located in your project's root directory. Look for the keys **admin-default** and **`admin`**. The configuration will appear as follows:
 
     ```php
     <?php
     return [
         'admin-default' => 'default',
 
-        'admin-themes' => [
+        'admin' => [
             'default' => [
                 'name'        => 'Default',
                 'assets_path' => 'public/themes/admin/default',
@@ -32,20 +32,20 @@ To configure the admin theme in Bagisto, follow these steps:
     | Key            | Description                              |
     | -------------- | ---------------------------------------- |
     | admin-default  | Sets the current theme for the admin area |
-    | admin-themes   | Stores a list of available themes         |
+    | admin          | Stores a list of available themes         |
 
 ## Creating a Theme
 
 To create a new admin theme, follow these steps:
 
-1. Add a new theme entry to the **`admin-themes`** array in the **`themes.php`** file:
+**1.** To add a new theme entry to the **admin** array in the **themes.php** file, please follow these steps:
 
     ```php
     <?php
     return [
         'admin-default' => 'default',
 
-        'admin-themes' => [
+        'admin' => [
             'default' => [
                 'name'        => 'Default',
                 'assets_path' => 'public/themes/admin/default',
@@ -58,14 +58,14 @@ To create a new admin theme, follow these steps:
                 ],
             ],
 
-            'theme1' => [
-                'name'        => 'Theme1',
-                'assets_path' => 'public/themes/admin/theme1',
-                'views_path'  => 'resources/admin-themes/theme1/views',
+            'new-theme' => [
+                'name'        => 'new-theme',
+                'assets_path' => 'public/themes/admin/new-theme',
+                'views_path'  => 'resources/admin-themes/new-theme/views',
 
                 'vite'        => [
-                    'hot_file'                 => 'admin-theme1-vite.hot',
-                    'build_directory'          => 'themes/admin/theme1/build',
+                    'hot_file'                 => 'admin-new-theme-vite.hot',
+                    'build_directory'          => 'themes/admin/new-theme/build',
                     'package_assets_directory' => 'src/Resources/assets',
                 ],
             ],
@@ -73,14 +73,14 @@ To create a new admin theme, follow these steps:
     ];
     ```
 
-2. In the new theme entry, specify the path to the views and assets folders according to your desired structure. For example:
+**2.** In the new theme entry, specify the path to the views and assets folders according to your desired structure. For example:
 
     - Views structure:
 
       ```
       - resources
         └── admin-themes
-            └── theme1
+            └── new-theme
                 └── views
       ```
 
@@ -89,31 +89,31 @@ To create a new admin theme, follow these steps:
       ```
       - public
         └── admin-themes
-            └── theme1
+            └── new-theme
                 └── assets
       ```
 
-3. To replace the dashboard page with a custom version, create the same directory structure for the dashboard in the **`theme1`** folder as it exists in the **`default`** folder. For example:
+**3.** To replace the dashboard page with a custom version, create the same directory structure for the dashboard in the **`new-theme`** folder as it exists in the **`default`** folder. For example:
 
     ```
     - resources
       └── admin-themes
-          └── theme1
+          └── new-theme
               └── views
                   └── dashboard
                       └── index.blade.php
     ```
 
-4. In the newly created **`index.blade.php`** file, add the desired content for the dashboard page. For example:
+**4.** In the newly created **`index.blade.php`** file, add the desired content for the dashboard page. For example:
 
     ```php
-    Theme 1 Sample
+    New Theme Sample
     ```
 
-5. Finally, activate the new theme by changing the value of the **`admin-default`** key in the **`config/themes.php`** file:
+**5.** Finally, activate the new theme by changing the value of the **`admin-default`** key in the **`config/themes.php`** file:
 
     ```php
-    'admin-default' => 'theme1',
+    'admin-default' => 'new-theme',
     ```
 
-Now, when you access the dashboard page in the admin area, you should see the customized version provided by the new theme (Theme 1).
+Now, when you access the dashboard page in the admin area, you should see the customized version provided by the new theme (New Theme).

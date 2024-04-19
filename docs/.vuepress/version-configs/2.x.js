@@ -67,7 +67,8 @@ module.exports = [
             ['packages/validation', 'Validation'],
             ['packages/datagrid', 'DataGrid'],
             ['packages/create-acl', 'Access Control List'],
-            ['packages/create-custom-configuration', 'Custom Configuration']
+            ['packages/create-custom-configuration', 'Custom Configuration'],
+            ['packages/create-data-import', 'Data Transfer']
         ])
     },
     {
@@ -94,8 +95,15 @@ module.exports = [
         children: setVersionPrefix([
             ['themes/create-theme', 'Store Theme'],
             ['themes/create-admin-theme', 'Admin Theme'],
-            ['themes/notification', 'Real Time Notification'],
-            ['themes/integrate-image-search-in-theme', 'Image Search']
+        ])
+    },
+    {
+        title: 'Features',
+        path: setVersionPrefix('features'),
+        collapsable: true,
+        children: setVersionPrefix([
+            ['features/notification', 'Real Time Notification'],
+            ['features/integrate-image-search-in-theme', 'Image Search']
         ])
     },
     {

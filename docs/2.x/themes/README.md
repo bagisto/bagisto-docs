@@ -12,7 +12,7 @@ Creating a custom theme for Bagisto involves a few simple steps. Here's an overv
 
 1. **Create a Package**: As themes in Bagisto are treated as packages, the first step is to create a new package specifically for your theme. This package will serve as the container for your theme files and configuration.
 
-2. **Configure the Package**: Once the package is created, you need to configure it by defining the necessary details such as the package name, author, description, and other relevant information. This configuration ensures that Bagisto recognizes your package as a theme.
+2. **Configure the Package**: Once the package is created, you need to configure it by defining the necessary details, such as the package name, author, description, and other relevant information. This configuration ensures that Bagisto recognizes your package as a theme.
 
 3. **Define the Theme Assets**: In Bagisto, themes are primarily composed of assets such as CSS stylesheets, JavaScript files, and image files. You will need to create the appropriate directories within your theme package to store these assets.
 
