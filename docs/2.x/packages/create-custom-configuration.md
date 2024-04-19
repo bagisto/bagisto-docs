@@ -197,9 +197,6 @@ return [
                 'name'  => 'boolean_type',
                 'title' => 'admin::app.admin.system.boolean-type',
                 'type'  => 'boolean',
-                'name'  => 'boolean_type',
-                'title' => 'admin::app.admin.system.boolean-type',
-                'type'  => 'boolean',
             ],
         ],
     ],
@@ -257,9 +254,6 @@ return [
         'sort'   => 1,
         'fields' => [
             [
-                'name'  => 'textarea_type',
-                'title' => 'admin::app.admin.system.textarea-type',
-                'type'  => 'textarea'
                 'name'  => 'textarea_type',
                 'title' => 'admin::app.admin.system.textarea-type',
                 'type'  => 'textarea'
