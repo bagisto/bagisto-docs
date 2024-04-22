@@ -60,7 +60,7 @@ Additionally, To learn in detail about blade components, you can visit the Larav
 
 If you want to use the above component in a Blade file, you can use the code snippet provided below. Here are examples of some components.
 
-- ***Accordion:*** Let's assume you want to use the **`accordion`** component; you can call it like this:
+- **Accordion:** Let's assume you want to use the **`accordion`** component; you can call it like this:
 
 You can customize the appearance of the accordion `header` and `content` by passing additional CSS classes to the header and `content` slots, respectively.
 
@@ -94,7 +94,7 @@ You can customize the appearance of the accordion `header` and `content` by pass
 </x-shop::accordion>
 ```
 
-- ***Breadcrumbs:*** Let's assume you want to use the **`breadcrumbs`** component. You can call it like this:
+- **Breadcrumbs:** Let's assume you want to use the **`breadcrumbs`** component. You can call it like this:
 
 ```html
 <!-- Shop Accordion -->
@@ -104,7 +104,7 @@ You can customize the appearance of the accordion `header` and `content` by pass
 />
 ```
 
-- ***Button:*** Let's assume you want to use the **`button`** component. You can call it like this:
+- **Button:** Let's assume you want to use the **`button`** component. You can call it like this:
 
 You can customize the appearance of the button by passing additional props `loading`  `buttonType`  `buttonClass` respectively. 
 
@@ -127,11 +127,11 @@ You can customize the appearance of the button by passing additional props `load
 />
 ```
 
-- ***Charts:-*** Let's assume you want to use the **`charts`** component. You can call it like this.
+- **Charts:** Let's assume you want to use the **`charts`** component. You can call it like this.
 
 You can customize the appearance of the bar chart by providing different datasets with colors, labels, and data points. Additionally, you can adjust the aspect ratio of the chart by setting the aspect-ratio prop.
 
-***Props:-*** 
+**Props:**
 
 ***labels*** (array, required): An array of labels for the x-axis of the chart.
 
@@ -160,7 +160,12 @@ You can customize the appearance of the bar chart by providing different dataset
 />
 ```
 
-- ***Drawer:-*** Let's assume you want to use the **`drawer`** component. You can call it like this.
+- **Drawer:** Let's assume you want to use the **`drawer`** component. You can call it like this.
+
+You can customize the appearance of the Drawer by passing additional props `position`  `width`  `isActive` respectively.
+
+* To customize the header section, you can target the `header` slot with your own CSS classes or styles.
+* Similarly, you can customize the content section using the `content` slot.
 
 ```html
 <!-- Admin Drawer -->
@@ -172,11 +177,11 @@ You can customize the appearance of the bar chart by providing different dataset
         Drawer Toggle
     </x-slot>
 
-    <x-slot:header>
+    <x-slot:header class="bg-red-100">  <!-- Pass your custom css to customize header -->
         Drawer Header
     </x-slot>
 
-    <x-slot:content class="!p-5">
+    <x-slot:content class="!p-5"> <!-- Pass your custom css to customize header -->
         Drawer Content
     </x-slot>
 </x-admin::drawer>
@@ -200,11 +205,15 @@ You can customize the appearance of the bar chart by providing different dataset
 </x-shop::drawer>
 ```
 
-- ***Dropdown:-*** Let's assume you want to use the **`dropdown`** component. You can call it like this.
+- **Dropdown:** Let's assume you want to use the **`dropdown`** component. You can call it like this.
+
+It allows you to define the `position` of the dropdown and provides slots for the toggle button, content, and menu items.
+
+To customize the content section, you can target the `content` slot with your own CSS classes or styles.
 
 ```html
 <!-- Admin Dropdown -->
-<x-admin::dropdown>
+<x-admin::dropdown position="bottom-left">  <!-- Defines the position of the dropdown menu. Default is "bottom-left" -->
     <x-slot:toggle>
         Dropdown Toggle
     </x-slot>
@@ -226,7 +235,7 @@ You can customize the appearance of the bar chart by providing different dataset
 </x-shop::dropdown>
 ```
 
-- ***Flat-Picker:-*** Let's assume you want to use the **`flat-picker`** component. You can call it like this.
+- **Flat-Picker:** Let's assume you want to use the **`flat-picker`** component. You can call it like this.
 
 ```html
 <!-- Admin flat-picker -->
@@ -252,7 +261,7 @@ You can customize the appearance of the bar chart by providing different dataset
 </x-shop::flat-picker.date>
 ```
 
-- ***Data Grid:-*** Let's assume you want to use the **`DataGrid`** component. You can call it like this.
+- **Data Grid:** Let's assume you want to use the **`DataGrid`** component. You can call it like this.
 
 ```html
 <!-- Admin Datagrid -->
@@ -262,7 +271,7 @@ You can customize the appearance of the bar chart by providing different dataset
 <x-shop::datagrid :src="route('shop.customers.account.orders.index')" />
 ```
 
-- ***Tab:-*** Let's assume you want to use the **`Tab`** component on shop. You can call it like this.
+- **Tab:** Let's assume you want to use the **`Tab`** component on shop. You can call it like this.
 
 ```html
 <!-- Shop Tab -->
@@ -292,7 +301,7 @@ You can customize the appearance of the bar chart by providing different dataset
 </x-shop::tabs>
 ```
 
-- ***Tinymce:-*** Let's assume you want to use the **`Tinymce`** component on shop. You can call it like this.
+- **Tinymce:** Let's assume you want to use the **`Tinymce`** component on shop. You can call it like this.
 
 ```html
 <!-- Admin Tinymce -->
@@ -320,7 +329,7 @@ You can customize the appearance of the bar chart by providing different dataset
 />
 ```
 
-- ***Shimmer:-*** Let's assume you want to use the **`Shimmer`** component on shop. You can call it like this.
+- **Shimmer:** Let's assume you want to use the **`Shimmer`** component on shop. You can call it like this.
 
 ```html
 <!-- Admin shimmer -->
@@ -330,13 +339,13 @@ You can customize the appearance of the bar chart by providing different dataset
 <x-shop::shimmer.datagrid />
 
 ```
-- ***SEO:-*** Let's assume you want to use the **`SEO`** component. You can call it like this,
+- **SEO:** Let's assume you want to use the **`SEO`** component. You can call it like this,
 
 ```html 
     <x-admin::seo />
 ```
 
-- ***Quantity Changer:-*** Let's assume you want to use the **`Quantity Changer`** component on shop. You can call it like this.
+- **Quantity Changer:** Let's assume you want to use the **`Quantity Changer`** component on shop. You can call it like this.
 
 ```html
 <!-- Shop Quantity changer -->
@@ -354,7 +363,7 @@ You can customize the appearance of the bar chart by providing different dataset
 />
 ```
 
-- ***Table:-*** Let's assume you want to use the **`Table`** component on shop. You can call it like this.
+- **Table:** Let's assume you want to use the **`Table`** component on shop. You can call it like this.
 
 ```html
 <!-- Admin Table -->
