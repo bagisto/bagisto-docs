@@ -213,7 +213,7 @@ The `drawer` component in Bagisto provides a versatile drawer that can be positi
   | **`content`** | Slot for the main content. |
   | **`footer`** |  Slot for the footer content. |
 
-You can customize the appearance of the Drawer by passing additional props.
+You can customize the appearance of the Drawer by passing additional CSS.
 
 * To customize the header section, you can target the `header` slot with your own CSS classes or styles.
 * Similarly, you can customize the content section using the `content` slot.
@@ -526,6 +526,7 @@ Let's assume you want to use the **`Quantity Changer`** component on shop. You c
 Table component provides a structured way to display tabular data in Bagisto.
 
 * You can customize the appearance of these table elements using CSS. Below are some common customization options:
+
 ***Customization:-*** You can customize the appearance of these table elements using CSS. Below are some common customization options:
 
 | Styling           | Description                                                      |
@@ -623,4 +624,125 @@ Let's assume you want to use the **`Table`** component on shop. You can call it 
         </x-shop::table.thead.tr>
     </x-shop::table.tbody>
 </x-shop::table>
+```
+
+### Modal
+
+The `modal` component in Bagisto provides a flexible way to create modal dialogs. It allows you to display content in a layer that floats above the rest of the page.
+
+| Props           | Description                                                      |
+  | ------------- | ------------------------------------------------------------------------ |
+  | **`isActive`** | Controls the visibility of the modal. |
+
+| Slots           | Description                                                      |
+  | ------------- | ------------------------------------------------------------------------ |
+  | **`toggle`** | Slot for the element that toggles the modal. |
+  | **`header`** | Slot for the modal header. |
+  | **`content`** | Slot for the modal body. |
+  | **`footer`** |  Slot for the footer content. |
+
+You can customize the appearance of the Modal by passing additional CSS.
+
+* To customize the header section, you can target the `header` slot with your own CSS classes or styles.
+* Similarly, you can customize the content section using the `content` slot.
+* Similarly, you can customize the content section using the `footer` slot.
+
+Let's assume you want to use the **`modal`** component, You can call it like this.
+
+```html
+<!-- Admin Modal -->
+<x-admin::modal>
+    <x-slot:toggle>
+        Modal Toggle
+    </x-slot>
+
+    <x-slot:header>
+        Modal Header
+    </x-slot>
+
+    <x-slot:content>
+        Modal Content
+    </x-slot>
+</x-admin::modal>
+
+<!-- Shop Modal-->
+<x-shop::modal>
+    <x-slot:toggle>
+        Modal Toggle
+    </x-slot>
+
+    <x-slot:header>
+        Modal Header
+    </x-slot>
+
+    <x-slot:content>
+        Modal Content
+    </x-slot>
+</x-shop::modal>
+```
+
+### Tree
+
+The Tree component in Bagisto enables you to display hierarchical data in a tree-like structure, with support for checkboxes or radio buttons for selection.
+
+| Props           | Description                                                      |
+  | ------------- | ------------------------------------------------------------------------ |
+  | **`input-type`** | Specifies the type of input to use for selection. Can be either `checkbox` or `radio`. |
+  | **`selectionType`** | Specifies the selection type. Can be 'hierarchical' or 'individual'. (String, default: `hierarchical`) |
+  | **`nameField`** | The field name to use as the identifier for each tree node. |
+  | **`idField`** | The field name to use as the unique identifier for each tree node. |
+  | **`valueField`** | The field name to use as the value for each tree node. |
+  | **`items`** | The tree data to be displayed. |
+  | **`value`** | The selected values.. |
+  | **`fallback-locale`** | The fallback locale to use for translations.. |
+  | **`collapse`** |  Determines whether the tree nodes are initially collapsed or expanded. (Boolean, default: `false`) |
+
+Let's assume you want to use the **`tree`** component, You can call it like this.
+
+```html
+<x-admin::tree.view
+    inputType="checkbox"
+    selectionType="individual"
+    nameField="categories"
+    idField="id"
+    valueField="id"
+    ::items="categories"
+    :value="($product->categories->pluck('id'))"
+    :fallback-locale="config('app.fallback_locale')"
+    :collapse="true"
+>
+</x-admin::tree.view>
+```
+
+### Media(Image/Video)
+ 
+The Media component in Bagisto provides a user interface for managing and displaying images/videos, allowing users to upload, edit, and delete images.:
+
+| Props           | Description                                                      |
+  | ------------- | ------------------------------------------------------------------------ |
+  | **`name`** | The name of the input field. |
+  | **`allowMultiple`** | Whether to allow uploading multiple images. |
+  | **`showPlaceholders`** | Whether to show placeholder images when no images are uploaded. |
+  | **`uploadedImages`** | Array of uploaded images. |
+  | **`uploadedVideos`** | Array of uploaded videos. |
+  | **`width`** | Width of the image container. |
+  | **`height`** | Height of the image container. |
+
+Let's assume you want to use the **`Image/Video`** component, You can call it like this.
+
+```html
+<!-- Image Component -->
+<x-admin::media.images
+    name="images"
+    allow-multiple="true"
+    show-placeholders="true"
+    :uploaded-images="$product->images"
+/>
+
+<!-- Video Component -->
+<x-admin::media.videos
+    name="videos[files]"
+    :allow-multiple="true"
+    :uploaded-videos="$product->videos"
+/>
 ```
