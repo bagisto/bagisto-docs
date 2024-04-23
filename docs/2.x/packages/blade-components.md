@@ -60,7 +60,14 @@ Additionally, To learn in detail about blade components, you can visit the Larav
 
 If you want to use the above component in a Blade file, you can use the code snippet provided below. Here are examples of some components.
 
-- **Accordion:** Let's assume you want to use the **`accordion`** component; you can call it like this:
+### Accordion
+
+Let's assume you want to use the **`accordion`** component, you can call it like this:
+
+| Component           | Used For                                                      |
+  | ------------- | ------------------------------------------------------------------------ |
+  | **`header`** | This is used for creating the accordion layout. |
+  | **`content`** | This is used for creating the breadcrumbs layout. |
 
 You can customize the appearance of the accordion `header` and `content` by passing additional CSS classes to the header and `content` slots, respectively.
 
@@ -236,18 +243,27 @@ To customize the content section, you can target the `content` slot with your ow
 ```
 
 - **Flat-Picker:** Let's assume you want to use the **`flat-picker`** component. You can call it like this.
+It can be configured with various props to customize its behavior according to application requirements.
+
+***Props***
+* name (String): Specifies the name attribute for the input element.
+* value (String): Represents the initial value of the date and time picker.
+* allowInput (Boolean): Indicates whether manual input of date and time values is allowed.
+* disable (Array): An array of dates to be disabled, preventing selection.
+* minDate (String): Sets the minimum selectable date.
+* maxDate (String): Sets the maximum selectable date.
 
 ```html
 <!-- Admin flat-picker -->
-<x-admin::dropdown>
-    <x-slot:toggle>
-        Dropdown Toggle
-    </x-slot>
-
-    <x-slot:content class="!p-0">
-        Dropdown Content
-    </x-slot>
-</x-admin::dropdown>
+<x-admin::flat-picker.date ::allow-input="false">
+    <input
+        type="datetime"
+        name="test"
+        class="mb-4"
+        value="test"
+        placeholder="datetime"
+    />
+</x-admin::flat-picker.date>
 
 <!-- Shop flat-picker -->
 <x-shop::flat-picker.date ::allow-input="false">
@@ -261,7 +277,10 @@ To customize the content section, you can target the `content` slot with your ow
 </x-shop::flat-picker.date>
 ```
 
-- **Data Grid:** Let's assume you want to use the **`DataGrid`** component. You can call it like this.
+- **Data Grid:** Let's assume you want to use the **`datagrid`** component. You can call it like this.
+
+You can customize the appearance of the `DataGrid` by referring to the [DataGrid Customization](https://devdocs.bagisto.com/2.x/packages/datagrid.html#datagrid-customization) documentation.
+
 
 ```html
 <!-- Admin Datagrid -->
@@ -272,13 +291,21 @@ To customize the content section, you can target the `content` slot with your ow
 ```
 
 - **Tab:** Let's assume you want to use the **`Tab`** component on shop. You can call it like this.
+You can customize the tabs and their content as per your requirements.
+
+***props***
+* position (String): Specifies the position of the tabs. It accepts values such as 'left', 'right', or 'center'.
+
+***tab-item props***
+* title (String): Title of the tab.
+* is-selected (Boolean): Indicates whether the tab is selected or not (default is false).
 
 ```html
 <!-- Shop Tab -->
 <x-shop::tabs position="center">
     <x-shop::tabs.item
         class="container"
-        :title="trans('shop::app.general.tab-1')"
+        :title="Tab-1"
         :is-selected="true"
     >
         <div class="container mt-[60px] max-1180:px-[20px]">
@@ -290,7 +317,7 @@ To customize the content section, you can target the `content` slot with your ow
 
     <x-shop::tabs.item
         class="container"
-        :title="trans('shop::app.general.tab-2')"
+        :title="Tab-2"
     >
         <div class="container mt-[60px] max-1180:px-[20px]">
             <p class="text-[#6E6E6E] text-[18px] max-1180:text-[14px]">
@@ -311,8 +338,8 @@ To customize the content section, you can target the `content` slot with your ow
     name="content"
     rules="required"
     :value="old('content')"
-    :label="trans('admin::app.marketing.communications.templates.create.content')"
-    :placeholder="trans('admin::app.marketing.communications.templates.create.content')"
+    :label="Content"
+    :placeholder="Content"
     :tinymce="true"
 />
 
@@ -323,13 +350,13 @@ To customize the content section, you can target the `content` slot with your ow
     name="content"
     rules="required"
     :value="old('content')"
-    :label="trans('admin::app.marketing.communications.templates.create.content')"
-    :placeholder="trans('admin::app.marketing.communications.templates.create.content')"
+    :label="content"
+    :placeholder="Content"
     :tinymce="true"
 />
 ```
 
-- **Shimmer:** Let's assume you want to use the **`Shimmer`** component on shop. You can call it like this.
+- **Shimmer:** Let's assume you want to use the **`Shimmer`** component on shop. For all components, prebuilt shimmer effects are available in Bagisto. You can easily use them. You can call it like this.
 
 ```html
 <!-- Admin shimmer -->
@@ -339,13 +366,18 @@ To customize the content section, you can target the `content` slot with your ow
 <x-shop::shimmer.datagrid />
 
 ```
-- **SEO:** Let's assume you want to use the **`SEO`** component. You can call it like this,
+- **SEO:** Let's assume you want to use the **`SEO`** component. You can call it like this, It offers a convenient way to generate and display SEO-friendly content for web pages.
+
+You can pass `slug (String): URL slug for the page.` as a props .
 
 ```html 
-    <x-admin::seo />
+<x-admin::seo slug="page" />
 ```
 
 - **Quantity Changer:** Let's assume you want to use the **`Quantity Changer`** component on shop. You can call it like this.
+***props***
+* name (String): Name attribute for the hidden input field.
+* value (Number): Initial quantity value.
 
 ```html
 <!-- Shop Quantity changer -->
@@ -363,7 +395,16 @@ To customize the content section, you can target the `content` slot with your ow
 />
 ```
 
-- **Table:** Let's assume you want to use the **`Table`** component on shop. You can call it like this.
+- **Table:** Let's assume you want to use the **`Table`** component on shop.
+
+***Customization:-*** You can customize the appearance of these table elements using CSS. Below are some common customization options:
+
+* Table Styling: Apply custom styles to the `table` element to change its appearance, such as borders, padding, and background color.
+* Cell Styling: Customize the appearance of `th` and `td` elements using CSS, such as font size, text alignment, and background color.
+* Row Styling: Apply styles to `tr` elements to change their appearance, such as background color, hover effects, and borders.
+* Header Styling: Customize the appearance of the header cells within the `thead` section using `th` elements. Apply styles such as font weight, text color, and background color.
+
+You can call it like this.
 
 ```html
 <!-- Admin Table -->
