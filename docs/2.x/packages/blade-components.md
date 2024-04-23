@@ -62,14 +62,20 @@ If you want to use the above component in a Blade file, you can use the code sni
 
 ### Accordion
 
-Let's assume you want to use the **`accordion`** component, you can call it like this:
+Bagisto provides a collapsible accordion UI element, allowing users to toggle the visibility of content sections. It is commonly used for organizing and presenting information in a compact and intuitive manner.
 
-| Component           | Used For                                                      |
+| Props           | Description                                                      |
   | ------------- | ------------------------------------------------------------------------ |
-  | **`header`** | This is used for creating the accordion layout. |
-  | **`content`** | This is used for creating the breadcrumbs layout. |
+  | **`isActive`** | Determines the initial state of the accordion. |
 
-You can customize the appearance of the accordion `header` and `content` by passing additional CSS classes to the header and `content` slots, respectively.
+| Slots           | Description                                                      |
+  | ------------- | ------------------------------------------------------------------------ |
+  | **`header`** | Used to customize the header section of the accordion. |
+  | **`content`** | Used to customize the content section of the accordion. |
+
+You can customize the appearance of the accordion `header` and `content` by passing additional CSS classes to the header and content slots, respectively.
+
+Let's assume you want to use the **`accordion`** component, you can call it like this:
 
 ```html
 <!-- Admin Accordion -->
@@ -101,7 +107,16 @@ You can customize the appearance of the accordion `header` and `content` by pass
 </x-shop::accordion>
 ```
 
-- **Breadcrumbs:** Let's assume you want to use the **`breadcrumbs`** component. You can call it like this:
+### Breadcrumbs
+
+The breadcrumbs component generates `breadcrumb` navigation for the application.
+
+| Props           | Description                                                      |
+  | ------------- | ------------------------------------------------------------------------ |
+  | **`name`** | Name of the current page or resource. |
+  | **`entity`** | Entity associated with the current page. |
+
+Let's assume you want to use the **`breadcrumbs`** component. You can call it like this:
 
 ```html
 <!-- Shop Accordion -->
@@ -111,16 +126,26 @@ You can customize the appearance of the accordion `header` and `content` by pass
 />
 ```
 
-- **Button:** Let's assume you want to use the **`button`** component. You can call it like this:
+### Button
 
-You can customize the appearance of the button by passing additional props `loading`  `buttonType`  `buttonClass` respectively. 
+The `button` component in Bagisto provides a versatile button element that supports loading state with a spinner animation. It offers flexibility in styling and functionality to suit various use cases within your application.
 
+| Props           | Description                                                      |
+  | ------------- | ------------------------------------------------------------------------ |
+  | **`title`** | Title text displayed on the button. |
+  | **`loading`** | Indicates whether the button is in a loading state. |
+  | **`buttonType `** | Specifies the type of button. |
+  | **`buttonClass`** | Additional classes for custom styling. |
 
+You can customize the appearance of the button by passing additional props `loading`  `buttonType`  `buttonClass` respectively.
+
+Let's assume you want to use the **`button`** component. You can call it like this:
+ 
 ```html
 <!-- Admin Button -->
 <x-admin::button
     class="primary-button"
-    :title="trans('Button')"
+    :title="Button"
     ::loading="true"
     ::disabled="true"
 />
@@ -134,15 +159,19 @@ You can customize the appearance of the button by passing additional props `load
 />
 ```
 
-- **Charts:** Let's assume you want to use the **`charts`** component. You can call it like this.
+### Charts
+
+The `charts-bar` and `charts-line` components in Bagisto provide easy-to-use chart components for displaying bar and line charts respectively. These components are based on the Chart.js library and offer customization options for labels, datasets, and aspect ratio to create visually appealing charts in your Bagisto application.
+
+| Props           | Description                                                      |
+  | ------------- | ------------------------------------------------------------------------ |
+  | **`labels (array, required)`** | An array of labels for the x-axis of the chart. |
+  | **`loading (array, required)`** | An array of datasets containing data points for the chart. |
+  | **`aspectRatio (Number)`** | Aspect ratio of the chart (default is 3.23). |
 
 You can customize the appearance of the bar chart by providing different datasets with colors, labels, and data points. Additionally, you can adjust the aspect ratio of the chart by setting the aspect-ratio prop.
 
-**Props:**
-
-***labels*** (array, required): An array of labels for the x-axis of the chart.
-
-***datasets*** (array, required): An array of datasets containing data points for the chart.
+Let's assume you want to use the **`charts`** component. You can call it like this.
 
 ```html
 <!--
@@ -167,12 +196,30 @@ You can customize the appearance of the bar chart by providing different dataset
 />
 ```
 
-- **Drawer:** Let's assume you want to use the **`drawer`** component. You can call it like this.
+### Drawer
 
-You can customize the appearance of the Drawer by passing additional props `position`  `width`  `isActive` respectively.
+The `drawer` component in Bagisto provides a versatile drawer that can be positioned on the top, bottom, left, or right side of the screen. It allows you to create interactive drawers that can contain various content such as headers, body, and footer sections. The drawer can be toggled open or closed, providing a clean and efficient way to display additional information or functionality.
+
+| Props           | Description                                                      |
+  | ------------- | ------------------------------------------------------------------------ |
+  | **`isActive`** | Determines whether the drawer is initially active (default is `false`). |
+  | **`position`** | Specifies the position of the drawer (`top`, `bottom`, `left`, or `right`). |
+  | **`width`** | Specifies the width of the drawer (default is '500px'). |
+
+| Slots           | Description                                                      |
+  | ------------- | ------------------------------------------------------------------------ |
+  | **`toggle`** | Slot for the toggle button or element. |
+  | **`header`** | Slot for the header content. |
+  | **`content`** | Slot for the main content. |
+  | **`footer`** |  Slot for the footer content. |
+
+You can customize the appearance of the Drawer by passing additional props.
 
 * To customize the header section, you can target the `header` slot with your own CSS classes or styles.
 * Similarly, you can customize the content section using the `content` slot.
+* Similarly, you can customize the content section using the `footer` slot.
+
+Let's assume you want to use the **`drawer`** component. You can call it like this.
 
 ```html
 <!-- Admin Drawer -->
@@ -212,21 +259,42 @@ You can customize the appearance of the Drawer by passing additional props `posi
 </x-shop::drawer>
 ```
 
-- **Dropdown:** Let's assume you want to use the **`dropdown`** component. You can call it like this.
+### Dropdown
 
-It allows you to define the `position` of the dropdown and provides slots for the toggle button, content, and menu items.
+The `dropdown` component in Bagisto provides a customizable dropdown menu that can be positioned at different locations relative to its toggle button. It enables you to create dropdown menus with various content sections such as toggle button, content, and menu items.
+
+| Props           | Description                                                      |
+  | ------------- | ------------------------------------------------------------------------ |
+  | **`closeOnClick`** | Determines whether the dropdown should close when clicking outside the menu (default is `true`). |
+  | **`position`** | Specifies the position of the dropdown menu relative to the toggle button (`top-left`, `top-right`, `bottom-left`, `bottom-right`). |
+
+  | Slots           | Description                                                      |
+  | ------------- | ------------------------------------------------------------------------ |
+  | **`toggle`** | Slot for the toggle button or element.. |
+  | **`content`** | Slot for the main content. |
+  | **`menu`** | Slot for the menu items.. |
 
 To customize the content section, you can target the `content` slot with your own CSS classes or styles.
 
+Let's assume you want to use the **`dropdown`** component. You can call it like this.
+
 ```html
 <!-- Admin Dropdown -->
-<x-admin::dropdown position="bottom-left">  <!-- Defines the position of the dropdown menu. Default is "bottom-left" -->
+<x-admin::dropdown position="bottom-left"> 
     <x-slot:toggle>
         Dropdown Toggle
     </x-slot>
 
     <x-slot:content class="!p-0">
         Dropdown Content
+    </x-slot>
+
+    <x-slot:menu>
+        <x-admin::dropdown.menu.item
+            Menu Item 1
+            Menu Item 2
+        >
+        </x-admin::dropdown.menu.item>
     </x-slot>
 </x-admin::dropdown>
 
@@ -239,48 +307,71 @@ To customize the content section, you can target the `content` slot with your ow
     <x-slot:content class="!m-0">
         Dropdown Content
     </x-slot>
+
+    <x-slot:menu>
+        <x-sho::dropdown.menu.item
+            Menu Item 1
+            Menu Item 2
+        >
+        </x-shop::dropdown.menu.item>
+    </x-slot>
 </x-shop::dropdown>
 ```
 
-- **Flat-Picker:** Let's assume you want to use the **`flat-picker`** component. You can call it like this.
+### Flat-Picker
+
+The `datetime-picker` and `date-picker` components provide `date` and `time` picker functionality within Bagisto applications. These components are based on the Flatpickr library and offer customizable options for selecting dates and times.
+
 It can be configured with various props to customize its behavior according to application requirements.
 
-***Props***
-* name (String): Specifies the name attribute for the input element.
-* value (String): Represents the initial value of the date and time picker.
-* allowInput (Boolean): Indicates whether manual input of date and time values is allowed.
-* disable (Array): An array of dates to be disabled, preventing selection.
-* minDate (String): Sets the minimum selectable date.
-* maxDate (String): Sets the maximum selectable date.
+| Props           | Description                                                      |
+  | ------------- | ------------------------------------------------------------------------ |
+  | **`name`** | Name attribute for the input field. |
+  | **`value`** |  Initial value of the date picker. |
+  | **`allowInput`** | Determines whether manual input is allowed in the input field.. |
+  | **`disable`** |  Array of dates to disable. |
+  | **`minDate`** | Minimum selectable date. |
+  | **`maxDate`** | Maximum selectable date. |
+
+Let's assume you want to use the **`flat-picker`** component. You can call it like this.
 
 ```html
-<!-- Admin flat-picker -->
+<!-- Admin DateTime Picker -->
 <x-admin::flat-picker.date ::allow-input="false">
     <input
         type="datetime"
-        name="test"
+        name="datetime"
         class="mb-4"
-        value="test"
+        :value="selectedDateTime"
+        :disable="disabledDates"
+        minDate="today"
+        maxDate="2024-12-31"
         placeholder="datetime"
     />
 </x-admin::flat-picker.date>
 
-<!-- Shop flat-picker -->
+<!-- Shop Date picker -->
 <x-shop::flat-picker.date ::allow-input="false">
     <input
         type="date"
-        name="test"
+        name="date"
         class="mb-4"
-        value="test"
+        :allowInput="true"
+        :disable="disabledDates"
+        minDate="today"
+        maxDate="2024-12-31"
         placeholder="date"
     />
 </x-shop::flat-picker.date>
 ```
 
-- **Data Grid:** Let's assume you want to use the **`datagrid`** component. You can call it like this.
+### Data Grid
+
+The `datagrid` component in Bagisto applications provides a flexible and customizable data grid interface for displaying tabular data. It includes features such as `sorting`, `filtering`, `pagination`, and `mass actions` to manage data efficiently.
 
 You can customize the appearance of the `DataGrid` by referring to the [DataGrid Customization](https://devdocs.bagisto.com/2.x/packages/datagrid.html#datagrid-customization) documentation.
 
+Let's assume you want to use the **`datagrid`** component. You can call it like this.
 
 ```html
 <!-- Admin Datagrid -->
@@ -290,15 +381,22 @@ You can customize the appearance of the `DataGrid` by referring to the [DataGrid
 <x-shop::datagrid :src="route('shop.customers.account.orders.index')" />
 ```
 
-- **Tab:** Let's assume you want to use the **`Tab`** component on shop. You can call it like this.
-You can customize the tabs and their content as per your requirements.
+### Tabs 
 
-***props***
-* position (String): Specifies the position of the tabs. It accepts values such as 'left', 'right', or 'center'.
+The Tabs component allows users to navigate between different content sections using tabs. It consists of two main parts: the `tabs` component for managing the tabs and the `tab-item` component for defining individual tab items.
 
-***tab-item props***
-* title (String): Title of the tab.
-* is-selected (Boolean): Indicates whether the tab is selected or not (default is false).
+| Tab Props           | Description                                                      |
+  | ------------- | ------------------------------------------------------------------------ |
+  | **`position`** | Specifies the position of the tabs. It accepts values such as 'left', 'right', or 'center'. |
+
+| Tab Item Props           | Description                                                      |
+  | ------------- | ------------------------------------------------------------------------ |
+  | **`title`** |  Title of the tab. |
+  | **`is-selected`** | Indicates whether the tab is selected or not (default is `false`). |
+
+You can customize the tabs and their content as per your requirements. 
+
+Let's assume you want to use the **`tabs`** component on shop. You can call it like this.
 
 ```html
 <!-- Shop Tab -->
@@ -328,7 +426,17 @@ You can customize the tabs and their content as per your requirements.
 </x-shop::tabs>
 ```
 
-- **Tinymce:** Let's assume you want to use the **`Tinymce`** component on shop. You can call it like this.
+### Tinymce
+
+The `tinymce` component wraps the Tinymce editor and provides additional functionalities like AI content generation.
+
+| Props           | Description                                                      |
+  | ------------- | ------------------------------------------------------------------------ |
+  | **`selector`** | The CSS selector for the textarea element to initialize as Tinymce. |
+  | **`field`** | Vue Formulate field object. |
+  | **`prompt`** | The prompt to be used for AI content generation. |
+
+Let's assume you want to use the **`tinymce`** component on admin and shop. You can call it like this.
 
 ```html
 <!-- Admin Tinymce -->
@@ -341,6 +449,7 @@ You can customize the tabs and their content as per your requirements.
     :label="Content"
     :placeholder="Content"
     :tinymce="true"
+    :prompt="core()->getConfigData('general.magic_ai.content_generation.category_description_prompt')"
 />
 
 <!-- Shop Tinymce -->
@@ -356,7 +465,11 @@ You can customize the tabs and their content as per your requirements.
 />
 ```
 
-- **Shimmer:** Let's assume you want to use the **`Shimmer`** component on shop. For all components, prebuilt shimmer effects are available in Bagisto. You can easily use them. You can call it like this.
+### Shimmer
+
+Prebuilt `shimmer` effects are available in Bagisto. You can easily use them.
+
+Let's assume you want to use the **`shimmer`** You can call it like this.
 
 ```html
 <!-- Admin shimmer -->
@@ -366,45 +479,63 @@ You can customize the tabs and their content as per your requirements.
 <x-shop::shimmer.datagrid />
 
 ```
-- **SEO:** Let's assume you want to use the **`SEO`** component. You can call it like this, It offers a convenient way to generate and display SEO-friendly content for web pages.
 
-You can pass `slug (String): URL slug for the page.` as a props .
+### SEO
+
+The `seo` component, assists in managing SEO-related metadata for your pages. It dynamically updates the meta title and description based on user input and provides a preview of the generated SEO metadata.
+
+| Props           | Description                                                      |
+  | ------------- | ------------------------------------------------------------------------ |
+  | **`slug`** | URL slug for the page. |
+
+Let's assume you want to use the **`seo`** component. You can call it like this, It offers a convenient way to generate and display SEO-friendly content for web pages.
 
 ```html 
 <x-admin::seo slug="page" />
 ```
 
-- **Quantity Changer:** Let's assume you want to use the **`Quantity Changer`** component on shop. You can call it like this.
-***props***
-* name (String): Name attribute for the hidden input field.
-* value (Number): Initial quantity value.
+### Quantity Changer
+
+The Quantity Changer component, provides a simple interface for users to increase or decrease a quantity value. 
+
+| Props           | Description                                                      |
+  | ------------- | ------------------------------------------------------------------------ |
+  | **`name`** | The name attribute for the hidden input field. |
+  | **`value`** | The initial quantity value. |
+
+Let's assume you want to use the **`Quantity Changer`** component on shop. You can call it like this.
 
 ```html
-<!-- Shop Quantity changer -->
-<x-shop::quantity-changer
-    name="quantity"
-    value="1"
-    class="gap-x-4 rounded-xl px-7 py-4"
-/>
-
 <!-- Admin Quantity changer -->
 <x-admin::quantity-changer
     name="quantity"
     value="1"
     class="w-max gap-x-4 rounded-l px-4 py-1"
 />
+
+<!-- Shop Quantity changer -->
+<x-shop::quantity-changer
+    name="quantity"
+    value="1"
+    class="gap-x-4 rounded-xl px-7 py-4"
+/>
 ```
 
-- **Table:** Let's assume you want to use the **`Table`** component on shop.
+### Table
 
+Table component provides a structured way to display tabular data in Bagisto.
+
+* You can customize the appearance of these table elements using CSS. Below are some common customization options:
 ***Customization:-*** You can customize the appearance of these table elements using CSS. Below are some common customization options:
 
-* Table Styling: Apply custom styles to the `table` element to change its appearance, such as borders, padding, and background color.
-* Cell Styling: Customize the appearance of `th` and `td` elements using CSS, such as font size, text alignment, and background color.
-* Row Styling: Apply styles to `tr` elements to change their appearance, such as background color, hover effects, and borders.
-* Header Styling: Customize the appearance of the header cells within the `thead` section using `th` elements. Apply styles such as font weight, text color, and background color.
+| Styling           | Description                                                      |
+  | ------------- | ------------------------------------------------------------------------ |
+  | **`Table`** | Apply custom styles to the `table` element to change its appearance, such as borders, padding, and background color. |
+  | **`Cell`** | Customize the appearance of `th` and `td` elements using CSS, such as font size, text alignment, and background color. |
+  | **`Row`** | Apply styles to `tr` elements to change their appearance, such as background color, hover effects, and borders. |
+  | **`Header`** | Customize the appearance of the header cells within the `thead` section using `th` elements. Apply styles such as font weight, text color, and background color. |
 
-You can call it like this.
+Let's assume you want to use the **`Table`** component on shop. You can call it like this.
 
 ```html
 <!-- Admin Table -->
