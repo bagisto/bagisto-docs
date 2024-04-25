@@ -70,12 +70,12 @@ To learn in detail about Localization, you can visit the Laravel documentation [
 
   ::: details Admin Output
 
-  ![Translation Output](../../assets/1.5.x/images/package-development/blog-admin-lang-output.png)
+  ![Translation Output](../../assets/2.x/images/package-development/blog-admin-lang-output.png)
 
   :::
 
   ::: details Shop Output
 
-  ![Translation Output](../../assets/1.5.x/images/package-development/blog-shop-lang-output.png)
+  ![Translation Output](../../assets/2.x/images/package-development/blog-shop-lang-output.png)
 
   :::

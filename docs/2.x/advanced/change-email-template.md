@@ -103,4 +103,4 @@ Now you can test the modified email template.
 
 ## Email Template Sample
 
-![Email Template Sample](../../assets/1.5.x/images/advanced-topics/mail-sample.png)
+![Email Template Sample](../../assets/2.x/images/advanced-topics/mail-sample.png)
