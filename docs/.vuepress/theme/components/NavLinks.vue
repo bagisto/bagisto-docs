@@ -67,11 +67,11 @@ export default {
       version: '2.x',
     };
   },
-
+  
   mounted() {
     let currentPath = this.$route.path.split('/');
 
-    this.version = currentPath[1];
+    this.version = currentPath[1] || '2.x';
   },
 
   computed: {
