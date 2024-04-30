@@ -320,14 +320,40 @@ In **`Bagisto`**, we have the flexibility to tailor DataGrids to your specific n
 1. Start by extending the DataGrid template:
 
 ```html
-<x-admin::datagrid src="{{ route('admin.catalog.products.index') }}" :isMultiRow="true">
-    <template #header="{ columns, records, sortPage, selectAllRecords, applied, isLoading}">
-    </template>
+<x-admin::datagrid 
+    src="{{ route('admin.catalog.products.index') }}" 
+    :isMultiRow="true"
+>
+        <template #header="{
+            isLoading,
+            available,
+            applied,
+            selectAll,
+            sort,
+            performAction
+        }">
 
-    <template #body="{ columns, records, setCurrentSelectionMode, applied, isLoading }">
-    </template>
+        <template #body="{
+            isLoading,
+            available,
+            applied,
+            selectAll,
+            sort,
+            performAction
+        }">
 </x-admin::datagrid>
 ```
+
+  | Key           | Functionality                                                            |
+  | ------------- | ------------------------------------------------------------------------ |
+  | **`isLoading`** | This key provides information about whether the DataGrid is currently loading. |
+  | **`available`** | This key contains the available records in the DataGrid. |
+  | **`applied`**  | An object representing the currently applied filters, pagination, sorting, and mass actions. |
+  | **`selectAll`** | A function that selects or deselects all records in the datagrid. |
+  | **`sort`** | This is a function used to sort the datagrid based on a specified column. |
+  | **`performAction`** | This is a function triggered when an action is performed on a record in the datagrid, such as editing, deleting, or processing. |
+
+You can use these props to customize the appearance and behavior of the datagrid header, including handling loading states, applying filters, sorting data, selecting records, and performing actions on the entire dataset.
 
 2. Once you've completed this step, all the data within the DataGrid becomes accessible inside the template. At this point, you have the freedom to modify the DataGrid's functionality and its user interface to suit your preferences.
 
@@ -335,11 +361,3 @@ In **`Bagisto`**, we have the flexibility to tailor DataGrids to your specific n
 By customizing the DataGrid directly in the Blade file, you won't affect your default DataGrid. This means you can display the same DataGrid with various appearances and customize it by writing simple Vue.js code and using Tailwind CSS (since we use it in Bagisto).
 :::
 
-  | Key           | Functionality                                                            |
-  | ------------- | ------------------------------------------------------------------------ |
-  | **`columns`** | This key contains the columns of the DataGrid. |
-  | **`records`** | This key contains the records in the DataGrid. |
-  | **`sortPage`** | This key controls the sorting functionality for the page. |
-  | **`selectAllRecords`** | This is used to select multiple records for performing mass actions in the DataGrid. |
-  | **`applied`**  | This key contains the records of filters currently applied to the DataGrid. |
-  | **`isLoading`** | This key provides information about whether the DataGrid is currently loading. |
