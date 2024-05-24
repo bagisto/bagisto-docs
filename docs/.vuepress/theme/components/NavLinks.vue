@@ -31,6 +31,16 @@
       <OutboundLink />
     </a>
 
+    <a
+      :href="contactUs.link"
+      class="nav-item"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {{ contactUs.text }}
+      <OutboundLink />
+    </a>
+
     <div 
       class="nav-item" 
       v-if="$route.path.split('/')[1] !== ''"
@@ -145,7 +155,13 @@ export default {
       }
 
       return 'Source'
-    }
+    },
+
+    contactUs () {
+      const { contactUs } = this.$site.themeConfig;
+
+      return contactUs;
+    },
   },
 
   methods: {
