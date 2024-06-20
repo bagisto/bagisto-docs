@@ -92,7 +92,7 @@ The following changes have been implemented in Bagisto from version 1.x to 2.x:
 
 - Implemented customized data grids for improved data visualization and interaction.
 
-For more information, please visit the [Bagisto changelog on GitHub](https://github.com/bagisto/bagisto/blob/master/CHANGELOG.md).
+For more information, please visit the [Bagisto changelog on GitHub](https://github.com/bagisto/bagisto/blob/v2.2.0/CHANGELOG.md).
 
 
 #### Changes in the latest release
