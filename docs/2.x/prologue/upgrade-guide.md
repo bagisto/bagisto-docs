@@ -93,3 +93,10 @@ The following changes have been implemented in Bagisto from version 1.x to 2.x:
 - Implemented customized data grids for improved data visualization and interaction.
 
 For more information, please visit the [Bagisto changelog on GitHub](https://github.com/bagisto/bagisto/blob/master/CHANGELOG_v2.x.x.md).
+
+
+#### Changes in the latest release
+
+We are excited to announce the release of version [2.2.0](https://github.com/bagisto/bagisto/tree/v2.2.0) of Bagisto, which includes numerous enhancements and improvements. To ensure a smooth transition to this latest version, we have prepared a comprehensive upgrade guide.
+
+For the upgrade guide visit [Bagisto UPGRADE.md on GitHub](https://github.com/bagisto/bagisto/blob/v2.2.0/UPGRADE.md).
