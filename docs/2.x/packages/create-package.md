@@ -176,21 +176,21 @@ Add your package's namespace to the **`psr-4`** section in the **`composer.json`
 
 Register your package's service provider in the **`config/app.php`** file located in the root directory of your Bagisto application. Add the following line to the **`providers`** array:
 
-    ```php
-    <?php
+```php
+<?php
 
-    return [
-        
-        // Other configuration options
+return [
+    
+    // Other configuration options
 
-        'providers' => ServiceProvider::defaultProviders()->merge([
-            // Other service providers
-            Webkul\Blog\Providers\BlogServiceProvider::class,
-        ])->toArray(),
-        
-        // Other configuration options
-    ];
-    ```
+    'providers' => ServiceProvider::defaultProviders()->merge([
+        // Other service providers
+        Webkul\Blog\Providers\BlogServiceProvider::class,
+    ])->toArray(),
+    
+    // Other configuration options
+];
+```
 
 ### Run the Commands 
 
