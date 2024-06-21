@@ -8,17 +8,17 @@ To install Bagisto using our GUI installer, you can follow any of the following 
 
 #### Method 1:
 
-1. Choose the directory where you want to install Bagisto. Open your terminal and navigate to this directory. 
+- Choose the directory where you want to install Bagisto. Open your terminal and navigate to this directory. 
 
-2. Once you are in the desired directory, run the following command in your terminal to install Bagisto:
+- Once you are in the desired directory, run the following command in your terminal to install Bagisto:
 
     ```sh
     composer create-project bagisto/bagisto
     ```
 
-3. Configure your HTTP server to point to the **`public/`** directory of the project.
+- Configure your HTTP server to point to the **`public/`** directory of the project.
 
-4. Open your browser and access the following URL:
+- Open your browser and access the following URL:
 
     ```
     http://localhost/bagisto/public/
@@ -30,21 +30,21 @@ To install Bagisto using our GUI installer, you can follow any of the following 
 
 Otherwise you can download the zip file and install it using the following steps:
 
-1. [Download Bagisto](https://bagisto.com/en/download/) from our website.
+- [Download Bagisto](https://bagisto.com/en/download/) from our website.
 
-2. Extract the contents of the downloaded
+- Extract the contents of the downloaded
 
-3. Navigate to the project root directory.
+- Navigate to the project root directory.
 
-4. Run the following command:
+- Run the following command:
 
     ```sh
     composer create
     ```
 
-5. Configure your HTTP server to point to the **`public/`** directory of the project.
+- Configure your HTTP server to point to the **`public/`** directory of the project.
 
-6. Open your browser and access the following URL:
+- Open your browser and access the following URL:
 
     ```
     http://localhost/bagisto/public/
@@ -60,17 +60,17 @@ Ensure that Composer is installed on your system
 
 To install Bagisto using Composer, use the following steps:
 
-1. Choose the directory where you want to install Bagisto. Open your terminal and navigate to this directory. 
+- Choose the directory where you want to install Bagisto. Open your terminal and navigate to this directory. 
 
-2. Once you are in the desired directory, run the following command in your terminal to install Bagisto:
+- Once you are in the desired directory, run the following command in your terminal to install Bagisto:
 
-3. Run the following command:
+- Run the following command:
 
     ```sh
     composer create-project bagisto/bagisto
     ```
 
-4. Run the following command:
+- Run the following command:
 
     ```sh
     php artisan bagisto:install
