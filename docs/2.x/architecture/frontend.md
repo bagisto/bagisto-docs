@@ -1,4 +1,9 @@
-# Vue and Tailwind
+
+# Frontend
+
+Bagisto frontend built using Vue.js and Tailwind CSS. Vue.js provides a robust and flexible framework for building dynamic user interfaces, while Tailwind CSS offers a highly customizable, utility-first approach to styling. This combination allows for the rapid development of responsive, aesthetically pleasing, and highly interactive web applications.
+
+## Vue.js and Tailwind
 
 [Vue.js](https://vuejs.org/) and [Tailwind CSS](https://tailwindcss.com/) handles the complete UI of **Bagisto**.
 
@@ -10,6 +15,6 @@ In **vite.config.js** file, just define your [Vue.js](https://vuejs.org/) and pa
 
 In **tailwind.config.js** file, just define your blade file path along with .js file directory, [Tailwind CSS](https://tailwindcss.com/) will be responsible to compile all the css defined on the location.
 
-# Blade
+## Blade
 
 **Bagisto** utilizes the Blade template engine, which comes integrated with **Laravel**. It allows flexibility by permitting the use of both Blade components and plain PHP code within templates. This versatility empowers developers to craft dynamic and efficient solutions. For further insights into Bagisto's directory structure and package configuration, refer to the [documentation](https://devdocs.bagisto.com/2.x/packages/views.html#directory-structure).
