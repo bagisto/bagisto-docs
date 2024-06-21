@@ -2,17 +2,30 @@
 
 [[TOC]]
 
+## Introduction 
+
+A package is a self-contained module that encapsulates specific features or functionality, allowing developers to add custom features without altering the core codebase. This approach not only preserves the integrity of the core system but also ensures that updates and maintenance can be carried out smoothly.
+
+By developing packages, you can introduce new functionalities, integrate third-party services, or customize existing features to better meet your business requirements. Each package is isolated, promoting clean code practices and enabling easier debugging and testing.
+
+This guide will take you through the process of creating a package for Bagisto, from setting up the directory structure to defining configurations, routes, controllers, models, and views. By the end of this guide, you will have a solid understanding of how to develop and integrate packages into the Bagisto platform, enhancing its capabilities while maintaining a robust and maintainable codebase.
+
+## Prerequisites
+
+- A working Bagisto application
+- Composer installed
+
 ## Using Bagisto Package Generator
 
 To facilitate package development, you can use the [Bagisto Package Generator](https://github.com/bagisto/bagisto-package-generator). Follow the steps below to install it:
 
-1. Install the Bagisto Package Generator by running the following command in the root folder of your Bagisto application:
+- Install the Bagisto Package Generator by running the following command in the root folder of your Bagisto application:
 
    ```shell
    composer require bagisto/bagisto-package-generator
    ```
 
-2. Once installed, you can generate your package using the following command:
+- Once installed, you can generate your package using the following command:
 
     We will assume that the package name is "**Blog**".
 
@@ -34,7 +47,7 @@ To facilitate package development, you can use the [Bagisto Package Generator](h
 
 To register your package, follow these steps:
 
-1. Add your package's namespace to the **`psr-4`** section in the **`composer.json`** file located in the root directory of your Bagisto application. Update it as follows:
+Add your package's namespace to the **`psr-4`** section in the **`composer.json`** file located in the root directory of your Bagisto application. Update it as follows:
 
    ```json
    "autoload": {
@@ -46,30 +59,32 @@ To register your package, follow these steps:
    }
    ```
 
-2. Register your package's service provider in the **`config/app.php`** file located in the root directory of your Bagisto application. Add the following line to the **`providers`** array:
+Register your package's service provider in the **`config/app.php`** file located in the root directory of your Bagisto application. Add the following line to the **`providers`** array:
 
-    ```php
-    <?php
+```php
+<?php
 
-    return [
-        
-        // Other configuration options
+return [
+    
+    // Other configuration options
 
-        'providers' => ServiceProvider::defaultProviders()->merge([
-            // Other service providers
-            Webkul\Blog\Providers\BlogServiceProvider::class,
-        ])->toArray(),
-        
-        // Other configuration options
-    ];
-    ```
+    'providers' => ServiceProvider::defaultProviders()->merge([
+        // Other service providers
+        Webkul\Blog\Providers\BlogServiceProvider::class,
+    ])->toArray(),
+    
+    // Other configuration options
+];
+```
 
-3. Run the following commands to autoload your package and publish its assets and configurations:
+### Run the Commands 
+
+Run the following commands to autoload your package and publish its assets and configurations:
 
    ```shell
    composer dump-autoload
    php artisan optimize
-   php artisan vendor:publish --force
+   php artisan vendor:publish --provider=Webkul\Blog\Providers\BlogServiceProvider
    ```
 
    When prompted to select which items to publish, choose the number corresponding to **`"Webkul\Blog\Providers\BlogServiceProvider"`** and press enter to publish all assets and configurations.
@@ -82,7 +97,7 @@ If you prefer to set up your package manually, follow these steps assuming you a
 
 ### Create Package Directory
 
-1. Inside the **`packages/Webkul`** folder, create a folder with your package name. Your structure should look like this:
+Inside the **`packages/Webkul`** folder, create a folder with your package name. Your structure should look like this:
 
    ```
    └── packages
@@ -90,7 +105,7 @@ If you prefer to set up your package manually, follow these steps assuming you a
            └── Blog
    ```
 
-2. In your package folder, create a folder named as **`src`**. This is where you'll put all your package-related files. Your updated structure will look like this:
+In your package folder, create a folder named as **`src`**. This is where you'll put all your package-related files. Your updated structure will look like this:
 
    ```
    └── packages
@@ -101,7 +116,7 @@ If you prefer to set up your package manually, follow these steps assuming you a
 
 ### Create Service Provider
 
-1. In the **`src`** folder, create a folder named as **`Providers`**. Inside that folder, create a file named as **`BlogServiceProvider.php`**. Your structure should look like this:
+In the **`src`** folder, create a folder named as **`Providers`**. Inside that folder, create a file named as **`BlogServiceProvider.php`**. Your structure should look like this:
 
    ```
    └── packages
@@ -112,7 +127,7 @@ If you prefer to set up your package manually, follow these steps assuming you a
                        └── BlogServiceProvider.php
    ```
 
-2. Copy the following code and paste it into **`BlogServiceProvider.php`**:
+Copy the following code and paste it into **`BlogServiceProvider.php`**:
 
    ```php
    <?php
@@ -147,7 +162,7 @@ If you prefer to set up your package manually, follow these steps assuming you a
 
 ### Register Your Package
 
-1. Add your package's namespace to the **`psr-4`** section in the **`composer.json`** file located in the root directory of your Bagisto application. Update it as follows:
+Add your package's namespace to the **`psr-4`** section in the **`composer.json`** file located in the root directory of your Bagisto application. Update it as follows:
 
    ```json
    "autoload": {
@@ -159,7 +174,7 @@ If you prefer to set up your package manually, follow these steps assuming you a
    }
    ```
 
-2. Register your package's service provider in the **`config/app.php`** file located in the root directory of your Bagisto application. Add the following line to the **`providers`** array:
+Register your package's service provider in the **`config/app.php`** file located in the root directory of your Bagisto application. Add the following line to the **`providers`** array:
 
     ```php
     <?php
@@ -177,7 +192,9 @@ If you prefer to set up your package manually, follow these steps assuming you a
     ];
     ```
 
-3. Run the following command to autoload your package:
+### Run the Commands 
+
+Run the following command to autoload your package:
 
    ```shell
    composer dump-autoload
