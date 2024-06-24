@@ -54,7 +54,7 @@ module.exports = [
             ['packages/create-package', 'Getting Started'],
             ['packages/create-migrations', 'Migrations'],
             ['packages/create-models', 'Models'],
-            ['packages/store-data-through-repositories', 'Repository'],
+            ['packages/store-data-through-repositories', 'Repositories'],
             ['packages/routes', 'Routes'],
             ['packages/controllers', 'Controllers'],
             ['packages/views', 'Views'],

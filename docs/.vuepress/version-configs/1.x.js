@@ -37,7 +37,7 @@ module.exports = [
             ['packages/create-acl', 'Access control list'],
             ['packages/create-custom-configuration', 'Create custom configuration'],
             ['packages/create-models', 'Create models'],
-            ['packages/store-data-through-repositories', 'Store data through repositories'],
+            ['packages/store-data-through-repositories', 'Repositories'],
         ])
     },
     {
