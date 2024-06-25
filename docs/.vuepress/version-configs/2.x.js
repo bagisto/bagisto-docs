@@ -98,15 +98,6 @@ module.exports = [
         ])
     },
     {
-        title: 'Features',
-        path: setVersionPrefix('features'),
-        collapsable: true,
-        children: setVersionPrefix([
-            ['features/notification', 'Real Time Notification'],
-            ['features/integrate-image-search-in-theme', 'Image Search']
-        ])
-    },
-    {
         title: 'Bagisto APIs',
         path: setVersionPrefix('api'),
         collapsable: true,
