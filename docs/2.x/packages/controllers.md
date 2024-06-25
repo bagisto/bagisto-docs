@@ -95,7 +95,7 @@ In `packages/Webkul/Blog/src/Http/Controllers/Admin/PostController.php`, define 
       {
           $blogs = $this->postRepository->all();
 
-          return view('blog::admin.index', ['blogs' => $blogs]);
+          return view('blog::admin.index', compact('blogs'));
       }
 
       /**
@@ -169,7 +169,7 @@ In `packages/Webkul/Blog/src/Http/Controllers/Shop/PostController.php`, define t
       {
           $blogs = $this->postRepository->with(['author'])->all();
 
-          return view('blog::shop.index', ['blogs' => $blogs]);
+          return view('blog::shop.index', compact('blogs'));
       }
 
       /**
