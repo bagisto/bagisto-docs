@@ -112,3 +112,19 @@ php artisan optimize:clear
 ```
 
 After completing these steps, your custom menu item (Blogs) with its associated route and icon should appear within the admin panel of Bagisto.
+
+## Level of Admin Menu
+
+In Bagisto, the admin menu offers three levels of navigation to organize and access different sections and features efficiently:
+
+### First Level (Sidebar): 
+This level appears in the sidebar and contains the primary menu items. These are the main sections of the admin panel, such as Dashboard, Catalog, and Sales.
+
+### Second Level (Hover Menu): 
+When you hover over an item in the first-level sidebar menu, the second level appears. This level contains sub-items related to the main section, providing more specific options. For example, hovering over "Catalog" might show options like Products, Categories, and Attributes.
+
+### Third Level (Tabs):
+
+The third level is presented as tabs within the second-level menu item. When you select a sub-item from the second level, it might open a page with additional tabs for further navigation. These tabs allow for deeper, more granular control and management within a specific section, such as different tabs for managing various attributes of a product.
+
+By utilizing these three levels of navigation, Bagisto ensures a structured and intuitive user interface, making it easier to manage complex administrative tasks.

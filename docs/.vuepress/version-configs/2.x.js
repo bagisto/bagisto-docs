@@ -63,7 +63,6 @@ module.exports = [
             ['packages/layouts', 'Layouts'],
             ['packages/bundling-assets', 'Bundling Assets'],
             ['packages/add-menu-in-admin', 'Admin Menu'],
-            ['packages/customize-hompepage-menu.md', 'Homepage Menu'],
             ['packages/validation', 'Validation'],
             ['packages/datagrid', 'DataGrid'],
             ['packages/create-acl', 'Access Control List'],

@@ -4,11 +4,11 @@
 
 ## Introduction
 
-A DataGrid is a concept of displaying your database records in a tabular format. It is a powerful tool that helps you present large amounts of data in an organized way. At Bagisto, we have implemented this feature, which allows you to use it to display data in a tabular format or write code from scratch to display data. In addition to the basic functionality of DataGrid, we have also implemented additional features such as sorting, filtering, and mass action, which are explained in detail below.
+A DataGrid is a powerful tool for displaying database records in a tabular format, making it easier to present and manage large amounts of data in an organized manner. In Bagisto, the DataGrid feature enables you to display data efficiently, with built-in functionalities like sorting, filtering, and mass actions. These additional features enhance the basic functionality of DataGrid, allowing you to interact with and manage data seamlessly. Whether you use the pre-built DataGrid or write your own custom implementation, Bagisto’s DataGrid provides a robust solution for data presentation and manipulation.
 
 ## Global Properties of DataGrid
 
-Here are the global properties of the DataGrid:
+The DataGrid in Bagisto has several global properties that enhance its functionality and customization. Below are the key properties and their purposes:
 
 | Property          | Functionality                                                                                                                                                                                                  |
 | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
