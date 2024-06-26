@@ -61,7 +61,7 @@ module.exports = [
             ['packages/localization', 'Localization'],
             ['packages/blade-components', 'Blade Components'],
             ['packages/layouts', 'Layouts'],
-            ['packages/assets', 'Assets'],
+            ['packages/bundling-assets', 'Bundling Assets'],
             ['packages/add-menu-in-admin', 'Admin Menu'],
             ['packages/customize-hompepage-menu.md', 'Homepage Menu'],
             ['packages/validation', 'Validation'],
