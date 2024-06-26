@@ -2,7 +2,11 @@
 
 [[TOC]]
 
-This section provides an overview of menu items, how to access them, and how they can be customized. Both the **`default`** and **`velocity`** themes display categories in the menu items.
+# Introduction
+
+The homepage menu in Bagisto's Velocity theme is a crucial component of the storefront, providing users with seamless navigation through various categories. This section offers a comprehensive overview of how to access and customize these menu items to enhance the user experience by effectively organizing products.
+
+To access and manipulate the categories displayed in the menu, developers can utilize the `CategoryRepository` class located in the `Webkul\Category\Repositories\CategoryRepository` namespace. This repository class offers several methods for retrieving and managing category data. One particularly useful method is getVisibleCategoryTree, which returns a list of all visible categories under a specified root category.
 
 ## Accessing Categories
 
