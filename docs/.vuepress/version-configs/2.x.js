@@ -66,7 +66,7 @@ module.exports = [
             ['packages/validation', 'Validation'],
             ['packages/datagrid', 'DataGrid'],
             ['packages/create-acl', 'Access Control List'],
-            ['packages/create-custom-configuration', 'Custom Configuration'],
+            ['packages/create-system-configuration', 'System Configuration'],
             ['packages/create-data-import', 'Data Transfer']
         ])
     },
