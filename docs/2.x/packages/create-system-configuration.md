@@ -288,4 +288,126 @@ return [
 ];
 ```
 
+## Dependent Fields
+
+The `depends` feature in Bagisto's configuration system allows you to conditionally display or enable certain configuration fields based on the value of other fields. This feature is particularly useful for creating dynamic and context-sensitive configuration forms in the admin panel.
+
+The `depends` attribute is used within the configuration array of a setting to specify a condition under which the setting should be enabled or visible. It evaluates the value of another field in real-time and adjusts the display or behavior of the current field accordingly.
+
+Consider the following example configuration snippet:
+```php
+return [
+    'key'    => 'sales.order_settings.minimum_order',
+    'name'   => 'admin::app.configuration.index.sales.order-settings.minimum-order.title',
+    'info'   => 'admin::app.configuration.index.sales.order-settings.minimum-order.info',
+    'sort'   => 1,
+    'fields' => [
+        [
+            'name'          => 'enable',
+            'title'         => 'admin::app.configuration.index.sales.order-settings.minimum-order.enable',
+            'type'          => 'boolean',
+        ], [
+            'name'          => 'minimum_order_amount',
+            'title'         => 'admin::app.configuration.index.sales.order-settings.minimum-order.minimum-order-amount',
+            'type'          => 'number',
+            'validation'    => 'required_if:enable,1|numeric',
+            'depends'       => 'enable:1',
+            'channel_based' => true,
+        ], [
+            'name'          => 'include_discount_amount',
+            'title'         => 'admin::app.configuration.index.sales.order-settings.minimum-order.include-discount-amount',
+            'type'          => 'boolean',
+            'depends'       => 'enable:1',
+        ], [
+            'name'          => 'include_tax_to_amount',
+            'title'         => 'admin::app.configuration.index.sales.order-settings.minimum-order.include-tax-amount',
+            'type'          => 'boolean',
+            'depends'       => 'enable:1',
+        ], [
+            'name'          => 'description',
+            'title'         => 'admin::app.configuration.index.sales.order-settings.minimum-order.description',
+            'type'          => 'textarea',
+            'depends'       => 'enable:1',
+            'channel_based' => true,
+        ],
+    ],
+],
+
+```
+
+#### Explanation 
+
+- The `active` field determines if the "Free Shipping" method is enabled.
+
+- If `active` is set to `1`(true), the `title` field becomes required and is displayed. The depends attribute ensures that the title field is only shown if the shipping method is active.
+
+- The `description` field is always displayed but is both channel and locale-based, meaning its value can vary by channel and language.
+
+## Validations in Bagisto Configuration
+
+In Bagisto, validations are defined in the configuration array for each field under the `validation` key. These validations follow Laravel's validation rules, providing a robust way to enforce data integrity.
+
+- `required` Ensures the field is not empty.
+
+- `string` Ensures the field contains a string.
+
+- `Integer` Ensures the field contains an integer.
+
+- `boolean` Ensures the field contains a boolean value (true or false).
+
+- `numeric` Ensures the field contains an numeric value.
+
+- `email` Ensures the field contains a valid email address.
+
+- `mimes` Ensures the uploaded file is of a specific MIME type.
+
+- `max` Ensures the field contains a value not greater than a specified maximum.
+
+- `min` Ensures the field contains a value not less than a specified minimum.
+
+- `required_if` Ensures the field is required if another field has a specific value.
+
+#### Example Configuration with Validations
+
+```php
+return [
+    [
+        'key'    => 'general.general.custom-settings',
+        'name'   => 'admin::app.admin.system.custom-settings',
+        'sort'   => 1,
+        'fields' => [
+            [
+                'name'       => 'site_title',
+                'title'      => 'admin::app.admin.system.site-title',
+                'type'       => 'text',
+                'validation' => 'required|string|max:255',
+            ],
+            [
+                'name'       => 'admin_email',
+                'title'      => 'admin::app.admin.system.admin-email',
+                'type'       => 'email',
+                'validation' => 'required|email',
+            ],
+            [
+                'name'       => 'max_upload_size',
+                'title'      => 'admin::app.admin.system.max-upload-size',
+                'type'       => 'number',
+                'validation' => 'required|integer|min:1|max:1024',
+            ],
+            [
+                'name'       => 'enable_feature',
+                'title'      => 'admin::app.admin.system.enable-feature',
+                'type'       => 'boolean',
+                'validation' => 'required|boolean',
+            ],
+            [
+                'name'       => 'upload_file',
+                'title'      => 'admin::app.admin.system.upload-file',
+                'type'       => 'file',
+                'validation' => 'required|mimes:jpeg,jpg,png|max:2048',
+            ],
+        ],
+    ],
+];
+```
 By following these steps and examples, you can create and manage custom configurations in Bagisto effectively, ensuring a flexible and tailored experience for your e-commerce platform.
