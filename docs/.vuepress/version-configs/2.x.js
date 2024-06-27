@@ -66,8 +66,7 @@ module.exports = [
             ['packages/validation', 'Validation'],
             ['packages/datagrid', 'DataGrid'],
             ['packages/create-acl', 'Access Control List'],
-            ['packages/create-system-configuration', 'System Configuration'],
-            ['packages/create-data-import', 'Data Transfer']
+            ['packages/create-system-configuration', 'System Configuration']
         ])
     },
     {
@@ -85,6 +84,7 @@ module.exports = [
             ['advanced/change-email-template.md', 'Email Template'],
             ['advanced/indexing-products-to-elasticsearch.md', 'Configure Elasticsearch'],
             ['advanced/security-practice', 'Best Security Practices'],
+            ['advanced/create-data-import', 'Data Transfer']
         ])
     },
     {
