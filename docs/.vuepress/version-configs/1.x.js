@@ -63,7 +63,7 @@ module.exports = [
         collapsable: true,
         children: setVersionPrefix([
             ['themes/tracer', 'Blade file tracer'],
-            ['themes/create-theme', 'Create a store theme'],
+            ['themes/create-store-theme', 'Create a store theme'],
             ['themes/create-admin-theme', 'Create an admin theme'],
             ['themes/change-email-template.md', 'Change email template'],
             ['themes/customize-hompepage-menu.md', 'Customize homepage menu'],

@@ -2,6 +2,10 @@
 
 [[TOC]]
 
+## Introduction 
+
+Elasticsearch is a powerful distributed search and analytics engine, built on Apache Lucene, designed for scalability and real-time data processing. It excels at fast full-text search, complex querying, and handling large volumes of data with high availability. Elasticsearch is widely used for applications requiring robust search capabilities, from real-time logging and analytics to e-commerce product search and personalized recommendations.
+
 In this section, we will explain how to configure Elasticsearch for indexing products from the database.
 
 ## Environment Setup
@@ -36,6 +40,8 @@ Alternatively, you can use the curl command:
 curl -X GET 'http://localhost:9200'
 ```
 
+This command should return a similar JSON response, confirming Elasticsearch's availability and version details.
+
 ## Configuration Setup
 
   ::: tip Note
@@ -45,83 +51,93 @@ This configuration is for the latest version 2.1.0
 To configure Elasticsearch, you can set the necessary value in the `config/elasticsearch.php` file of your project.
 
 
-- **Default Connection**: The `connection` key specifies the default Elasticsearch connection to use when building a client.
-    ```php
-    /**
-     * Here you can specify the connection to use when building a client.
-     */
-    'connection' => 'default',
-    ```
-- **Available Connections**: You can define multiple Elasticsearch connections with different configurations under the connections array.
+### Default Connection
+The `connection` key specifies the default Elasticsearch connection to use when building a client.
 
-    ```php
-   /**
-     * These are the available connections parameters that you can use to connect
-     */
-    'default' => [
-        'hosts' => [
-            env('ELASTICSEARCH_HOST', 'http://localhost:9200'),
-        ],
+```php
+/**
+ * Here you can specify the connection to use when building a client.
+ */
+'connection' => 'default',
+```
 
-        'user'   => env('ELASTICSEARCH_USER', null),
-        'pass'   => env('ELASTICSEARCH_PASS', null),
+### Available Connections
+You can define multiple Elasticsearch connections with different configurations under the connections array.
+
+```php
+/**
+ * These are the available connections parameters that you can use to connect
+ */
+'default' => [
+    'hosts' => [
+        env('ELASTICSEARCH_HOST', 'http://localhost:9200'),
     ],
-    ```
 
-- **API Key Authentication**: You can connect with API key authentication by setting the `api` key instead of the `user` and `pass` keys.
+    'user'   => env('ELASTICSEARCH_USER', null),
+    'pass'   => env('ELASTICSEARCH_PASS', null),
+],
+```
 
-    ```php
-    'api' => [
-        'hosts' => [
-            env('ELASTICSEARCH_HOST', null),
-        ],
+### API Key Authentication
+You can connect with API key authentication by setting the `api` key instead of the `user` and `pass` keys.
 
-        'key'   => env('ELASTICSEARCH_API_KEY', null),
+```php
+'api' => [
+    'hosts' => [
+        env('ELASTICSEARCH_HOST', null),
     ],
-    ```
 
-- **Elasticsearch Cloud**:  You can connect to Elastic Cloud with the Cloud ID using the `cloud` key
+    'key'   => env('ELASTICSEARCH_API_KEY', null),
+],
+```
 
-    ```php
-    'cloud' => [
-        'id'      => env('ELASTICSEARCH_CLOUD_ID', null),
+### Elasticsearch Cloud
+You can connect to Elastic Cloud with the Cloud ID using the `cloud` key
 
-        /**
-         * If you are authenticating with API KEY then set user and pass as null
-         */
-        'api_key' => env('ELASTICSEARCH_API_KEY', null),
+```php
+'cloud' => [
+    'id'      => env('ELASTICSEARCH_CLOUD_ID', null),
 
-        /**
-         * If you are authenticating with username and password then set api_key as null
-         */
-        'user'    => env('ELASTICSEARCH_USER', null),
-        'pass'    => env('ELASTICSEARCH_PASS', null),
-    ],
-    ```
-- **CA Bundle**:  The `caBundle` option allows you to specify the path to the CA Bundle certificate if required for SSL/TLS connections.
-
-    ```php
     /**
-     * If you have the http_ca.crt certificate copied during the start of Elasticsearch
-     * then the path here
-     *
-     * @see https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/connecting.html#auth-http
+     * If you are authenticating with API KEY then set user and pass as null
      */
-    'caBundle' => null,
-    ```
+    'api_key' => env('ELASTICSEARCH_API_KEY', null),
 
-- **Retries**:  The `retries` option controls the number of times the client will retry requests. By default, it retries as many times as there are nodes in the Elasticsearch cluster.
-
-    ```php
     /**
-     * By default, the client will retry n times, where n = number of nodes in
-     * your cluster. If you would like to disable retries, or change the number,
-     * you can do so here.
-     *
-     * @see https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/set-retries.html
+     * If you are authenticating with username and password then set api_key as null
      */
-    'retries' => null,
-    ```
+    'user'    => env('ELASTICSEARCH_USER', null),
+    'pass'    => env('ELASTICSEARCH_PASS', null),
+],
+```
+
+### CA Bundle
+The `caBundle` option allows you to specify the path to the CA Bundle certificate if required for SSL/TLS connections.
+
+```php
+/**
+ * If you have the http_ca.crt certificate copied during the start of Elasticsearch
+ * then the path here
+ *
+ * @see https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/connecting.html#auth-http
+ */
+'caBundle' => null,
+```
+
+### Retries  
+
+The `retries` option controls the number of times the client will retry requests. By default, it retries as many times as there are nodes in the Elasticsearch cluster.
+
+```php
+/**
+ * By default, the client will retry n times, where n = number of nodes in
+ * your cluster. If you would like to disable retries, or change the number,
+ * you can do so here.
+ *
+ * @see https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/set-retries.html
+ */
+'retries' => null,
+```
 
 ::: tip Not
 Below are the essential configuration details for setting up Elasticsearch in version 2.0.0

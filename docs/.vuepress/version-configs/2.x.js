@@ -92,7 +92,7 @@ module.exports = [
         path: setVersionPrefix('themes'),
         collapsable: true,
         children: setVersionPrefix([
-            ['themes/create-theme', 'Store Theme'],
+            ['themes/create-store-theme', 'Store Theme'],
             ['themes/create-admin-theme', 'Admin Theme'],
         ])
     },
