@@ -4,13 +4,13 @@
 
 ## Introduction
 
-In this section, we will explain how to customize the email templates in Bagisto. Customizing email templates allows you to personalize the appearance of your emails according to your preferences.
+In this section, we'll guide you through the process of customizing email templates in Bagisto. Customizing email templates allows you to personalize the appearance and content of email notifications sent from your Bagisto application.
 
 ## Email Template Flow
 
-Before we dive into template customization, let's understand how email templates work in Bagisto.
+Before customizing, let's understand how email templates work in Bagisto. Bagisto uses mail notification classes located in namespaces like `Webkul\Admin\Mail`. These classes, such as `CancelOrderAdminNotification`, extend Laravel's `Mailable` class and define the email's structure and data.
 
-Bagisto provides various mail notification classes, such as **`CancelOrderAdminNotification`** and **`NewCustomerNotification`**, located in the **`Webkul\Admin\Mail`** namespace. Let's take the **`CancelOrderAdminNotification`** class as an example.
+Here's an example from `CancelOrderAdminNotification`:
 
 ```php
 <?php
@@ -58,9 +58,11 @@ class CancelOrderAdminNotification extends Mailable
 }
 ```
 
-In the **`build()`** method of the above class, you can see that the main view file, **`view('shop::emails.sales.order-cancel-admin')`**, is loaded from the shop package.
+In the `build()` method, the email view `shop::emails.sales.order-cancel-admin` is specified, which is located in the package's view directory.
 
-Now, let's explore the view file mentioned in **`view('shop::emails.sales.order-cancel-admin')`**. If you check the file at the path **`packages/Webkul/Shop/src/Resources/views/emails/sales/order-cancel-admin.blade.php`**, you will find it. This view file uses the main layout component **`shop::emails.layouts.master`**.
+The view file `order-cancel-admin.blade.php` typically includes a layout component, such as `shop::emails.layouts.master`.
+
+Now, let's explore the view file mentioned in `view('shop::emails.sales.order-cancel-admin')`. If you check the file at the path `packages/Webkul/Shop/src/Resources/views/emails/sales/order-cancel-admin.blade.php`, you will find it. This view file uses the main layout component `shop::emails.layouts.master`.
 
 ```php
 @component('shop::emails.layouts.master')
@@ -72,13 +74,17 @@ This layout component is responsible for the overall email layout. If desired, y
 
 ## Changing Email Template
 
+To customize an email template in Bagisto, follow these steps:
+
+### Override the View
+
 To customize the email template, the recommended approach is to override the package's view. Since all email views are defined in the shop package, we need to override the view within the shop package.
 
-Here's how you can override the view for the same file we mentioned above, **`view('shop::emails.sales.order-cancel-admin')`**.
+Here's how you can override the view for the same file we mentioned above, `view('shop::emails.sales.order-cancel-admin')`.
 
-Bagisto registers two locations for views: the application's **`resources/themes`** directory specified in **`config/themes.php`**, and the directory you specify. If you are using the default theme, **`shop`** package, Bagisto will first check if a custom version of the view exists in the **`resources/themes/default`** directory. If the view has not been customized, Bagisto will then search the package's view directory.
+Bagisto registers two locations for views: the application's `resources/themes` directory specified in `config/themes.php`, and the directory you specify. If you are using the default theme, `shop` package, Bagisto will first check if a custom version of the view exists in the`resources/themes/default` directory. If the view has not been customized, Bagisto will then search the package's view directory.
 
-To override the view, create the same directory structure in the application's **`resources/themes/default`** directory:
+To override the view, create the same directory structure in the application's `resources/themes/default` directory:
 
 ```
 - resources/
@@ -90,17 +96,16 @@ To override the view, create the same directory structure in the application's *
                       └── order-cancel-admin.blade.php
 ```
 
-For example, create a file named **`order-cancel-admin.blade.php`** within the **`sales`** directory, and modify its content as desired:
+For example, create a file named `order-cancel-admin.blade.php` within the `sales` directory, and modify its content as desired:
 
 ```blade
 
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum porro cumque numquam neque dicta quo, accusantium, perferendis sed beatae nesc
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum porro cumque numquam neque dicta quo, accusantium, perferendis sed beatae nesc
 
-    iunt eum impedit vel doloribus dolor excepturi vero tenetur perspiciatis saepe?
+iunt eum impedit vel doloribus dolor excepturi vero tenetur perspiciatis saepe?
 ```
 
-Now you can test the modified email template.
+### Test Your Template
 
-## Email Template Sample
+After customizing the template, test it by triggering the relevant email notification from your Bagisto application to verify that the changes are applied correctly.
 
-![Email Template Sample](../../assets/2.x/images/advanced-topics/mail-sample.png)

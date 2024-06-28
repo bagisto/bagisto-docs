@@ -22,7 +22,7 @@ core()->version()
 
 The `core()->getAllChannels()` method is a helper function in Bagisto that retrieves all the available channels in the application. Channels in Bagisto represent different storefronts or websites, allowing for multi-channel retailing from a single Bagisto installation. This method is useful for obtaining a list of all configured channels, which can be utilized in various parts of the application.
 
-To get all the channels in your Bagisto application, you can use the core()->getAllChannels() method as shown below
+To get all the channels in your Bagisto application, you can use the `core()->getAllChannels()` method as shown below
 
 ```php
 core()->getAllChannels()
@@ -30,7 +30,7 @@ core()->getAllChannels()
 
 ### Get current channel models
 
-The core()->getCurrentChannel() method is a helper function in Bagisto that retrieves the current channel being accessed in the application. Channels in Bagisto represent different storefronts or websites, allowing for multi-channel retailing from a single installation. This method is useful for obtaining details about the specific channel currently in use.
+The `core()->getCurrentChannel()` method is a helper function in Bagisto that retrieves the current channel being accessed in the application. Channels in Bagisto represent different storefronts or websites, allowing for multi-channel retailing from a single installation. This method is useful for obtaining details about the specific channel currently in use.
 
 ```php
 core()->getCurrentChannel()
@@ -293,7 +293,7 @@ core()->formatBasePrice($price, $isEncoded = false)
 
 ### Checks if current date of the given channel (in the channel timezone) is within the range
 
-The core()->isChannelDateInInterval($dateFrom = null, $dateTo = null) function in Bagisto checks if the current date of the given channel (considering the channel's timezone) falls within the specified date range.
+The `core()->isChannelDateInInterval($dateFrom = null, $dateTo = null)` function in Bagisto checks if the current date of the given channel (considering the channel's timezone) falls within the specified date range.
 
 ```php
 core()->isChannelDateInInterval($dateFrom = null, $dateTo = null)
@@ -337,7 +337,7 @@ core()->getConfigData($field, $channel = null, $locale = null)
 
 ### Retrieve all countries
 
-To retrieve all countries in Bagisto, you can use the core()->countries() function. Here's how you can fetch and utilize this data:
+To retrieve all countries in Bagisto, you can use the `core()->countries()` function. Here's how you can fetch and utilize this data:
 
 ```php
 core()->countries()
@@ -345,7 +345,7 @@ core()->countries()
 
 ### Get country name by code
 
-To get the country name by its ISO 3166-1 alpha-2 code in Bagisto, you can use the core()->country_name($code) function. Here's how you can use it
+To get the country name by its ISO 3166-1 alpha-2 code in Bagisto, you can use the `core()->country_name($code)` function. Here's how you can use it
 
 ```php
 core()->country_name($code)
@@ -433,7 +433,7 @@ core()->sortItems($items)
 
 ### Get config field
 
-You can retrieve a specific configuration field value using a method like core()->getConfigField($fieldName)
+You can retrieve a specific configuration field value using a method like `core()->getConfigField($fieldName)`
 
 ```php
 core()->getConfigField($fieldName)
@@ -499,7 +499,7 @@ core()->getSenderEmailDetails()
 
 ### Get Admin email details
 
-To retrieve the admin email details in Bagisto, you typically need to access the configuration settings where these details are stored. Here’s how you can conceptualize and implement the core()->getAdminEmailDetails() function:
+To retrieve the admin email details in Bagisto, you typically need to access the configuration settings where these details are stored. Here’s how you can conceptualize and implement the `core()->getAdminEmailDetails()` function:
 
 ```php
 core()->getAdminEmailDetails()
