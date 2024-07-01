@@ -35,9 +35,9 @@ module.exports = [
             ['packages/create-migrations', 'Create migrations'],
             ['packages/add-menu-in-admin', 'Add menu in admin'],
             ['packages/create-acl', 'Access control list'],
-            ['packages/create-custom-configuration', 'Create custom configuration'],
+            ['packages/create-system-configuration', 'System Configuration'],
             ['packages/create-models', 'Create models'],
-            ['packages/store-data-through-repositories', 'Store data through repositories'],
+            ['packages/store-data-through-repositories', 'Repositories'],
         ])
     },
     {
@@ -63,7 +63,7 @@ module.exports = [
         collapsable: true,
         children: setVersionPrefix([
             ['themes/tracer', 'Blade file tracer'],
-            ['themes/create-theme', 'Create a store theme'],
+            ['themes/create-store-theme', 'Create a store theme'],
             ['themes/create-admin-theme', 'Create an admin theme'],
             ['themes/change-email-template.md', 'Change email template'],
             ['themes/customize-hompepage-menu.md', 'Customize homepage menu'],

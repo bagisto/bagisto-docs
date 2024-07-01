@@ -2,118 +2,130 @@
 
 [[TOC]]
 
+## Introduction
+
+In Bagisto, the flexibility to customize the look and feel of your admin panel allows you to create a more personalized and efficient backend experience. This guide provides a step-by-step process to configure and create a new admin theme. By following these instructions, you will be able to set up custom views and assets, tailoring the admin interface to better suit your brand and operational needs.
+
 ## Configuration
 
 To configure the admin theme in Bagisto, follow these steps:
 
-1. Locate the **themes.php** file inside the **config** folder located in your project's root directory. Look for the keys **admin-default** and **`admin`**. The configuration will appear as follows:
+- Locate the `themes.php` file inside the `config` folder located in your project's root directory. Look for the keys `admin-default` and `admin`. The configuration will appear as follows:
 
-    ```php
-    <?php
-    return [
-        'admin-default' => 'default',
+```php
+<?php
+return [
+    'admin-default' => 'default',
 
-        'admin' => [
-            'default' => [
-                'name'        => 'Default',
-                'assets_path' => 'public/themes/admin/default',
-                'views_path'  => 'resources/admin-themes/default/views',
+    'admin' => [
+        'default' => [
+            'name'        => 'Default',
+            'assets_path' => 'public/themes/admin/default',
+            'views_path'  => 'resources/admin-themes/default/views',
 
-                'vite'        => [
-                    'hot_file'                 => 'admin-default-vite.hot',
-                    'build_directory'          => 'themes/admin/default/build',
-                    'package_assets_directory' => 'src/Resources/assets',
-                ],
+            'vite'        => [
+                'hot_file'                 => 'admin-default-vite.hot',
+                'build_directory'          => 'themes/admin/default/build',
+                'package_assets_directory' => 'src/Resources/assets',
             ],
         ],
-    ];
-    ```
+    ],
+];
+```
 
-    | Key            | Description                              |
-    | -------------- | ---------------------------------------- |
-    | admin-default  | Sets the current theme for the admin area |
-    | admin          | Stores a list of available themes         |
+| Key            | Description                              |
+| -------------- | ---------------------------------------- |
+| admin-default  | Sets the current theme for the admin area |
+| admin          | Stores a list of available themes         |
 
 ## Creating a Theme
 
-To create a new admin theme, follow these steps:
+To create a new admin theme, follow these steps
 
-**1.** To add a new theme entry to the **admin** array in the **themes.php** file, please follow these steps:
+### Add a New Theme Entry
 
-    ```php
-    <?php
-    return [
-        'admin-default' => 'default',
+Update the themes.php file inside the config folder to include your new theme. Add the new theme entry under the admin array:
 
-        'admin' => [
-            'default' => [
-                'name'        => 'Default',
-                'assets_path' => 'public/themes/admin/default',
-                'views_path'  => 'resources/admin-themes/default/views',
+```php
+<?php
+return [
+    'admin-default' => 'default',
 
-                'vite'        => [
-                    'hot_file'                 => 'admin-default-vite.hot',
-                    'build_directory'          => 'themes/admin/default/build',
-                    'package_assets_directory' => 'src/Resources/assets',
-                ],
-            ],
+    'admin' => [
+        'default' => [
+            'name'        => 'Default',
+            'assets_path' => 'public/themes/admin/default',
+            'views_path'  => 'resources/admin-themes/default/views',
 
-            'new-theme' => [
-                'name'        => 'new-theme',
-                'assets_path' => 'public/themes/admin/new-theme',
-                'views_path'  => 'resources/admin-themes/new-theme/views',
-
-                'vite'        => [
-                    'hot_file'                 => 'admin-new-theme-vite.hot',
-                    'build_directory'          => 'themes/admin/new-theme/build',
-                    'package_assets_directory' => 'src/Resources/assets',
-                ],
+            'vite'        => [
+                'hot_file'                 => 'admin-default-vite.hot',
+                'build_directory'          => 'themes/admin/default/build',
+                'package_assets_directory' => 'src/Resources/assets',
             ],
         ],
-    ];
-    ```
 
-**2.** In the new theme entry, specify the path to the views and assets folders according to your desired structure. For example:
+        'new-theme' => [
+            'name'        => 'new-theme',
+            'assets_path' => 'public/themes/admin/new-theme',
+            'views_path'  => 'resources/admin-themes/new-theme/views',
 
-    - Views structure:
+            'vite'        => [
+                'hot_file'                 => 'admin-new-theme-vite.hot',
+                'build_directory'          => 'themes/admin/new-theme/build',
+                'package_assets_directory' => 'src/Resources/assets',
+            ],
+        ],
+    ],
+];
+```
 
-      ```
-      - resources
-        └── admin-themes
-            └── new-theme
-                └── views
-      ```
+### Specify the Path to Views and Assets
 
-    - Assets structure:
+Ensure the paths to the views and assets folders are according to your desired structure. For example
 
-      ```
-      - public
-        └── admin-themes
-            └── new-theme
-                └── assets
-      ```
-
-**3.** To replace the dashboard page with a custom version, create the same directory structure for the dashboard in the **`new-theme`** folder as it exists in the **`default`** folder. For example:
+- Views structure:
 
     ```
     - resources
-      └── admin-themes
-          └── new-theme
-              └── views
-                  └── dashboard
-                      └── index.blade.php
+    └── admin-themes
+        └── new-theme
+            └── views
     ```
 
-**4.** In the newly created **`index.blade.php`** file, add the desired content for the dashboard page. For example:
+- Assets structure:
 
-    ```php
-    New Theme Sample
+    ```
+    - public
+    └── admin-themes
+        └── new-theme
+            └── assets
     ```
 
-**5.** Finally, activate the new theme by changing the value of the **`admin-default`** key in the **`config/themes.php`** file:
+### Customize the Dashboard Page
 
-    ```php
-    'admin-default' => 'new-theme',
-    ```
+Create the directory structure for the dashboard page in the `new-theme` folder, mirroring the structure in the `default` folder. For example:
 
-Now, when you access the dashboard page in the admin area, you should see the customized version provided by the new theme (New Theme).
+```
+- resources
+    └── admin-themes
+        └── new-theme
+            └── views
+                └── dashboard
+                    └── index.blade.php
+```
+
+Add the desired content for the dashboard page in the index.blade.php file. For example:
+
+```php
+New Theme Sample
+```
+
+### Activate the New Theme
+
+Change the value of the `admin-default` key in the `config/themes.php` file to activate the new theme
+
+```php
+'admin-default' => 'new-theme',
+```
+
+Now, when you access the dashboard page in the admin area, you should see the customized version provided by the new theme

@@ -47,14 +47,17 @@ To customize the Reindex process through the terminal, follow these commands.
 
 #### Command Signature
 
-    php artisan indexer:index {--type=*} {--mode=*}
-    
+```
+php artisan indexer:index {--type=*} {--mode=*}
+```    
 - **--type**: Specifies the type of indexers to reindex. Multiple types can be provided, separated by commas.
 - **--mode**: Specifies the reindexing mode, either `full` for full reindexing or selective for `selective` reindexing (default).
 
 **Reindexing all indexers in full mode:**
 
-    php artisan indexer:index --mode=full
+```
+php artisan indexer:index --mode=full
+```
 
 **Reindexing specific types of indexers**
 
@@ -76,6 +79,147 @@ To customize the Reindex process through the terminal, follow these commands.
     php artisan indexer:index --type=elastic
     ```
 
+## Full Page Cache 
+
+Bagisto introduces Full Page Cache support to deliver lightning-fast page loading, improved SEO, scalability, and reduced server load for enhanced eCommerce performance.
+
+Full Page Cache is a mechanism that stores entire HTML pages in the cache. When a request is made for the same page, the cache seamlessly serves the page without the need for re-executing server-side logic. This process allows for faster page load times as the cache provides a quick and efficient way to serve the requested page without the need to run the server-side logic again. This reduces the need for database queries, template rendering, and other resource-intensive tasks, resulting in faster page load times.
+
+We used the Spatie Laravel Responsecache Package in Bagisto
+
+### How to Enable Full Page Cache In Bagisto
+
+- Go to the .env Configuration file
+
+- Set RESPONSE_CACHE_ENABLED=true
+
+### How to set Cache duration and other Configuration
+
+- Navigate to  `config/responsecache.php.` this path to adjust cache duration and explore other configuration settings for Full Page Cache in Bagisto. Here, you’ll find all the configurations related to Full Page Cache.
+
+### Full page cache supported pages
+
+- Home Page
+- Category Page
+- Product Page
+
+### Supported Cache Drivers
+
+- File
+- Memcached
+- Redis
+- DynamoDB
+
+### Clearing  Response Cache with Artisan Commands:
+
+To effortlessly clear your application’s response cache in Bagisto, utilize the following command:
+
+```php
+php artisan cache:clear
+```
+
+### Cache invalidation
+
+Here are some common techniques for cache invalidation in Laravel:
+
+**Create the EventServiceProvider class**
+
+We create an EventServiceProvider in the `packages/Webkul/FPC/src/Providers/EventServiceProvider.php` directory. This file contains the code for the event service provider, which can be used to register events and their listeners. To register an event and its listener, you can add them to the $listen array in the EventServiceProvider class.
+
+```php
+<?php
+
+namespace Webkul\FPC\Providers;
+
+use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+
+class EventServiceProvider extends ServiceProvider
+{
+    /**
+     * The event handler mappings for the application.
+     *
+     * @var array
+     */
+    protected $listen = [
+        'customer.review.update.after' => [
+            'Webkul\FPC\Listeners\Review@afterUpdate',
+        ],
+    ];
+}
+```
+
+**Register the service in the FPC service provider**
+
+In the `packages/Webkul/FPC/src/Providers/FPCServiceProvider.php` file, locate the boot()  method. Here you can see we add EventServiceProvider within the boot() method.
+
+```php
+<?php
+
+namespace Webkul\FPC\Providers;
+
+use Illuminate\Support\ServiceProvider;
+
+class FPCServiceProvider extends ServiceProvider
+{
+    /**
+     * Bootstrap services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->app->register(EventServiceProvider::class);
+    }
+
+    /**
+     * Register services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+    }
+}
+```
+
+For instance, in the realm of event-based cache management, consider the event ‘customer.review.update.after’ triggered from the review controller upon a review update. This seamless integration guarantees swift cache clearance or update, maintaining synchronization with the latest review modifications.
+
+```php
+/**
+ * Update the specified resource in storage.
+ *
+ * @param  int  $id
+ * @return \Illuminate\Http\Response
+ */
+public function update($id)
+{
+    Event::dispatch('customer.review.update.before', $id);
+
+    $review = $this->productReviewRepository->update(request()->only(['status']), $id);
+
+    Event::dispatch('customer.review.update.after', $review);
+
+    session()->flash('success', trans('admin::app.customers.reviews.update-success', ['name' => 'admin::app.customers.reviews.review']));
+
+    return redirect()->route('admin.customers.customers.review.index');
+}
+```
+
+In the directory `packages/Webkul/FPC/src/Listeners` you can find the `afterUpdate()` method. This method clears the cache using the `forget()` method when a review is updated.
+
+```php
+/**
+ * After review is updated
+ *
+ * @param  \Webkul\Product\Contracts\Review  $review
+ * @return void
+ */
+public function afterUpdate($review)
+{
+    ResponseCache::forget('/' .  $review->product->url_key);
+}
+```
+
 ## Laravel Octane 
 
 [Laravel Octane](https://laravel.com/docs/10.x/octane) is a performance-boosting package designed to enhance the speed, efficiency, and scalability of Laravel applications, including Bagisto.
@@ -85,12 +229,3 @@ To customize the Reindex process through the terminal, follow these commands.
 - Provides the scalability required to accommodate the growth of e-commerce businesses.
 
 - Forms the foundation for optimizing Bagisto's performance and meeting the demands of modern e-commerce.
-
-## FPC(Full Page Cache) 
-
-In Bagisto we have implemented FPC(Full Page Cache) for follwing purposes.
-
-- Faster page loading times.
-- Reduce server load.
-- Better SEO ranking due to faster loading speed.
-- Enhance user experience.

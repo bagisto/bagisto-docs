@@ -31,3 +31,7 @@ To optimize search performance, Bagisto integrates with Elasticsearch, a highly 
 ### Overriding Core Models
 
 Sometimes, you may need to modify or extend the default behavior of Bagisto's core models to accommodate your specific business requirements. We will demonstrate how to override core models effectively, enabling you to customize the behavior of Bagisto without modifying the underlying codebase.
+
+### Data Transfer
+Directory Structure
+Creating a data import in a custom package makes it very easy to import bulk data into Bagisto. In Bagisto, data transfer can be found in the admin panel under the Settings Menu.

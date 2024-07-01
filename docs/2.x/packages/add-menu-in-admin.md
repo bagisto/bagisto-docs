@@ -2,96 +2,129 @@
 
 [[TOC]]
 
-## Directory Structure
+## Introduction
+
+The admin menu in Bagisto allows developers to customize and extend the default menu items within the admin panel. By adding custom menu items, you can provide easy access to various sections and features specific to your package. This guide will walk you through the process of configuring the admin menu for your custom package.
+
+## Configure the admin menu
 
 To ensure that the admin menu includes the necessary configuration, follow these steps:
 
-1. In your package's source directory, which is typically located at **`packages/Webkul/Blog/src`**, create a new folder named **`Config`** if it doesn't already exist.
-   ```
-    └── packages
-        └── Webkul
-            └── Blog
-                └── src
-                    ├── ...
-                    └── Config
-                        └── admin-menu.php
-   ```
+### Create Configuration File:
 
-2. Inside the newly created **`Config`** folder, create a file named **`admin-menu.php`**.
+- Navigate to your package's source directory, typically located at `packages/Webkul/Blog/src`.
 
-3. Copy and paste the following code into the **`admin-menu.php`** file:
+- Create a new directory named `Config` if it doesn't already exist.
 
-    ```php
-    <?php
+- Inside the `Config` directory, create a file `named admin-menu.php`.
 
-    return [
-        [
-            'key'   => 'blogs',
-            'name'  => 'Blogs',
-            'route' => 'blog.admin.index',
-            'sort'  => 2,
-            'icon'  => 'icon-blog',
-        ],
-    ];
-    ```
+```
+└── packages
+    └── Webkul
+        └── Blog
+            └── src
+                ├── ...
+                └── Config
+                    └── admin-menu.php
+```
 
-4. In your **`admin-routes.php`** file (located in the same package's source directory), add the named route **`blog.admin.index`** as follows:
+### Define Menu Items
 
-    ```php
-    Route::get('/blog', [PostController::class, 'index'])->name('blog.admin.index');
-    ```
+Open `admin-menu.php` and define your menu items using an array structure. Each item should include:
+
+- `key` Unique identifier for the menu item.
+- `name` Display name of the menu item.
+- `route` Laravel route name corresponding to the menu item.
+- `sort` Optional. Sort order for menu items.
+- `icon` Optional. CSS class for an icon associated with the menu item.
+
+```php
+<?php
+
+return [
+    [
+        'key'   => 'blogs',
+        'name'  => 'Blogs',
+        'route' => 'blog.admin.index',
+        'sort'  => 2,
+        'icon'  => 'icon-blog',
+    ],
+];
+```
+
+### Define Routes
+
+In your package's `admin-routes.php` file, define the named route used in` admin-menu.php` as follows.
+
+```php
+Route::get('/blog', [PostController::class, 'index'])->name('blog.admin.index');
+```
 
     In this step, we define the route that corresponds to the menu item added in the previous step.
 
-## Add Menu Icon
+### Add Menu Icon
 
-5. To add the menu icon, you need to add the icon font inside the  **`assets/fonts/font.woff`** file and then you need to add the icon code inside the **`assets/css/app.css`** file.
+Place your custom icon font (e.g., `font.woff`) under `assets/fonts/`.
 
-First, open the **`assets/fonts/font.woff`** file and add the menu icon font to it. Then, create a class in the **`assets/css/app.css`** file to use the icon.
+Define the icon in your CSS file (e.g., `assets/css/app.css`) using a pseudo-element class.
 
-- For example
+For example
 
-    ```css
-    .icon-blog:before {
-        content: "\e929";  /* Your Icon Code */
-    }
-    ```
+```css
+.icon-blog:before {
+    content: "\e929";  /* Your Icon Code */
+}
+```
 
-6. To merge the **`admin-menu.php`** configuration with the core menu file, use the **`mergeConfigFrom()`** method in the **`register()`** method of your package's service provider. Here's an example:
+### Merge Configuration:
 
-    ```php
-    <?php
+In your package's service provider (`BlogServiceProvider`), use `mergeConfigFrom()` to integrate your `admin-menu.php` configuration with the core admin menu.
 
-    namespace Webkul\Blog\Providers;
+```php
+<?php
 
-    use Illuminate\Support\ServiceProvider;
+namespace Webkul\Blog\Providers;
 
-    class BlogServiceProvider extends ServiceProvider
+use Illuminate\Support\ServiceProvider;
+
+class BlogServiceProvider extends ServiceProvider
+{
+    /**
+     * Register services.
+     *
+     * @return void
+     */
+    public function register()
     {
-        /**
-         * Register services.
-         *
-         * @return void
-         */
-        public function register()
-        {
-            $this->mergeConfigFrom(
-                dirname(__DIR__) . '/Config/admin-menu.php', 'menu.admin'
-            );
-        }
+        $this->mergeConfigFrom(
+            dirname(__DIR__) . '/Config/admin-menu.php', 'menu.admin'
+        );
     }
-    ```
+}
+```
 
-7. Finally, run the following command to optimize your application:
+### Optimize Application
 
-    ```
-    php artisan optimize:clear
-    ```
+Finally, run the following command to optimize your application:
 
-    After completing these steps, the menu item should appear in the admin panel.
+```
+php artisan optimize:clear
+```
 
-    ::: details Admin Menu Output
+After completing these steps, your custom menu item (Blogs) with its associated route and icon should appear within the admin panel of Bagisto.
 
-    ![Admin Menu Output](../../assets/2.x/images/package-development/admin-menu-output.png)
+## Level of Admin Menu
 
-    :::
+In Bagisto, the admin menu offers three levels of navigation to organize and access different sections and features efficiently:
+
+### First Level (Sidebar): 
+This level appears in the sidebar and contains the primary menu items. These are the main sections of the admin panel, such as Dashboard, Catalog, and Sales.
+
+### Second Level (Hover Menu): 
+When you hover over an item in the first-level sidebar menu, the second level appears. This level contains sub-items related to the main section, providing more specific options. For example, hovering over "Catalog" might show options like Products, Categories, and Attributes.
+
+### Third Level (Tabs):
+
+The third level is presented as tabs within the second-level menu item. When you select a sub-item from the second level, it might open a page with additional tabs for further navigation. These tabs allow for deeper, more granular control and management within a specific section, such as different tabs for managing various attributes of a product.
+
+By utilizing these three levels of navigation, Bagisto ensures a structured and intuitive user interface, making it easier to manage complex administrative tasks.

@@ -54,7 +54,7 @@ module.exports = [
             ['packages/create-package', 'Getting Started'],
             ['packages/create-migrations', 'Migrations'],
             ['packages/create-models', 'Models'],
-            ['packages/store-data-through-repositories', 'Repository'],
+            ['packages/store-data-through-repositories', 'Repositories'],
             ['packages/routes', 'Routes'],
             ['packages/controllers', 'Controllers'],
             ['packages/views', 'Views'],
@@ -66,7 +66,7 @@ module.exports = [
             ['packages/validation', 'Validation'],
             ['packages/datagrid', 'DataGrid'],
             ['packages/create-acl', 'Access Control List'],
-            ['packages/create-custom-configuration', 'Custom Configuration']
+            ['packages/create-system-configuration', 'System Configuration']
         ])
     },
     {
@@ -91,7 +91,7 @@ module.exports = [
         path: setVersionPrefix('themes'),
         collapsable: true,
         children: setVersionPrefix([
-            ['themes/create-theme', 'Store Theme'],
+            ['themes/create-store-theme', 'Store Theme'],
             ['themes/create-admin-theme', 'Admin Theme'],
             ['themes/notification', 'Real Time Notification'],
             ['themes/integrate-image-search-in-theme', 'Image Search']

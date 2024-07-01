@@ -2,13 +2,17 @@
 
 [[TOC]]
 
-Creating a data import in a custom package makes it very easy to import bulk data into Bagisto. In Bagisto, data transfer can be found in the admin panel under the **Settings Menu**.
+## Introduction
 
-## Directory Structure
+Creating a custom data import functionality in Bagisto enables seamless bulk data import operations directly from the admin panel under the `Settings Menu`. This feature is particularly useful for efficiently managing large datasets within your application.
 
-Let's create a custom data import for your application. We will assume that the package name is "Blog". Follow these steps:
+## Implement Custom Data Import
 
-1. Create a **`Importer.php`** file in the **`Helpers`** folder of your package:
+To implement custom data import in your application, follow these structured steps within your package directory:
+
+### Create Importer File
+
+Start by creating an `Importer.php` file under the `Helpers/Importers` directory of your package. Here's a simplified representation of the directory structure:
 
  ```
     └── packages
@@ -27,7 +31,9 @@ Let's create a custom data import for your application. We will assume that the 
 
 Here inside the Helpers/Importers folder, the FileName folder is for which section we are implementing the import method.
 
-2. Inside the **`Importer.php`** file, include the following code:
+### Implement Importer Logic
+
+Within the `Importer.php` file, implement the necessary logic for handling data validation and batch processing. Below is an example implementation:
 
 ```php
     <?php
@@ -243,10 +249,10 @@ Here inside the Helpers/Importers folder, the FileName folder is for which secti
 
 ```
 
-This code defines the custom data transfer settings. It consists of two main methods:
+This structured explanation provides a clear overview of the steps involved in setting up and implementing a custom data import feature in Bagisto
 
-1. `validateRow()`: This method is responsible for validating all the rows of your `.csv` files. It checks for required fields, data types, and performs other validation checks.
+- `validateRow()`: This method is responsible for validating all the rows of your `.csv` files. It checks for required fields, data types, and performs other validation checks.
 
-2. `importBatch()`: This method imports all the rows of your `.csv` files into a batch file and then imports them into the database in a queue. It handles the processing of the data and updates the import batch summary.
+- `importBatch()`: This method imports all the rows of your `.csv` files into a batch file and then imports them into the database in a queue. It handles the processing of the data and updates the import batch summary.
 
 These methods play a crucial role in ensuring the integrity and accuracy of the imported data. They help in identifying and handling errors, such as missing or duplicate identifiers, and provide a smooth data transfer process.

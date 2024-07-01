@@ -54,21 +54,19 @@ module.exports = [
             ['packages/create-package', 'Getting Started'],
             ['packages/create-migrations', 'Migrations'],
             ['packages/create-models', 'Models'],
-            ['packages/store-data-through-repositories', 'Repository'],
+            ['packages/store-data-through-repositories', 'Repositories'],
             ['packages/routes', 'Routes'],
             ['packages/controllers', 'Controllers'],
             ['packages/views', 'Views'],
             ['packages/localization', 'Localization'],
             ['packages/blade-components', 'Blade Components'],
             ['packages/layouts', 'Layouts'],
-            ['packages/assets', 'Assets'],
+            ['packages/bundling-assets', 'Bundling Assets'],
             ['packages/add-menu-in-admin', 'Admin Menu'],
-            ['packages/customize-hompepage-menu.md', 'Homepage Menu'],
             ['packages/validation', 'Validation'],
             ['packages/datagrid', 'DataGrid'],
             ['packages/create-acl', 'Access Control List'],
-            ['packages/create-custom-configuration', 'Custom Configuration'],
-            ['packages/create-data-import', 'Data Transfer']
+            ['packages/create-system-configuration', 'System Configuration']
         ])
     },
     {
@@ -86,6 +84,7 @@ module.exports = [
             ['advanced/change-email-template.md', 'Email Template'],
             ['advanced/indexing-products-to-elasticsearch.md', 'Configure Elasticsearch'],
             ['advanced/security-practice', 'Best Security Practices'],
+            ['advanced/create-data-import', 'Data Transfer']
         ])
     },
     {
@@ -93,17 +92,8 @@ module.exports = [
         path: setVersionPrefix('themes'),
         collapsable: true,
         children: setVersionPrefix([
-            ['themes/create-theme', 'Store Theme'],
+            ['themes/create-store-theme', 'Store Theme'],
             ['themes/create-admin-theme', 'Admin Theme'],
-        ])
-    },
-    {
-        title: 'Features',
-        path: setVersionPrefix('features'),
-        collapsable: true,
-        children: setVersionPrefix([
-            ['features/notification', 'Real Time Notification'],
-            ['features/integrate-image-search-in-theme', 'Image Search']
         ])
     },
     {

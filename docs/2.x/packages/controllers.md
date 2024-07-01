@@ -2,15 +2,25 @@
 
 [[TOC]]
 
-To learn in detail about Controllers, you can visit the Laravel documentation [here](https://laravel.com/docs/10.x/controllers).
+## Introduction
 
-## Directory Structure
+In Laravel, controllers are responsible for handling the request logic of an application. They act as intermediaries between the models and views, processing user input, interacting with the data layer, and returning the appropriate responses. By organizing related request handling logic into separate classes, controllers make it easier to manage and maintain the application's codebase.
 
-**Let's start by creating a controller for our blog posts. We will assume that the package name is "Blog".**
+To learn in detail about Controllers, you can visit the Laravel documentation [here](https://laravel.com/docs/11.x/controllers).
 
-- Create an **`Http`** folder in the **`packages/Webkul/Blog/src`** path. Inside the **`Http`** folder, create another folder named **`Controllers`**. Inside the **`Controllers`** folder, we need to create one file named **`Controller.php`** and two folders, namely **`Admin`** and **`Shop`**.
+## How to create Controllers
 
-- Inside both the **`Admin`** and **`Shop`** folders, create a **`PostController.php`** file. The updated directory structure will look like this:
+To start building a controller for our blog posts within the Laravel package named "Blog", follow the steps below:
+
+### Directory Structure
+
+Create the necessary directory structure within the `packages/Webkul/Blog/src` path. To create the directory structure follow the following steps:
+
+1. Navigate to the `packages/Webkul/Blog/src` directory.
+2. Create an `Http` folder inside `src`.
+3. Inside the `Http` folder, create another folder named `Controllers`.
+4. Inside the `Controllers` folder, create one file named `Controller.php` and two folders, namely `Admin` and `Shop`.
+5. Inside both the `Admin` and `Shop` folders, create a `PostController.php` file. The updated directory structure will look like this:
 
   ```
   └── packages
@@ -27,9 +37,13 @@ To learn in detail about Controllers, you can visit the Laravel documentation [h
                               └── PostController.php
   ```
 
-## Base Controller
+### Creating Controller Files
 
-- **`Controller.php`**: This is the base controller that needs to be extended in all sub-controllers. Add the following code to this file:
+Now, create the necessary controller files.
+
+#### Base Controller (Controller.php)
+
+In `packages/Webkul/Blog/src/Http/Controllers/Controller.php`, you can define the base controller for your package:
 
   ```php
   <?php
@@ -47,9 +61,9 @@ To learn in detail about Controllers, you can visit the Laravel documentation [h
   }
   ```
 
-## Controllers
+### PostController.php for Admin
 
-- **`Admin/PostController.php`**: This file is for admin usage. Add the following code to this file:
+In `packages/Webkul/Blog/src/Http/Controllers/Admin/PostController.php`, define the Admin post controller:
 
   ```php
   <?php
@@ -77,10 +91,11 @@ To learn in detail about Controllers, you can visit the Laravel documentation [h
        * 
        * @return \Illuminate\View\View
        */
-      public function index() {
+      public function index() 
+      {
           $blogs = $this->postRepository->all();
 
-          return view('blog::admin.index', ['blogs' => $blogs]);
+          return view('blog::admin.index', compact('blogs'));
       }
 
       /**
@@ -88,23 +103,42 @@ To learn in detail about Controllers, you can visit the Laravel documentation [h
        * 
        * @return \Illuminate\View\View
        */
-      public function create() {
+      public function create() 
+      {
           //
       }
 
       /**
        * Store.
        * 
-       * @param  \Illuminate\Http\Request  $request
        * @return \Illuminate\View\View
        */
-      public function store(Request $request) {
+      public function store(Request $request)
+      {
           //
       }
+
+      /**
+       * Function to update items.
+       */
+       public function update(int $id)
+       {
+         //
+       }
+
+      /**
+       * Function to remove items.
+       */
+       public function destroy(int $id)
+       {
+         //
+       }
   }
   ```
 
-- **`Shop/PostController.php`**: This file is for shop usage. Add the following code to this file:
+### PostController.php for Shop
+
+In `packages/Webkul/Blog/src/Http/Controllers/Shop/PostController.php`, define the Shop post controller:
 
   ```php
   <?php
@@ -135,7 +169,7 @@ To learn in detail about Controllers, you can visit the Laravel documentation [h
       {
           $blogs = $this->postRepository->with(['author'])->all();
 
-          return view('blog::shop.index', ['blogs' => $blogs]);
+          return view('blog::shop.index', compact('blogs'));
       }
 
       /**
@@ -143,9 +177,11 @@ To learn in detail about Controllers, you can visit the Laravel documentation [h
        * 
        * @return \Illuminate\View\View
        */
-      public function blogDetails($id) 
+      public function blogDetails(int $id) 
       {
           //
       }
   }
   ```
+
+By following these steps, you will have created the necessary structure and files for handling blog posts within your "Blog" package. You can now add the specific logic for each method to handle the functionality required for your blog posts in both the admin and shop areas.

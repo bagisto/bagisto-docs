@@ -1,4 +1,4 @@
-# Custom Configuration
+# System Configuration
 
 [[TOC]]
 
@@ -10,7 +10,7 @@ To create a custom configuration for your application, follow these steps:
 
 1. Create a **`system.php`** file in the **`Config`** folder of your package:
 
-    ```
+   ```
     └── packages
         └── Webkul
             └── Blog
@@ -18,51 +18,70 @@ To create a custom configuration for your application, follow these steps:
                 └── src
                     └── ...
                     └── Config
-                        ├── ...
-                        └── system.php
-             
-    ```
+                    └── system.php
+                
+   ```
 
 2. Inside the **`system.php`** file, include the following code:
 
-    ```php
-    <?php
+   ```php
+   <?php
 
-    return [
-        [
-            'key'  => 'blog',
-            'name' => 'blog::app.admin.system.title',
-            'info' => 'blog::app.admin.system.info',
-            'sort' => 1
-        ], [
-            'key'  => 'blog.settings',
-            'name' => 'blog::app.admin.system.settings.title',
-            'info' => 'blog::app.admin.system.settings.info',
-            'icon' => 'settings/settings.svg',
-            'sort' => 1,
-        ], [
-            'key'    => 'blog.settings.general',
-            'name'   => 'blog::app.admin.system.settings.general',
-            'sort'   => 1,
-            'fields' => [
-                [
-                    'name'  => 'status',
-                    'title' => 'blog::app.admin.system.settings.status',
-                    'type'  => 'boolean'
-                ], [
-                    'name'  => 'pagination',
-                    'title' => 'blog::app.admin.system.settings.pagination',
-                    'type'  => 'boolean',
-                ], [
-                    'name'       => 'items',
-                    'title'      => 'blog::app.admin.system.settings.items_per_page',
-                    'type'       => 'number',
-                    'validation' => 'numeric'
-                ]
-            ]
-        ]
-    ];
-    ```
+   return [
+       [
+           'key' => 'blog',
+           'name' => 'Blog',
+           'sort' => 1
+       ],
+       [
+           'key' => 'blog.settings',
+           'name' => 'Blog Settings',
+           'sort' => 1,
+       ],
+       [
+           'key' => 'blog.settings.package',
+           'name' => 'Package Status',
+           'sort' => 1,
+           'fields' => [
+               [
+                   'name' => 'status',
+                   'title' => 'Status',
+                   'type' => 'boolean',
+                   'validation' => 'required'
+               ]
+           ]
+       ],
+       [
+           'key'    => 'blog.settings.blog-setting',
+           'name'   => 'blog::app.admin.system.blog-setting',
+           'sort'   => 2,
+           'fields' => [
+               [
+                   'name'          => 'pagination',
+                   'title'         => 'blog::app.admin.system.pagination',
+                   'type'          => 'select',
+                   'validation' => 'required',
+                   'options'       => [
+                       [
+                           'title' => 'Yes',
+                           'value' => 1,
+                       ],
+                       [
+                           'title' => 'No',
+                           'value' => 0,
+                       ],
+                   ]
+               ],
+               [
+                   'name'  => 'items',
+                   'title' => 'blog::app.admin.system.items',
+                   'type'  => 'number',
+                   'validation' => 'numeric'
+               ]
+           ]
+       ]
+   ];
+   ```
 
    This code defines the custom configuration settings. Each configuration has a key, name, sort, and fields (if applicable).
 
@@ -93,8 +112,7 @@ To merge the custom configuration, follow these steps:
             //...
             
             $this->mergeConfigFrom(
-               dirname(__DIR__) . '/Config/system.php',
-               'core'
+               dirname(__DIR__) . '/Config/system.php', 'core'
             );
         }
     }
@@ -104,25 +122,19 @@ To merge the custom configuration, follow these steps:
 
 3. After making the changes, run the following command to cache the latest changes:
 
-    ```sh
-    php artisan optimize:clear
-    ```
+   ```sh
+   php artisan optimize
+   ```
 
    This ensures that the latest custom configuration is used.
 
 4. You can now check the updated configuration in the admin panel:
 
-    :::details Blog Configuration
+    :::details Custom Configuration
 
-    ![Admin Custom Config Output](../../assets/2.x/images/package-development/custom-config-output-1.png)
+   ![Admin Custom Config Output](../../assets/1.5.x/images/package-development/custom-config-output.png)
    
-    :::
-
-    :::details Blog Configuration Details
-
-    ![Admin Custom Config Output](../../assets/2.x/images/package-development/custom-config-output-2.png)
-   
-    :::
+   :::
 
 ## Supported Field Types
 
@@ -142,6 +154,8 @@ return [
         'name'   => 'admin::app.admin.system.custom-types',
         'sort'   => 1,
         'fields' => [
+
+
             [
                 'name'          => 'text_type',
                 'title'         => 'admin::app.admin.system.text-type',
@@ -194,9 +208,9 @@ return [
         'sort'   => 1,
         'fields' => [
             [
-                'name'  => 'boolean_type',
-                'title' => 'admin::app.admin.system.boolean-type',
-                'type'  => 'boolean',
+                'name'          => 'boolean_type',
+                'title'         => 'admin::app.admin.system.boolean-type',
+                'type'          => 'boolean',
             ],
         ],
     ],
@@ -219,15 +233,15 @@ return [
         'sort'   => 1,
         'fields' => [
             [
-                'name'    => 'select_type',
-                'title'   => 'admin::app.admin.system.select-type',
-                'type'    => 'select',
-                'options' => [
+                'name'          => 'select_type',
+                'title'         => 'admin::app.admin.system.select-type',
+                'type'          => 'select',
+                'options'       => [
                     [
                         'title' => 'option_1',
                         'value' => 'value_1',
-                    ], [
-                    ], [
+                    ],
+                    [
                         'title' => 'option_2',
                         'value' => 'vallue_2',
                     ],
@@ -254,9 +268,9 @@ return [
         'sort'   => 1,
         'fields' => [
             [
-                'name'  => 'textarea_type',
-                'title' => 'admin::app.admin.system.textarea-type',
-                'type'  => 'textarea'
+                'name'          => 'textarea_type',
+                'title'         => 'admin::app.admin.system.textarea-type',
+                'type'          => 'textarea'
             ],
         ],
     ],
@@ -279,10 +293,10 @@ return [
         'sort'   => 1,
         'fields' => [
             [
-                'name'       => 'image_type',
-                'title'      => 'admin::app.admin.system.image-type',
-                'type'       => 'image',
-                'validation' => 'mimes:bmp,jpeg,jpg,png,webp,svg',
+                'name'          => 'image_type',
+                'title'         => 'admin::app.admin.system.image-type',
+                'type'          => 'image',
+                'validation'    => 'mimes:bmp,jpeg,jpg,png,webp',
             ],
         ],
     ],

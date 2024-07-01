@@ -4,19 +4,47 @@
 
 ## Install Using GUI Installer
 
-To install Bagisto using our GUI installer, follow these steps:
+To install Bagisto using our GUI installer, you can follow any of the following methods:
 
-1. [Download Bagisto](https://bagisto.com/en/download/) from our website.
-2. Extract the contents of the downloaded zip file.
-3. Navigate to the project root directory.
-4. Run the following command:
+#### Method 1:
+
+- Choose the directory where you want to install Bagisto. Open your terminal and navigate to this directory. 
+
+- Once you are in the desired directory, run the following command in your terminal to install Bagisto:
+
+    ```sh
+    composer create-project bagisto/bagisto
+    ```
+
+- Configure your HTTP server to point to the **`public/`** directory of the project.
+
+- Open your browser and access the following URL:
+
+    ```
+    http://localhost/bagisto/public/
+    ```
+
+  This will launch the Bagisto installer.
+
+#### Method 2:
+
+Otherwise you can download the zip file and install it using the following steps:
+
+- [Download Bagisto](https://bagisto.com/en/download/) from our website.
+
+- Extract the contents of the downloaded
+
+- Navigate to the project root directory.
+
+- Run the following command:
 
     ```sh
     composer create
     ```
 
-5. Configure your HTTP server to point to the **`public/`** directory of the project.
-6. Open your browser and access the following URL:
+- Configure your HTTP server to point to the **`public/`** directory of the project.
+
+- Open your browser and access the following URL:
 
     ```
     http://localhost/bagisto/public/
@@ -24,17 +52,25 @@ To install Bagisto using our GUI installer, follow these steps:
 
    This will launch the Bagisto installer.
 
+::: warning
+Ensure that Composer is installed on your system
+:::
+
 ## Install Using Composer
 
 To install Bagisto using Composer, use the following steps:
 
-1. Run the following command:
+- Choose the directory where you want to install Bagisto. Open your terminal and navigate to this directory. 
+
+- Once you are in the desired directory, run the following command in your terminal to install Bagisto:
+
+- Run the following command:
 
     ```sh
     composer create-project bagisto/bagisto
     ```
 
-2. Run the following command:
+- Run the following command:
 
     ```sh
     php artisan bagisto:install
@@ -105,7 +141,7 @@ Password: admin123
 
 To log in as a customer, you can directly register on **`https://example.com/customer/register`**. After registration, you can log in using your credentials on the domain.
 
-## Installation of mobile app
+## Installation of Mobile App
 
 Before beginning with the installation, you will need the following with the mentioned versions
 
@@ -192,6 +228,7 @@ Change the baseUrl  as per your store
 ```sh
 static const String baseUrl = ‘....’;
 ```
+
 > Note: Add the value of the complete URL ending with the GraphQL API endpoint. E.g - https://example.com/graphql 
 
 ### For Theme
