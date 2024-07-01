@@ -47,14 +47,17 @@ To customize the Reindex process through the terminal, follow these commands.
 
 #### Command Signature
 
-    php artisan indexer:index {--type=*} {--mode=*}
-    
+```
+php artisan indexer:index {--type=*} {--mode=*}
+```    
 - **--type**: Specifies the type of indexers to reindex. Multiple types can be provided, separated by commas.
 - **--mode**: Specifies the reindexing mode, either `full` for full reindexing or selective for `selective` reindexing (default).
 
 **Reindexing all indexers in full mode:**
 
-    php artisan indexer:index --mode=full
+```
+php artisan indexer:index --mode=full
+```
 
 **Reindexing specific types of indexers**
 
@@ -216,7 +219,6 @@ public function afterUpdate($review)
     ResponseCache::forget('/' .  $review->product->url_key);
 }
 ```
-
 
 ## Laravel Octane 
 

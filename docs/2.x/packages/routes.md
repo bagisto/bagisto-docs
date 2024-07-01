@@ -73,30 +73,30 @@ Routes inside `shop-routes.php` apply middleware groups (`web`, `theme`, `locale
 
 In the `BlogServiceProvider.php` class, load the routes using the loadRoutesFrom method inside the boot method.
 
-  ```php
-  <?php
+```php
+<?php
 
-  namespace Webkul\Blog\Providers;
+namespace Webkul\Blog\Providers;
 
-  use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
-  class BlogServiceProvider extends ServiceProvider
-  {
-      /**
-       * Bootstrap services.
-       *
-       * @return void
-       */
-      public function boot()
-      {
-          //... 
-          
-          $this->loadRoutesFrom(__DIR__ . '/../Routes/admin-routes.php');
+class BlogServiceProvider extends ServiceProvider
+{
+    /**
+     * Bootstrap services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        //... 
+        
+        $this->loadRoutesFrom(__DIR__ . '/../Routes/admin-routes.php');
 
-          $this->loadRoutesFrom(__DIR__ . '/../Routes/shop-routes.php');
-      }
-  }
-  ```
+        $this->loadRoutesFrom(__DIR__ . '/../Routes/shop-routes.php');
+    }
+}
+```
 
 #### Explanation 
 
