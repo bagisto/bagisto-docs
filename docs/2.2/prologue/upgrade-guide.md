@@ -129,8 +129,9 @@ For the upgrade guide visit [Bagisto UPGRADE.md on GitHub](https://github.com/ba
 
 ## Upgrading To v2.2.0 From v2.1.0
 
-> [!NOTE]
-> We strive to document every potential breaking change. However, as some of these alterations occur in lesser-known sections of Bagisto, only a fraction of them may impact your application.
+:::tip
+ We strive to document every potential breaking change. However, as some of these alterations occur in lesser-known sections of Bagisto, only a fraction of them may impact your application.
+:::
 
 ### Updating Dependencies
 

@@ -156,7 +156,9 @@ Before beginning with the installation, you will need the following with the men
 
 Make sure you have installed the API module and set this up properly on your bagisto.
 
-> NOTE: It is recommended that you run a simple Hello World program in Flutter first before proceeding further so that you are sure that the environment is properly set up.
+:::tip Note
+It is recommended that you run a simple Hello World program in Flutter first before proceeding further so that you are sure that the environment is properly set up.
+:::
 
 ### Clone the repository
 
@@ -231,7 +233,9 @@ Change the baseUrl  as per your store
 static const String baseUrl = ‘....’;
 ```
 
-> Note: Add the value of the complete URL ending with the GraphQL API endpoint. E.g - https://example.com/graphql 
+:::tip Note
+Add the value of the complete URL ending with the GraphQL API endpoint. E.g - https://example.com/graphql 
+:::
 
 ### For Theme
 
@@ -253,11 +257,13 @@ Replace "google-services.json".
 
 Replace "GoogleService-Info.plist".
 
-> Helpful Articles
+:::tip Note
+Helpful Articles
 
-> Android  → https://mobikul.com/knowledgebase/generating-google-service-file-enable-fcm-firebase-cloud-messaging-android-application/
+Android  → https://mobikul.com/knowledgebase/generating-google-service-file-enable-fcm-firebase-cloud-messaging-android-application/
 
-> iOS → https://mobikul.com/knowledgebase/generating-new-googleservice-info-plist-file-fcm-based-project-ios-app/
+iOS → https://mobikul.com/knowledgebase/generating-new-googleservice-info-plist-file-fcm-based-project-ios-app/
+:::
 
 ### For Application Title
 
@@ -270,8 +276,10 @@ Replace "GoogleService-Info.plist".
 
   1. Go to the general tab and identity change the display name to your app name
  
-> For Homepage Header Title - Go to ‘assets/language/en.json’
-> (Note: Here, “en” in en.json refers to the languages that would be supported within the application)
+:::tip Note 
+For Homepage Header Title - Go to ‘assets/language/en.json’
+(Note: Here, “en” in en.json refers to the languages that would be supported within the application)
+:::
 
 ### For Splash Screen
 

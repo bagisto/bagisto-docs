@@ -111,7 +111,6 @@ Retrieve all records.
 
 ```php
 $posts = $this->postRepository->all();
-
 ```
 
 ### Find

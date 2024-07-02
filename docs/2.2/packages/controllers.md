@@ -16,11 +16,11 @@ To start building a controller for our blog posts within the Laravel package nam
 
 Create the necessary directory structure within the `packages/Webkul/Blog/src` path. To create the directory structure follow the following steps:
 
-1. Navigate to the `packages/Webkul/Blog/src` directory.
-2. Create an `Http` folder inside `src`.
-3. Inside the `Http` folder, create another folder named `Controllers`.
-4. Inside the `Controllers` folder, create one file named `Controller.php` and two folders, namely `Admin` and `Shop`.
-5. Inside both the `Admin` and `Shop` folders, create a `PostController.php` file. The updated directory structure will look like this:
+- Navigate to the `packages/Webkul/Blog/src` directory.
+- Create an `Http` folder inside `src`.
+- Inside the `Http` folder, create another folder named `Controllers`.
+- Inside the `Controllers` folder, create one file named `Controller.php` and two folders, namely `Admin` and `Shop`.
+- Inside both the `Admin` and `Shop` folders, create a `PostController.php` file. The updated directory structure will look like this:
 
   ```
   └── packages
