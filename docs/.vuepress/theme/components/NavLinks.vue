@@ -49,11 +49,15 @@
         v-model="version" 
         @change="changeVersion"
       >
-        <option value="1.x">1.x</option>
+        <option value="2.1">2.1</option>
+
+        <option value="2.2">2.2</option>
+
+        <option value="2.x">2.x</option>
 
         <option value="1.5.x">1.5.x</option>
         
-        <option value="2.x">2.x</option>
+        <option value="1.x">1.x</option>
       </select>
     </div>
   </nav>
@@ -74,14 +78,14 @@ export default {
 
   data() {
     return {
-      version: '2.x',
+      version: '2.2',
     };
   },
   
   mounted() {
     let currentPath = this.$route.path.split('/');
 
-    this.version = currentPath[1] || '2.x';
+    this.version = currentPath[1] || '2.2';
   },
 
   computed: {
