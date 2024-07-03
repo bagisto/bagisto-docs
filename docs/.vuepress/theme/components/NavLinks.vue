@@ -49,11 +49,11 @@
         v-model="version" 
         @change="changeVersion"
       >
-        <option value="2.1">2.1</option>
+        <option value="master">Master</option>
 
         <option value="2.2">2.2</option>
 
-        <option value="2.x">2.x</option>
+        <option value="2.1">2.1</option>
 
         <option value="1.5.x">1.5.x</option>
         

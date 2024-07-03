@@ -32,7 +32,8 @@ module.exports = {
             '/1.5.x/': require('./version-configs/1.5.x'),
             '/2.x/': require('./version-configs/2.x'),
             '/2.1/': require('./version-configs/2.1'),
-            '/2.2/': require('./version-configs/2.2')
+            '/2.2/': require('./version-configs/2.2'),
+            '/master/': require('./version-configs/master')
         }
     },
     markdown: {
