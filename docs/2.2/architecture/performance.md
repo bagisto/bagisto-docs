@@ -31,15 +31,16 @@ Similar to price indexing, the inventory indexing process in Bagisto involves up
 
 ### Flat Indexing
 
-Bagisto's flat indexer is an essential feature designed to optimize the performance of product queries, particularly those involving product prices. It ensures that price changes, including those affected by catalog rules, are accurately and promptly reflected across the store.
+Flat indexing in Bagisto is a vital mechanism designed to enhance the performance and efficiency of product data retrieval.
+The indexer processes products in batches, which is efficient for handling large datasets without overwhelming the system.
+It manages a set of fillable attribute codes that are essential during the creation of the flat index. The flat indexer takes into account various channels and locales, ensuring that product data is accurately indexed for different market segments.  A predefined list of attribute codes, such as `sku`, `name`, `price`, `weight`, and `status`, that can be populated during the indexing process.
+By default, the Flat Indexer reindexes products based on product creation or update events. However, there are scenarios where you might need to reindex the flat index in response to changes in channels or locales. In such cases, you can manually trigger the reindexing process to ensure that the flat tables reflect the latest channel and locale updates.
 
-#### Scheduled Indexing
+### Catalog Rule Indexing
 
-To ensure that prices are consistently updated, Bagisto schedules the flat indexer to reindex product prices and catalog rules daily. This process includes reindexing the prices for three specific days: yesterday, today, and tomorrow. The indexing command is scheduled to run at 00:01 every day, ensuring that any changes to catalog rules are promptly applied.
+Catalog rule indexing in Bagisto ensures that product prices are updated based on any changes to catalog rules, such as offers expiring or being updated. To maintain accurate pricing, Bagisto schedules the catalog rule indexer to run daily. This scheduled task ensures that any modifications to catalog rules are promptly applied to the product prices.
 
-```php
-$schedule->command('product:price-rule:index')->dailyAt('00:01');
-```
+The catalog rule indexing process is set to execute at 00:01 every day. The product prices are consistently recalculated and updated based on the current catalog rules. This automatic reindexing guarantees that any changes in promotional offers, discounts, or other pricing rules are reflected in the product listings without any manual intervention.
 
 ### ElasticSearch
 
@@ -51,50 +52,41 @@ To configure Elasticsearch, please refer to the [Configuration Setup](https://de
 
 ### Reindexing
 
-The `ReindexCommands` console command is responsible for reindexing data within the Bagisto, facilitating efficient data retrieval and search functionality. This command offers flexibility in selecting specific indexers and reindexing modes to suit varying requirements.
+The `ReindexCommands` console command is responsible for reindexing data within Bagisto, facilitating efficient data retrieval and search functionality. This command offers flexibility in selecting specific indexers and reindexing modes to suit varying requirements.
 
-The indexer:index command with the --type=price option is scheduled to run daily at 00:01 AM. This command is responsible for indexing data related to product prices, likely for search or display purposes.
-
-To customize the Reindex process through the terminal, follow these commands.
+By default, reindexing is executed at the scheduled time or based on specific events, such as product creation or updates. However, there may be situations where you need to manually trigger reindexing. This can be done using the following commands:
 
 #### Command Signature
 
-```
+The command `php artisan indexer:index` in Bagisto is used to manage the reindexing of various indexers. Here is a detailed description of its usage:
+
+```shell
 php artisan indexer:index {--type=*} {--mode=*}
 ```    
-- **--type**: Specifies the type of indexers to reindex. Multiple types can be provided, separated by commas.
+- **--type**: Specifies the type of indexers to reindex. You can provide multiple types, separated by commas.
 - **--mode**: Specifies the reindexing mode, either `full` for full reindexing or selective for `selective` reindexing (default).
 
-**Reindexing all indexers in full mode:**
+- **Full Reindexing for All Types**
 
-```
+```shell
 php artisan indexer:index --mode=full
 ```
+This command performs a full reindexing for all indexers by default.
 
-**Reindexing specific types of indexers**
 
-- Command for Reindexing only prices
+- **Selective Reindexing**
 
-```php
+```shell
 php artisan indexer:index --type=price
 ```
 
-- Command for Reindexing only inventory
+This command performs selective reindexing specifically for the price indexer.
+
+Price and price rule indexing are scheduled to reindex at a specific time each day to ensure that the latest pricing information is accurately reflected in searches and displays. The following commands are scheduled to run daily at 00:01 AM:
 
 ```php
-php artisan indexer:index --type=inventory
-```
-
-- Command for Reindexing Only flat prices
-
-```php
-php artisan indexer:index --type=flat
-```
-    
-- Command for Reindexing only elastic
-
-```php
-php artisan indexer:index --type=elastic
+$schedule->command('indexer:index --type=price')->dailyAt('00:01');
+$schedule->command('product:price-rule:index')->dailyAt('00:01');
 ```
 
 ## Full Page Cache
