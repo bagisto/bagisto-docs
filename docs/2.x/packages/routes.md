@@ -20,18 +20,19 @@ Inside the `Routes` folder, create two files named `admin-routes.php` and `shop-
 
 The updated directory structure will look like this:
 
-    ```
-    └── packages
-        └── Webkul
-            └── Blog
-                └── src
-                    ├── ...
-                    └── Routes
-                        ├── admin-routes.php
-                        └── shop-routes.php
-    ```
+```
+└── packages
+    └── Webkul
+        └── Blog
+            └── src
+                ├── ...
+                └── Routes
+                    ├── admin-routes.php
+                    └── shop-routes.php
+```
 
 ### Admin Routes
+
 `admin-routes.php` This file is for admin routes. Add the following code to this file:
 
   ```php
@@ -98,11 +99,11 @@ class BlogServiceProvider extends ServiceProvider
 }
 ```
 
-#### Explanation 
+#### Explanation
 
 The `loadRoutesFrom` method registers routes defined in `admin-routes.php` and `shop-routes.php` within the Laravel application, integrating them into the routing system.
 
-## Available HTTP methods 
+## Available HTTP methods
 
 Basic routes are the most common type of routes in Laravel. They respond to HTTP requests like `GET`, `POST`, `PUT`, `DELETE`, etc., and map the URL to a specific controller method or closure function. For example:
 
@@ -114,6 +115,7 @@ The `GET` method is used to retrieve data from the server. It is typically used 
 // Define a route that responds to a GET request
 Route::get('/posts', [PostController::class, 'index']);
 ```
+
 ### POST
 
 The `POST` method is used to submit data to the server. It is commonly used for form submissions.
