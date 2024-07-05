@@ -155,10 +155,14 @@ $this->postRepository->delete($id)
 
 ### Paginate
 
-Retrieve paginated records.
+This method is responsible for retrieving a paginated set of records for the Posts model from the database.
 
 ```php
-$posts = $this->postRepository->paginate($limit = null, $columns = ['*']);
+// Number of categories to be displayed per page.
+$perPage = 15;
+
+// Paginate the categories.
+$posts = $this->postRepository->paginate($perPage);
 ```
 
 ### Where
