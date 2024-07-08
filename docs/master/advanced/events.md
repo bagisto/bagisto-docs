@@ -259,63 +259,60 @@ In Bagisto, there are several events fired throughout its operations, allowing d
 | user.admin.create.after | This event will be fired after admin gets created. |  `$admin` |
 | user.admin.update.before | This event will be fired before admin gets updated. | `$id` |
 | user.admin.update.after | This event will be fired after admin gets updated. | `$admin` |
-| admin.password.update.after | This event will be fired after admin password gets updated. |
-| user.admin.delete.before | This event will be fired before admin gets deleted. |
-| user.admin.delete.after | This event will be fired after admin gets deleted. |
-| tax.category.create.before | This event will be fired before tax category gets created. |
-| tax.category.create.after | This event will be fired after tax category gets created. |
-| tax.category.update.before | This event will be fired before tax category gets updated. |
-| tax.category.update.after | This event will be fired after tax category gets updated. |
-| tax.category.delete.before | This event will be fired before tax category gets deleted. |
-| tax.category.delete.after | This event will be fired after tax category gets deleted. |
-| tax.rate.create.before | This event will be fired before tax rate gets created. |
-| tax.rate.create.after | This event will be fired after tax rate gets created. |
-| tax.rate.update.before | This event will be fired before tax rate gets updated. |
-| tax.rate.update.after | This event will be fired after tax rate gets updated. |
-| tax.rate.delete.before | This event will be fired before tax rate gets deleted. |
-| tax.rate.delete.after | This event will be fired after tax rate gets deleted. |
-| checkout.cart.delete.before | This event will be fired before cart item gets deleted. |
-| checkout.cart.delete.after | This event will be fired after cart item gets deleted. |
-| checkout.cart.delete.all.before | This event will be fired before all cart items gets deleted. |
-| checkout.cart.delete.all.after | This event will be fired after all cart item gets deleted. |
-| checkout.cart.add.before | This event will be fired before cart item gets created. |
-| checkout.cart.add.after | This event will be fired after cart item gets created. |
-| checkout.cart.update.before | This event will be fired before cart item gets updated. |
-| checkout.cart.update.after | This event will be fired after cart item gets updated. |
-| checkout.cart.collect.totals.before | This event will be fired before collecting cart totals. |
-| checkout.cart.collect.totals.after | This event will be fired after collecting cart totals. |
-| checkout.cart.calculate.items.tax.before | This event will be fired before calculating cart items tax. |
-| checkout.cart.calculate.items.tax.after | This event will be fired after calculating cart items tax. |
-| core.configuration.save.before | This event will be fired before core configuration gets saved. |
-| core.configuration.save.after | This event will be fired after core configuration gets saved. |
-| core.currency.create.before | This event will be fired before currency gets created. |
-| core.currency.create.after | This event will be fired after currency gets created. |
-| core.currency.update.before | This event will be fired before currency gets updated. |
-| core.currency.update.after | This event will be fired after currency gets updated. |
-| core.currency.delete.before | This event will be fired before currency gets deleted. |
-| core.currency.delete.after | This event will be fired after currency gets deleted. |
-| core.locale.create.before | This event will be fired before locale gets created. |
-| core.locale.create.after | This event will be fired after locale gets created. |
-| core.locale.update.before | This event will be fired before locale gets updated. |
-| core.locale.update.after | This event will be fired after locale gets updated. |
-| core.locale.delete.before | This event will be fired before locale gets deleted. |
-| core.locale.delete.after | This event will be fired after locale gets deleted. |
-| sales.invoice.save.before | This event will be fired before invoice gets saved. |
-| sales.invoice.save.after | This event will be fired after invoice gets saved. |
-| checkout.order.save.before | This event will be fired before order gets saved. |
-| checkout.order.save.after | This event will be fired after order gets saved. |
-| checkout.order.orderitem.save.before | This event will be fired before order item gets saved. |
-| checkout.order.orderitem.save.after | This event will be fired after order item gets saved. |
-| sales.order.cancel.before | This event will be fired before order gets canceled. |
-| sales.order.cancel.after | This event will be fired after order gets canceled. |
-| sales.order.update-status.before | This event will be fired before order status gets updated. |
-| sales.order.update-status.after | This event will be fired after order status gets updated. |
-| sales.refund.save.before | This event will be fired before order refund gets saved. |
-| sales.refund.save.after | This event will be fired after order refund gets saved. |
-| sales.shipment.save.before | This event will be fired before shipment gets saved. |
-| sales.shipment.save.after | This event will be fired after shipment gets saved. |
-| checkout.load.index | This event will be fired on checkout page load. |
-| shop.item.buy-now | This event will be fired directly on the Buy Now product. |
+| admin.password.update.after | This event will be fired after admin password gets updated. | `$admin` |
+| user.admin.delete.before | This event will be fired before admin gets deleted. | `$id` |
+| user.admin.delete.after | This event will be fired after admin gets deleted. | `$id` |
+| tax.category.create.before | This event will be fired before tax category gets created. | - | 
+| tax.category.create.after | This event will be fired after tax category gets created. | `$taxCategory` |
+| tax.category.update.before | This event will be fired before tax category gets updated. | `$id` |
+| tax.category.update.after | This event will be fired after tax category gets updated. | `$taxCategory` |
+| tax.category.delete.before | This event will be fired before tax category gets deleted. | `$id` |
+| tax.category.delete.after | This event will be fired after tax category gets deleted. | `$id` |
+| tax.rate.create.before | This event will be fired before tax rate gets created. | - |
+| tax.rate.create.after | This event will be fired after tax rate gets created. | `$taxRate` |   
+| tax.rate.update.before | This event will be fired before tax rate gets updated. | `$id` |
+| tax.rate.update.after | This event will be fired after tax rate gets updated. | `$taxRate` |
+| tax.rate.delete.before | This event will be fired before tax rate gets deleted. | `$id` |
+| tax.rate.delete.after | This event will be fired after tax rate gets deleted. | `$id` |
+| checkout.cart.delete.before | This event will be fired before cart item gets deleted. | `$itemId` |
+| checkout.cart.delete.after | This event will be fired after cart item gets deleted. | `$itemId` |
+| checkout.cart.add.before | This event will be fired before cart item gets created. | `$product->id` |
+| checkout.cart.add.after | This event will be fired after cart item gets created. | `$this->cart` |
+| checkout.cart.update.before | This event will be fired before cart item gets updated. | `$item` |
+| checkout.cart.update.after | This event will be fired after cart item gets updated. | `$item` |
+| checkout.cart.collect.totals.before | This event will be fired before collecting cart totals. | `$this->cart` |
+| checkout.cart.collect.totals.after | This event will be fired after collecting cart totals. | `$this->cart` |
+| checkout.cart.calculate.items.tax.before | This event will be fired before calculating cart items tax. | `$this->cart` |
+| checkout.cart.calculate.items.tax.after | This event will be fired after calculating cart items tax. | `$this->cart` |
+| core.configuration.save.before | This event will be fired before core configuration gets saved. | - |
+| core.configuration.save.after | This event will be fired after core configuration gets saved. | -  |
+| core.currency.create.before | This event will be fired before currency gets created. | - |
+| core.currency.create.after | This event will be fired after currency gets created. | `$currency` |
+| core.currency.update.before | This event will be fired before currency gets updated. | `$id` |
+| core.currency.update.after | This event will be fired after currency gets updated. | `$currency` |
+| core.currency.delete.before | This event will be fired before currency gets deleted. | `$id` |
+| core.currency.delete.after | This event will be fired after currency gets deleted. | `$id` |
+| core.locale.create.before | This event will be fired before locale gets created. |  -  |
+| core.locale.create.after | This event will be fired after locale gets created. | `$locale` |
+| core.locale.update.before | This event will be fired before locale gets updated. | `$id` |
+| core.locale.update.after | This event will be fired after locale gets updated. | `$locale` |
+| core.locale.delete.before | This event will be fired before locale gets deleted. | `$id` |
+| core.locale.delete.after | This event will be fired after locale gets deleted. | `$id` |
+| sales.invoice.save.before | This event will be fired before invoice gets saved. | `$data` |
+| sales.invoice.save.after | This event will be fired after invoice gets saved. | `$invoice` |
+| checkout.order.save.before | This event will be fired before order gets saved. | `[$data]` |
+| checkout.order.save.after | This event will be fired after order gets saved. | `$order` |
+| checkout.order.orderitem.save.before | This event will be fired before order item gets saved. | `$item` |
+| checkout.order.orderitem.save.after | This event will be fired after order item gets saved. | `$orderItem` |
+| sales.order.cancel.before | This event will be fired before order gets canceled. | `$order` |
+| sales.order.cancel.after | This event will be fired after order gets canceled. | `$order` |
+| sales.order.update-status.before | This event will be fired before order status gets updated. | `$order` |
+| sales.order.update-status.after | This event will be fired after order status gets updated. | `$order` |
+| sales.refund.save.before | This event will be fired before order refund gets saved. | `$data` |
+| sales.refund.save.after | This event will be fired after order refund gets saved. | `$refund` |
+| sales.shipment.save.before | This event will be fired before shipment gets saved. | `$data` |
+| sales.shipment.save.after | This event will be fired after shipment gets saved. | `$shipment` |
+| checkout.load.index | This event will be fired on checkout page load. | - |
 
 ## Events Listen in Bagisto
 
