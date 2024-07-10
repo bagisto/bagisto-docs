@@ -65,7 +65,7 @@ The view file `order-cancel-admin.blade.php` typically includes a layout compone
 Now, let's explore the view file mentioned in `view('shop::emails.sales.order-cancel-admin')`. If you check the file at the path `packages/Webkul/Shop/src/Resources/views/emails/sales/order-cancel-admin.blade.php`, you will find it. This view file uses the main layout component `shop::emails.layouts.master`.
 
 ```php
-@component('shop::emails.layouts.master')
+@component('shop::emails.layout')
     ...
 @endcomponent
 ```
@@ -99,7 +99,6 @@ To override the view, create the same directory structure in the application's `
 For example, create a file named `order-cancel-admin.blade.php` within the `sales` directory, and modify its content as desired:
 
 ```blade
-
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum porro cumque numquam neque dicta quo, accusantium, perferendis sed beatae nesc
 
 iunt eum impedit vel doloribus dolor excepturi vero tenetur perspiciatis saepe?

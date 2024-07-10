@@ -70,14 +70,11 @@ To upgrade your current version to the latest version of Bagisto, follow these s
 
 11. Congratulations! Your project is now upgraded to the latest version of Bagisto. However, keep in mind that if you have made significant customizations, ensure compatibility with the latest version.
 
-
 ## New Changes
 
-The following changes have been implemented in Bagisto from version 2.1 to 2.2:
+The following changes have been implemented in Bagisto from version master to upcoming version:
 
-
-For more information, please visit the [Bagisto changelog on GitHub](https://github.com/bagisto/bagisto/blob/v2.2.1/CHANGELOG.md).
-
+For more information, please visit the [Bagisto changelog on GitHub](https://github.com/bagisto/bagisto/blob/master/CHANGELOG.md).
 
 #### Changes in the latest release
 
