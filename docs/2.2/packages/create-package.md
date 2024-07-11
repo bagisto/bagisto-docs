@@ -77,6 +77,27 @@ return [
 ];
 ```
 
+Add Model into `config/concord.php` file:
+```php
+<?php
+
+return [
+
+    'convention' => Webkul\Core\CoreConvention::class,
+
+    'modules' => [
+
+        /**
+         * Example:
+         * VendorA\ModuleX\Providers\ModuleServiceProvider::class,
+         * VendorB\ModuleY\Providers\ModuleServiceProvider::class
+         */
+        // Other service providers
+        Webkul\Blog\Providers\ModuleServiceProvider::class,
+    ],
+];
+```
+
 ### Run the Commands 
 
 Run the following commands to autoload your package and publish its assets and configurations:
@@ -84,7 +105,7 @@ Run the following commands to autoload your package and publish its assets and c
    ```shell
    composer dump-autoload
    php artisan optimize
-   php artisan vendor:publish --provider=Webkul\Blog\Providers\BlogServiceProvider
+   php artisan vendor:publish --provider=Webkul\Blog\Providers\ModuleServiceProvider
    ```
 
    When prompted to select which items to publish, choose the number corresponding to **`"Webkul\Blog\Providers\BlogServiceProvider"`** and press enter to publish all assets and configurations.
