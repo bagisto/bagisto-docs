@@ -39,45 +39,41 @@ To configure Elasticsearch, please refer to the [Configuration Setup](https://de
 
 ### Reindexing
 
-The `ReindexCommands` console command is responsible for reindexing data within the Bagisto, facilitating efficient data retrieval and search functionality. This command offers flexibility in selecting specific indexers and reindexing modes to suit varying requirements.
+The `ReindexCommands` console command is responsible for reindexing data within Bagisto, facilitating efficient data retrieval and search functionality. This command offers flexibility in selecting specific indexers and reindexing modes to suit varying requirements.
 
-The indexer:index command with the --type=price option is scheduled to run daily at 00:01 AM. This command is responsible for indexing data related to product prices, likely for search or display purposes.
-
-To customize the Reindex process through the terminal, follow these commands.
+By default, reindexing is executed at the scheduled time or based on specific events, such as product creation or updates. However, there may be situations where you need to manually trigger reindexing. This can be done using the following commands:
 
 #### Command Signature
 
-```
+The command `php artisan indexer:index` in Bagisto is used to manage the reindexing of various indexers. Here is a detailed description of its usage:
+
+```shell
 php artisan indexer:index {--type=*} {--mode=*}
 ```    
-- **--type**: Specifies the type of indexers to reindex. Multiple types can be provided, separated by commas.
+- **--type**: Specifies the type of indexers to reindex.
 - **--mode**: Specifies the reindexing mode, either `full` for full reindexing or selective for `selective` reindexing (default).
 
-**Reindexing all indexers in full mode:**
+- **Full Reindexing for All Types**
 
-```
+```shell
 php artisan indexer:index --mode=full
 ```
+This command performs a full reindexing for all indexers by default.
 
-**Reindexing specific types of indexers**
 
-- Command for Reindexing only prices
+- **Selective Reindexing**
 
-    ```php
-    php artisan indexer:index --type=price
-    ```
+```shell
+php artisan indexer:index --type=price
+```
 
-- Command for Reindexing only inventory
+This command performs selective reindexing specifically for the price indexer.
 
-    ```php
-    php artisan indexer:index --type=inventory
-    ```
+Price and price rule indexing are scheduled to reindex at a specific time each day to ensure that the latest pricing information is accurately reflected in searches and displays. The following commands are scheduled to run daily at 00:01 AM:
 
-- Command for Reindexing only elastic
-
-    ```php
-    php artisan indexer:index --type=elastic
-    ```
+```php
+$schedule->command('indexer:index --type=price')->dailyAt('00:01');
+```
 
 ## Full Page Cache 
 

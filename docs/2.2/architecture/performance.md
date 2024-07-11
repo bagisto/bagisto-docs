@@ -63,7 +63,7 @@ The command `php artisan indexer:index` in Bagisto is used to manage the reindex
 ```shell
 php artisan indexer:index {--type=*} {--mode=*}
 ```    
-- **--type**: Specifies the type of indexers to reindex. You can provide multiple types, separated by commas.
+- **--type**: Specifies the type of indexers to reindex.
 - **--mode**: Specifies the reindexing mode, either `full` for full reindexing or selective for `selective` reindexing (default).
 
 - **Full Reindexing for All Types**
@@ -95,13 +95,15 @@ Bagisto introduces Full Page Cache support to deliver lightning-fast page loadin
 
 Full Page Cache is a mechanism that stores entire HTML pages in the cache. When a request is made for the same page, the cache seamlessly serves the page without the need for re-executing server-side logic. This process allows for faster page load times as the cache provides a quick and efficient way to serve the requested page without the need to run the server-side logic again. This reduces the need for database queries, template rendering, and other resource-intensive tasks, resulting in faster page load times.
 
-We used the Spatie Laravel Responsecache Package in Bagisto
+We used the [Spatie Laravel Responsecache Package](https://github.com/spatie/laravel-responsecache) in Bagisto 
 
 ### How to Enable Full Page Cache In Bagisto
 
 - Go to the .env Configuration file
 
-- Set RESPONSE_CACHE_ENABLED=true
+```php
+Set RESPONSE_CACHE_ENABLED=true
+```
 
 ### How to set Cache duration and other Configuration
 
@@ -124,22 +126,30 @@ We used the Spatie Laravel Responsecache Package in Bagisto
 
 To effortlessly clear your application’s response cache in Bagisto, utilize the following command:
 
-```php
-php artisan cache:clear
+```shell
+php artisan responsecache:clear
 ```
+
+This command clears all cached responses. Optionally, you can provide a `--url` option to clear the cache for a specific URL:
+
+```shell
+php artisan responsecache:clear --url=http://example.com
+```
+
+Replace `http://example.com` with the actual URL for which you want to clear the cached response.
 
 ### Cache invalidation
 
 Here are some common techniques for cache invalidation in Laravel:
 
-**Create the EventServiceProvider class**
+#### Create the EventServiceProvider class
 
-We create an EventServiceProvider in the `packages/Webkul/FPC/src/Providers/EventServiceProvider.php` directory. This file contains the code for the event service provider, which can be used to register events and their listeners. To register an event and its listener, you can add them to the $listen array in the EventServiceProvider class.
+Create an EventServiceProvider in the `packages/Webkul/Post/src/Providers/EventServiceProvider.php` directory. This file contains the code for the event service provider, which can be used to register events and their listeners. To register an event and its listener, you can add them to the $listen array in the EventServiceProvider class.
 
 ```php
 <?php
 
-namespace Webkul\FPC\Providers;
+namespace Webkul\Post\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -151,25 +161,25 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'customer.review.update.after' => [
-            'Webkul\FPC\Listeners\Review@afterUpdate',
+        'post.update.after' => [
+            'Webkul\Post\Listeners\Post@afterUpdate',
         ],
     ];
 }
 ```
 
-**Register the service in the FPC service provider**
+#### Register the Service in the Post Service Provider
 
-In the `packages/Webkul/FPC/src/Providers/FPCServiceProvider.php` file, locate the boot()  method. Here you can see we add EventServiceProvider within the boot() method.
+In the `packages/Webkul/Post/src/Providers/PostServiceProvider.php` file, locate the `boot()` method. Add EventServiceProvider within the `boot()` method.
 
 ```php
 <?php
 
-namespace Webkul\FPC\Providers;
+namespace Webkul\Post\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class FPCServiceProvider extends ServiceProvider
+class PostServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap services.
@@ -191,42 +201,44 @@ class FPCServiceProvider extends ServiceProvider
     }
 }
 ```
+#### Handling Events in the Post Controller
 
-For instance, in the realm of event-based cache management, consider the event ‘customer.review.update.after’ triggered from the review controller upon a review update. This seamless integration guarantees swift cache clearance or update, maintaining synchronization with the latest review modifications.
+In the realm of event-based cache management, consider the event post.update.after triggered from the post controller upon a post update. This integration guarantees swift cache clearance or update, maintaining synchronization with the latest post modifications.
 
 ```php
 /**
  * Update the specified resource in storage.
  *
- * @param  int  $id
  * @return \Illuminate\Http\Response
  */
-public function update($id)
+public function update(int $id)
 {
-    Event::dispatch('customer.review.update.before', $id);
+    Event::dispatch('post.update.before', $id);
 
-    $review = $this->productReviewRepository->update(request()->only(['status']), $id);
+    $post = $this->postRepository->update(request()->only(['status']), $id);
 
-    Event::dispatch('customer.review.update.after', $review);
+    Event::dispatch('post.update.after', $post);
 
-    session()->flash('success', trans('admin::app.customers.reviews.update-success', ['name' => 'admin::app.customers.reviews.review']));
+    session()->flash('success', trans('shop::app.posts.update-success', ['name' => 'shop::app.posts.post']));
 
-    return redirect()->route('admin.customers.customers.review.index');
+    return redirect()->route('shop.posts.index');
 }
 ```
 
-In the directory `packages/Webkul/FPC/src/Listeners` you can find the `afterUpdate()` method. This method clears the cache using the `forget()` method when a review is updated.
+#### Listener Method for Cache Invalidation
+
+In the directory `packages/Webkul/Post/src/Listeners` you can find the `afterUpdate()` method. This method clears the cache using the `forget()` method when  a post is updated.
 
 ```php
 /**
- * After review is updated
+ * After post is updated
  *
- * @param  \Webkul\Product\Contracts\Review  $review
+ * @param  \Webkul\Post\Contracts\Post  $post
  * @return void
  */
-public function afterUpdate($review)
+public function afterUpdate($post)
 {
-    ResponseCache::forget('/' .  $review->product->url_key);
+    ResponseCache::forget('/' .  $post->url_key);
 }
 ```
 
