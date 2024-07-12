@@ -254,7 +254,7 @@ The DataGrid package in Bagisto empowers administrators with a versatile solutio
 
 ### DataTransfer
 
-This package contains all the logic related to data transfer. You can follow the given link for the more information about the[DataTransfer](https://bagisto.com/en/how-to-bulk-import-products-in-bagisto-2-1-0/)
+This package contains all the logic related to data transfer. You can follow the given link for the more information about the [DataTransfer](https://bagisto.com/en/how-to-bulk-import-products-in-bagisto-2-1-0/)
 
 ### DebugBar
 

@@ -177,7 +177,7 @@ In `packages/Webkul/Blog/src/Http/Controllers/Shop/PostController.php`, define t
        * 
        * @return \Illuminate\View\View
        */
-      public function blogDetails(int $id) 
+      public function view(int $id) 
       {
           //
       }
