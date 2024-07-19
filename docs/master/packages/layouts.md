@@ -36,9 +36,9 @@ To extend the default layout of the Bagisto admin panel, you'll create or modify
 
 ## Shop Layout
 
-`<x-shop::layouts>` This component serves as the container for your extended admin layout. It encapsulates the entire layout structure, including the title and content.
+`<x-shop::layouts>` This component serves as the container for your extended shop layout. It encapsulates the entire layout structure, including the title and content.
 
-To extend the shop layout in Bagisto, modify or create the `index.blade.php` file located at `packages/Webkul/Blog/src/Resources/views/shop/default/index.blade.php`. Below is a detailed breakdown of how to integrate and customize the shop layout:
+To extend the shop layout in Bagisto, modify or create the `index.blade.php` file located at `packages/Webkul/Blog/src/Resources/views/shop/index.blade.php`. Below is a detailed breakdown of how to integrate and customize the shop layout:
 
 ```html
 <x-shop::layouts
