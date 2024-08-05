@@ -26,7 +26,7 @@ To limit the exposure of sensitive information in error messages, follow these s
 
 :::details Screenshot
 
-![limiting-error-messages](../../assets/2.x/images/advanced-topics/limiting-error-messages.png)
+![limiting-error-messages](../../assets/2.1/images/advanced-topics/limiting-error-messages.png)
 
 :::
 
