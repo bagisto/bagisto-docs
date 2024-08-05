@@ -55,6 +55,8 @@
 
         <option value="2.1">2.1</option>
 
+        <option value="2.0">2.0</option>
+
         <option value="1.5.x">1.5.x</option>
         
         <option value="1.x">1.x</option>

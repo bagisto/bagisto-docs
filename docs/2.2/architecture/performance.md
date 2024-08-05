@@ -48,7 +48,7 @@ As Elastic is designed to handle large amounts of data and provide fast and scal
 
 #### Configuration Setup
 
-To configure Elasticsearch, please refer to the [Configuration Setup](https://devdocs.bagisto.com/2.x/advanced/indexing-products-to-elasticsearch.html) documentation.
+To configure Elasticsearch, please refer to the [Configuration Setup](https://devdocs.bagisto.com/2.2/advanced/indexing-products-to-elasticsearch.html) documentation.
 
 ### Reindexing
 

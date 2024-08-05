@@ -31,4 +31,4 @@ Bagisto utilizes the Blade template engine, which is integrated with [Laravel](h
 - **Template Inheritance**: Blade supports template inheritance, which allows for a modular and maintainable template structure.
 - **Directives**: Blade includes various directives that simplify common tasks, such as loops and conditionals.
 
-For more insights into Bagisto's directory structure and package configuration, refer to the [documentation](https://devdocs.bagisto.com/2.x/packages/views.html#directory-structure).
+For more insights into Bagisto's directory structure and package configuration, refer to the [documentation](https://devdocs.bagisto.com/2.2/packages/views.html#directory-structure).

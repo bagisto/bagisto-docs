@@ -213,7 +213,7 @@ Let's assume you want to use the **`flat-picker`** component. You can call it li
 
 The `datagrid` component in Bagisto applications provides a flexible and customizable data grid interface for displaying tabular data. It includes features such as `sorting`, `filtering`, `pagination`, and `mass actions` to manage data efficiently.
 
-You can customize the appearance of the `DataGrid` by referring to the [DataGrid Customization](https://devdocs.bagisto.com/2.x/packages/datagrid.html#datagrid-customization) documentation.
+You can customize the appearance of the `DataGrid` by referring to the [DataGrid Customization](https://devdocs.bagisto.com/2.1/packages/datagrid.html#datagrid-customization) documentation.
 
 Let's assume you want to use the **`datagrid`** component. You can call it like this.
 
@@ -673,7 +673,7 @@ Let's assume you want to use the **`flat-picker`** component. You can call it li
 
 The `datagrid` component in Bagisto applications provides a flexible and customizable data grid interface for displaying tabular data. It includes features such as `sorting`, `filtering`, `pagination`, and `mass actions` to manage data efficiently.
 
-You can customize the appearance of the `DataGrid` by referring to the [DataGrid Customization](https://devdocs.bagisto.com/2.x/packages/datagrid.html#datagrid-customization) documentation.
+You can customize the appearance of the `DataGrid` by referring to the [DataGrid Customization](https://devdocs.bagisto.com/2.1/packages/datagrid.html#datagrid-customization) documentation.
 
 Let's assume you want to use the **`datagrid`** component. You can call it like this.
 
