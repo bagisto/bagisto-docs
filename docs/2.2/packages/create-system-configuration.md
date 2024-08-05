@@ -138,6 +138,7 @@ return [
     [
         'key'    => 'general.general.custom-types',
         'name'   => 'admin::app.admin.system.custom-types',
+        'info'   => 'admin::app.admin.system.custom-types',
         'sort'   => 1,
         'fields' => [
             [
@@ -164,6 +165,7 @@ return [
     [
         'key'    => 'general.general.custom-types',
         'name'   => 'admin::app.admin.system.custom-types',
+        'info'   => 'admin::app.admin.system.custom-types',
         'sort'   => 1,
         'fields' => [
             [
@@ -189,6 +191,7 @@ return [
     [
         'key'    => 'general.general.custom-types',
         'name'   => 'admin::app.admin.system.custom-types',
+        'info'   => 'admin::app.admin.system.custom-types',
         'sort'   => 1,
         'fields' => [
             [
@@ -214,6 +217,7 @@ return [
     [
         'key'    => 'general.general.custom-types',
         'name'   => 'admin::app.admin.system.custom-types',
+        'info'   => 'admin::app.admin.system.custom-types',
         'sort'   => 1,
         'fields' => [
             [
@@ -249,6 +253,7 @@ return [
     [
         'key'    => 'general.general.custom-types',
         'name'   => 'admin::app.admin.system.custom-types',
+        'info'   => 'admin::app.admin.system.custom-types',
         'sort'   => 1,
         'fields' => [
             [
@@ -274,6 +279,7 @@ return [
     [
         'key'    => 'general.general.custom-types',
         'name'   => 'admin::app.admin.system.custom-types',
+        'info'   => 'admin::app.admin.system.custom-types',
         'sort'   => 1,
         'fields' => [
             [
@@ -374,6 +380,7 @@ return [
     [
         'key'    => 'general.general.custom-settings',
         'name'   => 'admin::app.admin.system.custom-settings',
+        'info'   => 'admin::app.admin.system.custom-settings',
         'sort'   => 1,
         'fields' => [
             [

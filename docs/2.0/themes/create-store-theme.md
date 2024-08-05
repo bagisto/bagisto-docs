@@ -58,11 +58,11 @@ Let's go through the parameters defined in the `themes.php` file as understandin
 
 ### Explanation of Parameters
 
-- `shop-default` This parameter at the top of the file indicates the currently active or default theme for the shop in Bagisto. It is set to `'shop-default'`, representing the name of the currently active theme.
+- `default` This parameter at the top of the file indicates the currently active or default theme for the shop-end in Bagisto. It is set to `'default'`, representing the name of the currently active theme.
 
-- `shop` This parameter allows you to define the configurations for your custom theme for the shop end. You can create and use multiple themes simultaneously in Bagisto.
+- `themes` This parameter allows you to define the configurations for your custom theme for the shop end. You can create and use multiple themes simultaneously in Bagisto.
 
-- Inside the `'shop'` array, there is another array named `'default'`, which represents your currently active theme. It contains several key-value pairs that are explained below:
+- Inside the `'themes'` array, there is another array named `'default'`, which represents your currently active theme. It contains several key-value pairs that are explained below:
 
     - `views_path` This parameter specifies the path to the views or blade files for your custom theme.
 
