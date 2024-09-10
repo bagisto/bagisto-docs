@@ -19,7 +19,7 @@ You can contribute to the following projects:
 - Bagisto
 - Bagisto docs
 - Bagisto rest-api
-- Bgaitso booking-product
+- Bagisto booking-product
 - Laravel-aliexpress-dropship
 - Laravel-aliexpress-dropship-chrome-extension
 - Bagisto-custom-style-extension
