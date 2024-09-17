@@ -231,7 +231,7 @@ return [
                     ], [
                     ], [
                         'title' => 'option_2',
-                        'value' => 'vallue_2',
+                        'value' => 'value_2',
                     ],
                 ],
             ],

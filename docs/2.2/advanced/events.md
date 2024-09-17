@@ -134,7 +134,7 @@ In Bagisto, there are several events fired throughout its operations, allowing d
 | catalog.product.update.after | This event will be fired after product gets updated. | `$product` |
 | catalog.product.delete.before | This event will be fired before product gets deleted. | `$id` |
 | catalog.product.delete.after | This event will be fired after product gets deleted. | `$id`  |
-| products.datagrid.sync | This event will be fired to synicing datagrid product. | `true` |
+| products.datagrid.sync | This event will be fired to syncing datagrid product. | `true` |
 | cms.page.create.before | This event will be fired before cms page gets created. | - |
 | cms.page.create.after | This event will be fired after cms page gets created. | `$page` |
 | cms.page.update.before | This event will be fired before cms page gets updated. | `$id` | 
