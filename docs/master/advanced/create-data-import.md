@@ -256,3 +256,12 @@ This structured explanation provides a clear overview of the steps involved in s
 - `importBatch()`: This method imports all the rows of your `.csv` files into a batch file and then imports them into the database in a queue. It handles the processing of the data and updates the import batch summary.
 
 These methods play a crucial role in ensuring the integrity and accuracy of the imported data. They help in identifying and handling errors, such as missing or duplicate identifiers, and provide a smooth data transfer process.
+
+### Types of file allowed in the import process.
+
+We support four types of files for data transfer when importing bulk data into the system:
+
+- XML
+- CSV
+- XLSX
+- XLS
