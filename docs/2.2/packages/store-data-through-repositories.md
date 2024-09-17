@@ -69,8 +69,6 @@ Copy the following code into your newly created repository file.
   {
       /**
       * Specify the Model class name
-      *
-      * @return string
       */
       function model(): string
       {

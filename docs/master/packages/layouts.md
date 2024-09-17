@@ -21,13 +21,13 @@ To extend the default layout of the Bagisto admin panel, you'll create or modify
         @lang('blog::app.admin.index.page-title')
     </x-slot:title>
 
-    <div class="flex gap-[16px] justify-between max-sm:flex-wrap">
-        <p class="py-[11px] text-[20px] text-gray-800 dark:text-white font-bold">
+    <div class="flex gap-4 justify-between max-sm:flex-wrap">
+        <p class="py-[11px] text-xl text-gray-800 dark:text-white font-bold">
             <!-- Section Title -->
             @lang('blog::app.admin.index.page-title')
         </p> 
 
-        <div class="flex gap-x-[10px] items-center">
+        <div class="flex gap-x-2.5 items-center">
             <!-- Action Button -->
         </div>
     </div>
