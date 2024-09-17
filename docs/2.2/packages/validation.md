@@ -113,14 +113,12 @@ import { createApp } from "vue/dist/vue.esm-bundler";
 import { configure, defineRule } from "vee-validate";
 import { localize } from "@vee-validate/i18n";
 import en from "@vee-validate/i18n/dist/locale/en.json";
-import * as AllRules from '@vee-validate/rules';
+import { all } from '@vee-validate/rules';
 
 /**
  * Registration of all global validators.
  */
-Object.keys(AllRules).forEach(rule => {
-    defineRule(rule, AllRules[rule]);
-});
+Object.entries(all).forEach(([name, rule]) => defineRule(name, rule));
 
 /**
  * This regular expression allows phone numbers with the following conditions:
@@ -131,7 +129,7 @@ Object.keys(AllRules).forEach(rule => {
  * someone wants to customize it, they can override this rule.
  */
 defineRule("phone", (value) => {
-    if (!value || !value.length) {
+    if (! value || ! value.length) {
         return true;
     }
 
@@ -195,7 +193,7 @@ configure({
 Below are examples of how to use VeeValidate for validation in Vue components within Bagisto:
 
 ```html
-<x-admin::form.control-group class="w-full mb-[10px]">
+<x-admin::form.control-group class="w-full mb-2.5">
     <x-admin::form.control-group.label class="required">
         @lang('blog::app.admin.blog.create.title')
     </x-admin::form.control-group.label>
@@ -223,11 +221,11 @@ Below are examples of how to use VeeValidate for validation in Vue components wi
 
 ```javascript
 defineRule("phone", (value) => {
-    if (!value || !value.length) {
+    if (! value || ! value.length) {
         return true;
     }
 
-    if (!/^\+?\d+$/.test(value)) {
+    if (! /^\+?\d+$/.test(value)) {
         return false;
     }
 
@@ -238,12 +236,12 @@ defineRule("phone", (value) => {
 
 ```javascript
 defineRule("address", (value) => {
-    if (!value || !value.length) {
+    if (! value || ! value.length) {
         return true;
     }
 
     if (
-        !/^[a-zA-Z0-9\s.\/*'\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\u0590-\u05FF\u3040-\u309F\u30A0-\u30FF\u0400-\u04FF\u0D80-\u0DFF\u3400-\u4DBF\u2000-\u2A6D\u00C0-\u017F\u0980-\u09FF\u0900-\u097F\u4E00-\u9FFF,\(\)-]{1,60}$/iu.test(
+        ! /^[a-zA-Z0-9\s.\/*'\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\u0590-\u05FF\u3040-\u309F\u30A0-\u30FF\u0400-\u04FF\u0D80-\u0DFF\u3400-\u4DBF\u2000-\u2A6D\u00C0-\u017F\u0980-\u09FF\u0900-\u097F\u4E00-\u9FFF,\(\)-]{1,60}$/iu.test(
             value
         )
     ) {

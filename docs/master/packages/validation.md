@@ -193,7 +193,7 @@ configure({
 Below are examples of how to use VeeValidate for validation in Vue components within Bagisto:
 
 ```html
-<x-admin::form.control-group class="w-full mb-[10px]">
+<x-admin::form.control-group class="w-full mb-2.5">
     <x-admin::form.control-group.label class="required">
         @lang('blog::app.admin.blog.create.title')
     </x-admin::form.control-group.label>

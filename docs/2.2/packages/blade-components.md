@@ -722,8 +722,8 @@ Let's assume you want to use the **`tabs`** component on shop. You can call it l
         class="container"
         :title="Tab-2"
     >
-        <div class="container mt-[60px] max-1180:px-[20px]">
-            <p class="text-[#6E6E6E] text-[18px] max-1180:text-[14px]">
+        <div class="container mt-[60px] max-1180:px-5">
+            <p class="text-[#6E6E6E] text-lg max-1180:text-sm">
                 Lorem Ipsum is simply dummy text of the printing and typesetting industry.
             </p>
         </div>
