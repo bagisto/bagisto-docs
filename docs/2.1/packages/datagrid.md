@@ -412,6 +412,28 @@ $this->addColumn([
 ]);
 ```
 
+
+This is a small example of status flags that can be set to either active or inactive. You can configure the status flags according to your requirements.
+
+
+```php
+$this->addColumn([
+    'index'      => 'status',
+    'label'      => trans('blog::app.admin.datagrid.index.status'),
+    'type'       => 'boolean',
+    'searchable' => false,
+    'filterable' => true,
+    'sortable'   => true,
+    'closure'    => function ($value) {
+        if ($value->status) {
+            return '<span class="badge badge-md badge-success">'.trans('blog::app.admin.datagrid.index.status.active').'</span>';
+        }
+
+        return '<span class="badge badge-md badge-danger">'.trans('blog::app.admin.datagrid.index.status.inactive').'</span>';
+    },
+]);
+```
+
 ### Dropdown Column Type 
 
 When using the dropdown column type in Bagisto’s DataGrid, the following filterable options are supported to refine searches based on predefined choices from a dropdown menu. The dropdown filter allows users to select specific values from a list, making data filtering simple and precise. Inside the options are set based on the value of the dropdown type.
