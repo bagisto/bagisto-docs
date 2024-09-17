@@ -164,7 +164,7 @@ Mention the database details same as docker-compose.yml and admin details.
 
 ### Install with composer
 
-The following commands will be exexcuted within the docker container
+The following commands will be executed within the docker container
 ```shell
 docker exec -i apache2 bash -c "su - www-data -s /bin/bash -c 'composer create-project bagisto/bagisto'"
 ```

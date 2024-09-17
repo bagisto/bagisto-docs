@@ -340,7 +340,7 @@ The Product package in Bagisto encapsulates comprehensive functionalities relate
 
 - Defines structured data models and repository patterns for efficient data handling and interaction.
 
-- Allows administrators to create new products, update existing ones, and manage product lifecycles efficiently.
+- Allows administrators to create new products, update existing ones, and manage product life cycle efficiently.
 
 ### Sales
 

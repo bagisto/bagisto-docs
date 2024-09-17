@@ -38,7 +38,12 @@ In **`Webkul\DataGrid\DataGrid\DataGrid.php`** abstract class, two abstract meth
     public function prepareQueryBuilder()
     {
         $queryBuilder = DB::table('posts')
-            ->select('id', 'title', 'status', 'created_at', 'updated_at');
+            ->select('id',
+                'title',
+                'status',
+                'created_at',
+                'updated_at'
+            );
 
         return $queryBuilder;
     }
@@ -263,7 +268,12 @@ class PostDataGrid extends DataGrid
     public function prepareQueryBuilder()
     {
         $queryBuilder = DB::table('posts')
-            ->select('id', 'title', 'status', 'created_at', 'updated_at');
+            ->select('id',
+                'title',
+                'status',
+                'created_at',
+                'updated_at'
+            );
 
         return $queryBuilder;
     }
@@ -305,10 +315,10 @@ class PostDataGrid extends DataGrid
             'filterable' => true,
             'closure'    => function ($value) {
                 if ($value->status) {
-                    return '<p class="label-active">' . trans('blog::app.admin.datagrid.active') . '</p>';
+                    return '<p class="label-active">'.trans('blog::app.admin.datagrid.active').'</p>';
                 }
 
-                return '<p class="label-info">' . trans('blog::app.admin.datagrid.inactive') . '</p>';
+                return '<p class="label-info">'.trans('blog::app.admin.datagrid.inactive').'</p>';
             },
         ]);
 
@@ -343,7 +353,7 @@ class PostDataGrid extends DataGrid
             'title'  => trans('blog::app.admin.datagrid.edit'),
             'method' => 'GET',
             'url'    => function ($row) {
-                return route('aadmin.blog.edit', $row->id);
+                return route('admin.blog.edit', $row->id);
             },
         ]);
 

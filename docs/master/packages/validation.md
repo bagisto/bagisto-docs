@@ -113,14 +113,12 @@ import { createApp } from "vue/dist/vue.esm-bundler";
 import { configure, defineRule } from "vee-validate";
 import { localize } from "@vee-validate/i18n";
 import en from "@vee-validate/i18n/dist/locale/en.json";
-import * as AllRules from '@vee-validate/rules';
+import { all } from '@vee-validate/rules';
 
 /**
  * Registration of all global validators.
  */
-Object.keys(AllRules).forEach(rule => {
-    defineRule(rule, AllRules[rule]);
-});
+Object.entries(all).forEach(([name, rule]) => defineRule(name, rule));
 
 /**
  * This regular expression allows phone numbers with the following conditions:
@@ -131,7 +129,7 @@ Object.keys(AllRules).forEach(rule => {
  * someone wants to customize it, they can override this rule.
  */
 defineRule("phone", (value) => {
-    if (!value || !value.length) {
+    if (! value || ! value.length) {
         return true;
     }
 
@@ -223,7 +221,7 @@ Below are examples of how to use VeeValidate for validation in Vue components wi
 
 ```javascript
 defineRule("phone", (value) => {
-    if (!value || !value.length) {
+    if (! value || ! value.length) {
         return true;
     }
 
@@ -238,7 +236,7 @@ defineRule("phone", (value) => {
 
 ```javascript
 defineRule("address", (value) => {
-    if (!value || !value.length) {
+    if (! value || ! value.length) {
         return true;
     }
 

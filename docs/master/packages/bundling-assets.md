@@ -113,18 +113,28 @@ The `package.json` file includes the following:
 
 - **DevDependencies:** These are packages required during the development phase, including:
     - `autoprefixer` Adds vendor prefixes to CSS rules.
+
     - `axios` A promise-based HTTP client.
+
     - `laravel-vite-plugin` Integrates Vite with Laravel.
+
     - `postcss` A tool for transforming CSS with JavaScript plugins.
+
     - `tailwindcss` A utility-first CSS framework.
+
     - `vite` A frontend build tool.
+
     - `vue` The progressive JavaScript framework.
 
 - **Dependencies:** These are essential packages required for the project to function, including:
     - `@vee-validate/i18n` Internationalization for VeeValidate.
+
     - `@vee-validate/rules` Validation rules for VeeValidate.
+
     - `mitt` A tiny event emitter.
+
     - `vee-validate` Form validation for Vue.js.
+
     - `vue-flatpickr` A Vue component for Flatpickr date picker.
 
 ### Set Up vite.config.js
