@@ -364,7 +364,7 @@ By customizing the DataGrid directly in the Blade file, you won't affect your de
 
 ## Available Column Types
 
-Bagisto’s DataGrid supports various column types that allow you to store, display, and manage diverse kinds of data. This also includes a searchability feature, allowing users to filter data by specific criteria. Below is a breakdown of key column types: integer, string, boolean, date, datetime, and aggregate types.
+Bagisto’s DataGrid supports various column types that allow you to store, display, and manage diverse kinds of data. This also includes a searchability feature, allowing users to filter data by specific criteria. Below is a breakdown of key column types: integer, string, boolean, date range, and dropdown types.
 
 ### Integer Column Type
 
@@ -412,6 +412,53 @@ $this->addColumn([
 ]);
 ```
 
+
+This is a small example of status flags that can be set to either active or inactive. You can configure the status flags according to your requirements.
+
+
+```php
+$this->addColumn([
+    'index'      => 'status',
+    'label'      => trans('blog::app.admin.datagrid.index.status'),
+    'type'       => 'boolean',
+    'searchable' => false,
+    'filterable' => true,
+    'sortable'   => true,
+    'closure'    => function ($value) {
+        if ($value->status) {
+            return '<span class="badge badge-md badge-success">'.trans('blog::app.admin.datagrid.index.status.active').'</span>';
+        }
+
+        return '<span class="badge badge-md badge-danger">'.trans('blog::app.admin.datagrid.index.status.inactive').'</span>';
+    },
+]);
+```
+
+### Dropdown Column Type 
+
+When using the dropdown column type in Bagisto’s DataGrid, the following filterable options are supported to refine searches based on predefined choices from a dropdown menu. The dropdown filter allows users to select specific values from a list, making data filtering simple and precise. Inside the options are set based on the value of the dropdown type.
+
+```php
+$this->addColumn([
+    'index'      => 'type',
+    'label'      => trans('blog::app.admin.datagrid.index.type'),
+    'type'       => 'dropdown',
+    'options'    => [
+        'type' => 'basic',
+
+        'params' => [
+            'options' => collect(config('product_types'))
+                ->map(fn ($type) => ['label' => trans($type['name']), 'value' => trans('blog::app.admin.datagrid.index.type.create.'.$type['key'])])
+                ->values()
+                ->toArray(),
+        ],
+    ],
+    'searchable' => false,
+    'filterable' => true,
+    'sortable'   => true,
+]);
+```
+
 ### Date Column Type 
 
 The date column type stores dates, but without time information. It is useful when only the calendar date is important, such as in daily reports or event dates. Often used for birth dates, order dates, or specific event dates.
@@ -420,37 +467,7 @@ The date column type stores dates, but without time information. It is useful wh
 $this->addColumn([
     'index'      => 'created_at',
     'label'      => trans('blog::app.admin.datagrid.index.date'),
-    'type'       => 'date',
-    'searchable' => true,
-    'filterable' => 'date_range',
-    'sortable'   => true,
-]);
-```
-
-### DateTime Column Type 
-
-The datetime column type stores both date and time information. This is important when precise timestamps are needed. Used for tracking exact times for events like order creation, login timestamps, or last updated times.
-
-```php
-$this->addColumn([
-    'index'      => 'updated_at',
-    'label'      => trans('blog::app.admin.datagrid.index.date'),
-    'type'       => 'datetime',
-    'searchable' => true,
-    'filterable' => 'datetime_range',
-    'sortable'   => true,
-]);
-```
-
-### Aggregate Type Column 
-
-The aggregate column type is used for displaying summarized or calculated data, such as totals, averages, or counts derived from other data in the DataGrid. Used to display metrics like total sales, average order value, or product count in categories.
-
-```php
-$this->addColumn([
-    'index'      => 'total',
-    'label'      => trans('blog::app.admin.datagrid.index.total'),
-    'type'       => 'aggregate',
+    'type'       => 'date_range',
     'searchable' => true,
     'filterable' => true,
     'sortable'   => true,
