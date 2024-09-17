@@ -2,7 +2,7 @@
 
 [[TOC]]
 
-In the realm of online stores, [web vitals](https://web.dev/vitals/) have become increasingly crucial. **Bagisto** prioritises good [LCP](https://web.dev/lcp/) and [CLS](https://web.dev/cls/) to ensure an optimal user experience.
+In the realm of online stores, [web vitals](https://web.dev/vitals/) have become increasingly crucial. **Bagisto** priorities good [LCP](https://web.dev/lcp/) and [CLS](https://web.dev/cls/) to ensure an optimal user experience.
 
 Additionally, **Bagisto** has seamlessly integrated [ElasticSearch](https://bagisto.com/en/elasticsearch-for-bagisto/) to further enhance user experience.
 
@@ -34,13 +34,13 @@ Similar to price indexing, the inventory indexing process in Bagisto involves up
 Flat indexing in Bagisto is a vital mechanism designed to enhance the performance and efficiency of product data retrieval.
 The indexer processes products in batches, which is efficient for handling large datasets without overwhelming the system.
 It manages a set of fillable attribute codes that are essential during the creation of the flat index. The flat indexer takes into account various channels and locales, ensuring that product data is accurately indexed for different market segments.  A predefined list of attribute codes, such as `sku`, `name`, `price`, `weight`, and `status`, that can be populated during the indexing process.
-By default, the Flat Indexer reindexes products based on product creation or update events. However, there are scenarios where you might need to reindex the flat index in response to changes in channels or locales. In such cases, you can manually trigger the reindexing process to ensure that the flat tables reflect the latest channel and locale updates.
+By default, the Flat Indexer reindexes products based on product creation or update events. However, there are scenarios where you might need to re-index the flat index in response to changes in channels or locales. In such cases, you can manually trigger the re-indexing process to ensure that the flat tables reflect the latest channel and locale updates.
 
 ### Catalog Rule Indexing
 
 Catalog rule indexing in Bagisto ensures that product prices are updated based on any changes to catalog rules, such as offers expiring or being updated. To maintain accurate pricing, Bagisto schedules the catalog rule indexer to run daily. This scheduled task ensures that any modifications to catalog rules are promptly applied to the product prices.
 
-The catalog rule indexing process is set to execute at 00:01 every day. The product prices are consistently recalculated and updated based on the current catalog rules. This automatic reindexing guarantees that any changes in promotional offers, discounts, or other pricing rules are reflected in the product listings without any manual intervention.
+The catalog rule indexing process is set to execute at 00:01 every day. The product prices are consistently recalculated and updated based on the current catalog rules. This automatic re-indexing guarantees that any changes in promotional offers, discounts, or other pricing rules are reflected in the product listings without any manual intervention.
 
 ### ElasticSearch
 
@@ -52,37 +52,37 @@ To configure Elasticsearch, please refer to the [Configuration Setup](https://de
 
 ### Reindexing
 
-The `ReindexCommands` console command is responsible for reindexing data within Bagisto, facilitating efficient data retrieval and search functionality. This command offers flexibility in selecting specific indexers and reindexing modes to suit varying requirements.
+The `Re-indexCommands` console command is responsible for re-indexing data within Bagisto, facilitating efficient data retrieval and search functionality. This command offers flexibility in selecting specific indexers and re-indexing modes to suit varying requirements.
 
-By default, reindexing is executed at the scheduled time or based on specific events, such as product creation or updates. However, there may be situations where you need to manually trigger reindexing. This can be done using the following commands:
+By default, re-indexing is executed at the scheduled time or based on specific events, such as product creation or updates. However, there may be situations where you need to manually trigger re-indexing. This can be done using the following commands:
 
 #### Command Signature
 
-The command `php artisan indexer:index` in Bagisto is used to manage the reindexing of various indexers. Here is a detailed description of its usage:
+The command `php artisan indexer:index` in Bagisto is used to manage the re-indexing of various indexers. Here is a detailed description of its usage:
 
 ```shell
 php artisan indexer:index {--type=*} {--mode=*}
 ```    
-- **--type**: Specifies the type of indexers to reindex.
-- **--mode**: Specifies the reindexing mode, either `full` for full reindexing or selective for `selective` reindexing (default).
+- **--type**: Specifies the type of indexers to re-index.
+- **--mode**: Specifies the re-indexing mode, either `full` for full re-indexing or selective for `selective` re-indexing (default).
 
-- **Full Reindexing for All Types**
+- **Full Re-indexing for All Types**
 
 ```shell
 php artisan indexer:index --mode=full
 ```
-This command performs a full reindexing for all indexers by default.
+This command performs a full re-indexing for all indexers by default.
 
 
-- **Selective Reindexing**
+- **Selective Re-indexing**
 
 ```shell
 php artisan indexer:index --type=price
 ```
 
-This command performs selective reindexing specifically for the price indexer.
+This command performs selective re-indexing specifically for the price indexer.
 
-Price and price rule indexing are scheduled to reindex at a specific time each day to ensure that the latest pricing information is accurately reflected in searches and displays. The following commands are scheduled to run daily at 00:01 AM:
+Price and price rule indexing are scheduled to re-index at a specific time each day to ensure that the latest pricing information is accurately reflected in searches and displays. The following commands are scheduled to run daily at 00:01 AM:
 
 ```php
 $schedule->command('indexer:index --type=price')->dailyAt('00:01');
