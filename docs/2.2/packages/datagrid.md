@@ -442,7 +442,7 @@ By customizing the DataGrid directly in the Blade file, you won't affect your de
 
 ## Available Column Types
 
-Bagisto’s DataGrid supports various column types that allow you to store, display, and manage diverse kinds of data. This also includes a searchability feature, allowing users to filter data by specific criteria. Below is a breakdown of key column types: float, integer, string, boolean, date, datetime, and aggregate types.
+Bagisto’s DataGrid supports various column types that allow you to store, display, and manage diverse kinds of data. This also includes a searchability feature, allowing users to filter data by specific criteria. Below is a breakdown of key column types: decimal, integer, string, boolean, date, datetime, and aggregate types.
 
 ### Integer Column Type
 
@@ -460,15 +460,15 @@ $this->addColumn([
 ]);
 ```
 
-### Float Column Type
+### Decimal Column Type
 
-The Float column type stores numbers with high precision, allowing fractional parts. It’s ideal for financial or measurement data where exact precision is necessary. Used for columns like product prices, weights, or tax rates that require float values.
+The decimal column type stores numbers with high precision, allowing fractional parts. It’s ideal for financial or measurement data where exact precision is necessary. Used for columns like product prices, weights, or tax rates that require decimal values.
 
 ```php
 $this->addColumn([
     'index'      => 'price',
     'label'      => trans('blog::app.admin.datagrid.index.price'),
-    'type'       => 'float',
+    'type'       => 'decimal',
     'searchable' => true,
     'filterable' => true,
     'sortable'   => true,
@@ -486,6 +486,68 @@ $this->addColumn([
     'type'       => 'string',
     'searchable' => true,
     'filterable' => true,
+    'sortable'   => true,
+]);
+```
+
+#### filterable options in string column type
+
+When using the string column type in Bagisto’s DataGrid, the following filterable options are supported to help refine searches based on text data.
+
+```php
+$this->addColumn([
+    'index'              => 'type',
+    'label'              => trans('blog::app.admin.datagrid.index.type'),
+    'type'               => 'string',
+    'filterable'         => true,
+    'searchable'         => true,
+    'filterable_type'    => 'dropdown',
+    'filterable_options' => [
+        [
+            'label' => trans('blog::app.admin.datagrid.index.type.text'),
+            'value' => 'text',
+        ],
+        [
+            'label' => trans('blog::app.admin.datagrid.index.type.textarea'),
+            'value' => 'textarea',
+        ],
+        [
+            'label' => trans('blog::app.admin.datagrid.index.type.price'),
+            'value' => 'price',
+        ],
+        [
+            'label' => trans('blog::app.admin.datagrid.index.type.boolean'),
+            'value' => 'boolean',
+        ],
+        [
+            'label' => trans('blog::app.admin.datagrid.index.type.select'),
+            'value' => 'select',
+        ],
+        [
+            'label' => trans('blog::app.admin.datagrid.index.type.multiselect'),
+            'value' => 'multiselect',
+        ],
+        [
+            'label' => trans('blog::app.admin.datagrid.index.type.date-time'),
+            'value' => 'datetime',
+        ],
+        [
+            'label' => trans('blog::app.admin.datagrid.index.type.date'),
+            'value' => 'date',
+        ],
+        [
+            'label' => trans('blog::app.admin.datagrid.index.type.image'),
+            'value' => 'image',
+        ],
+        [
+            'label' => trans('blog::app.admin.datagrid.index.type.file'),
+            'value' => 'file',
+        ],
+        [
+            'label' => trans('blog::app.admin.datagrid.index.type.checkbox'),
+            'value' => 'checkbox',
+        ],
+    ],
     'sortable'   => true,
 ]);
 ```
@@ -515,8 +577,24 @@ $this->addColumn([
     'label'      => trans('blog::app.admin.datagrid.index.date'),
     'type'       => 'date',
     'searchable' => true,
-    'filterable' => 'date_range',
+    'filterable' => true,
     'sortable'   => true,
+]);
+```
+
+#### filterable type in Date column type
+
+When using the date column type in Bagisto’s DataGrid, the following filterable type are supported to help refine searches based on text data. The filterable type is typically set to 'date_range', allowing users to search for records based on specific date ranges.
+
+```php
+$this->addColumn([
+    'index'           => 'created_at',
+    'label'           => trans('blog::app.admin.datagrid.index.date'),
+    'type'            => 'date',
+    'searchable'      => true,
+    'filterable'      => true,
+    'filterable_type' => 'date_range',
+    'sortable'        => true
 ]);
 ```
 
@@ -530,8 +608,24 @@ $this->addColumn([
     'label'      => trans('blog::app.admin.datagrid.index.date'),
     'type'       => 'datetime',
     'searchable' => true,
-    'filterable' => 'datetime_range',
+    'filterable' => true,
     'sortable'   => true,
+]);
+```
+
+#### filterable type in Date Time column type
+
+When using the date time column type in Bagisto’s DataGrid, the following filterable type are supported to help refine searches based on text data. The filterable type is typically set to 'datetime_range', allowing users to search for records based on specific date time ranges.
+
+```php
+$this->addColumn([
+    'index'           => 'updated_at',
+    'label'           => trans('blog::app.admin.datagrid.index.date'),
+    'type'            => 'datetime',
+    'filterable'      => true,
+    'searchable'      => true,
+    'filterable_type' => 'datetime_range',
+    'sortable'        => true,
 ]);
 ```
 
