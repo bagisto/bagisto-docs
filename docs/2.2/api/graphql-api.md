@@ -4,13 +4,13 @@
 
 ## GraphQL API
 
-Bagisto REST API is a medium to use the features of the core Bagisto System. By using Bagisto REST API, you can integrate your application to serve the default content of Bagisto.
+Bagisto GraphQL API provides a way to interact with the core features of the Bagisto system. By using the Bagisto GraphQL API, you can seamlessly integrate your application and access the default functionality and content provided by Bagisto.
 
 ## Explore GraphQL API Demo
 
 Welcome to our API demo! Dive into the interactive showcase of our API functionalities to get a hands-on experience of how our platform works. Click the Link below to access the demo:
 
-[Access REST API Demo](https://demo.bagisto.com/mobikul-common/)
+[Access GraphQL API Demo](https://demo.bagisto.com/mobikul-common/)
 
 #### Installation of GraphQL API
 
