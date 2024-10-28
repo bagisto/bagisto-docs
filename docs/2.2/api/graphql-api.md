@@ -2,7 +2,7 @@
 
 [[toc]]
 
-## GraphQL API
+## Introduction
 
 Bagisto GraphQL API provides a way to interact with the core features of the Bagisto system. By using the Bagisto GraphQL API, you can seamlessly integrate your application and access the default functionality and content provided by Bagisto.
 
