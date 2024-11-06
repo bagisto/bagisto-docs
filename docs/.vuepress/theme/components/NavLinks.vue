@@ -88,6 +88,14 @@ export default {
     let currentPath = this.$route.path.split('/');
 
     this.version = currentPath[1] || '2.2';
+
+    this.currentVersion();
+  },
+
+  watch: {
+    $route() {
+      this.currentVersion();
+    }
   },
 
   computed: {
@@ -178,6 +186,10 @@ export default {
 
       this.$router.push(currentPath.join('/'));
     },
+
+    currentVersion() {
+      this.version = this.$route.path.split('/')[1] || '2.2';
+    }
   },
 }
 </script>
