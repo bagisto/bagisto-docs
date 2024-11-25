@@ -343,7 +343,7 @@ class PostDataGrid extends DataGrid
             'title'  => trans('blog::app.admin.datagrid.edit'),
             'method' => 'GET',
             'url'    => function ($row) {
-                return route('aadmin.blog.edit', $row->id);
+                return route('admin.blog.edit', $row->id);
             },
         ]);
 

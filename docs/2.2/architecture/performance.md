@@ -50,7 +50,7 @@ As Elastic is designed to handle large amounts of data and provide fast and scal
 
 To configure Elasticsearch, please refer to the [Configuration Setup](https://devdocs.bagisto.com/2.2/advanced/indexing-products-to-elasticsearch.html) documentation.
 
-### Reindexing
+### Re-indexing
 
 The `Re-indexCommands` console command is responsible for re-indexing data within Bagisto, facilitating efficient data retrieval and search functionality. This command offers flexibility in selecting specific indexers and re-indexing modes to suit varying requirements.
 
