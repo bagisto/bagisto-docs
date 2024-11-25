@@ -52,15 +52,15 @@ export default {
           userOptions,
           {
             inputSelector: '#algolia-search-input',
-            // #697 Make docsearch work well at i18n mode.
+            // #697 Make doc search work well at i18n mode.
             algoliaOptions: Object.assign({
               'facetFilters': [`lang:${lang}`].concat(algoliaOptions.facetFilters || [])
             }, algoliaOptions),
             handleSelected: (input, event, suggestion) => {
               const { pathname, hash } = new URL(suggestion.url)
-              const routepath = pathname.replace(this.$site.base, '/')
+              const routePath = pathname.replace(this.$site.base, '/')
               const _hash = decodeURIComponent(hash)
-              this.$router.push(`${routepath}${_hash}`)
+              this.$router.push(`${routePath}${_hash}`)
             }
           }
         ))
