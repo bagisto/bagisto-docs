@@ -11,5 +11,5 @@ features:
   details: Learn advanced topics like payment methods, shipping methods.
 - title: Custom theme
   details: Learn how to create or customize a theme for Bagisto.
-footer: Copyright © 2024 Bagisto
+footer: Copyright © 2025 Bagisto
 ---
