@@ -95,6 +95,14 @@ module.exports = [
             ['themes/create-store-theme', 'Store Theme'],
             ['themes/create-admin-theme', 'Admin Theme'],
         ])
+    },   
+    {
+        title: 'Performance',
+        path: setVersionPrefix('performance'),
+        collapsable: true,
+        children: setVersionPrefix([
+            ['performance/loadbalancing', 'Load Balancing'],
+        ])
     },
     {
         title: 'Bagisto APIs',
