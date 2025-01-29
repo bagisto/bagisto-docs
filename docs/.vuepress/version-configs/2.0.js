@@ -97,6 +97,14 @@ module.exports = [
         ])
     },
     {
+        title: 'Performance',
+        path: setVersionPrefix('performance'),
+        collapsable: true,
+        children: setVersionPrefix([
+            ['performance/loadbalancing', 'Load Balancing'],
+        ])
+    },
+    {
         title: 'Bagisto APIs',
         path: setVersionPrefix('api'),
         collapsable: true,
