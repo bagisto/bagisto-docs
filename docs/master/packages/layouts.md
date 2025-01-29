@@ -21,13 +21,13 @@ To extend the default layout of the Bagisto admin panel, you'll create or modify
         @lang('blog::app.admin.index.page-title')
     </x-slot:title>
 
-    <div class="flex gap-[16px] justify-between max-sm:flex-wrap">
-        <p class="py-[11px] text-[20px] text-gray-800 dark:text-white font-bold">
+    <div class="flex gap-4 justify-between max-sm:flex-wrap">
+        <p class="py-[11px] text-xl text-gray-800 dark:text-white font-bold">
             <!-- Section Title -->
             @lang('blog::app.admin.index.page-title')
         </p> 
 
-        <div class="flex gap-x-[10px] items-center">
+        <div class="flex gap-x-2.5 items-center">
             <!-- Action Button -->
         </div>
     </div>
@@ -36,9 +36,9 @@ To extend the default layout of the Bagisto admin panel, you'll create or modify
 
 ## Shop Layout
 
-`<x-shop::layouts>` This component serves as the container for your extended admin layout. It encapsulates the entire layout structure, including the title and content.
+`<x-shop::layouts>` This component serves as the container for your extended shop layout. It encapsulates the entire layout structure, including the title and content.
 
-To extend the shop layout in Bagisto, modify or create the `index.blade.php` file located at `packages/Webkul/Blog/src/Resources/views/shop/default/index.blade.php`. Below is a detailed breakdown of how to integrate and customize the shop layout:
+To extend the shop layout in Bagisto, modify or create the `index.blade.php` file located at `packages/Webkul/Blog/src/Resources/views/shop/index.blade.php`. Below is a detailed breakdown of how to integrate and customize the shop layout:
 
 ```html
 <x-shop::layouts

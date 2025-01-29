@@ -19,7 +19,8 @@ You can contribute to the following projects:
 - Bagisto
 - Bagisto docs
 - Bagisto rest-api
-- Bgaitso booking-product
+- Bagisto booking-product
+- Bagisto laravel-data-faker
 - Laravel-aliexpress-dropship
 - Laravel-aliexpress-dropship-chrome-extension
 - Bagisto-custom-style-extension
@@ -34,7 +35,7 @@ Before submitting a pull request, it's important to consider the following point
 
 - **Bug Fixes**: If you're fixing a bug, make sure to port the fix to the master version. 
 - **Critical Bug Fixes**: If you're fixing a critical bug, make sure to port the fix to the latest stable version that supports it (currently v2.2.1).
-- **Feature Requests**: If your request involves a feature with potential breaking changes, send it to the master branch, which corresponds to the upcoming release (v2.x).
+- **Feature Requests**: If your request involves a feature with potential breaking changes, send it to the master branch, which corresponds to the upcoming release (v2.2).
 
 ## Compiled Assets
 

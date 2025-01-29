@@ -10,11 +10,9 @@ Configuring the store theme in Bagisto allows you to customize the visual appear
 
 - To configure the store theme in Bagisto, follow these steps:
 
-- Locate the `themes.php` File.
+- Locate the `themes.php` File. Navigate to the `config` folder located in the root directory of your Bagisto project.
 
-- Navigate to the `config` folder located in the root directory of your Bagisto project.
-
-- Look for the `themes.php` file within this directory.
+- Open the `themes.php` File. Find the `themes.php` file within the config directory and open it for editing.
 
 ```
 - app
@@ -154,3 +152,6 @@ return [
 
 By following these steps, you can create and configure a new theme for your Bagisto store, enabling you to customize the appearance and layout to suit your branding and design preferences.
 
+After adding your new theme, you will be able to select it when creating a new section for your storefront homepage from the admin panel.
+
+![limiting-error-messages](../../assets/master/images/themes/new-theme-added.png)

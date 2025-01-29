@@ -440,3 +440,206 @@ Once you've completed this step, all the data within the DataGrid becomes access
 By customizing the DataGrid directly in the Blade file, you won't affect your default DataGrid. This means you can display the same DataGrid with various appearances and customize it by writing simple Vue.js code and using Tailwind CSS (since we use it in Bagisto).
 :::
 
+## Available Column Types
+
+Bagisto’s DataGrid supports various column types that allow you to store, display, and manage diverse kinds of data. This also includes a searchability feature, allowing users to filter data by specific criteria. Below is a breakdown of key column types: decimal, integer, string, boolean, date, datetime, and aggregate types.
+
+### Integer Column Type
+
+The integer column type is designed for whole numbers without any fractional or decimal parts. This column type is ideal for counting or identification data. Used for IDs, quantities, and numeric fields that don’t require decimal places.
+
+
+```php
+$this->addColumn([
+    'index'      => 'id',
+    'label'      => trans('blog::app.admin.datagrid.index.id'),
+    'type'       => 'integer',
+    'searchable' => true,
+    'filterable' => true,
+    'sortable'   => true,
+]);
+```
+
+### Decimal Column Type
+
+The decimal column type stores numbers with high precision, allowing fractional parts. It’s ideal for financial or measurement data where exact precision is necessary. Used for columns like product prices, weights, or tax rates that require decimal values.
+
+```php
+$this->addColumn([
+    'index'      => 'price',
+    'label'      => trans('blog::app.admin.datagrid.index.price'),
+    'type'       => 'decimal',
+    'searchable' => true,
+    'filterable' => true,
+    'sortable'   => true,
+]);
+```
+
+### String Column Type
+
+The string column type stores text or alphanumeric data. It’s widely used for columns that contain names, descriptions, or any textual information. Typically used for product names, customer names, categories, and descriptions.
+
+```php
+$this->addColumn([
+    'index'      => 'name',
+    'label'      => trans('blog::app.admin.datagrid.index.name'),
+    'type'       => 'string',
+    'searchable' => true,
+    'filterable' => true,
+    'sortable'   => true,
+]);
+```
+
+#### filterable options in string column type
+
+When using the string column type in Bagisto’s DataGrid, the following filterable options are supported to help refine searches based on text data.
+
+```php
+$this->addColumn([
+    'index'              => 'type',
+    'label'              => trans('blog::app.admin.datagrid.index.type'),
+    'type'               => 'string',
+    'filterable'         => true,
+    'searchable'         => true,
+    'filterable_type'    => 'dropdown',
+    'filterable_options' => [
+        [
+            'label' => trans('blog::app.admin.datagrid.index.type.text'),
+            'value' => 'text',
+        ],
+        [
+            'label' => trans('blog::app.admin.datagrid.index.type.textarea'),
+            'value' => 'textarea',
+        ],
+        [
+            'label' => trans('blog::app.admin.datagrid.index.type.price'),
+            'value' => 'price',
+        ],
+        [
+            'label' => trans('blog::app.admin.datagrid.index.type.boolean'),
+            'value' => 'boolean',
+        ],
+        [
+            'label' => trans('blog::app.admin.datagrid.index.type.select'),
+            'value' => 'select',
+        ],
+        [
+            'label' => trans('blog::app.admin.datagrid.index.type.multiselect'),
+            'value' => 'multiselect',
+        ],
+        [
+            'label' => trans('blog::app.admin.datagrid.index.type.date-time'),
+            'value' => 'datetime',
+        ],
+        [
+            'label' => trans('blog::app.admin.datagrid.index.type.date'),
+            'value' => 'date',
+        ],
+        [
+            'label' => trans('blog::app.admin.datagrid.index.type.image'),
+            'value' => 'image',
+        ],
+        [
+            'label' => trans('blog::app.admin.datagrid.index.type.file'),
+            'value' => 'file',
+        ],
+        [
+            'label' => trans('blog::app.admin.datagrid.index.type.checkbox'),
+            'value' => 'checkbox',
+        ],
+    ],
+    'sortable'   => true,
+]);
+```
+
+### Boolean Column Type 
+
+The boolean column type stores binary values such as true or false. It’s useful for indicating the state of a specific condition. Used for status flags like “active/inactive,” “available/unavailable,” or "enabled/disabled."
+
+```php
+$this->addColumn([
+    'index'      => 'status',
+    'label'      => trans('blog::app.admin.datagrid.index.status'),
+    'type'       => 'boolean',
+    'searchable' => true,
+    'filterable' => true,
+    'sortable'   => true,
+]);
+```
+
+### Date Column Type 
+
+The date column type stores dates, but without time information. It is useful when only the calendar date is important, such as in daily reports or event dates. Often used for birth dates, order dates, or specific event dates.
+
+```php
+$this->addColumn([
+    'index'      => 'created_at',
+    'label'      => trans('blog::app.admin.datagrid.index.date'),
+    'type'       => 'date',
+    'searchable' => true,
+    'filterable' => true,
+    'sortable'   => true,
+]);
+```
+
+#### filterable type in Date column type
+
+When using the date column type in Bagisto’s DataGrid, the following filterable type are supported to help refine searches based on text data. The filterable type is typically set to 'date_range', allowing users to search for records based on specific date ranges.
+
+```php
+$this->addColumn([
+    'index'           => 'created_at',
+    'label'           => trans('blog::app.admin.datagrid.index.date'),
+    'type'            => 'date',
+    'searchable'      => true,
+    'filterable'      => true,
+    'filterable_type' => 'date_range',
+    'sortable'        => true
+]);
+```
+
+### DateTime Column Type 
+
+The datetime column type stores both date and time information. This is important when precise timestamps are needed. Used for tracking exact times for events like order creation, login timestamps, or last updated times.
+
+```php
+$this->addColumn([
+    'index'      => 'updated_at',
+    'label'      => trans('blog::app.admin.datagrid.index.date'),
+    'type'       => 'datetime',
+    'searchable' => true,
+    'filterable' => true,
+    'sortable'   => true,
+]);
+```
+
+#### filterable type in Date Time column type
+
+When using the date time column type in Bagisto’s DataGrid, the following filterable type are supported to help refine searches based on text data. The filterable type is typically set to 'datetime_range', allowing users to search for records based on specific date time ranges.
+
+```php
+$this->addColumn([
+    'index'           => 'updated_at',
+    'label'           => trans('blog::app.admin.datagrid.index.date'),
+    'type'            => 'datetime',
+    'filterable'      => true,
+    'searchable'      => true,
+    'filterable_type' => 'datetime_range',
+    'sortable'        => true,
+]);
+```
+
+### Aggregate Type Column 
+
+The aggregate column type is used for displaying summarized or calculated data, such as totals, averages, or counts derived from other data in the DataGrid. Used to display metrics like total sales, average order value, or product count in categories.
+
+```php
+$this->addColumn([
+    'index'      => 'total',
+    'label'      => trans('blog::app.admin.datagrid.index.total'),
+    'type'       => 'aggregate',
+    'searchable' => true,
+    'filterable' => true,
+    'sortable'   => true,
+]);
+```

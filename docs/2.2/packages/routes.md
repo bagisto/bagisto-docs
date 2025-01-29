@@ -40,9 +40,16 @@ The updated directory structure will look like this:
   use Illuminate\Support\Facades\Route;
   use Webkul\Blog\Http\Controllers\Admin\PostController;
 
-  Route::group(['middleware' => ['web', 'admin'], 'prefix' => config('app.admin_url')], function () {
-      Route::get('/blogs', [PostController::class, 'index']);
-  });
+    Route::group(['middleware' => ['web', 'admin'], 'prefix' => config('app.admin_url')], function () {
+        /**
+         * Blog routes.
+         */
+        Route::controller(PostController::class)->prefix('blogs')->group(function () {
+            Route::get('', 'index')->name('admin.blogs.index');
+
+            // Here you can add your own routes related to the blog 
+        });
+    });
   ```
 
 #### Explanation
@@ -58,8 +65,15 @@ Routes inside `admin-routes.php` are prefixed with the admin URL (`config('app.a
   use Illuminate\Support\Facades\Route;
   use Webkul\Blog\Http\Controllers\Shop\PostController;
 
-  Route::group(['middleware' => ['web', 'theme', 'locale', 'currency']], function () {
-      Route::get('/blogs', [PostController::class, 'index']);
+  Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']], function () {
+         /**
+         * Blog routes.
+         */
+        Route::controller(PostController::class)->prefix('blogs')->group(function () {
+            Route::get('', 'index')->name('shop.blogs.index');
+
+            // Here you can add your own routes related to the blog 
+    });
   });
   ```
 

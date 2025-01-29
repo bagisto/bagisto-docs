@@ -201,7 +201,7 @@ The CMS package in Bagisto empowers store administrators to manage content pages
 
 ### Core
 
-The Core package in Bagisto serves as the foundation for various functionalities and utilities essential for the operation of the entire e-commerce platform. It encapsulates critical components, settings, configurations, and common helper functions that are integral to the seamless functioning of other packages within Bagisto.
+The Core package in Bagisto serves as the foundation for various functionalities and utilities essential for the operation of the entire e-commerce platform. It encapsulates critical components, settings, configurations, and common helper functions that are integral to the seamless functioning of other packages within Bagisto. Here’s a detailed description of the Core package:
 
 #### Key Features and Components
 
@@ -254,7 +254,7 @@ The DataGrid package in Bagisto empowers administrators with a versatile solutio
 
 ### DataTransfer
 
-This package contains all the logic related to data transfer. You can follow the given link for the more information about the[DataTransfer](https://bagisto.com/en/how-to-bulk-import-products-in-bagisto-2-1-0/)
+This package contains all the logic related to data transfer. You can follow the given link for the more information about the [DataTransfer](https://bagisto.com/en/how-to-bulk-import-products-in-bagisto-2-1-0/)
 
 ### DebugBar
 
@@ -264,13 +264,38 @@ This package includes essential functionalities to monitor, analyze, and debug t
 
 This package provides advanced caching mechanisms to store generated pages in memory, reducing server load and improving page load times for your customers. You can follow the given link for the more information about the [FPC](https://bagisto.com/en/optimizing-bagisto-e-commerce-a-deep-dive-into-full-page-cache-implementation/)
 
+#### Features
+
+- Full Page Caching
+
+    - Caches entire pages and serves them to users without re-processing server-side logic.
+    - Reduces response time by serving pre-rendered pages directly from the cache.
+
+- Cache Invalidation
+    - Automatically invalidates and updates the cache when changes occur (e.g., product updates, inventory changes).
+    - Ensures customers always see the most up-to-date content without compromising performance.
+    
 ### Installer
 
 The Installer package in Bagisto simplifies the setup and installation process of your e-commerce platform, providing a streamlined experience for deploying Bagisto on various environments. This package includes essential functionalities to configure database connections, install dependencies, and initialize the application environment, ensuring a smooth and hassle-free installation process.
 
 ### Inventory 
 
-The Inventory package in Bagisto provides comprehensive tools to manage and track product inventory efficiently within your e-commerce store. This package includes essential functionalities to monitor stock levels, track inventory movements, and ensure accurate stock availability for seamless order fulfillment.
+The Inventory package in Bagisto offers comprehensive tools to manage and track product inventory efficiently within your e-commerce store. This package includes essential functionalities to monitor stock levels, track inventory movements, and ensure accurate stock availability for seamless order fulfillment. Here’s a detailed description of the Inventory package:
+
+#### Key Components of the Checkout Package
+
+- Stock Management
+    - Allows businesses to manage stock levels for each product.
+    - Supports updating stock quantities manually or via automated processes.
+
+- Multi-Warehouse Support
+    - Enables management of inventory across multiple warehouses.
+    - Allows assigning stock to specific warehouses for better control and distribution.
+ 
+- Inventory Movements
+    - Tracks inventory movements including stock additions, subtractions, transfers, and adjustments.
+    - Provides detailed logs of inventory changes for audit purposes.
 
 ### MagicAI 
 
@@ -315,7 +340,7 @@ The Product package in Bagisto encapsulates comprehensive functionalities relate
 
 - Defines structured data models and repository patterns for efficient data handling and interaction.
 
-- Allows administrators to create new products, update existing ones, and manage product lifecycles efficiently.
+- Allows administrators to create new products, update existing ones, and manage product life cycle efficiently.
 
 ### Sales
 
@@ -377,7 +402,7 @@ This package enables businesses to configure and apply taxes accurately based on
 
 ### Theme 
 
-All the logic of the theme customization managed by this package. This package enables businesses to create unique storefronts, enhance brand identity, and deliver tailored shopping experiences to customers.
+The theme package in Bagisto handles all the logic related to theme customization. This package is essential for businesses that want to create unique storefronts, enhance their brand identity, and deliver tailored shopping experiences to their customers. Here’s a detailed description of the theme package
 
 #### Key features of the Theme package include
 
@@ -386,6 +411,14 @@ All the logic of the theme customization managed by this package. This package e
 
 - Theme Management
     -  The package facilitates easy installation, activation, and management of themes through configuration files and administrative controls. Themes can be switched seamlessly without affecting site functionality.
+
+- Customizable Layouts
+    - Allows users to create and modify layouts to fit their specific needs.
+    - Supports various layout structures, including header, footer, and content sections.
+
+- Multi-theme Support
+    - Enables the use of multiple themes in a single Bagisto instance.
+    - Supports theme switching based on customer preferences or store settings
 
 ### User
 

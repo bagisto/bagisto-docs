@@ -213,7 +213,7 @@ Let's assume you want to use the **`flat-picker`** component. You can call it li
 
 The `datagrid` component in Bagisto applications provides a flexible and customizable data grid interface for displaying tabular data. It includes features such as `sorting`, `filtering`, `pagination`, and `mass actions` to manage data efficiently.
 
-You can customize the appearance of the `DataGrid` by referring to the [DataGrid Customization](https://devdocs.bagisto.com/2.x/packages/datagrid.html#datagrid-customization) documentation.
+You can customize the appearance of the `DataGrid` by referring to the [DataGrid Customization](https://devdocs.bagisto.com/2.2/packages/datagrid.html#datagrid-customization) documentation.
 
 Let's assume you want to use the **`datagrid`** component. You can call it like this.
 
@@ -673,7 +673,7 @@ Let's assume you want to use the **`flat-picker`** component. You can call it li
 
 The `datagrid` component in Bagisto applications provides a flexible and customizable data grid interface for displaying tabular data. It includes features such as `sorting`, `filtering`, `pagination`, and `mass actions` to manage data efficiently.
 
-You can customize the appearance of the `DataGrid` by referring to the [DataGrid Customization](https://devdocs.bagisto.com/2.x/packages/datagrid.html#datagrid-customization) documentation.
+You can customize the appearance of the `DataGrid` by referring to the [DataGrid Customization](https://devdocs.bagisto.com/2.2/packages/datagrid.html#datagrid-customization) documentation.
 
 Let's assume you want to use the **`datagrid`** component. You can call it like this.
 
@@ -722,8 +722,8 @@ Let's assume you want to use the **`tabs`** component on shop. You can call it l
         class="container"
         :title="Tab-2"
     >
-        <div class="container mt-[60px] max-1180:px-[20px]">
-            <p class="text-[#6E6E6E] text-[18px] max-1180:text-[14px]">
+        <div class="container mt-[60px] max-1180:px-5">
+            <p class="text-[#6E6E6E] text-lg max-1180:text-sm">
                 Lorem Ipsum is simply dummy text of the printing and typesetting industry.
             </p>
         </div>

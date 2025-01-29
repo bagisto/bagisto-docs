@@ -110,6 +110,7 @@ module.exports = [
         collapsable: true,
         children: setVersionPrefix([
             ['api/getting-started-with-the-api', 'Rest API'],
+            ['api/graphql-api', 'GraphQL API'],
         ])
     },
 ]

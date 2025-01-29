@@ -33,7 +33,7 @@ We welcome proposals for new features and enhancements to the existing Bagisto a
 Before submitting a pull request, it's important to consider the following points to help you choose the appropriate branch:
 
 - **Bug Fixes**: If you're fixing a bug, make sure to port the fix to the master version. 
-- **Critical Bug Fixes**: If you're fixing a critical bug, make sure to port the fix to the latest stable version that supports it (currently v2.1.2).
+- **Critical Bug Fixes**: If you're fixing a critical bug, make sure to port the fix to the latest stable version that supports it (currently v2.2.0).
 - **Feature Requests**: If your request involves a feature with potential breaking changes, send it to the master branch, which corresponds to the upcoming release (v2.x).
 
 ## Compiled Assets

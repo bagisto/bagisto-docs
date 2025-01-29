@@ -154,3 +154,6 @@ return [
 
 By following these steps, you can create and configure a new theme for your Bagisto store, enabling you to customize the appearance and layout to suit your branding and design preferences.
 
+After adding your new theme, you will be able to select it when creating a new section for your storefront homepage from the admin panel.
+
+![limiting-error-messages](../../assets/2.2/images/themes/new-theme-added.png)

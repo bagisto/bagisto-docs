@@ -198,7 +198,7 @@ The output will provide details about the product index:
 
 :::details Output
 
-![Product Index Information](../../assets/2.x/images/advanced-topics/product-index.png)
+![Product Index Information](../../assets/2.1/images/advanced-topics/product-index.png)
 
 :::
 

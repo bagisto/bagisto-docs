@@ -66,7 +66,7 @@ return [
             ], [
                 'name'       => 'items',
                 'title'      => 'blog::app.admin.system.settings.items_per_page',
-                'type'       => 'number',
+                'type'       => 'integer',
                 'validation' => 'numeric'
             ]
         ]
@@ -138,6 +138,7 @@ return [
     [
         'key'    => 'general.general.custom-types',
         'name'   => 'admin::app.admin.system.custom-types',
+        'info'   => 'admin::app.admin.system.custom-types',
         'sort'   => 1,
         'fields' => [
             [
@@ -164,12 +165,13 @@ return [
     [
         'key'    => 'general.general.custom-types',
         'name'   => 'admin::app.admin.system.custom-types',
+        'info'   => 'admin::app.admin.system.custom-types',
         'sort'   => 1,
         'fields' => [
             [
                 'name'  => 'number_type',
                 'title' => 'admin::app.admin.system.number-type',
-                'type'  => 'number',
+                'type'  => 'integer',
             ],
         ],
     ],
@@ -189,6 +191,7 @@ return [
     [
         'key'    => 'general.general.custom-types',
         'name'   => 'admin::app.admin.system.custom-types',
+        'info'   => 'admin::app.admin.system.custom-types',
         'sort'   => 1,
         'fields' => [
             [
@@ -214,6 +217,7 @@ return [
     [
         'key'    => 'general.general.custom-types',
         'name'   => 'admin::app.admin.system.custom-types',
+        'info'   => 'admin::app.admin.system.custom-types',
         'sort'   => 1,
         'fields' => [
             [
@@ -227,7 +231,7 @@ return [
                     ], [
                     ], [
                         'title' => 'option_2',
-                        'value' => 'vallue_2',
+                        'value' => 'value_2',
                     ],
                 ],
             ],
@@ -249,6 +253,7 @@ return [
     [
         'key'    => 'general.general.custom-types',
         'name'   => 'admin::app.admin.system.custom-types',
+        'info'   => 'admin::app.admin.system.custom-types',
         'sort'   => 1,
         'fields' => [
             [
@@ -274,6 +279,7 @@ return [
     [
         'key'    => 'general.general.custom-types',
         'name'   => 'admin::app.admin.system.custom-types',
+        'info'   => 'admin::app.admin.system.custom-types',
         'sort'   => 1,
         'fields' => [
             [
@@ -309,7 +315,7 @@ return [
         ], [
             'name'          => 'minimum_order_amount',
             'title'         => 'admin::app.configuration.index.sales.order-settings.minimum-order.minimum-order-amount',
-            'type'          => 'number',
+            'type'          => 'integer',
             'validation'    => 'required_if:enable,1|numeric',
             'depends'       => 'enable:1',
             'channel_based' => true,
@@ -374,6 +380,7 @@ return [
     [
         'key'    => 'general.general.custom-settings',
         'name'   => 'admin::app.admin.system.custom-settings',
+        'info'   => 'admin::app.admin.system.custom-settings',
         'sort'   => 1,
         'fields' => [
             [
@@ -391,7 +398,7 @@ return [
             [
                 'name'       => 'max_upload_size',
                 'title'      => 'admin::app.admin.system.max-upload-size',
-                'type'       => 'number',
+                'type'       => 'integer',
                 'validation' => 'required|integer|min:1|max:1024',
             ],
             [

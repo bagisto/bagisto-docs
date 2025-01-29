@@ -72,7 +72,7 @@ To upgrade your current version to the latest version of Bagisto, follow these s
 
 ## New Changes
 
-The following changes have been implemented in Bagisto from version 1.x to 2.x:
+The following changes have been implemented in Bagisto from version 1.x to 2.1:
 
 #### Performance
 

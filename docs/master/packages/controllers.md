@@ -79,7 +79,6 @@ In `packages/Webkul/Blog/src/Http/Controllers/Admin/PostController.php`, define 
       /**
        * Create a controller instance.
        * 
-       * @param  \Webkul\Blog\Repository\PostRepository  $postRepository
        * @return void
        */
       public function __construct(protected PostRepository $postRepository){}
@@ -151,7 +150,6 @@ In `packages/Webkul/Blog/src/Http/Controllers/Shop/PostController.php`, define t
       /**
        * Create a controller instance.
        * 
-       * @param  \Webkul\Blog\Repository\PostRepository  $postRepository
        * @return void
        */
       public function __construct(protected PostRepository $postRepository){}
@@ -173,7 +171,7 @@ In `packages/Webkul/Blog/src/Http/Controllers/Shop/PostController.php`, define t
        * 
        * @return \Illuminate\View\View
        */
-      public function blogDetails(int $id) 
+      public function view(int $id) 
       {
           //
       }

@@ -57,7 +57,7 @@ In **`Webkul\DataGrid\DataGrid\DataGrid.php`** abstract class, two abstract meth
         $this->addColumn([
             'index'      => 'id',
             'label'      => trans('blog::app.admin.datagrid.id'),
-            'type'       => 'number',
+            'type'       => 'integer',
             'searchable' => false,
             'sortable'   => true,
             'filterable' => true
@@ -203,7 +203,7 @@ class PostDataGrid extends DataGrid
         $this->addColumn([
             'index'      => 'id',
             'label'      => trans('blog::app.admin.datagrid.id'),
-            'type'       => 'number',
+            'type'       => 'integer',
             'searchable' => false,
             'sortable'   => true,
             'filterable' => true,
@@ -361,3 +361,115 @@ You can use these props to customize the appearance and behavior of the datagrid
 By customizing the DataGrid directly in the Blade file, you won't affect your default DataGrid. This means you can display the same DataGrid with various appearances and customize it by writing simple Vue.js code and using Tailwind CSS (since we use it in Bagisto).
 :::
 
+
+## Available Column Types
+
+Bagisto’s DataGrid supports various column types that allow you to store, display, and manage diverse kinds of data. This also includes a searchability feature, allowing users to filter data by specific criteria. Below is a breakdown of key column types: integer, string, boolean, date range, and dropdown types.
+
+### Integer Column Type
+
+The integer column type is designed for whole numbers without any fractional or decimal parts. This column type is ideal for counting or identification data. Used for IDs, quantities, and numeric fields that don’t require decimal places.
+
+
+```php
+$this->addColumn([
+    'index'      => 'id',
+    'label'      => trans('blog::app.admin.datagrid.index.id'),
+    'type'       => 'integer',
+    'searchable' => true,
+    'filterable' => true,
+    'sortable'   => true,
+]);
+```
+
+### String Column Type
+
+The string column type stores text or alphanumeric data. It’s widely used for columns that contain names, descriptions, or any textual information. Typically used for product names, customer names, categories, and descriptions.
+
+```php
+$this->addColumn([
+    'index'      => 'name',
+    'label'      => trans('blog::app.admin.datagrid.index.name'),
+    'type'       => 'string',
+    'searchable' => true,
+    'filterable' => true,
+    'sortable'   => true,
+]);
+```
+
+### Boolean Column Type 
+
+The boolean column type stores binary values such as true or false. It’s useful for indicating the state of a specific condition. Used for status flags like “active/inactive,” “available/unavailable,” or "enabled/disabled."
+
+```php
+$this->addColumn([
+    'index'      => 'status',
+    'label'      => trans('blog::app.admin.datagrid.index.status'),
+    'type'       => 'boolean',
+    'searchable' => true,
+    'filterable' => true,
+    'sortable'   => true,
+]);
+```
+
+
+This is a small example of status flags that can be set to either active or inactive. You can configure the status flags according to your requirements.
+
+
+```php
+$this->addColumn([
+    'index'      => 'status',
+    'label'      => trans('blog::app.admin.datagrid.index.status'),
+    'type'       => 'boolean',
+    'searchable' => false,
+    'filterable' => true,
+    'sortable'   => true,
+    'closure'    => function ($value) {
+        if ($value->status) {
+            return '<span class="badge badge-md badge-success">'.trans('blog::app.admin.datagrid.index.status.active').'</span>';
+        }
+
+        return '<span class="badge badge-md badge-danger">'.trans('blog::app.admin.datagrid.index.status.inactive').'</span>';
+    },
+]);
+```
+
+### Dropdown Column Type 
+
+When using the dropdown column type in Bagisto’s DataGrid, the following filterable options are supported to refine searches based on predefined choices from a dropdown menu. The dropdown filter allows users to select specific values from a list, making data filtering simple and precise. Inside the options are set based on the value of the dropdown type.
+
+```php
+$this->addColumn([
+    'index'      => 'type',
+    'label'      => trans('blog::app.admin.datagrid.index.type'),
+    'type'       => 'dropdown',
+    'options'    => [
+        'type' => 'basic',
+
+        'params' => [
+            'options' => collect(config('product_types'))
+                ->map(fn ($type) => ['label' => trans($type['name']), 'value' => trans('blog::app.admin.datagrid.index.type.create.'.$type['key'])])
+                ->values()
+                ->toArray(),
+        ],
+    ],
+    'searchable' => false,
+    'filterable' => true,
+    'sortable'   => true,
+]);
+```
+
+### Date Column Type 
+
+The date column type stores dates, but without time information. It is useful when only the calendar date is important, such as in daily reports or event dates. Often used for birth dates, order dates, or specific event dates.
+
+```php
+$this->addColumn([
+    'index'      => 'created_at',
+    'label'      => trans('blog::app.admin.datagrid.index.date'),
+    'type'       => 'date_range',
+    'searchable' => true,
+    'filterable' => true,
+    'sortable'   => true,
+]);
+```

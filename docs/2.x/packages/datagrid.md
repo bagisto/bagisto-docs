@@ -57,7 +57,7 @@ In **`Webkul\DataGrid\DataGrid\DataGrid.php`** abstract class, two abstract meth
         $this->addColumn([
             'index'      => 'id',
             'label'      => trans('blog::app.admin.datagrid.id'),
-            'type'       => 'number',
+            'type'       => 'integer',
             'searchable' => false,
             'sortable'   => true,
             'filterable' => true
@@ -203,7 +203,7 @@ class PostDataGrid extends DataGrid
         $this->addColumn([
             'index'      => 'id',
             'label'      => trans('blog::app.admin.datagrid.id'),
-            'type'       => 'number',
+            'type'       => 'integer',
             'searchable' => false,
             'sortable'   => true,
             'filterable' => true,

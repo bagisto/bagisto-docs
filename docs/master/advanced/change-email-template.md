@@ -63,7 +63,7 @@ The view file `order-cancel.blade.php` typically includes a layout component, su
 Now, let's explore the view file mentioned in `view('shop::emails.orders.canceled')`. If you check the file at the path `packages/Webkul/Shop/src/Resources/views/emails/sales/order-cancel.blade.php`, you will find it. This view file uses the main layout component `shop::emails.layouts.master`.
 
 ```php
-@component('shop::emails.layouts.master')
+@component('shop::emails.layout')
     ...
 @endcomponent
 ```

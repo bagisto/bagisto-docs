@@ -21,6 +21,7 @@ module.exports = {
         logo: '/logo.png',
         nav: [
             { text: 'Home', link: '/' },
+            { text: 'User Guide', link: 'https://docs.bagisto.com/' },
             { text: 'Extensions', link: 'https://bagisto.com/en/extensions/' },
             { text: 'Community Forum', link: 'https://forums.bagisto.com/' }
         ],
@@ -31,6 +32,7 @@ module.exports = {
             '/1.x/': require('./version-configs/1.x'),
             '/1.5.x/': require('./version-configs/1.5.x'),
             '/2.x/': require('./version-configs/2.x'),
+            '/2.0/': require('./version-configs/2.0'),
             '/2.1/': require('./version-configs/2.1'),
             '/2.2/': require('./version-configs/2.2'),
             '/master/': require('./version-configs/master')

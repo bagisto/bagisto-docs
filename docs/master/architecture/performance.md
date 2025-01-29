@@ -2,7 +2,7 @@
 
 [[TOC]]
 
-In the realm of online stores, [web vitals](https://web.dev/vitals/) have become increasingly crucial. **Bagisto** prioritises good [LCP](https://web.dev/lcp/) and [CLS](https://web.dev/cls/) to ensure an optimal user experience.
+In the realm of online stores, [web vitals](https://web.dev/vitals/) have become increasingly crucial. **Bagisto** priorities good [LCP](https://web.dev/lcp/) and [CLS](https://web.dev/cls/) to ensure an optimal user experience.
 
 Additionally, **Bagisto** has seamlessly integrated [ElasticSearch](https://bagisto.com/en/elasticsearch-for-bagisto/) to further enhance user experience.
 
@@ -34,13 +34,13 @@ Similar to price indexing, the inventory indexing process in Bagisto involves up
 Flat indexing in Bagisto is a vital mechanism designed to enhance the performance and efficiency of product data retrieval.
 The indexer processes products in batches, which is efficient for handling large datasets without overwhelming the system.
 It manages a set of fillable attribute codes that are essential during the creation of the flat index. The flat indexer takes into account various channels and locales, ensuring that product data is accurately indexed for different market segments.  A predefined list of attribute codes, such as `sku`, `name`, `price`, `weight`, and `status`, that can be populated during the indexing process.
-By default, the Flat Indexer reindexes products based on product creation or update events. However, there are scenarios where you might need to reindex the flat index in response to changes in channels or locales. In such cases, you can manually trigger the reindexing process to ensure that the flat tables reflect the latest channel and locale updates.
+By default, the Flat Indexer reindexes products based on product creation or update events. However, there are scenarios where you might need to reindex the flat index in response to changes in channels or locales. In such cases, you can manually trigger the re-indexing process to ensure that the flat tables reflect the latest channel and locale updates.
 
 ### Catalog Rule Indexing
 
 Catalog rule indexing in Bagisto ensures that product prices are updated based on any changes to catalog rules, such as offers expiring or being updated. To maintain accurate pricing, Bagisto schedules the catalog rule indexer to run daily. This scheduled task ensures that any modifications to catalog rules are promptly applied to the product prices.
 
-The catalog rule indexing process is set to execute at 00:01 every day. The product prices are consistently recalculated and updated based on the current catalog rules. This automatic reindexing guarantees that any changes in promotional offers, discounts, or other pricing rules are reflected in the product listings without any manual intervention.
+The catalog rule indexing process is set to execute at 00:01 every day. The product prices are consistently recalculated and updated based on the current catalog rules. This automatic re-indexing guarantees that any changes in promotional offers, discounts, or other pricing rules are reflected in the product listings without any manual intervention.
 
 ### ElasticSearch
 
@@ -50,39 +50,39 @@ As Elastic is designed to handle large amounts of data and provide fast and scal
 
 To configure Elasticsearch, please refer to the [Configuration Setup](https://devdocs.bagisto.com/2.x/advanced/indexing-products-to-elasticsearch.html) documentation.
 
-### Reindexing
+### Re-indexing
 
-The `ReindexCommands` console command is responsible for reindexing data within Bagisto, facilitating efficient data retrieval and search functionality. This command offers flexibility in selecting specific indexers and reindexing modes to suit varying requirements.
+The `Re-indexCommands` console command is responsible for re-indexing data within Bagisto, facilitating efficient data retrieval and search functionality. This command offers flexibility in selecting specific indexers and re-indexing modes to suit varying requirements.
 
-By default, reindexing is executed at the scheduled time or based on specific events, such as product creation or updates. However, there may be situations where you need to manually trigger reindexing. This can be done using the following commands:
+By default, re-indexing is executed at the scheduled time or based on specific events, such as product creation or updates. However, there may be situations where you need to manually trigger re-indexing. This can be done using the following commands:
 
 #### Command Signature
 
-The command `php artisan indexer:index` in Bagisto is used to manage the reindexing of various indexers. Here is a detailed description of its usage:
+The command `php artisan indexer:index` in Bagisto is used to manage the re-indexing of various indexers. Here is a detailed description of its usage:
 
 ```shell
 php artisan indexer:index {--type=*} {--mode=*}
 ```    
-- **--type**: Specifies the type of indexers to reindex. You can provide multiple types, separated by commas.
-- **--mode**: Specifies the reindexing mode, either `full` for full reindexing or selective for `selective` reindexing (default).
+- **--type**: Specifies the type of indexers to reindex.
+- **--mode**: Specifies the re-indexing mode, either `full` for full re-indexing or selective for `selective` re-indexing (default).
 
 - **Full Reindexing for All Types**
 
 ```shell
 php artisan indexer:index --mode=full
 ```
-This command performs a full reindexing for all indexers by default.
+This command performs a full re-indexing for all indexers by default.
 
 
-- **Selective Reindexing**
+- **Selective Re-indexing**
 
 ```shell
 php artisan indexer:index --type=price
 ```
 
-This command performs selective reindexing specifically for the price indexer.
+This command performs selective re-indexing specifically for the price indexer.
 
-Price and price rule indexing are scheduled to reindex at a specific time each day to ensure that the latest pricing information is accurately reflected in searches and displays. The following commands are scheduled to run daily at 00:01 AM:
+Price and price rule indexing are scheduled to re-index at a specific time each day to ensure that the latest pricing information is accurately reflected in searches and displays. The following commands are scheduled to run daily at 00:01 AM:
 
 ```php
 $schedule->command('indexer:index --type=price')->dailyAt('00:01');
@@ -95,13 +95,15 @@ Bagisto introduces Full Page Cache support to deliver lightning-fast page loadin
 
 Full Page Cache is a mechanism that stores entire HTML pages in the cache. When a request is made for the same page, the cache seamlessly serves the page without the need for re-executing server-side logic. This process allows for faster page load times as the cache provides a quick and efficient way to serve the requested page without the need to run the server-side logic again. This reduces the need for database queries, template rendering, and other resource-intensive tasks, resulting in faster page load times.
 
-We used the Spatie Laravel Responsecache Package in Bagisto
+We used the [Spatie Laravel Responsecache Package](https://github.com/spatie/laravel-responsecache) in Bagisto 
 
 ### How to Enable Full Page Cache In Bagisto
 
 - Go to the .env Configuration file
 
-- Set RESPONSE_CACHE_ENABLED=true
+```php
+Set RESPONSE_CACHE_ENABLED=true
+```
 
 ### How to set Cache duration and other Configuration
 
@@ -124,22 +126,30 @@ We used the Spatie Laravel Responsecache Package in Bagisto
 
 To effortlessly clear your application’s response cache in Bagisto, utilize the following command:
 
-```php
-php artisan cache:clear
+```shell
+php artisan responsecache:clear
 ```
+
+This command clears all cached responses. Optionally, you can provide a `--url` option to clear the cache for a specific URL:
+
+```shell
+php artisan responsecache:clear --url=http://example.com
+```
+
+Replace `http://example.com` with the actual URL for which you want to clear the cached response.
 
 ### Cache invalidation
 
 Here are some common techniques for cache invalidation in Laravel:
 
-**Create the EventServiceProvider class**
+#### Create the EventServiceProvider class
 
-We create an EventServiceProvider in the `packages/Webkul/FPC/src/Providers/EventServiceProvider.php` directory. This file contains the code for the event service provider, which can be used to register events and their listeners. To register an event and its listener, you can add them to the $listen array in the EventServiceProvider class.
+Create an EventServiceProvider in the `packages/Webkul/Post/src/Providers/EventServiceProvider.php` directory. This file contains the code for the event service provider, which can be used to register events and their listeners. To register an event and its listener, you can add them to the $listen array in the EventServiceProvider class.
 
 ```php
 <?php
 
-namespace Webkul\FPC\Providers;
+namespace Webkul\Post\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -151,25 +161,25 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'customer.review.update.after' => [
-            'Webkul\FPC\Listeners\Review@afterUpdate',
+        'post.update.after' => [
+            'Webkul\Post\Listeners\Post@afterUpdate',
         ],
     ];
 }
 ```
 
-**Register the service in the FPC service provider**
+#### Register the Service in the Post Service Provider
 
-In the `packages/Webkul/FPC/src/Providers/FPCServiceProvider.php` file, locate the boot()  method. Here you can see we add EventServiceProvider within the boot() method.
+In the `packages/Webkul/Post/src/Providers/PostServiceProvider.php` file, locate the `boot()` method. Add EventServiceProvider within the `boot()` method.
 
 ```php
 <?php
 
-namespace Webkul\FPC\Providers;
+namespace Webkul\Post\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class FPCServiceProvider extends ServiceProvider
+class PostServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap services.
@@ -191,42 +201,44 @@ class FPCServiceProvider extends ServiceProvider
     }
 }
 ```
+#### Handling Events in the Post Controller
 
-For instance, in the realm of event-based cache management, consider the event ‘customer.review.update.after’ triggered from the review controller upon a review update. This seamless integration guarantees swift cache clearance or update, maintaining synchronization with the latest review modifications.
+In the realm of event-based cache management, consider the event post.update.after triggered from the post controller upon a post update. This integration guarantees swift cache clearance or update, maintaining synchronization with the latest post modifications.
 
 ```php
 /**
  * Update the specified resource in storage.
  *
- * @param  int  $id
  * @return \Illuminate\Http\Response
  */
-public function update($id)
+public function update(int $id)
 {
-    Event::dispatch('customer.review.update.before', $id);
+    Event::dispatch('post.update.before', $id);
 
-    $review = $this->productReviewRepository->update(request()->only(['status']), $id);
+    $post = $this->postRepository->update(request()->only(['status']), $id);
 
-    Event::dispatch('customer.review.update.after', $review);
+    Event::dispatch('post.update.after', $post);
 
-    session()->flash('success', trans('admin::app.customers.reviews.update-success', ['name' => 'admin::app.customers.reviews.review']));
+    session()->flash('success', trans('shop::app.posts.update-success', ['name' => 'shop::app.posts.post']));
 
-    return redirect()->route('admin.customers.customers.review.index');
+    return redirect()->route('shop.posts.index');
 }
 ```
 
-In the directory `packages/Webkul/FPC/src/Listeners` you can find the `afterUpdate()` method. This method clears the cache using the `forget()` method when a review is updated.
+#### Listener Method for Cache Invalidation
+
+In the directory `packages/Webkul/Post/src/Listeners` you can find the `afterUpdate()` method. This method clears the cache using the `forget()` method when  a post is updated.
 
 ```php
 /**
- * After review is updated
+ * After post is updated
  *
- * @param  \Webkul\Product\Contracts\Review  $review
+ * @param  \Webkul\Post\Contracts\Post  $post
  * @return void
  */
-public function afterUpdate($review)
+public function afterUpdate($post)
 {
-    ResponseCache::forget('/' .  $review->product->url_key);
+    ResponseCache::forget('/' .  $post->url_key);
 }
 ```
 

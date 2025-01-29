@@ -97,7 +97,8 @@ class BlogServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/admin-menu.php', 'menu.admin'
+            dirname(__DIR__) . '/Config/admin-menu.php',
+            'menu.admin'
         );
     }
 }
