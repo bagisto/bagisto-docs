@@ -26,6 +26,7 @@
       />
       <SearchBox v-else-if="$site.themeConfig.search !== false && $page.frontmatter.search !== false" />
       <NavLinks class="can-hide" />
+      <GoogleTranslate class="can-hide" />
     </div>
   </header>
 </template>
@@ -35,6 +36,7 @@ import AlgoliaSearchBox from '@AlgoliaSearchBox'
 import SearchBox from '@SearchBox'
 import SidebarButton from '@theme/components/SidebarButton.vue'
 import NavLinks from '@theme/components/NavLinks.vue'
+import GoogleTranslate from '@theme/components/GoogleTranslate.vue'
 
 export default {
   name: 'Navbar',
@@ -43,7 +45,8 @@ export default {
     SidebarButton,
     NavLinks,
     SearchBox,
-    AlgoliaSearchBox
+    AlgoliaSearchBox,
+    GoogleTranslate
   },
 
   data () {
