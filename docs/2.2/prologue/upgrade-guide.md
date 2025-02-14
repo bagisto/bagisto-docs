@@ -58,17 +58,7 @@ To upgrade your current version to the latest version of Bagisto, follow these s
    If your existing project depends on local storage, has changed paths, or requires previous logs, ensure to include those as well.
    :::
 
-10. Once the copying is complete, publish the new files by running the following command:
-
-    ```sh
-    php artisan vendor:publish --all
-    ```
-
-    ::: warning
-    Avoid using the **`--force`** flag, as it will reset all your views. Only use it if you understand the consequences.
-    :::
-
-11. Congratulations! Your project is now upgraded to the latest version of Bagisto. However, keep in mind that if you have made significant customizations, ensure compatibility with the latest version.
+10. Congratulations! Your project is now upgraded to the latest version of Bagisto. However, keep in mind that if you have made significant customizations, ensure compatibility with the latest version.
 
 
 ## New Changes
