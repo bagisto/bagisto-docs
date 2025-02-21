@@ -98,9 +98,8 @@ For example, create a file named `order-cancel.blade.php` within the `sales` dir
 
 ```blade
 
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum porro cumque numquam neque dicta quo, accusantium, perferendis sed beatae nesc
+We regret to inform you that your order has been cancelled:
 
-iunt eum impedit vel doloribus dolor excepturi vero tenetur perspiciatis saepe?
 ```
 
 ### Test Your Template
