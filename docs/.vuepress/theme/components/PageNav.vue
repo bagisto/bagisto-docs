@@ -59,8 +59,6 @@
 
 <script>
 import { resolvePage } from '../util'
-import isString from 'lodash/isString'
-import isNil from 'lodash/isNil'
 
 export default {
   name: 'PageNav',
@@ -103,43 +101,44 @@ function resolvePageLink (
   linkType,
   { $themeConfig, $page, $route, $site, sidebarItems }
 ) {
-  const { resolveLink, getThemeLinkConfig, getPageLinkConfig } = linkType
+  const { resolveLink, getThemeLinkConfig, getPageLinkConfig } = linkType;
 
-  // Get link config from theme
-  const themeLinkConfig = getThemeLinkConfig($themeConfig)
+  const link = getPageLinkConfig($page) ?? getThemeLinkConfig($themeConfig);
 
-  // Get link config from current page
-  const pageLinkConfig = getPageLinkConfig($page)
+  if (link === false) return null;
+  if (typeof link === "string") return resolvePage($site.pages, link, $route.path);
 
-  // Page link config will overwrite global theme link config if defined
-  const link = isNil(pageLinkConfig) ? themeLinkConfig : pageLinkConfig
-
-  if (link === false) {
-    return
-  } else if (isString(link)) {
-    return resolvePage($site.pages, link, $route.path)
-  } else {
-    return resolveLink($page, sidebarItems)
-  }
+  return resolveLink($page, sidebarItems);
 }
 
-function find (page, items, offset) {
-  const res = []
-  flatten(items, res)
+function find(page, items, offset) {
+  const res = [];
+  flatten(items, res);
+
   for (let i = 0; i < res.length; i++) {
-    const cur = res[i]
-    if (cur.type === 'page' && cur.path === decodeURIComponent(page.path)) {
-      return res[i + offset]
+    const cur = res[i];
+
+    const isPageMatch =
+      cur.type === 'page' && cur.path === decodeURIComponent(page.path);
+
+    const isGroupMatch =
+      cur.type === 'group' && cur.title === decodeURIComponent(page.title);
+
+    if (isPageMatch || isGroupMatch) {
+      return res[i + offset] || null;
     }
   }
+
+  return null;
 }
 
 function flatten (items, res) {
-  for (let i = 0, l = items.length; i < l; i++) {
-    if (items[i].type === 'group') {
-      flatten(items[i].children || [], res)
-    } else {
-      res.push(items[i])
+  for (let i = 0; i < items.length; i++) {
+    const currentItem = items[i];
+    res.push(currentItem);
+
+    if (currentItem.type === 'group') {
+      flatten(currentItem.children || [], res);
     }
   }
 }

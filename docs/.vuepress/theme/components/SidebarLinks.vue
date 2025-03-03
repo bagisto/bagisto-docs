@@ -10,6 +10,7 @@
       <SidebarGroup
         v-if="item.type === 'group'"
         :item="item"
+        :index="i"
         :open="i === openGroupIndex"
         :collapsable="item.collapsable || item.collapsible"
         :depth="depth"
@@ -36,14 +37,14 @@ export default {
 
   props: [
     'items',
-    'depth',  // depth of current sidebar links
-    'sidebarDepth', // depth of headers to be extracted
+    'depth',
+    'sidebarDepth',
     'initialOpenGroupIndex'
   ],
 
   data () {
     return {
-      openGroupIndex: this.initialOpenGroupIndex || 0
+      openGroupIndex: this.initialOpenGroupIndex || 0,
     }
   },
 
@@ -68,36 +69,36 @@ export default {
       }
     },
 
-    toggleGroup (index) {
+    toggleGroup(index) {
       this.openGroupIndex = index === this.openGroupIndex ? -1 : index
     },
 
     isActive (page) {
-      return isActive(this.$route, page.regularPath)
+      return isActive(this.$route, page.regularPath);
     }
   }
 }
 
 function resolveOpenGroupIndex (route, items) {
   for (let i = 0; i < items.length; i++) {
-    const item = items[i]
+    const item = items[i];
     if (descendantIsActive(route, item)) {
-      return i
+      return i;
     }
   }
-  return -1
+  return -1;
 }
 
 function descendantIsActive (route, item) {
   if (item.type === 'group') {
     return item.children.some(child => {
       if (child.type === 'group') {
-        return descendantIsActive(route, child)
+        return descendantIsActive(route, child);
       } else {
-        return child.type === 'page' && isActive(route, child.path)
+        return child.type === 'page' && isActive(route, child.path);
       }
-    })
+    });
   }
-  return false
+  return false;
 }
 </script>
