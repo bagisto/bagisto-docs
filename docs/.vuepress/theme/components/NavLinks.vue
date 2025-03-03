@@ -62,6 +62,8 @@
         <option value="1.x">1.x</option>
       </select>
     </div>
+
+    <LocaleSwitcher class="nav-item" />
   </nav>
 </template>
 
@@ -69,13 +71,15 @@
 import DropdownLink from '@theme/components/DropdownLink.vue'
 import { resolveNavLinkItem } from '../util'
 import NavLink from '@theme/components/NavLink.vue'
+import LocaleSwitcher from '@theme/components/LocaleSwitcher.vue'
 
 export default {
   name: 'NavLinks',
 
   components: {
     NavLink,
-    DropdownLink
+    DropdownLink,
+    LocaleSwitcher
   },
 
   data() {

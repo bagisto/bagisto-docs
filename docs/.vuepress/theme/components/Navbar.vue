@@ -26,7 +26,6 @@
       />
       <SearchBox v-else-if="$site.themeConfig.search !== false && $page.frontmatter.search !== false" />
       <NavLinks class="can-hide" />
-      <LocaleSwitcher class="can-hide" />
     </div>
   </header>
 </template>
@@ -36,7 +35,6 @@ import AlgoliaSearchBox from '@AlgoliaSearchBox'
 import SearchBox from '@SearchBox'
 import SidebarButton from '@theme/components/SidebarButton.vue'
 import NavLinks from '@theme/components/NavLinks.vue'
-import LocaleSwitcher from '@theme/components/LocaleSwitcher.vue'
 
 export default {
   name: 'Navbar',
@@ -46,7 +44,6 @@ export default {
     NavLinks,
     SearchBox,
     AlgoliaSearchBox,
-    LocaleSwitcher
   },
 
   data () {
