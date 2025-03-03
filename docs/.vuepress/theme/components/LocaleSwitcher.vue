@@ -52,10 +52,8 @@
 <style scoped>
   .locale-switcher-container {
     display: inline-block;
-    margin: 0 0 0 10px;
     max-height: 28px; 
-    line-height: 1;
-    margin-top: 6px;
+    line-height: 1 !important;
   }
 
   .goog-te-gadget-simple {
