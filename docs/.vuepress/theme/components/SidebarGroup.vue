@@ -17,7 +17,7 @@
         'active': isActive($route, item.path)
       }"
       :to="item.path"
-      @click.native="$emit('toggle')"
+      @click.native="$emit('toggle', index)"
     >
       <span>{{ item.title }}</span>
       <span
@@ -31,7 +31,7 @@
       v-else
       class="sidebar-heading"
       :class="{ open }"
-      @click="$emit('toggle')"
+      @click="$emit('toggle', index)"
     >
       <span>{{ item.title }}</span>
       <span
@@ -69,15 +69,35 @@ export default {
     'item',
     'open',
     'collapsable',
-    'depth'
+    'depth',
+    'index'
   ],
 
-  // ref: https://vuejs.org/v2/guide/components-edge-cases.html#Circular-References-Between-Components
-  beforeCreate () {
+  beforeCreate() {
     this.$options.components.SidebarLinks = require('@theme/components/SidebarLinks.vue').default
   },
 
-  methods: { isActive }
+  mounted() {
+    this.openSideBar();
+  },
+
+  methods: {
+    isActive(route, path) {
+      if (!path) return false;
+
+      if (path === '/') {
+        return route.path === path;
+      }
+
+      return route.path.startsWith(path);
+    },
+
+    openSideBar() {
+      if (this.item.path === this.$route.matched[0].path) {
+        this.$emit('toggle', this.index);
+      }
+    }
+  }
 }
 </script>
 
