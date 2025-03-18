@@ -14,20 +14,21 @@ Follow these commands in your Bagisto root directory to create a payment method 
 
 ### Creating a New Package
 
-If the package directory (`Webkul/Blog` in this example) does not exist, use the following command:
+If the package directory (`Webkul/CustomPaymentMethod` in this example) does not exist, use the following command:
 
 ```sh
-php artisan package:make-payment-method Webkul/Blog
+php artisan package:make-payment-method Webkul/CustomPaymentMethod
 ```
-This command initializes a new package named Webkul/Blog specifically tailored for a payment method.
+
+This command initializes a new package named Webkul/CustomPaymentMethod specifically tailored for a payment method.
 
 ### Overwriting Existing Packages
 
 If you need to overwrite an existing package, add the `--force` flag to the command:
 
-  ```sh
-  php artisan package:make-payment-method Webkul/Blog --force
-  ```
+```sh
+php artisan package:make-payment-method Webkul/CustomPaymentMethod --force
+```
 
 This option allows you to regenerate the package structure, updating any existing files as necessary.
 
@@ -39,11 +40,11 @@ Setting up a payment method manually in Bagisto involves creating the necessary 
 
 ### Directory Structure
 
-Create the following directory structure for your payment method within the `Webkul/Blog` package:
+Create the following directory structure for your payment method within the `Webkul/CustomPaymentMethod` package:
 
 ```
 - Webkul/
-    └── Blog/
+    └── CustomPaymentMethod/
         └── src/
             ├── ...
             ├── Config/
@@ -54,6 +55,7 @@ Create the following directory structure for your payment method within the `Web
             └── Providers/
                 └── StripeServiceProvider.php
 ```
+
 ### Configuration Files
 
 The `Config` folder contains application configuration files In the `system.php` file, include the following array keys.
@@ -92,6 +94,7 @@ return [
     ]
 ];
 ```
+
 - `key` : A unique value for the configuration, concatenated with a dot (`.`) operator.
 - `name` : The placeholder value for the configuration. It is recommended to use translations in Bagisto.
 - `sort` : The position of the configuration menu.
@@ -107,7 +110,7 @@ return [
         'code'        => 'stripe',
         'title'       => 'Stripe',
         'description' => 'Stripe',
-        'class'       => 'Webkul\Blog\Payment\Stripe',
+        'class'       => 'Webkul\CustomPaymentMethod\Payment\Stripe',
         'active'      => true,
         'sort'        => 1,
     ],
@@ -126,7 +129,7 @@ Implement the payment method logic. Example skeleton for `Stripe.php`:
 ```php
 <?php
 
-namespace Webkul\Blog\Payment;
+namespace Webkul\CustomPaymentMethod\Payment;
 
 use Webkul\Payment\Payment\Payment;
 
@@ -157,12 +160,12 @@ To seamlessly integrate your custom payment method into Bagisto, follow these st
 
 ### Create ServiceProvider
 
-Create a service provider `StripeServiceProvider.php` in `Webkul\Blog\Providers` directory:
+Create a service provider `StripeServiceProvider.php` in `Webkul\CustomPaymentMethod\Providers` directory:
 
 ```php
 <?php
 
-namespace Webkul\Blog\Providers;
+namespace Webkul\CustomPaymentMethod\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -207,7 +210,7 @@ Add your payment method namespace to the `psr-4` key in the `composer.json` file
     ...
     "psr-4": {
         // Other PSR-4 namespaces
-        "Webkul\\Blog\\": "packages/Webkul/Blog/src"
+        "Webkul\\CustomPaymentMethod\\": "packages/Webkul/CustomPaymentMethod/src"
     }
 }
 ```
@@ -224,9 +227,9 @@ return [
 
     'providers' => ServiceProvider::defaultProviders()->merge([
         // Other service providers
-        Webkul\Blog\Providers\StripeServiceProvider::class,
+        Webkul\CustomPaymentMethod\Providers\StripeServiceProvider::class,
     ])->toArray(),
-    
+
     // Other configuration options
 ];
 ```

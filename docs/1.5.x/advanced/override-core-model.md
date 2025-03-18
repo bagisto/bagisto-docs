@@ -21,11 +21,11 @@ For more details, you can visit the [Concord GitHub repository](https://github.c
   ```php
   <?php
 
-  namespace Webkul\Blog\Providers;
+  namespace Webkul\CustomModule\Providers;
 
   use Illuminate\Support\ServiceProvider;
 
-  class BlogServiceProvider extends ServiceProvider
+  class CustomModuleServiceProvider extends ServiceProvider
   {
       /**
        * Bootstrap any application services.
@@ -35,7 +35,7 @@ For more details, you can visit the [Concord GitHub repository](https://github.c
       public function boot()
       {
           //...
-          
+
           $this->app->concord->registerModel(
               \Webkul\Product\Contracts\Product::class, \App\Http\Product::class
           );

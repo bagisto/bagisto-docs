@@ -19,19 +19,19 @@ To learn in detail about Controllers, you can visit the Laravel documentation [h
 
 ### Using Package Generator
 
-If you have the Bagisto Package Generator installed, you can use the following command to create a new event class in the `packages/Webkul/Blog/src/Events` directory:
+If you have the Bagisto Package Generator installed, you can use the following command to create a new event class in the `packages/Webkul/CustomEvent/src/Events` directory:
 
 ```sh
-php artisan package:make-event BlogEvent Webkul/Blog
+php artisan package:make-event CustomEvent Webkul/CustomEvent
 ```
 
 If the event class already exists, you can use the --force option to overwrite it:
 
 ```sh
-php artisan package:make-event BlogEvent Webkul/Blog --force
+php artisan package:make-event CustomEvent Webkul/CustomEvent --force
 ```
 
-Alternatively, if you don't have the package generator, you can create the file manually by creating a new class in the `packages/Webkul/Blog/src/Events` directory.
+Alternatively, if you don't have the package generator, you can create the file manually by creating a new class in the `packages/Webkul/CustomEvent/src/Events` directory.
 
 ### Manually Registering Events
 

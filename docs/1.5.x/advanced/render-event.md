@@ -40,12 +40,12 @@ To render content before or after a specific section of a template, follow these
    ```php
     <?php
 
-    namespace Webkul\Blog\Providers;
+    namespace Webkul\CustomExtension\Providers;
 
     use Illuminate\Support\ServiceProvider;
     use Illuminate\Support\Facades\Event;
 
-    class BlogServiceProvider extends ServiceProvider
+    class CustomExtensionServiceProvider extends ServiceProvider
     {
         /**
          * Bootstrap any application services.
@@ -55,7 +55,7 @@ To render content before or after a specific section of a template, follow these
         public function boot()
         {
             //...
-                
+
             Event::listen('bagisto.shop.test.before', function($viewRenderEventManager) {
                 $viewRenderEventManager->addTemplate('template file path to be injected');
             });
@@ -66,7 +66,7 @@ To render content before or after a specific section of a template, follow these
    In the code above, replace **`'template file path to be injected'`** with the actual path to the template file that you want to render.
 
 :::warning
-   Make sure that you have registered the **`EventServiceProvider`** in your own service provider.
+Make sure that you have registered the **`EventServiceProvider`** in your own service provider.
 :::
 
 By following these steps, you can use the **`view_render_event()`** function to dynamically inject content before or after the main content of a template in Bagisto.

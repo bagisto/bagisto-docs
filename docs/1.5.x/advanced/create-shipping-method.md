@@ -9,13 +9,13 @@ To create a shipping method package using the Bagisto package generator, follow 
 1. Run the following command:
 
    ```sh
-   php artisan package:make-shipping-method Webkul/Blog
+   php artisan package:make-shipping-method Webkul/CustomShippingMethod
    ```
 
 2. If the package directory already exists, you can use the force command to overwrite it. Simply add the **`--force`** flag:
 
    ```sh
-   php artisan package:make-shipping-method Webkul/Blog --force
+   php artisan package:make-shipping-method Webkul/CustomShippingMethod --force
    ```
 
    This command will generate the entire directory structure automatically, so you don't need to do it manually.
@@ -24,11 +24,11 @@ To create a shipping method package using the Bagisto package generator, follow 
 
 Alternatively, you can manually set up all the files for your shipping method package:
 
-1. Create a **`carriers.php`** file in the **`src/Config`** path of your package (e.g., Blog). The file structure should be as follows:
+1. Create a **`carriers.php`** file in the **`src/Config`** path of your package (e.g., CustomShippingMethod). The file structure should be as follows:
 
    ```
    - Webkul
-     └── Blog/
+     └── CustomShippingMethod/
          └── src/
              ├── ...
              └── Config/
@@ -42,14 +42,14 @@ Alternatively, you can manually set up all the files for your shipping method pa
    <?php
 
    return [
-       'blog' => [
-           'code'         => 'blog',
-           'title'        => 'Blog',
-           'description'  => 'Blog',
+       'custom_shipping_method' => [
+           'code'         => 'custom_shipping_method',
+           'title'        => 'CustomShippingMethod',
+           'description'  => 'CustomShippingMethod',
            'active'       => true,
            'default_rate' => '10',
            'type'         => 'per_unit',
-           'class'        => 'Webkul\Blog\Carriers\Blog',
+           'class'        => 'Webkul\CustomShippingMethod\Carriers\CustomShippingMethod',
        ]
    ];
    ```
@@ -62,41 +62,41 @@ Alternatively, you can manually set up all the files for your shipping method pa
    - **type**: Specifies whether the shipping method applies per unit or per order.
    - **class**: The path and filename of the shipping method class (**`namespace\package-name\Carriers-folder\filename`**).
 
-3. Create a **`Carriers`** folder inside the **`src`** folder. Then, create a **`Blog.php`** file inside the **`Carriers`** folder.
+3. Create a **`Carriers`** folder inside the **`src`** folder. Then, create a **`CustomShippingMethod.php`** file inside the **`Carriers`** folder.
 
    ```
     - Webkul
-      └── Blog/
+      └── CustomShippingMethod/
           └── src/
               ├── ...
               ├── Carriers/
-              │   └── Blog.php
+              │   └── CustomShippingMethod.php
               └── Config/
                   ├── ...
-                  └── carriers.php  
+                  └── carriers.php
 
    ```
 
-4. Copy the following code into the **`Blog.php`** file:
+4. Copy the following code into the **`CustomShippingMethod.php`** file:
 
    ```php
    <?php
 
-   namespace Webkul\Blog\Carriers;
+   namespace Webkul\CustomShippingMethod\Carriers;
 
    use Config;
    use Webkul\Shipping\Carriers\AbstractShipping;
    use Webkul\Checkout\Models\CartShippingRate;
    use Webkul\Shipping\Facades\Shipping;
 
-   class Blog extends AbstractShipping
+   class CustomShippingMethod extends AbstractShipping
    {
         /**
          * Code.
          *
          * @var string
          */
-        protected $code  = 'blog';
+        protected $code  = 'custom_shipping_method';
 
         /**
          * Calculate.
@@ -111,9 +111,9 @@ Alternatively, you can manually set up all the files for your shipping method pa
 
           $object = new CartShippingRate;
 
-          $object->carrier = 'blog';
+          $object->carrier = 'custom_shipping_method';
           $object->carrier_title = $this->getConfigData('title');
-          $object->method = 'blog_blog';
+          $object->method = 'custom_shipping_method_custom_shipping_method';
           $object->method_title = $this->getConfigData('title');
           $object->method_description = $this->getConfigData('description');
           $object->price = 0;
@@ -148,140 +148,140 @@ Alternatively, you can manually set up all the files for your shipping method pa
    }
    ```
 
-   The **`Blog.php`** file extends the **`AbstractShipping`** class defined at **`Webkul\Shipping\Carriers\AbstractShipping`**. In this file, you can write all the operations needed for your shipping method. To render the shipping methods in the checkout process, define the **`calculate()`** method within the **`Blog.php`** file and return the shipping rate, title, and description within a **`CartShippingRate`** object.
+   The **`CustomShippingMethod.php`** file extends the **`AbstractShipping`** class defined at **`Webkul\Shipping\Carriers\AbstractShipping`**. In this file, you can write all the operations needed for your shipping method. To render the shipping methods in the checkout process, define the **`calculate()`** method within the **`CustomShippingMethod.php`** file and return the shipping rate, title, and description within a **`CartShippingRate`** object.
 
 5. After creating all the necessary files and configurations, create a form that will appear in the configuration section. Create a **`system.php`** file in the **`src/Config`** path and add the following code to it:
 
-    ```php
-    <?php
+   ```php
+   <?php
 
-    return
-    [
-        'key'    => 'sales.carriers.blog',
-        'name'   => 'admin::app.admin.system.blog-shipping',
-        'sort'   => 2,
-        'fields' => [
-            [
-                'name'          => 'title',
-                'title'         => 'admin::app.admin.system.title',
-                'type'          => 'depends',
-                'depend'        => 'active:1',
-                'validation'    => 'required_if:active,1',
-                'channel_based' => true,
-                'locale_based'  => true
-            ], [
-                'name'          => 'description',
-                'title'         => 'admin::app.admin.system.description',
-                'type'          => 'textarea',
-                'channel_based' => true,
-                'locale_based'  => false
-            ], [
-                'name'          => 'default_rate',
-                'title'         => 'admin::app.admin.system.rate',
-                'type'          => 'depends',
-                'depend'        => 'active:1',
-                'validation'    => 'required_if:active,1',
-                'channel_based' => true,
-                'locale_based'  => false
-            ], [
-                'name'          => 'base_amount',
-                'title'         => 'admin::app.admin.system.minimum-amount',
-                'type'          => 'text',
-                'channel_based' => true,
-                'locale_based'  => false
-            ], [
-                'name'    => 'type',
-                'title'   => 'admin::app.admin.system.type',
-                'type'    => 'select',
-                'options' => [
-                    [
-                        'title' => 'Per Unit',
-                        'value' => 'per_unit',
-                    ], [
-                        'title' => 'Per Order',
-                        'value' => 'per_order',
-                    ],
-                ],
-                'channel_based' => true,
-                'locale_based'  => false,
-            ], [
-                'name'          => 'active',
-                'title'         => 'admin::app.admin.system.status',
-                'type'          => 'boolean',
-                'validation'    => 'required',
-                'channel_based' => true,
-                'locale_based'  => false
-            ]
-        ]
-    ]
-    ```
+   return
+   [
+       'key'    => 'sales.carriers.custom_shipping_method',
+       'name'   => 'admin::app.admin.system.custom-shipping-method-shipping',
+       'sort'   => 2,
+       'fields' => [
+           [
+               'name'          => 'title',
+               'title'         => 'admin::app.admin.system.title',
+               'type'          => 'depends',
+               'depend'        => 'active:1',
+               'validation'    => 'required_if:active,1',
+               'channel_based' => true,
+               'locale_based'  => true
+           ], [
+               'name'          => 'description',
+               'title'         => 'admin::app.admin.system.description',
+               'type'          => 'textarea',
+               'channel_based' => true,
+               'locale_based'  => false
+           ], [
+               'name'          => 'default_rate',
+               'title'         => 'admin::app.admin.system.rate',
+               'type'          => 'depends',
+               'depend'        => 'active:1',
+               'validation'    => 'required_if:active,1',
+               'channel_based' => true,
+               'locale_based'  => false
+           ], [
+               'name'          => 'base_amount',
+               'title'         => 'admin::app.admin.system.minimum-amount',
+               'type'          => 'text',
+               'channel_based' => true,
+               'locale_based'  => false
+           ], [
+               'name'    => 'type',
+               'title'   => 'admin::app.admin.system.type',
+               'type'    => 'select',
+               'options' => [
+                   [
+                       'title' => 'Per Unit',
+                       'value' => 'per_unit',
+                   ], [
+                       'title' => 'Per Order',
+                       'value' => 'per_order',
+                   ],
+               ],
+               'channel_based' => true,
+               'locale_based'  => false,
+           ], [
+               'name'          => 'active',
+               'title'         => 'admin::app.admin.system.status',
+               'type'          => 'boolean',
+               'validation'    => 'required',
+               'channel_based' => true,
+               'locale_based'  => false
+           ]
+       ]
+   ]
+   ```
 
-## Merge Configuration 
+## Merge Configuration
 
-1. To merge all your configurations, modify the **`packages/Webkul/Blog/src/Providers/BlogServiceProvider.php`** file as follows:
+1. To merge all your configurations, modify the **`packages/Webkul/CustomShippingMethod/src/Providers/CustomShippingMethodServiceProvider.php`** file as follows:
 
-    ```php
-    <?php
+   ```php
+   <?php
 
-    namespace Webkul\Blog\Providers;
+   namespace Webkul\CustomShippingMethod\Providers;
 
-    use Illuminate\Support\ServiceProvider;
+   use Illuminate\Support\ServiceProvider;
 
-    class BlogServiceProvider extends ServiceProvider
-    {
-        /**
-         * Register services.
-         *
-         * @return void
-         */
-        public function register()
-        {
-            $this->mergeConfigFrom(
-                dirname(__DIR__) . '/Config/carriers.php', 'carriers'
-            );
+   class CustomShippingMethodServiceProvider extends ServiceProvider
+   {
+       /**
+        * Register services.
+        *
+        * @return void
+        */
+       public function register()
+       {
+           $this->mergeConfigFrom(
+               dirname(__DIR__) . '/Config/carriers.php', 'carriers'
+           );
 
-            $this->mergeConfigFrom(
-                dirname(__DIR__) . '/Config/system.php', 'core'
-            );
-        }
-    }
-    ```
+           $this->mergeConfigFrom(
+               dirname(__DIR__) . '/Config/system.php', 'core'
+           );
+       }
+   }
+   ```
 
 2. Add the namespace for your shipment method in the **`psr-4`** key of the **`composer.json`** file in the Bagisto root directory:
 
-     ```json
+   ```json
    "autoload": {
-       ...
-       "psr-4": {
-           // Other PSR-4 namespaces
-           "Webkul\\Blog\\": "packages/Webkul/Blog/src"
-       }
+     ...
+     "psr-4": {
+         // Other PSR-4 namespaces
+         "Webkul\\CustomShippingMethod\\": "packages/Webkul/CustomShippingMethod/src"
+     }
    }
    ```
 
 3. Register your service provider in the **`config/app.php`** file located in the Bagisto root directory:
 
-    ```php
-    <?php
+   ```php
+   <?php
 
-    return [
-        
-        // Other configuration options
+   return [
 
-        'providers' => ServiceProvider::defaultProviders()->merge([
-            // Other service providers
-            Webkul\Blog\Providers\BlogServiceProvider::class,
-        ])->toArray(),
-        
-        // Other configuration options
-    ];
-    ```
+       // Other configuration options
+
+       'providers' => ServiceProvider::defaultProviders()->merge([
+           // Other service providers
+           Webkul\CustomShippingMethod\Providers\CustomShippingMethodServiceProvider::class,
+       ])->toArray(),
+
+       // Other configuration options
+   ];
+   ```
 
 4. After making these changes, run the following commands:
 
-    ```sh
-    composer dump-autoload
-    php artisan config:cache
-    ```
+   ```sh
+   composer dump-autoload
+   php artisan config:cache
+   ```
 
-    If you encounter an error with the **`composer dump-autoload`** command, try deleting all files in the **`bootstrap/cache`** directory and then running the command again.
+   If you encounter an error with the **`composer dump-autoload`** command, try deleting all files in the **`bootstrap/cache`** directory and then running the command again.

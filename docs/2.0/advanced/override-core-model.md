@@ -29,11 +29,11 @@ Use Concord's registerModel() method in your module's service provider (ServiceP
 ```php
 <?php
 
-namespace Webkul\Blog\Providers;
+namespace Webkul\CustomModule\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class BlogServiceProvider extends ServiceProvider
+class CustomModuleServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
@@ -43,7 +43,7 @@ class BlogServiceProvider extends ServiceProvider
     public function boot()
     {
         //...
-        
+
         $this->app->concord->registerModel(
             \Webkul\Product\Contracts\Product::class, \App\Http\Product::class
         );
@@ -74,4 +74,3 @@ class Product extends ProductBaseModel
 Once registered, you can use dependency injection or other Laravel mechanisms to reference the interface(`\Webkul\Product\Contracts\Product::class`) throughout your application. Laravel's service container will automatically resolve your custom model implementation (`\App\Http\Product::class`) where the interface is referenced.
 
 By following this approach, you can effectively extend and override core models within Bagisto using Concord, maintaining modularity and flexibility in your application's architecture.
-
