@@ -12,7 +12,7 @@ To utilize the `view_render_event()` function effectively, follow these steps:
 
 ### Injecting Content in Blade Templates
 
-You can use `view_render_event()` within your Blade templates (*.blade.php) to specify points where content should be injected. Here’s an example:
+You can use `view_render_event()` within your Blade templates (\*.blade.php) to specify points where content should be injected. Here’s an example:
 
 ```php
 @section('content-wrapper')
@@ -40,12 +40,12 @@ In the `boot()` method of your `EventServiceProvider`, add event listeners as fo
 ```php
 <?php
 
-namespace Webkul\Blog\Providers;
+namespace Webkul\CustomExtension\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Event;
 
-class BlogServiceProvider extends ServiceProvider
+class CustomExtensionServiceProvider extends ServiceProvider
 {
     /**
      * Register any events for your application.
@@ -64,10 +64,11 @@ class BlogServiceProvider extends ServiceProvider
     }
 }
 ```
+
 Replace `'path/to/before_content_template.blade.php'` and `'path/to/after_content_template.blade.php'` with the actual paths to the Blade template files you want to inject.
 
 :::warning
-   Make sure that you have registered the **`EventServiceProvider`** in your own service provider.
+Make sure that you have registered the **`EventServiceProvider`** in your own service provider.
 :::
 
 ### Implementation Details

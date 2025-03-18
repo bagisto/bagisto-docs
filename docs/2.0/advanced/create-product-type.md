@@ -12,9 +12,9 @@ Creating custom product types in Bagisto means you can define new types of produ
 
 ## Creating a New Product Type
 
-To extend the functionality of Bagisto by introducing a new product type, such as "coupon," follow these straightforward steps:
+To extend the functionality of Bagisto by introducing a new product type, such as "custom_product," follow these straightforward steps:
 
-**Note**: In this example, we will create a new product type called "coupon".
+**Note**: In this example, we will create a new product type called "custom_product".
 
 ### Package Creation
 
@@ -32,10 +32,10 @@ Populate the `product_types.php` file with the necessary configuration details t
 <?php
 
 return [
-    'coupon' => [
-        'key'   => 'coupon',
-        'name'  => 'Coupon',
-        'class' => 'Webkul\Blog\Type\Coupon',
+    'custom_product' => [
+        'key'   => 'custom_product',
+        'name'  => 'CustomProduct',
+        'class' => 'Webkul\CustomProduct\Type\CustomProduct',
         'sort'  => 7
     ],
 ];
@@ -54,16 +54,16 @@ Follow these steps to merge the configuration and define its behavior:
 
 ### Merge Configuration in ServiceProvider
 
-In your package's service provider (e.g., `CouponServiceProvider.php`), utilize the `mergeConfigFrom()` method within the `register()` method to integrate your product type configuration with Bagisto's core configurations. Here's an example snippet:
+In your package's service provider (e.g., `CustomProductServiceProvider.php`), utilize the `mergeConfigFrom()` method within the `register()` method to integrate your product type configuration with Bagisto's core configurations. Here's an example snippet:
 
 ```php
 <?php
 
-namespace Webkul\Blog\Providers;
+namespace Webkul\CustomProduct\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class CouponServiceProvider extends ServiceProvider
+class CustomProductServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -84,16 +84,16 @@ class CouponServiceProvider extends ServiceProvider
 
 ### Define Product Type Class
 
-Within your package, create a PHP class file named `Coupon.php` under `src/Type` directory. This class will define the specific behavior and attributes of your "coupon" product type. Here’s a basic example to get started:
+Within your package, create a PHP class file named `CustomProduct.php` under `src/Type` directory. This class will define the specific behavior and attributes of your "custom_product" product type. Here’s a basic example to get started:
 
 ```php
 <?php
 
-namespace Webkul\Blog\Type;
+namespace Webkul\CustomProduct\Type;
 
 use Webkul\Product\Type\AbstractType;
 
-class Coupon extends AbstractType
+class CustomProduct extends AbstractType
 {
 //
 }
@@ -103,6 +103,6 @@ Replace the placeholder comments with actual methods and properties tailored to 
 
 ### Extending AbstractType:
 
-After completing the above steps, your product type will be created. However, the `Type/Coupon.php` file does not have any code specific to the coupon type product yet. To inherit the basic functionality of any product type, you need to extend the classes from the Product package, specifically the `type/AbstractType.php` file.
+After completing the above steps, your product type will be created. However, the `Type/CustomProduct.php` file does not have any code specific to the custom_product type product yet. To inherit the basic functionality of any product type, you need to extend the classes from the Product package, specifically the `type/AbstractType.php` file.
 
-By extending the `AbstractType.php` class in your product type (`Type/Coupon.php`), you can provide the core functionality of a product. Additionally, if you need to define custom methods for your product type, you can do so within the `Coupon.php` file.
+By extending the `AbstractType.php` class in your product type (`Type/CustomProduct.php`), you can provide the core functionality of a product. Additionally, if you need to define custom methods for your product type, you can do so within the `CustomProduct.php` file.

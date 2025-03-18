@@ -14,19 +14,19 @@ To implement custom data import in your application, follow these structured ste
 
 Start by creating an `Importer.php` file under the `Helpers/Importers` directory of your package. Here's a simplified representation of the directory structure:
 
- ```
-    └── packages
-        └── Webkul
-            └── Blog
-                ├── ...
-                └── src
-                    └── ...
-                    └── Helpers
-                        └── ...
-                        └── Importers
-                            ├── ...
-                            └── FileName
-                                └── Importer.php             
+```
+   └── packages
+       └── Webkul
+           └── CustomImport
+               ├── ...
+               └── src
+                   └── ...
+                   └── Helpers
+                       └── ...
+                       └── Importers
+                           ├── ...
+                           └── FileName
+                               └── Importer.php
 ```
 
 Here inside the Helpers/Importers folder, the FileName folder is for which section we are implementing the import method.
@@ -38,13 +38,13 @@ Within the `Importer.php` file, implement the necessary logic for handling data 
 ```php
     <?php
 
-    namespace Webkul\Blog\Helpers\BlogImage;
+    namespace Webkul\CustomImport\Helpers\CustomImportImage;
 
     use Illuminate\Support\Arr;
     use Illuminate\Support\Facades\Event;
     use Illuminate\Support\Facades\Validator;
-    use Webkul\Blog\Contracts\BlogImageBatch as BlogImageContract;
-    use Webkul\Blog\Repositories\ImportBatchRepository;
+    use Webkul\CustomImport\Contracts\CustomImportImageBatch as CustomImportImageContract;
+    use Webkul\CustomImport\Repositories\ImportBatchRepository;
     use Webkul\DataTransfer\Helpers\Import;
     use Webkul\DataTransfer\Helpers\Importers\AbstractImporter;
 
@@ -198,7 +198,7 @@ Within the `Importer.php` file, implement the necessary logic for handling data 
         /**
          * Start the import process
          */
-        public function importBatch(BlogImageContract $batch): bool
+        public function importBatch(CustomImportImageContract $batch): bool
         {
             Event::dispatch('data_transfer.imports.batch.import.before', $batch);
 

@@ -15,7 +15,7 @@ To create a shipping method package in Bagisto, you can utilize the Bagisto pack
 Navigate to the Bagisto root directory and run the following command:
 
 ```sh
-php artisan package:make-shipping-method Webkul/Blog
+php artisan package:make-shipping-method Webkul/CustomShippingMethod
 ```
 
 ### Overwrite Existing Package
@@ -23,7 +23,7 @@ php artisan package:make-shipping-method Webkul/Blog
 If the package directory already exists, use the `--force` flag to overwrite it
 
 ```sh
-php artisan package:make-shipping-method Webkul/Blog --force
+php artisan package:make-shipping-method Webkul/CustomShippingMethod --force
 ```
 
 This command will generate the entire directory structure automatically, eliminating the need for manual setup.
@@ -38,7 +38,7 @@ Create a `carriers.php` file in the `src/Config` path of your package. The file 
 
 ```
 - Webkul
-    └── Blog/
+    └── CustomShippingMethod/
         └── src/
             ├── ...
             └── Config/
@@ -52,14 +52,14 @@ Copy the following code into the `carriers.php` file:
 <?php
 
 return [
-    'blog' => [
-        'code'         => 'blog',
-        'title'        => 'Blog',
-        'description'  => 'Blog',
+    'custom_shipping_method' => [
+        'code'         => 'custom_shipping_method',
+        'title'        => 'CustomShippingMethod',
+        'description'  => 'CustomShippingMethod',
         'active'       => true,
         'default_rate' => '10',
         'type'         => 'per_unit',
-        'class'        => 'Webkul\Blog\Carriers\Blog',
+        'class'        => 'Webkul\CustomShippingMethod\Carriers\CustomShippingMethod',
     ]
 ];
 ```
@@ -78,47 +78,47 @@ Create a directory named `Carriers` inside the `src` folder of your package:
 
 ```
 - Webkul
-  └── Blog/
+  └── CustomShippingMethod/
       └── src/
           ├── ...
           └── Carriers/
 ```
 
-Create a file named `Blog.php` inside the `Carriers` directory. The file structure should be as follows:
+Create a file named `CustomShippingMethod.php` inside the `Carriers` directory. The file structure should be as follows:
 
 ```
 - Webkul
-    └── Blog/
+    └── CustomShippingMethod/
         └── src/
             ├── ...
             ├── Carriers/
-            │   └── Blog.php
+            │   └── CustomShippingMethod.php
             └── Config/
                 ├── ...
-                └── carriers.php  
+                └── carriers.php
 
 ```
 
-Add the following code to the `Blog.php` file to define your custom shipping method:
+Add the following code to the `CustomShippingMethod.php` file to define your custom shipping method:
 
 ```php
 <?php
 
-namespace Webkul\Blog\Carriers;
+namespace Webkul\CustomShippingMethod\Carriers;
 
 use Config;
 use Webkul\Shipping\Carriers\AbstractShipping;
 use Webkul\Checkout\Models\CartShippingRate;
 use Webkul\Shipping\Facades\Shipping;
 
-class Blog extends AbstractShipping
+class CustomShippingMethod extends AbstractShipping
 {
     /**
      * Code.
      *
      * @var string
      */
-    protected $code  = 'blog';
+    protected $code  = 'custom_shipping_method';
 
     /**
      * Calculate.
@@ -133,9 +133,9 @@ class Blog extends AbstractShipping
 
         $object = new CartShippingRate;
 
-        $object->carrier = 'blog';
+        $object->carrier = 'custom_shipping_method';
         $object->carrier_title = $this->getConfigData('title');
-        $object->method = 'blog_blog';
+        $object->method = 'custom_shipping_method_custom_shipping_method';
         $object->method_title = $this->getConfigData('title');
         $object->method_description = $this->getConfigData('description');
         $object->price = 0;
@@ -170,7 +170,7 @@ class Blog extends AbstractShipping
 }
 ```
 
-The `Blog.php` file extends the `AbstractShipping` class defined at `Webkul\Shipping\Carriers\AbstractShipping`. In this file, you can write all the operations needed for your shipping method. To render the shipping methods in the checkout process, define the `calculate()` method within the `Blog.php` file and return the shipping rate, title, and description within a `CartShippingRate` object.
+The `CustomShippingMethod.php` file extends the `AbstractShipping` class defined at `Webkul\Shipping\Carriers\AbstractShipping`. In this file, you can write all the operations needed for your shipping method. To render the shipping methods in the checkout process, define the `calculate()` method within the `CustomShippingMethod.php` file and return the shipping rate, title, and description within a `CartShippingRate` object.
 
 After creating all the necessary files and configurations, create a form that will appear in the configuration section. Create a `system.php` file in the `src/Config` path and add the following code to it:
 
@@ -179,8 +179,8 @@ After creating all the necessary files and configurations, create a form that wi
 
 return
 [
-    'key'    => 'sales.carriers.blog',
-    'name'   => 'admin::app.admin.system.blog-shipping',
+    'key'    => 'sales.carriers.custom_shipping_method',
+    'name'   => 'admin::app.admin.system.custom-shipping-method-shipping',
     'sort'   => 2,
     'fields' => [
         [
@@ -238,26 +238,26 @@ return
 ]
 ```
 
-## Merge Configuration 
+## Merge Configuration
 
 To ensure that your system configurations for the shipping method package are properly merged and recognized by Bagisto, follow these steps:
 
-### Modify the BlogServiceProvider
+### Modify the CustomShippingMethodServiceProvider
 
-Modify the `BlogServiceProvider` class to merge your custom configurations. This ensures that the configurations defined in your `carriers.php` and `system.php` files are integrated into the Bagisto application.
+Modify the `CustomShippingMethodServiceProvider` class to merge your custom configurations. This ensures that the configurations defined in your `carriers.php` and `system.php` files are integrated into the Bagisto application.
 
-Open the BlogServiceProvider.php file located at `packages/Webkul/Blog/src/Providers/BlogServiceProvider.php`.
+Open the CustomShippingMethodServiceProvider.php file located at `packages/Webkul/CustomShippingMethod/src/Providers/CustomShippingMethodServiceProvider.php`.
 
 Update the `register` method as follows:
 
 ```php
 <?php
 
-namespace Webkul\Blog\Providers;
+namespace Webkul\CustomShippingMethod\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class BlogServiceProvider extends ServiceProvider
+class CustomShippingMethodServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -278,6 +278,7 @@ class BlogServiceProvider extends ServiceProvider
     }
 }
 ```
+
 ### Add the Namespace to composer.json
 
 To ensure that your custom shipping method package is correctly autoloaded by Composer, you need to add its namespace to the `psr-4` key in the `composer.json` file located in the Bagisto root directory. This step is essential for enabling the application to locate and utilize the classes in your package.
@@ -287,7 +288,7 @@ To ensure that your custom shipping method package is correctly autoloaded by Co
     ...
     "psr-4": {
         // Other PSR-4 namespaces
-        "Webkul\\Blog\\": "packages/Webkul/Blog/src"
+        "Webkul\\CustomShippingMethod\\": "packages/Webkul/CustomShippingMethod/src"
     }
 }
 ```
@@ -300,14 +301,14 @@ To ensure that your custom shipping method package is properly integrated into t
 <?php
 
 return [
-    
+
     // Other configuration options
 
     'providers' => ServiceProvider::defaultProviders()->merge([
         // Other service providers
-        Webkul\Blog\Providers\BlogServiceProvider::class,
+        Webkul\CustomShippingMethod\Providers\CustomShippingMethodServiceProvider::class,
     ])->toArray(),
-    
+
     // Other configuration options
 ];
 ```
