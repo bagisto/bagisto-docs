@@ -59,21 +59,23 @@ Add your package's namespace to the **`psr-4`** section in the **`composer.json`
    }
    ```
 
-Register your package's service provider in the **`config/app.php`** file located in the root directory of your Bagisto application. Add the following line to the **`providers`** array:
+Register your package's service provider in the **`bootstrap/providers.php`** file located in the root directory of your Bagisto application. Add the following line `Webkul\Blog\Providers\BlogServiceProvider::class,` just like other Bagisto service providers:
 
 ```php
 <?php
 
 return [
-    
-    // Other configuration options
+    /**
+     * Application service providers.
+     */
+    App\Providers\AppServiceProvider::class,
 
-    'providers' => ServiceProvider::defaultProviders()->merge([
-        // Other service providers
-        Webkul\Blog\Providers\BlogServiceProvider::class,
-    ])->toArray(),
-    
-    // Other configuration options
+    // Other service providers
+
+    /**
+     * Blog service providers.
+     */
+    Webkul\Blog\Providers\BlogServiceProvider::class,
 ];
 ```
 
@@ -174,21 +176,23 @@ Add your package's namespace to the **`psr-4`** section in the **`composer.json`
    }
    ```
 
-Register your package's service provider in the **`config/app.php`** file located in the root directory of your Bagisto application. Add the following line to the **`providers`** array:
+Register your package's service provider in the **`bootstrap/providers.php`** file located in the root directory of your Bagisto application. Add the following line `Webkul\Blog\Providers\BlogServiceProvider::class,` just like other Bagisto service providers:
 
 ```php
 <?php
 
 return [
-    
-    // Other configuration options
+    /**
+     * Application service providers.
+     */
+    App\Providers\AppServiceProvider::class,
 
-    'providers' => ServiceProvider::defaultProviders()->merge([
-        // Other service providers
-        Webkul\Blog\Providers\BlogServiceProvider::class,
-    ])->toArray(),
-    
-    // Other configuration options
+    // Other service providers
+
+    /**
+     * Blog service providers.
+     */
+    Webkul\Blog\Providers\BlogServiceProvider::class,
 ];
 ```
 
