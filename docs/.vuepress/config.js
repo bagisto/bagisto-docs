@@ -35,6 +35,7 @@ module.exports = {
             '/2.0/': require('./version-configs/2.0'),
             '/2.1/': require('./version-configs/2.1'),
             '/2.2/': require('./version-configs/2.2'),
+            '/2.3/': require('./version-configs/2.3'),
             '/master/': require('./version-configs/master')
         }
     },

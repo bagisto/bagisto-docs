@@ -51,6 +51,8 @@
       >
         <option value="master">Master</option>
 
+        <option value="2.3">2.3</option>
+
         <option value="2.2">2.2</option>
 
         <option value="2.1">2.1</option>
