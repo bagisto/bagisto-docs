@@ -6,8 +6,8 @@
 
 - **Server**: Apache 2 or NGINX
 - **RAM**: 4GB or higher
-- **Node**: 18.12.0 LTS or higher
-- **PHP**: 8.1 or higher
+- **Node**: 23.10.0 LTS or higher
+- **PHP**: 8.2 or higher
 - **Composer**: 2.5 or higher
 
 ## PHP Extensions
