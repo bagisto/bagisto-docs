@@ -161,6 +161,7 @@ export default defineConfig(({ mode }) => {
         server: {
             host: process.env.VITE_HOST || "localhost",
             port: process.env.VITE_PORT || 5173,
+            cors: true,
         },
 
         plugins: [

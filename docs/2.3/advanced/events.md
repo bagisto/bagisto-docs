@@ -169,6 +169,12 @@ In Bagisto, there are several events fired throughout its operations, allowing d
 | customer.review.update.after                       | This event will be fired after customer review gets updated.      | `$review`                 |
 | customer.review.delete.before                      | This event will be fired before customer review gets deleted.     | `$id`                     |
 | customer.review.delete.after                       | This event will be fired after customer review gets deleted.      | `$id`                     |
+| customer.account.gdpr-request.create.before        | This event will be fired before gdpr request created.             | -                         |
+| customer.gdpr-request.create.after                 | This event will be fired after gdpr request created.              | `$gdprRequest`            |
+| customer.account.gdpr-request.update.before        | This event will be fired before gdpr request updated.             | -                         |
+| customer.account.gdpr-request.update.after         | This event will be fired after gdpr request updated.              | `$gdprRequest`            | 
+| customer.gdpr-request.update.after                 | This event will be fired after gdpr request updated.              | `$gdprRequest`            | 
+| customer.gdpr-request.update.before                | This event will be fired after gdpr request updated.              | -                         | 
 | marketing.search_seo.sitemap.create.before         | This event will be fired before sitemaps gets created.            | -                         |
 | marketing.search_seo.sitemap.create.after          | This event will be fired after sitemaps gets created.             | `$sitemap`                |
 | marketing.search_seo.sitemap.update.before         | This event will be fired before sitemaps gets updated.            | `$id`                     |

@@ -252,6 +252,22 @@ defineRule("address", (value) => {
 });
 ```
 
+- `postcode` The postcode validation rule is designed to ensure that the input is a valid post code. 
+
+```javascript
+defineRule("postcode", (value) => {
+    if (! value || ! value.length) {
+        return true;
+    }
+
+    if (! /^[a-zA-Z0-9][a-zA-Z0-9\s-]*[a-zA-Z0-9]$/.test(value)) {
+        return false;
+    }
+
+    return true;
+});
+```
+
 - `decimal` The decimal validation rule ensures that the input is a valid decimal number. This rule allows specifying the number of decimal places and the decimal separator. By default, it accepts any number of decimal places and uses the period (".") as the separator.
 
 ```javascript
@@ -274,4 +290,18 @@ defineRule(
         return regex.test(value);
     }
 );
+```
+
+- `required_if` The required_if validation rule ensures that a value is required based on a given condition. If the specified condition evaluates to true, the input must not be null, undefined, or an empty string. If the condition is false, the validation passes regardless of the input value.
+
+```javascript
+defineRule("required_if", (value, { condition = true } = {}) => {
+    if (condition) {
+        if (value === null || value === undefined || value === '') {
+            return false;
+        }
+    }
+
+    return true;
+});
 ```

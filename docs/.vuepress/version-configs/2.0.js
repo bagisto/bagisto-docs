@@ -41,7 +41,6 @@ module.exports = [
             ['architecture/packages', 'Packages'],
             ['architecture/frontend', 'Frontend'],
             ['architecture/theme', 'Theme'],
-            ['architecture/performance', 'Performance'],
             ['architecture/repository-pattern', 'Repository Pattern'],
             ['architecture/modular-design', 'Modular Design']
         ])
@@ -101,6 +100,9 @@ module.exports = [
         path: setVersionPrefix('performance'),
         collapsable: true,
         children: setVersionPrefix([
+            ['performance/indexing', 'Indexing'],
+            ['performance/fpc', 'Full Page Cache'],
+            ['performance/octane', 'Laravel Octane'],
             ['performance/loadbalancing', 'Load Balancing'],
         ])
     },
