@@ -217,20 +217,23 @@ Add your payment method namespace to the `psr-4` key in the `composer.json` file
 
 ### Register ServiceProvider
 
-Register your service provider in the `config/app.php` file:
+To ensure that your custom payment method package is properly integrated into the Bagisto application, you need to register your service provider. This can be done by adding it to the `bootstrap/providers.php` file in the Bagisto root directory.
 
 ```php
 <?php
 
 return [
-    // Other configuration options
+    /**
+     * Application service providers.
+     */
+    App\Providers\AppServiceProvider::class,
 
-    'providers' => ServiceProvider::defaultProviders()->merge([
-        // Other service providers
-        Webkul\CustomPaymentMethod\Providers\StripeServiceProvider::class,
-    ])->toArray(),
+    // Other service providers
 
-    // Other configuration options
+    /**
+     * Blog service providers.
+     */
+    Webkul\CustomPaymentMethod\Providers\StripeServiceProvider::class,
 ];
 ```
 

@@ -295,21 +295,23 @@ To ensure that your custom shipping method package is correctly autoloaded by Co
 
 ### Register the Service Provider
 
-To ensure that your custom shipping method package is properly integrated into the Bagisto application, you need to register your service provider. This can be done by adding it to the `config/app.php` file in the Bagisto root directory.
+To ensure that your custom shipping method package is properly integrated into the Bagisto application, you need to register your service provider. This can be done by adding it to the `bootstrap/providers.php` file in the Bagisto root directory.
 
 ```php
 <?php
 
 return [
+    /**
+     * Application service providers.
+     */
+    App\Providers\AppServiceProvider::class,
 
-    // Other configuration options
+    // Other service providers
 
-    'providers' => ServiceProvider::defaultProviders()->merge([
-        // Other service providers
-        Webkul\CustomShippingMethod\Providers\CustomShippingMethodServiceProvider::class,
-    ])->toArray(),
-
-    // Other configuration options
+    /**
+     * Blog service providers.
+     */
+    Webkul\CustomShippingMethod\Providers\CustomShippingMethodServiceProvider::class,
 ];
 ```
 
