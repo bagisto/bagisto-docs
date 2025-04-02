@@ -74,13 +74,13 @@ To upgrade your current version to the latest version of Bagisto, follow these s
 
 The following changes have been implemented in Bagisto from version master to upcoming version:
 
-For more information, please visit the [Bagisto changelog on GitHub](https://github.com/bagisto/bagisto/blob/master/CHANGELOG.md).
+For more information, please visit the [Bagisto changelog on GitHub](https://github.com/bagisto/bagisto/blob/2.3/CHANGELOG.md).
 
 #### Changes in the latest release
 
 We are excited to announce the release of version [master](https://github.com/bagisto/bagisto) of Bagisto, which includes numerous enhancements and improvements. To ensure a smooth transition to this latest version, we have prepared a comprehensive upgrade guide.
 
-For the upgrade guide visit [Bagisto UPGRADE.md on GitHub](https://github.com/bagisto/bagisto/blob/master/UPGRADE.md).
+For the upgrade guide visit [Bagisto UPGRADE.md on GitHub](https://github.com/bagisto/bagisto/blob/2.3/UPGRADE.md).
 
 
 

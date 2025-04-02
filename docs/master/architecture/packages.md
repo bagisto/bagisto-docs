@@ -83,6 +83,44 @@ The Attribute package in Bagisto manages product attributes and attribute sets, 
 
     - Allow products to inherit attributes from attribute families, ensuring consistent product data structure.
 
+### BookingProduct
+
+The Booking Product Package in Bagisto extends the platform’s capabilities by allowing merchants to offer products and services that require scheduling and reservations. This package is designed to handle various booking scenarios, including appointments, rentals, events, and more. It provides a flexible and seamless booking experience for both merchants and customers.
+
+#### Key Features of the BookingProduct Package
+
+- Multiple Booking Types
+    - Appointment Booking – Ideal for doctors, salons, and consultancy services.
+    - Event Booking – Suitable for ticket-based bookings like concerts and conferences.
+    - Rental Booking – Used for vehicle rentals, equipment rentals, and room bookings.
+    - Table Booking – Supports restaurant reservations and seating arrangements.
+
+- Date & Time Management
+    - Define available booking dates and times.
+    - Set time slots with custom intervals.
+    - Manage booking duration and buffer times between slots.
+
+- Availability & Capacity Control
+    - Set maximum bookings per slot.
+
+    - Configure booking restrictions to prevent overbooking.
+
+    - Allow or restrict same-day bookings.
+
+- Customer-Friendly Booking Experience
+    - Interactive date and time picker for seamless selection.
+
+    - Booking summary displayed before checkout.
+
+    - Email notifications and reminders for customers and admin.
+
+- Admin Control & Order Management
+    - Manage bookings from the admin panel.
+
+    - Approve, cancel, or reschedule bookings.
+
+    - Export booking data for reporting and analysis.
+
 ### CartRule 
 
 The CartRule package in Bagisto provides all the necessary logic to define conditions and actions for cart-based promotions, enabling you to offer dynamic and targeted discounts to your customers. This package allows you to create flexible discount rules that can be applied to the shopping cart, enhancing your promotional capabilities and driving sales.
@@ -203,7 +241,7 @@ The CMS package in Bagisto empowers store administrators to manage content pages
 
 The Core package in Bagisto serves as the foundation for various functionalities and utilities essential for the operation of the entire e-commerce platform. It encapsulates critical components, settings, configurations, and common helper functions that are integral to the seamless functioning of other packages within Bagisto. Here’s a detailed description of the Core package:
 
-#### Key Features and Components
+#### Key Features and Components of the Core Package
 
 - Settings and Configurations
     - Manages platform-wide configurations such as site name, logo, currency settings, and default language.
@@ -219,7 +257,7 @@ The Core package in Bagisto serves as the foundation for various functionalities
 
 The Customer package in Bagisto is designed to handle all aspects related to customer management, authentication, and customer-centric functionalities essential for e-commerce operations. It provides a comprehensive suite of features to manage customer accounts, streamline registration processes, and enhance user engagement.
 
-#### Key Features and Components
+#### Key Features and Components of the Customer Package
 
 - Customer Account Management
     - Facilitates customer registration with email verification and password management. Supports social login integration for streamlined access.
@@ -264,7 +302,7 @@ This package includes essential functionalities to monitor, analyze, and debug t
 
 This package provides advanced caching mechanisms to store generated pages in memory, reducing server load and improving page load times for your customers. You can follow the given link for the more information about the [FPC](https://bagisto.com/en/optimizing-bagisto-e-commerce-a-deep-dive-into-full-page-cache-implementation/)
 
-#### Features
+#### Key Features of the Customer Package
 
 - Full Page Caching
 
@@ -274,7 +312,19 @@ This package provides advanced caching mechanisms to store generated pages in me
 - Cache Invalidation
     - Automatically invalidates and updates the cache when changes occur (e.g., product updates, inventory changes).
     - Ensures customers always see the most up-to-date content without compromising performance.
-    
+
+#### GDPR
+
+The GDPR Package in Bagisto allows customers to easily raise requests to update, modify, or delete their personal data stored on the platform. This feature empowers customers by giving them greater control over their information and ensures that businesses comply with data protection laws like the GDPR.
+
+#### Key Features of the Customer Package
+
+- Customer-Initiated Data Modification Requests
+    - Customers can raise requests to modify or update their personal details (such as email, name, address, etc.) in their account settings.
+    - Customers can easily request to delete their personal data from the system. This is in accordance with the GDPR’s "Right to Erasure," which allows individuals to request the deletion of their data from systems that no longer need it.
+    - Customers can revoke consent for data processing, allowing businesses to stop collecting or using their data. The system keeps track of revocation timestamps (revoked_at), ensuring compliance with GDPR.
+    - While the customers can submit requests, the admin can review, approve, or reject them via the admin panel. The admin can also track the progress and history of these requests.
+
 ### Installer
 
 The Installer package in Bagisto simplifies the setup and installation process of your e-commerce platform, providing a streamlined experience for deploying Bagisto on various environments. This package includes essential functionalities to configure database connections, install dependencies, and initialize the application environment, ensuring a smooth and hassle-free installation process.
