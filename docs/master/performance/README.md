@@ -1,15 +1,20 @@
-# Performance & Load Balancing in Bagisto
+# Performance
 
-Bagisto is designed to be fast, scalable, and efficient, ensuring a smooth e-commerce experience even under heavy traffic. This guide covers essential performance optimizations, caching strategies, database tuning, and load balancing techniques to enhance scalability.
+Bagisto is designed to be fast, scalable, and efficient, ensuring a smooth e-commerce experience even under heavy traffic. This guide covers essential performance optimizations, caching strategies, database tuning, indexing, full-page caching (FPC), Laravel Octane, and load balancing techniques to enhance scalability.
+
+In the realm of online stores, [web vitals](https://web.dev/vitals/) have become increasingly crucial. Bagisto prioritizes good [LCP](https://web.dev/lcp/) and [CLS](https://web.dev/cls/) to ensure an optimal user experience.
+
+Additionally, Bagisto has seamlessly integrated [ElasticSearch](https://bagisto.com/en/elasticsearch-for-bagisto/) to further enhance search speed and efficiency.
 
 ## Key Performance Features
 
 ### Caching Mechanisms
-- Supports Redis and OpCache to optimize performance and reduce database queries.
+- Implements Full Page Caching (FPC) to reduce server processing time and accelerate page loads.
 - Page and route caching improve response times.
 
 ### Optimized Codebase
 - Follows best coding practices with a modular architecture for faster execution.
+- Uses Laravel Octane to boost performance by running the application with high-performance servers like RoadRunner and Swoole.
 
 ### Database Performance
 - Uses proper indexing and optimized queries to enhance database speed.
@@ -18,8 +23,10 @@ Bagisto is designed to be fast, scalable, and efficient, ensuring a smooth e-com
 ### Lazy Loading
 - Implements lazy loading for images and assets to enhance page load speed.
 
-### Minification & Compression
-- Minifies CSS/JavaScript files and enables Gzip/Brotli compression to reduce file sizes.
+### Indexing for Enhanced Performance
+- Implements indexing strategies using Elasticsearch to speed up product searches and filtering.
+- Improves product listing performance with efficient indexing mechanisms.
+- Supports asynchronous indexing to prevent performance bottlenecks.
 
 ### Queue Processing
 - Uses Laravel Queues to handle background tasks efficiently (e.g., emails, order processing).
@@ -27,34 +34,6 @@ Bagisto is designed to be fast, scalable, and efficient, ensuring a smooth e-com
 ## Load Balancing for Scalability
 
 To ensure high availability and scalability, Bagisto can be deployed with a Load Balancer to distribute traffic efficiently across multiple instances.
-
-### Steps to Implement Load Balancing:
-
-#### 1. Set Up a Dedicated Database Server
-- Host MySQL on a separate EC2 instance.
-- Enable remote access and optimize configurations for performance.
-
-#### 2. Deploy Bagisto on Multiple EC2 Instances
-- Create an Amazon Machine Image (AMI) for easy scaling.
-- Launch multiple EC2 instances from the AMI and register them with a target group.
-
-#### 3. Configure an Application Load Balancer (ALB)
-- Use AWS ALB to distribute requests across multiple instances.
-- Configure round-robin or sticky session-based load balancing.
-
-#### 4. Enable Session Management
-- Store sessions in Redis to maintain user sessions across instances.
-
-#### 5. Use Amazon S3 for Media Storage
-- Offload media files to Amazon S3 to reduce server load and improve response times.
-
-#### 6. Set Up Auto Scaling
-- Enable AWS Auto Scaling to dynamically add or remove instances based on traffic.
-
-## Best Practices for Performance Optimization
-
-### Use a Content Delivery Network (CDN)
-- Distribute static content globally for faster load times.
 
 ### Optimize Database Queries
 - Monitor slow queries and implement indexing.
