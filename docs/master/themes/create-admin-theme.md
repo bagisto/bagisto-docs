@@ -4,13 +4,40 @@
 
 ## Introduction
 
-In Bagisto, the flexibility to customize the look and feel of your admin panel allows you to create a more personalized and efficient backend experience. This guide provides a step-by-step process to configure and create a new admin theme. By following these instructions, you will be able to set up custom views and assets, tailoring the admin interface to better suit your brand and operational needs.
+The Bagisto admin panel serves as the command center for your e-commerce operations. Customizing its appearance allows you to create a more efficient and branded management experience. This guide provides comprehensive instructions for configuring and developing custom admin themes to match your brand identity and workflow preferences.
 
-## Configuration
+## Understanding Theme Configuration
 
-To configure the admin theme in Bagisto, follow these steps:
+Bagisto's theme system is managed through a central configuration file: `themes.php`. This file contains all the theme definitions and settings that determine how your storefront appears.
 
-- Locate the `themes.php` file inside the `config` folder located in your project's root directory. Look for the keys `admin-default` and `admin`. The configuration will appear as follows:
+### Key Configuration Parameters
+
+| Parameter              | Description                                             |
+| ---------------------- | --------------------------------------------------------|
+| **`admin-default`**    | Designates the active theme for your admin view |
+| **`name`**             | The display name of your theme. |
+| **`views_path`**       | Location of the theme's blade template files. |
+| **`assets_path`**      | Location of CSS, JavaScript, and image files.  |
+| **`parent`**           | (Optional) Parent theme to inherit from. |
+| **`vite`**             | Configuration for Vite assets bundling |
+
+## Step-by-Step Theme Configuration
+
+1. Locate the `themes.php` File. Navigate to the `config` folder located in the root directory of your Bagisto project.
+
+```
+- app
+- bin
+- bootstrap
+- config
+    ├── ...
+    └── themes.php  👈 This is the file we need
+- database
+- packages
+    └── Webkul
+```
+
+2. Locate the `themes.php` file inside the `config` folder located in your project's root directory. Look for the keys `admin-default` and `admin`. The configuration will appear as follows.
 
 ```php
 <?php
@@ -32,19 +59,17 @@ return [
     ],
 ];
 ```
+3. Understand the structure
 
-| Key            | Description                              |
-| -------------- | ---------------------------------------- |
-| admin-default  | Sets the current theme for the admin area |
-| admin          | Stores a list of available themes         |
+- `admin-default` defines which theme is currently active
+- The `admin` array contains all available themes
+- Each theme (like `default`) has its own configuration settings
 
-## Creating a Theme
+## Creating a Custom Theme
 
-To create a new admin theme, follow these steps
+Follow these four steps to create and implement a custom admin theme:
 
-### Add a New Theme Entry
-
-Update the themes.php file inside the config folder to include your new theme. Add the new theme entry under the admin array:
+1. Add your new theme definition to the themes.php file under the admin section:
 
 ```php
 <?php
@@ -79,53 +104,60 @@ return [
 ];
 ```
 
-### Specify the Path to Views and Assets
-
-Ensure the paths to the views and assets folders are according to your desired structure. For example
-
-- Views structure:
-
-    ```
-    - resources
-    └── admin-themes
-        └── new-theme
-            └── views
-    ```
-
-- Assets structure:
-
-    ```
-    - public
-    └── admin-themes
-        └── new-theme
-            └── assets
-    ```
-
-### Customize the Dashboard Page
-
-Create the directory structure for the dashboard page in the `new-theme` folder, mirroring the structure in the `default` folder. For example:
+2. Create the necessary directories for your new theme
 
 ```
-- resources
-    └── admin-themes
-        └── new-theme
-            └── views
-                └── dashboard
-                    └── index.blade.php
+📁 resources
+ └── 📁 admin-themes
+     └── 📁 new-theme
+         └── 📁 views
+             ├── 📁 dashboard
+             ├── 📁 catalog
+             ├── 📁 sales
+             ├── 📁 customers
+             ├── 📁 settings
+             └── 📁 layouts
 ```
 
-Add the desired content for the dashboard page in the index.blade.php file. For example:
+3. Create the necessary directories for theme assets
+
+```
+📁 public
+ └── 📁 themes
+     └── 📁 admin
+         └── 📁 new-theme
+             ├── 📁 css
+             ├── 📁 js
+             └── 📁 images
+```
+
+4. Create view files: Create template files in your theme's views directory. You can start by customizing the dashboard:
+
+```
+📁 resources
+ └── 📁 admin-themes
+     └── 📁 new-theme
+         └── 📁 views
+             └── 📁 dashboard
+                 └── 📄 index.blade.php
+```
+
+Example content for index.blade.php:
 
 ```php
 New Theme Sample
 ```
 
-### Activate the New Theme
-
-Change the value of the `admin-default` key in the `config/themes.php` file to activate the new theme
+5. Change the `admin-default` value in your `themes.php` file to activate your new theme
 
 ```php
 'admin-default' => 'new-theme',
+```
+
+6. Clear the application cache to ensure your changes take effect:
+
+```php
+php artisan cache:clear
 ```
 
 Now, when you access the dashboard page in the admin area, you should see the customized version provided by the new theme

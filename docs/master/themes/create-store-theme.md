@@ -4,15 +4,26 @@
 
 ## Introduction 
 
-Configuring the store theme in Bagisto allows you to customize the visual appearance and functionality of your online store. Themes define the layout, styling, and user interface elements that create a unique brand experience for your customers.
+Themes in Bagisto define the visual identity and user experience of your e-commerce store. They control layouts, styling, and interactive elements that create a cohesive brand experience for your customers. This guide will help you understand, configure, and create custom themes for your Bagisto store.
 
-## Configuration
+## Understanding Theme Configuration
 
-- To configure the store theme in Bagisto, follow these steps:
+Bagisto's theme system is managed through a central configuration file: `themes.php`. This file contains all the theme definitions and settings that determine how your storefront appears.
 
-- Locate the `themes.php` File. Navigate to the `config` folder located in the root directory of your Bagisto project.
+### Key Configuration Parameters
 
-- Open the `themes.php` File. Find the `themes.php` file within the config directory and open it for editing.
+| Parameter              | Description                                         |
+| ---------------------- | ----------------------------------------------------|
+| **`shop-default`**     | Designates the active theme for your store |
+| **`name`**             | The display name of your theme. |
+| **`views_path`**       | Location of the theme's blade template files. |
+| **`assets_path`**      | Location of CSS, JavaScript, and image files.  |
+| **`parent`**           | (Optional) Parent theme to inherit from. |
+| **`vite`**             | Configuration for Vite assets bundling |
+
+## Step-by-Step Theme Configuration
+
+1. Locate the `themes.php` File. Navigate to the `config` folder located in the root directory of your Bagisto project.
 
 ```
 - app
@@ -20,15 +31,13 @@ Configuring the store theme in Bagisto allows you to customize the visual appear
 - bootstrap
 - config
     ├── ...
-    └── themes.php
+    └── themes.php  👈 This is the file we need
 - database
 - packages
     └── Webkul
 ```
 
-- Open the `themes.php` file to view and configure theme settings
-
-- This file contains arrays that define different themes available in your application.
+2. Open the `themes.php` File. Find the `themes.php` file within the config directory and open it for editing.
 
 ```php
 <?php
@@ -52,46 +61,16 @@ return [
 ];
 ```
 
-Let's go through the parameters defined in the `themes.php` file as understanding them will help you in creating a custom theme.
+3. Understand the structure
 
-### Explanation of Parameters
+- `shop-default` defines which theme is currently active
+- The `shop` array contains all available themes
+- Each theme (like `default`) has its own configuration settings
 
-- `shop-default` This parameter at the top of the file indicates the currently active or default theme for the shop in Bagisto. It is set to `'shop-default'`, representing the name of the currently active theme.
+## Creating a Custom Theme
+Follow these steps to create a new theme for your Bagisto store:
 
-- `shop` This parameter allows you to define the configurations for your custom theme for the shop end. You can create and use multiple themes simultaneously in Bagisto.
-
-- Inside the `'shop'` array, there is another array named `'default'`, which represents your currently active theme. It contains several key-value pairs that are explained below:
-
-    - `views_path` This parameter specifies the path to the views or blade files for your custom theme.
-
-    - `assets_path` It determines the path to the assets such as images, CSS files, and JavaScript files for your theme.
-
-    - `name` This parameter defines a global name for your theme inside Bagisto.
-
-    - `parent` This is an optional parameter that allows you to customize existing themes in Bagisto. By setting the `'parent'` parameter to the value of the `'name'` parameter listed above, you can inherit the configuration of the parent theme and make further customizations.
-
-Once you have defined the paths and names for your custom theme in the `themes.php` file, you can start creating your view files. Make sure to cover all the GET routes of the shop package that include a parameter called `'view'`. You can find the route file of the shop package located at `packages/Webkul/Shop/src/Http/routes.php`.
-
-Ensure that the name of your blade file matches the value passed in the GET route file. For example:
-
-```php
-use Webkul\Shop\Http\Controllers\CategoryController;
-
-// Store front header nav-menu fetch
-Route::get('/categories/{slug}', [CategoryController::class, 'index'])->name('shop.categories.index');
-```
-
-We are using Laravel 10 based routing system, which involves keeping view files inside the controller's section. This allows for the creation of custom view files, as well as redirection in controllers.
-
-For all the views, check all the GET routes as they include a `'view'` parameter with the corresponding value to be used.
-
-By following these steps, you can configure and create custom view files for your store theme in Bagisto. This allows you to personalize the appearance and layout of your storefront to align with your branding and provide an enhanced user experience.
-
-## Creating a Theme
-
-To create a new theme, follow these steps:
-
-- Add a new theme entry to the `themes` array in the `themes.php` file:
+1. Add a new theme definition Edit `themes.php` to include your new theme:
 
 ```php
 <?php
@@ -126,28 +105,42 @@ return [
 ];
 ```
 
-- Create the necessary directories for your new theme
+2. Create the necessary directories for your new theme
 
 ```
-└── resources
-    └── themes
-        └── new-theme
-            └── views
-                └── layout.blade.php
-                └── home.blade.php
+📁 resources
+ └── 📁 themes
+     └── 📁 new-theme
+         └── 📁 views
+             ├── 📄 layout.blade.php
+             └── 📄 home.blade.php
 ```
 
-- In the `views` directory, create the view files required for your theme, such as `layout.blade.php` and `home.blade.php`.
+3. Create the necessary directories for theme assets
 
-- Ensure that your theme's assets (CSS, JS, images, etc.) are placed in the specified `assets_path`:
 ```
-└── public
-    └── themes
-        └── shop
-            └── new-theme
-                └── css
-                └── js
-                └── images
+📁 public
+ └── 📁 themes
+     └── 📁 shop
+         └── 📁 new-theme
+             ├── 📁 css
+             ├── 📁 js
+             └── 📁 images
+```
+
+4. Create view files
+
+Your theme needs to implement views for all routes in the shop package. Reference the route file at: `packages/Webkul/Shop/src/Http/routes.php` Ensure your blade filenames match the route definitions. For example:
+```php
+Route::controller(CategoryController::class)->group(function () {
+    Route::get('/categories/{slug}', 'index')->name('shop.categories.index');
+});
+```
+
+5. Clear application cache:
+
+```
+php artisan cache:clear
 ```
 
 By following these steps, you can create and configure a new theme for your Bagisto store, enabling you to customize the appearance and layout to suit your branding and design preferences.
