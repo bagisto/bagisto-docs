@@ -86,14 +86,14 @@ export default {
 
   data() {
     return {
-      version: '2.2',
+      version: '2.3',
     };
   },
   
   mounted() {
     let currentPath = this.$route.path.split('/');
 
-    this.version = currentPath[1] || '2.2';
+    this.version = currentPath[1] || '2.3';
 
     this.currentVersion();
   },
@@ -194,7 +194,7 @@ export default {
     },
 
     currentVersion() {
-      this.version = this.$route.path.split('/')[1] || '2.2';
+      this.version = this.$route.path.split('/')[1] || '2.3';
     }
   },
 }
