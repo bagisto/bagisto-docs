@@ -6,7 +6,7 @@
 
 The Bagisto admin panel serves as the command center for your e-commerce operations. Customizing its appearance allows you to create a more efficient and branded management experience. This guide provides comprehensive instructions for configuring and developing custom admin themes to match your brand identity and workflow preferences.
 
-## Understanding Theme Configuration
+## Theme Configuration
 
 Bagisto's theme system is managed through a central configuration file: `themes.php`. This file contains all the theme definitions and settings that determine how your storefront appears.
 
@@ -20,8 +20,6 @@ Bagisto's theme system is managed through a central configuration file: `themes.
 | **`assets_path`**      | Location of CSS, JavaScript, and image files.  |
 | **`parent`**           | (Optional) Parent theme to inherit from. |
 | **`vite`**             | Configuration for Vite assets bundling |
-
-## Step-by-Step Theme Configuration
 
 1. Locate the `themes.php` File. Navigate to the `config` folder located in the root directory of your Bagisto project.
 
@@ -104,34 +102,7 @@ return [
 ];
 ```
 
-2. Create the necessary directories for your new theme
-
-```
-📁 resources
- └── 📁 admin-themes
-     └── 📁 new-theme
-         └── 📁 views
-             ├── 📁 dashboard
-             ├── 📁 catalog
-             ├── 📁 sales
-             ├── 📁 customers
-             ├── 📁 settings
-             └── 📁 layouts
-```
-
-3. Create the necessary directories for theme assets
-
-```
-📁 public
- └── 📁 themes
-     └── 📁 admin
-         └── 📁 new-theme
-             ├── 📁 css
-             ├── 📁 js
-             └── 📁 images
-```
-
-4. Create view files: Create template files in your theme's views directory. You can start by customizing the dashboard:
+2. Set up the required directories for your new theme and create template files within the theme's views directory. Begin by customizing the dashboard.
 
 ```
 📁 resources
@@ -148,16 +119,20 @@ Example content for index.blade.php:
 New Theme Sample
 ```
 
-5. Change the `admin-default` value in your `themes.php` file to activate your new theme
+3. Change the `admin-default` value in your `themes.php` file to activate your new theme
 
 ```php
 'admin-default' => 'new-theme',
 ```
 
-6. Clear the application cache to ensure your changes take effect:
+4. Clear the application cache to ensure your changes take effect:
 
-```php
+```sh
 php artisan cache:clear
 ```
 
 Now, when you access the dashboard page in the admin area, you should see the customized version provided by the new theme
+
+:::warning
+This section covers the basic theme setup using resources. In the next topic, we'll explore an advanced setup with a separate package and Vite configuration.
+:::
