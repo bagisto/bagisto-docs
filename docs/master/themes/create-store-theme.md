@@ -6,7 +6,7 @@
 
 Themes in Bagisto define the visual identity and user experience of your e-commerce store. They control layouts, styling, and interactive elements that create a cohesive brand experience for your customers. This guide will help you understand, configure, and create custom themes for your Bagisto store.
 
-## Understanding Theme Configuration
+## Theme Configuration
 
 Bagisto's theme system is managed through a central configuration file: `themes.php`. This file contains all the theme definitions and settings that determine how your storefront appears.
 
@@ -20,8 +20,6 @@ Bagisto's theme system is managed through a central configuration file: `themes.
 | **`assets_path`**      | Location of CSS, JavaScript, and image files.  |
 | **`parent`**           | (Optional) Parent theme to inherit from. |
 | **`vite`**             | Configuration for Vite assets bundling |
-
-## Step-by-Step Theme Configuration
 
 1. Locate the `themes.php` File. Navigate to the `config` folder located in the root directory of your Bagisto project.
 
@@ -112,34 +110,18 @@ return [
  └── 📁 themes
      └── 📁 new-theme
          └── 📁 views
-             ├── 📄 layout.blade.php
-             └── 📄 home.blade.php
+             └── 📁 home.blade.php
+                 └── 📄 index.blade.php
 ```
 
-3. Create the necessary directories for theme assets
-
+Example content for index.blade.php:
 ```
-📁 public
- └── 📁 themes
-     └── 📁 shop
-         └── 📁 new-theme
-             ├── 📁 css
-             ├── 📁 js
-             └── 📁 images
-```
-
-4. Create view files
-
-Your theme needs to implement views for all routes in the shop package. Reference the route file at: `packages/Webkul/Shop/src/Http/routes.php` Ensure your blade filenames match the route definitions. For example:
-```php
-Route::controller(CategoryController::class)->group(function () {
-    Route::get('/categories/{slug}', 'index')->name('shop.categories.index');
-});
+New Theme Sample
 ```
 
 5. Clear application cache:
 
-```
+```sh
 php artisan cache:clear
 ```
 
