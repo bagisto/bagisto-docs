@@ -112,7 +112,7 @@ Run the following command to register your package
 composer dump-autoload
 ```
 
-:::tip
+:::tip Note
 Your new theme package has been set up successfully! In the next step, we will configure and apply the theme.
 :::
 

@@ -115,7 +115,7 @@ return [
 ```
 
 Example content for index.blade.php:
-```
+```html
 New Theme Sample
 ```
 
@@ -131,6 +131,6 @@ After adding your new theme, you will be able to select it when creating a new s
 
 ![limiting-error-messages](../../assets/master/images/themes/new-theme-added.png)
 
-:::warning
+:::tip Note
 This section covers the basic theme setup using resources. In the next topic, we'll explore an advanced setup with a separate package and Vite configuration.
 :::

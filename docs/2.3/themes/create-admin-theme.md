@@ -115,7 +115,7 @@ return [
 
 Example content for index.blade.php:
 
-```php
+```html
 New Theme Sample
 ```
 
@@ -133,6 +133,6 @@ php artisan cache:clear
 
 Now, when you access the dashboard page in the admin area, you should see the customized version provided by the new theme
 
-:::warning
+:::tip Note
 This section covers the basic theme setup using resources. In the next topic, we'll explore an advanced setup with a separate package and Vite configuration.
 :::
