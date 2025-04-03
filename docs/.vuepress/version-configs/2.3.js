@@ -94,6 +94,7 @@ module.exports = [
         children: setVersionPrefix([
             ['themes/create-store-theme', 'Store Theme'],
             ['themes/create-admin-theme', 'Admin Theme'],
+            ['themes/custom-theme-package', 'Custom Theme Package'],
         ])
     },
     {
