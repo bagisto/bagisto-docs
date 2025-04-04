@@ -115,7 +115,7 @@ sudo apt-get install mysql-client-8.0
 
 - Go to **Instances > Actions > Image and templates > Create Image**.
 
-![Create Image](../../assets/master/images/loadbalancing/create-image-ec2.png)
+![Create Image](../../assets/2.3/images/loadbalancing/create-image-ec2.png)
 
 - Enter the image name and click **Create Image**.
 
@@ -134,14 +134,14 @@ sudo apt-get install mysql-client-8.0
 - Go to Target Groups and click Create Target Group.
 - Choose Instances as the target type and give it a name.
 
-![Target Group](../../assets/master/images/loadbalancing/target-group.png)
+![Target Group](../../assets/2.3/images/loadbalancing/target-group.png)
 
 
 #### Register Instances in the Target Group
 
 - Choose the instances to be added to the target group
 
-![Create Target Group](../../assets/master/images/loadbalancing/create-target-group.png)
+![Create Target Group](../../assets/2.3/images/loadbalancing/create-target-group.png)
 
 ####  Configure Load Balancing Algorithm
 
@@ -159,11 +159,11 @@ sudo apt-get install mysql-client-8.0
     - Select all **Availability Zones**.
     - Choose the target group created earlier and configure the listener on **port 80 (HTTP)**.
 
-![Create Load Balancer](../../assets/master/images/loadbalancing/create-loadbalancer.png)
+![Create Load Balancer](../../assets/2.3/images/loadbalancing/create-loadbalancer.png)
 
-![Create Load Balancer](../../assets/master/images/loadbalancing/loadbalancer-port.png)
+![Create Load Balancer](../../assets/2.3/images/loadbalancing/loadbalancer-port.png)
 
-![Create Load Balancer](../../assets/master/images/loadbalancing/loadbalancer-port-80.png)
+![Create Load Balancer](../../assets/2.3/images/loadbalancing/loadbalancer-port-80.png)
 
 #### Adjust Security Groups
 
@@ -178,7 +178,7 @@ sudo apt-get install mysql-client-8.0
 
 - Configure the ALB listener to use HTTPS (port 443), ensuring that an SSL certificate is installed.
 
-![Load Balancer Result](../../assets/master/images/loadbalancing/loadbalancer-result.png)
+![Load Balancer Result](../../assets/2.3/images/loadbalancing/loadbalancer-result.png)
 
 ### Verify and Test the Entire Setup
 

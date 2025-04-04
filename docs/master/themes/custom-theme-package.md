@@ -4,12 +4,18 @@
 
 ## Introduction 
 
-A custom theme package allows you to separate your theme files from Bagisto's core structure, making your theme modular, reusable, and easier to maintain. This approach provides better control over layouts, assets, and views while enabling seamless theme management.
-This guide walks you through creating and configuring a custom theme package in Bagisto, including setting up service providers, integrating assets, and using Vite for asset bundling.
+Creating a custom theme package in Bagisto allows you to keep your theme separate from the core, making it easier to customize and maintain. By isolating the theme into its own package, you can integrate tools like Vite for efficient asset bundling, easily update or override existing sections, and fully tailor the UI to meet your requirements. This modular approach ensures better flexibility, reusability, and smoother theme management.
 
 ## Package Structure Setup
 
+In the previous section, we created a basic custom theme. Here, we assume you already have a fundamental understanding of how custom themes work in Bagisto.
+
+If you're not yet familiar with setting up a basic theme, we recommend checking out the [Basic Theme Setup](https://devdocs.bagisto.com/2.3/themes/create-store-theme.html) guide first to get up to speed.
+
+In this section, we’ll walk you through the step-by-step process of creating a custom theme as a standalone package in Bagisto.
+
 ### Create the Directory Structure
+
 First, create the following directory structure for your new theme package:
 
 ```
@@ -18,23 +24,7 @@ First, create the following directory structure for your new theme package:
     └── 📁 NewTheme
         └── 📁 src
             ├── 📁 Providers
-            │   └── 📄 NewThemeServiceProvider.php
-            │
-            ├── 📁 Resources  
-            │   ├── 📁 views
-            │   │   └── 📁 home
-            │   │       └── 📄 index.blade.php
-            │   │
-            │   └── 📁 assets
-            │       ├── 📁 css
-            │       │   └── 📄 app.css
-            │       └── 📁 js
-            │           └── 📄 app.js
-            │
-            ├── 📄 composer.json    
-            ├── 📄 package.json
-            ├── 📄 tailwind.config.js
-            └── 📄 vite.config.js
+                └── 📄 NewThemeServiceProvider.php
 ```
 
 ### Create the Service Provider
@@ -86,6 +76,14 @@ Update the root `composer.json` file to include your package's namespace:
 }
 ```
 
+### Update Autoloader
+
+Run the following command to register your package
+
+```shell
+composer dump-autoload
+```
+
 ### Register the Service Provider
 
 Add your service provider to `bootstrap/providers.php` 
@@ -104,15 +102,7 @@ return [
 ];
 ```
 
-### Update Autoloader
-
-Run the following command to register your package
-
-```shell
-composer dump-autoload
-```
-
-:::tip
+:::tip Note
 Your new theme package has been set up successfully! In the next step, we will configure and apply the theme.
 :::
 
@@ -122,48 +112,43 @@ Your new theme package has been set up successfully! In the next step, we will c
 
 Edit `config/themes.php` to include your new theme:
 
-```php
-<?php
-return [
-    'shop-default' => 'default',
+In the previous section, we created a basic custom theme. Here, we assume you already have a fundamental understanding of how custom themes work in Bagisto.
 
-    'shop' => [
-        'default' => [
-            'name'        => 'Default',
-            'assets_path' => 'public/themes/shop/default',
-            'views_path'  => 'resources/themes/default/views',
+If you're not yet familiar with setting up a basic theme, we recommend checking out the [Basic Theme Setup](https://devdocs.bagisto.com/2.3/themes/create-store-theme.html) guide first to get up to speed.
 
-            'vite'        => [
-                'hot_file'                 => 'shop-default-vite.hot',
-                'build_directory'          => 'themes/shop/default/build',
-                'package_assets_directory' => 'src/Resources/assets',
-            ],
-        ],
+### Add Views
 
-        'new-theme' => [
-            'name'        => 'New Theme',
-            'assets_path' => 'public/themes/shop/new-theme',
-            'views_path'  => 'resources/themes/new-theme/views',
+Create a new folder named `Resources` inside the src directory. This folder will serve as the central location for storing essential theme assets such as views, language files, and other resources required for the custom theme. Organizing files within Resources ensures better modularity and maintainability of your theme package.
 
-            'vite'        => [
-                'hot_file'                 => 'shop-new-theme-vite.hot',
-                'build_directory'          => 'themes/shop/new-theme/build',
-                'package_assets_directory' => 'src/Resources/assets',
-            ],
-        ],
-    ],
-];
+After creating the `Resources` folder, your package directory structure will look like this
+
+```
+📁 packages
+└── 📁 Webkul
+    └── 📁 NewTheme
+        └── 📁 src
+            ├── 📁 Providers
+            │   └── 📄 NewThemeServiceProvider.php
+            │
+            └── 📁 Resources  
 ```
 
-### Create Sample View
+Move the views folder from resources/themes/new-theme into the Resources directory of your package. This ensures that all theme-related assets are contained within the package itself, keeping the structure modular and organized.
 
-Add content to `packages/Webkul/NewTheme/src/Resources/views/home/index.blade.php`
+After the move, your updated directory structure will look like this:
 
-```html
-<div class="container mx-auto py-8">
-    <h1 class="text-3xl font-bold">New Theme Sample</h1>
-    <p>This is a sample page from your custom Bagisto theme.</p>
-</div>
+```
+📁 packages
+└── 📁 Webkul
+    └── 📁 NewTheme
+        └── 📁 src
+            ├── 📁 Providers
+            │   └── 📄 NewThemeServiceProvider.php
+            │
+            └── 📁 Resources
+                └── 📁 views
+                    └── 📁 home
+                        └── 📄 index.blade.php  
 ```
 
 ### Update Service Provider
@@ -179,17 +164,21 @@ public function boot()
 }
 ```
 
-4. To publish the view files, run the following command
+4. To publish the view files, navigate to the root directory of your project and run the following command:
 
-```
+```shell
 php artisan vendor:publish --provider="Webkul\NewTheme\Providers\NewThemeServiceProvider" --force
 ```
 
+5. Your custom theme has now been successfully applied, and the changes are reflected on the homepage.
+
+![Basic Theme Preview](../../assets/master/images/themes/basic-theme.png)
+
 :::tip Note
-Your new theme has been set up successfully! Next, we will configure Tailwind CSS and Vite to manage styles and assets efficiently.
+Your new theme has been set up successfully using package! Next, we will configure Tailwind CSS and Vite to manage styles and assets efficiently.
 :::
 
-## Asset Management
+## Vite Integration
 
 ### Configure package.json
 
@@ -197,21 +186,40 @@ Create `packages/Webkul/NewTheme/package.json` with the following content.
 
 ```json
 {
-    "private": true,
-    "scripts": {
-        "dev": "vite",
-        "build": "vite build"
-    },
-    "devDependencies": {
-        "@vitejs/plugin-vue": "^4.1.0",
-        "autoprefixer": "^10.4.14",
-        "laravel-vite-plugin": "^0.7.4",
-        "postcss": "^8.4.21",
-        "tailwindcss": "^3.3.1",
-        "vite": "^4.2.1"
-    }
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.1",
+    "@types/node": "^22.7.8",
+    "autoprefixer": "^10.4.16",
+    "axios": "^1.7.9",
+    "laravel-vite-plugin": "^1.0",
+    "postcss": "^8.4.23",
+    "tailwindcss": "^3.3.2",
+    "vite": "^5.4.12",
+    "vue": "^3.5.13"
+  },
+  "dependencies": {
+    "@vee-validate/i18n": "^4.9.1",
+    "@vee-validate/rules": "^4.9.1",
+    "@vitejs/plugin-vue": "^4.2.3",
+    "dotenv": "^16.4.7",
+    "mitt": "^3.0.0",
+    "playwright": "^1.48.1",
+    "readline-sync": "^1.4.10",
+    "vee-validate": "^4.9.1",
+    "vue-flatpickr": "^2.3.0"
+  }
 }
 ```
+
+:::tip Note  
+You can also copy this code from the `Shop` package.  
+:::
 
 ### Configure Tailwind CSS
 
@@ -223,49 +231,63 @@ module.exports = {
     content: ["./src/Resources/**/*.blade.php", "./src/Resources/**/*.js"],
 
     theme: {
+        container: {
+            center: true,
+
+            screens: {
+                "2xl": "1440px",
+            },
+
+            padding: {
+                DEFAULT: "90px",
+            },
+        },
+
         screens: {
             sm: "525px",
             md: "768px",
             lg: "1024px",
             xl: "1240px",
+            "2xl": "1440px",
+            1180: "1180px",
+            1060: "1060px",
+            991: "991px",
+            868: "868px",
         },
 
         extend: {
             colors: {
+                navyBlue: "#060C3B",
+                lightOrange: "#F6F2EB",
+                darkGreen: '#40994A',
+                darkBlue: '#0044F2',
                 darkPink: '#F85156',
+            },
+
+            fontFamily: {
+                poppins: ["Poppins"],
+                dmserif: ["DM Serif Display"],
             },
         }
     },
 
     plugins: [],
+
+    safelist: [
+        {
+            pattern: /icon-/,
+        }
+    ]
 };
 ```
 
-### Create CSS Entry Point
-
-Add the following to `packages/Webkul/NewTheme/src/Resources/assets/css/app.css`:
-
-```css
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* Custom styles can be added here */
-```
-
-### Create JS Entry Point
-
-Add the following to `packages/Webkul/NewTheme/src/Resources/assets/js/app.js`
-
-```js
-// Import your custom JS modules here
-console.log('New Theme JS initialized');
-
-```
+:::tip Note  
+You can also copy this file from the `Shop` package.  
+:::
 
 ### Configure Vite
 
-3. To configure your vite Add the following to `packages/Webkul/NewTheme/vite.config.js`:
+To configure your vite Add the following to `packages/Webkul/NewTheme/vite.config.js`:
 
 ```js
 import { defineConfig, loadEnv } from "vite";
@@ -317,6 +339,39 @@ export default defineConfig(({ mode }) => {
 });
 ```
 
+### Update Hot File Build Directory path
+
+Edit `config/themes.php` to include your new theme:
+
+```php
+'new-theme' => [
+    'name'        => 'New Theme',
+    'assets_path' => 'public/themes/shop/new-theme',
+    'views_path'  => 'resources/themes/new-theme/views',
+
+    'vite'        => [
+        'hot_file'                 => 'shop-new-theme-vite.hot', // Updated Path
+        'build_directory'          => 'themes/shop/new-theme/build', //Updated Path
+        'package_assets_directory' => 'src/Resources/assets',
+    ],
+],
+```
+### Create CSS and JS Entry Point
+
+To include necessary assets in your custom theme, follow these steps:
+
+Copy the `assets` folder from the `Shop` package:
+
+```
+packages/Webkul/Shop/src/Resources/assets
+```
+
+Paste the copied folder into the `Resources` directory of your custom theme package:
+
+```
+packages/Webkul/NewTheme/src/Resources/assets
+```
+
 :::warning
 Make sure the `app.css` and `app.js` file added into your package under the assets folder.
 :::
@@ -325,7 +380,7 @@ Make sure the `app.css` and `app.js` file added into your package under the asse
 
 Navigate to your theme package directory and install dependencies:
 
-4. Navigate to the packages directory:
+Navigate to the packages directory:
 
 ```shell
 cd packages/Webkul/NewTheme
@@ -339,20 +394,49 @@ npm install
 npm run build
 ```
 
-### Publish Theme Files
+The assets for your custom theme will be compiled and generated under the `public/themes/shop` directory. You can now verify that the build process has successfully created the required CSS, JavaScript, and other static files for your theme.
 
-Publish your theme's views to the Bagisto application:
+### Create layouts and view files.
+
+Copy the `views` folder from the `Shop` package:
+
+```
+packages/Webkul/Shop/src/Resources/views
+```
+
+Replace with your `views` directory of your custom theme package: 
+
+```
+packages/Webkul/NewTheme/src/Resources/views
+```
+
+:::tip Note  
+We copied the view files from the `Shop` package for better understanding. You can customize the theme according to your requirements.  
+:::  
+
+To publish the view files, navigate to the root directory of your project and run the following command:
 
 ```shell
 php artisan vendor:publish --provider="Webkul\NewTheme\Providers\NewThemeServiceProvider" --force
 ```
 
-### Using Theme Assets in Templates
+:::warning  
+Ensure that your layout includes the following directive to properly load your theme’s assets:  
 
-In your Blade templates, use the Vite directive to include your theme's assets:
-
-```html
-@vite(['themes/shop/new-theme/build/css/app.css', 'themes/shop/new-theme/build/js/app.js'])
+```blade
+@bagistoVite(['src/Resources/assets/css/app.css', 'src/Resources/assets/js/app.js'])
 ```
+:::
+
+Your custom theme has now been successfully applied, and the changes are reflected on the homepage.
+
+Navigate to the Admin Panel, then go to Settings > Themes. Create a Image slider for your custom the.
+![New Slider](../../assets/master/images/themes/new-slider.png)
+
+Your custom theme has been successfully applied! To demonstrate customization, we have modified the header background for better clarity and understanding.
+
+:::details Output
+![New Slider Output](../../assets/master/images/themes/theme-slider-output.png)
+:::
 
 You've successfully created a custom theme package for Bagisto! This modular approach allows you to maintain your theme separately from the core and easily reuse it across multiple projects

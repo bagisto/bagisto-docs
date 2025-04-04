@@ -93,14 +93,18 @@ return [
             'views_path'  => 'resources/admin-themes/new-theme/views',
 
             'vite'        => [
-                'hot_file'                 => 'admin-new-theme-vite.hot',
-                'build_directory'          => 'themes/admin/new-theme/build',
+                'hot_file'                 => 'admin-default-vite.hot',
+                'build_directory'          => 'themes/admin/default/build',
                 'package_assets_directory' => 'src/Resources/assets',
             ],
         ],
     ],
 ];
 ```
+
+:::tip Note
+The vite configuration in this setup is currently a placeholder(as well as default theme). Since Vite has not been configured yet, we will cover its setup in detail in the upcoming Vite Configuration section.
+:::
 
 2. Set up the required directories for your new theme and create template files within the theme's views directory. Begin by customizing the dashboard.
 
@@ -113,11 +117,24 @@ return [
                  └── 📄 index.blade.php
 ```
 
+:::warning
+The directory structure should follow the same conventions as the `admin` package to ensure compatibility and maintainability.
+:::
+
 Example content for index.blade.php:
 
-```php
-New Theme Sample
+```html
+<x-admin::layouts>
+    <div class="container mt-10 py-16 bg-lightOrange"> 
+        <h1 class="text-3xl font-bold">New Theme Sample</h1>
+        <p>This is a sample page from your custom Bagisto theme.</p>
+    </div>
+</x-admin::layouts> 
 ```
+
+:::tip Note
+We are using the default `admin` layout here since a custom theme layout has not been implemented yet. We’ll cover how to create and use a custom layout in the upcoming section.
+:::
 
 3. Change the `admin-default` value in your `themes.php` file to activate your new theme
 
@@ -133,6 +150,6 @@ php artisan cache:clear
 
 Now, when you access the dashboard page in the admin area, you should see the customized version provided by the new theme
 
-:::warning
+:::tip Note
 This section covers the basic theme setup using resources. In the next topic, we'll explore an advanced setup with a separate package and Vite configuration.
 :::

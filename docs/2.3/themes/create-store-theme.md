@@ -94,14 +94,18 @@ return [
             'views_path'  => 'resources/themes/new-theme/views',
 
             'vite'        => [
-                'hot_file'                 => 'shop-new-theme-vite.hot',
-                'build_directory'          => 'themes/shop/new-theme/build',
+                'hot_file'                 => 'shop-default-vite.hot',
+                'build_directory'          => 'themes/shop/default/build',
                 'package_assets_directory' => 'src/Resources/assets',
             ],
         ],
     ],
 ];
 ```
+
+:::tip Note
+The vite configuration in this setup is currently a placeholder(as well as default theme). Since Vite has not been configured yet, we will cover its setup in detail in the upcoming Vite Configuration section.
+:::
 
 2. Create the necessary directories for your new theme
 
@@ -114,10 +118,21 @@ return [
                  └── 📄 index.blade.php
 ```
 
+c
 Example content for index.blade.php:
+
+```html
+<x-shop::layouts>
+    <div class="container mt-10 py-16 bg-lightOrange"> 
+        <h1 class="text-3xl font-bold">New Theme Sample</h1>
+        <p>This is a sample page from your custom Bagisto theme.</p>
+    </div>
+</x-shop::layouts> 
 ```
-New Theme Sample
-```
+
+:::tip Note
+We are using the default `shop` layout here since a custom theme layout has not been implemented yet. We’ll cover how to create and use a custom layout in the upcoming section.
+:::
 
 5. Clear application cache:
 
@@ -125,12 +140,16 @@ New Theme Sample
 php artisan cache:clear
 ```
 
+6. Navigate to the Admin Panel, then go to Settings > Channels. Edit the desired channel and change the Theme option to your custom theme from the dropdown.
+
+![Select Theme](../../assets/2.3/images/themes/theme-selection.png)
+
+7. Your custom theme has now been successfully applied, and the changes are reflected on the homepage.
+
+![Basic Theme Preview](../../assets/2.3/images/themes/basic-theme.png)
+
 By following these steps, you can create and configure a new theme for your Bagisto store, enabling you to customize the appearance and layout to suit your branding and design preferences.
 
-After adding your new theme, you will be able to select it when creating a new section for your storefront homepage from the admin panel.
-
-![limiting-error-messages](../../assets/master/images/themes/new-theme-added.png)
-
-:::warning
+:::tip Note
 This section covers the basic theme setup using resources. In the next topic, we'll explore an advanced setup with a separate package and Vite configuration.
 :::
