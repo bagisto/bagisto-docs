@@ -68,7 +68,7 @@ return [
 ## Creating a Custom Theme
 Follow these steps to create a new theme for your Bagisto store:
 
-1. Add a new theme definition Edit `themes.php` to include your new theme:
+1. Add a new theme configuration in the `themes.php` file located in the root configs directory.
 
 ```php
 <?php
@@ -104,7 +104,7 @@ return [
 ```
 
 :::tip Note
-The vite configuration in this setup is currently a placeholder(as well as default theme). Since Vite has not been configured yet, we will cover its setup in detail in the upcoming Vite Configuration section.
+The vite configuration in this setup is currently as well as default theme. Since Vite has not been configured yet, we will cover its setup in detail in the upcoming Vite Configuration section.
 :::
 
 2. Create the necessary directories for your new theme
@@ -118,7 +118,6 @@ The vite configuration in this setup is currently a placeholder(as well as defau
                  └── 📄 index.blade.php
 ```
 
-c
 Example content for index.blade.php:
 
 ```html

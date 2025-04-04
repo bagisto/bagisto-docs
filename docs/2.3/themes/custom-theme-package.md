@@ -167,8 +167,12 @@ public function boot()
 4. To publish the view files, navigate to the root directory of your project and run the following command:
 
 ```shell
-php artisan vendor:publish --provider="Webkul\NewTheme\Providers\NewThemeServiceProvider" --force
+php artisan vendor:publish --provider="Webkul\NewTheme\Providers\NewThemeServiceProvider"
 ```
+
+:::tip Note
+If the directory structure already exists in the resources folder and your changes are not reflected, use the `--force` flag to overwrite existing files.
+:::
 
 5. Your custom theme has now been successfully applied, and the changes are reflected on the homepage.
 
@@ -417,8 +421,12 @@ We copied the view files from the `Shop` package for better understanding. You c
 To publish the view files, navigate to the root directory of your project and run the following command:
 
 ```shell
-php artisan vendor:publish --provider="Webkul\NewTheme\Providers\NewThemeServiceProvider" --force
+php artisan vendor:publish --provider="Webkul\NewTheme\Providers\NewThemeServiceProvider"
 ```
+
+:::tip Note
+If the directory structure already exists in the resources folder and your changes are not reflected, use the `--force` flag to overwrite existing files.
+:::
 
 :::warning  
 Ensure that your layout includes the following directive to properly load your theme’s assets:  
