@@ -31,7 +31,7 @@ Follow the steps below to set up Bagisto using Docker Hub. This approach provide
 To pull the Bagisto Docker image from Docker Hub, use the following command:
 
 ```bash
-docker pull webkul/bagisto:2.2.2
+docker pull webkul/bagisto:2.1.2
 ```
 
 #### Step 2: Run a New Container
@@ -39,14 +39,14 @@ docker pull webkul/bagisto:2.2.2
 Once the image is pulled, you can run a new Docker container using the command below. This will bind your local port 80 to the container’s port 80, so Bagisto can be accessed via the browser.
 
 ```bash
-docker run -it -d -p 80:80 webkul/bagisto:2.2.2
+docker run -it -d -p 80:80 webkul/bagisto:2.1.2
 ```
 
 > **Note:**
 > If port 80 is already in use, you can try using a different port. For example, you can map port 8082 on your local machine to port 80 in the container by running the following command:
 >
 > ```bash
-> docker run -it -d -p 8082:80 webkul/bagisto:2.2.2
+> docker run -it -d -p 8082:80 webkul/bagisto:2.1.2
 > ```
 > After this, you can access the application at `http://localhost:8082/` instead of `http://localhost:80`.
 

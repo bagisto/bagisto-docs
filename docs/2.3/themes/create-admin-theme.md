@@ -103,7 +103,7 @@ return [
 ```
 
 :::tip Note
-The vite configuration in this setup is currently a placeholder(as well as default theme). Since Vite has not been configured yet, we will cover its setup in detail in the upcoming Vite Configuration section.
+The vite configuration in this setup is currently as well as default theme. Since Vite has not been configured yet, we will cover its setup in detail in the upcoming Vite Configuration section.
 :::
 
 2. Set up the required directories for your new theme and create template files within the theme's views directory. Begin by customizing the dashboard.
