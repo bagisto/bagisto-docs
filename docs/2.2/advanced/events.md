@@ -13,7 +13,7 @@ In Bagisto, events and listeners are organized in a clear and structured manner:
 
 This organization makes it easy to manage and locate the event-driven components of your application.
 
-To learn in detail about Controllers, you can visit the Laravel documentation [here](https://laravel.com/docs/11.x/events).
+To learn in detail about Events, you can visit the Laravel documentation [here](https://laravel.com/docs/11.x/events).
 
 ## Creating an Event Class
 
