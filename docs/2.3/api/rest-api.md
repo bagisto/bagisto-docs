@@ -2,7 +2,7 @@
 
 [[toc]]
 
-## REST API
+## Introduction
 
 Bagisto REST API is a medium to use the features of the core Bagisto System. By using Bagisto REST API, you can integrate your application to serve the default content of Bagisto.
 
