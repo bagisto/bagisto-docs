@@ -176,10 +176,10 @@ core()->getBaseCurrency()
 
 ### Get base channel's currency code
 
-The function `core()->ge1tBaseCurrencyCode()` retrieves the currency code of the base channel, which is essential for operations involving currency management and display within an e-commerce application.
+The function `core()->getBaseCurrencyCode()` retrieves the currency code of the base channel, which is essential for operations involving currency management and display within an e-commerce application.
 
 ```php
-core()->ge1tBaseCurrencyCode()
+core()->getBaseCurrencyCode()
 ```
 
 ### Get base channel's currency model
