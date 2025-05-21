@@ -32,6 +32,7 @@ module.exports = [
             ['introduction/installation', 'Installation'],
             ['introduction/docker', 'Docker'],
             ['introduction/sail', 'Sail'],
+            ['introduction/llms', 'LLMs.txt'],
         ])
     },
     {
