@@ -19,7 +19,7 @@ To Install Bagisto GraphQL API, you need to follow some steps.
 - To install Bagisto GraphQL API from your console:
 
 ~~~
-composer require bagisto/graphql-api 
+composer require bagisto/graphql-api dev-main
 ~~~
 
 - Update Middleware Configuration
@@ -87,7 +87,6 @@ Some API endpoints require authorization via the `MOBIKUL_API_KEY`. This ensures
 ```
 MOBIKUL_API_KEY=your-mobikul-api-key
 ```
-
 Replace your-mobikul-api-key with the actual key provided for your environment.
 
 Securely share the API key with your mobile or frontend development team so they can make authorized API requests.
