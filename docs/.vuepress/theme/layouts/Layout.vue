@@ -5,12 +5,14 @@
     @touchstart="onTouchStart"
     @touchend="onTouchEnd"
   >
-    <TopNav/>
+    <div class="top-section"> 
+      <TopNav/>
 
-    <Navbar
-      v-if="shouldShowNavbar"
-      @toggle-sidebar="toggleSidebar"
-    />
+      <Navbar
+        v-if="shouldShowNavbar"
+        @toggle-sidebar="toggleSidebar"
+      />
+    </div>
 
     <div
       class="sidebar-mask"

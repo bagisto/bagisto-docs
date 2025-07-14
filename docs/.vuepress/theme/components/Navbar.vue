@@ -1,18 +1,20 @@
 <template>
   <header class="navbar">
-    <SidebarButton @toggle-sidebar="$emit('toggle-sidebar')" />
-
-    <RouterLink
-      :to="$localePath"
-      class="home-link"
-    >
-      <img
-        v-if="$site.themeConfig.logo"
-        class="logo"
-        :src="$withBase($site.themeConfig.logo)"
-        :alt="$siteTitle"
+    <div class="left-menu">
+      <SidebarButton @toggle-sidebar="$emit('toggle-sidebar')" />
+  
+      <RouterLink
+        :to="$localePath"
+        class="home-link"
       >
-    </RouterLink>
+        <img
+          v-if="$site.themeConfig.logo"
+          class="logo"
+          :src="$withBase($site.themeConfig.logo)"
+          :alt="$siteTitle"
+        >
+      </RouterLink>
+    </div>
 
     <div
       class="links"
@@ -63,7 +65,7 @@ export default {
   },
 
   mounted () {
-    const MOBILE_DESKTOP_BREAKPOINT = 719 // refer to config.styl
+    const MOBILE_DESKTOP_BREAKPOINT = 1024 // refer to config.style
     const NAVBAR_VERTICAL_PADDING = parseInt(css(this.$el, 'paddingLeft')) + parseInt(css(this.$el, 'paddingRight'))
     const handleLinksWrapWidth = () => {
       if (document.documentElement.clientWidth < MOBILE_DESKTOP_BREAKPOINT) {
@@ -93,6 +95,12 @@ $navbar-horizontal-padding = 1.5rem
 .navbar
   padding $navbar-vertical-padding $navbar-horizontal-padding
   line-height $navbarHeight - 1.4rem
+  display flex
+  align-items center
+  justify-content space-between
+  .left-menu
+    display flex
+    align-items center
   a, span, img
     display inline-block
   .logo
@@ -111,7 +119,6 @@ $navbar-horizontal-padding = 1.5rem
     background-color white
     white-space nowrap
     font-size 0.9rem
-    position absolute
     right $navbar-horizontal-padding
     top $navbar-vertical-padding
     display flex

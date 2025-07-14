@@ -20,7 +20,6 @@ module.exports = {
 
         logo: '/logo.png',
         nav: [
-            { text: 'Home', link: '/' },
             { text: 'User Guide', link: 'https://docs.bagisto.com/' },
             { text: 'Extensions', link: 'https://bagisto.com/en/extensions/' },
             { text: 'Community Forum', link: 'https://forums.bagisto.com/' }
