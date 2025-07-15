@@ -130,6 +130,27 @@ export default {
 
       this.updateTopNavStyles();
     });
+
+    function setPageMarginTop() {
+      const topSection = document.querySelector('.top-section');
+      const page = document.querySelector('.page');
+      const sidebar = document.querySelector('.custom-sidebar-top-height');
+      if (sidebar && topSection) {
+        sidebar.style.top = `${topSection.clientHeight}px`;
+      }
+
+      if (topSection && page) {
+        page.style.marginTop = `${topSection.clientHeight}px`;
+      }
+    }
+
+    window.addEventListener('resize', setPageMarginTop);
+    window.addEventListener('load', setPageMarginTop);
+
+    this.$once('hook:beforeDestroy', () => {
+      window.removeEventListener('resize', setPageMarginTop);
+      window.removeEventListener('load', setPageMarginTop);
+    });
   },
 
   methods: {

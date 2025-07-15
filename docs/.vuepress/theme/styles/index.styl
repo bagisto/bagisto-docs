@@ -58,8 +58,6 @@ body
 
 {$contentClass}:not(.custom)
   @extend $wrapper
-  > *:first-child
-    margin-top $navbarHeight
 
   a:hover
     text-decoration underline
@@ -121,7 +119,6 @@ h1, h2, h3, h4, h5, h6
     margin-bottom 0
 
     &:first-child
-      margin-top -1.5rem
       margin-bottom 1rem
 
       + p, + pre, + .custom-block
@@ -196,12 +193,6 @@ th, td
 
 .custom-navbar-top-height
   top $topNavHeight !important
-
-.custom-sidebar-top-height
-  top $topNavHeight + $navbarHeight !important
-
-.custom-wrapper
-  padding-top 4rem !important
   
 @media (min-width: ($MQMobile + 1px))
   .theme-container.no-sidebar

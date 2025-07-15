@@ -128,7 +128,7 @@ $navbar-horizontal-padding = 1.5rem
 
 @media (max-width: $MQMobile)
   .navbar
-    padding-left 4rem
+    padding-left 1rem
     .can-hide
       display none
     .links
