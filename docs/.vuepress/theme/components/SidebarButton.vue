@@ -26,7 +26,7 @@
   width 1.25rem
   height 1.25rem
   padding 0.6rem
-  margin-top 10px
+  margin-top 0.625rem
   .icon
     display block
     width 1.25rem

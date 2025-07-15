@@ -147,6 +147,8 @@ export default {
     window.addEventListener('resize', setPageMarginTop);
     window.addEventListener('load', setPageMarginTop);
 
+    setPageMarginTop();
+
     this.$once('hook:beforeDestroy', () => {
       window.removeEventListener('resize', setPageMarginTop);
       window.removeEventListener('load', setPageMarginTop);
