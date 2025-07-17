@@ -42,17 +42,12 @@ export default {
 
 <style>
   .top-nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background: rgb(255, 164, 35);
     color: #fff;
     padding: 0.5rem;
-    z-index: 20;
   }
 
   .nav-text {

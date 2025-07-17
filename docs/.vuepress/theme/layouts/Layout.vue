@@ -5,12 +5,14 @@
     @touchstart="onTouchStart"
     @touchend="onTouchEnd"
   >
-    <TopNav/>
+    <div class="top-section"> 
+      <TopNav/>
 
-    <Navbar
-      v-if="shouldShowNavbar"
-      @toggle-sidebar="toggleSidebar"
-    />
+      <Navbar
+        v-if="shouldShowNavbar"
+        @toggle-sidebar="toggleSidebar"
+      />
+    </div>
 
     <div
       class="sidebar-mask"
@@ -127,6 +129,29 @@ export default {
       this.isSidebarOpen = false;
 
       this.updateTopNavStyles();
+    });
+
+    function setPageMarginTop() {
+      const topSection = document.querySelector('.top-section');
+      const page = document.querySelector('.page');
+      const sidebar = document.querySelector('.custom-sidebar-top-height');
+      if (sidebar && topSection) {
+        sidebar.style.top = `${topSection.clientHeight}px`;
+      }
+
+      if (topSection && page) {
+        page.style.marginTop = `${topSection.clientHeight}px`;
+      }
+    }
+
+    window.addEventListener('resize', setPageMarginTop);
+    window.addEventListener('load', setPageMarginTop);
+
+    setPageMarginTop();
+
+    this.$once('hook:beforeDestroy', () => {
+      window.removeEventListener('resize', setPageMarginTop);
+      window.removeEventListener('load', setPageMarginTop);
     });
   },
 
