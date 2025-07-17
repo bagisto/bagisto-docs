@@ -8,7 +8,14 @@ In Bagisto, shipping methods are crucial components that define how products are
 
 ## Using Bagisto Package Generator
 
-To create a shipping method package in Bagisto, you can utilize the Bagisto package generator. This tool simplifies the process and ensures that the necessary files and directory structures are automatically created.
+To create a shipping method package in Bagisto, you can utilize the **Bagisto Package Generator**.  
+This tool simplifies the process and ensures that the necessary files and directory structures are automatically created.
+
+If you haven’t installed it yet, run the following command:
+
+```bash
+composer require bagisto/bagisto-package-generator
+```
 
 ### Run the following command
 
