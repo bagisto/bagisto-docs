@@ -302,7 +302,7 @@ This package includes essential functionalities to monitor, analyze, and debug t
 
 This package provides advanced caching mechanisms to store generated pages in memory, reducing server load and improving page load times for your customers. You can follow the given link for the more information about the [FPC](https://bagisto.com/en/optimizing-bagisto-e-commerce-a-deep-dive-into-full-page-cache-implementation/)
 
-#### Key Features of the Customer Package
+#### Key Features of the FPC Package
 
 - Full Page Caching
 
@@ -317,7 +317,7 @@ This package provides advanced caching mechanisms to store generated pages in me
 
 The GDPR Package in Bagisto allows customers to easily raise requests to update, modify, or delete their personal data stored on the platform. This feature empowers customers by giving them greater control over their information and ensures that businesses comply with data protection laws like the GDPR.
 
-#### Key Features of the Customer Package
+#### Key Features of the GDPR Package
 
 - Customer-Initiated Data Modification Requests
     - Customers can raise requests to modify or update their personal details (such as email, name, address, etc.) in their account settings.
@@ -333,7 +333,7 @@ The Installer package in Bagisto simplifies the setup and installation process o
 
 The Inventory package in Bagisto offers comprehensive tools to manage and track product inventory efficiently within your e-commerce store. This package includes essential functionalities to monitor stock levels, track inventory movements, and ensure accurate stock availability for seamless order fulfillment. Here’s a detailed description of the Inventory package:
 
-#### Key Components of the Checkout Package
+#### Key Components of the Inventory Package
 
 - Stock Management
     - Allows businesses to manage stock levels for each product.
