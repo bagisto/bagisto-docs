@@ -54,6 +54,7 @@
     display: inline-block;
     max-height: 28px; 
     line-height: 1 !important;
+    width: 157px;
   }
 
   .goog-te-gadget-simple {
