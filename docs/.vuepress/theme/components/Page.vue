@@ -1,5 +1,8 @@
 <template>
-  <main class="page">
+  <main
+    class="page"
+    style="margin-top: 92px;"
+  >
     <slot name="top" />
 
     <Content class="theme-default-content" />

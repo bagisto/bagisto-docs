@@ -1,5 +1,8 @@
 <template>
-  <aside class="sidebar">
+  <aside
+    class="sidebar"
+    style="top: 92px;"
+  >
     <NavLinks />
 
     <slot name="top" />
