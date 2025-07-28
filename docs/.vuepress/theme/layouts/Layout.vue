@@ -169,7 +169,7 @@ export default {
           this.applyStyles();
         });
 
-        setTimeout(this.applyStyles(), 0);
+        setTimeout(() => this.applyStyles(), 0);
 
         if (! this._resizeHandler) {
           this._resizeHandler = () => {

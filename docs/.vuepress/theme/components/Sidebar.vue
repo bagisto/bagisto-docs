@@ -1,7 +1,7 @@
 <template>
   <aside
     class="sidebar"
-    style="top: 92px;"
+    style="top: var(--sidebar-top-offset, 92px);"
   >
     <NavLinks />
 
