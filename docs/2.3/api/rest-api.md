@@ -19,7 +19,7 @@ To install Bagisto REST API, you need to follow some steps.
 - To install Bagisto REST API from your console:
 
 ~~~
-composer require bagisto/rest-api dev-master
+composer require bagisto/rest-api
 ~~~
 
 - Add below options in the .env file (i.e. http://localhost/public your domain):
