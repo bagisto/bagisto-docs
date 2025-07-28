@@ -160,32 +160,49 @@ export default {
   methods: {
     updateTopNavStyles() {
       let currentPath = this.$route.path.split('/');
-
       let version = currentPath[1];
 
-      if (version) {
-        if ([`master`, `2.3`, `2.2`, '2.1', '2.0', '2.x', '1.5.x', '1.x'].includes(version)) {
-          this.showTopNav = true;
+      if (version && [`master`, `2.3`, `2.2`, '2.1', '2.0', '2.x', '1.5.x', '1.x'].includes(version)) {
+        this.showTopNav = true;
 
-          this.applyTopNavCustomStyles();
+        this.$nextTick(() => {
+          this.applyStyles();
+        });
+
+        setTimeout(() => this.applyStyles(), 0);
+
+        if (! this._resizeHandler) {
+          this._resizeHandler = () => {
+            this.applyStyles();
+          };
+
+          window.addEventListener('resize', this._resizeHandler);
         }
       } else {
         this.showTopNav = false;
-      }
-    },
 
-    applyTopNavCustomStyles() {
-      setTimeout(() => {
-        document.querySelectorAll('.navbar').forEach(element => element.classList.add('custom-navbar-top-height'));
-        document.querySelectorAll('.sidebar').forEach(element => element.classList.add('custom-sidebar-top-height'));
-        document.querySelectorAll('.theme-default-content').forEach(element => element.classList.add('custom-wrapper'));
-        document.querySelectorAll('.top-nav').forEach(element => element.classList.remove('no-custom-navbar'));
-      }, 0);
+        if (this._resizeHandler) {
+          window.removeEventListener('resize', this._resizeHandler);
+          this._resizeHandler = null;
+        }
+      }
     },
 
     toggleSidebar (to) {
       this.isSidebarOpen = typeof to === 'boolean' ? to : !this.isSidebarOpen
       this.$emit('toggle-sidebar', this.isSidebarOpen)
+    },
+
+    applyStyles() {
+      const topSection = document.querySelector('.top-section');
+      const content = document.querySelector('.theme-default-content');
+      if (topSection && content) {
+        content.style.marginTop = `${topSection.clientHeight}px`;
+      }
+      document.querySelectorAll('.navbar').forEach(element => element.classList.add('custom-navbar-top-height'));
+      document.querySelectorAll('.sidebar').forEach(element => element.classList.add('custom-sidebar-top-height'));
+      document.querySelectorAll('.theme-default-content').forEach(element => element.classList.add('custom-wrapper'));
+      document.querySelectorAll('.top-nav').forEach(element => element.classList.remove('no-custom-navbar'));
     },
 
     // side swipe
