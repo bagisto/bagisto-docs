@@ -6,7 +6,7 @@
     @touchend="onTouchEnd"
   >
     <div class="top-section"> 
-      <TopNav/>
+      <TopNav v-if="showTopNav" />
 
       <Navbar
         v-if="shouldShowNavbar"
@@ -68,7 +68,9 @@ export default {
 
   data () {
     return {
-      isSidebarOpen: false
+      isSidebarOpen: false,
+
+      showTopNav: false,
     }
   },
 
@@ -158,13 +160,17 @@ export default {
   methods: {
     updateTopNavStyles() {
       let currentPath = this.$route.path.split('/');
-      
+
       let version = currentPath[1];
 
-      if ([`master`, `2.3`, `2.2`, '2.1', '2.0', '2.x', '1.5.x', '1.x'].includes(version)) {
-        this.applyTopNavCustomStyles();
+      if (version) {
+        if ([`master`, `2.3`, `2.2`, '2.1', '2.0', '2.x', '1.5.x', '1.x'].includes(version)) {
+          this.showTopNav = true;
+
+          this.applyTopNavCustomStyles();
+        }
       } else {
-        this.removeTopNavCustomStyles();
+        this.showTopNav = false;
       }
     },
 
@@ -174,15 +180,6 @@ export default {
         document.querySelectorAll('.sidebar').forEach(element => element.classList.add('custom-sidebar-top-height'));
         document.querySelectorAll('.theme-default-content').forEach(element => element.classList.add('custom-wrapper'));
         document.querySelectorAll('.top-nav').forEach(element => element.classList.remove('no-custom-navbar'));
-      }, 0);
-    },
-
-    removeTopNavCustomStyles() {
-      setTimeout(() => {
-        document.querySelectorAll('.top-nav').forEach(element => element.classList.add('no-custom-navbar'));
-        document.querySelectorAll('.sidebar').forEach(element => element.classList.remove('custom-sidebar-top-height'));
-        document.querySelectorAll('.theme-default-content').forEach(element => element.classList.remove('custom-wrapper'));
-        document.querySelectorAll('.navbar').forEach(element => element.classList.remove('custom-navbar-top-height'));
       }, 0);
     },
 
