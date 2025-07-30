@@ -10,7 +10,7 @@ Bagisto REST API is a medium to use the features of the core Bagisto System. By 
 
 Welcome to our API demo! Dive into the interactive showcase of our API functionalities to get a hands-on experience of how our platform works. Click the Link below to access the demo:
 
-[Access REST API Demo](https://demo.bagisto.com/bagisto-api-demo/)
+[Access REST API Demo](https://demo.bagisto.com/bagisto-api-demo-common/)
 
 #### Installation of REST API
 
