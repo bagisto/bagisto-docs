@@ -12,7 +12,7 @@ Welcome to our API demo! Dive into the interactive showcase of our API functiona
 
 [Access Admin API](https://demo.bagisto.com/bagisto-api-demo-common/api/admin/documentation#/) – View and interact with Admin API endpoints.
 
-[Access Shop API](https://demo.bagisto.com/bagisto-api-demo-common/public/api/shop/documentation#/) – Explore the Shop API functionality.
+[Access Shop API](https://demo.bagisto.com/bagisto-api-demo-common/api/shop/documentation#/) – Explore the Shop API functionality.
 
 #### Installation of REST API
 
