@@ -10,7 +10,9 @@ Bagisto GraphQL API provides a way to interact with the core features of the Bag
 
 Welcome to our API demo! Dive into the interactive showcase of our API functionalities to get a hands-on experience of how our platform works. Click the Link below to access the demo:
 
-[Access GraphQL API Demo](https://demo.bagisto.com/mobikul-common/)
+[Server Demo](https://demo.bagisto.com/mobikul-common/)
+
+[Access GraphQL API Demo](https://demo.bagisto.com/mobikul-common/graphiql)
 
 #### Installation of GraphQL API
 
