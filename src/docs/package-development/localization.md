@@ -1,29 +1,29 @@
+---
+title: Localization
+description: Add translations to your package, load them via the service provider, and use them in Blade. Clean, VitePress-friendly and RMA-based.
+outline: deep
+---
+
 # Localization
 
-## Introduction
+Laravel's localization features let you fetch strings in multiple languages so your application can support different locales. Translation strings live in the application's `lang` directory, with one subfolder per locale (for example, `en`, `hi`).
 
-Laravel's localization features provide a convenient way to retrieve strings in various languages, allowing you to easily support multiple languages within your application.
+For the full Laravel guide, see: https://laravel.com/docs/11.x/localization
 
-Language strings may be stored in files within the application's lang directory. Within this directory, there may be subdirectories for each language supported by the application. This is the approach Laravel uses to manage translation strings for built-in Laravel features such as validation error messages:
+## Publish the application language files (optional)
 
-To learn in detail about Localization, you can visit the Laravel documentation [here](https://laravel.com/docs/11.x/localization).
+Laravel's default skeleton doesn't include the `lang` directory. To customize Laravel's own messages, scaffold them with:
 
-## Publishing the Language Files
-
-By default, the Laravel application skeleton does not include the lang directory. If you would like to customize Laravel's language files or create your own, you should scaffold the lang directory via the lang:publish Artisan command. The lang:publish command will create the lang directory in your application and publish the default set of language files used by Laravel:
-
-```
+```bash
 php artisan lang:publish
 ```
 
-## Configuring the Locale
+## Configure the application locale
 
-The default language for your application is stored in the `config/app.php` configuration file's `locale` configuration option, which is typically set using the `APP_LOCALE` environment variable. You are free to modify this value to suit the needs of your application.
-
-You may also configure a `"fallback language"`, which will be used when the default language does not contain a given translation string. Like the default language, the fallback language is also configured in the `config/app.php` configuration file, and its value is typically set using the APP_FALLBACK_LOCALE environment variable.
+Set your default and fallback locales in `config/app.php`:
 
 ```php
-  /*
+ /*
   |--------------------------------------------------------------------------
   | Application Locale Configuration
   |--------------------------------------------------------------------------
@@ -48,111 +48,92 @@ You may also configure a `"fallback language"`, which will be used when the defa
   */
 
   'fallback_locale' => 'en',
-  ```
+```
 
-## Create a new Locale
+## Create locales in your package (RMA example)
 
-To support localization in your package, you need to create language files. Follow the steps below to set up a language file for English translations.
+Create a `lang` folder in your package and add an English file to hold translations.
 
-#### Create the `lang` Folder
-   - Navigate to the `packages/Webkul/Blog/src/Resources` directory.
-   - Create a folder named `lang`.
+1) Create folders
+- Path: `packages/Webkul/RMA/src/Resources/lang`
+- Inside `lang`, create a folder for each locale you support (for example, `en`, `ar`). Start with `en`.
 
-#### Create Language Code Folders
-   - Inside the `lang` folder, create different folders for each language you want to support. For example, you can create folders for English (`en`), Hindi (`hi`), etc.
-   - For now, let's create a folder named `en` to represent English.
+2) Create `app.php`
+- Inside `packages/Webkul/RMA/src/Resources/lang/en`, create `app.php`.
 
-#### Create the `app.php` File
-   - Inside the `en` folder, create a file named `app.php` for language translations.
+### Directory structure
 
-### Directory Structure
-
-The updated directory structure will look like this:
-
-  ```
-  └── packages
-      └── Webkul
-          └── Blog
-              └── src
+```
+packages
+  └── Webkul
+      └── RMA
+          └── src
+              ├── ...
+              └── Resources
                   ├── ...
-                  └── Resources
-                      ├── ...
-                      └── lang
-                          └── en
-                              └── app.php
-  ```
+                  └── lang
+                      └── en
+                          └── app.php              
+```
 
-### Writing a Translation in `app.php`
+### Write translations in `app.php`
 
-To add translations for your package, you can edit the `app.php` file located in the language folder (`en` in this case). Below is an example of how you can define translations:
+Define your keys as an associative array. Example:
 
-#### Open the `app.php` File
-   - Navigate to `packages/Webkul/Blog/src/Resources/lang/en`.
-   - Open the `app.php` file.
+```php
+<?php
 
-#### Add the Translation
-   - Inside `app.php`, define your translations as an associative array. For example:
+return [
+    'admin' => [
+        'name' => 'John Doe',
+    ],
+];
+```
 
-   ```php
-   <?php
+This file is referenced by its filename (`app`). The example exposes the key `app.admin.name` in the `rma` namespace (shown below).
 
-   return [
-       'admin' => [
-           'name' => 'John Doe'
-       ]
-   ];
-  ``` 
+## Load translations from the package
 
-## Load Translation from Package
+Register your package translations in the service provider so they're available across the app.
 
-To make translations from your package accessible, you need to register the language file in the service provider and then use them in your Blade templates.
+Update `packages/Webkul/RMA/src/Providers/RMAServiceProvider.php`:
 
-### Update the Service Provider
-   - Open the `BlogServiceProvider.php` file located in `packages/Webkul/Blog/src/Providers`.
-   - Add the following code to the `boot` method:
+```php
+<?php
 
-  ```php
-  <?php
+namespace Webkul\RMA\Providers;
 
-  namespace Webkul\Blog\Providers;
+use Illuminate\Support\ServiceProvider;
 
-  use Illuminate\Support\ServiceProvider;
+class RMAServiceProvider extends ServiceProvider
+{
+    public function boot(): void
+    {
+        // ... other boot logic
 
-  class BlogServiceProvider extends ServiceProvider
-  {
-     /**
-      * Bootstrap services.
-      *
-      * @return void
-      */
-      public function boot()
-      {
-          //... 
+        $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'rma');
+    }
+}
+```
 
-          $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'blog');
-      }
-  }
-  ```
-#### Explanation
+::: tip Namespace
+Use the `'rma'` namespace in views. The path points to your package's `Resources/lang` directory.
+:::
 
-- This code uses `$this->loadTranslationsFrom` to register translations from the lang directory of your package (`packages/  Webkul/Blog/src/Resources/lang`) under the namespace `'blog'`.
+If you want to allow publishing your package translations to the application, add a publish group:
 
-- The `loadTranslationsFrom` method registers translations for the `'blog'` namespace from the specified path (`__DIR__ . '/../Resources/lang'`).
+```php
+$this->publishes([
+    __DIR__ . '/../Resources/lang' => resource_path('lang/vendor/rma'),
+], 'rma-translations');
+```
 
-- This makes translations accessible throughout your Laravel application using the `'blog'` namespace prefix.
+## Use translations in Blade
 
-### Use Translations in Blade Files
+In Blade templates, use `@lang` (or `__()`) with your namespace and key:
 
-In your Blade templates (`.blade.php` files), you can use the `@lang` helper function to retrieve translations. Use the namespace 'blog' followed by the translation key. For example:
+```html
+@lang('rma::app.admin.name')
+```
 
-  ```html
-  @lang('blog::app.admin.name')
-  ```
-
-#### Explanation
-
-- The `@lang('blog::app.admin.name')` syntax fetches the translation for `'name'` under the `'admin'` section from your package's translation file (`app.php`).
-
-- Replace `'app.admin.name'` with your actual translation keys to use different translations as needed in your application.
-
-By following these steps, you've effectively loaded translations from your package and integrated them into your Laravel application's Blade templates. This allows you to maintain language-specific content and support localization within your package.
+Your package now ships its own translations, loaded under the `rma` namespace and ready to use across your application.
