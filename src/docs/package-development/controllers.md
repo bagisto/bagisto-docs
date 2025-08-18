@@ -1,179 +1,173 @@
-# Controller
+---
+title: Controllers
+description: Create base and feature controllers for a Bagisto RMA package and wire them with repositories.
+outline: deep
+---
 
-## Introduction
+# Controllers
 
-In Laravel, controllers are responsible for handling the request logic of an application. They act as intermediaries between the models and views, processing user input, interacting with the data layer, and returning the appropriate responses. By organizing related request handling logic into separate classes, controllers make it easier to manage and maintain the application's codebase.
+Controllers handle request logic, coordinate with models/repositories, and return responses or views. They help keep your application organized by grouping related actions in classes.
 
-To learn in detail about Controllers, you can visit the Laravel documentation [here](https://laravel.com/docs/11.x/controllers).
+Learn more: [Laravel Controllers](https://laravel.com/docs/11.x/controllers)
 
-## How to create Controllers
+## Create controllers
 
-To start building a controller for our blog posts within the Laravel package named "Blog", follow the steps below:
+We’ll build controllers for the RMA package.
 
-### Directory Structure
+### Directory structure
 
-Create the necessary directory structure within the `packages/Webkul/Blog/src` path. To create the directory structure follow the following steps:
+Create the following structure under `packages/Webkul/RMA/src`:
 
-- Navigate to the `packages/Webkul/Blog/src` directory.
-- Create an `Http` folder inside `src`.
-- Inside the `Http` folder, create another folder named `Controllers`.
-- Inside the `Controllers` folder, create one file named `Controller.php` and two folders, namely `Admin` and `Shop`.
-- Inside both the `Admin` and `Shop` folders, create a `PostController.php` file. The updated directory structure will look like this:
+- Navigate to `packages/Webkul/RMA/src`.
+- Create `Http/Controllers`.
+- Inside `Controllers`, create `Controller.php`, and folders `Admin` and `Shop`.
+- Inside both `Admin` and `Shop`, create a `ReturnRequestController.php` file.
 
-  ```
-  └── packages
-      └── Webkul
-          └── Blog
-              └── src
-                  ├── ...
-                  └── Http
-                      └── Controllers
-                          ├── Controller.php
-                          ├── Admin
-                          │   └── PostController.php
-                          └── Shop
-                              └── PostController.php
-  ```
+```text
+packages
+└── Webkul
+  └── RMA
+    └── src
+      ├── ...
+      └── Http
+        └── Controllers
+          ├── Controller.php
+          ├── Admin
+          │   └── ReturnRequestController.php
+          └── Shop
+            └── ReturnRequestController.php
+```
 
-### Creating Controller Files
+### Create controller files
 
 Now, create the necessary controller files.
 
-#### Base Controller (Controller.php)
+#### Base controller (Controller.php)
 
-In `packages/Webkul/Blog/src/Http/Controllers/Controller.php`, you can define the base controller for your package:
+In `packages/Webkul/RMA/src/Http/Controllers/Controller.php`, define the base controller for your package:
 
-  ```php
-  <?php
+```php
+<?php
 
-  namespace Webkul\Blog\Http\Controllers;
+namespace Webkul\RMA\Http\Controllers;
 
-  use Illuminate\Foundation\Bus\DispatchesJobs;
-  use Illuminate\Routing\Controller as BaseController;
-  use Illuminate\Foundation\Validation\ValidatesRequests;
-  use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-  class Controller extends BaseController
+class Controller extends BaseController
+{
+  use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+}
+```
+
+#### Admin controller (ReturnRequestController.php)
+
+In `packages/Webkul/RMA/src/Http/Controllers/Admin/ReturnRequestController.php`, define the Admin controller:
+
+```php
+<?php
+
+namespace Webkul\RMA\Http\Controllers\Admin;
+
+use Illuminate\Http\Request;
+use Webkul\RMA\Http\Controllers\Controller;
+use Webkul\RMA\Repository\ReturnRequestRepository;
+
+class ReturnRequestController extends Controller
+{
+  /**
+   * Create a controller instance.
+   */
+  public function __construct(protected ReturnRequestRepository $returnRequestRepository) {}
+
+  /**
+   * List return requests.
+   */
+  public function index()
   {
-      use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    $returns = $this->returnRequestRepository->with(['order', 'customer'])->paginate(20);
+
+    return view('rma::admin.returns.index', compact('returns'));
   }
-  ```
 
-### PostController.php for Admin
-
-In `packages/Webkul/Blog/src/Http/Controllers/Admin/PostController.php`, define the Admin post controller:
-
-  ```php
-  <?php
-
-  namespace Webkul\Blog\Http\Controllers\Admin;
-
-  use Illuminate\Http\Request;
-  use Webkul\Blog\Http\Controllers\Controller;
-  use Webkul\Blog\Repository\PostRepository;
-
-  class PostController extends Controller
+  /**
+   * Show create form.
+   */
+  public function create()
   {
-      /**
-       * Create a controller instance.
-       * 
-       * @return void
-       */
-      public function __construct(protected PostRepository $postRepository){}
-
-      /**
-       * Index.
-       * 
-       * @return \Illuminate\View\View
-       */
-      public function index() 
-      {
-          $blogs = $this->postRepository->all();
-
-          return view('blog::admin.index', compact('blogs'));
-      }
-
-      /**
-       * Create.
-       * 
-       * @return \Illuminate\View\View
-       */
-      public function create() 
-      {
-          //
-      }
-
-      /**
-       * Store.
-       * 
-       * @return \Illuminate\View\View
-       */
-      public function store(Request $request)
-      {
-          //
-      }
-
-      /**
-       * Function to update items.
-       */
-       public function update(int $id)
-       {
-         //
-       }
-
-      /**
-       * Function to remove items.
-       */
-       public function destroy(int $id)
-       {
-         //
-       }
+    return view('rma::admin.returns.create');
   }
-  ```
 
-### PostController.php for Shop
-
-In `packages/Webkul/Blog/src/Http/Controllers/Shop/PostController.php`, define the Shop post controller:
-
-  ```php
-  <?php
-
-  namespace Webkul\Blog\Http\Controllers\Shop;
-
-  use Webkul\Blog\Http\Controllers\Controller;
-  use Webkul\Blog\Repository\PostRepository;
-
-  class PostController extends Controller
+  /**
+   * Store a new return request.
+   */
+  public function store(Request $request)
   {
-      /**
-       * Create a controller instance.
-       * 
-       * @return void
-       */
-      public function __construct(protected PostRepository $postRepository){}
-
-      /**
-       * Index.
-       * 
-       * @return \Illuminate\View\View
-       */
-      public function index()
-      {
-          $blogs = $this->postRepository->with(['author'])->all();
-
-          return view('blog::shop.index', compact('blogs'));
-      }
-
-      /**
-       * Blog details.
-       * 
-       * @return \Illuminate\View\View
-       */
-      public function view(int $id) 
-      {
-          //
-      }
+    // validate and create
+    // $this->returnRequestRepository->create($request->only([...]))
+    return redirect()->route('admin.returns.index');
   }
-  ```
 
-By following these steps, you will have created the necessary structure and files for handling blog posts within your "Blog" package. You can now add the specific logic for each method to handle the functionality required for your blog posts in both the admin and shop areas.
+  /**
+   * Update an existing return request.
+   */
+  public function update(int $id, Request $request)
+  {
+    // $this->returnRequestRepository->update($request->only([...]), $id)
+    return redirect()->back();
+  }
+
+  /**
+   * Delete a return request.
+   */
+  public function destroy(int $id)
+  {
+    // $this->returnRequestRepository->delete($id)
+    return redirect()->back();
+  }
+}
+```
+
+#### Shop controller (ReturnRequestController.php)
+
+In `packages/Webkul/RMA/src/Http/Controllers/Shop/ReturnRequestController.php`, define the Shop controller:
+
+```php
+<?php
+
+namespace Webkul\RMA\Http\Controllers\Shop;
+
+use Webkul\RMA\Http\Controllers\Controller;
+use Webkul\RMA\Repository\ReturnRequestRepository;
+
+class ReturnRequestController extends Controller
+{
+  /**
+   * Create a controller instance.
+   */
+  public function __construct(protected ReturnRequestRepository $returnRequestRepository) {}
+
+  /**
+   * List return requests for the shop.
+   */
+  public function index()
+  {
+    $returns = $this->returnRequestRepository->with(['order'])->paginate(10);
+
+    return view('rma::shop.returns.index', compact('returns'));
+  }
+
+  /**
+   * Show return request details.
+   */
+  public function view(int $id)
+  {
+    $return = $this->returnRequestRepository->findOrFail($id);
+
+    return view('rma::shop.returns.view', compact('return'));
+  }
+}
+```
+By following these steps, you’ve created the structure and files to handle RMA return requests in both Admin and Shop areas. Add validation, authorization, and business logic as needed.
