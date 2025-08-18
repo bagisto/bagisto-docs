@@ -1,28 +1,10 @@
 {
-  "name": "bagisto-docs",
-  "version": "1.0.0",
-  "description": "Bagisto Developer Documentation",
-  "main": "index.js",
-  "scripts": {
-    "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs",
-    "docs:eject": "vuepress eject docs"
-  },
-  "keywords": [
-    "bagisto",
-    "developer",
-    "documentation"
-  ],
-  "author": "Bagisto",
-  "license": "MIT",
   "devDependencies": {
-    "@vuepress/plugin-back-to-top": "^1.9.10",
-    "@vuepress/plugin-pwa": "^1.9.10",
-    "vuepress": "^1.9.10",
-    "vuepress-plugin-auto-sidebar": "^2.3.2",
-    "vuepress-plugin-copy-code": "0.0.1"
+    "vitepress": "^1.6.4"
   },
-  "dependencies": {
-    "vuepress-bar": "^0.4.5"
+  "scripts": {
+    "docs:dev": "vitepress dev",
+    "docs:build": "vitepress build",
+    "docs:preview": "vitepress preview"
   }
 }
