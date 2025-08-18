@@ -68,9 +68,9 @@ export default defineConfig({
         collapsed: true,
         items: [
           { text: 'Getting Started', link: '/docs/package-development/getting-started' },
-          { text: 'Migrations', link: '/docs/package-development/create-migrations' },
-          { text: 'Models', link: '/docs/package-development/create-models' },
-          { text: 'Repositories', link: '/docs/package-development/store-data-through-repositories' },
+          { text: 'Migrations', link: '/docs/package-development/migrations' },
+          { text: 'Models', link: '/docs/package-development/models' },
+          { text: 'Repositories', link: '/docs/package-development/repositories' },
           { text: 'Routes', link: '/docs/package-development/routes' },
           { text: 'Controllers', link: '/docs/package-development/controllers' },
           { text: 'Views', link: '/docs/package-development/views' },

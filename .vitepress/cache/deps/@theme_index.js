@@ -9,38 +9,38 @@ import {
 } from "./chunk-EAEFJUV4.js";
 
 // node_modules/vitepress/dist/client/theme-default/index.js
-import "/var/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/styles/fonts.css";
+import "/home/users/shivendra.gupta/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/styles/fonts.css";
 
 // node_modules/vitepress/dist/client/theme-default/without-fonts.js
-import "/var/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/styles/vars.css";
-import "/var/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/styles/base.css";
-import "/var/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/styles/icons.css";
-import "/var/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/styles/utils.css";
-import "/var/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/styles/components/custom-block.css";
-import "/var/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/styles/components/vp-code.css";
-import "/var/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/styles/components/vp-code-group.css";
-import "/var/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/styles/components/vp-doc.css";
-import "/var/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/styles/components/vp-sponsor.css";
-import VPBadge from "/var/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPBadge.vue";
-import Layout from "/var/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/Layout.vue";
-import { default as default2 } from "/var/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPBadge.vue";
-import { default as default3 } from "/var/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPButton.vue";
-import { default as default4 } from "/var/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPDocAsideSponsors.vue";
-import { default as default5 } from "/var/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPFeatures.vue";
-import { default as default6 } from "/var/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPHomeContent.vue";
-import { default as default7 } from "/var/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPHomeFeatures.vue";
-import { default as default8 } from "/var/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPHomeHero.vue";
-import { default as default9 } from "/var/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPHomeSponsors.vue";
-import { default as default10 } from "/var/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPImage.vue";
-import { default as default11 } from "/var/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPLink.vue";
-import { default as default12 } from "/var/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPNavBarSearch.vue";
-import { default as default13 } from "/var/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPSocialLink.vue";
-import { default as default14 } from "/var/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPSocialLinks.vue";
-import { default as default15 } from "/var/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPSponsors.vue";
-import { default as default16 } from "/var/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPTeamMembers.vue";
-import { default as default17 } from "/var/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPTeamPage.vue";
-import { default as default18 } from "/var/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPTeamPageSection.vue";
-import { default as default19 } from "/var/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPTeamPageTitle.vue";
+import "/home/users/shivendra.gupta/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/styles/vars.css";
+import "/home/users/shivendra.gupta/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/styles/base.css";
+import "/home/users/shivendra.gupta/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/styles/icons.css";
+import "/home/users/shivendra.gupta/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/styles/utils.css";
+import "/home/users/shivendra.gupta/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/styles/components/custom-block.css";
+import "/home/users/shivendra.gupta/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/styles/components/vp-code.css";
+import "/home/users/shivendra.gupta/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/styles/components/vp-code-group.css";
+import "/home/users/shivendra.gupta/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/styles/components/vp-doc.css";
+import "/home/users/shivendra.gupta/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/styles/components/vp-sponsor.css";
+import VPBadge from "/home/users/shivendra.gupta/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPBadge.vue";
+import Layout from "/home/users/shivendra.gupta/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/Layout.vue";
+import { default as default2 } from "/home/users/shivendra.gupta/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPBadge.vue";
+import { default as default3 } from "/home/users/shivendra.gupta/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPButton.vue";
+import { default as default4 } from "/home/users/shivendra.gupta/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPDocAsideSponsors.vue";
+import { default as default5 } from "/home/users/shivendra.gupta/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPFeatures.vue";
+import { default as default6 } from "/home/users/shivendra.gupta/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPHomeContent.vue";
+import { default as default7 } from "/home/users/shivendra.gupta/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPHomeFeatures.vue";
+import { default as default8 } from "/home/users/shivendra.gupta/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPHomeHero.vue";
+import { default as default9 } from "/home/users/shivendra.gupta/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPHomeSponsors.vue";
+import { default as default10 } from "/home/users/shivendra.gupta/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPImage.vue";
+import { default as default11 } from "/home/users/shivendra.gupta/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPLink.vue";
+import { default as default12 } from "/home/users/shivendra.gupta/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPNavBarSearch.vue";
+import { default as default13 } from "/home/users/shivendra.gupta/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPSocialLink.vue";
+import { default as default14 } from "/home/users/shivendra.gupta/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPSocialLinks.vue";
+import { default as default15 } from "/home/users/shivendra.gupta/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPSponsors.vue";
+import { default as default16 } from "/home/users/shivendra.gupta/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPTeamMembers.vue";
+import { default as default17 } from "/home/users/shivendra.gupta/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPTeamPage.vue";
+import { default as default18 } from "/home/users/shivendra.gupta/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPTeamPageSection.vue";
+import { default as default19 } from "/home/users/shivendra.gupta/www/html/bagisto-docs/node_modules/vitepress/dist/client/theme-default/components/VPTeamPageTitle.vue";
 
 // node_modules/vitepress/dist/client/theme-default/composables/local-nav.js
 import { onContentUpdated } from "vitepress";
