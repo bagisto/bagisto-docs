@@ -267,7 +267,7 @@ Once your package is set up, you can start building its functionality. For the r
 The following sections will guide you through manual registration of components to provide deeper understanding of package development concepts. If you used the Package Generator, you can still follow along to understand what was automatically created for you.
 :::
 
-- **[Migrations](/docs/package-development/create-migrations)** - Set up your database schema  
+- **[Migrations](/docs/package-development/migrations)** - Set up your database schema  
 - **[Models](/docs/package-development/models)** - Define your data structures
 - **[Add Routes](/docs/package-development/routes)** - Define your package's endpoints
 - **[Create Controllers](/docs/package-development/controllers)** - Handle your business logic
