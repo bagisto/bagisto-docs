@@ -80,6 +80,14 @@ Add your package's namespace to the `psr-4` section in the `composer.json` file 
 }
 ```
 
+Run the following command to regenerate the autoloader files:
+
+```bash
+composer dump-autoload
+```
+
+This ensures that the new namespace mapping is properly loaded by Composer's autoloader.
+
 #### Register Service Provider
 
 Register your package's service provider in the `bootstrap/providers.php` file located in the root directory of your Bagisto application. Add the following line `Webkul\RMA\Providers\RMAServiceProvider::class,` just like other Bagisto service providers:
@@ -93,7 +101,9 @@ return [
      */
     App\Providers\AppServiceProvider::class,
 
-    // Other service providers
+    /**
+     * Webkul's service providers.
+     */
 
     /**
      * RMA service providers.
@@ -104,18 +114,14 @@ return [
 
 #### Final Setup Commands
 
-Run the following commands to autoload your package and publish its assets and configurations:
+Run the following command to clear the application cache:
 
 ```bash
-composer dump-autoload
-php artisan optimize
-php artisan vendor:publish --provider=Webkul\RMA\Providers\RMAServiceProvider
+php artisan optimize:clear
 ```
 
-When prompted to select which items to publish, choose the number corresponding to `"Webkul\RMA\Providers\RMAServiceProvider"` and press enter to publish all assets and configurations.
-
 ::: tip Success
-Congratulations! Your package is now registered and ready to use. Start creating something cool!
+Congratulations! Your RMA package is now successfully registered and ready for development. The package generator has automatically configured the basic structure, routes, and admin menu - you should now be able to see the RMA menu in the admin navigation panel. You can now start building the RMA functionality step by step according to your requirements.
 :::
 
 ## Manual Setup of Files
@@ -123,7 +129,7 @@ Congratulations! Your package is now registered and ready to use. Start creating
 If you prefer to set up your package manually, follow these steps assuming you are familiar with package directory structures and workflows. We'll use the default `package` folder in Bagisto as an example.
 
 ::: warning Manual Setup
-Manual setup requires good understanding of Laravel package development. If you're new to this, consider using the Package Generator method above.
+Manual setup requires good understanding of Laravel package development. If you're new to this, consider using the [Package Generator](#using-bagisto-package-generator) method above.
 :::
 
 ### Create Package Directory
@@ -211,6 +217,12 @@ Add your package's namespace to the `psr-4` section in the `composer.json` file 
 }
 ```
 
+Run the following command to regenerate the autoloader files:
+
+```bash
+composer dump-autoload
+```
+
 #### Register Service Provider
 
 Register your package's service provider in the `bootstrap/providers.php` file located in the root directory of your Bagisto application. Add the following line `Webkul\RMA\Providers\RMAServiceProvider::class,` just like other Bagisto service providers:
@@ -224,7 +236,9 @@ return [
      */
     App\Providers\AppServiceProvider::class,
 
-    // Other service providers
+    /**
+     * Webkul's service providers.
+     */
 
     /**
      * RMA service providers.
@@ -235,26 +249,26 @@ return [
 
 #### Final Setup Commands
 
-Run the following command to autoload your package:
+Run the following command to clear the application cache:
 
 ```bash
-composer dump-autoload
+php artisan optimize:clear
 ```
 
 ::: tip Package Ready
-Your package is now ready to use! You can start adding controllers, models, views, and other components to build your custom functionality.
+Your package is now ready for development! Note that the [Package Generator](#using-bagisto-package-generator) creates a more complete structure with additional boilerplate files. For a full-featured setup, consider using the Package Generator method which includes controllers, models, views, and other components automatically.
 :::
 
 ## Next Steps
 
-Once your package is set up, you can start building its functionality:
+Once your package is set up, you can start building its functionality. For the remainder of this documentation, we'll assume you're following the manual setup approach, as this allows you to understand each component registration process step by step - such as routes, views, models, and controllers. While the Package Generator automates these registrations, learning the manual process helps you understand how each piece works together.
+
+::: info Learning Approach
+The following sections will guide you through manual registration of components to provide deeper understanding of package development concepts. If you used the Package Generator, you can still follow along to understand what was automatically created for you.
+:::
 
 - **[Create Migrations](/docs/package-development/create-migrations)** - Set up your database schema  
 - **[Create Models](/docs/package-development/create-models)** - Define your data structures
 - **[Add Routes](/docs/package-development/routes)** - Define your package's endpoints
 - **[Create Controllers](/docs/package-development/controllers)** - Handle your business logic
 - **[Design Views](/docs/package-development/views)** - Build your user interface
-
-::: tip Best Practices
-Follow Laravel conventions and Bagisto's coding standards to ensure your package integrates seamlessly with the platform.
-:::
