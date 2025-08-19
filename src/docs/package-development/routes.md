@@ -1,88 +1,127 @@
----
-title: Routes
-description: Define and load package routes for admin and shop in a Bagisto RMA package using Laravel routing.
-outline: deep
----
-
 # Routes
 
-Routes map HTTP requests to controllers or closures. They define how users interact with your app and support all common methods (GET, POST, PUT, DELETE, PATCH), parameters, middleware, and RESTful patterns.
+Routes define the entry points to your application, mapping HTTP requests to specific controllers or actions. In Bagisto, routes are organized to handle both admin panel functionality and storefront operations, supporting all common HTTP methods (GET, POST, PUT, DELETE, PATCH) with middleware protection and RESTful patterns.
 
-For detailed information on Laravel routes, including how to define routes, use route parameters, and apply middleware, refer to the [Laravel Documentation on Routing](https://laravel.com/docs/11.x/routing).
+For our RMA package, we'll create routes that allow administrators to manage return requests and provide customer-facing functionality for submitting and tracking returns.
 
-## Create routes
+::: info Learning Objective
+This section demonstrates how to create organized, secure routes for both admin and shop sections of your Bagisto package, following best practices for middleware configuration and URL structure.
+:::
 
-We'll set up admin and shop routes for the RMA package:
+For detailed information on Laravel routing concepts, visit the [Laravel Documentation on Routing](https://laravel.com/docs/11.x/routing).
 
-1) Create a `Routes` folder inside `packages/Webkul/RMA/src`.
-2) Inside it, add `admin-routes.php` and `shop-routes.php`.
+## Bagisto Route Organization
 
-Directory structure:
+Bagisto follows a structured approach to route organization:
+
+### Admin Routes
+- **Purpose**: Administrative functionality for managing your package features
+- **Access**: Protected by admin authentication middleware
+- **URL Pattern**: Prefixed with the admin URL (typically `/admin`)
+- **Features**: Full CRUD operations, data management, reporting
+
+### Shop Routes  
+- **Purpose**: Customer-facing functionality for your package
+- **Access**: Protected by shop middleware (locale, theme, currency)
+- **URL Pattern**: Public URLs accessible to customers
+- **Features**: Customer interactions, public APIs, frontend functionality
+
+## Creating Route Files
+
+Let's create the route structure for our RMA package. We'll organize routes into separate files for better maintainability.
+
+### Directory Structure
+
+Create the following directory structure in your package:
+
+```bash
+mkdir -p packages/Webkul/RMA/src/Routes
+```
 
 ```text
 packages
 └── Webkul
-  └── RMA
-    └── src
-      ├── ...
-      └── Routes
-        ├── admin-routes.php
-        └── shop-routes.php
+    └── RMA
+        └── src
+            ├── ...
+            └── Routes
+                ├── admin-routes.php
+                └── shop-routes.php
 ```
 
-### Admin routes
-Add the following code to `admin-routes.php`:
+### Admin Routes File
+
+Create `packages/Webkul/RMA/src/Routes/admin-routes.php`:
 
 ```php
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Webkul\RMA\Http\Controllers\Admin\ReturnRequestController;
 
-Route::group(['middleware' => ['web', 'admin'], 'prefix' => config('app.admin_url')], function () {
-  /**
-   * RMA routes.
-   */
-  Route::controller(ReturnRequestController::class)->prefix('returns')->group(function () {
-    Route::get('', 'index')->name('admin.returns.index');
-    // Add your own admin routes related to RMA returns here
-  });
+Route::group([
+    'middleware' => ['web', 'admin'], 
+    'prefix' => config('app.admin_url')
+], function () {
+    /**
+     * Return request routes.
+     */
+    Route::prefix('rma/return-requests')->group(function () {
+        /**
+         * First route. 
+         */
+        Route::get('', function () {
+            return 'Admin RMA Return Requests List';
+        })->name('admin.rma.return-requests.index');
+    });
 });
 ```
 
-#### Explanation
-Routes inside `admin-routes.php` are prefixed with the admin URL (`config('app.admin_url')`) and apply the `web` and `admin` middleware groups. Adjust middleware and the URL prefix per your application's configuration.
+::: details Admin Route Explanation
+**Route Structure:**
 
-### Shop routes
+- **Middleware**: `['web', 'admin']` ensures proper session handling and admin authentication
+- **Prefix**: Uses `config('app.admin_url')` (typically `/admin`) for all admin routes
+- **Route Prefix**: `rma/return-requests` creates organized URL structure
+- **Callback Functions**: Simple closures that return strings to demonstrate route functionality
+- **Naming Convention**: Uses `admin.rma.return-requests.*` pattern for easy route referencing
+- **RESTful Pattern**: Will follow standard CRUD operations when we add controllers
 
-Define routes for the shop section in `shop-routes.php`.
+**Note**: We'll replace these callback functions with proper controllers in the **[Controllers](./controllers.md)** section.
+:::
+
+### Shop Routes File
+
+Create `packages/Webkul/RMA/src/Routes/shop-routes.php`:
 
 ```php
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Webkul\RMA\Http\Controllers\Shop\ReturnRequestController;
 
-Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']], function () {
-  /**
-   * RMA routes.
-   */
-  Route::controller(ReturnRequestController::class)->prefix('returns')->group(function () {
-    Route::get('', 'index')->name('shop.returns.index');
-    // Add your own shop routes related to RMA returns here
-  });
+Route::group([
+    'middleware' => ['web', 'locale', 'theme', 'currency']
+], function () {
+    // Leave it blank for now...
 });
 ```
 
-#### Explanation
+::: details Shop Route Explanation
+**Route Structure:**
 
-Routes inside `shop-routes.php` apply middleware groups (`web`, `locale`, `theme`, `currency`) commonly used for shop-related routes. Adjust middleware as per your application's requirements.
+- **Middleware**: `['web', 'locale', 'theme', 'currency']` handles storefront essentials
+- **No Prefix**: Shop routes are accessible directly from the root URL
+- **Placeholder**: Currently empty, will be populated when we add customer-facing functionality
+- **Future Structure**: Will include routes for customers to create and view their return requests
+- **Naming Convention**: Will use `shop.rma.*` pattern to distinguish from admin routes
 
-## Load routes
+**Note**: Shop routes will be added with proper controllers in the **[Controllers](./controllers.md)** section.
+:::
 
-### Register routes in ServiceProvider
+## Registering Routes with Service Provider
 
-In the `RMAServiceProvider.php` class, load the routes using the `loadRoutesFrom` method inside `boot()`.
+Now we need to register these route files with our RMA service provider so Laravel can load them.
+
+Update your `packages/Webkul/RMA/src/Providers/RMAServiceProvider.php`:
 
 ```php
 <?php
@@ -94,75 +133,57 @@ use Illuminate\Support\ServiceProvider;
 class RMAServiceProvider extends ServiceProvider
 {
     /**
+     * Register services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        //
+    }
+
+    /**
      * Bootstrap services.
      *
      * @return void
      */
-  public function boot()
-  {
-    // ... other boot logic
-    $this->loadRoutesFrom(__DIR__ . '/../Routes/admin-routes.php');
-    $this->loadRoutesFrom(__DIR__ . '/../Routes/shop-routes.php');
-  }
+    public function boot()
+    {
+        // Load migrations
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
+        
+        // Load routes
+        $this->loadRoutesFrom(__DIR__ . '/../Routes/admin-routes.php');
+        $this->loadRoutesFrom(__DIR__ . '/../Routes/shop-routes.php');
+    }
 }
 ```
 
-#### Explanation 
-
-The `loadRoutesFrom` method registers routes defined in `admin-routes.php` and `shop-routes.php` with the Laravel application.
-
-## HTTP methods
-
-Basic routes are the most common type of routes in Laravel. They respond to HTTP requests like `GET`, `POST`, `PUT`, `DELETE`, etc., and map the URL to a specific controller method or closure function. For example:
-
-### GET
-
-The `GET` method is used to retrieve data from the server. It is typically used to display pages or retrieve information.
-
-```php
-// Define a route that responds to a GET request
-Route::get('/returns', [ReturnRequestController::class, 'index']);
-```
-### POST
-
-The `POST` method is used to submit data to the server. It is commonly used for form submissions.
-
-```php
-// Define a route that responds to a POST request
-Route::post('/returns', [ReturnRequestController::class, 'store']);
-```
-
-### PUT
-
-The `PUT` method is used to update existing data on the server. It is usually used for updating resources.
-
-```php
-// Define a route that responds to a PUT request
-Route::put('/returns/{id}', [ReturnRequestController::class, 'update']);
-```
-
-### DELETE
-
-The `DELETE` method is used to delete data from the server. It is used to remove resources.
-
-```php
-// Define a route that responds to a DELETE request
-Route::delete('/returns/{id}', [ReturnRequestController::class, 'destroy']);
-```
-
-### PATCH
-
-The `PATCH` method is similar to `PUT`, but it is used to make partial updates to data on the server.
-
-```php
-// Define a route that responds to a PATCH request
-Route::patch('/returns/{id}', [ReturnRequestController::class, 'partialUpdate']);
-```
-
-::: tip Route names
-Use named routes when generating URLs/redirects:
-```php
-route('admin.returns.index'); 
-route('shop.returns.index');  
-```
+::: tip Service Provider Loading Order
+The `loadRoutesFrom()` method automatically registers your routes with Laravel's routing system. Routes are loaded during the application's boot process, making them available immediately.
 :::
+
+## Testing Your Routes
+
+Verify your routes are properly registered and working:
+
+```bash
+# Test a route in your browser
+# Visit: http://your-app.com/admin/rma/return-requests (will show "Admin RMA Return Requests List")
+```
+
+::: info Route Testing Tips
+**Verification Commands:**
+- Check route registration: `php artisan route:list | grep rma`
+- Test route generation: `php artisan tinker` then `route('admin.rma.return-requests.index')`
+- Visit routes in browser to see callback responses
+- Verify middleware: Look for middleware column in route:list output
+:::
+
+## Your Next Step
+
+With your routes defined using callback functions, you now have a working URL structure for your RMA package. These routes currently return simple strings to demonstrate the routing concept.
+
+In the **Controllers** section, we'll create proper controller classes that use the repository we built earlier, and then **update these routes** to use the controllers instead of callback functions.
+
+**Continue to:** **[Controllers](./controllers.md)** - Build controllers and update your routes to use them

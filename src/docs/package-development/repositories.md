@@ -1,72 +1,37 @@
----
-title: Repositories
-description: Create and use repositories in a Bagisto package to encapsulate database access for your models.
-outline: deep
----
-
 # Repositories
 
-## Introduction
+In Bagisto, the Repository pattern is a crucial architectural component that abstracts database operations and promotes cleaner, more maintainable code. Unlike traditional development where application logic is often embedded directly in controllers, Bagisto uses repositories to decouple models from controllers and provide readable names for complex queries.
 
-In traditional development, application logic is often embedded in controllers. An alternative approach uses Repositories to abstract database operations and queries, promoting cleaner, more maintainable code.
+Repositories provide a consistent interface for data operations while keeping business logic separate from data persistence concerns. This separation enhances code readability, reusability, and adherence to the separation of concerns principle.
 
-Repositories decouple models from controllers and provide readable names for complex queries. Each Repository class binds to an Eloquent model in its constructor, enabling the use of methods like `findOrFail`, `update`, and `all`. This separation enhances code readability, reusability, and adherence to the separation of concerns principle, making the application easier to manage and scale.
+::: info Why Repositories in Bagisto?
+Bagisto's repository pattern, powered by the [Prettus L5 Repository](https://github.com/andersao/l5-repository) package, provides advanced features like criteria-based filtering, caching, and automatic query optimization that enhance the standard Laravel Eloquent experience.
+:::
 
-## Dependency Injection
+For our RMA package, we'll create a `ReturnRequestRepository` that works with the `ReturnRequest` model we created earlier.
 
-Use dependency injection to access your repository within controllers/services. This keeps your classes loosely coupled and easy to test.
+## Creating Repositories
 
-```php
-use Webkul\RMA\Repository\ReturnRequestRepository;
+When creating repositories in Bagisto, you have two approaches: using the package generator for convenience, or manually creating the repository for more control.
 
-// Bound in constructor
-public function __construct(protected ReturnRequestRepository $returnRequestRepository) {}
-```
+### Using Bagisto Package Generator
 
-The constructor binds an instance of `ReturnRequestRepository` to a property using PHP 8 constructor property promotion.
-
-## Using Bagisto Package Generator
-
-The Bagisto package generator can scaffold a repository class for you.
-
-### Create a New Repository Class
-
-To create a new repository class, run:
+The fastest way to create a repository is using Bagisto's package generator:
 
 ```bash
 php artisan package:make-repository ReturnRequestRepository Webkul/RMA
 ```
 
-### Explanation
+**Command Parameters:**
+- `ReturnRequestRepository`: The name of the repository class
+- `Webkul/RMA`: The package where the repository will be created
 
-- Command: `php artisan package:make-repository` generates a new repository class.
-- Repository Name: `ReturnRequestRepository` will be created.
-- Package Path: `Webkul/RMA` is the package where the class will be placed.
-
-## Manually Setting Up Repository Files
-
-Manually setting up repository files involves creating and organizing repository classes in your application without relying on automated generators. This approach allows for custom structuring and naming conventions tailored to your project's needs. By manually managing repository files, developers can ensure precise control over code organization and maintain consistency across the application architecture.
-
-### Setting Up ReturnRequestRepository in Webkul/RMA Package
-
-Create a `Repository` folder within the `packages/Webkul/RMA/src/` directory. Then create a file named `ReturnRequestRepository.php`.
-
-```text
-packages
-└── Webkul
-    └── RMA
-        └── src
-            ├── ...
-            └── Repository
-                └── ReturnRequestRepository.php
-```
-
-Copy the following code into your newly created repository file.
+This will create a repository file at `packages/Webkul/RMA/src/Repositories/ReturnRequestRepository.php`:
 
 ```php
 <?php
 
-namespace Webkul\RMA\Repository;
+namespace Webkul\RMA\Repositories;
 
 use Webkul\Core\Eloquent\Repository;
 
@@ -82,130 +47,267 @@ class ReturnRequestRepository extends Repository
 }
 ```
 
-The `model()` method returns your model contract FQCN. This initializes the model instance used throughout the repository for database interactions.
+::: tip Package Generator Benefits
+The generator automatically creates the proper file structure, namespaces, and extends the correct base repository class following Bagisto conventions.
+:::
 
-## Available Methods
+### Manual Repository Creation
 
-Bagisto leverages the Prettus Repository package. You can find the full list here: https://github.com/andersao/l5-repository?tab=readme-ov-file#methods. Common examples:
+If you prefer understanding each component or need more control, you can create the repository manually:
 
-Examples:
+#### Step 1: Create Repository Directory
 
-| # | Method       | Description                                              |
-|---|--------------|----------------------------------------------------------|
-| 1 | all          | Find all results in the repository                       |
-| 2 | find         | Find a result by ID                                      |
-| 3 | findOrFail   | Find a result by ID or throw if not found                |
-| 4 | create       | Create a new record                                      |
-| 5 | update       | Update an existing record by its ID                      |
-| 6 | delete       | Delete a record by its ID                                |
-| 7 | paginate     | Find all results with pagination                         |
-| 8 | where        | Retrieve records matching specific conditions            |
-| 9 | first        | Retrieve the first record matching specific conditions   |
-|10 | with([...])  | Eager load relationships                                 |
-|11 | findWhereIn  | Find results by multiple values in one field             |
+Create a `Repositories` folder within your package:
 
-### all
-
-Retrieve all records.
-
-```php
-$returns = $this->returnRequestRepository->all();
+```bash
+mkdir -p packages/Webkul/RMA/src/Repositories
 ```
 
-### find
+#### Step 2: Create Repository File
 
-Retrieve a single record by its ID.
+Create `packages/Webkul/RMA/src/Repositories/ReturnRequestRepository.php`:
 
-```php
-$return = $this->returnRequestRepository->find($id);
+```text
+packages
+└── Webkul
+    └── RMA
+        └── src
+            ├── ...
+            └── Repositories
+                └── ReturnRequestRepository.php
 ```
 
-### findOrFail
-
-Retrieve a single record by its ID or throw an exception if not found.
+#### Step 3: Implement Repository Class
 
 ```php
-$return = $this->returnRequestRepository->findOrFail($id);
+<?php
+
+namespace Webkul\RMA\Repositories;
+
+use Webkul\Core\Eloquent\Repository;
+
+class ReturnRequestRepository extends Repository
+{
+    /**
+     * Specify the Model contract class name.
+     *
+     * @return string
+     */
+    public function model(): string
+    {
+        return 'Webkul\RMA\Contracts\ReturnRequest';
+    }
+}
 ```
 
-### create
+::: details Understanding the Repository Structure
+**Key Components:**
 
-Create a new record.
+- **Namespace**: Follows PSR-4 autoloading standards
+- **Base Class**: Extends `Webkul\Core\Eloquent\Repository` which provides all repository methods
+- **Model Contract**: References the model contract (not the model directly) for better flexibility
+- **Return Type**: The `model()` method must return the FQCN of your model contract
+:::
+
+## Available Repository Methods
+
+Bagisto repositories leverage the [Prettus L5 Repository](https://github.com/andersao/l5-repository) package, providing a rich set of methods for database operations. Here are the most commonly used methods:
+
+### Basic CRUD Operations
+
+#### Create New Records
 
 ```php
-$data = [
+// Create a single return request
+$returnRequest = $this->returnRequestRepository->create([
+    'customer_id' => 1,
     'order_id' => 123,
-    'customer_id' => 456,
-    'reason' => 'Damaged item',
+    'product_sku' => 'SAMPLE-001',
+    'product_name' => 'Test Product',
+    'product_quantity' => 1,
+    'reason' => 'Defective item',
     'status' => 'pending',
-];
-
-$return = $this->returnRequestRepository->create($data);
-```
-
-### update
-
-Update an existing record by its ID.
-
-```php
-$return = $this->returnRequestRepository->update([
-    'status' => 'approved',
-], $id);
-```
-
-### delete
-
-Delete a record by its ID.
-
-```php
-$this->returnRequestRepository->delete($id);
-```
-
-### paginate
-
-Retrieve a paginated set of return requests from the database.
-
-```php
-// Number of records per page.
-$perPage = 15;
-
-// Paginate the results.
-$returns = $this->returnRequestRepository->paginate($perPage);
-```
-
-### where
-
-Retrieve records matching specific conditions.
-
-```php
-$returns = $this->returnRequestRepository->findWhere([
-    'status' => 'pending',
-    'customer_id' => 456,
 ]);
 ```
 
-### first
-
-Retrieve the first record matching specific conditions.
+#### Retrieve Records
 
 ```php
+// Get all return requests
+$allReturns = $this->returnRequestRepository->all();
+
+// Find by ID
+$returnRequest = $this->returnRequestRepository->find($id);
+
+// Find by ID or throw exception
+$returnRequest = $this->returnRequestRepository->findOrFail($id);
+
+// Get first record matching conditions
 $firstPending = $this->returnRequestRepository->findWhere([
-    'status' => 'pending',
+    'status' => 'pending'
 ])->first();
 ```
 
-### with
-
-Eager load relationships.
+#### Update Records
 
 ```php
-$return = $this->returnRequestRepository->with(['order', 'customer'])->find($id);
+// Update by ID
+$returnRequest = $this->returnRequestRepository->update([
+    'status' => 'approved',
+    'admin_notes' => 'Approved for return'
+], $id);
 ```
 
-### findWhereIn
-
-Retrieve records where a specified column's value is within a given array of values.
+#### Delete Records
 
 ```php
-$returns = $this->returnRequestRepository->findWhereIn('id', [1, 2, 3, 4, 5]);
+// Delete by ID
+$this->returnRequestRepository->delete($id);
 ```
+
+### Advanced Query Methods
+
+#### Conditional Queries
+
+```php
+// Find records matching specific conditions
+$pendingReturns = $this->returnRequestRepository->findWhere([
+    'status' => 'pending',
+    'customer_id' => 456,
+]);
+
+// Find records where field value is in array
+$specificReturns = $this->returnRequestRepository->findWhereIn('id', [1, 2, 3, 4, 5]);
+
+// Find records where field value is between two values
+$recentReturns = $this->returnRequestRepository->findWhereBetween('created_at', [
+    '2024-01-01',
+    '2024-12-31'
+]);
+```
+
+#### Pagination
+
+```php
+// Paginate results (15 per page by default)
+$paginatedReturns = $this->returnRequestRepository->paginate(15);
+
+// With custom pagination
+$returns = $this->returnRequestRepository->paginate($perPage = 20, $columns = ['*'], $method = 'paginate');
+```
+
+#### Relationships and Eager Loading
+
+```php
+// Eager load relationships (assuming you have defined them in your model)
+$returnWithRelations = $this->returnRequestRepository
+    ->with(['customer', 'order'])
+    ->find($id);
+
+// Multiple relationships
+$returns = $this->returnRequestRepository
+    ->with(['customer', 'order', 'product'])
+    ->paginate(15);
+```
+
+### Custom Query Methods
+
+You can add custom methods to your repository for complex business logic:
+
+```php
+<?php
+
+namespace Webkul\RMA\Repositories;
+
+use Webkul\Core\Eloquent\Repository;
+
+class ReturnRequestRepository extends Repository
+{
+    /**
+     * Specify the Model contract class name.
+     */
+    public function model(): string
+    {
+        return 'Webkul\RMA\Contracts\ReturnRequest';
+    }
+
+    /**
+     * Get pending return requests for a specific customer.
+     */
+    public function getPendingForCustomer(int $customerId)
+    {
+        return $this->findWhere([
+            'customer_id' => $customerId,
+            'status' => 'pending'
+        ]);
+    }
+
+    /**
+     * Get return requests statistics.
+     */
+    public function getStats(): array
+    {
+        return [
+            'total' => $this->count(),
+            'pending' => $this->findWhere(['status' => 'pending'])->count(),
+            'approved' => $this->findWhere(['status' => 'approved'])->count(),
+            'rejected' => $this->findWhere(['status' => 'rejected'])->count(),
+        ];
+    }
+
+    /**
+     * Get recent return requests.
+     */
+    public function getRecent(int $limit = 10)
+    {
+        return $this->orderBy('created_at', 'desc')
+                    ->limit($limit)
+                    ->get();
+    }
+}
+```
+
+## Testing Your Repository
+
+Verify your repository works correctly:
+
+```bash
+php artisan tinker
+```
+
+```php
+// Test repository through service container
+$repository = app('Webkul\RMA\Repositories\ReturnRequestRepository');
+
+// Create a test record
+$return = $repository->create([
+    'customer_id' => 1,
+    'order_id' => 1,
+    'product_sku' => 'TEST-001',
+    'product_name' => 'Test Product',
+    'product_quantity' => 1,
+    'reason' => 'Testing repository',
+    'status' => 'pending'
+]);
+
+// Test retrieval
+$retrieved = $repository->find($return->id);
+echo $retrieved->product_name; // Should output: Test Product
+
+// Test update
+$updated = $repository->update(['status' => 'approved'], $return->id);
+echo $updated->status; // Should output: approved
+```
+
+::: info Testing Tips
+**Quick Verification Commands:**
+- Check if repository resolves: `php artisan tinker` then `app('Webkul\RMA\Repositories\ReturnRequestRepository')`
+- Test basic operations: Create, read, update, delete operations
+- Verify relationships work if you've defined them in your model
+:::
+
+## Your Next Step
+
+With your repository complete, you now have a clean data access layer for your RMA package. The next logical step is to define routes that will connect HTTP requests to your repository operations.
+
+**Continue to:** **[Routes](./routes.md)** - Configure routing for your RMA package

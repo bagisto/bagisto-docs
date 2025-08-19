@@ -1,50 +1,62 @@
----
-title: Controllers
-description: Create base and feature controllers for a Bagisto RMA package and wire them with repositories.
-outline: deep
----
-
 # Controllers
 
-Controllers handle request logic, coordinate with models/repositories, and return responses or views. They help keep your application organized by grouping related actions in classes.
+Controllers in Laravel act as the bridge between your routes and business logic, handling HTTP requests and coordinating with repositories to return appropriate responses. In Bagisto, controllers follow a structured approach that separates admin panel functionality from storefront operations while integrating seamlessly with the repository pattern.
 
-Learn more: [Laravel Controllers](https://laravel.com/docs/11.x/controllers)
+For our RMA package, we'll create controllers that handle the admin interface for managing return requests, using the repository we built earlier to interact with our data.
 
-## Create controllers
+::: info Learning Objective
+This section demonstrates how to create organized, maintainable controllers that use dependency injection with repositories and follow Bagisto's architectural patterns for both admin and shop functionality.
+:::
 
-We’ll build controllers for the RMA package.
+For detailed information on Laravel controllers, visit the [Laravel Documentation on Controllers](https://laravel.com/docs/11.x/controllers).
 
-### Directory structure
+## Bagisto Controller Architecture
 
-Create the following structure under `packages/Webkul/RMA/src`:
+Bagisto follows a structured approach to controller organization:
 
-- Navigate to `packages/Webkul/RMA/src`.
-- Create `Http/Controllers`.
-- Inside `Controllers`, create `Controller.php`, and folders `Admin` and `Shop`.
-- Inside both `Admin` and `Shop`, create a `ReturnRequestController.php` file.
+### Admin Controllers
+- **Purpose**: Handle administrative functionality for your package
+- **Location**: `Http/Controllers/Admin/` directory
+- **Features**: Full CRUD operations, data management, repository integration
+- **Access**: Protected by admin middleware
+
+### Shop Controllers  
+- **Purpose**: Handle customer-facing functionality
+- **Location**: `Http/Controllers/Shop/` directory
+- **Features**: Customer interactions, limited operations, public interfaces
+- **Access**: Protected by shop middleware
+
+## Creating Controller Structure
+
+Let's create the controller structure for our RMA package, starting with the basic setup and then implementing the index functionality.
+
+### Directory Structure
+
+Create the following directory structure in your package:
+
+```bash
+mkdir -p packages/Webkul/RMA/src/Http/Controllers/Admin
+mkdir -p packages/Webkul/RMA/src/Http/Controllers/Shop
+```
 
 ```text
 packages
 └── Webkul
-  └── RMA
-    └── src
-      ├── ...
-      └── Http
-        └── Controllers
-          ├── Controller.php
-          ├── Admin
-          │   └── ReturnRequestController.php
-          └── Shop
-            └── ReturnRequestController.php
+    └── RMA
+        └── src
+            ├── ...
+            └── Http
+                └── Controllers
+                    ├── Controller.php
+                    ├── Admin
+                    │   └── ReturnRequestController.php
+                    └── Shop
+                        └── ReturnRequestController.php
 ```
 
-### Create controller files
+### Base Controller
 
-Now, create the necessary controller files.
-
-#### Base controller (Controller.php)
-
-In `packages/Webkul/RMA/src/Http/Controllers/Controller.php`, define the base controller for your package:
+Create `packages/Webkul/RMA/src/Http/Controllers/Controller.php`:
 
 ```php
 <?php
@@ -58,81 +70,72 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class Controller extends BaseController
 {
-  use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 }
 ```
 
-#### Admin controller (ReturnRequestController.php)
+::: details Base Controller Explanation
+**Purpose**: Provides common functionality for all controllers in your package
 
-In `packages/Webkul/RMA/src/Http/Controllers/Admin/ReturnRequestController.php`, define the Admin controller:
+**Traits Used:**
+- **AuthorizesRequests**: Enables authorization policies and gates
+- **DispatchesJobs**: Allows dispatching queued jobs
+- **ValidatesRequests**: Provides request validation capabilities
+
+**Inheritance**: Extends Laravel's base controller while maintaining package isolation
+:::
+
+## Creating Controllers
+
+Now let's create the actual controllers that will handle our RMA functionality, starting with the essential index method.
+
+### Admin Controller
+
+Create `packages/Webkul/RMA/src/Http/Controllers/Admin/ReturnRequestController.php`:
 
 ```php
 <?php
 
 namespace Webkul\RMA\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use Webkul\RMA\Http\Controllers\Controller;
-use Webkul\RMA\Repository\ReturnRequestRepository;
+use Webkul\RMA\Repositories\ReturnRequestRepository;
 
 class ReturnRequestController extends Controller
 {
-  /**
-   * Create a controller instance.
-   */
-  public function __construct(protected ReturnRequestRepository $returnRequestRepository) {}
+    /**
+     * Create a new controller instance.
+     */
+    public function __construct(
+        protected ReturnRequestRepository $returnRequestRepository
+    ) {}
 
-  /**
-   * List return requests.
-   */
-  public function index()
-  {
-    $returns = $this->returnRequestRepository->with(['order', 'customer'])->paginate(20);
-
-    return view('rma::admin.returns.index', compact('returns'));
-  }
-
-  /**
-   * Show create form.
-   */
-  public function create()
-  {
-    return view('rma::admin.returns.create');
-  }
-
-  /**
-   * Store a new return request.
-   */
-  public function store(Request $request)
-  {
-    // validate and create
-    // $this->returnRequestRepository->create($request->only([...]))
-    return redirect()->route('admin.returns.index');
-  }
-
-  /**
-   * Update an existing return request.
-   */
-  public function update(int $id, Request $request)
-  {
-    // $this->returnRequestRepository->update($request->only([...]), $id)
-    return redirect()->back();
-  }
-
-  /**
-   * Delete a return request.
-   */
-  public function destroy(int $id)
-  {
-    // $this->returnRequestRepository->delete($id)
-    return redirect()->back();
-  }
+    /**
+     * Display a listing of return requests.
+     */
+    public function index()
+    {
+        // For now, return a simple response
+        // We'll enhance this with views in the Views section
+        return 'Admin RMA Return Requests List - Using Controller!';
+    }
 }
 ```
 
-#### Shop controller (ReturnRequestController.php)
+::: details Admin Controller Explanation
+**Key Components:**
 
-In `packages/Webkul/RMA/src/Http/Controllers/Shop/ReturnRequestController.php`, define the Shop controller:
+- **Dependency Injection**: Repository injected via constructor using PHP 8 property promotion
+- **Namespace**: Organized under `Admin` for clear separation
+- **Base Class**: Extends our package's base controller
+- **Index Method**: Simple implementation that will be enhanced with views later
+
+**Repository Integration**: The controller uses the repository we created earlier for data access
+:::
+
+### Shop Controller
+
+Create `packages/Webkul/RMA/src/Http/Controllers/Shop/ReturnRequestController.php`:
 
 ```php
 <?php
@@ -140,34 +143,127 @@ In `packages/Webkul/RMA/src/Http/Controllers/Shop/ReturnRequestController.php`, 
 namespace Webkul\RMA\Http\Controllers\Shop;
 
 use Webkul\RMA\Http\Controllers\Controller;
-use Webkul\RMA\Repository\ReturnRequestRepository;
+use Webkul\RMA\Repositories\ReturnRequestRepository;
 
 class ReturnRequestController extends Controller
 {
-  /**
-   * Create a controller instance.
-   */
-  public function __construct(protected ReturnRequestRepository $returnRequestRepository) {}
+    /**
+     * Create a new controller instance.
+     */
+    public function __construct(
+        protected ReturnRequestRepository $returnRequestRepository
+    ) {}
 
-  /**
-   * List return requests for the shop.
-   */
-  public function index()
-  {
-    $returns = $this->returnRequestRepository->with(['order'])->paginate(10);
-
-    return view('rma::shop.returns.index', compact('returns'));
-  }
-
-  /**
-   * Show return request details.
-   */
-  public function view(int $id)
-  {
-    $return = $this->returnRequestRepository->findOrFail($id);
-
-    return view('rma::shop.returns.view', compact('return'));
-  }
+    /**
+     * Display a listing of customer return requests.
+     */
+    public function index()
+    {
+        // For now, return a simple response
+        // We'll enhance this with views in the Views section
+        return 'Shop RMA Return Requests List - Using Controller!';
+    }
 }
 ```
-By following these steps, you’ve created the structure and files to handle RMA return requests in both Admin and Shop areas. Add validation, authorization, and business logic as needed.
+
+::: details Shop Controller Explanation
+**Key Components:**
+
+- **Customer Focus**: Designed for customer-facing functionality
+- **Limited Scope**: Typically fewer operations than admin controllers
+- **Same Structure**: Follows the same dependency injection pattern as admin controller
+
+**Future Enhancement**: Will be expanded with customer-specific functionality in later sections
+:::
+
+## Updating Routes to Use Controllers
+
+Now that we have our controllers, let's update the route files we created earlier to use these controllers instead of callback functions.
+
+### Update Admin Routes
+
+Update `packages/Webkul/RMA/src/Routes/admin-routes.php`:
+
+```php
+<?php
+
+use Illuminate\Support\Facades\Route;
+use Webkul\RMA\Http\Controllers\Admin\ReturnRequestController;
+
+Route::group([
+    'middleware' => ['web', 'admin'], 
+    'prefix' => config('app.admin_url')
+], function () {
+    /**
+     * Return request routes.
+     */
+    Route::prefix('rma/return-requests')->group(function () {
+        /**
+         * List return requests.
+         */
+        Route::get('', [ReturnRequestController::class, 'index'])
+            ->name('admin.rma.return-requests.index');
+    });
+});
+```
+
+### Update Shop Routes
+
+Update `packages/Webkul/RMA/src/Routes/shop-routes.php`:
+
+```php
+<?php
+
+use Illuminate\Support\Facades\Route;
+use Webkul\RMA\Http\Controllers\Shop\ReturnRequestController;
+
+Route::group([
+    'middleware' => ['web', 'locale', 'theme', 'currency']
+], function () {
+    /**
+     * Customer return request routes.
+     */
+    Route::prefix('rma/return-requests')->group(function () {
+        /**
+         * List customer return requests.
+         */
+        Route::get('', [ReturnRequestController::class, 'index'])
+            ->name('shop.rma.return-requests.index');
+    });
+});
+```
+
+::: tip Route Update Benefits
+**Before**: Routes used callback functions that returned simple strings
+
+**After**: Routes now use proper controllers with dependency injection and repository access
+
+This change enables us to add complex business logic, data retrieval, and view rendering as we continue developing the package.
+:::
+
+## Testing Your Controllers
+
+Verify your controllers are working correctly:
+
+```bash
+# Test the routes in your browser
+# Admin: http://your-app.com/admin/rma/return-requests
+# Shop: http://your-app.com/rma/return-requests
+```
+
+You should now see:
+- **Admin Route**: "Admin RMA Return Requests List - Using Controller!"
+- **Shop Route**: "Shop RMA Return Requests List - Using Controller!"
+
+::: info Testing Tips
+**Verification Commands:**
+- Check routes are updated: `php artisan route:list | grep rma`
+- Test dependency injection: Controllers should load without errors
+- Verify repository access: No "class not found" errors indicate successful injection
+:::
+
+## Your Next Step
+
+With your controllers created and routes updated, you now have a working controller layer that integrates with your repository. The next logical step is to create views that will replace the simple string responses with proper HTML interfaces.
+
+**Continue to:** **[Views](./views.md)** - Create admin panel interfaces for your RMA package

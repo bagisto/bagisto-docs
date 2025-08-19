@@ -1,54 +1,101 @@
----
-title: Models
-description: Create Eloquent models, contracts, and proxies for Bagisto packages using Concord and Laravel best practices.
-outline: deep
----
-
 # Models
 
+In Bagisto, models follow a specific architecture pattern that combines Laravel's Eloquent with additional layers for modularity and flexibility. Unlike standard Laravel applications, Bagisto uses the [konekt/concord](https://packagist.org/packages/konekt/concord) package for modular development and implements the Repository pattern for data access.
 
-Eloquent is Laravel’s ORM for working with database records as PHP objects. Each table maps to a "model" class that can retrieve, insert, update, and delete rows.
+## Bagisto's Model Architecture
 
-Learn more in the Laravel docs: https://laravel.com/docs/11.x/eloquent
+Bagisto's model architecture consists of several key components:
 
-Bagisto uses the [konekt/concord](https://packagist.org/packages/konekt/concord) package to enable modular packages. Below, we’ll create an `RMA` package model.
+### 1. **Konekt/Concord Integration**
+Concord enables true modular development by allowing packages to define their own models, migrations, and business logic while maintaining loose coupling between modules.
 
-## Using Bagisto Package Generator
+### 2. **Contract-Based Design**
+Each model implements a contract (interface) that defines its public API. This allows for easy model swapping and testing without breaking dependent code.
 
-Generate a new `ReturnRequest` model in your package:
+### 3. **Model Proxies**
+Proxies act as intermediaries that enable runtime model resolution. This means packages can extend or override existing models without modifying core files.
+
+### 4. **Repository Pattern**
+Bagisto uses the Repository pattern to abstract data access logic. Repositories provide a consistent interface for data operations while keeping business logic separate from data persistence concerns.
+
+::: info Why This Architecture?
+This layered approach allows Bagisto to be highly modular and extensible. Developers can create packages that integrate seamlessly with the core system while maintaining the ability to customize and extend functionality.
+:::
+
+## Creating Models
+
+When creating models in Bagisto, you have two approaches: using the package generator for convenience, or manually creating the components for more control. Models in Bagisto follow Laravel's Eloquent ORM but with additional architectural layers.
+
+Learn more about Laravel Eloquent: https://laravel.com/docs/11.x/eloquent
+
+Below, we'll create a `ReturnRequest` model for an RMA package to demonstrate both approaches.
+
+### Using Bagisto Package Generator
+
+The fastest way to create a complete model structure is using Bagisto's package generator. This command creates all three required components in one go:
 
 ```bash
 php artisan package:make-model ReturnRequest Webkul/RMA
 ```
 
-This creates the following files:
-- `packages/Webkul/RMA/src/Models/ReturnRequest.php` (model)
-- `packages/Webkul/RMA/src/Models/ReturnRequestProxy.php` (model proxy)
-- `packages/Webkul/RMA/src/Contracts/ReturnRequest.php` (model contract interface)
+::: tip Package Generator Benefits
+The generator automatically creates the proper file structure, namespaces, and basic implementations following Bagisto conventions. This saves time and ensures consistency.
+:::
 
-## Using Laravel Artisan Command
+#### Generated Files Overview
 
-If you prefer the manual approach, create the `Contract` and `Proxy` first, then the model class.
+The package generator creates three interconnected files that work together:
 
-### Create the Contract
+**1. Model Contract** - `packages/Webkul/RMA/src/Contracts/ReturnRequest.php`
+```php
+<?php
 
-Laravel's Contracts are a set of interfaces that define the core services provided by the framework. For example, the `Illuminate\Contracts\Queue\Queue` contract defines the methods needed for queueing jobs, while the `Illuminate\Contracts\Mail\Mailer` contract defines the methods needed for sending an email.
+namespace Webkul\RMA\Contracts;
 
-All Laravel contracts are stored in their own GitHub repository. This provides a quick reference for available contracts and a decoupled package for reuse.
-
-Now, create a folder named `Contracts` inside `packages/Webkul/RMA/src/` and create an interface file named `ReturnRequest.php`.
-
-```text
-packages
-└── Webkul
-    └── RMA
-        └── src
-            ├── ...
-            └── Contracts
-                └── ReturnRequest.php
+interface ReturnRequest
+{
+}
 ```
 
-Copy the following code into the `ReturnRequest.php` file.
+**2. Model Proxy** - `packages/Webkul/RMA/src/Models/ReturnRequestProxy.php`
+```php
+<?php
+
+namespace Webkul\RMA\Models;
+
+use Konekt\Concord\Proxies\ModelProxy;
+
+class ReturnRequestProxy extends ModelProxy
+{
+}
+```
+
+**3. Base Model** - `packages/Webkul/RMA/src/Models/ReturnRequest.php`
+```php
+<?php
+
+namespace Webkul\RMA\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Webkul\RMA\Contracts\ReturnRequest as ReturnRequestContract;
+
+class ReturnRequest extends Model implements ReturnRequestContract
+{
+    protected $fillable = [];
+}
+```
+
+### Using Laravel Artisan Command (Manual Approach)
+
+If you prefer understanding each component or need more control, you can create each file manually. This approach creates the exact same three files as the package generator, helping you understand how the pieces fit together.
+
+#### Step 1: Create the Contract
+
+**File:** `packages/Webkul/RMA/src/Contracts/ReturnRequest.php`
+
+```bash
+mkdir -p packages/Webkul/RMA/src/Contracts
+```
 
 ```php
 <?php
@@ -60,36 +107,13 @@ interface ReturnRequest
 }
 ```
 
-### Create the Proxy
+#### Step 2: Create the Proxy
 
-Proxies, as their name suggests, act as intermediaries to the actual model class. Model proxies are used to override the functionality of existing models without creating a new database table.
+**File:** `packages/Webkul/RMA/src/Models/ReturnRequestProxy.php`
 
-Navigate to the directory `packages/Webkul/RMA/src/` and create a new folder named `Models`.
-
-```text
-packages
-└── Webkul
-    └── RMA
-        └── src
-            ├── ...
-            └── Models
+```bash
+mkdir -p packages/Webkul/RMA/src/Models
 ```
-
-Inside the `Models` folder, create a new PHP file named `ReturnRequestProxy.php`.
-
-```text
-packages
-└── Webkul
-    └── RMA
-        └── src
-            ├── ...
-            ├── Contracts
-            │   └── ReturnRequest.php
-            └── Models
-                └── ReturnRequestProxy.php
-```
-
-Copy the following code into the `ReturnRequestProxy.php` file.
 
 ```php
 <?php
@@ -103,30 +127,14 @@ class ReturnRequestProxy extends ModelProxy
 }
 ```
 
-### Create the Model
+#### Step 3: Create the Base Model
 
-The simple way to create a model is to execute the `make:model` artisan command:
+**File:** `packages/Webkul/RMA/src/Models/ReturnRequest.php`
 
 ```bash
 php artisan make:model ReturnRequest
+# Move from app/Models to packages/Webkul/RMA/src/Models
 ```
-
-Now, move your `ReturnRequest` model from the project root directory (i.e., `app/Models`) to `packages/Webkul/RMA/src/Models`.
-
-```text
-packages
-└── Webkul
-    └── RMA
-        └── src
-            ├── ...
-            ├── Contracts
-            │   └── ReturnRequest.php
-            └── Models
-                ├── ReturnRequest.php
-                └── ReturnRequestProxy.php
-```
-
-Copy the following code into the `ReturnRequest.php` file.
 
 ```php
 <?php
@@ -134,57 +142,75 @@ Copy the following code into the `ReturnRequest.php` file.
 namespace Webkul\RMA\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Webkul\Sales\Models\Order;
-use Webkul\Customer\Models\Customer;
+use Webkul\RMA\Contracts\ReturnRequest as ReturnRequestContract;
+
+class ReturnRequest extends Model implements ReturnRequestContract
+{
+    protected $fillable = [];
+}
+```
+
+::: tip Comparing Approaches
+**Package Generator Result = Manual Creation Result**
+
+Both approaches create identical basic files. The manual approach helps you understand the structure, while the package generator saves time. Choose based on your learning preference!
+:::
+
+## Completing the Model Implementation
+
+Whether you used the package generator or manual approach, you now have the same basic structure. Next, customize the base model to work with your `rma_requests` migration table:
+
+**Transform your basic model into a fully functional RMA model:**
+
+```php
+<?php
+
+namespace Webkul\RMA\Models;
+
+use Illuminate\Database\Eloquent\Model;
 use Webkul\RMA\Contracts\ReturnRequest as ReturnRequestContract;
 
 class ReturnRequest extends Model implements ReturnRequestContract
 {
     /**
      * The table associated with the model.
-     *
-     * @var string
      */
-    protected $table = 'returns';
+    protected $table = 'rma_requests';
 
     /**
      * The attributes that are mass assignable.
-     *
-     * @var array<string>
      */
     protected $fillable = [
-        'order_id',
         'customer_id',
-        'reason',
+        'order_id',
+        'product_sku',
+        'product_name',
+        'product_quantity',
         'status',
+        'reason',
+        'admin_notes',
     ];
-
-    /**
-     * Return request belongs to an order.
-     */
-    public function order(): BelongsTo
-    {
-        return $this->belongsTo(Order::class);
-    }
-
-    /**
-     * Return request belongs to a customer.
-     */
-    public function customer(): BelongsTo
-    {
-        return $this->belongsTo(Customer::class);
-    }
 }
 ```
 
-The `ReturnRequest` model represents an RMA request. It implements the `ReturnRequest` contract, belongs to the `Webkul\RMA\Models` namespace, and maps to the `returns` table.
+## Registering Models with Concord
 
-The `order()` and `customer()` methods define `BelongsTo` relationships to `Order` and `Customer`.
+Now that your model is complete, you need to register it with Bagisto's modular system. This is where the **ModuleServiceProvider** comes in.
 
-## Module Service Provider
+### Why ModuleServiceProvider?
 
-To create a provider named `ModuleServiceProvider.php` inside `packages/Webkul/RMA/src/Providers` for your Laravel package, follow these steps.
+The ModuleServiceProvider serves a crucial purpose in Bagisto's architecture:
+
+- **Model Registration**: Tells Concord about your package's models
+- **Proxy Resolution**: Enables runtime model resolution and extensibility
+- **Package Discovery**: Allows Bagisto to automatically discover your package components
+- **Dependency Management**: Ensures proper loading order of package components
+
+Without this registration, Bagisto won't know about your models and they won't be available for dependency injection or proxy resolution.
+
+### Creating the ModuleServiceProvider
+
+Create `packages/Webkul/RMA/src/Providers/ModuleServiceProvider.php`:
 
 ```text
 packages
@@ -193,11 +219,9 @@ packages
         └── src
             ├── ...
             └── Providers
-                ├── RMAServiceProvider.php
-                └── ModuleServiceProvider.php
+                ├── ModuleServiceProvider.php
+                └── RMAServiceProvider.php
 ```
-
-Register models used in this package. Example:
 
 ```php
 <?php
@@ -214,11 +238,19 @@ class ModuleServiceProvider extends BaseModuleServiceProvider
 }
 ```
 
-The `ModuleServiceProvider` registers models for the RMA package. It extends `BaseModuleServiceProvider` from `konekt/concord`.
+::: details Understanding the Registration
+**What This Does:**
 
-## Registering ModuleServiceProvider
+- **`$models` Array**: Lists all models in your package that should be registered with Concord
+- **`BaseModuleServiceProvider`**: Provides the functionality to register models, enums, and other components
+- **Automatic Discovery**: Concord uses this list to set up proxies and dependency injection
 
-To integrate the `ModuleServiceProvider` with the Concord module system in Laravel, you need to register it in the `config/concord.php` configuration file.
+This registration enables features like model swapping, where other packages can extend or replace your models without modifying your code.
+:::
+
+### Registering with Concord
+
+Finally, register your ModuleServiceProvider with Bagisto's Concord system by adding it to `config/concord.php`:
 
 - Open the configuration file at `config/concord.php` in your Laravel application.
 - Inside the `modules` array, add the `ModuleServiceProvider` class to register it with Concord.
@@ -228,15 +260,167 @@ To integrate the `ModuleServiceProvider` with the Concord module system in Larav
 
 return [
     'modules' => [
-        // Other service providers
+        // Other service providers...
         \Webkul\RMA\Providers\ModuleServiceProvider::class,
     ],
 ];
 ```
 
-::: tip Concord integration
-Concord discovers and registers your package models through the `ModuleServiceProvider`. Ensure your package namespace is autoloaded in composer.json and run:
+## Testing Your Complete Setup
+
+Verify everything works together:
+
 ```bash
-composer dump-autoload
+php artisan tinker
 ```
+
+```php
+// Test model creation via direct model
+\Webkul\RMA\Models\ReturnRequest::create([
+    'customer_id' => 1,
+    'order_id' => 1,
+    'product_sku' => 'SAMPLE-001',
+    'product_name' => 'Test Product 1',
+    'product_quantity' => 1,
+    'reason' => 'Defective Item'
+]);
+
+// Test model creation via proxy
+\Webkul\RMA\Models\ReturnRequestProxy::create([
+    'customer_id' => 2,
+    'order_id' => 2,
+    'product_sku' => 'SAMPLE-002',
+    'product_name' => 'Test Product 2',
+    'product_quantity' => 1,
+    'reason' => 'Defective Item'
+]);
+```
+
+::: info Testing Tips
+**Quick Verification Commands:**
+- Check if migration ran: `php artisan migrate:status`
+- Clear cache if needed: `php artisan optimize:clear`
 :::
+
+## Troubleshooting Common Issues
+
+When working with Bagisto models, you might encounter several common issues. Here's how to identify and resolve them:
+
+### 1. Model Proxy Registration Errors
+
+**Error:**
+```
+TypeError: Konekt\Concord\Proxies\ModelProxy::targetClass(): Return value must be of type string, null returned.
+```
+
+**Cause:** This error occurs when the model is not properly registered with Concord or the ModuleServiceProvider is not loaded.
+
+**Solution:**
+1. **Verify ModuleServiceProvider Registration:**
+   ```php
+   // Check config/concord.php contains your provider
+   'modules' => [
+       \Webkul\RMA\Providers\ModuleServiceProvider::class,
+   ],
+   ```
+
+2. **Ensure Model is Listed in ModuleServiceProvider:**
+   ```php
+   protected $models = [
+       \Webkul\RMA\Models\ReturnRequest::class, // Must be the actual model, not proxy
+   ];
+   ```
+
+3. **Clear Cache:**
+   ```bash
+   php artisan optimize:clear
+   ```
+
+### 2. Table Not Found Errors
+
+**Error:**
+```
+SQLSTATE[42S02]: Base table or view not found: 1146 Table 'bagisto.rma_requests' doesn't exist
+```
+
+**Solution:**
+1. **Run Migrations:**
+   ```bash
+   php artisan migrate
+   ```
+
+2. **Check Migration Status:**
+   ```bash
+   php artisan migrate:status
+   ```
+
+3. **Verify Table Name in Model:**
+   ```php
+   protected $table = 'rma_requests'; // Must match migration table name
+   ```
+
+### 3. Namespace and Autoloading Issues
+
+**Error:**
+```
+Class 'Webkul\RMA\Models\ReturnRequest' not found
+```
+
+**Solution:**
+1. **Verify PSR-4 Autoloading in composer.json:**
+   ```json
+   "autoload": {
+       "psr-4": {
+           "Webkul\\RMA\\": "packages/Webkul/RMA/src/"
+       }
+   }
+   ```
+
+2. **Update Composer Autoload:**
+   ```bash
+   composer dump-autoload
+   ```
+
+### 4. Fillable Attribute Errors
+
+**Error:**
+```
+Illuminate\Database\Eloquent\MassAssignmentException: customer_id
+```
+
+**Solution:**
+```php
+// Ensure all required fields are in fillable array
+protected $fillable = [
+    'customer_id',
+    'order_id',
+    'product_sku',
+    'product_name',
+    'product_quantity',
+    'status',
+    'reason',
+    'admin_notes',
+];
+```
+
+### 5. Contract Implementation Issues
+
+**Error:**
+```
+Class must implement interface Webkul\RMA\Contracts\ReturnRequest
+```
+
+**Solution:**
+```php
+// Ensure model implements contract
+class ReturnRequest extends Model implements ReturnRequestContract
+{
+    // Model implementation
+}
+```
+
+## Your Next Step
+
+With your model complete and registered, you now need to implement Bagisto's Repository pattern. Repositories abstract your data access logic and provide a consistent interface for data operations while keeping business logic separate from data persistence.
+
+**Continue to:** **[Repositories](./repositories.md)** - Implement the Repository pattern for your RMA model

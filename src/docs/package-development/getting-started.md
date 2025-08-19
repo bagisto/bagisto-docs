@@ -176,21 +176,21 @@ use Illuminate\Support\ServiceProvider;
 class RMAServiceProvider extends ServiceProvider
 {
     /**
-     * Bootstrap services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        //
-    }
-
-    /**
      * Register services.
      *
      * @return void
      */
     public function register()
+    {
+        //
+    }
+    
+    /**
+     * Bootstrap services.
+     *
+     * @return void
+     */
+    public function boot()
     {
         //
     }
@@ -267,8 +267,3 @@ Once your package is set up, you can start building its functionality. For the r
 The following sections will guide you through manual registration of components to provide deeper understanding of package development concepts. If you used the Package Generator, you can still follow along to understand what was automatically created for you.
 :::
 
-- **[Migrations](/docs/package-development/migrations)** - Set up your database schema  
-- **[Models](/docs/package-development/models)** - Define your data structures
-- **[Add Routes](/docs/package-development/routes)** - Define your package's endpoints
-- **[Create Controllers](/docs/package-development/controllers)** - Handle your business logic
-- **[Design Views](/docs/package-development/views)** - Build your user interface

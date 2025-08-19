@@ -1,32 +1,43 @@
----
-title: Views
-description: Create and load Blade views for a Bagisto RMA package, and render them from controllers.
-outline: deep
----
-
 # Views
 
-Views in Laravel are responsible for separating the application's logic from the presentation layer. They provide a clean way to manage and organize the HTML content of your application. Views are typically stored in the `resources/views` directory and are rendered using the Blade templating engine, which offers a simple and powerful way to create dynamic content.
+Views in Laravel provide a clean separation between application logic and presentation layer, using the powerful Blade templating engine to create dynamic, maintainable interfaces. In Bagisto, views are organized to support both admin panel functionality and customer-facing storefront operations while maintaining consistency with Bagisto's design patterns.
 
-By using views, you can create reusable templates and components, making your code more maintainable and easier to understand. Blade templates allow you to use control structures like loops and conditionals, as well as to include other templates, which helps to keep your views organized and modular.
+For our RMA package, we'll create views that display return request listings and forms, integrating seamlessly with Bagisto's existing admin interface and storefront design.
 
-Learn more: [Laravel View](https://laravel.com/docs/11.x/views)
+::: info Learning Objective
+This section demonstrates how to create organized, reusable Blade templates that integrate with Bagisto's admin interface and follow established patterns for data presentation, starting with listing pages and progressing to form creation.
+:::
 
-## Directory structure
+For detailed information on Laravel views and Blade templating, visit the [Laravel Documentation on Views](https://laravel.com/docs/11.x/views).
 
-We’ll organize views for the RMA package under `packages/Webkul/RMA/src/Resources/views`.
+## Bagisto View Architecture
 
-1) Create `Resources` inside `packages/Webkul/RMA/src`.
-2) Inside it, create a `views` folder.
-3) Inside `views`, create `admin` and `shop` folders. Optionally, group templates by feature (e.g., `returns`).
+Bagisto follows a structured approach to view organization that separates administrative interfaces from customer-facing pages:
 
-#### Create the `views` Folder
-   - Inside the `Resources` folder, create another folder named `views`.
+### Admin Views
+- **Purpose**: Administrative interfaces for managing package features
+- **Integration**: Extends Bagisto's admin layout and components
+- **Features**: Data tables, forms, modals, CRUD operations
+- **Styling**: Uses Bagisto's admin CSS framework and Vue components
 
-#### Create the `admin` and `shop` Folders
-   - Inside the `views` folder, create two folders named `admin` and `shop`.
+### Shop Views  
+- **Purpose**: Customer-facing interfaces for package functionality
+- **Integration**: Uses storefront theme and layout components
+- **Features**: Customer interactions, responsive design, theme compatibility
+- **Styling**: Inherits from active storefront theme
 
-Directory structure:
+## Creating View Structure
+
+Let's create the view structure for our RMA package, starting with the essential directory organization and then building the listing functionality.
+
+### Directory Structure
+
+Create the following directory structure in your package:
+
+```bash
+mkdir -p packages/Webkul/RMA/src/Resources/views/admin/return-requests
+mkdir -p packages/Webkul/RMA/src/Resources/views/shop/return-requests
+```
 
 ```text
 packages
@@ -37,135 +48,201 @@ packages
             └── Resources
                 └── views
                     ├── admin
-                    │   └── returns
-                    │       └── index.blade.php
+                    │   └── return-requests
+                    │       ├── index.blade.php
+                    │       └── create.blade.php
                     └── shop
-                        └── returns
+                        └── return-requests
                             ├── index.blade.php
-                            ├── create.blade.php
-                            └── edit.blade.php
+                            └── create.blade.php
 ```
 
-### Create templates
+::: details View Organization Strategy
+**Admin Views**: Organized under `admin/return-requests/` for clear feature separation
 
-Create simple Blade templates to start.
+**Shop Views**: Located under `shop/return-requests/` for customer-facing functionality
 
-#### `admin/returns/index.blade.php`
+**Naming Convention**: Uses descriptive folder names (`return-requests`) instead of generic terms for better organization
 
-```html
-<!DOCTYPE html>
-<html>
-    <head>
-    <title>Admin - Return Requests</title>
-    </head>
-    <body>
-    <h1>Admin - Return Requests</h1>
-    <p>Manage customer return requests.</p>
-    </body>
-</html>
-```
+**Scalability**: Structure supports adding more views (edit, show, etc.) as the package grows
+:::
 
-#### `shop/returns/index.blade.php`
+## Registering Views with Service Provider
 
-```html
-<!DOCTYPE html>
-<html>
-    <head>
-    <title>Shop - Return Requests</title>
-    </head>
-    <body>
-    <h1>Shop - Return Requests</h1>
-    <p>View your return requests.</p>
-    </body>
-</html>
-```
+Before creating view templates, we need to register our views with the service provider so Laravel can find them.
 
-## Load views from the package
-
-Register views in your service provider’s `boot()` method.
-
-### Update the service provider
-
-In `packages/Webkul/RMA/src/Providers/RMAServiceProvider.php`:
-
-  ```php
-    <?php
-
-    namespace Webkul\RMA\Providers;
-
-    use Illuminate\Support\ServiceProvider;
-
-    class RMAServiceProvider extends ServiceProvider
-    {
-        /**
-         * Bootstrap services.
-        *
-        * @return void
-        */
-        public function boot()
-        {
-            $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'rma');
-        }
-    }
-  ```
-
-#### Explanation
-
-- The `namespace` keyword defines the namespace for the `RMAServiceProvider` class: `Webkul\RMA\Providers`.
-- The `RMAServiceProvider` class extends Laravel's base `ServiceProvider` class.
-- The `boot` method is used to bootstrap any application services.
-- Inside the `boot` method, we use the `$this->loadViewsFrom` method to register the views from the package.
-- The `loadViewsFrom` method takes two arguments:
-    - The path to the views directory within the package: `__DIR__ . '/../Resources/views'`.
-    - A namespace for the views: `'rma'`.
-
-## Render views
-
-In Laravel applications, views are typically rendered from controller methods using the `view` helper function. This section describes how views are invoked and passed data from a controller.
+Update your `packages/Webkul/RMA/src/Providers/RMAServiceProvider.php`:
 
 ```php
 <?php
 
-namespace Webkul\RMA\Http\Controllers\Shop;
+namespace Webkul\RMA\Providers;
 
-use Webkul\RMA\Http\Controllers\Controller;
-use Webkul\RMA\Repository\ReturnRequestRepository;
+use Illuminate\Support\ServiceProvider;
 
-class ReturnRequestController extends Controller
+class RMAServiceProvider extends ServiceProvider
 {
-    public function __construct(protected ReturnRequestRepository $returnRequestRepository) {}
-
-    public function index()
+    /**
+     * Register services.
+     *
+     * @return void
+     */
+    public function register()
     {
-        $returns = $this->returnRequestRepository->with(['order'])->paginate(10);
+        //
+    }
 
-        return view('rma::shop.returns.index', compact('returns'));
+    /**
+     * Bootstrap services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        // Load migrations
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
+        
+        // Load routes
+        $this->loadRoutesFrom(__DIR__ . '/../Routes/admin-routes.php');
+        $this->loadRoutesFrom(__DIR__ . '/../Routes/shop-routes.php');
+        
+        // Load views
+        $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'rma');
     }
 }
 ```
 
-#### Explanation
+::: tip View Namespace
+The `loadViewsFrom()` method registers views with the `rma` namespace, allowing you to reference them as `rma::admin.return-requests.index` instead of using full file paths.
+:::
 
-- The `view()` helper renders a package view using the namespace (`rma::shop.returns.index`).
-- Pass data to the view as the second argument (e.g., `compact('returns')`).
+## Creating Admin Listing View
 
-## Blade file naming
+Let's start with the most important view - the admin listing page that displays all return requests. This view will integrate with Bagisto's admin interface and display data from our repository.
 
-Use Blade templates for `listing`, `creation`, and `updating` operations for resources like return requests.
+### Admin Index View
 
-### Listing (index.blade.php)
+Create `packages/Webkul/RMA/src/Resources/views/admin/return-requests/index.blade.php`:
 
-- Display a list of all records (return requests).
-- The controller’s `index` method fetches data and passes it to the view.
+```blade
+<x-admin::layouts>
+    <x-slot:title>
+        RMA Listing Title
+    </x-slot:title>
 
-### Creation (create.blade.php)
+    RMA Listing Content
+</x-admin::layouts>
+```
 
-- Contains a form for creating new records.
-- The controller’s `create` method renders this view.
+::: details Admin View Explanation
+**Key Components:**
 
-### Updating (edit.blade.php)
+- **Bagisto Layout**: Uses `<x-admin::layouts>` for consistent admin interface
+- **Basic Structure**: Simple title and content placeholders to demonstrate layout integration
+- **Component Integration**: Shows how to use Bagisto's slot-based layout system
+- **Scalable Foundation**: Structure supports adding DataGrid, forms, and other components later
 
-- Contains a form for editing existing records.
-- The controller’s `edit` method fetches the record and passes it to the view.
+**Note on Localization**: You'll notice we haven't used any `@lang()` or `trans()` methods in these views. We're keeping the views simple at this stage and will cover comprehensive localization techniques in the **[Localization](./localization.md)** section.
+:::
 
-By following these steps, you can effectively use Blade templates in Bagisto for listing, creating, and updating resources, keeping CRUD views structured and maintainable.
+## Updating Controllers to Use Views
+
+Now let's update our controllers to render these views instead of returning simple strings.
+
+### Update Admin Controller
+
+Update `packages/Webkul/RMA/src/Http/Controllers/Admin/ReturnRequestController.php`:
+
+```php
+<?php
+
+namespace Webkul\RMA\Http\Controllers\Admin;
+
+use Webkul\RMA\Http\Controllers\Controller;
+use Webkul\RMA\Repositories\ReturnRequestRepository;
+
+class ReturnRequestController extends Controller
+{
+    /**
+     * Create a new controller instance.
+     */
+    public function __construct(
+        protected ReturnRequestRepository $returnRequestRepository
+    ) {}
+
+    /**
+     * Display a listing of return requests.
+     */
+    public function index()
+    {
+        // For now, we'll render the view without data
+        // In a later section, we'll add DataGrid functionality for data loading
+        return view('rma::admin.return-requests.index');
+    }
+}
+```
+
+::: tip Controller Update
+We've updated the controller to render the Blade view instead of returning a string. This demonstrates the basic integration between routes, controllers, and views in the Bagisto architecture.
+:::
+
+## Creating Shop Views
+
+For the shop section, you can create views following the same pattern as the admin views. Since we're focusing on understanding the admin panel architecture in this section, we'll concentrate on the admin implementation.
+
+### Shop View Structure
+
+The shop views would follow a similar structure:
+
+```bash
+# Shop view creation (for reference)
+# packages/Webkul/RMA/src/Resources/views/shop/return-requests/index.blade.php
+```
+
+```blade
+<x-shop::layouts>
+    <x-slot:title>
+        RMA Shop Listing Title
+    </x-slot:title>
+
+    RMA Shop Listing Content
+</x-shop::layouts>
+```
+
+::: tip Shop Implementation
+The shop views follow the same principles as admin views but use `<x-shop::layouts>` for storefront integration. For now, we're focusing on the admin panel to understand the core concepts before expanding to customer-facing functionality.
+:::
+
+## Testing Your Views
+
+Test your views are working correctly:
+
+```bash
+# Clear cache to ensure views are loaded
+php artisan optimize:clear
+
+# Test the admin route in your browser
+# Admin: http://your-app.com/admin/rma/return-requests
+```
+
+You should now see:
+- **Admin Route**: Basic admin interface with Bagisto layout displaying "RMA Listing Title" and "RMA Listing Content"
+
+::: info Testing Tips
+- Check views load without errors
+- Verify styling matches Bagisto's admin interface
+- Test that layout components render correctly
+- Ensure views display the basic title and content placeholders
+:::
+
+## Your Next Step
+
+With your basic admin views complete, you now have a foundation presentation layer for your RMA package. These simple views demonstrate how to integrate with Bagisto's admin layout system.
+
+The views currently show basic content placeholders, which is perfect for this stage of learning. In subsequent sections, you'll expand these views with more advanced features and multi-language support.
+
+**Continue to:** **[Localization](./localization.md)** - Add multi-language support to your RMA package views and content
+
+::: tip Learning Approach
+Starting with basic admin layouts helps you understand Bagisto's component system before adding complexity. This foundation will make it easier to implement advanced features like localization, datagrids, and forms in later sections.
+:::
