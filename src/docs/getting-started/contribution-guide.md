@@ -168,7 +168,7 @@ vendor/bin/pint
 If you discover a security vulnerability, **DO NOT** create a public issue.
 :::
 
-**Contact**: Email [jitendra@webkul.in](mailto:jitendra@webkul.in) immediately
+**Contact**: Email [support@bagisto.com](mailto:support@bagisto.com) immediately
 
 ### Security Report Should Include:
 - Detailed description of the vulnerability

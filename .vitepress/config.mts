@@ -75,14 +75,10 @@ export default defineConfig({
           { text: 'Controllers', link: '/docs/package-development/controllers' },
           { text: 'Views', link: '/docs/package-development/views' },
           { text: 'Localization', link: '/docs/package-development/localization' },
-          { text: 'Blade Components', link: '/docs/package-development/blade-components' },
-          { text: 'Layouts', link: '/docs/package-development/layouts' },
-          { text: 'Bundling Assets', link: '/docs/package-development/bundling-assets' },
-          { text: 'Admin Menu', link: '/docs/package-development/add-menu-in-admin' },
-          { text: 'Validation', link: '/docs/package-development/validation' },
           { text: 'DataGrid', link: '/docs/package-development/datagrid' },
-          { text: 'Access Control List', link: '/docs/package-development/create-acl' },
-          { text: 'System Configuration', link: '/docs/package-development/create-system-configuration' }
+          { text: 'Menu', link: '/docs/package-development/menu' },
+          { text: 'Access Control List', link: '/docs/package-development/access-control-list' },
+          { text: 'System Configuration', link: '/docs/package-development/system-configuration' }
         ]
       },
       {
@@ -99,7 +95,11 @@ export default defineConfig({
           { text: 'Email Template', link: '/docs/advanced/change-email-template' },
           { text: 'Configure Elasticsearch', link: '/docs/advanced/indexing-products-to-elasticsearch' },
           { text: 'Best Security Practices', link: '/docs/advanced/security-practice' },
-          { text: 'Data Transfer', link: '/docs/advanced/create-data-import' }
+          { text: 'Data Transfer', link: '/docs/advanced/create-data-import' },
+          { text: 'Blade Components', link: '/docs/package-development/blade-components' },
+          { text: 'Layouts', link: '/docs/package-development/layouts' },
+          { text: 'Bundling Assets', link: '/docs/package-development/bundling-assets' },
+          { text: 'Validation', link: '/docs/package-development/validation' },
         ]
       },
       {

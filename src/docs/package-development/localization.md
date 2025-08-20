@@ -329,6 +329,8 @@ echo __('rma::app.admin.return-requests.title'); // Should fallback to English s
 **Cache Clearing**: Always clear cache after adding new translation files
 :::
 
+## Your Next Step
+
 With comprehensive localization implemented, your RMA package now supports multiple languages and provides a professional, international user experience. The translation system you've built provides a solid foundation for expanding to additional languages and regions.
 
 You've successfully created:
@@ -339,7 +341,7 @@ You've successfully created:
 
 The localization system is now ready to support your package's growth and international expansion.
 
-**Continue to:** **[Blade Components](./blade-components.md)** - Learn Bagisto's component system and create reusable UI elements
+**Continue to:** **[DataGrid](./datagrid.md)** - Learn how to create data tables with sorting, filtering, and pagination for your admin interface
 
 ::: tip Internationalization Strategy
 As your package grows, consider creating translation files for major e-commerce markets (Spanish, French, German, Arabic) and implementing locale-specific features like RTL support and currency formatting.
