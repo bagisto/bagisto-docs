@@ -69,7 +69,7 @@ Set your default and fallback locales in `config/app.php`. These settings affect
 'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
 ```
 
-::: details Locale Configuration Explanation
+::: info Locale Configuration Explanation
 **Application Locale**: The primary language your application will use by default.
 
 **Fallback Locale**: When a translation key is missing in the current locale, Laravel will attempt to find it in the fallback locale before displaying the key itself.
@@ -101,7 +101,7 @@ packages
                         └── app.php
 ```
 
-::: details Simple Translation Structure
+::: info Simple Translation Structure
 **app.php**: Contains the basic translations we need for our simple admin view
 
 **Starting Simple**: We're beginning with just English and one file to match our basic view implementation
@@ -140,7 +140,7 @@ Register your package translations in the service provider so they're available 
 
 Update `packages/Webkul/RMA/src/Providers/RMAServiceProvider.php`:
 
-```php
+```php{32-33}
 <?php
 
 namespace Webkul\RMA\Providers;
@@ -166,17 +166,13 @@ class RMAServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Load migrations
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
         
-        // Load routes
         $this->loadRoutesFrom(__DIR__ . '/../Routes/admin-routes.php');
         $this->loadRoutesFrom(__DIR__ . '/../Routes/shop-routes.php');
         
-        // Load views
         $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'rma');
         
-        // Load translations
         $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'rma');
     }
 }
@@ -203,7 +199,7 @@ Users can then publish and customize your translations:
 php artisan vendor:publish --tag=rma-translations
 ```
 
-::: details Publishing Benefits
+::: info Publishing Benefits
 **Customization**: Users can modify translations without editing your package files
 
 **Override System**: Published translations take precedence over package translations
@@ -223,7 +219,7 @@ Update your views to use translations instead of hardcoded text. Let's update th
 
 **Update:** `packages/Webkul/RMA/src/Resources/views/admin/return-requests/index.blade.php`
 
-```blade
+```blade{3,6}
 <x-admin::layouts>
     <x-slot:title>
         @lang('rma::app.admin.return-requests.title')
@@ -241,7 +237,7 @@ This translation implementation perfectly matches our simple view from the Views
 
 Use translations in controller methods for basic responses:
 
-```php
+```php{16-20}
 <?php
 
 namespace Webkul\RMA\Http\Controllers\Admin;

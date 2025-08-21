@@ -27,7 +27,7 @@ For our RMA package demonstration, we'll create a single table that supports bas
 
 Before creating migrations, we need to configure our service provider to load them. Update your `RMAServiceProvider.php` file:
 
-```php
+```php{26}
 <?php
 
 namespace Webkul\RMA\Providers;
@@ -145,7 +145,7 @@ This will automatically create the following directory structure if it doesn't e
 
 To create the RMA requests table, copy the code provided here and paste it into your migration file. This migration creates a comprehensive table structure suitable for a real-world RMA system:
 
-```php
+```php{17-36}
 <?php
 
 use Illuminate\Database\Migrations\Migration;

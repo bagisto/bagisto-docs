@@ -100,13 +100,13 @@ class ReturnRequestRepository extends Repository
 }
 ```
 
-::: details Understanding the Repository Structure
+::: info Understanding the Repository Structure
 **Key Components:**
 
 - **Namespace**: Follows PSR-4 autoloading standards
 - **Base Class**: Extends `Webkul\Core\Eloquent\Repository` which provides all repository methods
 - **Model Contract**: References the model contract (not the model directly) for better flexibility
-- **Return Type**: The `model()` method must return the FQCN of your model contract
+- **Return Type**: The `model()` method must return the full class path of your model contract
 :::
 
 ## Available Repository Methods
@@ -214,7 +214,7 @@ $returns = $this->returnRequestRepository
 
 You can add custom methods to your repository for complex business logic:
 
-```php
+```php{16-49}
 <?php
 
 namespace Webkul\RMA\Repositories;
@@ -261,8 +261,8 @@ class ReturnRequestRepository extends Repository
     public function getRecent(int $limit = 10)
     {
         return $this->orderBy('created_at', 'desc')
-                    ->limit($limit)
-                    ->get();
+            ->limit($limit)
+            ->get();
     }
 }
 ```

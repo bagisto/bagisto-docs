@@ -76,19 +76,11 @@ return [
 
 This configuration defines RMA-specific settings including enable/disable functionality, partial return options, and return time limits.
 
-### Merge the Configuration
-
-To merge the system configuration into your application, follow these steps:
-
-#### Modify Service Provider
-
-Navigate to the `RMAServiceProvider` class within the `Webkul\RMA\Providers` namespace.
-
-#### Register Method
+## Register Configuration
 
 In the `register` method, add the following code to merge your system configuration:
 
-```php
+```php{23-27}
 <?php
 
 namespace Webkul\RMA\Providers;
@@ -99,20 +91,19 @@ class RMAServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->mergeConfigFrom(
             dirname(__DIR__) . '/Config/admin-menu.php',
             'menu.admin'
         );
-        
+
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/acl.php', 'acl'
+            dirname(__DIR__) . '/Config/acl.php',
+            'acl'
         );
-        
+
         $this->mergeConfigFrom(
             dirname(__DIR__) . '/Config/system.php',
             'core'
@@ -121,14 +112,16 @@ class RMAServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
+        
         $this->loadRoutesFrom(__DIR__ . '/../Routes/admin-routes.php');
+        $this->loadRoutesFrom(__DIR__ . '/../Routes/shop-routes.php');
+        
         $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'rma');
+        
         $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'rma');
     }
 }
@@ -174,7 +167,7 @@ Once you have the basic configuration working, you can implement translations fo
 
 Update your translation file `packages/Webkul/RMA/src/Resources/lang/en/app.php`:
 
-```php
+```php{16-27}
 <?php
 
 return [
@@ -191,7 +184,6 @@ return [
             'view' => 'View',
         ],
         
-        // Add system configuration translations
         'system' => [
             'rma' => 'RMA',
             'rma-info' => 'Return Merchandise Authorization settings',
@@ -211,7 +203,7 @@ return [
 
 Replace the direct text with translation keys in your `system.php`:
 
-```php
+```php{6,7,11,12,17,18,23,27,31}
 <?php
 
 return [
@@ -738,7 +730,7 @@ Once you've defined your system configuration, you can access these values throu
 
 ### In Controllers
 
-```php
+```php{11,13}
 <?php
 
 namespace Webkul\RMA\Http\Controllers;
@@ -749,7 +741,6 @@ class ReturnRequestController extends Controller
 {
     public function create()
     {
-        // Get configuration values
         $isRmaEnabled = core()->getConfigData('rma.settings.general.enable');
 
         $maxReturnDays = core()->getConfigData('rma.settings.general.max_return_days');
@@ -765,7 +756,7 @@ class ReturnRequestController extends Controller
 
 ### In Blade Views
 
-```blade
+```blade{1,5}
 @if (core()->getConfigData('rma.settings.general.enable'))
     <div class="return-request-section">
         <h3>Request Return</h3>
@@ -791,7 +782,7 @@ class ReturnRequestController extends Controller
 
 ## Your Next Step
 
-Excellent! You've now successfully implemented system configuration for your RMA package. Your package now provides administrators with an intuitive interface to configure RMA behavior without touching code.
+You've now successfully implemented system configuration for your RMA package. Your package now provides administrators with an intuitive interface to configure RMA behavior without touching code.
 
 With system configuration in place, administrators can now:
 - Enable or disable RMA functionality across the store

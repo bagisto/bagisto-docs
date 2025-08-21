@@ -4,7 +4,7 @@ In Bagisto, there are two types of menus to understand:
 
 **Shop Menu**: The frontend navigation that customers see is managed through the **Categories** section in the admin panel. These menus are automatically generated from your product categories and don't require package development.
 
-**Admin Menu**: The backend navigation that administrators use to manage the system. This is what we'll focus on in this section - creating custom admin menu items for your package.
+**Admin Menu**: This section focuses on the backend navigation that administrators use to manage the system. Specifically, we will cover how to create custom admin menu items for your package.
 
 Admin menus provide navigation structure for your package's administrative interface in Bagisto. They allow administrators to easily access different sections and features of your package from the admin panel sidebar.
 
@@ -63,13 +63,13 @@ return [
         'key'   => 'rma',
         'name'  => 'RMA',
         'route' => 'admin.rma.return-requests.index',
-        'sort'  => 100,
+        'sort'  => 100, // Order position `100` places it near the end of the menu
         'icon'  => '',
     ],
 ];
 ```
 
-::: details Simple Menu Explanation
+::: info Simple Menu Explanation
 **Key**: Unique identifier `rma` for our menu item
 
 **Name**: Display text `RMA` that appears in the admin sidebar
@@ -85,27 +85,13 @@ return [
 
 Update your translation file `packages/Webkul/RMA/src/Resources/lang/en/app.php` to include menu translations:
 
-```php
+```php{6-9}
 <?php
 
 return [
     'admin' => [
-        'return-requests' => [
-            'title' => 'Return Requests',
-            'content' => 'Manage customer return requests',
-            
-            'datagrid' => [
-                'id' => 'ID',
-                'product-name' => 'Product Name',
-                'status' => 'Status',
-                'pending' => 'Pending',
-                'approved' => 'Approved',
-                'rejected' => 'Rejected',
-                'view' => 'View',
-            ],
-        ],
+        // ...existing translations...
         
-        // Add menu translations
         'menu' => [
             'rma' => 'RMA',
         ],
@@ -115,7 +101,7 @@ return [
 
 Now update your menu configuration to use translations:
 
-```php
+```php{6}
 <?php
 
 return [
@@ -135,7 +121,7 @@ Update your package's service provider to register the admin menu configuration:
 
 **Update:** `packages/Webkul/RMA/src/Providers/RMAServiceProvider.php`
 
-```php
+```php{14-17}
 <?php
 
 namespace Webkul\RMA\Providers;
@@ -161,8 +147,12 @@ class RMAServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
+        
         $this->loadRoutesFrom(__DIR__ . '/../Routes/admin-routes.php');
+        $this->loadRoutesFrom(__DIR__ . '/../Routes/shop-routes.php');
+        
         $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'rma');
+        
         $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'rma');
     }
 }
@@ -268,7 +258,7 @@ For demonstration purposes, all menu items above use the same route (`admin.rma.
 Make sure to create appropriate routes, controllers, and views for each menu item as per your package requirements.
 :::
 
-::: details How Hierarchical Keys Work
+::: info How Hierarchical Keys Work
 **Parent Menu**: `'key' => 'rma'` creates the main menu item
 
 **Child Menu**: `'key' => 'rma.return-requests'` creates a sub-item under the RMA menu
@@ -294,4 +284,8 @@ The hierarchy is automatically built based on the dot notation in the key names.
 
 Excellent! You've now successfully created an admin menu for your RMA package. Your package now has a complete navigation structure.
 
-At this point in your package development journey, you have mastered the core backend components. You can now build packages with solid data management and navigation structures that integrate seamlessly with Bagisto's admin interface.
+At this point in your package development journey, you have mastered the core backend components. However, to ensure proper security and access control for your admin menu, you'll need to implement permission-based access.
+
+**Continue to:** **[Access Control List (ACL)](./access-control-list.md)** - Set up access control lists to manage who can view and interact with your admin menu
+
+With menu navigation and proper access control in place, you'll have a secure, professional admin interface that integrates seamlessly with Bagisto's permission system.

@@ -162,7 +162,7 @@ Whether you used the package generator or manual approach, you now have the same
 
 **Transform your basic model into a fully functional RMA model:**
 
-```php
+```php{10-21}
 <?php
 
 namespace Webkul\RMA\Models;
@@ -172,14 +172,8 @@ use Webkul\RMA\Contracts\ReturnRequest as ReturnRequestContract;
 
 class ReturnRequest extends Model implements ReturnRequestContract
 {
-    /**
-     * The table associated with the model.
-     */
     protected $table = 'rma_requests';
 
-    /**
-     * The attributes that are mass assignable.
-     */
     protected $fillable = [
         'customer_id',
         'order_id',
@@ -192,6 +186,24 @@ class ReturnRequest extends Model implements ReturnRequestContract
     ];
 }
 ```
+
+::: info Model Properties Explained
+**Table Property Convention:**
+- **`protected $table = 'rma_requests';`** - Explicitly defines the table name for this model
+- **Why needed?** Laravel's default convention would expect `return_requests` (plural snake_case of model name), but we're using `rma_requests` to namespace our table with the package prefix
+- **Best Practice:** Always use package prefixes (`rma_`, `blog_`, etc.) to avoid table name conflicts with core Bagisto tables or other packages
+
+**Fillable Array:**
+- **Purpose:** Defines which attributes can be mass-assigned using `create()` or `update()` methods
+- **Security:** Protects against mass assignment vulnerabilities by explicitly whitelisting safe attributes
+- **Convention:** Include all user-input fields that should be mass-assignable, excluding `id`, `created_at`, `updated_at` (automatically managed)
+- **Rule of Thumb:** If a field appears in forms or API requests, it should be in the fillable array
+
+**What's Protected:**
+- Primary keys (`id`) are never fillable
+- Timestamps (`created_at`, `updated_at`) are automatically managed by Laravel
+- Sensitive fields like authentication tokens should use `$guarded` instead
+:::
 
 ## Registering Models with Concord
 
@@ -238,7 +250,7 @@ class ModuleServiceProvider extends BaseModuleServiceProvider
 }
 ```
 
-::: details Understanding the Registration
+::: info Understanding the Registration
 **What This Does:**
 
 - **`$models` Array**: Lists all models in your package that should be registered with Concord
@@ -255,7 +267,7 @@ Finally, register your ModuleServiceProvider with Bagisto's Concord system by ad
 - Open the configuration file at `config/concord.php` in your Laravel application.
 - Inside the `modules` array, add the `ModuleServiceProvider` class to register it with Concord.
 
-```php
+```php{6}
 <?php
 
 return [

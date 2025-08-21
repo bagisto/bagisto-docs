@@ -74,7 +74,7 @@ class Controller extends BaseController
 }
 ```
 
-::: details Base Controller Explanation
+::: info Base Controller Explanation
 **Purpose**: Provides common functionality for all controllers in your package
 
 **Traits Used:**
@@ -122,7 +122,7 @@ class ReturnRequestController extends Controller
 }
 ```
 
-::: details Admin Controller Explanation
+::: info Admin Controller Explanation
 **Key Components:**
 
 - **Dependency Injection**: Repository injected via constructor using PHP 8 property promotion
@@ -166,7 +166,7 @@ class ReturnRequestController extends Controller
 }
 ```
 
-::: details Shop Controller Explanation
+::: info Shop Controller Explanation
 **Key Components:**
 
 - **Customer Focus**: Designed for customer-facing functionality
@@ -184,7 +184,7 @@ Now that we have our controllers, let's update the route files we created earlie
 
 Update `packages/Webkul/RMA/src/Routes/admin-routes.php`:
 
-```php
+```php{17-18}
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -211,7 +211,7 @@ Route::group([
 
 Update `packages/Webkul/RMA/src/Routes/shop-routes.php`:
 
-```php
+```php{16-17}
 <?php
 
 use Illuminate\Support\Facades\Route;

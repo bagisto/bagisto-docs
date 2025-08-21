@@ -70,7 +70,7 @@ To register your package, follow these steps:
 
 Add your package's namespace to the `psr-4` section in the `composer.json` file located in the root directory of your Bagisto application. Update it as follows:
 
-```json
+```json{5}
 "autoload": {
     ...
     "psr-4": {
@@ -92,7 +92,7 @@ This ensures that the new namespace mapping is properly loaded by Composer's aut
 
 Register your package's service provider in the `bootstrap/providers.php` file located in the root directory of your Bagisto application. Add the following line `Webkul\RMA\Providers\RMAServiceProvider::class,` just like other Bagisto service providers:
 
-```php
+```php{16}
 <?php
 
 return [
@@ -197,7 +197,7 @@ class RMAServiceProvider extends ServiceProvider
 }
 ```
 
-::: details Service Provider Explanation
+::: info Service Provider Explanation
 The Service Provider is the central place to register your package's services, including routes, views, configurations, and other components. The `boot()` method is called after all services are registered, while `register()` is used to bind services into the container.
 :::
 
@@ -207,7 +207,7 @@ The Service Provider is the central place to register your package's services, i
 
 Add your package's namespace to the `psr-4` section in the `composer.json` file located in the root directory of your Bagisto application. Update it as follows:
 
-```json
+```json{5}
 "autoload": {
     ...
     "psr-4": {
@@ -227,7 +227,7 @@ composer dump-autoload
 
 Register your package's service provider in the `bootstrap/providers.php` file located in the root directory of your Bagisto application. Add the following line `Webkul\RMA\Providers\RMAServiceProvider::class,` just like other Bagisto service providers:
 
-```php
+```php{16}
 <?php
 
 return [
@@ -264,6 +264,5 @@ Your package is now ready for development! Note that the [Package Generator](#us
 Once your package is set up, you can start building its functionality. For the remainder of this documentation, we'll assume you're following the manual setup approach, as this allows you to understand each component registration process step by step - such as routes, views, models, and controllers. While the Package Generator automates these registrations, learning the manual process helps you understand how each piece works together.
 
 ::: info Learning Approach
-The following sections will guide you through manual registration of components to provide deeper understanding of package development concepts. If you used the Package Generator, you can still follow along to understand what was automatically created for you.
+The remaining sections will guide you through manual registration of components to provide deeper understanding of package development concepts. If you used the Package Generator, you can still follow along to understand what was automatically created for you.
 :::
-

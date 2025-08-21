@@ -57,7 +57,7 @@ packages
                             └── create.blade.php
 ```
 
-::: details View Organization Strategy
+::: info View Organization Strategy
 **Admin Views**: Organized under `admin/return-requests/` for clear feature separation
 
 **Shop Views**: Located under `shop/return-requests/` for customer-facing functionality
@@ -73,7 +73,7 @@ Before creating view templates, we need to register our views with the service p
 
 Update your `packages/Webkul/RMA/src/Providers/RMAServiceProvider.php`:
 
-```php
+```php{30-31}
 <?php
 
 namespace Webkul\RMA\Providers;
@@ -99,14 +99,11 @@ class RMAServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Load migrations
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
         
-        // Load routes
         $this->loadRoutesFrom(__DIR__ . '/../Routes/admin-routes.php');
         $this->loadRoutesFrom(__DIR__ . '/../Routes/shop-routes.php');
         
-        // Load views
         $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'rma');
     }
 }
@@ -134,7 +131,7 @@ Create `packages/Webkul/RMA/src/Resources/views/admin/return-requests/index.blad
 </x-admin::layouts>
 ```
 
-::: details Admin View Explanation
+::: info Admin View Explanation
 **Key Components:**
 
 - **Bagisto Layout**: Uses `<x-admin::layouts>` for consistent admin interface
@@ -153,7 +150,7 @@ Now let's update our controllers to render these views instead of returning simp
 
 Update `packages/Webkul/RMA/src/Http/Controllers/Admin/ReturnRequestController.php`:
 
-```php
+```php{22-24}
 <?php
 
 namespace Webkul\RMA\Http\Controllers\Admin;

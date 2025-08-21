@@ -41,7 +41,7 @@ return [
         'key'   => 'rma',
         'name'  => 'RMA',  // Using direct text for now
         'route' => 'admin.rma.return-requests.index',
-        'sort'  => 100,
+        'sort'  => 1,
     ], [
         'key'   => 'rma.return-requests',
         'name'  => 'Return Requests',  // Using direct text for now
@@ -66,7 +66,7 @@ Once you have the basic ACL working, you can implement translations for better i
 
 Create or update your translation file `packages/Webkul/RMA/src/Resources/lang/en/app.php`:
 
-```php
+```php{11-15}
 <?php
 
 return [
@@ -77,7 +77,6 @@ return [
             'rma' => 'RMA',
         ],
         
-        // Add ACL translations under admin key
         'acl' => [
             'rma' => 'RMA',
             'return-requests' => 'Return Requests',
@@ -91,7 +90,7 @@ return [
 
 Replace the direct text with translation keys in your `acl.php`:
 
-```php
+```php{6,11,16}
 <?php
 
 return [
@@ -99,7 +98,7 @@ return [
         'key'   => 'rma',
         'name'  => 'rma::app.admin.acl.rma',  // Now using translation key
         'route' => 'admin.rma.return-requests.index',
-        'sort'  => 100,
+        'sort'  => 1,
     ], [
         'key'   => 'rma.return-requests',
         'name'  => 'rma::app.admin.acl.return-requests',  // Now using translation key
@@ -120,56 +119,51 @@ return [
 - **Maintainability**: Easier to update permission names across the application
 :::
 
-## Merge ACL Configuration
+## Register ACL Configuration
 
-To merge the ACL configuration, follow these steps:
+Update your package's service provider to register the ACL:
 
-### Modify Service Provider
+**Update:** `packages/Webkul/RMA/src/Providers/RMAServiceProvider.php`
 
-Navigate to the `RMAServiceProvider` class within the `Webkul\RMA\Providers` namespace.
+```php{18-22}
+<?php
 
-### Register Method
+namespace Webkul\RMA\Providers;
 
-Inside the `register` method of your service provider, use the mergeConfigFrom method to merge your ACL configuration file:
+use Illuminate\Support\ServiceProvider;
 
-```php
-   <?php
-
-   namespace Webkul\RMA\Providers;
-
-   use Illuminate\Support\ServiceProvider;
-
-   class RMAServiceProvider extends ServiceProvider
-   {
-      /**
-      * Register services.
-      *
-      * @return void
-      */
-      public function register()
-      {
-         $this->mergeConfigFrom(
+class RMAServiceProvider extends ServiceProvider
+{
+    /**
+     * Register services.
+     */
+    public function register(): void
+    {
+        $this->mergeConfigFrom(
             dirname(__DIR__) . '/Config/admin-menu.php',
             'menu.admin'
-         );
-         
-         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/acl.php', 'acl'
-         );
-      }
+        );
 
-      /**
-      * Bootstrap services.
-      *
-      * @return void
-      */
-      public function boot()
-      {
-         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
-         $this->loadRoutesFrom(__DIR__ . '/../Routes/admin-routes.php');
-         $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'rma');
-         $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'rma');
-      }
+        $this->mergeConfigFrom(
+            dirname(__DIR__) . '/Config/acl.php',
+            'acl'
+        );
+    }
+
+    /**
+     * Bootstrap services.
+     */
+    public function boot(): void
+    {
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
+        
+        $this->loadRoutesFrom(__DIR__ . '/../Routes/admin-routes.php');
+        $this->loadRoutesFrom(__DIR__ . '/../Routes/shop-routes.php');
+        
+        $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'rma');
+        
+        $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'rma');
+    }
 }
 ```
 
@@ -229,7 +223,7 @@ return [
         'key'   => 'rma',
         'name'  => 'RMA',  // Consider using translation key: rma::app.admin.acl.rma
         'route' => 'admin.rma.return-requests.index',
-        'sort'  => 100,
+        'sort'  => 1,
     ], [
         'key'   => 'rma.return-requests',
         'name'  => 'Return Requests',  // Consider using translation key: rma::app.admin.acl.return-requests
@@ -323,6 +317,7 @@ class ReturnRequestController extends Controller
     <!-- Show RMA-related content -->
     <div class="rma-section">
         <h3>Return Requests Management</h3>
+
         <!-- RMA content here -->
     </div>
 @endif
@@ -342,7 +337,7 @@ class ReturnRequestController extends Controller
 
 ## Your Next Step
 
-Excellent! You've now successfully implemented Access Control Lists for your RMA package. Your package now has proper security controls that integrate seamlessly with Bagisto's user management system.
+You've now successfully implemented Access Control Lists for your RMA package. Your package now has proper security controls that integrate seamlessly with Bagisto's user management system.
 
 With ACL configured, administrators can now:
 - Create custom roles with specific RMA permissions
@@ -350,5 +345,8 @@ With ACL configured, administrators can now:
 - Control access to your package features at a granular level
 - Ensure sensitive return request data is properly protected
 
-At this point, your package has comprehensive security alongside its data management and navigation features.
+Now that your package has comprehensive security alongside its data management and navigation features, the next step is to make your package configurable through the admin interface.
 
+**Continue to:** **[System Configuration](./system-configuration.md)** - Add configurable settings that administrators can manage through the Bagisto admin panel
+
+With ACL security and system configuration in place, your package will be both secure and flexible, allowing administrators to customize its behavior according to their business needs.

@@ -109,7 +109,7 @@ class ReturnRequestDataGrid extends DataGrid
 }
 ```
 
-::: details Simple DataGrid Explanation
+::: info Simple DataGrid Explanation
 **Query Builder**: Selects only the `id` column from our `rma_requests` table - keeping it simple
 
 **Single Column**: Just the ID column to demonstrate the basic DataGrid concept
@@ -125,15 +125,14 @@ class ReturnRequestDataGrid extends DataGrid
 
 Create the necessary translation keys for your DataGrid by updating `packages/Webkul/RMA/src/Resources/lang/en/app.php`:
 
-```php
+```php{8-11}
 <?php
 
 return [
     'admin' => [
         'return-requests' => [
-            'title' => 'Return Requests',
-            'content' => 'Manage customer return requests',
-            'create-btn' => 'Create Return Request',
+            'title' => 'RMA Listing Title',
+            'content' => 'RMA Listing Content',
             
             'datagrid' => [
                 'id' => 'ID',
@@ -153,7 +152,7 @@ Update your admin controller to use the DataGrid:
 
 **Update:** `packages/Webkul/RMA/src/Http/Controllers/Admin/ReturnRequestController.php`
 
-```php
+```php{23-26}
 <?php
 
 namespace Webkul\RMA\Http\Controllers\Admin;
@@ -203,23 +202,17 @@ mkdir -p packages/Webkul/RMA/src/Resources/views/admin/return-requests
 
 **Create:** `packages/Webkul/RMA/src/Resources/views/admin/return-requests/index.blade.php`
 
-```blade
+```blade{5-6}
 <x-admin::layouts>
     <x-slot:title>
         @lang('rma::app.admin.return-requests.title')
     </x-slot:title>
 
-    <div class="flex gap-4 justify-between items-center max-sm:flex-wrap">
-        <p class="text-xl text-gray-800 dark:text-white font-bold">
-            @lang('rma::app.admin.return-requests.title')
-        </p>
-    </div>
-
     <x-admin::datagrid :src="route('admin.rma.return-requests.index')" />
 </x-admin::layouts>
 ```
 
-::: details Simple View Explanation
+::: info Simple View Explanation
 **Layout Component**: Uses Bagisto's admin layout with consistent styling
 
 **Basic Header**: Just shows the page title without additional buttons
@@ -460,7 +453,7 @@ Let's add a product name column to make our DataGrid more useful. This requires 
 
 First, modify your `prepareQueryBuilder()` method to select the additional column:
 
-```php
+```php{4}
 public function prepareQueryBuilder()
 {
     $queryBuilder = DB::table('rma_requests')
@@ -474,7 +467,7 @@ public function prepareQueryBuilder()
 
 Add the new column to your `prepareColumns()` method:
 
-```php
+```php{11-19}
 public function prepareColumns()
 {
     $this->addColumn([
@@ -486,7 +479,6 @@ public function prepareColumns()
         'filterable' => false,
     ]);
 
-    // Add product name column
     $this->addColumn([
         'index'      => 'product_name',
         'label'      => trans('rma::app.admin.return-requests.datagrid.product-name'),
@@ -502,7 +494,7 @@ public function prepareColumns()
 
 Update your translation file `packages/Webkul/RMA/src/Resources/lang/en/app.php`:
 
-```php
+```php{3}
 'datagrid' => [
     'id' => 'ID',
     'product-name' => 'Product Name',
@@ -517,7 +509,7 @@ Let's add a status column that demonstrates filtering capabilities:
 
 #### Step 1: Update Query Builder
 
-```php
+```php{4}
 public function prepareQueryBuilder()
 {
     $queryBuilder = DB::table('rma_requests')
@@ -529,12 +521,11 @@ public function prepareQueryBuilder()
 
 #### Step 2: Add Status Column with Filter
 
-```php
+```php{4-27}
 public function prepareColumns()
 {
     // ...existing columns...
 
-    // Add status column with dropdown filter
     $this->addColumn([
         'index'              => 'status',
         'label'              => trans('rma::app.admin.return-requests.datagrid.status'),
@@ -563,7 +554,7 @@ public function prepareColumns()
 
 #### Step 3: Add Status Translation
 
-```php
+```php{4-7}
 'datagrid' => [
     'id' => 'ID',
     'product-name' => 'Product Name',
@@ -582,12 +573,11 @@ Let's enhance the status column to display status values with styled badges usin
 
 First, let's add a simple closure that displays all status values with a consistent badge style:
 
-```php
+```php{4-30}
 public function prepareColumns()
 {
     // ...existing columns...
 
-    // Enhanced status column with basic badge formatting
     $this->addColumn([
         'index'              => 'status',
         'label'              => trans('rma::app.admin.return-requests.datagrid.status'),
@@ -631,7 +621,7 @@ The `closure` parameter allows you to:
 
 Once you're comfortable with basic closures, you can enhance it with conditional styling:
 
-```php
+```php{2-22}
 'closure' => function ($row) {
     $statusConfig = [
         'pending' => [
@@ -710,7 +700,7 @@ Here are simple examples of other closure implementations you might use:
 **Progression**: Master basic closures before moving to complex conditional logic
 :::
 
-::: details Why Use Closures in DataGrid?
+::: info Why Use Closures in DataGrid?
 **Better Display**: Transform plain database values into user-friendly formatted text
 
 **Visual Enhancement**: Add styling and formatting without changing underlying data
@@ -732,15 +722,12 @@ When you're ready for user interactions, let's start by adding a simple view act
 
 First, add a simple view route in your package's route file `packages/Webkul/RMA/src/Routes/admin-routes.php`:
 
-```php
+```php{5-7}
 Route::group(['middleware' => ['admin']], function () {
     Route::prefix('admin')->group(function () {
         Route::prefix('rma')->group(function () {
-            // Existing index route
-            Route::get('return-requests', [ReturnRequestController::class, 'index'])
-                ->name('admin.rma.return-requests.index');
+            // ...existing routes...
 
-            // Add basic view route for actions
             Route::get('return-requests/{id}', [ReturnRequestController::class, 'show'])
                 ->name('admin.rma.return-requests.show');
         });
@@ -752,7 +739,7 @@ Route::group(['middleware' => ['admin']], function () {
 
 Add the corresponding view method to your controller:
 
-```php
+```php{4-13}
 class ReturnRequestController extends Controller
 {
     // ...existing methods...
@@ -863,7 +850,7 @@ public function prepareActions()
 
 Update your translations to include the view page labels:
 
-```php
+```php{8,10-18}
 'datagrid' => [
     'id' => 'ID',
     'product-name' => 'Product Name',
@@ -890,7 +877,7 @@ Now your DataGrid will have a simple "View" button on each row that takes admini
 
 Once you're comfortable with basic actions, you can add edit and delete actions:
 
-```php
+```php{11-28}
 public function prepareActions()
 {
     $this->addAction([
@@ -922,7 +909,9 @@ public function prepareActions()
 }
 ```
 
-Remember to add the corresponding routes and controller methods for edit and delete functionality when you're ready to implement them.
+::: warning Important Implementation Note
+Remember to add the corresponding routes and controller methods for edit and delete functionality when you're ready to implement them. Without these routes and methods, the action buttons will result in 404 errors when clicked.
+:::
 
 ### Adding Mass Actions
 
@@ -930,27 +919,39 @@ For bulk operations, add the `prepareMassActions()` method:
 
 #### Step 1: Add Mass Delete Route
 
-```php
-// Add to your routes file
-Route::post('return-requests/mass-delete', [ReturnRequestController::class, 'massDestroy'])
-    ->name('admin.rma.return-requests.mass-delete');
+```php{5-7}
+Route::group(['middleware' => ['admin']], function () {
+    Route::prefix('admin')->group(function () {
+        Route::prefix('rma')->group(function () {
+            // ...existing routes...
+
+            Route::post('return-requests/mass-delete', [ReturnRequestController::class, 'massDestroy'])
+                ->name('admin.rma.return-requests.mass-delete');
+        });
+    });
+});
 ```
 
 #### Step 2: Add Mass Delete Controller Method
 
-```php
-/**
- * Mass delete return requests.
- */
-public function massDestroy()
+```php{4-17}
+class ReturnRequestController extends Controller
 {
-    $indices = request()->input('indices');
-    
-    foreach ($indices as $index) {
-        $this->returnRequestRepository->delete($index);
+    // ...existing methods...
+
+    /**
+     * Mass delete return requests.
+     */
+    public function massDestroy()
+    {
+        $indices = request()->input('indices');
+        
+        foreach ($indices as $index) {
+            $this->returnRequestRepository->delete($index);
+        }
+        
+        return response()->json(['message' => 'Selected return requests deleted successfully.']);
     }
-    
-    return response()->json(['message' => 'Selected return requests deleted successfully.']);
 }
 ```
 
@@ -970,7 +971,7 @@ public function prepareMassActions()
 
 #### Step 4: Add Mass Action Translation
 
-```php
+```php{9}
 'datagrid' => [
     'id' => 'ID',
     'product-name' => 'Product Name',
@@ -991,6 +992,8 @@ Start with just the ID column, then add one feature at a time. This approach hel
 
 Congratulations! You've successfully mastered DataGrid development in Bagisto.
 
-Your foundation is solid! You can now build professional admin interfaces with powerful data management capabilities. Continue building your complete package by exploring other essential topics like Views, Controllers, Models, Repositories, etc. to create full-featured admin interfaces that administrators will love to use.
+Your foundation is solid! You can now build professional admin interfaces with powerful data management capabilities. The next logical step is to make your DataGrid accessible to administrators through proper navigation.
 
-Each new concept builds upon what you've already learned, making your Bagisto packages more robust and user-friendly.
+**Continue to:** **[Menu](./menu.md)** - Create admin menu entries so administrators can easily access your DataGrid
+
+With DataGrid and menu integration complete, you'll have a fully functional admin interface that administrators will love to use. Each new concept builds upon what you've already learned, making your Bagisto packages more robust and user-friendly.

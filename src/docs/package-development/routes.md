@@ -76,7 +76,7 @@ Route::group([
 });
 ```
 
-::: details Admin Route Explanation
+::: info Admin Route Explanation
 **Route Structure:**
 
 - **Middleware**: `['web', 'admin']` ensures proper session handling and admin authentication
@@ -105,7 +105,7 @@ Route::group([
 });
 ```
 
-::: details Shop Route Explanation
+::: info Shop Route Explanation
 **Route Structure:**
 
 - **Middleware**: `['web', 'locale', 'theme', 'currency']` handles storefront essentials
@@ -123,7 +123,7 @@ Now we need to register these route files with our RMA service provider so Larav
 
 Update your `packages/Webkul/RMA/src/Providers/RMAServiceProvider.php`:
 
-```php
+```php{27-29}
 <?php
 
 namespace Webkul\RMA\Providers;
@@ -149,10 +149,8 @@ class RMAServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Load migrations
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
         
-        // Load routes
         $this->loadRoutesFrom(__DIR__ . '/../Routes/admin-routes.php');
         $this->loadRoutesFrom(__DIR__ . '/../Routes/shop-routes.php');
     }
