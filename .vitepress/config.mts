@@ -45,6 +45,7 @@ export default defineConfig({
     sidebar: [
       {
         text: 'Getting Started with Bagisto',
+        collapsed: false,
         items: [
           { text: 'Why Choose Bagisto?', link: '/docs/getting-started/why-choose-bagisto' },
           { text: 'Before You Start', link: '/docs/getting-started/before-you-start' },
@@ -56,7 +57,7 @@ export default defineConfig({
       },
       {
         text: 'Architecture Concepts',
-        collapsed: true,
+        collapsed: false,
         items: [
           { text: 'Overview', link: '/docs/architecture/overview' },
           { text: 'Backend', link: '/docs/architecture/backend' },
@@ -65,7 +66,7 @@ export default defineConfig({
       },
       {
         text: 'Package Development',
-        collapsed: true,
+        collapsed: false,
         items: [
           { text: 'Getting Started', link: '/docs/package-development/getting-started' },
           { text: 'Migrations', link: '/docs/package-development/migrations' },
@@ -82,12 +83,39 @@ export default defineConfig({
         ]
       },
       {
-        text: 'Digging Deeper',
-        collapsed: true,
+        text: 'Shipping Method Development',
+        collapsed: false,
         items: [
-          { text: 'Shipping Method', link: '/docs/advanced/create-shipping-method' },
-          { text: 'Payment Method', link: '/docs/advanced/create-payment-method' },
-          { text: 'Product Type', link: '/docs/advanced/create-product-type' },
+          { text: 'Getting Started', link: '/docs/shipping-method-development/getting-started' }
+        ]
+      },
+      {
+        text: 'Payment Method Development',
+        collapsed: false,
+        items: [
+          { text: 'Getting Started', link: '/docs/payment-method-development/getting-started' }
+        ]
+      },
+      {
+        text: 'Product Type Development',
+        collapsed: false,
+        items: [
+          { text: 'Getting Started', link: '/docs/product-type-development/getting-started' }
+        ]
+      },
+      {
+        text: 'Theme Development',
+        collapsed: false,
+        items: [
+          { text: 'Store Theme', link: '/docs/themes/create-store-theme' },
+          { text: 'Admin Theme', link: '/docs/themes/create-admin-theme' },
+          { text: 'Custom Theme Package', link: '/docs/themes/custom-theme-package' }
+        ]
+      },
+      {
+        text: 'Digging Deeper',
+        collapsed: false,
+        items: [
           { text: 'Events Listeners', link: '/docs/advanced/events' },
           { text: 'Helpers', link: '/docs/advanced/helpers' },
           { text: 'Override Core Models', link: '/docs/advanced/override-core-model' },
@@ -96,24 +124,15 @@ export default defineConfig({
           { text: 'Configure Elasticsearch', link: '/docs/advanced/indexing-products-to-elasticsearch' },
           { text: 'Best Security Practices', link: '/docs/advanced/security-practice' },
           { text: 'Data Transfer', link: '/docs/advanced/create-data-import' },
-          { text: 'Blade Components', link: '/docs/package-development/blade-components' },
-          { text: 'Layouts', link: '/docs/package-development/layouts' },
-          { text: 'Bundling Assets', link: '/docs/package-development/bundling-assets' },
-          { text: 'Validation', link: '/docs/package-development/validation' },
-        ]
-      },
-      {
-        text: 'Themes',
-        collapsed: true,
-        items: [
-          { text: 'Store Theme', link: '/docs/themes/create-store-theme' },
-          { text: 'Admin Theme', link: '/docs/themes/create-admin-theme' },
-          { text: 'Custom Theme Package', link: '/docs/themes/custom-theme-package' }
+          { text: 'Blade Components', link: '/docs/advanced/blade-components' },
+          { text: 'Layouts', link: '/docs/advanced/layouts' },
+          { text: 'Bundling Assets', link: '/docs/advanced/bundling-assets' },
+          { text: 'Validation', link: '/docs/advanced/validation' },
         ]
       },
       {
         text: 'Performance',
-        collapsed: true,
+        collapsed: false,
         items: [
           { text: 'Indexing', link: '/docs/performance/indexing' },
           { text: 'Full Page Cache', link: '/docs/performance/fpc' },
@@ -123,13 +142,17 @@ export default defineConfig({
       },
       {
         text: 'Bagisto APIs',
-        collapsed: true,
+        collapsed: false,
         items: [
           { text: 'Rest API', link: '/docs/api/rest-api' },
           { text: 'GraphQL API', link: '/docs/api/graphql-api' }
         ]
       }
     ],
+
+    outline: {
+      level: 'deep'
+    },
 
     footer: {
       message: 'Released under the <a href="https://opensource.org/licenses/mit" target="_blank" class="mit-license">MIT License</a>.',
