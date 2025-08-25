@@ -1,106 +1,154 @@
-# Product Type
+# Getting Started
 
-## Introduction
+Creating custom product types in Bagisto allows you to define specialized product behaviors that perfectly match your business needs. Whether you need subscription products, rental items, digital services, or complex product variations, custom product types provide the flexibility to create exactly what your store requires.
 
-Bagisto provides several default product types, including simple, configurable, virtual, grouped, downloadable, and bundled. However, if these default product types do not meet your requirements, you can create your own custom product types.
+For our tutorial, we'll create a **Subscription Product** type that demonstrates all the essential concepts you need to build any type of custom product solution.
 
-Bagisto comes with several built-in product types like simple, configurable, and others to handle different kinds of products. However, if these types don't fit what you need for your store, Bagisto lets you create your own custom product types.
+::: info Learning Objectives
+By the end of this guide, you'll be able to:
+- Understand Bagisto's product type architecture and components
+- Create custom product types using both generator and manual approaches
+- Configure product type properties and behaviors
+- Implement custom business logic for specialized products
+- Test and deploy custom product types in production
+:::
 
-Creating custom product types in Bagisto means you can define new types of products that suit your business perfectly. This flexibility allows you to manage and showcase products in ways that are tailored to your specific needs, ensuring your online store can offer exactly what your customers are looking for.
+## Understanding Bagisto Product Type Architecture
 
-## Creating a New Product Type
+Bagisto's product system is built around a flexible type-based architecture that separates product behavior from data storage:
 
-To extend the functionality of Bagisto by introducing a new product type, such as "custom_product," follow these straightforward steps:
+### Core Components
 
-**Note**: In this example, we will create a new product type called "custom_product".
+| Component | Purpose | Location |
+|-----------|---------|----------|
+| **Product Types Configuration** | Defines product type properties and metadata | `Config/product_types.php` |
+| **Product Type Classes** | Contains business logic for product behavior | `Type/ClassName.php` |
+| **AbstractType Base Class** | Provides core functionality for all product types | Extended by custom classes |
+| **Service Provider** | Registers product type with Bagisto core | `Providers/ServiceProvider.php` |
 
-### Package Creation
+### Key Features
 
-Begin by creating a new package for your custom development needs. If you're unfamiliar with package development in Bagisto, you can find detailed guidance in the [Package Development](../packages) section.
+- **Flexible Product Behavior**: Custom logic for pricing, inventory, cart operations
+- **Type-specific Validation**: Different validation rules per product type
+- **Custom Attributes**: Type-specific product attributes and fields
+- **Extensible Architecture**: Easy integration with existing Bagisto functionality
+- **Admin Integration**: Seamless integration with product creation interface
 
-### Configuration File Setup
+## Development Workflow
 
-Within your package's `Config` directory, establish a new file named `product_types.php`. This file will serve as the configuration hub for defining your custom product types.
+The typical workflow for creating a custom product type follows these steps:
 
-### Define the Product Type:
+### 1. Setup and Structure
+Choose between package generator (if available) or manual setup to create your product type foundation.
 
-Populate the `product_types.php` file with the necessary configuration details to define your new product type. Here’s an example of how to structure this configuration:
+**📖 Next:** [Creating Your First Product Type](./create-your-first-product-type.md)
 
-```php
-<?php
+### 2. Configure Product Type Properties
+Define your product type's basic properties, behavior settings, and availability rules.
 
-return [
-    'custom_product' => [
-        'key'   => 'custom_product',
-        'name'  => 'CustomProduct',
-        'class' => 'Webkul\CustomProduct\Type\CustomProduct',
-        'sort'  => 7
-    ],
-];
+**📖 Next:** [Understanding Product Type Configuration](./understanding-product-type-configuration.md)
+
+### 3. Implement Product Logic
+Build the product type class with custom business logic, pricing, and inventory management.
+
+**📖 Next:** [Understanding AbstractType](./understanding-abstract-type.md)
+
+### 4. Add Advanced Features
+Implement sophisticated features like custom cart behavior, special pricing models, and complex validation.
+
+**📖 Next:** [Advanced Product Type Examples](./advanced-product-type-examples.md)
+
+## Prerequisites
+
+Before you begin, ensure you have:
+
+- **Bagisto Installation**: A working Bagisto development environment
+- **PHP Knowledge**: Familiarity with PHP 8.1+ and Laravel concepts
+- **Package Development**: Basic understanding of Bagisto package structure
+- **Product Understanding**: Knowledge of how Bagisto products work
+
+::: tip Quick Start Path
+**New to Bagisto?** Start with the [step-by-step creation guide](./create-your-first-product-type.md) for your first product type.
+
+**Want deep understanding?** Follow the [manual setup approach](./create-your-first-product-type.md#method-2-manual-setup-complete-understanding) to learn every component.
+:::
+
+## What You'll Build
+
+Throughout this guide, you'll create a **Subscription Product** type that includes:
+
+### Core Features
+- ✅ **Custom Product Behavior**: Subscription-specific logic and validation
+- ✅ **Inventory Management**: Service-based products without traditional stock
+- ✅ **Pricing Logic**: Recurring pricing calculations and discounts
+- ✅ **Cart Integration**: Subscription-specific cart preparation and validation
+
+### Advanced Features (Optional)
+- 🚀 **Billing Frequencies**: Monthly, quarterly, yearly subscription options
+- 🚀 **Trial Periods**: Free trial handling and conversion logic
+- 🚀 **Subscription Limits**: Slot-based availability management
+- 🚀 **Custom Attributes**: Subscription-specific product fields
+
+## Architecture Overview
+
+```text
+Subscription Product Type Package
+├── src/
+│   ├── Type/
+│   │   └── Subscription.php              # Product type logic
+│   ├── Config/
+│   │   └── product_types.php             # Product type definition
+│   └── Providers/
+│       └── ServiceProvider.php          # Package registration
+├── composer.json                        # Package metadata
+└── README.md                            # Documentation
 ```
 
-#### Explanation
+::: info Development Time Estimate
+- **Basic Implementation**: 1-2 hours (manual setup)
+- **Custom Logic**: 2-4 hours (business logic + validation)
+- **Advanced Features**: 4-8 hours (complex behaviors, custom attributes)
+- **Testing & Polish**: 1-2 hours (admin testing, cart validation)
+:::
 
-- `key` : A unique identifier for your product type, used internally within Bagisto.
-- `name` : The display name of your product type, which will be visible in the admin panel and to your customers.
-- `class` : The namespace of the PHP class that defines the behavior and attributes of your custom product type. This class should be located in your package's directory structure.
-- `sort`: An optional field to specify the position of your product type in lists or dropdowns within Bagisto. Lower numbers appear higher in the list.
+## Built-in Product Types Reference
 
-## Merging the Configuration
+Understanding Bagisto's built-in product types helps you decide what to extend or customize:
 
-Follow these steps to merge the configuration and define its behavior:
+### Simple Products
+- **Use Case**: Basic products with straightforward pricing and inventory
+- **Features**: Standard pricing, inventory tracking, simple cart behavior
+- **Best For**: Physical products, digital downloads
 
-### Merge Configuration in ServiceProvider
+### Configurable Products
+- **Use Case**: Products with variations (size, color, etc.)
+- **Features**: Variant management, attribute-based pricing
+- **Best For**: Clothing, electronics with options
 
-In your package's service provider (e.g., `CustomProductServiceProvider.php`), utilize the `mergeConfigFrom()` method within the `register()` method to integrate your product type configuration with Bagisto's core configurations. Here's an example snippet:
+### Virtual Products
+- **Use Case**: Non-physical products or services
+- **Features**: No shipping required, downloadable content
+- **Best For**: Software licenses, consultations
 
-```php
-<?php
+### Grouped Products
+- **Use Case**: Related products sold together
+- **Features**: Bundle pricing, component selection
+- **Best For**: Product kits, related item collections
 
-namespace Webkul\CustomProduct\Providers;
+## When to Create Custom Product Types
 
-use Illuminate\Support\ServiceProvider;
+Consider creating a custom product type when:
 
-class CustomProductServiceProvider extends ServiceProvider
-{
-    /**
-     * Register services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        //...
+- ✅ **Unique Behavior**: Your products need behavior not covered by built-in types
+- ✅ **Special Pricing**: Complex pricing models or calculations
+- ✅ **Custom Attributes**: Type-specific fields and validation rules
+- ✅ **Inventory Logic**: Non-standard inventory management requirements
+- ✅ **Business Rules**: Specific business logic for product handling
 
-        $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/product_types.php',
-            'product_types'
-        );
-    }
-}
-```
+## Ready to Start?
 
-### Define Product Type Class
+Choose your learning path and begin building your custom product type:
 
-Within your package, create a PHP class file named `CustomProduct.php` under `src/Type` directory. This class will define the specific behavior and attributes of your "custom_product" product type. Here’s a basic example to get started:
+**🚀 [Create Your First Product Type →](./create-your-first-product-type.md)**
 
-```php
-<?php
-
-namespace Webkul\CustomProduct\Type;
-
-use Webkul\Product\Type\AbstractType;
-
-class CustomProduct extends AbstractType
-{
-//
-}
-```
-
-Replace the placeholder comments with actual methods and properties tailored to your product type's requirements.
-
-### Extending AbstractType:
-
-After completing the above steps, your product type will be created. However, the `Type/CustomProduct.php` file does not have any code specific to the custom_product type product yet. To inherit the basic functionality of any product type, you need to extend the classes from the Product package, specifically the `type/AbstractType.php` file.
-
-By extending the `AbstractType.php` class in your product type (`Type/CustomProduct.php`), you can provide the core functionality of a product. Additionally, if you need to define custom methods for your product type, you can do so within the `CustomProduct.php` file.
+This section covers both package generator and manual approaches, helping you understand the foundations while building a working subscription product type.
