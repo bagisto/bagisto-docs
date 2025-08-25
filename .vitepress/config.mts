@@ -86,7 +86,11 @@ export default defineConfig({
         text: 'Shipping Method Development',
         collapsed: false,
         items: [
-          { text: 'Getting Started', link: '/docs/shipping-method-development/getting-started' }
+          { text: 'Getting Started', link: '/docs/shipping-method-development/getting-started' },
+          { text: 'Creating Your First Shipping Method', link: '/docs/shipping-method-development/create-your-first-shipping-method' },
+          { text: 'Understanding Carrier', link: '/docs/shipping-method-development/understanding-carrier' },
+          { text: 'Understanding System Configuration', link: '/docs/shipping-method-development/understanding-system-configuration' },
+          { text: 'Advanced Rate Calculation Examples', link: '/docs/shipping-method-development/advanced-rate-calculation-examples' }
         ]
       },
       {
