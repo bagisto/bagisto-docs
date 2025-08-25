@@ -97,7 +97,11 @@ export default defineConfig({
         text: 'Payment Method Development',
         collapsed: false,
         items: [
-          { text: 'Getting Started', link: '/docs/payment-method-development/getting-started' }
+          { text: 'Getting Started', link: '/docs/payment-method-development/getting-started' },
+          { text: 'Creating Your First Payment Method', link: '/docs/payment-method-development/create-your-first-payment-method' },
+          { text: 'Understanding Payment Configuration', link: '/docs/payment-method-development/understanding-payment-configuration' },
+          { text: 'Understanding Payment Class', link: '/docs/payment-method-development/understanding-payment-class' },
+          { text: 'Advanced Payment Examples', link: '/docs/payment-method-development/advanced-payment-examples' }
         ]
       },
       {
