@@ -1,5 +1,15 @@
 # Understanding Carrier Configuration and Class
 
+The carrier component is the heart of your shipping method, consisting of configuration that defines properties and a class that implements business logic.
+
+::: info What You'll Learn
+This section covers:
+- Carrier configuration properties and their purposes
+- AbstractShipping class methods and their implementations
+- Rate calculation logic and best practices
+- Error handling and validation techniques
+:::
+
 ## Understanding the Carrier Configuration
 
 Let's examine the generated `carriers.php` file and understand each configuration option:
@@ -155,3 +165,28 @@ public function calculate()
     return $object;
 }
 ```
+
+## Key Takeaways
+
+Understanding carrier configuration and classes is essential for building robust shipping methods:
+
+**Configuration Best Practices:**
+- ✅ Use descriptive and unique codes
+- ✅ Provide clear titles and descriptions
+- ✅ Set sensible default values
+- ✅ Match class namespace exactly
+
+**Implementation Best Practices:**
+- ✅ Always check `isAvailable()` before calculating rates
+- ✅ Use `core()->convertPrice()` for currency conversion
+- ✅ Handle edge cases (empty carts, invalid products)
+- ✅ Return `false` when shipping is not available
+
+### Continue Learning
+
+**📖 [Understanding System Configuration →](./understanding-system-configuration.md)**
+Learn how to create admin interfaces for your shipping method settings.
+
+**📖 [Advanced Rate Calculation Examples →](./advanced-rate-calculation-examples.md)**
+Explore sophisticated pricing models and API integrations.
+

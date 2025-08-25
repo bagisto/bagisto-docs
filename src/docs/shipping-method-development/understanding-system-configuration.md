@@ -1,5 +1,17 @@
 # Understanding System Configuration
 
+The system configuration creates the admin interface for your shipping method settings, allowing administrators to configure rates, enable/disable the method, and customize behavior per channel.
+
+::: info What You'll Learn
+This section covers:
+- System configuration structure and properties
+- Field types and validation options
+- Multi-channel and multi-locale support
+- Advanced configuration patterns
+:::
+
+## System Configuration Structure
+
 The system configuration creates the admin interface for your shipping method settings:
 
 **File:** `packages/Webkul/CustomExpressShipping/src/Config/system.php`
@@ -112,3 +124,38 @@ return [
     ]
 ];
 ```
+
+## Configuration Best Practices
+
+**Field Organization:**
+- ✅ Group related fields logically
+- ✅ Use descriptive field names and titles
+- ✅ Provide appropriate validation rules
+- ✅ Set sensible default values
+
+**Multi-channel Considerations:**
+- ✅ Enable `channel_based` for store-specific settings (rates, titles)
+- ✅ Enable `locale_based` for translatable content (titles, descriptions)
+- ✅ Consider regional pricing differences
+- ✅ Test with multiple channel configurations
+
+**Validation Guidelines:**
+- ✅ Always validate required fields
+- ✅ Use numeric validation for rates and thresholds
+- ✅ Provide clear error messages
+- ✅ Consider edge cases in validation logic
+
+## Key Takeaways
+
+System configuration provides the bridge between your shipping logic and administrative control:
+
+- **Flexibility**: Administrators can adjust settings without code changes
+- **Multi-channel**: Different configurations for different stores
+- **Validation**: Ensures data integrity and prevents configuration errors
+- **User Experience**: Clean, organized interface for complex settings
+
+### Continue Learning
+
+**📖 [Advanced Rate Calculation Examples →](./advanced-rate-calculation-examples.md)**
+Explore sophisticated pricing models and business logic implementations.
+

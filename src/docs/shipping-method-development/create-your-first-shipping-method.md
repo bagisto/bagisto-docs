@@ -2,6 +2,15 @@
 
 Let's create a custom shipping method using both approaches available in Bagisto. We'll explore the package generator for quick setup and the manual method for complete understanding.
 
+::: info What You'll Learn
+This guide covers the complete process of creating a **Custom Express Shipping** method, including:
+- Package structure setup (generator vs manual)
+- Configuration file creation
+- Rate calculation implementation
+- Admin interface integration
+- Testing and deployment
+:::
+
 ## Method 1: Using Bagisto Package Generator (Quick Setup)
 
 The fastest way to create a shipping method is using Bagisto's package generator. This tool creates the proper structure and boilerplate code automatically.
@@ -450,14 +459,35 @@ Now let's test your custom express shipping method:
 - ✅ Responds correctly to weight/price thresholds
 :::
 
-## Your Next Step
+## Your Next Steps
 
 Congratulations! You've successfully created a custom shipping method for Bagisto. Your express shipping method now integrates seamlessly with the checkout process and provides administrators with full configuration control.
 
 **Key Achievements:**
 - ✅ Built a complete shipping method from scratch
-- ✅ Implemented advanced rate calculation logic
+- ✅ Implemented basic rate calculation logic
 - ✅ Created admin configuration interface
 - ✅ Integrated with Bagisto's shipping system
+
+### Continue Learning
+
+Now that you have a working shipping method, dive deeper into specific components:
+
+**📖 [Understanding Carrier Configuration →](./understanding-carrier.md)**
+Learn about carrier configuration properties, validation, and advanced options.
+
+**📖 [Understanding System Configuration →](./understanding-system-configuration.md)**
+Master the admin interface creation with field types, validation, and multi-channel support.
+
+**📖 [Advanced Rate Calculation Examples →](./advanced-rate-calculation-examples.md)**
+Implement sophisticated pricing models including free shipping thresholds, distance-based pricing, and API integrations.
+
+::: tip Production Considerations
+**Before deploying to production:**
+- Test with various cart configurations
+- Verify multi-channel and multi-locale settings
+- Set up monitoring for rate calculation errors
+- Document configuration options for administrators
+:::
 
 Your shipping method is now ready for production use. You can extend it further by adding features like tracking integration, delivery time estimates, or integration with shipping carrier APIs.
