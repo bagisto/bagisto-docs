@@ -108,7 +108,11 @@ export default defineConfig({
         text: 'Product Type Development',
         collapsed: false,
         items: [
-          { text: 'Getting Started', link: '/docs/product-type-development/getting-started' }
+          { text: 'Getting Started', link: '/docs/product-type-development/getting-started' },
+          { text: 'Creating Your First Product Type', link: '/docs/product-type-development/create-your-first-product-type' },
+          { text: 'Understanding Product Type Configuration', link: '/docs/product-type-development/understanding-product-type-configuration' },
+          { text: 'Understanding Abstract Type Class', link: '/docs/product-type-development/understanding-abstract-type-class' },
+          { text: 'Advanced Product Type Examples', link: '/docs/product-type-development/advanced-product-type-examples' }
         ]
       },
       {
@@ -117,24 +121,24 @@ export default defineConfig({
         items: [
           { text: 'Store Theme', link: '/docs/themes/create-store-theme' },
           { text: 'Admin Theme', link: '/docs/themes/create-admin-theme' },
-          { text: 'Custom Theme Package', link: '/docs/themes/custom-theme-package' }
+          { text: 'Custom Theme Package', link: '/docs/themes/custom-theme-package' },
+          { text: 'Blade Components', link: '/docs/themes/blade-components' },
+          { text: 'Layouts', link: '/docs/themes/layouts' },
+          { text: 'Bundling Assets', link: '/docs/themes/bundling-assets' },
         ]
       },
       {
         text: 'Digging Deeper',
         collapsed: false,
         items: [
+          { text: 'Introduction', link: '/docs/advanced/introduction' },
           { text: 'Events Listeners', link: '/docs/advanced/events' },
           { text: 'Helpers', link: '/docs/advanced/helpers' },
           { text: 'Override Core Models', link: '/docs/advanced/override-core-model' },
           { text: 'View Render Event', link: '/docs/advanced/render-event' },
           { text: 'Email Template', link: '/docs/advanced/change-email-template' },
-          { text: 'Configure Elasticsearch', link: '/docs/advanced/indexing-products-to-elasticsearch' },
           { text: 'Best Security Practices', link: '/docs/advanced/security-practice' },
           { text: 'Data Transfer', link: '/docs/advanced/create-data-import' },
-          { text: 'Blade Components', link: '/docs/advanced/blade-components' },
-          { text: 'Layouts', link: '/docs/advanced/layouts' },
-          { text: 'Bundling Assets', link: '/docs/advanced/bundling-assets' },
           { text: 'Validation', link: '/docs/advanced/validation' },
         ]
       },
@@ -142,10 +146,13 @@ export default defineConfig({
         text: 'Performance',
         collapsed: false,
         items: [
-          { text: 'Indexing', link: '/docs/performance/indexing' },
-          { text: 'Full Page Cache', link: '/docs/performance/fpc' },
-          { text: 'Laravel Octane', link: '/docs/performance/octane' },
-          { text: 'Load Balancing', link: '/docs/performance/loadbalancing' }
+          { text: 'Introduction', link: '/docs/performance/introduction' },
+          { text: 'Understanding Indexers', link: '/docs/performance/understanding-indexers' },
+          { text: 'Configure Elasticsearch', link: '/docs/performance/configure-elasticsearch' },
+          { text: 'Configure Full Page Cache', link: '/docs/performance/configure-fpc' },
+          { text: 'Configure Varnish', link: '/docs/performance/configure-varnish' },
+          { text: 'Configure Laravel Octane', link: '/docs/performance/configure-laravel-octane' },
+          { text: 'Configure Load Balancing', link: '/docs/performance/configure-load-balancing' }
         ]
       },
       {

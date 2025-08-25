@@ -1,9 +1,5 @@
 # Admin Theme
 
-[[TOC]]
-
-## Introduction
-
 The Bagisto admin panel serves as the command center for your e-commerce operations. Customizing its appearance allows you to create a more efficient and branded management experience. This guide provides comprehensive instructions for configuring and developing custom admin themes to match your brand identity and workflow preferences.
 
 ## Theme Configuration

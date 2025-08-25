@@ -1,9 +1,5 @@
 # Custom Theme Package
 
-[[TOC]]
-
-## Introduction 
-
 Creating a custom theme package in Bagisto allows you to keep your theme separate from the core, making it easier to customize and maintain. By isolating the theme into its own package, you can integrate tools like Vite for efficient asset bundling, easily update or override existing sections, and fully tailor the UI to meet your requirements. This modular approach ensures better flexibility, reusability, and smoother theme management.
 
 ## Package Structure Setup

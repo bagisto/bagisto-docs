@@ -1,9 +1,5 @@
 # Store Theme
 
-[[TOC]]
-
-## Introduction 
-
 Themes in Bagisto define the visual identity and user experience of your e-commerce store. They control layouts, styling, and interactive elements that create a cohesive brand experience for your customers. This guide will help you understand, configure, and create custom themes for your Bagisto store.
 
 ## Theme Configuration
