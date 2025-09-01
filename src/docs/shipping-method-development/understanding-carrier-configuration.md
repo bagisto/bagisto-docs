@@ -533,25 +533,4 @@ Learn how to implement the business logic and rate calculation methods for your 
 **📖 [Understanding System Configuration →](./understanding-system-configuration.md)**
 Learn how to create admin interfaces for your shipping method settings.
 
-**📖 [Advanced Rate Calculation Examples →](./advanced-rate-calculation-examples.md)**
-Implement sophisticated pricing models including API integrations and complex business rules.
-
-::: tip Configuration Best Practices Summary
-
-**Structure:**
-- Use clear, descriptive property names
-- Group related settings logically
-- Provide sensible defaults for all optional properties
-
-**Maintainability:**
-- Separate configuration from business logic
-- Use environment variables for sensitive data
-- Validate configuration during application boot
-
-**Testing:**
-- Test configuration loading
-- Verify class instantiation works
-- Validate all configuration branches
-:::
-
 Your carrier configuration is now robust and ready for complex shipping scenarios.

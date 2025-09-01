@@ -495,7 +495,7 @@ Congratulations! You've successfully created a custom shipping method for Bagist
 
 Now that you have a working shipping method, dive deeper into specific components:
 
-**📖 [Understanding Carrier Configuration →](./understanding-carrier.md)**
+**📖 [Understanding Carrier Configuration →](./understanding-carrier-configuration.md)**
 Learn about carrier configuration properties, validation, and advanced options.
 
 **📖 [Understanding Carrier Class →](./understanding-carrier-class.md)**
@@ -503,9 +503,6 @@ Learn how to implement the business logic and rate calculation methods for your 
 
 **📖 [Understanding System Configuration →](./understanding-system-configuration.md)**
 Master the admin interface creation with field types, validation, and multi-channel support.
-
-**📖 [Advanced Rate Calculation Examples →](./advanced-rate-calculation-examples.md)**
-Implement sophisticated pricing models including free shipping thresholds, distance-based pricing, and API integrations.
 
 ::: tip Production Considerations
 **Before deploying to production:**
@@ -515,4 +512,4 @@ Implement sophisticated pricing models including free shipping thresholds, dista
 - Document configuration options for administrators
 :::
 
-Your shipping method is now completed. You can extend it further by adding features like tracking integration, delivery time estimates, or integration with shipping carrier APIs.
+Your shipping method is now complete! You can extend it further by adding features like tracking integration, delivery time estimates, or API integrations with shipping carriers.

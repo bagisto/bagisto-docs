@@ -9,8 +9,7 @@ By the end of this guide, you'll be able to:
 - Understand Bagisto's shipping architecture and components
 - Create custom shipping methods using both generator and manual approaches
 - Configure admin interfaces for shipping method settings
-- Implement advanced rate calculation logic
-- Test and deploy custom shipping methods in production
+- Implement rate calculation logic
 :::
 
 ## Understanding Bagisto Shipping Architecture
@@ -38,30 +37,29 @@ Bagisto's shipping system is built around a flexible carrier-based architecture 
 
 The typical workflow for creating a custom shipping method follows these steps:
 
-### 1. Setup and Structure
-Choose between package generator (quick) or manual setup (educational) to create your shipping method foundation.
+### 1. Create Your Shipping Method
+Choose between package generator (quick) or manual setup (educational) to create a complete working shipping method.
 
-**📖 Next:** [Creating Your First Shipping Method](./create-your-first-shipping-method.md)
+**📖 [Create Your First Shipping Method →](./create-your-first-shipping-method.md)**
 
-### 2. Configure Carrier Properties
-Define your shipping method's basic properties, pricing model, and availability rules.
+This section shows you how to build a complete working shipping method, then the remaining sections help you understand how to customize each component.
 
-**📖 Next:** [Understanding Carrier Configuration](./understanding-carrier.md)
+### 2. Understand Carrier Configuration
+Learn how carrier configuration works and how to customize shipping method properties.
 
-### 3. Implement Business Logic
-Build the carrier class that handles rate calculation, availability checks, and shipping method behavior.
+**📖 Next:** [Understanding Carrier Configuration](./understanding-carrier-configuration.md)
+
+### 3. Understand Business Logic
+Explore how the carrier class handles rate calculation and shipping method behavior.
 
 **📖 Next:** [Understanding Carrier Class](./understanding-carrier-class.md)
 
-### 4. Build Admin Interface
-Create configuration forms that allow administrators to manage shipping method settings.
+### 4. Understand Admin Interface
+Learn how system configuration creates admin forms for managing shipping method settings.
 
 **📖 Next:** [Understanding System Configuration](./understanding-system-configuration.md)
 
-### 5. Implement Advanced Logic
-Add sophisticated rate calculation, API integrations, and business rules.
-
-**📖 Next:** [Advanced Rate Calculation Examples](./advanced-rate-calculation-examples.md)
+You'll have a complete working shipping method after step 1, and steps 2-4 help you understand how to customize and extend it.
 
 ## Prerequisites
 
@@ -69,7 +67,7 @@ Before you begin, ensure you have:
 
 - **Bagisto Installation**: A working Bagisto development environment
 - **PHP Knowledge**: Familiarity with PHP 8.1+ and Laravel concepts
-- **Package Development**: Basic understanding of Laravel service providers
+- **Package Development**: Basic understanding of [Package Development](../package-development/getting-started.md)
 - **Development Tools**: Composer, Git, and a code editor
 
 ::: tip Quick Start Path
@@ -87,12 +85,6 @@ Throughout this guide, you'll create a **Custom Express Shipping** method that i
 - ✅ **Admin Configuration**: Complete settings interface in Bagisto admin
 - ✅ **Rate Calculation**: Dynamic pricing based on cart contents
 - ✅ **Multi-channel Support**: Different settings per sales channel
-
-### Advanced Features (Optional)
-- 🚀 **Free Shipping Thresholds**: Conditional free shipping based on order value
-- 🚀 **Distance Based Pricing**: Geographic rate calculation
-- 🚀 **API Integration**: Real-time rates from shipping carriers
-- 🚀 **Custom Validation**: Business-specific shipping rules
 
 ## Architecture Overview
 

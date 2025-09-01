@@ -53,7 +53,7 @@ return [
 
 For detailed information about all available field types, validation rules, and advanced configuration options, see:
 
-**📖 [Package Development - System Configuration →](../package-development/create-system-configuration.md)**
+**📖 [Package Development - System Configuration →](../package-development/system-configuration.md)**
 Complete guide to creating admin configuration interfaces with all field types and options.
 
 ## Accessing Configuration Data
@@ -85,30 +85,9 @@ public function calculate()
 
 ## What's Next?
 
-Now that you understand system configuration, let's explore advanced implementation patterns:
-
-**📖 [Advanced Rate Calculation Examples →](./advanced-rate-calculation-examples.md)**
-Learn sophisticated pricing models and real-world implementation patterns.
+Now that you understand system configuration, you have all the pieces to build a complete shipping method:
 
 **📖 [Back to Getting Started ←](./getting-started.md)**
-Review the complete shipping method development workflow.
+Review the complete shipping method development workflow and see your progress.
 
-::: tip System Configuration Summary
-
-**Key Concepts:**
-- Configuration files create admin interface fields
-- Use appropriate field types for different data
-- Access configuration data with `getConfigData()`
-
-**Common Field Types:**
-- `boolean` for enable/disable toggles
-- `text` for simple text input
-- `select` for dropdown options
-
-**Simple Structure:**
-1. Define configuration fields in system.php
-2. Access values in carrier class with `getConfigData()`
-3. Use values in your shipping logic
-:::
-
-Your shipping method now has a simple admin configuration interface. The next section explores advanced rate calculation patterns.
+Your shipping method now has a complete admin configuration interface. You're ready to build sophisticated shipping solutions!

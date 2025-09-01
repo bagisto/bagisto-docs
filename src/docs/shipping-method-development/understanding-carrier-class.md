@@ -157,27 +157,4 @@ Now that you understand the carrier class, let's explore system configuration:
 **📖 [Understanding System Configuration →](./understanding-system-configuration.md)**
 Learn how to create admin interfaces for configuring your shipping method.
 
-**📖 [Advanced Rate Calculation Examples →](./advanced-rate-calculation-examples.md)**
-Explore more sophisticated pricing models and real-world patterns.
-
-::: tip Carrier Class Summary
-
-**Key Points:**
-- Extend `AbstractShipping` class
-- Implement only the `calculate()` method
-- Return `false` when shipping is unavailable
-- Return `CartShippingRate` object when available
-
-**Simple Structure:**
-1. Check if method is active
-2. Create `CartShippingRate` object
-3. Set carrier, method, title, and price
-4. Return the rate object
-
-**Data Access:**
-- `$this->getConfigData('field')` - Get admin configuration
-- `$this->getCart()` - Get cart information
-- `$this->getShippingAddress()` - Get shipping address
-:::
-
 Your carrier class is now ready to handle shipping calculations. The next section shows you how to create admin configuration interfaces.
