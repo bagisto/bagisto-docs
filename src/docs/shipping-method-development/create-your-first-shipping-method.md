@@ -51,6 +51,70 @@ The generator automatically creates:
 - Service provider with proper registration
 :::
 
+### Step 4: Register the Generated Package
+
+After generating the package, you need to register it with Bagisto:
+
+**Add to composer.json** (in Bagisto root directory):
+
+```json{5}
+{
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Webkul\\CustomExpressShipping\\": "packages/Webkul/CustomExpressShipping/src"
+        }
+    }
+}
+```
+
+**Update autoloader:**
+
+```bash
+composer dump-autoload
+```
+
+**Register service provider** in `bootstrap/providers.php`:
+
+```php{8}
+<?php
+
+return [
+    App\Providers\AppServiceProvider::class,
+    
+    // ... other providers ...
+    
+    Webkul\CustomExpressShipping\Providers\CustomExpressShippingServiceProvider::class,
+];
+```
+
+**Clear caches:**
+
+```bash
+php artisan optimize:clear
+```
+
+### Step 5: Configure Your Shipping Method
+
+Now test the basic configuration that the generator created:
+
+1. **Go to Admin Panel**: Navigate to **Configure → Shipping Methods**
+2. **Find Your Method**: Look for "Custom Express Shipping" section
+3. **Basic Configuration**: You'll see some basic configuration fields that can be adjusted as per your needs
+
+::: tip Translation Note
+You may notice some translation keys are missing as we haven't registered translation files yet. For complete localization setup, refer to the [Localization section in Package Development](../package-development/localization.md). The main purpose here is to understand shipping method functionality.
+:::
+
+::: info Generator Creates Basic Configuration
+The package generator creates a simple shipping method with:
+- **Flat rate pricing**: Single rate for all orders
+- **Basic admin fields**: Essential configuration options
+- **Standard structure**: Following Bagisto conventions
+
+For advanced features like weight-based pricing, API integration, or complex calculations, you'll need to customize the generated code or use the manual approach below.
+:::
+
 ## Method 2: Manual Setup (Complete Understanding)
 
 For developers who want to understand every component, let's create the shipping method manually from scratch.
@@ -113,6 +177,16 @@ Create the main carrier class that handles rate calculation:
 
 **Create:** `packages/Webkul/CustomExpressShipping/src/Carriers/CustomExpressShipping.php`
 
+::: tip Don't Get Overwhelmed!
+Don't worry about understanding every line of code right now - just go with the flow! We'll cover all these concepts in detail in the following sections:
+- **Carrier configuration** and properties
+- **Rate calculation logic** and methods
+- **System configuration** and admin fields
+- **Advanced features** and customizations
+
+Focus on getting your shipping method working first, then dive deeper into each component.
+:::
+
 ```php
 <?php
 
@@ -134,14 +208,14 @@ class CustomExpressShipping extends AbstractShipping
      */
     public function calculate()
     {
-        // Check if shipping method is available
+        // check if shipping method is available
         if (! $this->isAvailable()) {
             return false;
         }
 
         $cart = Cart::getCart();
         
-        // Create shipping rate object
+        // create shipping rate object
         $object = new CartShippingRate;
         $object->carrier = 'custom_express_shipping';
         $object->carrier_title = $this->getConfigData('title');
@@ -149,26 +223,28 @@ class CustomExpressShipping extends AbstractShipping
         $object->method_title = $this->getConfigData('title');
         $object->method_description = $this->getConfigData('description');
         
-        // Calculate rate - start with base rate
+        // calculate rate - start with base rate
         $baseRate = $this->getConfigData('default_rate');
         $finalRate = $baseRate;
         
-        // Express shipping logic - you can customize this
+        // express shipping logic - you can customize this
         if ($this->getConfigData('type') === 'per_unit') {
-            // Calculate per item
+            // calculate per item
             $totalItems = 0;
+
             foreach ($cart->items as $item) {
                 if ($item->product->getTypeInstance()->isStockable()) {
                     $totalItems += $item->quantity;
                 }
             }
+
             $finalRate = $baseRate * $totalItems;
         } else {
-            // Per order pricing (flat rate)
+            // per order pricing (flat rate)
             $finalRate = $baseRate;
         }
         
-        // Set calculated prices
+        // set calculated prices
         $object->price = core()->convertPrice($finalRate);
         $object->base_price = $finalRate;
 
@@ -187,57 +263,60 @@ Create the admin interface configuration for your shipping method:
 <?php
 
 return [
-    'key'    => 'sales.carriers.custom_express_shipping',
-    'name'   => 'Custom Express Shipping',
-    'sort'   => 2,
-    'fields' => [
-        [
-            'name'          => 'title',
-            'title'         => 'Method Title',
-            'type'          => 'text',
-            'validation'    => 'required',
-            'channel_based' => true,
-            'locale_based'  => true
-        ],
-        [
-            'name'          => 'description', 
-            'title'         => 'Description',
-            'type'          => 'textarea',
-            'channel_based' => true,
-            'locale_based'  => false
-        ],
-        [
-            'name'          => 'default_rate',
-            'title'         => 'Base Rate ($)',
-            'type'          => 'text',
-            'validation'    => 'required|numeric|min:0',
-            'channel_based' => true,
-            'locale_based'  => false
-        ],
-        [
-            'name'    => 'type',
-            'title'   => 'Pricing Type',
-            'type'    => 'select',
-            'options' => [
-                [
-                    'title' => 'Per Order (Flat Rate)',
-                    'value' => 'per_order',
-                ],
-                [
-                    'title' => 'Per Item',
-                    'value' => 'per_unit',
-                ],
+    [
+        'key'    => 'sales.carriers.custom_express_shipping',
+        'name'   => 'Custom Express Shipping',
+        'info'   => 'Configure the Custom Express Shipping method settings.',
+        'sort'   => 1,
+        'fields' => [
+            [
+                'name'          => 'title',
+                'title'         => 'Method Title',
+                'type'          => 'text',
+                'validation'    => 'required',
+                'channel_based' => true,
+                'locale_based'  => true
             ],
-            'channel_based' => true,
-            'locale_based'  => false,
-        ],
-        [
-            'name'          => 'active',
-            'title'         => 'Enabled',
-            'type'          => 'boolean',
-            'validation'    => 'required',
-            'channel_based' => true,
-            'locale_based'  => false
+            [
+                'name'          => 'description', 
+                'title'         => 'Description',
+                'type'          => 'textarea',
+                'channel_based' => true,
+                'locale_based'  => false
+            ],
+            [
+                'name'          => 'default_rate',
+                'title'         => 'Base Rate ($)',
+                'type'          => 'text',
+                'validation'    => 'required|numeric|min:0',
+                'channel_based' => true,
+                'locale_based'  => false
+            ],
+            [
+                'name'    => 'type',
+                'title'   => 'Pricing Type',
+                'type'    => 'select',
+                'options' => [
+                    [
+                        'title' => 'Per Order (Flat Rate)',
+                        'value' => 'per_order',
+                    ],
+                    [
+                        'title' => 'Per Item',
+                        'value' => 'per_unit',
+                    ],
+                ],
+                'channel_based' => true,
+                'locale_based'  => false,
+            ],
+            [
+                'name'          => 'active',
+                'title'         => 'Enabled',
+                'type'          => 'boolean',
+                'validation'    => 'required',
+                'channel_based' => true,
+                'locale_based'  => false
+            ]
         ]
     ]
 ];
@@ -263,13 +342,13 @@ class CustomExpressShippingServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Merge carrier configuration
+        // merge carrier configuration
         $this->mergeConfigFrom(
             dirname(__DIR__) . '/Config/carriers.php',
             'carriers'
         );
 
-        // Merge system configuration  
+        // merge system configuration  
         $this->mergeConfigFrom(
             dirname(__DIR__) . '/Config/system.php',
             'core'
@@ -281,98 +360,15 @@ class CustomExpressShippingServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Additional bootstrapping can be added here
-        // For example: publishing configs, loading views, etc.
     }
 }
 ```
 
-## Generated vs Manual Package Structure
+### Step 6: Register Your Package
 
-Both methods create the same final structure:
+After creating all the files, you need to register your package with Bagisto:
 
-```text
-packages
-└── Webkul
-    └── CustomExpressShipping
-        └── src
-            ├── Carriers
-            │   └── CustomExpressShipping.php     # Rate calculation logic
-            ├── Config
-            │   ├── carriers.php                   # Shipping method definition
-            │   └── system.php                     # Admin configuration
-            └── Providers
-                └── CustomExpressShippingServiceProvider.php  # Registration
-```
-
-::: tip Choosing Your Approach
-**Use Package Generator When:**
-- Quick prototyping or testing
-- Following standard Bagisto patterns
-- Building simple shipping methods
-- Learning Bagisto basics
-
-**Use Manual Setup When:**
-- Need complete control over code
-- Building complex shipping logic
-- Want to understand every component
-- Customizing beyond standard patterns
-:::
-
-Let's continue with understanding each component and how to customize it for your needs.
-
-## Registering Your Shipping Method
-
-The service provider handles registering your shipping method with Bagisto. Let's examine and enhance the generated service provider:
-
-**File:** `packages/Webkul/CustomExpressShipping/src/Providers/CustomExpressShippingServiceProvider.php`
-
-```php
-<?php
-
-namespace Webkul\CustomExpressShipping\Providers;
-
-use Illuminate\Support\ServiceProvider;
-
-class CustomExpressShippingServiceProvider extends ServiceProvider
-{
-    /**
-     * Register services.
-     */
-    public function register(): void
-    {
-        $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/carriers.php',
-            'carriers'
-        );
-
-        $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/system.php',
-            'core'
-        );
-    }
-
-    /**
-     * Bootstrap services.
-     */
-    public function boot(): void
-    {
-        // Additional bootstrapping can be added here
-    }
-}
-```
-
-::: info Service Provider Explained
-**Key Functions:**
-
-- **`mergeConfigFrom()`**: Merges your package configs with Bagisto's core configurations
-- **Carriers Registration**: Makes your shipping method available to the shipping system
-- **System Configuration**: Adds your admin form fields to the configuration interface
-:::
-
-### Composer Autoloading Registration
-
-Add your package namespace to `composer.json` in the Bagisto root directory:
+**Add to composer.json** (in Bagisto root directory):
 
 ```json{5}
 {
@@ -385,11 +381,13 @@ Add your package namespace to `composer.json` in the Bagisto root directory:
 }
 ```
 
+**Update autoloader:**
 
+```bash
+composer dump-autoload
+```
 
-### Service Provider Registration
-
-Register your service provider in `bootstrap/providers.php`:
+**Register service provider** in `bootstrap/providers.php`:
 
 ```php{8}
 <?php
@@ -403,15 +401,7 @@ return [
 ];
 ```
 
-After registering the service provider, run composer dump-autoload to ensure the new classes are autoloaded:
-
-```bash
-composer dump-autoload
-```
-
-### Finalizing Installation
-
-Complete the installation with these commands:
+**Clear caches:**
 
 ```bash
 php artisan optimize:clear
@@ -423,7 +413,7 @@ Now let's test your custom express shipping method:
 
 ### Step 1: Enable in Admin
 
-1. Go to **Admin Panel → Configuration → Sales → Carriers**
+1. Go to **Admin Panel → Configure → Shipping Methods**
 2. Find **Custom Express Shipping** section
 3. Set **Enabled** to **Yes**
 4. Configure your rates and settings
@@ -459,6 +449,38 @@ Now let's test your custom express shipping method:
 - ✅ Responds correctly to weight/price thresholds
 :::
 
+## Generated vs Manual Package Structure
+
+Both methods create the same final structure:
+
+```text
+packages
+└── Webkul
+    └── CustomExpressShipping
+        └── src
+            ├── Carriers
+            │   └── CustomExpressShipping.php                 # Rate calculation logic
+            ├── Config
+            │   ├── carriers.php                              # Shipping method definition
+            │   └── system.php                                # Admin configuration
+            └── Providers
+                └── CustomExpressShippingServiceProvider.php  # Registration
+```
+
+::: tip Choosing Your Approach
+**Use Package Generator When:**
+- Quick prototyping or testing
+- Following standard Bagisto patterns
+- Building simple shipping methods
+- Learning Bagisto basics
+
+**Use Manual Setup When:**
+- Need complete control over code
+- Building complex shipping logic
+- Want to understand every component
+- Customizing beyond standard patterns
+:::
+
 ## Your Next Steps
 
 Congratulations! You've successfully created a custom shipping method for Bagisto. Your express shipping method now integrates seamlessly with the checkout process and provides administrators with full configuration control.
@@ -476,6 +498,9 @@ Now that you have a working shipping method, dive deeper into specific component
 **📖 [Understanding Carrier Configuration →](./understanding-carrier.md)**
 Learn about carrier configuration properties, validation, and advanced options.
 
+**📖 [Understanding Carrier Class →](./understanding-carrier-class.md)**
+Learn how to implement the business logic and rate calculation methods for your shipping method.
+
 **📖 [Understanding System Configuration →](./understanding-system-configuration.md)**
 Master the admin interface creation with field types, validation, and multi-channel support.
 
@@ -490,4 +515,4 @@ Implement sophisticated pricing models including free shipping thresholds, dista
 - Document configuration options for administrators
 :::
 
-Your shipping method is now ready for production use. You can extend it further by adding features like tracking integration, delivery time estimates, or integration with shipping carrier APIs.
+Your shipping method is now completed. You can extend it further by adding features like tracking integration, delivery time estimates, or integration with shipping carrier APIs.

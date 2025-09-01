@@ -88,9 +88,9 @@ export default defineConfig({
         items: [
           { text: 'Getting Started', link: '/docs/shipping-method-development/getting-started' },
           { text: 'Creating Your First Shipping Method', link: '/docs/shipping-method-development/create-your-first-shipping-method' },
-          { text: 'Understanding Carrier', link: '/docs/shipping-method-development/understanding-carrier' },
+          { text: 'Understanding Carrier Configuration', link: '/docs/shipping-method-development/understanding-carrier-configuration' },
+          { text: 'Understanding Carrier Class', link: '/docs/shipping-method-development/understanding-carrier-class' },
           { text: 'Understanding System Configuration', link: '/docs/shipping-method-development/understanding-system-configuration' },
-          { text: 'Advanced Rate Calculation Examples', link: '/docs/shipping-method-development/advanced-rate-calculation-examples' }
         ]
       },
       {
@@ -119,12 +119,12 @@ export default defineConfig({
         text: 'Theme Development',
         collapsed: false,
         items: [
-          { text: 'Store Theme', link: '/docs/themes/create-store-theme' },
-          { text: 'Admin Theme', link: '/docs/themes/create-admin-theme' },
-          { text: 'Custom Theme Package', link: '/docs/themes/custom-theme-package' },
-          { text: 'Blade Components', link: '/docs/themes/blade-components' },
-          { text: 'Layouts', link: '/docs/themes/layouts' },
-          { text: 'Bundling Assets', link: '/docs/themes/bundling-assets' },
+          { text: 'Store Theme', link: '/docs/theme-development/create-store-theme' },
+          { text: 'Admin Theme', link: '/docs/theme-development/create-admin-theme' },
+          { text: 'Custom Theme Package', link: '/docs/theme-development/custom-theme-package' },
+          { text: 'Blade Components', link: '/docs/theme-development/blade-components' },
+          { text: 'Layouts', link: '/docs/theme-development/layouts' },
+          { text: 'Bundling Assets', link: '/docs/theme-development/bundling-assets' },
         ]
       },
       {

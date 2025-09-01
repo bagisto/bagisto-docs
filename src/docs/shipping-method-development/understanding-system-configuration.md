@@ -1,18 +1,17 @@
 # Understanding System Configuration
 
-The system configuration creates the admin interface for your shipping method settings, allowing administrators to configure rates, enable/disable the method, and customize behavior per channel.
+Learn how to create admin configuration interfaces for your shipping method, allowing administrators to customize settings without touching code.
 
 ::: info What You'll Learn
-This section covers:
-- System configuration structure and properties
-- Field types and validation options
-- Multi-channel and multi-locale support
-- Advanced configuration patterns
+This guide covers:
+- Creating simple configuration fields
+- Field types and validation
+- Accessing configuration data in your carrier class
 :::
 
-## System Configuration Structure
+## Basic Configuration Structure
 
-The system configuration creates the admin interface for your shipping method settings:
+System configuration creates admin interface fields for your shipping method:
 
 **File:** `packages/Webkul/CustomExpressShipping/src/Config/system.php`
 
@@ -20,142 +19,96 @@ The system configuration creates the admin interface for your shipping method se
 <?php
 
 return [
-    'key'    => 'sales.carriers.custom_express_shipping',
-    'name'   => 'Custom Express Shipping',
-    'sort'   => 2,
-    'fields' => [
-        [
-            'name'          => 'title',
-            'title'         => 'Method Title',
-            'type'          => 'text',
-            'validation'    => 'required',
-            'channel_based' => true,
-            'locale_based'  => true
-        ],
-        [
-            'name'          => 'description', 
-            'title'         => 'Description',
-            'type'          => 'textarea',
-            'channel_based' => true,
-            'locale_based'  => false
-        ],
-        [
-            'name'          => 'default_rate',
-            'title'         => 'Base Rate ($)',
-            'type'          => 'text',
-            'validation'    => 'required|numeric|min:0',
-            'channel_based' => true,
-            'locale_based'  => false
-        ],
-        [
-            'name'          => 'active',
-            'title'         => 'Enabled',
-            'type'          => 'boolean',
-            'validation'    => 'required',
-            'channel_based' => true,
-            'locale_based'  => false
+    [
+        'key'    => 'sales.carriers.custom_express_shipping',
+        'name'   => 'Custom Express Shipping',
+        'info'   => 'Configure the Custom Express Shipping method settings.',
+        'sort'   => 1,
+        'fields' => [
+            [
+                'name'          => 'active',
+                'title'         => 'Enable Method',
+                'type'          => 'boolean',
+                'default_value' => true,
+            ],
+            [
+                'name'          => 'title',
+                'title'         => 'Method Title',
+                'type'          => 'text',
+                'default_value' => 'Express Delivery',
+            ],
+            [
+                'name'          => 'default_rate',
+                'title'         => 'Shipping Rate',
+                'type'          => 'text',
+                'default_value' => '19.99',
+                'validation'    => 'numeric|min:0',
+            ],
         ]
     ]
 ];
 ```
 
-::: info System Configuration Explained
-**Configuration Properties:**
+## Field Types and Validation
 
-- **`key`**: Configuration path following Bagisto's convention
-- **`name`**: Section name in admin configuration
-- **`sort`**: Order in the carriers list
-- **`fields`**: Array of form fields for admin settings
+For detailed information about all available field types, validation rules, and advanced configuration options, see:
 
-**Field Properties:**
-- **`name`**: Field identifier (matches getConfigData() parameter)
-- **`title`**: Label shown in admin form
-- **`type`**: Field type (text, textarea, select, boolean, etc.)
-- **`validation`**: Laravel validation rules
-- **`channel_based`**: Different values per sales channel
-- **`locale_based`**: Different values per language
-:::
+**📖 [Package Development - System Configuration →](../package-development/create-system-configuration.md)**
+Complete guide to creating admin configuration interfaces with all field types and options.
 
-## Adding Advanced Configuration Options
+## Accessing Configuration Data
 
-Let's enhance the configuration with more options:
+Once you've defined your configuration fields, you can access their values in your carrier class using the `getConfigData()` method:
 
-```php{11-35}
-return [
-    'key'    => 'sales.carriers.custom_express_shipping',
-    'name'   => 'Custom Express Shipping',
-    'sort'   => 2,
-    'fields' => [
-        // ...existing fields...
-        
-        [
-            'name'          => 'free_shipping_amount',
-            'title'         => 'Free Shipping Above ($)',
-            'type'          => 'text',
-            'validation'    => 'nullable|numeric|min:0',
-            'channel_based' => true,
-            'locale_based'  => false
-        ],
-        [
-            'name'          => 'max_weight',
-            'title'         => 'Maximum Weight (kg)',
-            'type'          => 'text',
-            'validation'    => 'nullable|numeric|min:0',
-            'channel_based' => true,
-            'locale_based'  => false
-        ],
-        [
-            'name'    => 'delivery_time',
-            'title'   => 'Delivery Time',
-            'type'    => 'select',
-            'options' => [
-                [
-                    'title' => '1-2 Business Days',
-                    'value' => '1-2_days',
-                ],
-                [
-                    'title' => '2-3 Business Days', 
-                    'value' => '2-3_days',
-                ],
-            ],
-            'channel_based' => true,
-            'locale_based'  => false,
-        ],
-    ]
-];
+### In Your Carrier Class
+
+The most common place to access configuration data is in your carrier's `calculate()` method:
+```php
+public function calculate()
+{
+    // get configuration values
+    $isActive = $this->getConfigData('active');
+    $title = $this->getConfigData('title');
+    $rate = $this->getConfigData('default_rate');
+    
+    // use in your logic
+    if (! $isActive) {
+        return false;
+    }
+    
+    $shippingRate = new CartShippingRate;
+    $shippingRate->price = $rate;
+    
+    return $shippingRate;
+}
 ```
 
-## Configuration Best Practices
+## What's Next?
 
-**Field Organization:**
-- ✅ Group related fields logically
-- ✅ Use descriptive field names and titles
-- ✅ Provide appropriate validation rules
-- ✅ Set sensible default values
-
-**Multi-channel Considerations:**
-- ✅ Enable `channel_based` for store-specific settings (rates, titles)
-- ✅ Enable `locale_based` for translatable content (titles, descriptions)
-- ✅ Consider regional pricing differences
-- ✅ Test with multiple channel configurations
-
-**Validation Guidelines:**
-- ✅ Always validate required fields
-- ✅ Use numeric validation for rates and thresholds
-- ✅ Provide clear error messages
-- ✅ Consider edge cases in validation logic
-
-## Key Takeaways
-
-System configuration provides the bridge between your shipping logic and administrative control:
-
-- **Flexibility**: Administrators can adjust settings without code changes
-- **Multi-channel**: Different configurations for different stores
-- **Validation**: Ensures data integrity and prevents configuration errors
-- **User Experience**: Clean, organized interface for complex settings
-
-### Continue Learning
+Now that you understand system configuration, let's explore advanced implementation patterns:
 
 **📖 [Advanced Rate Calculation Examples →](./advanced-rate-calculation-examples.md)**
-Explore sophisticated pricing models and business logic implementations.
+Learn sophisticated pricing models and real-world implementation patterns.
 
+**📖 [Back to Getting Started ←](./getting-started.md)**
+Review the complete shipping method development workflow.
+
+::: tip System Configuration Summary
+
+**Key Concepts:**
+- Configuration files create admin interface fields
+- Use appropriate field types for different data
+- Access configuration data with `getConfigData()`
+
+**Common Field Types:**
+- `boolean` for enable/disable toggles
+- `text` for simple text input
+- `select` for dropdown options
+
+**Simple Structure:**
+1. Define configuration fields in system.php
+2. Access values in carrier class with `getConfigData()`
+3. Use values in your shipping logic
+:::
+
+Your shipping method now has a simple admin configuration interface. The next section explores advanced rate calculation patterns.

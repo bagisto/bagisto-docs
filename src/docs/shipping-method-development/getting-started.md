@@ -48,12 +48,17 @@ Define your shipping method's basic properties, pricing model, and availability 
 
 **📖 Next:** [Understanding Carrier Configuration](./understanding-carrier.md)
 
-### 3. Build Admin Interface
+### 3. Implement Business Logic
+Build the carrier class that handles rate calculation, availability checks, and shipping method behavior.
+
+**📖 Next:** [Understanding Carrier Class](./understanding-carrier-class.md)
+
+### 4. Build Admin Interface
 Create configuration forms that allow administrators to manage shipping method settings.
 
 **📖 Next:** [Understanding System Configuration](./understanding-system-configuration.md)
 
-### 4. Implement Advanced Logic
+### 5. Implement Advanced Logic
 Add sophisticated rate calculation, API integrations, and business rules.
 
 **📖 Next:** [Advanced Rate Calculation Examples](./advanced-rate-calculation-examples.md)
