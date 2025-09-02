@@ -45,8 +45,7 @@ Module/src/
 │   ├── Module.php
 │   └── ModuleProxy.php
 ├── Repositories/
-│   ├── ModuleRepository.php
-│   └── ModuleRepositoryContract.php
+│   └── ModuleRepository.php
 ├── Resources/
 │   ├── views/
 │   │   ├── admin/
@@ -66,7 +65,7 @@ Module/src/
     ├── Unit/
     │   └── ModuleTest.php
     └── Feature/
-      └── ModuleFeatureTest.php
+        └── ModuleFeatureTest.php
 ```
 
 **Key Components:**

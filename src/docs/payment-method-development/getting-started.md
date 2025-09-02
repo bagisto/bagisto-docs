@@ -9,7 +9,6 @@ By the end of this guide, you'll be able to:
 - Understand Bagisto's payment architecture
 - Create custom payment methods using generator or manual approaches
 - Configure admin interfaces for payment settings
-- Implement secure payment processing
 :::
 
 ## Understanding Bagisto Payment Architecture
@@ -20,7 +19,7 @@ Bagisto's payment system is built around a flexible method-based architecture th
 
 | Component | Purpose | Location |
 |-----------|---------|----------|
-| **Payment Methods Configuration** | Defines payment method properties | `Config/payment_methods.php` |
+| **Payment Methods Configuration** | Defines payment method properties | `Config/payment-methods.php` |
 | **Payment Classes** | Contains payment processing logic | `Payment/ClassName.php` |
 | **System Configuration** | Admin interface forms | `Config/system.php` |
 | **Service Provider** | Registers payment method | `Providers/ServiceProvider.php` |
@@ -76,10 +75,10 @@ Before you begin, ensure you have:
 Throughout this guide, you'll create a **Custom Stripe Payment** method that includes:
 
 ### Core Features
-- ✅ **Secure Payment Processing**: Tokenized payment handling with Stripe API
+- ✅ **Basic Payment Processing**: Without redirect url
 - ✅ **Admin Configuration**: Complete settings interface in Bagisto admin
 - ✅ **Order Integration**: Seamless integration with Bagisto's order system
-- ✅ **Multi-channel Support**: Different API keys per sales channel
+- ✅ **Multi-channel Support**: Different value per sales channel
 
 ## Architecture Overview
 

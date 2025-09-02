@@ -357,28 +357,6 @@ Now let's test your custom payment method:
 4. Verify your payment method appears
 5. Test payment processing
 
-### Step 3: Testing Checklist
-
-::: info Testing Checklist
-**Admin Configuration:**
-- ✅ Custom Stripe Payment appears in payment method settings
-- ✅ All form fields render correctly
-- ✅ Settings save and persist properly
-- ✅ Validation works for required fields
-
-**Frontend Functionality:**
-- ✅ Payment method appears during checkout
-- ✅ Payment processing works correctly
-- ✅ Method title and description display properly
-- ✅ Integration with order management works
-
-**Edge Cases:**
-- ✅ Method respects enabled/disabled status
-- ✅ Handles payment failures gracefully
-- ✅ Works with different order amounts
-- ✅ Responds correctly to API key validation
-:::
-
 ## Generated vs Manual Package Structure
 
 Both methods create the same final structure:
