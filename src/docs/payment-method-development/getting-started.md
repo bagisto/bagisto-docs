@@ -1,16 +1,15 @@
 # Getting Started
 
-Creating custom payment methods in Bagisto enables you to offer diverse payment options that cater to your customers' preferences and expand your market reach. Whether you need to integrate with local payment gateways, implement cryptocurrency payments, or create specialized payment flows, custom payment methods provide the flexibility your business requires.
+Creating custom payment methods in Bagisto allows you to integrate any payment gateway or processor with your store. Whether you need local payment methods, cryptocurrency payments, or specialized payment flows, custom payment methods provide the flexibility your business requires.
 
 For our tutorial, we'll create a **Custom Stripe Payment** method that demonstrates all the essential concepts you need to build any type of payment solution.
 
-::: info Learning Objectives
+::: info What You'll Learn
 By the end of this guide, you'll be able to:
-- Understand Bagisto's payment architecture and components
-- Create custom payment methods using both generator and manual approaches
-- Configure admin interfaces for payment method settings
-- Implement secure payment processing with webhooks
-- Test and deploy custom payment methods in production
+- Understand Bagisto's payment architecture
+- Create custom payment methods using generator or manual approaches
+- Configure admin interfaces for payment settings
+- Implement secure payment processing
 :::
 
 ## Understanding Bagisto Payment Architecture
@@ -21,42 +20,41 @@ Bagisto's payment system is built around a flexible method-based architecture th
 
 | Component | Purpose | Location |
 |-----------|---------|----------|
-| **Payment Methods Configuration** | Defines payment method properties and metadata | `Config/payment_methods.php` |
-| **Payment Classes** | Contains business logic for payment processing | `Payment/ClassName.php` |
-| **System Configuration** | Admin interface forms for method settings | `Config/system.php` |
-| **Service Provider** | Registers payment method with Bagisto core | `Providers/ServiceProvider.php` |
+| **Payment Methods Configuration** | Defines payment method properties | `Config/payment_methods.php` |
+| **Payment Classes** | Contains payment processing logic | `Payment/ClassName.php` |
+| **System Configuration** | Admin interface forms | `Config/system.php` |
+| **Service Provider** | Registers payment method | `Providers/ServiceProvider.php` |
 
 ### Key Features
 
-- **Flexible Payment Processing**: Support for redirects, APIs, webhooks, or custom payment flows
-- **Configuration Management**: Admin-friendly settings interface with validation
+- **Flexible Payment Processing**: Support for redirects, APIs, webhooks, or custom flows
+- **Configuration Management**: Admin-friendly settings interface
 - **Multi-channel Support**: Different settings per sales channel
-- **Security Ready**: Built-in CSRF protection and secure payment handling
-- **Extensible Architecture**: Easy integration with third-party payment gateways
+- **Security Ready**: Built-in CSRF protection and secure handling
+- **Extensible Architecture**: Easy integration with third-party gateways
 
 ## Development Workflow
 
 The typical workflow for creating a custom payment method follows these steps:
 
-### 1. Setup and Structure
-Choose between package generator (quick) or manual setup (educational) to create your payment method foundation.
+### 1. Create Your Payment Method
+Choose between package generator (quick) or manual setup (educational) to create a complete working payment method.
 
-**📖 Next:** [Creating Your First Payment Method](./create-your-first-payment-method.md)
+**📖 [Create Your First Payment Method →](./create-your-first-payment-method.md)**
 
-### 2. Configure Payment Properties
-Define your payment method's basic properties, supported features, and availability rules.
+This section shows you how to build a complete working payment method, then the remaining sections help you understand how to customize each component.
+
+### 2. Understand Payment Configuration
+Learn how payment configuration works and how to customize payment method properties.
 
 **📖 Next:** [Understanding Payment Configuration](./understanding-payment-configuration.md)
 
-### 3. Implement Payment Logic
-Build the payment processing class with secure transaction handling and error management.
+### 3. Understand Payment Logic
+Explore how the payment class handles processing and payment method behavior.
 
 **📖 Next:** [Understanding Payment Class](./understanding-payment-class.md)
 
-### 4. Add Advanced Features
-Implement webhooks, refunds, recurring payments, and complex business rules.
-
-**📖 Next:** [Advanced Payment Examples](./advanced-payment-examples.md)
+You'll have a complete working payment method after step 1, and steps 2-3 help you understand how to customize and extend it.
 
 ## Prerequisites
 
@@ -64,7 +62,7 @@ Before you begin, ensure you have:
 
 - **Bagisto Installation**: A working Bagisto development environment
 - **PHP Knowledge**: Familiarity with PHP 8.1+ and Laravel concepts
-- **Payment Gateway Account**: Access to your chosen payment provider's API
+- **Package Development**: Basic understanding of Laravel service providers ([Package Development Guide](../package-development/getting-started.md))
 - **Development Tools**: Composer, Git, and a code editor
 
 ::: tip Quick Start Path
@@ -83,12 +81,6 @@ Throughout this guide, you'll create a **Custom Stripe Payment** method that inc
 - ✅ **Order Integration**: Seamless integration with Bagisto's order system
 - ✅ **Multi-channel Support**: Different API keys per sales channel
 
-### Advanced Features (Optional)
-- 🚀 **Webhook Handling**: Real-time payment status updates
-- 🚀 **Refund Support**: Programmatic refund processing
-- 🚀 **Recurring Payments**: Subscription and recurring payment support
-- 🚀 **3D Secure**: Enhanced security for card payments
-
 ## Architecture Overview
 
 ```text
@@ -100,33 +92,16 @@ Custom Stripe Payment Package
 │   │   ├── payment_methods.php         # Payment method definition
 │   │   └── system.php                  # Admin interface configuration
 │   └── Providers/
-│       └── ServiceProvider.php        # Package registration
-├── composer.json                      # Package metadata
-└── README.md                          # Documentation
+│       └── ServiceProvider.php         # Package registration
+├── composer.json                       # Package metadata
+└── README.md                           # Documentation
 ```
 
 ::: info Development Time Estimate
 - **Basic Implementation**: 2-3 hours (using generator)
 - **Custom Logic**: 4-6 hours (manual setup + payment integration)
-- **Advanced Features**: 6-12 hours (webhooks, refunds, 3D Secure)
 - **Testing & Polish**: 2-4 hours (admin testing, payment flow validation)
 :::
-
-## Security Considerations
-
-Payment methods require special attention to security:
-
-### Essential Security Practices
-- **Never store sensitive payment data** in your database
-- **Use HTTPS** for all payment-related requests
-- **Validate webhooks** with signature verification
-- **Implement proper error handling** without exposing sensitive information
-- **Use environment variables** for API keys and secrets
-
-### Compliance Requirements
-- **PCI DSS**: Follow payment card industry data security standards
-- **GDPR**: Ensure customer data protection compliance
-- **Regional Laws**: Consider local payment regulations
 
 ## Ready to Start?
 

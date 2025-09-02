@@ -8,12 +8,11 @@ This guide covers the complete process of creating a **Custom Stripe Payment** m
 - Configuration file creation
 - Payment processing implementation
 - Admin interface integration
-- Testing and deployment
 :::
 
 ## Method 1: Using Bagisto Package Generator (Quick Setup)
 
-The fastest way to create a payment method is using Bagisto's package generator. This tool creates the proper structure and boilerplate code automatically.
+The fastest way to create a payment method is using Bagisto's package generator.
 
 ### Step 1: Install Package Generator
 
@@ -31,9 +30,6 @@ Navigate to your Bagisto root directory and run:
 php artisan package:make-payment-method Webkul/CustomStripePayment
 ```
 
-**Command Parameters:**
-- `Webkul/CustomStripePayment`: The vendor/package name for your payment method
-
 ### Step 3: Handle Existing Package (If Needed)
 
 If the package directory already exists, use the `--force` flag:
@@ -45,41 +41,93 @@ php artisan package:make-payment-method Webkul/CustomStripePayment --force
 ::: tip Package Generator Benefits
 The generator automatically creates:
 - Proper directory structure following Bagisto conventions
-- Payment method configuration file with correct schema
+- Payment method configuration with correct schema
 - Base payment class extending AbstractPayment
 - System configuration for admin settings
 - Service provider with proper registration
 :::
 
+### Step 4: Register the Generated Package
+
+After generating the package, you need to register it with Bagisto:
+
+**Add to composer.json** (in Bagisto root directory):
+
+```json{5}
+{
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Webkul\\CustomStripePayment\\": "packages/Webkul/CustomStripePayment/src"
+        }
+    }
+}
+```
+
+**Update autoloader:**
+
+```bash
+composer dump-autoload
+```
+
+**Register service provider** in `bootstrap/providers.php`:
+
+```php{8}
+<?php
+
+return [
+    App\Providers\AppServiceProvider::class,
+    
+    // ... other providers ...
+    
+    Webkul\CustomStripePayment\Providers\CustomStripePaymentServiceProvider::class,
+];
+```
+
+**Clear caches:**
+
+```bash
+php artisan optimize:clear
+```
+
+### Step 5: Configure Your Payment Method
+
+Now test the basic configuration that the generator created:
+
+1. **Go to Admin Panel**: Navigate to **Configuration → Sales → Payment Methods**
+2. **Find Your Method**: Look for "Custom Stripe Payment" section
+3. **Basic Configuration**: You'll see some basic configuration fields that can be adjusted as per your needs
+
+::: tip Translation Note
+You may notice some translation keys are missing as we haven't registered translation files yet. For complete localization setup, refer to the [Localization section in Package Development](../package-development/localization.md). The main purpose here is to understand payment method functionality.
+:::
+
+::: info Generator Creates Basic Configuration
+The package generator creates a simple payment method with:
+- **Basic payment processing**: Simple payment handling logic
+- **Basic admin fields**: Essential configuration options
+- **Standard structure**: Following Bagisto conventions
+
+For advanced features like webhook handling, refund processing, or complex payment flows, you'll need to customize the generated code or use the manual approach below.
+:::
+
 ## Method 2: Manual Setup (Complete Understanding)
 
-For developers who want to understand every component, let's create the payment method manually from scratch.
+For developers who want to understand every component, let's create the payment method manually.
 
 ### Step 1: Create Package Directory Structure
 
-Create the complete directory structure for your payment method package:
+Create the directory structure for your payment method package:
 
 ```bash
 mkdir -p packages/Webkul/CustomStripePayment/src/{Payment,Config,Providers}
 ```
 
-This creates the following structure:
-
-```text
-packages
-└── Webkul
-    └── CustomStripePayment
-        └── src
-            ├── Payment/           # Payment processing logic
-            ├── Config/            # Configuration files
-            └── Providers/         # Service provider
-```
-
 ### Step 2: Create Payment Method Configuration
 
-Create the payment methods configuration file that defines your payment method properties:
+Create the payment methods configuration file:
 
-**Create:** `packages/Webkul/CustomStripePayment/src/Config/payment_methods.php`
+**Create:** `packages/Webkul/CustomStripePayment/src/Config/payment-methods.php`
 
 ```php
 <?php
@@ -92,24 +140,13 @@ return [
         'class'       => 'Webkul\CustomStripePayment\Payment\CustomStripePayment',
         'active'      => true,
         'sort'        => 1,
-    ]
+    ],
 ];
 ```
 
-::: info Configuration Properties Explained
-**Essential Properties:**
-
-- **`code`**: Unique identifier for your payment method (used in database and forms)
-- **`title`**: Display name shown to customers during checkout
-- **`description`**: Brief explanation of the payment method
-- **`class`**: Full namespace path to your payment class
-- **`active`**: Default enabled/disabled status
-- **`sort`**: Order in which payment methods appear (lower numbers appear first)
-:::
-
 ### Step 3: Create Payment Class
 
-Create the main payment class that handles payment processing:
+Create the main payment class:
 
 **Create:** `packages/Webkul/CustomStripePayment/src/Payment/CustomStripePayment.php`
 
@@ -123,55 +160,32 @@ use Webkul\Payment\Payment\Payment;
 class CustomStripePayment extends Payment
 {
     /**
-     * Payment method code - must match payment_methods.php key.
+     * Payment method code - must match payment-methods.php key.
      */
     protected $code = 'custom_stripe_payment';
 
     /**
      * Get redirect URL for payment processing.
-     * For Stripe, we might redirect to a secure payment form.
+     * 
+     * Note: You need to create this route in your Routes/web.php file
+     * or return null if you don't need a redirect.
      */
     public function getRedirectUrl()
     {
-        return route('custom_stripe_payment.process');
+        // return route('custom_stripe_payment.process');
+        return null; // No redirect needed for this basic example
     }
 
     /**
-     * Check if payment method supports additional information.
-     * Stripe typically requires credit card information.
+     * Get additional details for frontend display.
      */
     public function getAdditionalDetails()
     {
         return [
             'title' => $this->getConfigData('title'),
             'description' => $this->getConfigData('description'),
-            'sort' => $this->getConfigData('sort'),
             'requires_card_details' => true,
-            'supports_3d_secure' => true,
         ];
-    }
-
-    /**
-     * Check if payment method is available for current context.
-     */
-    public function isAvailable()
-    {
-        // Check if payment method is enabled
-        if (! $this->getConfigData('active')) {
-            return false;
-        }
-
-        // Check if required API keys are configured
-        $publicKey = $this->getConfigData('publishable_key');
-        $secretKey = $this->getConfigData('secret_key');
-
-        if (empty($publicKey) || empty($secretKey)) {
-            return false;
-        }
-
-        // Additional availability checks can be added here
-        // For example: currency support, country restrictions, etc.
-        return true;
     }
 
     /**
@@ -181,43 +195,16 @@ class CustomStripePayment extends Payment
     {
         return core()->getConfigData('sales.payment_methods.custom_stripe_payment.' . $field);
     }
-
-    /**
-     * Process payment after form submission.
-     * This method would handle the actual Stripe API integration.
-     */
-    public function processPayment($paymentData)
-    {
-        try {
-            // Initialize Stripe with secret key
-            $secretKey = $this->getConfigData('secret_key');
-            
-            // In a real implementation, you would:
-            // 1. Create Stripe charge/payment intent
-            // 2. Handle payment confirmation
-            // 3. Process webhooks for status updates
-            // 4. Update order status accordingly
-            
-            // For this example, we'll simulate a successful payment
-            return [
-                'status' => 'success',
-                'transaction_id' => 'stripe_' . uniqid(),
-                'message' => 'Payment processed successfully'
-            ];
-            
-        } catch (\Exception $e) {
-            return [
-                'status' => 'error',
-                'message' => 'Payment failed: ' . $e->getMessage()
-            ];
-        }
-    }
 }
 ```
 
+::: warning Route Configuration
+If you uncomment the `getRedirectUrl()` method to return a route, make sure to create the corresponding route in your package's `Routes/web.php` file. For basic payment methods that don't require external redirects, returning `null` is perfectly fine.
+:::
+
 ### Step 4: Create System Configuration
 
-Create the admin interface configuration for your payment method:
+Create the admin interface configuration:
 
 **Create:** `packages/Webkul/CustomStripePayment/src/Config/system.php`
 
@@ -225,88 +212,49 @@ Create the admin interface configuration for your payment method:
 <?php
 
 return [
-    'key'    => 'sales.payment_methods.custom_stripe_payment',
-    'name'   => 'Custom Stripe Payment',
-    'sort'   => 3,
-    'fields' => [
-        [
-            'name'          => 'title',
-            'title'         => 'Method Title',
-            'type'          => 'text',
-            'validation'    => 'required',
-            'channel_based' => true,
-            'locale_based'  => true
-        ],
-        [
-            'name'          => 'description',
-            'title'         => 'Description',
-            'type'          => 'textarea',
-            'channel_based' => true,
-            'locale_based'  => false
-        ],
-        [
-            'name'          => 'publishable_key',
-            'title'         => 'Stripe Publishable Key',
-            'type'          => 'text',
-            'validation'    => 'required',
-            'channel_based' => true,
-            'locale_based'  => false
-        ],
-        [
-            'name'          => 'secret_key',
-            'title'         => 'Stripe Secret Key',
-            'type'          => 'password',
-            'validation'    => 'required',
-            'channel_based' => true,
-            'locale_based'  => false
-        ],
-        [
-            'name'    => 'environment',
-            'title'   => 'Environment',
-            'type'    => 'select',
-            'options' => [
-                [
-                    'title' => 'Sandbox',
-                    'value' => 'sandbox',
-                ],
-                [
-                    'title' => 'Production',
-                    'value' => 'production',
-                ],
+    [
+        'key'    => 'sales.payment_methods.custom_stripe_payment',
+        'name'   => 'Custom Stripe Payment',
+        'info'   => 'Custom Stripe Payment Method Configuration',
+        'sort'   => 1,
+        'fields' => [
+            [
+                'name'          => 'active',
+                'title'         => 'Status',
+                'type'          => 'boolean',
+                'default_value' => true,
+                'channel_based' => true,
             ],
-            'channel_based' => true,
-            'locale_based'  => false,
+            [
+                'name'          => 'title',
+                'title'         => 'Title',
+                'type'          => 'text',
+                'default_value' => 'Credit Card (Stripe)',
+                'channel_based' => true,
+                'locale_based'  => true,
+            ],
+            [
+                'name'          => 'description',
+                'title'         => 'Description',
+                'type'          => 'textarea',
+                'default_value' => 'Secure credit card payments',
+                'channel_based' => true,
+                'locale_based'  => true,
+            ],
+            [
+                'name'          => 'sort',
+                'title'         => 'Sort Order',
+                'type'          => 'text',
+                'default_value' => '1',
+            ],
         ],
-        [
-            'name'          => 'webhook_secret',
-            'title'         => 'Webhook Secret',
-            'type'          => 'password',
-            'channel_based' => true,
-            'locale_based'  => false
-        ],
-        [
-            'name'          => 'sort',
-            'title'         => 'Sort Order',
-            'type'          => 'text',
-            'validation'    => 'numeric|min:0',
-            'channel_based' => true,
-            'locale_based'  => false
-        ],
-        [
-            'name'          => 'active',
-            'title'         => 'Enabled',
-            'type'          => 'boolean',
-            'validation'    => 'required',
-            'channel_based' => true,
-            'locale_based'  => false
-        ]
-    ]
+    ],
 ];
 ```
 
 ### Step 5: Create Service Provider
 
-Create the service provider to register your payment method with Bagisto:
+Create the service provider to register your payment method:
 
 **Create:** `packages/Webkul/CustomStripePayment/src/Providers/CustomStripePaymentServiceProvider.php`
 
@@ -324,13 +272,13 @@ class CustomStripePaymentServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Merge payment method configuration
+        // merge payment method configuration
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/payment_methods.php',
+            dirname(__DIR__) . '/Config/payment-methods.php',
             'payment_methods'
         );
 
-        // Merge system configuration  
+        // merge system configuration  
         $this->mergeConfigFrom(
             dirname(__DIR__) . '/Config/system.php',
             'core'
@@ -342,17 +290,94 @@ class CustomStripePaymentServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Load routes for payment processing
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/web.php');
-        
-        // Load views for payment forms
-        $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'custom_stripe_payment');
-        
-        // Load translations
-        $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'custom_stripe_payment');
     }
 }
 ```
+
+### Step 6: Register Your Package
+
+After creating all the files, you need to register your package with Bagisto:
+
+**Add to composer.json** (in Bagisto root directory):
+
+```json{5}
+{
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Webkul\\CustomStripePayment\\": "packages/Webkul/CustomStripePayment/src"
+        }
+    }
+}
+```
+
+**Update autoloader:**
+
+```bash
+composer dump-autoload
+```
+
+**Register service provider** in `bootstrap/providers.php`:
+
+```php{8}
+<?php
+
+return [
+    App\Providers\AppServiceProvider::class,
+    
+    // ... other providers ...
+    
+    Webkul\CustomStripePayment\Providers\CustomStripePaymentServiceProvider::class,
+];
+```
+
+**Clear caches:**
+
+```bash
+php artisan optimize:clear
+```
+
+## Testing Your Payment Method
+
+Now let's test your custom payment method:
+
+### Step 1: Enable in Admin
+
+1. Go to **Admin Panel → Configuration → Sales → Payment Methods**
+2. Find **Custom Stripe Payment** section
+3. Set **Enabled** to **Yes**
+4. Configure your payment settings
+5. Click **Save Configuration**
+
+### Step 2: Frontend Testing
+
+1. Add products to cart
+2. Proceed to checkout
+3. Enter billing address
+4. Verify your payment method appears
+5. Test payment processing
+
+### Step 3: Testing Checklist
+
+::: info Testing Checklist
+**Admin Configuration:**
+- ✅ Custom Stripe Payment appears in payment method settings
+- ✅ All form fields render correctly
+- ✅ Settings save and persist properly
+- ✅ Validation works for required fields
+
+**Frontend Functionality:**
+- ✅ Payment method appears during checkout
+- ✅ Payment processing works correctly
+- ✅ Method title and description display properly
+- ✅ Integration with order management works
+
+**Edge Cases:**
+- ✅ Method respects enabled/disabled status
+- ✅ Handles payment failures gracefully
+- ✅ Works with different order amounts
+- ✅ Responds correctly to API key validation
+:::
 
 ## Generated vs Manual Package Structure
 
@@ -364,10 +389,10 @@ packages
     └── CustomStripePayment
         └── src
             ├── Payment
-            │   └── CustomStripePayment.php       # Payment processing logic
+            │   └── CustomStripePayment.php                 # Payment processing logic
             ├── Config
-            │   ├── payment_methods.php           # Payment method definition
-            │   └── system.php                    # Admin configuration
+            │   ├── payment-methods.php                     # Payment method definition
+            │   └── system.php                              # Admin configuration
             └── Providers
                 └── CustomStripePaymentServiceProvider.php  # Registration
 ```
@@ -386,110 +411,9 @@ packages
 - Customizing beyond standard patterns
 :::
 
-## Registering Your Payment Method
-
-The service provider handles registering your payment method with Bagisto. Let's examine the registration process:
-
-### Composer Autoloading Registration
-
-Add your package namespace to `composer.json` in the Bagisto root directory:
-
-```json{5}
-{
-    "autoload": {
-        "psr-4": {
-            "App\\": "app/",
-            "Webkul\\CustomStripePayment\\": "packages/Webkul/CustomStripePayment/src"
-        }
-    }
-}
-```
-
-### Service Provider Registration
-
-Register your service provider in `bootstrap/providers.php`:
-
-```php{8}
-<?php
-
-return [
-    App\Providers\AppServiceProvider::class,
-    
-    // ... other providers ...
-    
-    Webkul\CustomStripePayment\Providers\CustomStripePaymentServiceProvider::class,
-];
-```
-
-After registering the service provider, run composer dump-autoload to ensure the new classes are autoloaded:
-
-```bash
-# Regenerate autoloader to recognize new package classes
-composer dump-autoload
-```
-
-### Finalizing Installation
-
-Complete the installation with these commands:
-
-```bash
-# Clear configuration cache to load new configs
-php artisan config:cache
-
-# Clear application cache
-php artisan cache:clear
-```
-
-::: warning Cache Clearing
-If you encounter errors with `composer dump-autoload`, delete all files in the `bootstrap/cache` directory and try again.
-:::
-
-## Testing Your Payment Method
-
-Now let's test your custom Stripe payment method:
-
-### Step 1: Configure in Admin
-
-1. Go to **Admin Panel → Configuration → Sales → Payment Methods**
-2. Find **Custom Stripe Payment** section
-3. Set **Enabled** to **Yes**
-4. Configure your Stripe API keys
-5. Set environment (Sandbox for testing)
-6. Click **Save Configuration**
-
-### Step 2: Frontend Testing
-
-1. Add products to cart
-2. Proceed to checkout
-3. Enter billing/shipping information
-4. Verify your payment method appears in payment options
-5. Test payment processing (use Stripe test cards)
-
-### Step 3: Testing Checklist
-
-::: info Testing Checklist
-**Admin Configuration:**
-- ✅ Custom Stripe Payment appears in payment method settings
-- ✅ All form fields render correctly
-- ✅ API key validation works
-- ✅ Settings save and persist properly
-
-**Frontend Functionality:**
-- ✅ Payment method appears during checkout
-- ✅ Payment form renders correctly
-- ✅ Test payments process successfully
-- ✅ Order status updates properly
-
-**Security Tests:**
-- ✅ Invalid API keys prevent payment processing
-- ✅ Payment failures are handled gracefully
-- ✅ No sensitive data is logged or exposed
-- ✅ HTTPS is enforced for payment pages
-:::
-
 ## Your Next Steps
 
-Congratulations! You've successfully created a custom payment method for Bagisto. Your Stripe payment method now integrates with the checkout process and provides administrators with configuration control.
+Congratulations! You've successfully created a custom payment method for Bagisto. Your payment method now integrates seamlessly with the checkout process.
 
 **Key Achievements:**
 - ✅ Built a complete payment method from scratch
@@ -502,21 +426,7 @@ Congratulations! You've successfully created a custom payment method for Bagisto
 Now that you have a working payment method, dive deeper into specific components:
 
 **📖 [Understanding Payment Configuration →](./understanding-payment-configuration.md)**
-Learn about payment method configuration properties and system configuration in detail.
+Learn about payment method configuration properties and system settings.
 
 **📖 [Understanding Payment Class →](./understanding-payment-class.md)**
-Master the payment class implementation with advanced processing logic and security best practices.
-
-**📖 [Advanced Payment Examples →](./advanced-payment-examples.md)**
-Implement sophisticated features like webhooks, refunds, and 3D Secure authentication.
-
-::: tip Production Considerations
-**Before deploying to production:**
-- Switch to production Stripe API keys
-- Test with real payment amounts (then refund)
-- Set up webhook endpoints for status updates
-- Implement proper error logging and monitoring
-- Review security and PCI compliance requirements
-:::
-
-Your payment method is now ready for advanced features like webhook handling, refund processing, and enhanced security implementations.
+Master the payment processing logic and implementation details.

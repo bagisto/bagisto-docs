@@ -1,21 +1,6 @@
 # Understanding Payment Class
 
-The payment class is the core component that handles payment processing logic, security validation, and integration with payment gateways. This is where the actual payment processing happens.
-
-::: info What You'll Learn
-This section covers:
-- Payment class structure and key methods
-- Secure payment processing implementation
-- Error handling and validation techniques
-- Integration with payment gateway APIs
-- Order status management
-:::
-
-## Payment Class Foundation
-
-Your payment class extends the base `Payment` class and implements the payment processing logic:
-
-**File:** `packages/Webkul/CustomStripePayment/src/Payment/CustomStripePayment.php`
+When you created your first payment method, you built this `CustomStripePayment` class. Now let's dive deeper into how each part works:
 
 ```php
 <?php
@@ -23,241 +8,217 @@ Your payment class extends the base `Payment` class and implements the payment p
 namespace Webkul\CustomStripePayment\Payment;
 
 use Webkul\Payment\Payment\Payment;
-use Stripe\Stripe;
-use Stripe\PaymentIntent;
-use Stripe\Exception\CardException;
 
 class CustomStripePayment extends Payment
 {
     /**
-     * Payment method code - must match payment_methods.php key.
+     * Payment method code - must match payment-methods.php key.
      */
     protected $code = 'custom_stripe_payment';
 
     /**
-     * Initialize Stripe configuration.
+     * Get redirect URL for payment processing.
+     * 
+     * Note: You need to create this route in your Routes/web.php file
+     * or return null if you don't need a redirect.
      */
-    public function __construct()
+    public function getRedirectUrl()
     {
-        parent::__construct();
-        
-        // Set Stripe API key
-        $secretKey = $this->getConfigData('secret_key');
-        if ($secretKey) {
-            Stripe::setApiKey($secretKey);
-        }
+        // return route('custom_stripe_payment.process');
+        return null; // No redirect needed for this basic example
+    }
+
+    /**
+     * Get additional details for frontend display.
+     */
+    public function getAdditionalDetails()
+    {
+        return [
+            'title' => $this->getConfigData('title'),
+            'description' => $this->getConfigData('description'),
+            'requires_card_details' => true,
+        ];
+    }
+
+    /**
+     * Get payment method configuration data.
+     */
+    public function getConfigData($field)
+    {
+        return core()->getConfigData('sales.payment_methods.custom_stripe_payment.' . $field);
     }
 }
 ```
 
-## Essential Payment Methods
+## Understanding Key Methods
 
-### Check Availability
+Let's break down each method in your `CustomStripePayment` class and understand what they do and when they're used.
+
+### Payment Method Code
+
+The `$code` property is the foundation of your payment method - it connects all the pieces together.
+
+```php
+protected $code = 'custom_stripe_payment';
+```
+
+::: info When Do You Need This Property?
+Usually, you don't need to explicitly set this property because if your codes are properly set, then config data can get properly. However, if codes are not in convention then you might need this property to override the default behavior.
+:::
+
+**Purpose:** This is the unique identifier that ties everything together:
+- Must match the key in `payment-methods.php`
+- Used in configuration paths
+- References your payment method throughout Bagisto
+
+### Redirect URL Handling
+
+This method controls the payment flow - whether customers stay on your site or get redirected elsewhere.
+
+```php
+public function getRedirectUrl()
+{
+    return null; // No redirect needed for this basic example
+}
+```
+
+::: info Basic Example Note
+In this example, we return `null` to keep things simple. At this stage, orders will be placed directly without external redirects. However, in real-life scenarios, you might need to redirect customers to external payment gateways for actual payment processing.
+:::
+
+**Purpose:** Determines where to redirect customers for payment processing:
+- Return `null` for inline payment forms
+- Return a route for external payment pages
+- Used for gateways that require external redirects
+
+**When to use redirects:**
+- PayPal Checkout
+- Bank transfer instructions page
+- External payment gateway forms
+
+### Frontend Display Information
+
+This method provides all the data your payment method needs to display correctly on the checkout page.
+
+```php
+public function getAdditionalDetails()
+{
+    return [
+        'title' => $this->getConfigData('title'),
+        'description' => $this->getConfigData('description'),
+        'requires_card_details' => true,
+    ];
+}
+```
+
+**Purpose:** Provides frontend with payment method information:
+- `title`: Display name from admin configuration
+- `description`: Payment method description
+- `requires_card_details`: Tells frontend to show card form
+- Custom properties for your specific needs
+
+### Configuration Data Access
+
+This method handles how your payment class retrieves configuration values from the admin panel.
+
+```php
+public function getConfigData($field)
+{
+    return core()->getConfigData('sales.payment_methods.custom_stripe_payment.' . $field);
+}
+```
+
+::: info When Do You Need This Method?
+Usually, you don't need this method because if your payment method code is properly set, then config data can get properly. However, if not in convention then you might need this method to override the default behavior.
+:::
+
+**Purpose:** Retrieves admin configuration values:
+- Builds the full configuration path
+- Accesses values set in admin panel
+- Returns the configured value for the specified field
+
+## Best Practices for Payment Classes
+
+Here are some essential practices to follow when building robust payment methods:
+
+::: warning Implementation Note
+The methods shown in this section are **demonstration examples** for best practices. In real-world applications, you need to implement these methods according to your specific payment gateway requirements and business logic. Use these examples as reference guides and adapt them to your particular use case.
+:::
+
+### Error Handling
+
+Always implement comprehensive error handling in your payment methods:
+
 ```php
 /**
- * Check if payment method is available for current context.
+ * Handle payment errors gracefully.
  */
-public function isAvailable()
+protected function handlePaymentError(\Exception $e)
 {
-    // Check if payment method is enabled
-    if (! $this->getConfigData('active')) {
-        return false;
-    }
+    // log the error for debugging
+    \Log::error('Payment error in ' . $this->code, [
+        'error' => $e->getMessage(),
+        'trace' => $e->getTraceAsString(),
+    ]);
 
-    // Check if required API keys are configured
-    $publicKey = $this->getConfigData('publishable_key');
-    $secretKey = $this->getConfigData('secret_key');
+    // return user-friendly error message
+    return [
+        'success' => false,
+        'error' => 'Payment processing failed. Please try again or contact support.',
+    ];
+}
+```
 
-    if (empty($publicKey) || empty($secretKey)) {
-        return false;
-    }
+### Security Considerations
 
-    // Check currency support
-    $currentCurrency = core()->getCurrentCurrencyCode();
-    $supportedCurrencies = ['USD', 'EUR', 'GBP', 'CAD', 'AUD'];
-    
-    if (! in_array($currentCurrency, $supportedCurrencies)) {
-        return false;
-    }
+Always validate and sanitize data before processing payments to protect your application and customers.
 
-    // Check minimum amount requirements
-    $cart = cart()->getCart();
-    if ($cart && $cart->grand_total < 0.50) { // Stripe minimum
-        return false;
+```php
+/**
+ * Validate payment data before processing.
+ */
+protected function validatePaymentData($data)
+{
+    $validator = validator($data, [
+        'amount' => 'required|numeric|min:0.01',
+        'currency' => 'required|string|size:3',
+        'customer_email' => 'required|email',
+    ]);
+
+    if ($validator->fails()) {
+        throw new \InvalidArgumentException($validator->errors()->first());
     }
 
     return true;
 }
 ```
 
-### Get Additional Details
+### Logging and Debugging
+
+Proper logging helps you track payment activities and troubleshoot issues without exposing sensitive information.
+
 ```php
 /**
- * Get additional information for frontend display.
+ * Log payment activities for debugging and audit.
  */
-public function getAdditionalDetails()
+protected function logPaymentActivity($action, $data = [])
 {
-    return [
-        'title' => $this->getConfigData('title'),
-        'description' => $this->getConfigData('description'),
-        'sort' => $this->getConfigData('sort'),
-        'code' => $this->code,
-        'requires_card_details' => true,
-        'supports_3d_secure' => true,
-        'supports_save_card' => true,
-        'publishable_key' => $this->getConfigData('publishable_key'),
-        'environment' => $this->getConfigData('environment'),
-    ];
-}
-```
-
-### Get Redirect URL
-```php
-/**
- * Get redirect URL for payment processing.
- */
-public function getRedirectUrl()
-{
-    return route('custom_stripe_payment.process');
-}
-```
-
-## Advanced Payment Processing
-
-### Create Payment Intent
-```php
-/**
- * Create Stripe Payment Intent for secure processing.
- */
-public function createPaymentIntent($order)
-{
-    try {
-        $paymentIntent = PaymentIntent::create([
-            'amount' => round($order->grand_total * 100), // Convert to cents
-            'currency' => strtolower($order->order_currency_code),
-            'payment_method_types' => ['card'],
-            'capture_method' => $this->getConfigData('capture_mode') === 'manual' ? 'manual' : 'automatic',
-            'metadata' => [
-                'order_id' => $order->id,
-                'customer_email' => $order->customer_email,
-                'store_name' => core()->getCurrentChannel()->name,
-            ],
-            'description' => 'Order #' . $order->increment_id,
-        ]);
-
-        return [
-            'success' => true,
-            'client_secret' => $paymentIntent->client_secret,
-            'payment_intent_id' => $paymentIntent->id,
-        ];
-
-    } catch (CardException $e) {
-        return [
-            'success' => false,
-            'error' => $e->getError()->message,
-        ];
-    } catch (\Exception $e) {
-        \Log::error('Stripe Payment Intent creation failed: ' . $e->getMessage());
-        
-        return [
-            'success' => false,
-            'error' => 'Payment processing failed. Please try again.',
-        ];
-    }
-}
-```
-
-### Process Payment
-```php
-/**
- * Process payment after customer confirmation.
- */
-public function processPayment($paymentData, $order)
-{
-    try {
-        // Retrieve payment intent
-        $paymentIntentId = $paymentData['payment_intent_id'];
-        $paymentIntent = PaymentIntent::retrieve($paymentIntentId);
-
-        // Verify payment succeeded
-        if ($paymentIntent->status !== 'succeeded') {
-            throw new \Exception('Payment not completed');
-        }
-
-        // Create payment record
-        $payment = $this->createPaymentRecord($order, $paymentIntent);
-
-        // Update order status
-        $this->updateOrderStatus($order, $paymentIntent);
-
-        return [
-            'success' => true,
-            'transaction_id' => $paymentIntent->id,
-            'payment' => $payment,
-        ];
-
-    } catch (\Exception $e) {
-        \Log::error('Stripe payment processing failed: ' . $e->getMessage());
-        
-        return [
-            'success' => false,
-            'error' => $e->getMessage(),
-        ];
-    }
-}
-```
-
-### Create Payment Record
-```php
-/**
- * Create payment record in database.
- */
-protected function createPaymentRecord($order, $paymentIntent)
-{
-    $payment = app(\Webkul\Sales\Repositories\OrderPaymentRepository::class)->create([
-        'order_id' => $order->id,
-        'method' => $this->getCode(),
-        'method_title' => $this->getConfigData('title'),
-        'transaction_id' => $paymentIntent->id,
-        'amount' => $order->grand_total,
-        'additional_details' => json_encode([
-            'stripe_payment_intent_id' => $paymentIntent->id,
-            'stripe_payment_method_id' => $paymentIntent->payment_method,
-            'environment' => $this->getConfigData('environment'),
-            'capture_method' => $paymentIntent->capture_method,
-        ]),
+    // remove sensitive data before logging
+    $sanitizedData = array_diff_key($data, [
+        'api_key' => '',
+        'secret_key' => '',
+        'card_number' => '',
+        'cvv' => '',
     ]);
 
-    return $payment;
+    \Log::info("Payment {$action} for {$this->code}", $sanitizedData);
 }
 ```
-
-### Update Order Status
-```php
-/**
- * Update order status based on payment result.
- */
-protected function updateOrderStatus($order, $paymentIntent)
-{
-    $orderRepository = app(\Webkul\Sales\Repositories\OrderRepository::class);
-    
-    if ($paymentIntent->status === 'succeeded') {
-        if ($paymentIntent->capture_method === 'manual' && ! $paymentIntent->amount_captured) {
-            // Authorization only
-            $orderRepository->update(['status' => 'processing'], $order->id);
-        } else {
-            // Payment captured
-            $orderRepository->update(['status' => 'processing'], $order->id);
-        }
-    } else {
-        $orderRepository->update(['status' => 'pending_payment'], $order->id);
-    }
-}
-```
-
-## Error Handling and Security
 
 ### Comprehensive Error Handling
+
+Different payment scenarios require different error handling approaches. Here's how to handle various types of payment errors gracefully:
+
 ```php
 /**
  * Handle different types of payment errors.
@@ -265,7 +226,7 @@ protected function updateOrderStatus($order, $paymentIntent)
 protected function handlePaymentError(\Exception $e)
 {
     if ($e instanceof CardException) {
-        // Card was declined
+        // card was declined
         $errorMessage = $e->getError()->message;
         
         \Log::warning('Stripe card declined', [
@@ -279,9 +240,8 @@ protected function handlePaymentError(\Exception $e)
             'error' => $errorMessage,
             'retry_allowed' => true,
         ];
-        
     } elseif ($e instanceof \Stripe\Exception\RateLimitException) {
-        // Rate limit exceeded
+        // rate limit exceeded
         \Log::error('Stripe rate limit exceeded');
         
         return [
@@ -289,9 +249,8 @@ protected function handlePaymentError(\Exception $e)
             'error' => 'Service temporarily unavailable. Please try again in a moment.',
             'retry_allowed' => true,
         ];
-        
     } elseif ($e instanceof \Stripe\Exception\InvalidRequestException) {
-        // Invalid request
+        // invalid request
         \Log::error('Stripe invalid request', ['message' => $e->getMessage()]);
         
         return [
@@ -299,9 +258,8 @@ protected function handlePaymentError(\Exception $e)
             'error' => 'Payment configuration error. Please contact support.',
             'retry_allowed' => false,
         ];
-        
     } else {
-        // Generic error
+        // generic error
         \Log::error('Stripe payment error', [
             'message' => $e->getMessage(),
             'trace' => $e->getTraceAsString(),
@@ -316,212 +274,13 @@ protected function handlePaymentError(\Exception $e)
 }
 ```
 
-### Input Validation
-```php
-/**
- * Validate payment data before processing.
- */
-protected function validatePaymentData($paymentData)
-{
-    $requiredFields = ['payment_intent_id'];
-    
-    foreach ($requiredFields as $field) {
-        if (empty($paymentData[$field])) {
-            throw new \InvalidArgumentException("Missing required field: {$field}");
-        }
-    }
-    
-    // Validate payment intent ID format
-    if (! preg_match('/^pi_[a-zA-Z0-9]{24}$/', $paymentData['payment_intent_id'])) {
-        throw new \InvalidArgumentException('Invalid payment intent ID format');
-    }
-    
-    return true;
-}
-```
-
-### Environment-based Configuration
-```php
-/**
- * Get environment-specific configuration.
- */
-protected function getEnvironmentConfig()
-{
-    $environment = $this->getConfigData('environment');
-    
-    return [
-        'secret_key' => $this->getConfigData('secret_key'),
-        'publishable_key' => $this->getConfigData('publishable_key'),
-        'webhook_secret' => $this->getConfigData('webhook_secret'),
-        'is_test_mode' => $environment === 'sandbox',
-    ];
-}
-```
-
-## Refund Processing
-
-### Process Refund
-```php
-/**
- * Process refund through Stripe.
- */
-public function refund($payment, $amount = null)
-{
-    try {
-        $transactionId = $payment->transaction_id;
-        
-        // Determine refund amount
-        $refundAmount = $amount ? round($amount * 100) : null; // Convert to cents
-        
-        // Create refund
-        $refund = \Stripe\Refund::create([
-            'payment_intent' => $transactionId,
-            'amount' => $refundAmount, // null for full refund
-            'metadata' => [
-                'order_id' => $payment->order_id,
-                'refund_reason' => 'Customer request',
-            ],
-        ]);
-
-        // Create refund record
-        $this->createRefundRecord($payment, $refund, $amount);
-
-        return [
-            'success' => true,
-            'refund_id' => $refund->id,
-            'amount' => $refund->amount / 100,
-        ];
-
-    } catch (\Exception $e) {
-        \Log::error('Stripe refund failed', [
-            'payment_id' => $payment->id,
-            'error' => $e->getMessage(),
-        ]);
-
-        return [
-            'success' => false,
-            'error' => 'Refund processing failed: ' . $e->getMessage(),
-        ];
-    }
-}
-```
-
-## Configuration Helper Methods
-
-### Get Configuration Data
-```php
-/**
- * Get payment method configuration data.
- */
-public function getConfigData($field)
-{
-    return core()->getConfigData('sales.payment_methods.custom_stripe_payment.' . $field);
-}
-
-/**
- * Check if test mode is enabled.
- */
-public function isTestMode()
-{
-    return $this->getConfigData('environment') === 'sandbox';
-}
-
-/**
- * Get formatted configuration for frontend.
- */
-public function getClientConfiguration()
-{
-    return [
-        'publishable_key' => $this->getConfigData('publishable_key'),
-        'environment' => $this->getConfigData('environment'),
-        'currency' => strtolower(core()->getCurrentCurrencyCode()),
-        'country' => core()->getCurrentChannel()->default_locale->country ?? 'US',
-    ];
-}
-```
-
-## Best Practices
-
-### Security Implementation
-```php
-// Always validate webhook signatures
-protected function validateWebhookSignature($payload, $signature)
-{
-    $secret = $this->getConfigData('webhook_secret');
-    
-    try {
-        \Stripe\Webhook::constructEvent($payload, $signature, $secret);
-        return true;
-    } catch (\Exception $e) {
-        \Log::warning('Invalid webhook signature', ['error' => $e->getMessage()]);
-        return false;
-    }
-}
-
-// Never log sensitive data
-protected function logPaymentActivity($action, $data = [])
-{
-    // Remove sensitive fields before logging
-    $sanitizedData = array_diff_key($data, [
-        'secret_key' => '',
-        'publishable_key' => '',
-        'card_number' => '',
-        'cvv' => '',
-    ]);
-    
-    \Log::info("Payment activity: {$action}", $sanitizedData);
-}
-```
-
-### Performance Optimization
-```php
-// Cache API responses when appropriate
-protected function getCachedExchangeRate($currency)
-{
-    $cacheKey = "stripe_exchange_rate_{$currency}";
-    
-    return cache()->remember($cacheKey, 3600, function () use ($currency) {
-        return $this->fetchExchangeRateFromAPI($currency);
-    });
-}
-
-// Use async processing for webhooks
-protected function processWebhookAsync($webhookData)
-{
-    // Queue webhook processing for better performance
-    dispatch(new ProcessStripeWebhook($webhookData))->onQueue('payments');
-}
-```
-
-## Key Takeaways
-
-Effective payment class implementation balances functionality, security, and performance:
-
-**Implementation Guidelines:**
-- ✅ Always validate input data before processing
-- ✅ Implement comprehensive error handling
-- ✅ Use environment-specific configuration
-- ✅ Log activities without exposing sensitive data
-
-**Security Best Practices:**
-- ✅ Never store sensitive payment data
-- ✅ Validate webhook signatures
-- ✅ Use HTTPS for all payment operations
-- ✅ Implement proper access controls
-
-**Performance Considerations:**
-- ✅ Cache expensive API calls when appropriate
-- ✅ Use async processing for webhooks
-- ✅ Implement proper retry mechanisms
-- ✅ Monitor and log payment performance
-
-### Continue Learning
-
-**📖 [Advanced Payment Examples →](./advanced-payment-examples.md)**
-Explore webhook handling, 3D Secure implementation, and complex payment scenarios.
+## Continue Your Journey
 
 **📖 [Understanding Payment Configuration ←](./understanding-payment-configuration.md)**
-Learn about the configuration options that power these payment methods.
+Learn about the configuration system that powers your payment method.
+
+**📖 [Back to Creating Your First Payment Method ←](./create-your-first-payment-method.md)**
+Review how we built this payment method step by step.
 
 **📖 [Back to Getting Started ←](./getting-started.md)**
 Return to the main payment method development guide.
