@@ -111,7 +111,7 @@ export default defineConfig({
           { text: 'Creating Your First Product Type', link: '/docs/product-type-development/create-your-first-product-type' },
           { text: 'Understanding Product Type Configuration', link: '/docs/product-type-development/understanding-product-type-configuration' },
           { text: 'Understanding Abstract Type Class', link: '/docs/product-type-development/understanding-abstract-type-class' },
-          { text: 'Advanced Product Type Examples', link: '/docs/product-type-development/advanced-product-type-examples' }
+          { text: 'Building Your Subscription Product Type', link: '/docs/product-type-development/building-your-subscription-product-type' },
         ]
       },
       {

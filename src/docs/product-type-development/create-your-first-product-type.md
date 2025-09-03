@@ -1,78 +1,18 @@
 # Creating Your First Product Type
 
-In this guide, you'll build a complete **Subscription Product** type that demonstrates all the essential concepts for creating custom product types in Bagisto. You'll learn both automated and manual approaches, giving you flexibility for future projects.
+Let's create a custom product type using Bagisto's manual setup approach. We'll build everything from scratch to give you complete understanding of how product types work.
 
-::: info What You'll Build
-A subscription product type with:
-- ✅ **Custom Product Behavior**: Subscription-specific logic and validation
-- ✅ **Inventory Management**: Service-based products without traditional stock tracking
-- ✅ **Pricing Logic**: Recurring pricing calculations and billing frequencies
-- ✅ **Cart Integration**: Subscription-specific cart preparation and validation
+::: info What You'll Learn
+This guide covers the complete process of creating a **Subscription Product** type, including:
+- Package structure setup (manual approach)
+- Configuration file creation
+- Product type class implementation
+- Admin interface integration
 :::
 
-## Method 1: Using Package Generator (Recommended for Beginners)
+## Manual Setup (Complete Understanding)
 
-If your Bagisto installation includes the package generator, this is the fastest way to get started.
-
-### Step 1: Generate Product Type Package
-
-Generate a new package with product type support:
-
-```bash
-php artisan package:make-product-type Webkul/SubscriptionProduct
-```
-
-This creates the foundation structure:
-
-```text
-packages/Webkul/SubscriptionProduct/
-├── src/
-│   ├── Type/
-│   │   └── Subscription.php
-│   ├── Config/
-│   │   └── product_types.php
-│   ├── Providers/
-│   │   └── ServiceProvider.php
-│   └── Resources/
-├── composer.json
-└── README.md
-```
-
-### Step 2: Configure Package Registration
-
-Register the package in `composer.json`:
-
-```json
-{
-    "autoload": {
-        "psr-4": {
-            "Webkul\\SubscriptionProduct\\": "packages/Webkul/SubscriptionProduct/src"
-        }
-    }
-}
-```
-
-### Step 3: Register Service Provider
-
-Add to `config/app.php`:
-
-```php
-'providers' => [
-    // ...existing providers
-    Webkul\SubscriptionProduct\Providers\ServiceProvider::class,
-],
-```
-
-### Step 4: Update Dependencies
-
-```bash
-composer dump-autoload
-php artisan config:cache
-```
-
-## Method 2: Manual Setup (Complete Understanding)
-
-This approach teaches you every component by building from scratch.
+Since Bagisto doesn't have a package generator for product types, we'll create everything manually. This approach teaches you every component by building from scratch.
 
 ### Step 1: Create Package Structure
 
@@ -82,44 +22,9 @@ Create the package directory structure:
 mkdir -p packages/Webkul/SubscriptionProduct/src/{Type,Config,Providers}
 ```
 
-### Step 2: Create Composer Configuration
+### Step 2: Configure Product Type
 
-Create `packages/Webkul/SubscriptionProduct/composer.json`:
-
-```json
-{
-    "name": "webkul/subscription-product",
-    "description": "Subscription Product Type for Bagisto",
-    "type": "library",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Your Name",
-            "email": "your-email@domain.com"
-        }
-    ],
-    "require": {
-        "php": "^8.1",
-        "bagisto/bagisto": "^2.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "Webkul\\SubscriptionProduct\\": "src/"
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Webkul\\SubscriptionProduct\\Providers\\ServiceProvider"
-            ]
-        }
-    }
-}
-```
-
-### Step 3: Configure Product Type
-
-Create `packages/Webkul/SubscriptionProduct/src/Config/product_types.php`:
+Create `packages/Webkul/SubscriptionProduct/src/Config/product-types.php`:
 
 ```php
 <?php
@@ -127,28 +32,14 @@ Create `packages/Webkul/SubscriptionProduct/src/Config/product_types.php`:
 return [
     'subscription' => [
         'key'   => 'subscription',
-        'name'  => 'Subscription Product',
+        'name'  => 'Subscription',
         'class' => 'Webkul\SubscriptionProduct\Type\Subscription',
         'sort'  => 5,
     ],
 ];
 ```
 
-::: details Understanding Configuration Options
-
-**Key Properties:**
-- `key`: Unique identifier for the product type
-- `name`: Display name in admin interface
-- `class`: Full namespace path to the product type class
-- `sort`: Display order in product type dropdown (lower numbers first)
-
-**Optional Properties:**
-- `description`: Extended description for admin users
-- `icon`: Icon class for admin interface
-- `groups`: Product type grouping for organization
-:::
-
-### Step 4: Create Product Type Class
+### Step 3: Create Product Type Class
 
 Create `packages/Webkul/SubscriptionProduct/src/Type/Subscription.php`:
 
@@ -161,302 +52,110 @@ use Webkul\Product\Type\AbstractType;
 
 class Subscription extends AbstractType
 {
-    /**
-     * Skip attribute for subscription products.
-     */
-    protected array $skipAttributes = [
-        'price',
-        'cost',
-        'special_price',
-        'special_price_from',
-        'special_price_to',
-        'length',
-        'width',
-        'height',
-        'weight',
-    ];
-
-    /**
-     * Show quantity box for subscription products.
-     */
-    public function showQuantityBox(): bool
-    {
-        return true;
-    }
-
-    /**
-     * Check if subscription product can be moved to cart.
-     */
-    public function canBeMovedFromWishlistToCart(): bool
-    {
-        return true;
-    }
-
-    /**
-     * Check if subscription is saleable (has available slots).
-     */
-    public function isSaleable(): bool
-    {
-        // For subscription products, check service availability
-        $availableSlots = $this->product->subscription_slots ?? 0;
-        $currentSubscriptions = $this->getCurrentSubscriptionCount();
-        
-        return $availableSlots > $currentSubscriptions;
-    }
-
-    /**
-     * Check if product has sufficient quantity for cart.
-     */
-    public function haveSufficientQuantity(int $qty): bool
-    {
-        // For subscriptions, check slot availability instead of inventory
-        if (! $this->product->manage_stock) {
-            return true;
-        }
-
-        $availableSlots = $this->product->subscription_slots ?? 0;
-        $currentSubscriptions = $this->getCurrentSubscriptionCount();
-        
-        return ($currentSubscriptions + $qty) <= $availableSlots;
-    }
-
-    /**
-     * Get total quantity available for subscription.
-     */
-    public function totalQuantity(): int
-    {
-        return $this->product->subscription_slots ?? 0;
-    }
-
-    /**
-     * Check if product is stockable (subscriptions are service-based).
-     */
-    public function isStockable(): bool
-    {
-        return false;
-    }
-
-    /**
-     * Prepare product for cart addition.
-     */
-    public function prepareForCart(array $data): array
-    {
-        $data = parent::prepareForCart($data);
-
-        // Add subscription-specific data
-        $data['subscription_frequency'] = $this->getSubscriptionFrequency();
-        $data['subscription_price'] = $this->getSubscriptionPrice();
-        $data['billing_cycle'] = $this->getBillingCycle();
-
-        return $data;
-    }
-
-    /**
-     * Get subscription frequency from product or request.
-     */
-    protected function getSubscriptionFrequency(): string
-    {
-        return request('subscription_frequency', $this->product->subscription_frequency ?? 'monthly');
-    }
-
-    /**
-     * Calculate subscription price based on frequency.
-     */
-    protected function getSubscriptionPrice(): float
-    {
-        $basePrice = (float) $this->product->subscription_base_price;
-        $frequency = $this->getSubscriptionFrequency();
-
-        return match ($frequency) {
-            'weekly' => $basePrice * 0.95,  // 5% discount for weekly
-            'monthly' => $basePrice,
-            'quarterly' => $basePrice * 2.85, // 5% discount for quarterly
-            'yearly' => $basePrice * 10.8,    // 10% discount for yearly
-            default => $basePrice,
-        };
-    }
-
-    /**
-     * Get billing cycle information.
-     */
-    protected function getBillingCycle(): array
-    {
-        $frequency = $this->getSubscriptionFrequency();
-        
-        return [
-            'frequency' => $frequency,
-            'interval' => $this->getIntervalForFrequency($frequency),
-            'next_billing' => $this->calculateNextBilling($frequency),
-        ];
-    }
-
-    /**
-     * Get interval period for frequency.
-     */
-    protected function getIntervalForFrequency(string $frequency): int
-    {
-        return match ($frequency) {
-            'weekly' => 7,
-            'monthly' => 30,
-            'quarterly' => 90,
-            'yearly' => 365,
-            default => 30,
-        };
-    }
-
-    /**
-     * Calculate next billing date based on frequency.
-     */
-    protected function calculateNextBilling(string $frequency): string
-    {
-        $interval = $this->getIntervalForFrequency($frequency);
-        return now()->addDays($interval)->format('Y-m-d');
-    }
-
-    /**
-     * Get current subscription count for this product.
-     */
-    protected function getCurrentSubscriptionCount(): int
-    {
-        // This would integrate with your subscription management system
-        // For now, return 0 as placeholder
-        return 0;
-    }
-
-    /**
-     * Validate subscription-specific data.
-     */
-    public function validateCartItem(array $data): bool
-    {
-        if (! parent::validateCartItem($data)) {
-            return false;
-        }
-
-        // Validate subscription frequency
-        $allowedFrequencies = ['weekly', 'monthly', 'quarterly', 'yearly'];
-        if (! in_array($data['subscription_frequency'] ?? '', $allowedFrequencies)) {
-            return false;
-        }
-
-        // Validate slot availability
-        return $this->haveSufficientQuantity($data['quantity'] ?? 1);
-    }
 }
 ```
 
-::: details Understanding Product Type Methods
+::: tip Implementation Notes
+For visualization purposes, we're keeping this class simple by just extending AbstractType. This allows the product type to appear in admin and demonstrates basic functionality.
 
-**Core Methods:**
-- `showQuantityBox()`: Controls quantity input display
-- `isSaleable()`: Determines if product can be purchased
-- `haveSufficientQuantity()`: Checks availability for requested quantity
-- `isStockable()`: Defines if product uses inventory tracking
+You can override methods step by step according to your subscription-based product requirements:
 
-**Cart Methods:**
-- `prepareForCart()`: Processes data before adding to cart
-- `validateCartItem()`: Validates cart item data
+- **isStockable()**: Define if products use inventory tracking
+- **showQuantityBox()**: Control quantity input display  
+- **haveSufficientQuantity()**: Custom availability logic
+- **isSaleable()**: Custom saleable conditions
+- **prepareForCart()**: Add subscription-specific cart data
 
-**Custom Methods:**
-- Subscription-specific logic for pricing and availability
-- Integration points for subscription management systems
+See the [Understanding Abstract Type Class →](./understanding-abstract-type-class.md) section for detailed method explanations.
 :::
 
-### Step 5: Create Service Provider
+### Step 4: Create Service Provider
 
-Create `packages/Webkul/SubscriptionProduct/src/Providers/ServiceProvider.php`:
+Create `packages/Webkul/SubscriptionProduct/src/Providers/SubscriptionServiceProvider.php`:
 
 ```php
 <?php
 
 namespace Webkul\SubscriptionProduct\Providers;
 
-use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
-class ServiceProvider extends BaseServiceProvider
+class SubscriptionServiceProvider extends ServiceProvider
 {
     /**
-     * Register the application services.
+     * Register services.
      */
     public function register(): void
     {
-        $this->registerConfig();
-    }
-
-    /**
-     * Bootstrap the application services.
-     */
-    public function boot(): void
-    {
-        $this->loadConfig();
-    }
-
-    /**
-     * Register package configuration.
-     */
-    protected function registerConfig(): void
-    {
+        // Merge product type configuration
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/product_types.php',
+            dirname(__DIR__) . '/Config/product-types.php',
             'product_types'
         );
     }
 
     /**
-     * Load and publish package configuration.
+     * Bootstrap services.
      */
-    protected function loadConfig(): void
+    public function boot(): void
     {
-        // Merge product types configuration
-        $productTypes = include dirname(__DIR__) . '/Config/product_types.php';
-        
-        config(['product_types' => array_merge(
-            config('product_types', []),
-            $productTypes
-        )]);
+        //
     }
 }
 ```
 
-### Step 6: Register the Package
+### Step 5: Register Your Package
 
-Add to your root `composer.json`:
+After creating all the files, you need to register your package with Bagisto:
 
-```json
+**Add to composer.json** (in Bagisto root directory):
+
+```json{5}
 {
     "autoload": {
         "psr-4": {
+            "App\\": "app/",
             "Webkul\\SubscriptionProduct\\": "packages/Webkul/SubscriptionProduct/src"
         }
     }
 }
 ```
 
-Register in `config/app.php`:
-
-```php
-'providers' => [
-    // ...existing providers
-    Webkul\SubscriptionProduct\Providers\ServiceProvider::class,
-],
-```
-
-### Step 7: Update and Test
-
-Update autoloader and clear caches:
+**Update autoloader:**
 
 ```bash
 composer dump-autoload
-php artisan config:cache
-php artisan cache:clear
 ```
 
-## Testing Your Product Type
+**Register service provider** in `bootstrap/providers.php`:
+
+```php{8}
+<?php
+
+return [
+    App\Providers\AppServiceProvider::class,
+    
+    // ... other providers ...
+    
+    Webkul\SubscriptionProduct\Providers\SubscriptionServiceProvider::class,
+];
+```
+
+**Clear caches:**
+
+```bash
+php artisan optimize:clear
+```
+
+### Step 6: Test Your Product Type
+
+After completing the setup, let's test your subscription product type:
 
 ### 1. Admin Interface Test
 
 1. **Navigate to Products**: Go to Admin → Catalog → Products
 2. **Create New Product**: Click "Add Product"
-3. **Select Type**: Choose "Subscription Product" from the dropdown
+3. **Select Type**: Choose "Subscription" from the dropdown
 4. **Verify Fields**: Check that subscription-specific fields appear
 5. **Save Product**: Complete the product creation process
 
@@ -467,46 +166,36 @@ php artisan cache:clear
 3. **Cart Behavior**: Verify subscription data is preserved
 4. **Checkout**: Ensure checkout process works correctly
 
-### 3. Debug Common Issues
+## What You've Built
 
-::: warning Common Issues
+Congratulations! You've successfully created a basic subscription product type with:
 
-**Product Type Not Appearing:**
-- Check service provider registration
-- Verify autoloader was updated
-- Clear all caches
+### Completed Components
+- ✅ **Product Type Configuration**: Registered subscription type with Bagisto
+- ✅ **Product Type Class**: Basic subscription class extending AbstractType
+- ✅ **Service Provider**: Properly registered the package with Bagisto
+- ✅ **Admin Integration**: Product type appears in admin product creation
 
-**Class Not Found:**
-- Verify namespace in product_types.php
-- Check composer autoload configuration
-- Run `composer dump-autoload`
+### Next Steps for Customization
 
-**Configuration Not Loading:**
-- Check service provider boot() method
-- Verify config file path
-- Clear config cache
-:::
+Your basic product type is now functional! To make it truly subscription-specific, you can:
+
+1. **Override Methods**: Add custom behavior by implementing methods in your Subscription class
+2. **Add Validation**: Implement subscription-specific validation rules
+3. **Custom Pricing**: Add subscription billing frequency and pricing logic
+4. **Inventory Logic**: Implement slot-based or service-based availability
 
 ## What's Next?
 
-Now that you have a working subscription product type, you can enhance it with:
+Congratulations! You've successfully created your first product type. Now you can dive deeper into understanding how each component works:
 
-1. **📖 [Understanding Product Type Configuration](./understanding-product-type-configuration.md)** - Deep dive into configuration options
-2. **📖 [Understanding AbstractType](./understanding-abstract-type.md)** - Master the base class and its methods
-3. **📖 [Advanced Product Type Examples](./advanced-product-type-examples.md)** - Add sophisticated features
+**📖 [Understanding Product Type Configuration →](./understanding-product-type-configuration.md)**  
+Learn how the configuration system defines your product type properties and behavior.
 
-::: tip Pro Tips
+**📖 [Understanding AbstractType Class →](./understanding-abstract-type-class.md)**  
+Master the methods available for customizing product behavior and business logic.
 
-**Development Workflow:**
-- Test each component individually before integration
-- Use Laravel's Tinker for quick testing: `php artisan tinker`
-- Enable debug mode for detailed error messages
-- Keep a backup of working configurations
+**📖 [Building Your Subscription Product Type →](./building-your-subscription-product-type.md)**  
+See how to implement a complete, functional subscription product type with real business logic.
 
-**Performance Considerations:**
-- Cache frequently accessed configuration
-- Optimize database queries in custom methods
-- Consider queue processing for complex operations
-:::
-
-Your subscription product type is now ready for enhancement and customization. The next sections will help you understand and extend its capabilities.
+Your subscription product type is now ready for enhancement and customization!
