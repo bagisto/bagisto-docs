@@ -56,8 +56,9 @@ After generating the package, you need to register it with Bagisto:
 ```json{5}
 {
     "autoload": {
+        ...
         "psr-4": {
-            "App\\": "app/",
+            // Other PSR-4 namespaces
             "Webkul\\CustomStripePayment\\": "packages/Webkul/CustomStripePayment/src"
         }
     }
@@ -303,8 +304,9 @@ After creating all the files, you need to register your package with Bagisto:
 ```json{5}
 {
     "autoload": {
+        ...
         "psr-4": {
-            "App\\": "app/",
+            // Other PSR-4 namespaces
             "Webkul\\CustomStripePayment\\": "packages/Webkul/CustomStripePayment/src"
         }
     }

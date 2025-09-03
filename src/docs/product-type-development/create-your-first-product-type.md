@@ -48,17 +48,32 @@ Create `packages/Webkul/SubscriptionProduct/src/Type/Subscription.php`:
 
 namespace Webkul\SubscriptionProduct\Type;
 
+use Webkul\Product\Helpers\Indexers\Price\Simple as SimpleIndexer;
 use Webkul\Product\Type\AbstractType;
 
 class Subscription extends AbstractType
 {
+    /**
+     * Returns price indexer class for a specific product type.
+     *
+     * @return string
+     */
+    public function getPriceIndexer()
+    {
+        // SimpleIndexer extends AbstractIndexer, so it handles basic price indexing
+        // You can keep this as-is for most custom product types
+        return app(SimpleIndexer::class);
+    }
 }
 ```
 
-::: tip Implementation Notes
-For visualization purposes, we're keeping this class simple by just extending AbstractType. This allows the product type to appear in admin and demonstrates basic functionality.
 
-You can override methods step by step according to your subscription-based product requirements:
+
+
+::: tip Implementation Notes
+This basic implementation includes the essential `getPriceIndexer()` method that all product types need for proper price indexing. The `SimpleIndexer` class extends `AbstractIndexer` and handles standard price calculations - you can keep this as-is for most custom product types.
+
+You can then override additional methods step by step according to your subscription-based product requirements:
 
 - **isStockable()**: Define if products use inventory tracking
 - **showQuantityBox()**: Control quantity input display  
@@ -113,8 +128,9 @@ After creating all the files, you need to register your package with Bagisto:
 ```json{5}
 {
     "autoload": {
+        ...
         "psr-4": {
-            "App\\": "app/",
+            // Other PSR-4 namespaces
             "Webkul\\SubscriptionProduct\\": "packages/Webkul/SubscriptionProduct/src"
         }
     }

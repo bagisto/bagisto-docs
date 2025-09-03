@@ -61,7 +61,7 @@ After generating the package, you need to register it with Bagisto:
 {
     "autoload": {
         "psr-4": {
-            "App\\": "app/",
+            // Other PSR-4 namespaces...
             "Webkul\\CustomExpressShipping\\": "packages/Webkul/CustomExpressShipping/src"
         }
     }
@@ -374,7 +374,7 @@ After creating all the files, you need to register your package with Bagisto:
 {
     "autoload": {
         "psr-4": {
-            "App\\": "app/",
+            // Other PSR-4 namespaces...
             "Webkul\\CustomExpressShipping\\": "packages/Webkul/CustomExpressShipping/src"
         }
     }

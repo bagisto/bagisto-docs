@@ -41,12 +41,25 @@ If you're not familiar with the `AbstractType` methods we're implementing below,
 
 namespace Webkul\SubscriptionProduct\Type;
 
+use Webkul\Product\Helpers\Indexers\Price\Simple as SimpleIndexer;
 use Webkul\Product\Type\AbstractType;
 
 class Subscription extends AbstractType
 {
     /**
-     * Subscriptions don't use traditional inventory
+     * Returns price indexer class for a specific product type.
+     *
+     * @return string
+     */
+    public function getPriceIndexer()
+    {
+        // SimpleIndexer extends AbstractIndexer, so it handles basic price indexing
+        // You can keep this as-is for most custom product types
+        return app(SimpleIndexer::class);
+    }
+    
+    /**
+     * Subscriptions don't use traditional inventory.
      */
     public function isStockable(): bool
     {
@@ -54,7 +67,7 @@ class Subscription extends AbstractType
     }
     
     /**
-     * Allow customers to select quantity for multiple subscription slots
+     * Allow customers to select quantity for multiple subscription slots.
      */
     public function showQuantityBox(): bool
     {
@@ -62,7 +75,7 @@ class Subscription extends AbstractType
     }
     
     /**
-     * Check if subscription is available for purchase
+     * Check if subscription is available for purchase.
      */
     public function isSaleable(): bool
     {
@@ -76,8 +89,8 @@ class Subscription extends AbstractType
     }
     
     /**
-     * Check if enough subscription slots are available
-     * Note: Assumes you have a 'subscription_slots' attribute on your product
+     * Check if enough subscription slots are available.
+     * Note: Assumes you have a `subscription_slots` attribute on your product.
      */
     public function haveSufficientQuantity(int $qty): bool
     {
@@ -87,8 +100,8 @@ class Subscription extends AbstractType
     }
     
     /**
-     * Return total available subscription slots
-     * Note: Assumes you have a 'subscription_slots' attribute on your product
+     * Return total available subscription slots.
+     * Note: Assumes you have a `subscription_slots` attribute on your product.
      */
     public function totalQuantity(): int
     {
@@ -98,8 +111,8 @@ class Subscription extends AbstractType
     }
     
     /**
-     * Prepare subscription data for cart
-     * Note: Assumes your frontend form sends 'subscription_frequency' in the request data
+     * Prepare subscription data for cart.
+     * Note: Assumes your frontend form sends 'subscription_frequency' in the request data.
      */
     public function prepareForCart($data): array
     {
