@@ -118,6 +118,7 @@ export default defineConfig({
         text: 'Theme Development',
         collapsed: false,
         items: [
+          { text: 'Getting Started', link: '/docs/theme-development/getting-started' },
           { text: 'Store Theme', link: '/docs/theme-development/create-store-theme' },
           { text: 'Admin Theme', link: '/docs/theme-development/create-admin-theme' },
           { text: 'Custom Theme Package', link: '/docs/theme-development/custom-theme-package' },

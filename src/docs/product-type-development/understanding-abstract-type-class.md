@@ -175,6 +175,205 @@ public function showQuantityBox(): bool
 }
 ```
 
+### Pricing and Display Methods
+
+These methods handle product pricing calculations and display formatting, which are essential for any product type that needs custom pricing logic:
+
+#### `getProductPrices(): array`
+
+Returns structured pricing data for the product:
+
+```php
+// Core method signature in AbstractType
+public function getProductPrices(): array
+{
+    // Returns structured pricing data with regular and final prices
+    // Includes both raw prices and formatted currency strings
+}
+```
+
+**For subscription products with custom pricing:**
+
+```php
+public function getProductPrices(): array
+{
+    $basePrice = $this->product->price;
+    
+    // Apply subscription discount if applicable
+    $subscriptionDiscount = $this->product->subscription_discount ?? 0;
+    $finalPrice = $basePrice - ($basePrice * $subscriptionDiscount / 100);
+    
+    return [
+        'regular' => [
+            'price'           => core()->convertPrice($basePrice),
+            'formatted_price' => core()->currency($basePrice),
+        ],
+        'final'   => [
+            'price'           => core()->convertPrice($finalPrice),
+            'formatted_price' => core()->currency($finalPrice),
+        ],
+    ];
+}
+```
+
+#### `getPriceHtml(): string`
+
+Generates the complete price HTML for frontend display:
+
+```php
+// Core method signature in AbstractType
+public function getPriceHtml(): string
+{
+    // Generates complete price HTML for frontend display
+    // Uses pricing view templates with product and pricing data
+}
+```
+
+**For subscription products with custom pricing display:**
+
+```php
+public function getPriceHtml(): string
+{
+    // You can customize the pricing view for subscriptions
+    return view('subscription::products.prices.subscription', [
+        'product' => $this->product,
+        'prices'  => $this->getProductPrices(),
+        'subscription_info' => [
+            'frequency' => $this->product->subscription_frequency,
+            'discount' => $this->product->subscription_discount,
+        ],
+    ])->render();
+}
+```
+
+### Validation Methods
+
+These methods handle form validation for product-specific data during product creation and updates:
+
+#### `getTypeValidationRules(): array`
+
+Returns validation rules for product type specific fields:
+
+```php
+// Core method signature in AbstractType
+public function getTypeValidationRules(): array
+{
+    // Returns array of validation rules for product type specific fields
+    // Used during product creation and update processes
+}
+```
+
+**For subscription products with custom validation:**
+
+```php
+public function getTypeValidationRules(): array
+{
+    return [
+        'subscription_frequency'     => 'required|in:weekly,monthly,quarterly,yearly',
+        'subscription_discount'      => 'nullable|numeric|min:0|max:100',
+        'subscription_duration'      => 'nullable|integer|min:1',
+        'subscription_trial_period'  => 'nullable|integer|min:0',
+        'subscription_slots'         => 'required|integer|min:1',
+    ];
+}
+```
+
+**For downloadable products (real Bagisto example):**
+
+```php
+public function getTypeValidationRules(): array
+{
+    return [
+        'downloadable_links.*.type'       => 'required',
+        'downloadable_links.*.file'       => 'required_if:type,==,file',
+        'downloadable_links.*.file_name'  => 'required_if:type,==,file',
+        'downloadable_links.*.url'        => 'required_if:type,==,url',
+        'downloadable_links.*.downloads'  => 'required',
+        'downloadable_links.*.sort_order' => 'required',
+    ];
+}
+```
+
+### Admin Interface Customization
+
+These properties and methods control how your product type appears in the admin interface, particularly in the product edit page:
+
+#### `$additionalViews` Property
+
+Specifies additional blade views to include in the product edit page:
+
+```php
+// Core property in AbstractType
+protected $additionalViews = [];
+```
+
+**For subscription products with custom admin fields:**
+
+```php
+/**
+ * These blade files will be included in product edit page.
+ *
+ * @var array
+ */
+protected $additionalViews = [
+    'subscription::admin.catalog.products.edit.subscription-settings',
+    'subscription::admin.catalog.products.edit.subscription-pricing',
+];
+```
+
+#### `$skipAttributes` Property
+
+Specifies which attributes to skip for this product type:
+
+```php
+// Core property in AbstractType
+protected $skipAttributes = [];
+```
+
+**For subscription products that don't need certain attributes:**
+
+```php
+/**
+ * Skip attribute for subscription product type.
+ *
+ * @var array
+ */
+protected $skipAttributes = [
+    'weight',
+    'dimensions',
+    'color',
+    'size',
+];
+```
+
+**For digital products example:**
+
+```php
+protected $skipAttributes = [
+    'weight',
+    'height',
+    'width',
+    'depth',
+];
+```
+
+::: tip Custom Admin Sections
+Use `additionalViews` to add:
+- Custom product configuration forms
+- Specialized pricing options
+- Product type specific settings
+- Integration configurations
+- Advanced validation options
+
+Use `skipAttributes` to:
+- Hide irrelevant attributes for specific product types
+- Simplify the admin interface
+- Prevent unnecessary data entry
+- Focus on product type specific fields
+
+These views are automatically included in the product edit page and have access to the `$product` variable.
+:::
+
 ### Cart Integration
 
 #### `prepareForCart(array $data): array`
@@ -214,6 +413,8 @@ public function prepareForCart(array $data): array
 }
 ```
 
+
+
 ## Exploring More Methods
 
 The methods covered above are the most commonly overridden ones, but the AbstractType class contains many more methods that you can customize based on your specific requirements. We recommend exploring the full AbstractType class to discover additional methods that might be useful for your custom product type implementation.
@@ -235,7 +436,14 @@ See how to implement these methods in a complete, functional subscription produc
 - `isSaleable()` - Controls product availability
 - `isStockable()` - Determines inventory behavior  
 - `showQuantityBox()` - Controls UI elements
+- `getProductPrices()` - Handles pricing calculations
+- `getPriceHtml()` - Generates price display
+- `getTypeValidationRules()` - Defines validation rules
 - `prepareForCart()` - Handles cart integration
+
+**Essential Properties:**
+- `$additionalViews` - Custom admin interface sections
+- `$skipAttributes` - Skip irrelevant attributes for product type
 
 **Override Patterns:**
 - Call parent methods first when possible

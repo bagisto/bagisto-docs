@@ -15,23 +15,28 @@ hero:
       link: https://github.com/bagisto/bagisto
 
 features:
-  - title: Package Creation
-    details: Learn how to create a new package for Bagisto and extend its functionality with custom modules.
+  - title: Package Development
+    details: Learn how to create a new package for Bagisto and extend its functionality with custom modules, repositories, and service providers.
     icon: 📦
-  - title: Digging Deeper
-    details: Learn advanced topics like payment methods, shipping methods, and complex integrations.
-    icon: 🔧
-  - title: Custom Theme
-    details: Learn how to create or customize a theme for Bagisto to match your brand and requirements.
+    link: /docs/package-development/getting-started
+  - title: Shipping Method Development
+    details: Create custom shipping methods with rate calculation, admin configuration, and integration with checkout process.
+    icon: 🚚
+    link: /docs/shipping-method-development/getting-started
+  - title: Payment Method Development
+    details: Build secure payment gateways and integrate with third-party payment processors for seamless transactions.
+    icon: 💳
+    link: /docs/payment-method-development/getting-started
+  - title: Product Type Development
+    details: Develop custom product types with specialized pricing, inventory management, and cart integration features.
+    icon: 🛍️
+    link: /docs/product-type-development/getting-started
+  - title: Theme Development
+    details: Create beautiful, responsive themes for Bagisto with custom layouts, components, and styling frameworks.
     icon: 🎨
-  - title: Architecture Concepts
-    details: Understand Bagisto's modular design, repository patterns, and frontend architecture.
-    icon: 🏗️
-  - title: Performance Optimization
-    details: Implement caching, indexing, and load balancing for high-performance e-commerce sites.
+    link: /docs/theme-development/getting-started
+  - title: Performance
+    details: Implement caching, indexing, and optimization techniques for high-performance e-commerce sites.
     icon: ⚡
-  - title: API Integration
-    details: Work with REST and GraphQL APIs to build headless commerce solutions.
-    icon: 🔌
+    link: /docs/performance/introduction
 ---
-
