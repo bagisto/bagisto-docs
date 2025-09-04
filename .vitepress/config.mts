@@ -128,6 +128,19 @@ export default defineConfig({
         ]
       },
       {
+        text: 'Performance',
+        collapsed: false,
+        items: [
+          { text: 'Introduction', link: '/docs/performance/introduction' },
+          { text: 'Understanding Indexers', link: '/docs/performance/understanding-indexers' },
+          { text: 'Configure Elasticsearch', link: '/docs/performance/configure-elasticsearch' },
+          { text: 'Configure Full Page Cache', link: '/docs/performance/configure-fpc' },
+          { text: 'Configure Varnish', link: '/docs/performance/configure-varnish' },
+          { text: 'Configure Laravel Octane', link: '/docs/performance/configure-laravel-octane' },
+          { text: 'Configure Load Balancing', link: '/docs/performance/configure-load-balancing' }
+        ]
+      },
+      {
         text: 'Digging Deeper',
         collapsed: false,
         items: [
@@ -140,19 +153,6 @@ export default defineConfig({
           { text: 'Best Security Practices', link: '/docs/advanced/security-practice' },
           { text: 'Data Transfer', link: '/docs/advanced/create-data-import' },
           { text: 'Validation', link: '/docs/advanced/validation' },
-        ]
-      },
-      {
-        text: 'Performance',
-        collapsed: false,
-        items: [
-          { text: 'Introduction', link: '/docs/performance/introduction' },
-          { text: 'Understanding Indexers', link: '/docs/performance/understanding-indexers' },
-          { text: 'Configure Elasticsearch', link: '/docs/performance/configure-elasticsearch' },
-          { text: 'Configure Full Page Cache', link: '/docs/performance/configure-fpc' },
-          { text: 'Configure Varnish', link: '/docs/performance/configure-varnish' },
-          { text: 'Configure Laravel Octane', link: '/docs/performance/configure-laravel-octane' },
-          { text: 'Configure Load Balancing', link: '/docs/performance/configure-load-balancing' }
         ]
       },
       {

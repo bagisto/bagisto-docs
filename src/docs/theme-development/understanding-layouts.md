@@ -5,8 +5,7 @@ Learn how Bagisto's layout system works and how to effectively use layouts in yo
 ::: info What You'll Learn
 - How Bagisto's layout components work
 - Using admin layouts for backend interfaces
-- Working with shop layouts for store**📚 [Back to Getting Started →](./getting-started.md)**  
-Review the complete theme development journey and explore other paths.ont themes
+- Working with shop layouts for storefront themes
 - Layout customization and best practices
 - Connecting layouts with your custom theme package
 :::
@@ -394,5 +393,5 @@ Learn to use Bagisto's pre-built components that work seamlessly with your layou
 **🛠️ [Package Development →](../package-development/)**  
 Explore advanced package development techniques for creating custom functionality.
 
-**� [Back to Getting Started →](./getting-started.md)**  
+**📚 [Back to Getting Started →](./getting-started.md)**  
 Review the complete theme development journey and explore other paths.
