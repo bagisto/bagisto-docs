@@ -1,7 +1,5 @@
 # Blade Components
 
-## Introduction
-
 To ensure optimal user experience in **Bagisto** we have created several separate Blade components for the Shop and Admin packages. Now in **`Bagisto`** we have also merged the vue.js code inside the blade component to improve application performance.
 
 Additionally, To learn in detail about blade components, you can visit the Laravel documentation [here](https://laravel.com/docs/11.x/blade#introduction).

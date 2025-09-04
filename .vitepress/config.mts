@@ -119,12 +119,12 @@ export default defineConfig({
         collapsed: false,
         items: [
           { text: 'Getting Started', link: '/docs/theme-development/getting-started' },
-          { text: 'Store Theme', link: '/docs/theme-development/create-store-theme' },
-          { text: 'Admin Theme', link: '/docs/theme-development/create-admin-theme' },
-          { text: 'Custom Theme Package', link: '/docs/theme-development/custom-theme-package' },
+          { text: 'Creating Store Theme', link: '/docs/theme-development/creating-store-theme' },
+          { text: 'Creating Admin Theme', link: '/docs/theme-development/creating-admin-theme' },
+          { text: 'Creating Custom Theme Package', link: '/docs/theme-development/creating-custom-theme-package' },
+          { text: 'Vite-Powered Theme Assets', link: '/docs/theme-development/vite-powered-theme-assets' },
+          { text: 'Understanding Layouts', link: '/docs/theme-development/understanding-layouts' },
           { text: 'Blade Components', link: '/docs/theme-development/blade-components' },
-          { text: 'Layouts', link: '/docs/theme-development/layouts' },
-          { text: 'Bundling Assets', link: '/docs/theme-development/bundling-assets' },
         ]
       },
       {
