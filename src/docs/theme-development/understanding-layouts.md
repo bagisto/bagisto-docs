@@ -5,7 +5,8 @@ Learn how Bagisto's layout system works and how to effectively use layouts in yo
 ::: info What You'll Learn
 - How Bagisto's layout components work
 - Using admin layouts for backend interfaces
-- Working with shop layouts for storefront themes
+- Working with shop layouts for store**📚 [Back to Getting Started →](./getting-started.md)**  
+Review the complete theme development journey and explore other paths.ont themes
 - Layout customization and best practices
 - Connecting layouts with your custom theme package
 :::
@@ -21,7 +22,7 @@ Layouts in Bagisto are fundamental building blocks that provide consistent struc
 - **Flexibility**: Customizable props and slots for different use cases
 
 ::: tip Connecting to Theme Development
-If you're building a custom theme package (covered in our [Custom Theme Package](./custom-theme-package.md) guide), understanding layouts is crucial for creating professional themes that integrate seamlessly with Bagisto's architecture.
+If you're building a custom theme package (covered in our [Custom Theme Package](./creating-custom-theme-package.md) guide), understanding layouts is crucial for creating professional themes that integrate seamlessly with Bagisto's architecture.
 :::
 
 ::: info Laravel Blade Foundation
@@ -168,7 +169,7 @@ The shop layout accepts several props to customize which sections are included:
 | **`has-footer`** | Include site footer with links and info | `true` | Disable for checkout or modal pages |
 
 ::: tip Shop Layout in Custom Themes
-If you're building a custom theme package (from our [Custom Theme Package](./custom-theme-package.md) tutorial), the shop layout automatically loads your theme's compiled assets when configured properly. This works seamlessly with the asset compilation setup from our [Modern Asset Compilation](./bundling-assets.md) guide.
+If you're building a custom theme package (from our [Custom Theme Package](./creating-custom-theme-package.md) tutorial), the shop layout automatically loads your theme's compiled assets when configured properly. This works seamlessly with the asset compilation setup from our [Vite-Powered Theme Assets](./vite-powered-theme-assets.md) guide.
 :::
 
 ### Example: Custom Theme Home Page
@@ -226,7 +227,7 @@ The shop layout automatically loads your active theme's compiled assets. This me
 - ✅ **Asset compilation**: Works with Vite dev server and production builds
 - ⚠️ **Custom layouts**: If you create your own layout, you'll need to manually include `@bagistoVite` directive
 
-For details on asset loading, see our [Modern Asset Compilation](./bundling-assets.md) guide.
+For details on asset loading, see our [Vite-Powered Theme Assets](./vite-powered-theme-assets.md) guide.
 :::
 
 ### Creating Minimal Pages
@@ -356,11 +357,11 @@ Then use your custom layout:
 
 This layout system integrates seamlessly with our previous guides:
 
-**🎨 [Custom Theme Package](./custom-theme-package.md)**
+**🎨 [Custom Theme Package](./creating-custom-theme-package.md)**
 - Layouts work automatically with your theme package structure
 - Service provider handles layout registration and publishing
 
-**⚡ [Modern Asset Compilation](./bundling-assets.md)**  
+**⚡ [Vite-Powered Theme Assets](./vite-powered-theme-assets.md)**  
 - Shop layout automatically loads your compiled theme assets
 - Custom layouts require manual asset inclusion with `@bagistoVite`
 
@@ -388,12 +389,10 @@ See our package development guides for details on handling translations.
 Understanding layouts is crucial for effective theme development. Here are your next steps:
 
 **🧩 [Blade Components →](./blade-components.md)**  
-Learn to create reusable components that work with Bagisto's layout system.
+Learn to use Bagisto's pre-built components that work seamlessly with your layouts.
 
-**🎨 [Theme Customization →](./customization.md)**  
-Discover advanced techniques for customizing layouts and components.
+**🛠️ [Package Development →](../package-development/)**  
+Explore advanced package development techniques for creating custom functionality.
 
-**📱 [Responsive Design →](./responsive-design.md)**  
-Master responsive design patterns within Bagisto's layout framework.
-
-If you don't want to include these layouts, you can create your own master file.
+**� [Back to Getting Started →](./getting-started.md)**  
+Review the complete theme development journey and explore other paths.

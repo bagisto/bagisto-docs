@@ -12,7 +12,7 @@ Learn how to convert your basic custom theme into a professional package structu
 
 ## Prerequisites
 
-Before starting this guide, make sure you have completed the [Creating Store Theme](./create-store-theme.md) tutorial. We'll be converting that basic theme into a package structure.
+Before starting this guide, make sure you have completed the [Creating Store Theme](./creating-store-theme.md) tutorial. We'll be converting that basic theme into a package structure.
 
 ::: tip Package Benefits
 - **Better Organization**: Keep your theme separate from core files
@@ -109,7 +109,7 @@ class CustomThemeServiceProvider extends ServiceProvider
 Move your existing theme files from the basic theme location to your package:
 
 ::: warning No Existing Theme Files?
-If you jumped directly to this section and don't have existing theme files from the [Creating Store Theme](./create-store-theme.md) tutorial, you'll need to either:
+If you jumped directly to this section and don't have existing theme files from the [Creating Store Theme](./creating-store-theme.md) tutorial, you'll need to either:
 
 1. **Go back and complete the basic theme tutorial first** (recommended for understanding)
 2. **Create the files directly in your package** using the examples below
@@ -205,7 +205,7 @@ return [
 Ensure your `config/themes.php` file has the correct configuration for your package theme:
 
 ::: info Optional Step
-If you completed the [Creating Store Theme](./create-store-theme.md) tutorial, you should already have this configuration. However, if you jumped directly to this section or want to verify your setup, make sure your theme configuration matches the example below.
+If you completed the [Creating Store Theme](./creating-store-theme.md) tutorial, you should already have this configuration. However, if you jumped directly to this section or want to verify your setup, make sure your theme configuration matches the example below.
 :::
 
 ```php{18-29}
@@ -371,11 +371,11 @@ To ensure your package theme works correctly:
 
 Congratulations! You've successfully converted your basic theme into a professional package structure. Here are your next steps:
 
-**⚡ [Asset Bundling →](./bundling-assets.md)**  
-Learn to set up Vite for modern asset compilation and optimization in your package.
+ **⚡ [Vite-Powered Theme Assets →](./vite-powered-theme-assets.md)**  
+Learn to set up modern asset compilation and optimization for your theme package.
 
-**📄 [Create Admin Theme Package →](./create-admin-theme.md)**  
-Apply the same package approach to admin themes for complete customization.
+**📄 [Understanding Layouts →](./understanding-layouts.md)**  
+Master custom layouts and advanced view organization in your theme packages.
 
-**🎨 [Layouts and Views →](./layouts.md)**  
-Master custom layouts and advanced view organization in packages.
+**🧩 [Blade Components →](./blade-components.md)**  
+Learn to use Bagisto's pre-built components within your theme package structure.

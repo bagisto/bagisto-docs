@@ -1,6 +1,7 @@
 # Creating Store Theme
 
-Learn how to create custom store themes for your Bagisto e-commerce platform. This guide covers the basic approach using Bagisto's resources directory, perfect for getting started with theme development.
+Learn how to create custom store themes for your Bagisto e-commerce platform. This guide covers the basic approach using Bagisto's resources directory, perfect for getting started with theme develop**👩‍💼 [Creating Admin Theme →](./creating-admin-theme.md)**  
+Learn to customize the admin panel interface with custom admin themes.nt.
 
 ::: info What You'll Learn
 - Understanding Bagisto's theme configuration system
@@ -118,7 +119,7 @@ return [
 ```
 
 ::: tip Vite Configuration Note
-The Vite configuration currently uses the default theme settings. We'll cover custom Vite setup in the [Asset Bundling](./bundling-assets.md) guide.
+The Vite configuration currently uses the default theme settings. We'll cover custom Vite setup in the [Vite-Powered Theme Assets](./vite-powered-theme-assets.md) guide.
 :::
 
 ### Step 2: Create Theme Directory Structure
@@ -184,7 +185,7 @@ When using the default shop layout, you're inheriting the existing Tailwind CSS 
 - **SCSS/PostCSS** preprocessing
 - **Asset optimization** and bundling
 
-We'll gradually progress through these advanced concepts in the upcoming guides. For now, stick to the existing Tailwind classes or use custom CSS to avoid compilation issues. The [Asset Bundling](./bundling-assets.md) guide will show you how to set up a complete modern development workflow.
+We'll gradually progress through these advanced concepts in the upcoming guides. For now, stick to the existing Tailwind classes or use custom CSS to avoid compilation issues. The [Vite-Powered Theme Assets](./vite-powered-theme-assets.md) guide will show you how to set up a complete modern development workflow.
 :::
 
 ### Step 4: Clear Application Cache
@@ -220,11 +221,11 @@ To ensure your theme works correctly:
 
 Congratulations! You've successfully created your first custom store theme. Here are your next steps:
 
-**📄 [Create Admin Theme →](./create-admin-theme.md)**  
+**💼 [Creating Admin Theme →](./creating-admin-theme.md)**  
 Learn to customize the admin panel interface with custom admin themes.
 
-**📦 [Custom Theme Package →](./custom-theme-package.md)**  
+**📦 [Custom Theme Package →](./creating-custom-theme-package.md)**  
 Advance to creating professional theme packages for distribution and better organization.
 
-**⚡ [Asset Bundling →](./bundling-assets.md)**  
-Master Vite configuration for optimized CSS, JavaScript, and asset management.
+**⚡ [Vite-Powered Theme Assets →](./vite-powered-theme-assets.md)**  
+Master modern asset compilation and optimization for your themes.

@@ -118,7 +118,7 @@ return [
 ```
 
 ::: tip Vite Configuration Note
-The Vite configuration currently uses the default theme settings. We'll cover custom Vite setup in the [Asset Bundling](./bundling-assets.md) guide.
+The Vite configuration currently uses the default theme settings. We'll cover custom Vite setup in the [Vite-Powered Theme Assets](./vite-powered-theme-assets.md) guide.
 :::
 
 ### Step 2: Create Admin Theme Directory Structure
@@ -216,7 +216,7 @@ When using the default admin layout, you're inheriting the existing CSS compilat
 - **SCSS/PostCSS** preprocessing for admin styling
 - **Asset optimization** and bundling for admin interfaces
 
-We'll gradually progress through these advanced concepts in the upcoming guides. For now, stick to the existing CSS classes or use custom CSS to avoid compilation issues. The [Asset Bundling](./bundling-assets.md) guide will show you how to set up a complete modern admin development workflow.
+We'll gradually progress through these advanced concepts in the upcoming guides. For now, stick to the existing CSS classes or use custom CSS to avoid compilation issues. The [Vite-Powered Theme Assets](./vite-powered-theme-assets.md) guide will show you how to set up a complete modern admin development workflow.
 :::
 
 ### Step 4: Clear Application Cache
@@ -260,11 +260,11 @@ To ensure your admin theme works correctly:
 
 Congratulations! You've successfully created your first custom admin theme. Here are your next steps:
 
-**📄 [Creating Store Theme →](./create-store-theme.md)**  
-Learn to create custom store themes for the customer-facing frontend.
-
-**📦 [Custom Theme Package →](./custom-theme-package.md)**  
+**📦 [Custom Theme Package →](./creating-custom-theme-package.md)**  
 Advance to creating professional theme packages for distribution and better organization.
 
-**⚡ [Asset Bundling →](./bundling-assets.md)**  
-Master Vite configuration for optimized CSS, JavaScript, and asset management.
+**⚡ [Vite-Powered Theme Assets →](./vite-powered-theme-assets.md)**  
+Master modern asset compilation and optimization for your themes.
+
+**📄 [Understanding Layouts →](./understanding-layouts.md)**  
+Learn about Bagisto's layout system and how to customize it effectively.

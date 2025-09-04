@@ -1,12 +1,38 @@
 # Blade Components
 
-To ensure optimal user experience in **Bagisto** we have created several separate Blade components for the Shop and Admin packages. Now in **`Bagisto`** we have also merged the vue.js code inside the blade component to improve application performance.
+Comprehensive guide to Bagisto's pre-built Blade components for both shop and admin interfaces. These components provide consistent UI elements with Vue.js integration for enhanced performance and user experience.
 
-Additionally, To learn in detail about blade components, you can visit the Laravel documentation [here](https://laravel.com/docs/11.x/blade#introduction).
+::: info What You'll Learn
+- Using shop components for customer-facing interfaces
+- Implementing admin components for backend functionality
+- Component customization and styling options
+- Integration with your custom theme packages
+- Best practices for component usage
+:::
 
-- Here are the list of Blade component that is available in **`Bagisto`**.
+## Introduction
 
-## Shop Component
+Bagisto provides an extensive collection of reusable Blade components for both **Shop** and **Admin** packages. These components integrate Vue.js functionality within Blade templates to deliver optimal performance and user experience.
+
+**Key Benefits:**
+- **Consistent UI**: Unified design across all interfaces
+- **Performance**: Vue.js integration for reactive functionality
+- **Customization**: Flexible props and slots for customization
+- **Accessibility**: Built-in accessibility features
+- **Responsive**: Mobile-first responsive design
+
+::: tip Integration with Theme Development
+These components work seamlessly with the custom themes covered in our previous guides:
+- [Custom Theme Package](./creating-custom-theme-package.md) - Package structure and development
+- [Understanding Layouts](./understanding-layouts.md) - Layout integration
+- [Vite-Powered Theme Assets](./vite-powered-theme-assets.md) - Asset management with components
+:::
+
+::: info Laravel Blade Foundation
+For comprehensive details about Blade components and templating, visit the [Laravel Blade documentation](https://laravel.com/docs/11.x/blade#introduction).
+:::
+
+## Shop Components
 
 Shop components are reusable Blade components used to build the shop. They manage product listings, shopping carts, checkout processes, and user interactions, providing a seamless shopping experience for customers.
 
@@ -61,6 +87,7 @@ Let's assume you want to use the **`breadcrumbs`** component. You can call it li
     :entity="$address"
 />
 ```
+
 By using the breadcrumbs component with these props, you can effectively enhance navigation within your shop application, providing users with clear paths to navigate through different sections or resources.
 
 ### Shop Button
@@ -89,6 +116,19 @@ Let's assume you want to use the **`button`** component. You can call it like th
     :disabled="true"
     ::loading="true"
 />
+```
+
+### Shop Data Grid
+
+The `datagrid` component in Bagisto applications provides a flexible and customizable data grid interface for displaying tabular data. It includes features such as `sorting`, `filtering`, `pagination`, and `mass actions` to manage data efficiently.
+
+You can customize the appearance of the `DataGrid` by referring to the [DataGrid Customization](/docs/package-development/datagrid).
+
+Let's assume you want to use the **`datagrid`** component. You can call it like this.
+
+```html
+<!-- Shop Datagrid -->
+<x-shop::datagrid :src="route('shop.customers.account.orders.index')" />
 ```
 
 ### Shop Drawer
@@ -167,10 +207,9 @@ Let's assume you want to use the **`dropdown`** component. You can call it like 
     </x-slot>
 
     <x-slot:menu>
-        <x-sho::dropdown.menu.item
+        <x-shop::dropdown.menu.item>
             Menu Item 1
             Menu Item 2
-        >
         </x-shop::dropdown.menu.item>
     </x-slot>
 </x-shop::dropdown>
@@ -205,17 +244,162 @@ Let's assume you want to use the **`flat-picker`** component. You can call it li
 </x-shop::flat-picker.date>
 ```
 
-### Shop Data Grid
+### Shop Media (Image)
 
-The `datagrid` component in Bagisto applications provides a flexible and customizable data grid interface for displaying tabular data. It includes features such as `sorting`, `filtering`, `pagination`, and `mass actions` to manage data efficiently.
+The Media component in Bagisto provides a user interface for managing and displaying images/videos, allowing users to upload, edit, and delete images.:
 
-You can customize the appearance of the `DataGrid` by referring to the [DataGrid Customization](https://devdocs.bagisto.com/2.x/packages/datagrid.html#datagrid-customization) documentation.
+| Prop Name         | Type       | Default Value | Description                                                      |
+|-------------------|-------------|---------------|------------------------------------------------------------------|
+| `name`            | `String`    |               | The name of the input field.                                      |
+| `allow-multiple` | `Boolean`   | `false`       | Whether to allow uploading multiple images.                       |
+| `show-placeholders` | `Boolean` | `true`        | Whether to show placeholder images when no images are uploaded.   |
+| `uploaded-images` | `Array`     | `[]`          | Array of uploaded images.                                         |
+| `uploaded-videos` | `Array`     | `[]`          | Array of uploaded videos.                                         |
+| `width`         | `String`    | `'100%'`      | Width of the image container.                                     |
+| `height`        | `String`    | `'auto'`      | Height of the image container.                                    |
 
-Let's assume you want to use the **`datagrid`** component. You can call it like this.
+Let's assume you want to use the **`Image/Video`** component, You can call it like this.
 
 ```html
-<!-- Shop Datagrid -->
-<x-shop::datagrid :src="route('shop.customers.account.orders.index')" />
+<!-- Image Component -->
+<x-shop::media.images.lazy
+    class="h-[110px] max-w-[110px] rounded-xl max-md:h-20 max-md:max-w-20"
+    ::src="item.base_image.small_image_url"
+    ::alt="item.name"
+    width="110"
+    height="110"
+    ::key="item.id"
+    ::index="item.id"
+/>
+```
+
+### Shop Modal
+
+The `modal` component in Bagisto provides a flexible way to create modal dialogs. It allows you to display content in a layer that floats above the rest of the page.
+
+| Props         | Type      | Default Value | Description                           |
+|--------------|-----------|---------------|---------------------------------------|
+| `is-active`  | Boolean   | `false`       | Controls the visibility of the modal.  |
+
+| Slot          | Description                                                 |
+|---------------|-------------------------------------------------------------|
+| **`toggle`**  | Used for the element that toggles the visibility of the modal. |
+| **`header`**  | Allows customization of the modal header content.           |
+| **`content`** | Provides a slot for the main body content of the modal.      |
+| **`footer`**  | Allows customization of the footer content within the modal. |
+
+You can customize the appearance of the Modal by passing additional CSS.
+
+* To customize the header section, you can target the `header` slot with your own CSS classes or styles.
+* Similarly, you can customize the content section using the `content` slot.
+* Similarly, you can customize the content section using the `footer` slot.
+
+Let's assume you want to use the **`modal`** component, You can call it like this.
+
+```html
+<!-- Shop Modal-->
+<x-shop::modal>
+    <x-slot:toggle>
+        Modal Toggle
+    </x-slot>
+
+    <x-slot:header>
+        Modal Header
+    </x-slot>
+
+    <x-slot:content>
+        Modal Content
+    </x-slot>
+</x-shop::modal>
+```
+
+### Shop Quantity Changer
+
+The Quantity Changer component, provides a simple interface for users to increase or decrease a quantity value. 
+
+| Props          | Type    | Default Value | Description                       |
+| -------------- | ------- | ------------- | --------------------------------- |
+| **`name`**     | String  | `''`          | The name attribute for the hidden input field. |
+| **`value`**    | Number  | `1`           | The initial quantity value.       |
+
+Let's assume you want to use the **`Quantity Changer`** component on shop. You can call it like this.
+
+```html
+<!-- Shop Quantity changer -->
+<x-shop::quantity-changer
+    name="quantity"
+    value="1"
+    class="gap-x-4 rounded-xl px-7 py-4"
+/>
+```
+
+### Shop Shimmer
+
+Prebuilt `shimmer` effects are available in Bagisto. You can easily use them.
+
+Let's assume you want to use the **`shimmer`** You can call it like this.
+
+```html
+<!-- Shop shimmer -->
+<x-shop::shimmer.datagrid />
+```
+
+### Shop Table
+
+The Table component provides a structured way to display tabular data in Bagisto. You can customize the appearance of the table elements using CSS. Below are some common customization options:
+
+| Styling        | Description                                                                                               |
+| -------------- | --------------------------------------------------------------------------------------------------------- |
+| **`Table`**    | Apply custom styles to the `table` element to change its appearance, such as borders, padding, and background color. |
+| **`Cell`**     | Customize the appearance of `th` and `td` elements using CSS, such as font size, text alignment, and background color. |
+| **`Row`**      | Apply styles to `tr` elements to change their appearance, such as background color, hover effects, and borders. |
+| **`Header`**   | Customize the appearance of the header cells within the `thead` section using `th` elements. Apply styles such as font weight, text color, and background color. |
+
+Let's assume you want to use the **`Table`** component on shop. You can call it like this.
+
+```html
+<!-- Shop Table -->
+<x-shop::table>
+    <x-shop::table.thead>
+        <x-shop::table.thead.tr>
+            <x-shop::table.th>
+                Heading 1
+            </x-shop::table.th>
+
+            <x-shop::table.th>
+                Heading 2
+            </x-shop::table.th>
+
+            <x-shop::table.th>
+                Heading 3
+            </x-shop::table.th>
+
+            <x-shop::table.th>
+                Heading 4
+            </x-shop::table.th>
+        </x-shop::table.thead.tr>
+    </x-shop::table.thead>
+
+    <x-shop::table.tbody>
+        <x-shop::table.tbody.tr>
+            <x-shop::table.td>
+                Column 1
+            </x-shop::table.td>
+
+            <x-shop::table.td>
+                Column 2
+            </x-shop::table.td>
+
+            <x-shop::table.td>
+                Column 3
+            </x-shop::table.td>
+
+            <x-shop::table.td>
+                Column 4
+            </x-shop::table.td>
+        </x-shop::table.thead.tr>
+    </x-shop::table.tbody>
+</x-shop::table>
 ```
 
 ### Shop Tabs 
@@ -293,163 +477,7 @@ Let's assume you want to use the **`tinymce`** component on admin and shop. You 
 />
 ```
 
-### Shop Shimmer
-
-Prebuilt `shimmer` effects are available in Bagisto. You can easily use them.
-
-Let's assume you want to use the **`shimmer`** You can call it like this.
-
-```html
-<!-- Shop shimmer -->
-<x-shop::shimmer.datagrid />
-```
-
-### Shop Quantity Changer
-
-The Quantity Changer component, provides a simple interface for users to increase or decrease a quantity value. 
-
-| Props          | Type    | Default Value | Description                       |
-| -------------- | ------- | ------------- | --------------------------------- |
-| **`name`**     | String  | `''`          | The name attribute for the hidden input field. |
-| **`value`**    | Number  | `1`           | The initial quantity value.       |
-
-Let's assume you want to use the **`Quantity Changer`** component on shop. You can call it like this.
-
-```html
-<!-- Shop Quantity changer -->
-<x-shop::quantity-changer
-    name="quantity"
-    value="1"
-    class="gap-x-4 rounded-xl px-7 py-4"
-/>
-```
-
-### Shop Table
-
-The Table component provides a structured way to display tabular data in Bagisto. You can customize the appearance of the table elements using CSS. Below are some common customization options:
-
-| Styling        | Description                                                                                               |
-| -------------- | --------------------------------------------------------------------------------------------------------- |
-| **`Table`**    | Apply custom styles to the `table` element to change its appearance, such as borders, padding, and background color. |
-| **`Cell`**     | Customize the appearance of `th` and `td` elements using CSS, such as font size, text alignment, and background color. |
-| **`Row`**      | Apply styles to `tr` elements to change their appearance, such as background color, hover effects, and borders. |
-| **`Header`**   | Customize the appearance of the header cells within the `thead` section using `th` elements. Apply styles such as font weight, text color, and background color. |
-
-Let's assume you want to use the **`Table`** component on shop. You can call it like this.
-
-```html
-<!-- Shop Table -->
-<x-shop::table>
-    <x-shop::table.thead>
-        <x-shop::table.thead.tr>
-            <x-shop::table.th>
-                Heading 1
-            </x-shop::table.th>
-
-            <x-shop::table.th>
-                Heading 2
-            </x-shop::table.th>
-
-            <x-shop::table.th>
-                Heading 3
-            </x-shop::table.th>
-
-            <x-shop::table.th>
-                Heading 4
-            </x-shop::table.th>
-        </x-shop::table.thead.tr>
-    </x-shop::table.thead>
-
-    <x-shop::table.tbody>
-        <x-shop::table.tbody.tr>
-            <x-shop::table.td>
-                Column 1
-            </x-shop::table.td>
-
-            <x-shop::table.td>
-                Column 2
-            </x-shop::table.td>
-
-            <x-shop::table.td>
-                Column 3
-            </x-shop::table.td>
-
-            <x-shop::table.td>
-                Column 4
-            </x-shop::table.td>
-        </x-shop::table.thead.tr>
-    </x-shop::table.tbody>
-</x-shop::table>
-```
-
-### Shop Modal
-
-The `modal` component in Bagisto provides a flexible way to create modal dialogs. It allows you to display content in a layer that floats above the rest of the page.
-
-| Props         | Type      | Default Value | Description                           |
-|--------------|-----------|---------------|---------------------------------------|
-| `is-active`  | Boolean   | `false`       | Controls the visibility of the modal.  |
-
-| Slot          | Description                                                 |
-|---------------|-------------------------------------------------------------|
-| **`toggle`**  | Used for the element that toggles the visibility of the modal. |
-| **`header`**  | Allows customization of the modal header content.           |
-| **`content`** | Provides a slot for the main body content of the modal.      |
-| **`footer`**  | Allows customization of the footer content within the modal. |
-
-You can customize the appearance of the Modal by passing additional CSS.
-
-* To customize the header section, you can target the `header` slot with your own CSS classes or styles.
-* Similarly, you can customize the content section using the `content` slot.
-* Similarly, you can customize the content section using the `footer` slot.
-
-Let's assume you want to use the **`modal`** component, You can call it like this.
-
-```html
-<!-- Shop Modal-->
-<x-shop::modal>
-    <x-slot:toggle>
-        Modal Toggle
-    </x-slot>
-
-    <x-slot:header>
-        Modal Header
-    </x-slot>
-
-    <x-slot:content>
-        Modal Content
-    </x-slot>
-</x-shop::modal>
-```
-
-### Shop Media(Image)
- 
-The Media component in Bagisto provides a user interface for managing and displaying images/videos, allowing users to upload, edit, and delete images.:
-
-| Prop Name         | Type       | Default Value | Description                                                      |
-|-------------------|------------|---------------|------------------------------------------------------------------|
-| `name`            | `String`   | `'attachments'`| Specifies the name of the input field for uploaded media.         |
-| `is-multiple`      | `Boolean`  | `false`       | Indicates whether multiple media files can be uploaded at once.   |
-| `rules`           | `String`   | `''`          | Validation rules for uploaded files (e.g., file size, type).      |
-| `accepted-types`   | `String`   | `'image/*, video/*'` | MIME types accepted for file upload (e.g., image/jpeg).      |
-| `src`             | `String`   | `''`          | Default media URL to display when initializing the component.     |
-
-Let's assume you want to use the **`Image/Video`** component, You can call it like this.
-
-```html
-<!-- Image Component -->
-<x-shop::media.images.lazy
-    class="h-[110px] max-w-[110px] rounded-xl max-md:h-20 max-md:max-w-20"
-    ::src="item.base_image.small_image_url"
-    ::alt="item.name"
-    width="110"
-    height="110"
-    ::key="item.id"
-    ::index="item.id"
-/>
-```
-
-## Admin Component
+## Admin Components
 
 Admin components are reusable Blade components used to build the Admin.
 
@@ -549,6 +577,19 @@ Let's assume you want to use the **`charts`** component. You can call it like th
     ::datasets="chartDatasets"
     ::aspect-ratio="1.41"
 />
+```
+
+### Admin Data Grid
+
+The `datagrid` component in Bagisto applications provides a flexible and customizable data grid interface for displaying tabular data. It includes features such as `sorting`, `filtering`, `pagination`, and `mass actions` to manage data efficiently.
+
+You can customize the appearance of the `DataGrid` by referring to the [DataGrid Customization](/docs/package-development/datagrid).
+
+Let's assume you want to use the **`datagrid`** component. You can call it like this.
+
+```html
+<!-- Admin Datagrid -->
+<x-admin::datagrid :src="route('admin.catalog.products.index')" />
 ```
 
 ### Admin Drawer
@@ -665,118 +706,77 @@ Let's assume you want to use the **`flat-picker`** component. You can call it li
 </x-admin::flat-picker.date>
 ```
 
-### Admin Data Grid
+### Admin Media (Image/Video)
+ 
+The Media component in Bagisto provides a user interface for managing and displaying images/videos, allowing users to upload, edit, and delete images.:
 
-The `datagrid` component in Bagisto applications provides a flexible and customizable data grid interface for displaying tabular data. It includes features such as `sorting`, `filtering`, `pagination`, and `mass actions` to manage data efficiently.
+| Props               | Type        | Default Value | Description                                                      |
+|---------------------|-------------|---------------|------------------------------------------------------------------|
+| **`name`**          | `String`    |               | The name of the input field.                                      |
+| **`allow-multiple`** | `Boolean`   | `false`       | Whether to allow uploading multiple images.                       |
+| **`show-placeholders` | `Boolean` | `true`        | Whether to show placeholder images when no images are uploaded.   |
+| **`uploaded-images` | `Array`     | `[]`          | Array of uploaded images.                                         |
+| **`uploaded-videos` | `Array`     | `[]`          | Array of uploaded videos.                                         |
+| **`width`**         | `String`    | `'100%'`      | Width of the image container.                                     |
+| **`height`**        | `String`    | `'auto'`      | Height of the image container.                                    |
 
-You can customize the appearance of the `DataGrid` by referring to the [DataGrid Customization](https://devdocs.bagisto.com/2.x/packages/datagrid.html#datagrid-customization) documentation.
-
-Let's assume you want to use the **`datagrid`** component. You can call it like this.
-
-```html
-<!-- Admin Datagrid -->
-<x-admin::datagrid :src="route('admin.catalog.products.index')" />
-```
-
-### Admin Tabs 
-
-The Tabs component allows users to navigate between different content sections using tabs. It consists of two main parts: the `tabs` component for managing the tabs and the `tab-item` component for defining individual tab items.
-
-| Prop          | Type             | Default Value | Description                                                             |
-| ------------- | ---------------- | ------------- | ----------------------------------------------------------------------- |
-| **`position`**| `String`         | `'left'`      | Specifies the position of the tabs (`left`, `right`, `center`).         |
-
-#### Tab Item Component Props
-
-The `tab-item` component represents an individual tab within the `tabs` component:
-
-| Prop             | Type          | Default Value | Description                                                            |
-| ---------------- | ------------- | ------------- | ---------------------------------------------------------------------- |
-| **`title`**      | `String`      | None          | Title of the tab.                                                       |
-| **`is-selected`**| `Boolean`     | `false`       | Indicates whether the tab is selected (`true`) or not (`false`). Default is `false`. |
-
-You can customize the tabs and their content as per your requirements. 
-
-Let's assume you want to use the **`tabs`** component on shop. You can call it like this.
+Let's assume you want to use the **`Image/Video`** component, You can call it like this.
 
 ```html
-<!-- Shop Tab -->
-<x-admin::tabs position="center">
-    <x-shop::tabs.item
-        class="container"
-        :title="Tab-1"
-        :is-selected="true"
-    >
-        <div class="container mt-[60px] max-1180:px-5">
-            <p class="text-[#6E6E6E] text-lg max-1180:text-sm">
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-            </p>
-        </div>
-    </x-admin::tabs.item>
+<!-- Image Component -->
+<x-admin::media.images
+    name="images"
+    allow-multiple="true"
+    show-placeholders="true"
+    :uploaded-images="$product->images"
+/>
 
-    <x-admin::tabs.item
-        class="container"
-        :title="Tab-2"
-    >
-        <div class="container mt-[60px] max-1180:px-5">
-            <p class="text-[#6E6E6E] text-lg max-1180:text-sm">
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-            </p>
-        </div>
-    </x-admin::tabs.item>
-</x-admin::tabs>
-```
-
-### Admin Tinymce
-
-The `tinymce` component wraps the Tinymce editor and provides additional functionalities like AI content generation.
-
-| Props          | Type    | Default Value | Description                                                      |
-| -------------- | ------- | ------------- | ---------------------------------------------------------------- |
-| **`selector`** | String  | `''`          | The CSS selector for the textarea element to initialize as TinyMCE. |
-| **`field`**    | Object  | `{}`          | Vue Formulate field object.                                      |
-| **`prompt`**   | String  | `''`          | The prompt to be used for AI content generation.                 |  
-
-Let's assume you want to use the **`tinymce`** component on admin and shop. You can call it like this.
-
-```html
-<!-- Admin Tinymce -->
-<x-admin::form.control-group.control
-    type="textarea"
-    id="content"
-    name="content"
-    rules="required"
-    :value="old('content')"
-    :label="Content"
-    :placeholder="Content"
-    :tinymce="true"
-    :prompt="core()->getConfigData('general.magic_ai.content_generation.category_description_prompt')"
+<!-- Video Component -->
+<x-admin::media.videos
+    name="videos[files]"
+    :allow-multiple="true"
+    :uploaded-videos="$product->videos"
 />
 ```
 
-### Admin Shimmer
+### Admin Modal
 
-Prebuilt `shimmer` effects are available in Bagisto. You can easily use them.
+The `modal` component in Bagisto provides a flexible way to create modal dialogs. It allows you to display content in a layer that floats above the rest of the page.
 
-Let's assume you want to use the **`shimmer`** You can call it like this.
+| Props         | Type      | Default Value | Description                           |
+|--------------|-----------|---------------|---------------------------------------|
+| `is-active`  | Boolean   | `false`       | Controls the visibility of the modal.  |
+
+| Slot          | Description                                                 |
+|---------------|-------------------------------------------------------------|
+| **`toggle`**  | Used for the element that toggles the visibility of the modal. |
+| **`header`**  | Allows customization of the modal header content.           |
+| **`content`** | Provides a slot for the main body content of the modal.      |
+| **`footer`**  | Allows customization of the footer content within the modal. |
+
+You can customize the appearance of the Modal by passing additional CSS.
+
+* To customize the header section, you can target the `header` slot with your own CSS classes or styles.
+* Similarly, you can customize the content section using the `content` slot.
+* Similarly, you can customize the content section using the `footer` slot.
+
+Let's assume you want to use the **`modal`** component, You can call it like this.
 
 ```html
-<!-- Admin shimmer -->
-<x-admin::shimmer.datagrid />
-```
+<!-- Admin Modal -->
+<x-admin::modal>
+    <x-slot:toggle>
+        Modal Toggle
+    </x-slot>
 
-### Admin SEO
+    <x-slot:header>
+        Modal Header
+    </x-slot>
 
-The `seo` component, assists in managing SEO-related metadata for your pages. It dynamically updates the meta title and description based on user input and provides a preview of the generated SEO metadata.
-
-| Props          | Type    | Default Value | Description                 |
-| -------------- | ------- | ------------- | --------------------------- |
-| **`slug`**     | String  | `''`          | URL slug for the page.      |
-
-Let's assume you want to use the **`seo`** component. You can call it like this, It offers a convenient way to generate and display SEO-friendly content for web pages.
-
-```html 
-<x-admin::seo slug="page" />
+    <x-slot:content>
+        Modal Content
+    </x-slot>
+</x-admin::modal>
 ```
 
 ### Admin Quantity Changer
@@ -797,6 +797,31 @@ Let's assume you want to use the **`Quantity Changer`** component on shop. You c
     value="1"
     class="w-max gap-x-4 rounded-l px-4 py-1"
 />
+```
+
+### Admin SEO
+
+The `seo` component, assists in managing SEO-related metadata for your pages. It dynamically updates the meta title and description based on user input and provides a preview of the generated SEO metadata.
+
+| Props          | Type    | Default Value | Description                 |
+| -------------- | ------- | ------------- | --------------------------- |
+| **`slug`**     | String  | `''`          | URL slug for the page.      |
+
+Let's assume you want to use the **`seo`** component. You can call it like this, It offers a convenient way to generate and display SEO-friendly content for web pages.
+
+```html 
+<x-admin::seo slug="page" />
+```
+
+### Admin Shimmer
+
+Prebuilt `shimmer` effects are available in Bagisto. You can easily use them.
+
+Let's assume you want to use the **`shimmer`** You can call it like this.
+
+```html
+<!-- Admin shimmer -->
+<x-admin::shimmer.datagrid />
 ```
 
 ### Admin Table
@@ -857,110 +882,169 @@ Let's assume you want to use the **`Table`** component on shop. You can call it 
 </x-admin::table>
 ```
 
-### Admin Modal
+### Admin Tabs 
 
-The `modal` component in Bagisto provides a flexible way to create modal dialogs. It allows you to display content in a layer that floats above the rest of the page.
+The Tabs component allows users to navigate between different content sections using tabs. It consists of two main parts: the `tabs` component for managing the tabs and the `tab-item` component for defining individual tab items.
 
-| Props         | Type      | Default Value | Description                           |
-|--------------|-----------|---------------|---------------------------------------|
-| `is-active`  | Boolean   | `false`       | Controls the visibility of the modal.  |
+| Prop          | Type             | Default Value | Description                                                             |
+| ------------- | ---------------- | ------------- | ----------------------------------------------------------------------- |
+| **`position`**| `String`         | `'left'`      | Specifies the position of the tabs (`left`, `right`, `center`).         |
 
-| Slot          | Description                                                 |
-|---------------|-------------------------------------------------------------|
-| **`toggle`**  | Used for the element that toggles the visibility of the modal. |
-| **`header`**  | Allows customization of the modal header content.           |
-| **`content`** | Provides a slot for the main body content of the modal.      |
-| **`footer`**  | Allows customization of the footer content within the modal. |
+#### Tab Item Component Props
 
-You can customize the appearance of the Modal by passing additional CSS.
+The `tab-item` component represents an individual tab within the `tabs` component:
 
-* To customize the header section, you can target the `header` slot with your own CSS classes or styles.
-* Similarly, you can customize the content section using the `content` slot.
-* Similarly, you can customize the content section using the `footer` slot.
+| Prop             | Type          | Default Value | Description                                                            |
+| ---------------- | ------------- | ------------- | ---------------------------------------------------------------------- |
+| **`title`**      | `String`      | None          | Title of the tab.                                                       |
+| **`is-selected`**| `Boolean`     | `false`       | Indicates whether the tab is selected (`true`) or not (`false`). Default is `false`. |
 
-Let's assume you want to use the **`modal`** component, You can call it like this.
+You can customize the tabs and their content as per your requirements. 
+
+Let's assume you want to use the **`tabs`** component on shop. You can call it like this.
 
 ```html
-<!-- Admin Modal -->
-<x-admin::modal>
-    <x-slot:toggle>
-        Modal Toggle
-    </x-slot>
+<!-- Shop Tab -->
+<x-admin::tabs position="center">
+    <x-shop::tabs.item
+        class="container"
+        :title="Tab-1"
+        :is-selected="true"
+    >
+        <div class="container mt-[60px] max-1180:px-5">
+            <p class="text-[#6E6E6E] text-lg max-1180:text-sm">
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+            </p>
+        </div>
+    </x-shop::tabs.item>
 
+    <x-admin::tabs.item
+        class="container"
+        :title="Tab-2"
+    >
+        <div class="container mt-[60px] max-1180:px-5">
+            <p class="text-[#6E6E6E] text-lg max-1180:text-sm">
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+            </p>
+        </div>
+    </x-admin::tabs.item>
+</x-admin::tabs>
+```
+
+### Admin Tinymce
+
+The `tinymce` component wraps the Tinymce editor and provides additional functionalities like AI content generation.
+
+| Props          | Type    | Default Value | Description                                                      |
+| -------------- | ------- | ------------- | ---------------------------------------------------------------- |
+| **`selector`** | String  | `''`          | The CSS selector for the textarea element to initialize as TinyMCE. |
+| **`field`**    | Object  | `{}`          | Vue Formulate field object.                                      |
+| **`prompt`**   | String  | `''`          | The prompt to be used for AI content generation.                 |  
+
+Let's assume you want to use the **`tinymce`** component on admin and shop. You can call it like this.
+
+```html
+<!-- Admin Tinymce -->
+<x-admin::form.control-group.control
+    type="textarea"
+    id="content"
+    name="content"
+    rules="required"
+    :value="old('content')"
+    :label="Content"
+    :placeholder="Content"
+    :tinymce="true"
+    :prompt="core()->getConfigData('general.magic_ai.content_generation.category_description_prompt')"
+/>
+```
+
+## Component Integration Best Practices
+
+### Using Components in Custom Themes
+
+When building custom themes with the components covered in our previous guides, these Blade components integrate seamlessly:
+
+**Theme Package Integration:**
+```blade
+{{-- In your custom theme views --}}
+<x-shop::layouts>
+    <x-slot:title>Custom Product Page</x-slot>
+    
+    {{-- Use components within your theme --}}
+    <x-shop::accordion>
+        <x-slot:header>Product Details</x-slot:header>
+        <x-slot:content>
+            <!-- Product information -->
+        </x-slot:content>
+    </x-shop::accordion>
+    
+    <x-shop::quantity-changer
+        name="quantity"
+        value="1"
+    />
+</x-shop::layouts>
+```
+
+**Asset Compilation:**
+Components automatically work with your theme's compiled assets from the [Vite-Powered Theme Assets](./vite-powered-theme-assets.md) guide.
+
+### Customization Strategies
+
+**1. CSS Customization:**
+```blade
+<x-shop::button
+    class="custom-primary-button hover:bg-blue-600"
+    :title="'Custom Styled Button'"
+/>
+```
+
+**2. Slot Customization:**
+```blade
+<x-shop::modal>
+    <x-slot:header class="bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+        Custom Header with Gradient
+    </x-slot:header>
+</x-shop::modal>
+```
+
+**3. Component Extension:**
+Create your own components that extend Bagisto's components:
+```blade
+{{-- resources/views/components/custom-product-card.blade.php --}}
+<x-shop::accordion>
     <x-slot:header>
-        Modal Header
-    </x-slot>
-
+        {{ $product->name }}
+    </x-slot:header>
     <x-slot:content>
-        Modal Content
-    </x-slot>
-</x-admin::modal>
+        <!-- Custom product content -->
+    </x-slot:content>
+</x-shop::accordion>
 ```
 
-### Admin Tree
+::: tip Performance Considerations
+- Components include Vue.js integration for optimal performance
+- Use shimmer components during loading states
+- Leverage built-in responsive design features
+- Components are optimized for accessibility
+:::
 
-The Tree component in Bagisto enables you to display hierarchical data in a tree-like structure, with support for checkboxes or radio buttons for selection.
+::: warning Component Compatibility
+When using components in custom themes:
+- Ensure your theme includes necessary CSS classes
+- Test components across different screen sizes
+- Verify JavaScript functionality with your asset compilation
+- Check compatibility with custom styling approaches
+:::
 
-| Props           | Type                             | Default Value | Description                                                      |
-|-----------------|----------------------------------|---------------|------------------------------------------------------------------|
-| **`input-type`** | `String`                         | `'checkbox'`  | Specifies the type of input to use for selection. Can be either `checkbox` or `radio`. |
-| **`selection-type`** | `String`                     | `'hierarchical'` | Specifies the selection type. Can be `'hierarchical'` or `'individual'`. |
-| **`name-field`** | `String`                         | `'permissions'` | The field name to use as the identifier for each tree node.      |
-| **`value-field`** | `String`                         | `'value'`      | The field name to use as the value for each tree node.           |
-| **`id-field`**    | `String`                         | `'id'`         | The field name to use as the unique identifier for each tree node. |
-| **`label-field`** | `String`                         | `'name'`       | The field name to use as the label for each tree node.           |
-| **`children-field`** | `String`                      | `'children'`   | The field name to use for nesting child nodes within each tree node. |
-| **`items`**      | `Array`, `String`, `Object`      | `[]`           | The hierarchical data to be displayed in the tree structure.      |
-| **`value`**      | `Array`, `String`, `Object`      | `[]`           | The selected values.                                             |
-| **`fallback-locale`** | `String`                     | `'en'`         | The fallback locale to use for translations.                     |
-| **`collapse`**   | `Boolean`                        | `false`       | Determines whether the tree nodes are initially collapsed (`true`) or expanded (`false`). |
+## What's Next?
 
-Let's assume you want to use the **`tree`** component, You can call it like this.
+Congratulations! You've completed the theme development journey. Here are your next steps:
 
-```html
-<x-admin::tree.view
-    input-type="checkbox"
-    selection-type="individual"
-    name-field="categories"
-    id-field="id"
-    value-field="id"
-    ::items="categories"
-    :value="($product->categories->pluck('id'))"
-    :fallback-locale="config('app.fallback_locale')"
-    :collapse="true"
->
-</x-admin::tree.view>
-```
+**🛠️ [Package Development →](../package-development/)**  
+Build advanced packages that include custom components and functionality.
 
-### Admin Media(Image/Video)
- 
-The Media component in Bagisto provides a user interface for managing and displaying images/videos, allowing users to upload, edit, and delete images.:
+**🚀 [Performance Optimization →](../performance/)**  
+Learn to optimize your themes for better performance and user experience.
 
-| Props               | Type        | Default Value | Description                                                      |
-|---------------------|-------------|---------------|------------------------------------------------------------------|
-| **`name`**          | `String`    |               | The name of the input field.                                      |
-| **`allow-multiple`** | `Boolean`   | `false`       | Whether to allow uploading multiple images.                       |
-| **`show-placeholders`** | `Boolean` | `true`        | Whether to show placeholder images when no images are uploaded.   |
-| **`uploaded-images`** | `Array`     | `[]`          | Array of uploaded images.                                         |
-| **`uploaded-videos`** | `Array`     | `[]`          | Array of uploaded videos.                                         |
-| **`width`**         | `String`    | `'100%'`      | Width of the image container.                                     |
-| **`height`**        | `String`    | `'auto'`      | Height of the image container.                                    |
-
-Let's assume you want to use the **`Image/Video`** component, You can call it like this.
-
-```html
-<!-- Image Component -->
-<x-admin::media.images
-    name="images"
-    allow-multiple="true"
-    show-placeholders="true"
-    :uploaded-images="$product->images"
-/>
-
-<!-- Video Component -->
-<x-admin::media.videos
-    name="videos[files]"
-    :allow-multiple="true"
-    :uploaded-videos="$product->videos"
-/>
-```
+**📚 [Back to Getting Started →](./getting-started.md)**  
+Review the complete theme development guide or explore different development paths.

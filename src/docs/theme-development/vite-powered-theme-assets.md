@@ -1,6 +1,6 @@
 # Vite-Powered Theme Assets
 
-Learn how to set up modern asset compilation for your custom theme package using Vite. This guide builds upon the [Custom Theme Package](./custom-theme-package.md) we created earlier, adding professional asset bundling with CSS, JavaScript, and image optimization.
+Learn how to set up modern asset compilation for your custom theme package using Vite. This guide builds upon the [Custom Theme Package](./creating-custom-theme-package.md) we created earlier, adding professional asset bundling with CSS, JavaScript, and image optimization.
 
 ::: info What You'll Learn
 - Setting up Vite for theme package asset compilation
@@ -12,7 +12,11 @@ Learn how to set up modern asset compilation for your custom theme package using
 
 ## Prerequisites
 
-Before starting this guide, make sure you have completed the [Custom Theme Package](./custom-theme-package.md) tutorial. We'll be adding asset bundling to the `CustomTheme` package we created.
+Before starting this guide, make sure you have completed the [Custom Theme Package](./custom-theme-package.md) tutorial. We'll be a **🧩 [Blade Components →](./blade-components.md)**  
+Master the usage of Bagisto's pre-built components with your compiled assets.
+
+**🛠️ [Package Development →](../package-development/)**  
+Explore advanced package development techniques and best practices. asset bundling to the `CustomTheme` package we created.
 
 ::: tip Why Asset Bundling?
 - **Modern Development**: Use the latest CSS and JavaScript features
@@ -719,11 +723,11 @@ When deploying your theme package:
 
 Congratulations! You now have a professional theme package with modern asset compilation. Here are your next steps:
 
-**🎨 [Advanced Layouts →](./layouts.md)**  
+**📄 [Understanding Layouts →](./understanding-layouts.md)**  
 Learn to create complex layouts and component systems for your theme.
 
-**🔧 [Theme Customization →](./customization.md)**  
-Discover advanced customization techniques and best practices.
+**🧩 [Blade Components →](./blade-components.md)**  
+Master the usage of Bagisto's pre-built components with your compiled assets.
 
-**📱 [Responsive Design →](./responsive-design.md)**  
-Master responsive design patterns for your Bagisto themes.
+**�️ [Package Development →](../package-development/)**  
+Explore advanced package development techniques and best practices.
