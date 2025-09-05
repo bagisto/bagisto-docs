@@ -52,6 +52,7 @@ export default defineConfig({
           { text: 'Installation', link: '/docs/getting-started/installation' },
           { text: 'Upgrade Guide', link: '/docs/getting-started/upgrade-guide' },
           { text: 'Contribution Guide', link: '/docs/getting-started/contribution-guide' },
+          { text: 'Best Security Practices', link: '/docs/getting-started/best-security-practice' },
           { text: 'LLMs.txt', link: '/docs/getting-started/llms' }
         ]
       },
@@ -125,6 +126,8 @@ export default defineConfig({
           { text: 'Vite-Powered Theme Assets', link: '/docs/theme-development/vite-powered-theme-assets' },
           { text: 'Understanding Layouts', link: '/docs/theme-development/understanding-layouts' },
           { text: 'Blade Components', link: '/docs/theme-development/blade-components' },
+          { text: 'Email Template', link: '/docs/theme-development/email-template' },
+          { text: 'Validation', link: '/docs/theme-development/validation' }
         ]
       },
       {
@@ -146,12 +149,9 @@ export default defineConfig({
         items: [
           { text: 'Introduction', link: '/docs/advanced/introduction' },
           { text: 'Understanding Core Class', link: '/docs/advanced/understanding-core-class' },
+          { text: 'Understanding Data Transfer', link: '/docs/advanced/understanding-data-transfer' },
           { text: 'Event Listeners', link: '/docs/advanced/event-listeners' },
-          { text: 'View Render Events', link: '/docs/advanced/view-render-events' },
-          { text: 'Email Template', link: '/docs/advanced/change-email-template' },
-          { text: 'Data Transfer', link: '/docs/advanced/create-data-import' },
-          { text: 'Best Security Practices', link: '/docs/advanced/security-practice' },
-          { text: 'Validation', link: '/docs/advanced/validation' },
+          { text: 'View Render Events', link: '/docs/advanced/view-render-events' }
         ]
       },
       {

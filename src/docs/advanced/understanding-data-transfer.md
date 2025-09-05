@@ -1,8 +1,4 @@
-# Data Transfer
-
-[[TOC]]
-
-## Introduction
+# Understanding Data Transfer
 
 Creating a custom data import functionality in Bagisto enables seamless bulk data import operations directly from the admin panel under the `Settings Menu`. This feature is particularly useful for efficiently managing large datasets within your application.
 

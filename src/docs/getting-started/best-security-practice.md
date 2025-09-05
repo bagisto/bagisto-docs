@@ -1,8 +1,8 @@
-# Best Security Practices
+# 🔒 Best Security Practices
 
-[[TOC]]
+Securing your Bagisto installation is critical to protecting your business, customer data, and reputation. This guide outlines essential security practices you should follow to minimize vulnerabilities and defend against common threats. By proactively implementing these measures, you can significantly reduce the risk of unauthorized access and data breaches.
 
-## Software Updates
+## 🔄 Software Updates
 
 To ensure the security of your system, follow these best practices:
 
@@ -12,25 +12,19 @@ To ensure the security of your system, follow these best practices:
 - Manage files only through secure communication protocols like SSH, SFTP, or HTTPS. Disable FTP.
 - Use the **`.htaccess`** file to protect system files when using the Apache web server.
 - Disable unused ports and stop unnecessary services running on the server.
-- Restrict access to the admin panel by allowing only specific IP addresses and enforcing two-factor authorization for admin logins.
+- Restrict access to the admin panel by allowing only specific IP addresses and enforcing two-factor authentication for admin logins.
 - Ensure the use of strong and unique passwords.
 - Configure and update the firewall properly to secure the connection between payment card data and the public network.
 
-## Limiting Error Messages
+## 🚫 Limiting Error Messages
 
 To limit the exposure of sensitive information in error messages, follow these steps:
 
 - Edit your Apache configuration file to avoid displaying server and operating system details.
 - Set **`ServerSignature`** to **`Off`** (by default, it is **`On`**).
-- Add **`ServerTokens Prod`** to display Apache only as the product.
+- Add **`ServerTokens Prod`** to display only Apache as the product.
 
-:::details Screenshot
-
-![limiting-error-messages](../../assets/2.x/images/advanced-topics/limiting-error-messages.png)
-
-:::
-
-## Limiting Admin Access
+## 🔐 Limiting Admin Access
 
 To restrict access to the admin area, modify the **`.htaccess`** file with the following code:
 
@@ -44,7 +38,7 @@ RewriteRule ^(.*)$ - [R=403,L]
 
 Ensure that there are no accessible development leftovers on the server, such as "log files," ".git directories," "database dumps," or "zip files."
 
-## Restricting Unnecessary Files
+## 📁 Restricting Unnecessary Files
 
 To restrict access to unnecessary files, add the following code to your **`.htaccess`** file:
 
@@ -56,7 +50,7 @@ To restrict access to unnecessary files, add the following code to your **`.htac
 
 Consider using a Web Application Firewall (WAF) to analyze traffic and detect suspicious patterns, such as credit card information being sent to attackers. Additionally, restrict public access to only ports 80 (HTTP) and 443 (HTTPS), while blocking other ports.
 
-## Restricting PHP Execution Inside Storage
+## 🚫 Restricting PHP Execution in Storage
 
 To restrict PHP execution inside the storage directory, modify your Apache configuration file:
 
@@ -71,7 +65,7 @@ To restrict PHP execution inside the storage directory, modify your Apache confi
 
 Don't forget to restart Apache after making these changes.
 
-## Server Hardening
+## 🛡️ Server Hardening
 
 Take the following measures to harden your server:
 
@@ -82,25 +76,23 @@ Take the following measures to harden your server:
 - Review and configure iptable rules to prevent unauthorized access and activity.
 - Regularly back up important files and store them remotely in a secure environment.
 
-## Strong Passwords
+## 🔑 Strong Passwords
 
-Ensure the use of strong and unique passwords and encourage periodic password changes. You can use a password generator tool ([Password Generator](https://passwords-generator.org/)) to create strong passwords. Limit access to the Bagisto admin
+Ensure the use of strong and unique passwords and encourage periodic password changes. You can use a password generator tool ([Password Generator](https://passwords-generator.org/)) to create strong passwords. Limit access to the Bagisto admin panel by updating the whitelist with authorized IP addresses.
 
- panel by updating the whitelist with authorized IP addresses.
-
-## Implementation of HTTP Security Headers
+## 🌐 Implementation of HTTP Security Headers
 
 Implementing the following HTTP security headers enhances web security:
 
-### HTTP Strict Transport Security (HSTS)
+### 🔒 HTTP Strict Transport Security (HSTS)
 
-Set the **`Strict-Transport-Security`** response header to instruct the browser to only access the application using HTTPS:
+Set the **`Strict-Transport-Security`** response header to instruct the browser to access the application only using HTTPS:
 
 ```
 Strict-Transport-Security: max-age=<expire-time>
 ```
 
-### Cross-Site Scripting Protection (X-XSS Protection)
+### ⚔️ Cross-Site Scripting Protection (X-XSS-Protection)
 
 Set the **`X-XSS-Protection`** response header to enable browsers to detect and prevent cross-site scripting (XSS) attacks:
 
@@ -108,15 +100,15 @@ Set the **`X-XSS-Protection`** response header to enable browsers to detect and 
 X-XSS-Protection: 1; mode=block
 ```
 
-### X-Frame-Options​
+### 🖼️ X-Frame-Options
 
-The **`X-Frame-Options`** response header protects applications against clickjacking. It specifies whether the content can be displayed within frames:
+The **`X-Frame-Options`** response header protects applications against clickjacking attacks. It specifies whether the content can be displayed within frames:
 
 ```
 X-Frame-Options: deny
 ```
 
-### X-Content-Type-Options​
+### 📄 X-Content-Type-Options
 
 The **`X-Content-Type-Options`** response header forces the browser to disable MIME sniffing, preventing MIME sniffing vulnerabilities:
 
@@ -124,12 +116,12 @@ The **`X-Content-Type-Options`** response header forces the browser to disable M
 X-Content-Type-Options: nosniff
 ```
 
-### Content Security Policy (CSP)
+### 🛡️ Content Security Policy (CSP)
 
-Implement a Content Security Policy (CSP) response header to control resources that can be loaded in users' browsers. CSP helps detect and mitigate attacks such as XSS and clickjacking.
+Implement a Content Security Policy (CSP) response header to control which resources can be loaded in users' browsers. CSP helps detect and mitigate attacks such as XSS and clickjacking.
 
-### Continuous Logging And Monitoring
+### 📊 Continuous Logging and Monitoring
 
-Maintain continuous logging and monitoring of all network access and cardholder data activities. Keep an eye out for large volume orders of a single item from new customers, a series of orders shipped to the same address but using different payment methods.
+Maintain continuous logging and monitoring of all network access and cardholder data activities. Keep an eye out for large volume orders of a single item from new customers, or a series of orders shipped to the same address but using different payment methods.
 
 By implementing these best security practices, you can enhance the security of your system and protect it from potential threats.
