@@ -145,12 +145,12 @@ export default defineConfig({
         collapsed: false,
         items: [
           { text: 'Introduction', link: '/docs/advanced/introduction' },
+          { text: 'Understanding Core Class', link: '/docs/advanced/understanding-core-class' },
           { text: 'Event Listeners', link: '/docs/advanced/event-listeners' },
-          { text: 'Helpers', link: '/docs/advanced/helpers' },
-          { text: 'View Render Event', link: '/docs/advanced/render-event' },
+          { text: 'View Render Events', link: '/docs/advanced/view-render-events' },
           { text: 'Email Template', link: '/docs/advanced/change-email-template' },
-          { text: 'Best Security Practices', link: '/docs/advanced/security-practice' },
           { text: 'Data Transfer', link: '/docs/advanced/create-data-import' },
+          { text: 'Best Security Practices', link: '/docs/advanced/security-practice' },
           { text: 'Validation', link: '/docs/advanced/validation' },
         ]
       },
