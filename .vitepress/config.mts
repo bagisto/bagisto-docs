@@ -145,7 +145,7 @@ export default defineConfig({
         collapsed: false,
         items: [
           { text: 'Introduction', link: '/docs/advanced/introduction' },
-          { text: 'Events Listeners', link: '/docs/advanced/events' },
+          { text: 'Event Listeners', link: '/docs/advanced/event-listeners' },
           { text: 'Helpers', link: '/docs/advanced/helpers' },
           { text: 'View Render Event', link: '/docs/advanced/render-event' },
           { text: 'Email Template', link: '/docs/advanced/change-email-template' },
