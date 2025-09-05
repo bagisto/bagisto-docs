@@ -147,7 +147,6 @@ export default defineConfig({
           { text: 'Introduction', link: '/docs/advanced/introduction' },
           { text: 'Events Listeners', link: '/docs/advanced/events' },
           { text: 'Helpers', link: '/docs/advanced/helpers' },
-          { text: 'Override Core Models', link: '/docs/advanced/override-core-model' },
           { text: 'View Render Event', link: '/docs/advanced/render-event' },
           { text: 'Email Template', link: '/docs/advanced/change-email-template' },
           { text: 'Best Security Practices', link: '/docs/advanced/security-practice' },

@@ -431,6 +431,129 @@ class ReturnRequest extends Model implements ReturnRequestContract
 }
 ```
 
+## Overriding Core Models (Optional)
+
+Sometimes you need to extend or modify existing Bagisto core models (like Product, Customer, Order) to add custom functionality. Bagisto's Concord architecture makes this possible without modifying core files.
+
+::: info When to Override Models
+Model overriding is an **advanced technique** used when you need to:
+- Add custom attributes or relationships to core models
+- Modify existing model behavior
+- Integrate third-party services with core entities
+- Create specialized business logic for existing models
+:::
+
+### Quick Override Example
+
+Here's how to override the core `Product` model to add custom functionality:
+
+**1. Create Your Extended Model**
+
+Create `packages/Webkul/RMA/src/Models/Product.php`:
+
+```php
+<?php
+
+namespace Webkul\RMA\Models;
+
+use Webkul\Product\Models\Product as BaseProduct;
+
+class Product extends BaseProduct
+{
+    /**
+     * Get return requests for this product.
+     */
+    public function returnRequests()
+    {
+        return $this->hasMany(ReturnRequestProxy::modelClass(), 'product_sku', 'sku');
+    }
+
+    /**
+     * Check if product is returnable.
+     */
+    public function isReturnable(): bool
+    {
+        return $this->status && $this->type !== 'digital';
+    }
+}
+```
+
+**2. Register the Override**
+
+You can register the model override using either approach:
+
+**Method 1: Via ModuleServiceProvider (Recommended)**
+
+```php{11}
+<?php
+
+namespace Webkul\RMA\Providers;
+
+use Konekt\Concord\BaseModuleServiceProvider;
+
+class ModuleServiceProvider extends BaseModuleServiceProvider
+{
+    protected $models = [
+        \Webkul\RMA\Models\ReturnRequest::class,
+        \Webkul\Product\Models\Product::class => \Webkul\RMA\Models\Product::class,
+    ];
+}
+```
+
+**Method 2: Via Main ServiceProvider**
+
+```php{15-18}
+<?php
+
+namespace Webkul\RMA\Providers;
+
+use Illuminate\Support\ServiceProvider;
+
+class RMAServiceProvider extends ServiceProvider
+{
+    // Other methods...
+
+    public function boot()
+    {
+        // Other boot logic...
+
+        $this->app->concord->registerModel(
+            \Webkul\Product\Contracts\Product::class,
+            \Webkul\RMA\Models\Product::class
+        );
+    }
+}
+```
+
+::: tip Which Method to Choose?
+- **Method 1** is cleaner and follows Bagisto conventions for package development
+- **Method 2** gives you more control and is useful for conditional overrides or complex logic
+- Both methods achieve the same result - choose based on your package structure preference
+:::
+
+**3. Use Everywhere via Contract**
+
+```php
+// In controllers, repositories, etc.
+use Webkul\Product\Contracts\Product;
+
+class SomeController extends Controller
+{
+    public function checkReturnable(Product $product)
+    {
+        // This automatically uses your extended model
+        return $product->isReturnable();
+    }
+}
+```
+
+::: warning Important Notes
+- **Always extend the base model**, never replace it entirely
+- **Use dependency injection** with contracts for automatic resolution
+- **Test thoroughly** as overrides affect the entire application
+- **Consider alternatives** like observers or custom services for simple additions
+:::
+
 ## Your Next Step
 
 With your model complete and registered, you now need to implement Bagisto's Repository pattern. Repositories abstract your data access logic and provide a consistent interface for data operations while keeping business logic separate from data persistence.

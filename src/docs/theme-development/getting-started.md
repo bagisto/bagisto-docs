@@ -21,7 +21,7 @@ To get the most out of this guide, you should have:
 
 ### Helpful Knowledge
 - **Laravel Package Development**: For creating distributable themes
-- **SCSS/CSS Preprocessors**: For advanced styling
+- **Tailwind CSS**: Bagisto's utility-first CSS framework
 - **JavaScript**: For interactive frontend features
 - **Vite/Webpack**: For asset bundling and optimization
 
