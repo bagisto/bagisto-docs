@@ -1,18 +1,41 @@
 # Email Template
 
-[[TOC]]
+Email templates are a crucial part of your Bagisto theme, providing branded communication with your customers. This guide shows you how to customize email templates as part of your theme development workflow, building on the concepts covered in previous theme development sections.
 
-## Introduction
+## Understanding Email Templates in Themes
 
-In this section, we'll guide you through the process of customizing email templates in Bagisto. Customizing email templates allows you to personalize the appearance and content of email notifications sent from your Bagisto application.
+Email templates in Bagisto follow the same theming principles as your storefront views. Just like regular theme views, email templates can be customized and organized within your theme structure to maintain consistency with your brand identity.
+
+### Email Template Architecture
+
+Bagisto's email system uses Laravel's Mailable classes combined with Blade templates, following the same view resolution patterns as your theme:
+
+```
+Theme Structure for Emails:
+└── resources/themes/your-theme/
+    └── views/
+        └── emails/
+            ├── ...
+            ├── ...
+            ├── ...
+            └── layouts.blade.php
+```
+
+::: tip Theme Integration
+Email templates follow the same view resolution hierarchy as your theme views. When you customize an email template, it becomes part of your theme package, ensuring consistency across all customer touchpoints.
+:::
 
 ## Email Template Flow
 
-Before customizing, let's understand how email templates work in Bagisto. Bagisto uses mail notification classes located in namespaces like `Webkul\Shop\Mail`. These classes, such as `CanceledNotification`, extend Laravel's `Mailable` class and define the email's structure and data.
+Email templates in Bagisto work through a system of Mailable classes and Blade views, similar to how your theme handles regular page views. Let's examine how this works:
 
-Here's an example from `CanceledNotification`:
+### Mailable Classes
 
-```php
+Bagisto uses mail notification classes located in namespaces like `Webkul\Shop\Mail`. These classes extend Laravel's `Mailable` class and define the email's structure, recipient, and view template.
+
+Here's an example from the order created notification:
+
+```php{42}
 <?php
 
 namespace Webkul\Shop\Mail\Order;
@@ -20,16 +43,17 @@ namespace Webkul\Shop\Mail\Order;
 use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Webkul\Sales\Contracts\Order;
 use Webkul\Shop\Mail\Mailable;
 
-class CanceledNotification extends Mailable
+class CreatedNotification extends Mailable
 {
     /**
-     * Create a new CanceledNotification instance.
+     * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(public $order) {}
+    public function __construct(public Order $order) {}
 
     /**
      * Get the message envelope.
@@ -38,9 +62,12 @@ class CanceledNotification extends Mailable
     {
         return new Envelope(
             to: [
-                new Address($this->order->customer_email, $this->order->customer_full_name),
+                new Address(
+                    $this->order->customer_email,
+                    $this->order->customer_full_name
+                ),
             ],
-            subject: trans('shop::app.emails.orders.canceled.subject'),
+            subject: trans('shop::app.emails.orders.created.subject'),
         );
     }
 
@@ -50,59 +77,93 @@ class CanceledNotification extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'shop::emails.orders.canceled',
+            view: 'shop::emails.orders.created',
         );
     }
 }
 ```
 
-In the `content()` method of `CanceledNotification`, the email view `shop::emails.orders.canceled` is specified. This view file is located in the package's view directory.
+### View Resolution
 
-The view file `order-cancel.blade.php` typically includes a layout component, such as `shop::emails.layouts.master`.
+The `view: 'shop::emails.orders.created'` follows the same theme resolution pattern you learned about in [Creating Store Theme](/docs/theme-development/creating-store-theme). Bagisto will look for this view in:
 
-Now, let's explore the view file mentioned in `view('shop::emails.orders.canceled')`. If you check the file at the path `packages/Webkul/Shop/src/Resources/views/emails/sales/order-cancel.blade.php`, you will find it. This view file uses the main layout component `shop::emails.layouts.master`.
+1. **Your active theme**: `resources/themes/your-theme/views/emails/orders/created.blade.php`
+2. **Default theme**: `resources/themes/default/views/emails/orders/created.blade.php`  
+3. **Package views**: `packages/Webkul/Shop/src/Resources/views/emails/orders/created.blade.php`
 
-```php
+### Email Layout System
+
+Email templates use a layout component system similar to your theme layouts:
+
+```blade
 @component('shop::emails.layout')
     ...
 @endcomponent
 ```
 
-This layout component is responsible for the overall email layout. If desired, you can explore this file as well. Now, let's proceed to learn how to change these email templates.
+The layout component (`shop::emails.layout`) provides the base HTML structure, styling, and branding for all emails, similar to how your theme's master layout works.
 
-## Changing Email Template
+## Customizing Email Templates
 
-To customize an email template in Bagisto, follow these steps:
+Now let's learn how to customize email templates as part of your theme development. This process follows the same patterns you've learned for customizing other theme views.
 
-### Override the View
+### Method 1: Theme-Based Customization (Recommended)
 
-To customize the email template, the recommended approach is to override the package's view. Since all email views are defined in the shop package, we need to override the view within the shop package.
+This approach integrates email customization into your theme structure, making it part of your overall theme package.
 
-Here's how you can override the view for the same file we mentioned above, `view('shop::emails.orders.canceled')`.
+#### Step 1: Create Email Views in Your Theme
 
-Bagisto registers two locations for views: the application's `resources/themes` directory specified in `config/themes.php`, and the directory you specify. If you are using the default theme, `shop` package, Bagisto will first check if a custom version of the view exists in the`resources/themes/default` directory. If the view has not been customized, Bagisto will then search the package's view directory.
+Create the email template structure within your theme directory:
 
-To override the view, create the same directory structure in the application's `resources/themes/default` directory:
-
-```
-- resources/
-  └── themes/
-      └── default/
-          └── views/
-              └── emails/
-                  └── sales/
-                      └── order-cancel.blade.php
+```bash
+# Create email directories in your theme
+mkdir -p resources/themes/your-theme/views/emails
 ```
 
-For example, create a file named `order-cancel.blade.php` within the `sales` directory, and modify its content as desired:
+#### Step 2: Override Specific Email Templates
 
-```blade
+Let's customize the order created email. Create the file:
 
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum porro cumque numquam neque dicta quo, accusantium, perferendis sed beatae nesc
+**`resources/themes/your-theme/views/emails/orders/created.blade.php`**
 
-iunt eum impedit vel doloribus dolor excepturi vero tenetur perspiciatis saepe?
+::: warning Path Matching Requirement
+Notice the path we have used: `emails/orders/created.blade.php`. This path is exactly the same as in the shop package (`packages/Webkul/Shop/src/Resources/views/emails/orders/created.blade.php`). We must follow the exact same path structure for view overriding to work. If you use a different path, the view will not be able to override the default template.
+:::
+
+```blade{1,8,15-20}
+@component('shop::emails.layout')
+    <p>This is customized order email.</p>
+@endcomponent
 ```
 
-### Test Your Template
+#### Step 3: Customize the Email Layout
 
-After customizing the template, test it by triggering the relevant email notification from your Bagisto application to verify that the changes are applied correctly.
+Create a custom email layout for your theme:
+
+**`resources/themes/your-theme/views/emails/layouts.blade.php`**
+
+::: warning Path Matching Requirement
+Notice the path we have used: `emails/layouts.blade.php`. This path must match the layout reference used in email templates. The layout component `@component('shop::emails.layout')` will look for this file in the exact path structure for view overriding to work.
+:::
+
+::: info Layout Override
+We are assuming you will change the layout to match your theme design, so we keep it as it is for now. You can customize the HTML structure, styling, and branding according to your theme requirements.
+:::
+
+```blade{5-10,15-25}
+<!-- ... existing layout code ... -->
+```
+
+### Method 2: Package-Based Customization
+
+If you're developing a theme package (as covered in [Creating Custom Theme Package](/docs/theme-development/creating-custom-theme-package)), email template customization follows the same principles as Method 1.
+
+::: tip Package Structure
+Simply place your email templates in your package's `src/Resources/views/emails/` directory following the same path structure:
+- `src/Resources/views/emails/orders/created.blade.php`
+- `src/Resources/views/emails/layouts.blade.php`
+:::
+
+The view registration and override mechanics work exactly the same way - Laravel's view resolution will automatically find your package's email templates when the corresponding views are requested.
+
+For detailed package development setup, refer to the [Creating Custom Theme Package](/docs/theme-development/creating-custom-theme-package) guide.

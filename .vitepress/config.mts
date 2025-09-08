@@ -158,6 +158,7 @@ export default defineConfig({
         text: 'Bagisto APIs',
         collapsed: false,
         items: [
+          { text: 'Introduction', link: '/docs/api/introduction' },
           { text: 'Rest API', link: '/docs/api/rest-api' },
           { text: 'GraphQL API', link: '/docs/api/graphql-api' }
         ]

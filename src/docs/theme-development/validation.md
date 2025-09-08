@@ -1,43 +1,165 @@
 # Validation
 
-## Validation Using Laravel
+Form validation is a crucial aspect of theme development, ensuring data integrity and providing a smooth user experience. This guide covers both server-side (Laravel) and client-side (Vue.js) validation techniques used in Bagisto themes, building on the concepts from previous theme development sections.
 
-### Introduction
+## Understanding Validation in Themes
 
-Laravel offers multiple approaches to validate incoming data in your application, ensuring that your data is accurate and meets the specified requirements before it is processed. The most common method is to use the validate method available on incoming HTTP requests.
+Validation in Bagisto themes works on two levels:
 
-This method is easy to use and integrates seamlessly with Laravel's request lifecycle. By leveraging Laravel's built-in validation rules and custom validation logic, you can ensure your application handles data validation efficiently and effectively.
+- **Client-side validation** using VeeValidate for Vue.js components
+- **Server-side validation** using Laravel's validation system
 
-For detailed information about validation in Laravel, refer to the [Laravel documentation](https://laravel.com/docs/11.x/validation).
+This dual approach ensures data integrity while providing immediate feedback to users, creating a seamless experience that aligns with your theme's design.
 
-### Usage
+::: tip Theme Integration
+Validation styling and error messages should match your theme's design language. Custom validation can be integrated into your theme components as covered in [Blade Components](/docs/theme-development/blade-components).
+:::
 
-Laravel provides multiple ways to handle validation in your application, ensuring your data meets specified criteria before processing it. Here are the two most common methods:
+## Client-Side Validation with Vue.js
 
-### Using the validate Method on Request
+Bagisto uses VeeValidate v4 for client-side validation, providing immediate feedback to users and improving the overall user experience in your theme.
 
-The simplest and most common way to validate incoming data is to use the `validate` method available on incoming HTTP requests. Here’s an example of how you can use this method to validate data in a controller method:
+### VeeValidate Configuration in Themes
 
-```php
-/**
- * Store a new blog post.
- */
-public function store(Request $request)
+Bagisto comes pre-configured with VeeValidate through dedicated plugins. The configuration is located in:
+
+**Admin Package:**
+`packages/Webkul/Admin/src/Resources/assets/js/plugins/vee-validate.js`
+
+**Shop Package:**
+`packages/Webkul/Shop/src/Resources/assets/js/plugins/vee-validate.js`
+
+```js
+...
+
+export default {
+    install: (app) => {
+        /**
+         * Global components registration
+         */
+        app.component("VForm", Form);
+        app.component("VField", Field);
+        app.component("VErrorMessage", ErrorMessage);
+
+        ...
+
+        /**
+         * Registration of all global validators
+         */
+        Object.entries(all).forEach(([name, rule]) => defineRule(name, rule));
+
+        ...
+    },
+};
+```
+
+::: tip Multi-Language Support
+Bagisto's VeeValidate plugin includes comprehensive multi-language support with over 20 locales including Arabic, Bengali, Chinese, French, German, Hindi, Japanese, Russian, and many more. The validation messages automatically adapt to your store's configured language.
+:::
+
+::: info Plugin Structure
+The VeeValidate configuration is implemented as a Vue plugin that registers global components (`VForm`, `VField`, `VErrorMessage`), defines custom validation rules, and configures localization. This plugin is automatically loaded in both admin and shop packages.
+:::
+
+### Custom Validation Rules for Themes
+
+Define custom validation rules specific to your theme needs:
+
+```js
+defineRule("strong_password", (value) => {
+    if (!value) return true; // Optional field
+    
+    const hasUpperCase = /[A-Z]/.test(value);
+    const hasLowerCase = /[a-z]/.test(value);
+    const hasNumbers = /\d/.test(value);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(value);
+    const isLongEnough = value.length >= 8;
+    
+    // Return true if all conditions are met
+    return hasUpperCase && hasLowerCase && hasNumbers && hasSpecialChar && isLongEnough;
+});
+```
+
+**Usage in your theme forms:**
+
+```blade{9}
+<x-shop::form.control-group class="mb-4">
+    <x-shop::form.control-group.label class="required">
+        Password
+    </x-shop::form.control-group.label>
+    
+    <x-shop::form.control-group.control
+        type="password"
+        name="password"
+        rules="required|strong_password"
+        label="Password"
+        placeholder="Enter a strong password"
+    />
+    
+    <x-shop::form.control-group.error control-name="password" />
+</x-shop::form.control-group>
+```
+
+::: tip Custom Rule Best Practices
+- **Return `true` for empty values** if the field is optional
+- **Use descriptive rule names** that clearly indicate their purpose
+- **Combine with built-in rules** using pipe syntax (e.g., `"required|strong_password"`)
+- **Add helpful user guidance** near the form field to explain requirements
+:::
+
+::: info Adding Custom Error Messages
+To add custom error messages for your rules, include them in the VeeValidate plugin configuration:
+
+```js
+generateMessage: localize({
+    en: {
+        messages: {
+            strong_password: "Password must be at least 8 characters with uppercase, lowercase, number, and special character"
+        }
+    }
+})
+```
+:::
+
+## Server-Side Validation with Laravel
+
+Laravel provides robust validation capabilities that integrate seamlessly with your Bagisto theme development. When building custom forms or extending existing functionality, server-side validation ensures data integrity and security.
+
+### Basic Request Validation
+
+The most common approach is using the `validate` method on HTTP requests. This method works well for simple forms in your theme:
+
+```php{11-16}
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class ContactController extends Controller
 {
-    $validated = $request->validate([
-        'title' => 'required|unique:posts|max:255',
-        'body'  => 'required',
-    ]);
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name'    => 'required|string|max:255',
+            'email'   => 'required|email|max:255',
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string|max:1000',
+        ]);
+
+        // Process the validated data
+        // This could be saving to database, sending email, etc.
+        
+        return redirect()->back()->with('success', 'Message sent successfully!');
+    }
 }
 ```
 
-In this example, the validate method takes an array of validation rules. If the validation fails, a ValidationException is thrown, and the user is redirected back to the previous page with error messages.
+### Advanced Validation with Custom Messages
 
-### Using the Validator Facade
+For more complex validation scenarios, you can use the `validate` method with custom messages. This approach gives you more control over the validation process and is useful for custom validation messages that match your theme's brand voice.
 
-For more complex validation scenarios, you can manually create a validator instance using the `Validator` facade. This approach gives you more control over the validation process and is useful for custom validation messages and handling errors in a more customized way.
-
-Here’s an example of how to use the Validator facade:
+Here's an example of how to use validation with custom messages:
 
 ```php
 <?php
@@ -66,240 +188,21 @@ class PostController extends Controller
         ];
 
         $this->validate($request, $rules, $customMessages);
+        
+        // Process the validated data
+        return redirect()->back()->with('success', 'Post created successfully!');
     }
 }
 ```
 
-- `Defining Rules` The $rules array contains the validation rules for each field.
-- `Custom Messages` The $customMessages array allows you to define custom validation messages.
-- `Creating Validator` The Validator::make method creates a validator instance.
-- `Handling Failure` If validation fails, the user is redirected back with the validation errors and input data.
+**Key Points:**
+- **Defining Rules**: The `$rules` array contains the validation rules for each field
+- **Custom Messages**: The `$customMessages` array allows you to define custom validation messages  
+- **Using validate()**: The `$this->validate()` method validates the request and automatically redirects back with errors if validation fails
+- **Handling Success**: If validation passes, you can process the validated data and return a response
 
-Both methods provide a robust way to ensure data integrity and user input validation in your Laravel application.
+This method provides a clean way to handle validation with custom messages while maintaining Laravel's automatic error handling.
 
-## Validation Using Vue
-
-### Introduction
-
-VeeValidate is a powerful validation library for Vue.js that provides an extensive set of validation rules out of the box, along with support for custom rules. It is template-based, making it easy to validate HTML5 inputs as well as custom Vue components. VeeValidate also supports localization with 44 languages maintained by the community.
-
-For detailed information about validation in Vue.js using VeeValidate v4, refer to the [VeeValidate documentation](https://vee-validate.logaretm.com/v4/guide/overview/).
-
-### Installation
-
-Bagisto already includes the VeeValidate v4 library, so there is no need to install it separately.
-
-### Configuration
-
-Bagisto comes with pre-configured settings for `vee-validate`. You can find the configuration in the following path: `bagisto/packages/Webkul/Admin/src/Resources/assets/js/app.js`.
-
-```js
-/**
- * This will track all the images and fonts for publishing.
- */
-import.meta.glob(["../images/**", "../fonts/**"]);
-
-/**
- * Main vue bundler.
- */
-import { createApp } from "vue/dist/vue.esm-bundler";
-
-/**
- * We are defining all the global rules here and configuring
- * all the `vee-validate` settings.
- */
-import { configure, defineRule } from "vee-validate";
-import { localize } from "@vee-validate/i18n";
-import en from "@vee-validate/i18n/dist/locale/en.json";
-import { all } from '@vee-validate/rules';
-
-/**
- * Registration of all global validators.
- */
-Object.entries(all).forEach(([name, rule]) => defineRule(name, rule));
-
-/**
- * This regular expression allows phone numbers with the following conditions:
- * - The phone number can start with an optional "+" sign.
- * - After the "+" sign, there should be one or more digits.
- *
- * This validation is sufficient for global-level phone number validation. If
- * someone wants to customize it, they can override this rule.
- */
-defineRule("phone", (value) => {
-    if (! value || ! value.length) {
-        return true;
-    }
-
-    if (!/^\+?\d+$/.test(value)) {
-        return false;
-    }
-
-    return true;
-});
-
-defineRule("decimal", (value, { decimals = '*', separator = '.' } = {}) => {
-    if (value === null || value === undefined || value === '') {
-        return true;
-    }
-
-    if (Number(decimals) === 0) {
-        return /^-?\d*$/.test(value);
-    }
-
-    const regexPart = decimals === '*' ? '+' : `{1,${decimals}}`;
-    const regex = new RegExp(`^[-+]?\\d*(\\${separator}\\d${regexPart})?([eE]{1}[-]?\\d+)?$`);
-
-    return regex.test(value);
-});
-
-defineRule("required_if", (value, { condition = true } = {}) => {
-    if (condition) {
-        if (value === null || value === undefined || value === '') {
-            return false;
-        }
-    }
-
-    return true;
-});
-
-defineRule("", () => true);
-
-configure({
-    /**
-     * Built-in error messages and custom error messages are available. Multiple
-     * locales can be added in the same way.
-     */
-    generateMessage: localize({
-        en: {
-            ...en,
-            messages: {
-                ...en.messages,
-                phone: "This {field} must be a valid phone number",
-            },
-        },
-    }),
-
-    validateOnBlur: true,
-    validateOnInput: true,
-    validateOnChange: true,
-});
-```
-
-### Examples
-
-Below are examples of how to use VeeValidate for validation in Vue components within Bagisto:
-
-```html
-<x-admin::form.control-group class="w-full mb-2.5">
-    <x-admin::form.control-group.label class="required">
-        @lang('blog::app.admin.blog.create.title')
-    </x-admin::form.control-group.label>
-
-    <x-admin::form.control-group.control
-        type="text"
-        name="title"
-        :value="old('title')"
-        rules="required"
-        :label="trans('blog::app.admin.blog.create.title')"
-        :placeholder="trans('blog::app.admin.blog.create.title')"
-    >
-    </x-admin::form.control-group.control>
-
-    <x-admin::form.control-group.error
-        control-name="title"
-    >
-    </x-admin::form.control-group.error>
-</x-admin::form.control-group>
-```
-
-### Available Custom Validation in bagisto 
-
-- `phone` The phone validation rule is designed to ensure that the input is a valid phone number.
-
-```javascript
-defineRule("phone", (value) => {
-    if (! value || ! value.length) {
-        return true;
-    }
-
-    if (!/^\+?\d+$/.test(value)) {
-        return false;
-    }
-
-    return true;
-});
-```
-- `address` The address validation rule typically ensures that an address field is not left empty and may include additional logic to check for valid address formats. 
-
-```javascript
-defineRule("address", (value) => {
-    if (! value || ! value.length) {
-        return true;
-    }
-
-    if (
-        !/^[a-zA-Z0-9\s.\/*'\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\u0590-\u05FF\u3040-\u309F\u30A0-\u30FF\u0400-\u04FF\u0D80-\u0DFF\u3400-\u4DBF\u2000-\u2A6D\u00C0-\u017F\u0980-\u09FF\u0900-\u097F\u4E00-\u9FFF,\(\)-]{1,60}$/iu.test(
-            value
-        )
-    ) {
-        return false;
-    }
-
-    return true;
-});
-```
-
-- `postcode` The postcode validation rule is designed to ensure that the input is a valid post code. 
-
-```javascript
-defineRule("postcode", (value) => {
-    if (! value || ! value.length) {
-        return true;
-    }
-
-    if (! /^[a-zA-Z0-9][a-zA-Z0-9\s-]*[a-zA-Z0-9]$/.test(value)) {
-        return false;
-    }
-
-    return true;
-});
-```
-
-- `decimal` The decimal validation rule ensures that the input is a valid decimal number. This rule allows specifying the number of decimal places and the decimal separator. By default, it accepts any number of decimal places and uses the period (".") as the separator.
-
-```javascript
-defineRule(
-    "decimal",
-    (value, { decimals = "*", separator = "." } = {}) => {
-        if (value === null || value === undefined || value === "") {
-            return true;
-        }
-
-        if (Number(decimals) === 0) {
-            return /^-?\d*$/.test(value);
-        }
-
-        const regexPart = decimals === "*" ? "+" : `{1,${decimals}}`;
-        const regex = new RegExp(
-            `^[-+]?\\d*(\\${separator}\\d${regexPart})?([eE]{1}[-]?\\d+)?$`
-        );
-
-        return regex.test(value);
-    }
-);
-```
-
-- `required_if` The required_if validation rule ensures that a value is required based on a given condition. If the specified condition evaluates to true, the input must not be null, undefined, or an empty string. If the condition is false, the validation passes regardless of the input value.
-
-```javascript
-defineRule("required_if", (value, { condition = true } = {}) => {
-    if (condition) {
-        if (value === null || value === undefined || value === '') {
-            return false;
-        }
-    }
-
-    return true;
-});
-```
+::: tip Advanced Laravel Validation
+As this is Laravel, you can explore more advanced validation techniques including Form Request validation, custom validation rules, and conditional validation. For comprehensive coverage of Laravel validation features, refer to the [Laravel Validation Documentation](https://laravel.com/docs/validation).
+:::
