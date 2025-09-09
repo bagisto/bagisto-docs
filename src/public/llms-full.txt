@@ -13075,7 +13075,7 @@ Heads up: You are viewing outdated documentation for Bagisto. Please consider up
 
 # [#](https://devdocs.bagisto.com/2.2/performance/octane.html#laravel-octane) Laravel Octane
 
-[Laravel Octane(opens new window)](https://laravel.com/docs/10.x/octane) is a performance-boosting package designed to enhance the speed, efficiency, and scalability of Laravel applications, including Bagisto.
+[Laravel Octane(opens new window)](https://laravel.com/docs/11.x/octane) is a performance-boosting package designed to enhance the speed, efficiency, and scalability of Laravel applications, including Bagisto.
 
 - Drives remarkable improvements in page load times, ensuring a seamless and responsive shopping experience.
 
@@ -13091,7 +13091,7 @@ This is the documentation for the current version (v2.3) of Bagisto. Stay inform
 
 # [#](https://devdocs.bagisto.com/2.3/performance/octane.html#laravel-octane) Laravel Octane
 
-[Laravel Octane(opens new window)](https://laravel.com/docs/10.x/octane) is a performance-boosting package designed to enhance the speed, efficiency, and scalability of Laravel applications, including Bagisto.
+[Laravel Octane(opens new window)](https://laravel.com/docs/11.x/octane) is a performance-boosting package designed to enhance the speed, efficiency, and scalability of Laravel applications, including Bagisto.
 
 - Drives remarkable improvements in page load times, ensuring a seamless and responsive shopping experience.
 
@@ -14026,7 +14026,7 @@ The dynamic user interfaces in Bagisto are powered by [Vue.js(opens new window)]
 - **Reactive Components**: Vue.js enables the development of reactive components that update seamlessly as the data changes.
 - **Component-Based Architecture**: This promotes reusability and maintainability of code by breaking down the UI into isolated, reusable components.
 
-In conjunction with Vue.js, Bagisto uses [Vite(opens new window)](https://vitejs.dev/) as the build tool. Vite offers a fast and efficient development environment, replacing the older [Laravel Mix(opens new window)](https://laravel.com/docs/10.x/mix) tool. The `vite.config.js` file defines the build directory path, and Vite compiles all CSS and JavaScript assets into the public directory.
+In conjunction with Vue.js, Bagisto uses [Vite(opens new window)](https://vitejs.dev/) as the build tool. Vite offers a fast and efficient development environment, replacing the older [Laravel Mix(opens new window)](https://laravel.com/docs/11.x/mix) tool. The `vite.config.js` file defines the build directory path, and Vite compiles all CSS and JavaScript assets into the public directory.
 
 ## [#](https://devdocs.bagisto.com/2.1/architecture/frontend.html#blade) Blade
 
@@ -14368,7 +14368,7 @@ public function afterUpdate($review)
 
 ## [#](https://devdocs.bagisto.com/2.x/architecture/performance.html#laravel-octane) Laravel Octane
 
-[Laravel Octane(opens new window)](https://laravel.com/docs/10.x/octane) is a performance-boosting package designed to enhance the speed, efficiency, and scalability of Laravel applications, including Bagisto.
+[Laravel Octane(opens new window)](https://laravel.com/docs/11.x/octane) is a performance-boosting package designed to enhance the speed, efficiency, and scalability of Laravel applications, including Bagisto.
 
 - Drives remarkable improvements in page load times, ensuring a seamless and responsive shopping experience.
 
@@ -14406,7 +14406,7 @@ The dynamic user interfaces in Bagisto are powered by [Vue.js(opens new window)]
 - **Reactive Components**: Vue.js enables the development of reactive components that update seamlessly as the data changes.
 - **Component-Based Architecture**: This promotes reusability and maintainability of code by breaking down the UI into isolated, reusable components.
 
-In conjunction with Vue.js, Bagisto uses [Vite(opens new window)](https://vitejs.dev/) as the build tool. Vite offers a fast and efficient development environment, replacing the older [Laravel Mix(opens new window)](https://laravel.com/docs/10.x/mix) tool. The `vite.config.js` file defines the build directory path, and Vite compiles all CSS and JavaScript assets into the public directory.
+In conjunction with Vue.js, Bagisto uses [Vite(opens new window)](https://vitejs.dev/) as the build tool. Vite offers a fast and efficient development environment, replacing the older [Laravel Mix(opens new window)](https://laravel.com/docs/11.x/mix) tool. The `vite.config.js` file defines the build directory path, and Vite compiles all CSS and JavaScript assets into the public directory.
 
 ## [#](https://devdocs.bagisto.com/2.x/architecture/frontend.html#blade) Blade
 
