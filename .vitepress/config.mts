@@ -136,7 +136,6 @@ export default defineConfig({
         collapsed: false,
         items: [
           { text: 'Introduction', link: '/docs/performance/introduction' },
-          { text: 'Understanding Indexers', link: '/docs/performance/understanding-indexers' },
           { text: 'Configure Elasticsearch', link: '/docs/performance/configure-elasticsearch' },
           { text: 'Configure Full Page Cache', link: '/docs/performance/configure-fpc' },
           { text: 'Configure Varnish', link: '/docs/performance/configure-varnish' },
@@ -150,6 +149,7 @@ export default defineConfig({
         items: [
           { text: 'Introduction', link: '/docs/advanced/introduction' },
           { text: 'Understanding Core Class', link: '/docs/advanced/understanding-core-class' },
+          { text: 'Understanding Indexers', link: '/docs/advanced/understanding-indexers' },
           { text: 'Understanding Data Transfer', link: '/docs/advanced/understanding-data-transfer' },
           { text: 'Event Listeners', link: '/docs/advanced/event-listeners' },
           { text: 'View Render Events', link: '/docs/advanced/view-render-events' }

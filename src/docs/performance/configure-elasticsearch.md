@@ -1,19 +1,35 @@
-# Elasticsearch Configuration
+# Configure Elasticsearch
 
-[[TOC]]
+Elasticsearch is a powerful distributed search and analytics engine that enhances Bagisto's search capabilities with fast, scalable product indexing and advanced search features.
 
-## Introduction 
+::: info What You'll Learn
+- How to install and verify Elasticsearch
+- Configure Elasticsearch connections in Bagisto
+- Index products for improved search performance
+- Verify your Elasticsearch setup
+:::
 
-Elasticsearch is a powerful distributed search and analytics engine, built on Apache Lucene, designed for scalability and real-time data processing. It excels at fast full-text search, complex querying, and handling large volumes of data with high availability. Elasticsearch is widely used for applications requiring robust search capabilities, from real-time logging and analytics to e-commerce product search and personalized recommendations.
-
-In this section, we will explain how to configure Elasticsearch for indexing products from the database.
+This guide covers configuring Elasticsearch for indexing products from your Bagisto database, enabling lightning-fast search functionality for your e-commerce store.
 
 ## Environment Setup
 
-Before we proceed, make sure you have [Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html) installed on your system. By default, Elasticsearch uses port **`9200`**. We will be using the same port for our configuration.
+Before configuring Elasticsearch with Bagisto, ensure you have [Elasticsearch installed](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html) on your system.
 
-To verify if Elasticsearch is installed successfully on your system, open your browser and navigate to **`http://localhost:9200`**. If you see the following output, it means Elasticsearch is installed:
+::: warning Prerequisites
+- Elasticsearch 7.0+ (recommended: 8.x)
+- PHP 8.2+ with cURL extension
+- Sufficient memory allocation (minimum 2GB for Elasticsearch)
+:::
 
+### Verify Installation
+
+Elasticsearch runs on port `9200` by default. Test your installation by visiting:
+
+```
+http://localhost:9200
+```
+
+**Expected Response:**
 ```json
 {
   "name" : "webkul-pc",
@@ -34,172 +50,265 @@ To verify if Elasticsearch is installed successfully on your system, open your b
 }
 ```
 
-Alternatively, you can use the curl command:
-
-```sh
+**Alternative CLI Check:**
+```bash
 curl -X GET 'http://localhost:9200'
 ```
 
-This command should return a similar JSON response, confirming Elasticsearch's availability and version details.
-
 ## Configuration Setup
 
-  ::: tip Note
-This configuration is for the latest version 2.1.0
-  :::
+Configure Elasticsearch connections in your Bagisto application using the `config/elasticsearch.php` file.
 
-To configure Elasticsearch, you can set the necessary value in the `config/elasticsearch.php` file of your project.
+::: code-group
 
+```php [Bagisto 2.1.0+]
+<?php
+// config/elasticsearch.php
 
-### Default Connection
-The `connection` key specifies the default Elasticsearch connection to use when building a client.
-
-```php
-/**
- * Here you can specify the connection to use when building a client.
- */
-'connection' => 'default',
-```
-
-### Available Connections
-You can define multiple Elasticsearch connections with different configurations under the connections array.
-
-```php
-/**
- * These are the available connections parameters that you can use to connect
- */
-'default' => [
-    'hosts' => [
-        env('ELASTICSEARCH_HOST', 'http://localhost:9200'),
-    ],
-
-    'user'   => env('ELASTICSEARCH_USER', null),
-    'pass'   => env('ELASTICSEARCH_PASS', null),
-],
-```
-
-### API Key Authentication
-You can connect with API key authentication by setting the `api` key instead of the `user` and `pass` keys.
-
-```php
-'api' => [
-    'hosts' => [
-        env('ELASTICSEARCH_HOST', null),
-    ],
-
-    'key'   => env('ELASTICSEARCH_API_KEY', null),
-],
-```
-
-### Elasticsearch Cloud
-You can connect to Elastic Cloud with the Cloud ID using the `cloud` key
-
-```php
-'cloud' => [
-    'id'      => env('ELASTICSEARCH_CLOUD_ID', null),
+return [
+    /**
+     * Here you can specify the connection to use when building a client.
+     */
+    'connection' => 'default',
 
     /**
-     * If you are authenticating with API KEY then set user and pass as null
+     * These are the available connections parameters that you can use to connect
      */
-    'api_key' => env('ELASTICSEARCH_API_KEY', null),
+    'connections' => [
+        'default' => [
+            'hosts' => [
+                env('ELASTICSEARCH_HOST', 'http://localhost:9200'),
+            ],
+
+            'user' => env('ELASTICSEARCH_USER', null),
+            'pass' => env('ELASTICSEARCH_PASS', null),
+        ],
+
+        /**
+         * You can connect with API key authentication by setting the `api` key
+         * instead of the `user` and `pass` keys.
+         */
+        'api' => [
+            'hosts' => [
+                env('ELASTICSEARCH_HOST', null),
+            ],
+
+            'key' => env('ELASTICSEARCH_API_KEY', null),
+        ],
+
+        /**
+         * You can connect to Elastic Cloud with the Cloud ID using the `cloud` key.
+         */
+        'cloud' => [
+            'id' => env('ELASTICSEARCH_CLOUD_ID', null),
+
+            /**
+             * If you are authenticating with API KEY then set user and pass as null
+             */
+            'api_key' => env('ELASTICSEARCH_API_KEY', null),
+
+            /**
+             * If you are authenticating with username and password then set api_key as null
+             */
+            'user' => env('ELASTICSEARCH_USER', null),
+            'pass' => env('ELASTICSEARCH_PASS', null),
+        ],
+    ],
 
     /**
-     * If you are authenticating with username and password then set api_key as null
+     * CA Bundle
+     *
+     * If you have the http_ca.crt certificate copied during the start of Elasticsearch
+     * then the path here
+     *
+     * @see https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/connecting.html#auth-http
      */
-    'user'    => env('ELASTICSEARCH_USER', null),
-    'pass'    => env('ELASTICSEARCH_PASS', null),
-],
+    'caBundle' => null,
+
+    /**
+     * Retries
+     *
+     * By default, the client will retry n times, where n = number of nodes in
+     * your cluster. If you would like to disable retries, or change the number,
+     * you can do so here.
+     *
+     * @see https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/set-retries.html
+     */
+    'retries' => null,
+];
 ```
 
-### CA Bundle
-The `caBundle` option allows you to specify the path to the CA Bundle certificate if required for SSL/TLS connections.
+```env [.env Configuration]
+# Basic Elasticsearch Configuration
+ELASTICSEARCH_HOST=http://localhost:9200
+ELASTICSEARCH_USER=
+ELASTICSEARCH_PASS=
 
-```php
-/**
- * If you have the http_ca.crt certificate copied during the start of Elasticsearch
- * then the path here
- *
- * @see https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/connecting.html#auth-http
- */
-'caBundle' => null,
+# For API Key Authentication
+ELASTICSEARCH_API_KEY=your_api_key_here
+
+# For Elasticsearch Cloud
+ELASTICSEARCH_CLOUD_ID=your_cloud_id
 ```
 
-### Retries  
-
-The `retries` option controls the number of times the client will retry requests. By default, it retries as many times as there are nodes in the Elasticsearch cluster.
-
-```php
-/**
- * By default, the client will retry n times, where n = number of nodes in
- * your cluster. If you would like to disable retries, or change the number,
- * you can do so here.
- *
- * @see https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/set-retries.html
- */
-'retries' => null,
-```
-
-::: tip Not
-Below are the essential configuration details for setting up Elasticsearch in version 2.0.0
-:::
-
-To configure Elasticsearch, you can set the necessary key-value pairs in the **`.env`** file of your project.
-
-Open the **`.env`** file and add the following lines:
-
-```env
-ELASTICSEARCH_PORT=9200
-ELASTICSEARCH_HOST=localhost
-```
-
-Save the file and run the following command to cache the configuration:
-
-```sh
-php artisan config:cache
-```
-
-Now your environment is set up and ready to index products.
-
-If you encounter any issues, you can directly set the configuration in the **`config/elasticsearch.php`** file:
-
-```php
+```php [Bagisto 2.0.0]
+// config/elasticsearch.php
 'hosts' => [
     [
         'host' => env('ELASTICSEARCH_HOST', 'localhost'),
         'port' => env('ELASTICSEARCH_PORT', 9200),
-        // Additional configuration options can be added here
     ]
 ]
 ```
 
-## Indexing
-
-After setting up the environment and configuration, new products will be automatically indexed when created.
-
-To index existing products, run the following command:
-
-```sh
-php artisan indexer:index
+```env [.env for 2.0.0]
+ELASTICSEARCH_PORT=9200
+ELASTICSEARCH_HOST=localhost
 ```
-
-This command will index all the data from the **`product_flat`** table to the Elasticsearch index.
-
-## Checking Indexes
-
-To check if your products have been indexed successfully, open your browser and navigate to **`http://localhost:9200/_cat/indices?v`**. You should see information about the imported index.
-
-Alternatively, you can use the curl command:
-
-```sh
-curl -X GET 'http://localhost:9200/_cat/indices?v'
-```
-
-The output will provide details about the product index:
-
-:::details Output
-
-![Product Index Information](../../assets/2.x/images/advanced-topics/product-index.png)
 
 :::
 
-By following these steps, you have successfully configured Elasticsearch and indexed your products.
+### Configuration Options
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `hosts` | Elasticsearch server endpoints | `http://localhost:9200` |
+| `user/pass` | Basic authentication credentials | `null` |
+| `api_key` | API key for authentication | `null` |
+| `cloud.id` | Elasticsearch Cloud identifier | `null` |
+| `caBundle` | SSL certificate bundle path | `null` |
+| `retries` | Connection retry attempts | Auto (node count) |
+
+::: tip Authentication Methods
+Choose one authentication method:
+- **None**: For local development
+- **Basic Auth**: Username/password
+- **API Key**: Recommended for production
+- **Cloud**: For Elasticsearch Service
+:::
+
+### Apply Configuration
+
+After updating your `.env` file, clear cache configuration:
+
+```bash
+php artisan optimize:clear
+```
+
+## Indexing Products
+
+Once configured, Bagisto automatically indexes new products when they're created. For existing products, manual indexing is required.
+
+
+
+### Index Existing Products
+
+Run the indexer command to process all existing products:
+
+```bash
+php artisan indexer:index
+```
+
+::: warning Queue Driver Configuration
+If your `QUEUE_CONNECTION` in `.env` is set to `database`, `redis`, or any driver other than `sync`, you must run the queue worker to process indexing jobs:
+
+```bash
+php artisan queue:listen
+```
+
+Without the queue worker running, products will not be indexed properly.
+:::
+
+::: details What happens during indexing?
+- Products are read from the `products` table
+- Data is transformed into Elasticsearch-compatible format
+- Documents are bulk-inserted into the search index
+- Search capabilities become available immediately
+:::
+
+### Automatic Indexing
+
+New products are automatically indexed when:
+- Products are created via admin panel
+- Products are imported via CSV
+- Product data is updated through API
+
+::: warning Performance Note
+Large product catalogs may take several minutes to index. Consider running indexing during off-peak hours for production stores.
+:::
+
+## Verification
+
+### Check Index Status
+
+Verify your products have been indexed successfully:
+
+**Browser Method:**
+```
+http://localhost:9200/_cat/indices?v
+```
+
+**CLI Method:**
+```bash
+curl -X GET 'http://localhost:9200/_cat/indices?v'
+```
+
+**Expected Output:**
+```
+health status index    uuid                   pri rep docs.count docs.deleted store.size pri.store.size
+yellow open   products AbcDef1234567890       1   1      1500           0      2.5mb          2.5mb
+```
+
+### Search Test
+
+Configure Elasticsearch in your Bagisto admin panel and test frontend search:
+
+**Admin Configuration:**
+1. Go to **Admin Panel → Configuration → Catalog → Products**
+2. Set the following options to **Elasticsearch**:
+   - **Search Engine**
+   - **Admin Search Mode** 
+   - **Storefront Search Mode**
+3. Save the configuration
+
+**Frontend Testing:**
+- Visit your store's frontend
+- Use the search functionality to look for products
+- Results should appear faster with improved relevance
+
+**Alternative CLI Test:**
+```bash
+curl -X GET "localhost:9200/products/_search?q=product_name:sample"
+```
+
+::: tip Success Indicators
+- ✅ Index appears in the indices list
+- ✅ `docs.count` matches your product count
+- ✅ Admin panel search settings saved successfully
+- ✅ Frontend search returns faster, more relevant results
+:::
+
+## Troubleshooting
+
+### Common Issues
+
+| Problem | Solution |
+|---------|----------|
+| Connection refused | Check if Elasticsearch is running on port 9200 |
+| Memory errors | Increase Elasticsearch heap size |
+| Slow indexing | Reduce batch size in indexer configuration |
+| Missing products | Re-run `php artisan indexer:index` |
+
+### Performance Tips
+
+- **Memory**: Allocate at least 2GB RAM to Elasticsearch
+- **Storage**: Use SSD storage for better performance  
+- **Network**: Keep Elasticsearch on the same server as Bagisto
+- **Monitoring**: Use Elasticsearch monitoring tools in production
+
+::: warning Production Considerations
+- Enable authentication in production environments
+- Configure SSL/TLS for secure connections
+- Set up regular backup and monitoring
+- Consider using Elasticsearch Service for managed hosting
+:::

@@ -26,7 +26,7 @@ The dynamic user interfaces in Bagisto are powered by [Vue.js](https://vuejs.org
 
 ### Build Tool Integration
 
-In conjunction with Vue.js, Bagisto uses [Vite](https://vitejs.dev/) as the build tool. Vite offers a fast and efficient development environment, replacing the older [Laravel Mix](https://laravel.com/docs/10.x/mix) tool. The `vite.config.js` file defines the build directory path, and Vite compiles all CSS and JavaScript assets into the public directory.
+In conjunction with Vue.js, Bagisto uses [Vite](https://vitejs.dev/) as the build tool. Vite offers a fast and efficient development environment, replacing the older [Laravel Mix](https://laravel.com/docs/11.x/mix) tool. The `vite.config.js` file defines the build directory path, and Vite compiles all CSS and JavaScript assets into the public directory.
 
 ## Blade
 

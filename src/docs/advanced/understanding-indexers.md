@@ -1,8 +1,4 @@
-# Indexing
-
-[[TOC]]
-
-## Introduction
+# Understanding Indexer
 
 When dealing with large volumes of data and retrieving complex information like variants and prices, optimizing queries becomes a challenge.
 

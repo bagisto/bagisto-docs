@@ -35,7 +35,7 @@ Assets in web development refer to files such as stylesheets, scripts, and image
 - **Fonts**: Custom typography and icon fonts
 
 ::: info Laravel Vite Integration
-Bagisto uses Laravel's Vite integration for modern asset compilation. For detailed information about Laravel's frontend tooling, visit the [Laravel documentation](https://laravel.com/docs/10.x/frontend#bundling-assets).
+Bagisto uses Laravel's Vite integration for modern asset compilation. For detailed information about Laravel's frontend tooling, visit the [Laravel documentation](https://laravel.com/docs/11.x/frontend#bundling-assets).
 :::
 
 ## Setting Up Your Theme Package Assets

@@ -65,7 +65,7 @@ You'll have a complete working product type after step 1, and steps 2-4 help you
 Before you begin, ensure you have:
 
 - **Bagisto Installation**: A working Bagisto development environment
-- **PHP Knowledge**: Familiarity with PHP 8.1+ and Laravel concepts
+- **PHP Knowledge**: Familiarity with PHP 8.2+ and Laravel concepts
 - **Package Development**: Basic understanding of Laravel service providers ([Package Development Guide](../package-development/getting-started.md))
 - **Development Tools**: Composer, Git, and a code editor
 
