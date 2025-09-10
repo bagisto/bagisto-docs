@@ -15,7 +15,7 @@ Before starting, ensure you have:
 - Web server (Apache/Nginx)
 
 ::: tip System Requirements
-If you haven't checked the system requirements yet, please review the [Before You Start](/docs/getting-started/before-you-start#system-requirements) guide.
+If you haven't checked the system requirements yet, please review the [Before You Start](/getting-started/before-you-start#system-requirements) guide.
 :::
 
 ### Step 1: Create Project

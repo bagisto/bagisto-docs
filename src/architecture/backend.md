@@ -115,7 +115,7 @@ By adopting the **Repository Pattern** with the Prettus Repository package, Bagi
 
 Bagisto comes with a comprehensive collection of packages that demonstrate the power of its modular architecture and repository pattern implementation. Each package follows the same standardized structure and design principles, allowing developers to easily understand, extend, and customize functionality across the entire platform.
 
-[Laravel](https://laravel.com) packages are the primary way of adding functionality. The following features are distributed into packages to enhance the application and allow developers to follow the standard way of developing custom functionality.
+Laravel packages are the primary way of adding functionality. The following features are distributed into packages to enhance the application and allow developers to follow the standard way of developing custom functionality.
 
 Below is a detailed overview of the default packages available in Bagisto, each showcasing how the modular design and repository pattern work together to create a robust, scalable e-commerce solution:
 
@@ -355,7 +355,9 @@ The DataGrid package in Bagisto empowers administrators with a versatile solutio
 
 ### DataTransfer
 
-This package contains all the logic related to data transfer. You can follow the given link for the more information about the [DataTransfer](https://bagisto.com/en/how-to-bulk-import-products-in-bagisto-2-1-0/)
+This package contains all the logic related to data transfer. You can follow the given link for the more information about the [DataTransfer](https://bagisto.com/en/how-to-bulk-import-products-in-bagisto-2-1-0/).
+
+> **Note:** The referenced blog post may be from an older version of Bagisto, but the core design patterns and workflow remain largely identical across versions. We recommend reviewing the documentation alongside your current Bagisto installation to identify any minor API or structural differences that may have evolved.
 
 ### DebugBar
 
@@ -363,7 +365,9 @@ This package includes essential functionalities to monitor, analyze, and debug t
 
 ### FPC
 
-This package provides advanced caching mechanisms to store generated pages in memory, reducing server load and improving page load times for your customers. You can follow the given link for the more information about the [FPC](https://bagisto.com/en/optimizing-bagisto-e-commerce-a-deep-dive-into-full-page-cache-implementation/)
+This package provides advanced caching mechanisms to store generated pages in memory, reducing server load and improving page load times for your customers. You can follow the given link for the more information about the [FPC](https://bagisto.com/en/optimizing-bagisto-e-commerce-a-deep-dive-into-full-page-cache-implementation/).
+
+> **Note:** The referenced blog post may be from an older version of Bagisto, but the core design patterns and workflow remain largely identical across versions. We recommend reviewing the documentation alongside your current Bagisto installation to identify any minor API or structural differences that may have evolved.
 
 #### Key Features of the FPC Package
 
@@ -413,6 +417,8 @@ The Inventory package in Bagisto offers comprehensive tools to manage and track 
 ### MagicAI 
 
 The MagicAI package in Bagisto integrates advanced artificial intelligence capabilities directly into your e-commerce platform, offering powerful tools to enhance efficiency, customer experience, and decision-making processes. You can follow the given link for the more information about the [MagicAI](https://bagisto.com/en/laravel-bagisto-2-1-0-ai-features/)
+
+> **Note:** The referenced blog post may be from an older version of Bagisto, but the core design patterns and workflow remain largely identical across versions. We recommend reviewing the documentation alongside your current Bagisto installation to identify any minor API or structural differences that may have evolved.
 
 ### Marketing 
 
@@ -537,4 +543,4 @@ The theme package in Bagisto handles all the logic related to theme customizatio
 
 This package empowers administrators to efficiently manage user registrations, profiles, roles, and permissions, ensuring secure and personalized customer interactions.
 
-Service provider enables features such as loading [routes](/2.x/packages/routes.html), [migrations](/2.x/packages/migrations.html), [languages](/2.x/packages/localization.html) or publishing [views](/2.x/packages/views.html), etc so **Bagisto** is developed considering these aspects.
+Service provider enables features such as loading [routes](/package-development/routes), [migrations](/package-development/migrations), [languages](/package-development/localization) or publishing [views](/package-development/views), etc so **Bagisto** is developed considering these aspects.
