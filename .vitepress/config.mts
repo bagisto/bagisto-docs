@@ -31,7 +31,7 @@ export default defineConfig({
     ],
 
     editLink: {
-      pattern: 'https://github.com/bagisto/bagisto-docs/edit/master/:path',
+      pattern: 'https://github.com/bagisto/bagisto-docs/edit/master/src/:path',
       text: 'Help us improve this page on Github.'
     },
 
