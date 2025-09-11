@@ -12,11 +12,7 @@ Learn how to set up modern asset compilation for your custom theme package using
 
 ## Prerequisites
 
-Before starting this guide, make sure you have completed the [Custom Theme Package](./custom-theme-package.md) tutorial. We'll be a **🧩 [Blade Components →](./blade-components.md)**  
-Master the usage of Bagisto's pre-built components with your compiled assets.
-
-**🛠️ [Package Development →](../package-development/)**  
-Explore advanced package development techniques and best practices. asset bundling to the `CustomTheme` package we created.
+Before starting this guide, make sure you have completed the [Custom Theme Package](./custom-theme-package.md) tutorial. We'll be adding modern asset bundling to the `CustomTheme` package we created.
 
 ::: tip Why Asset Bundling?
 - **Modern Development**: Use the latest CSS and JavaScript features
@@ -729,5 +725,5 @@ Learn to create complex layouts and component systems for your theme.
 **🧩 [Blade Components →](./blade-components.md)**  
 Master the usage of Bagisto's pre-built components with your compiled assets.
 
-**�️ [Package Development →](../package-development/)**  
+**📄 [Package Development →](../package-development/)**  
 Explore advanced package development techniques and best practices.

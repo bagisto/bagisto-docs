@@ -1,7 +1,6 @@
 # Creating Store Theme
 
-Learn how to create custom store themes for your Bagisto e-commerce platform. This guide covers the basic approach using Bagisto's resources directory, perfect for getting started with theme develop**👩‍💼 [Creating Admin Theme →](./creating-admin-theme.md)**  
-Learn to customize the admin panel interface with custom admin themes.nt.
+Learn how to create custom store themes for your Bagisto e-commerce platform. This guide covers the basic approach using Bagisto's resources directory, perfect for getting started with theme development.
 
 ::: info What You'll Learn
 - Understanding Bagisto's theme configuration system

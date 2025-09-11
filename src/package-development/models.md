@@ -480,27 +480,7 @@ class Product extends BaseProduct
 
 **2. Register the Override**
 
-You can register the model override using either approach:
-
-**Method 1: Via ModuleServiceProvider (Recommended)**
-
-```php{11}
-<?php
-
-namespace Webkul\RMA\Providers;
-
-use Konekt\Concord\BaseModuleServiceProvider;
-
-class ModuleServiceProvider extends BaseModuleServiceProvider
-{
-    protected $models = [
-        \Webkul\RMA\Models\ReturnRequest::class,
-        \Webkul\Product\Models\Product::class => \Webkul\RMA\Models\Product::class,
-    ];
-}
-```
-
-**Method 2: Via Main ServiceProvider**
+Register the model override in your main service provider:
 
 ```php{15-18}
 <?php
@@ -525,23 +505,52 @@ class RMAServiceProvider extends ServiceProvider
 }
 ```
 
-::: tip Which Method to Choose?
-- **Method 1** is cleaner and follows Bagisto conventions for package development
-- **Method 2** gives you more control and is useful for conditional overrides or complex logic
-- Both methods achieve the same result - choose based on your package structure preference
+::: tip Model Override Registration
+This method registers your extended model with Concord's dependency injection system. When any part of Bagisto requests the Product contract, your extended model will be used instead of the core model.
 :::
 
-**3. Use Everywhere via Contract**
+**3. Use Everywhere via Repository**
+
+Following Bagisto's best practices, access your extended model through repositories:
 
 ```php
-// In controllers, repositories, etc.
-use Webkul\Product\Contracts\Product;
+// In controllers, services, etc.
+use Webkul\Product\Repositories\ProductRepository;
 
 class SomeController extends Controller
 {
-    public function checkReturnable(Product $product)
+    public function __construct(
+        protected ProductRepository $productRepository
+    ) {}
+
+    public function checkReturnable($productId)
     {
+        $product = $this->productRepository->find($productId);
+        
         // This automatically uses your extended model
+        return $product->isReturnable();
+    }
+}
+```
+
+::: tip Repository Pattern Benefits
+- **Consistent Interface**: All data access goes through repositories
+- **Automatic Model Resolution**: Repositories use dependency injection to get the correct model
+- **Business Logic**: Repositories can contain query logic and business rules
+- **Testability**: Easy to mock repositories for unit testing
+:::
+
+**Alternative: Direct Contract Usage (When Needed)**
+
+```php
+// For specific cases where you need direct model access
+use Webkul\Product\Contracts\Product as ProductContract;
+
+class SpecialService
+{
+    public function processProduct(ProductContract $product)
+    {
+        // Direct model usage - automatically gets your extended model
         return $product->isReturnable();
     }
 }

@@ -81,6 +81,11 @@ Full Page Cache optimally works with these page types:
 | **Home Page** | 🚀 Excellent | ⭐ High |
 | **Category Pages** | 🚀 Excellent | ⭐ High |
 | **Product Pages** | 🚀 Excellent | ⭐ Very High |
+| **CMS Pages** | 🚀 Excellent | ⭐ High |
+
+::: tip CMS Page Caching
+CMS pages (About Us, Privacy Policy, Terms & Conditions, etc.) are ideal candidates for Full Page Cache since they rarely change and benefit significantly from caching. This improves load times for important informational pages that customers frequently visit.
+:::
 
 ::: warning Dynamic Content
 Pages with user-specific content (cart, wishlist, account) are automatically excluded from caching to ensure personalized experiences.
