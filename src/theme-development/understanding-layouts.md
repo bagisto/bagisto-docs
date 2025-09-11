@@ -390,7 +390,7 @@ Understanding layouts is crucial for effective theme development. Here are your 
 **🧩 [Blade Components →](./blade-components.md)**  
 Learn to use Bagisto's pre-built components that work seamlessly with your layouts.
 
-**🛠️ [Package Development →](../package-development/)**  
+**🛠️ [Package Development →](../package-development/getting-started)**  
 Explore advanced package development techniques for creating custom functionality.
 
 **📚 [Back to Getting Started →](./getting-started.md)**  

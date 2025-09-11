@@ -4,8 +4,8 @@ Welcome to the "Digging Deeper" section of Bagisto documentation! This advanced 
 
 ::: info Prerequisites
 This section assumes you have:
-- Completed the [Package Development](../package-development/) guides
-- Understanding of [Theme Development](../theme-development/) concepts  
+- Completed the [Package Development](../package-development/getting-started) guides
+- Understanding of [Theme Development](../theme-development/getting-started) concepts  
 - Solid knowledge of Laravel concepts (events, validation, service providers)
 - Experience with PHP and object-oriented programming
 :::
@@ -49,9 +49,9 @@ We recommend following this progression:
 
 ::: tip Integration with Previous Learning
 These advanced techniques build upon concepts from:
-- [Package Development](../package-development/) - Service providers, routing, and views
-- [Theme Development](../theme-development/) - Blade templates and asset management
-- [Performance Optimization](../performance/) - Efficient coding practices
+- [Package Development](../package-development/getting-started) - Service providers, routing, and views
+- [Theme Development](../theme-development/getting-started) - Blade templates and asset management
+- [Performance Optimization](../performance/introduction) - Efficient coding practices
 :::
 
 ## Advanced vs. Basic Development

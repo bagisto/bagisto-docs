@@ -170,7 +170,7 @@ Create a home page template at `resources/themes/custom-theme/views/home/index.b
 ```
 
 ::: tip Layout Usage
-We're using the default `<x-shop::layouts>` component since we haven't created a custom layout yet. Custom layouts will be covered in the [Layouts and Views](./layouts.md) guide.
+We're using the default `<x-shop::layouts>` component since we haven't created a custom layout yet. Custom layouts will be covered in the [Layouts and Views](./understanding-layouts.md) guide.
 :::
 
 ::: warning Styling Limitations & Development Approach

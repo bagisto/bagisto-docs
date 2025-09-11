@@ -1040,10 +1040,10 @@ When using components in custom themes:
 
 Congratulations! You've completed the theme development journey. Here are your next steps:
 
-**🛠️ [Package Development →](../package-development/)**  
+**🛠️ [Package Development →](../package-development/getting-started)**  
 Build advanced packages that include custom components and functionality.
 
-**🚀 [Performance Optimization →](../performance/)**  
+**🚀 [Performance Optimization →](../performance/introduction)**  
 Learn to optimize your themes for better performance and user experience.
 
 **📚 [Back to Getting Started →](./getting-started.md)**  
