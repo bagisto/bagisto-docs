@@ -18,7 +18,7 @@ composer require bagisto/bagisto-varnish
 
 ### Register Service Provider
 
-Register the service provider in `config/app.php`:
+Register the service provider in `bootstrap/providers.php`:
 
 ```php
 'providers' => [
