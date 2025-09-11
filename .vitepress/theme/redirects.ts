@@ -26,6 +26,7 @@ export const redirects = {
   '/2.3/architecture/modular-design': '/architecture/backend.html#modular-design-in-bagisto',
 
   // Package Development
+  '/2.3/packages': '/package-development/getting-started',
   '/2.3/packages/create-package': '/package-development/getting-started',
   '/2.3/packages/create-migrations': '/package-development/migrations',
   '/2.3/packages/create-models': '/package-development/models',
@@ -57,6 +58,7 @@ export const redirects = {
   '/2.3/advanced/create-data-import': '/advanced/understanding-data-transfer',
 
   // Themes
+  '/2.3/themes': '/theme-development/getting-started',
   '/2.3/themes/create-store-theme': '/theme-development/creating-store-theme',
   '/2.3/themes/create-admin-theme': '/theme-development/creating-admin-theme',
   '/2.3/themes/custom-theme-package': '/theme-development/creating-custom-theme-package',
@@ -93,7 +95,8 @@ export const redirects = {
   '/2.2/architecture/repository-pattern': '/architecture/backend.html#repository-pattern-in-bagisto',
   '/2.2/architecture/modular-design': '/architecture/backend.html#modular-design-in-bagisto',
 
-  // Package Development  
+  // Package Development
+  '/2.2/packages': '/package-development/getting-started',
   '/2.2/packages/create-package': '/package-development/getting-started',
   '/2.2/packages/create-migrations': '/package-development/migrations',
   '/2.2/packages/create-models': '/package-development/models',
@@ -125,6 +128,7 @@ export const redirects = {
   '/2.2/advanced/create-data-import': '/advanced/understanding-data-transfer',
 
   // Themes
+  '/2.2/themes': '/theme-development/getting-started',
   '/2.2/themes/create-store-theme': '/theme-development/creating-store-theme',
   '/2.2/themes/create-admin-theme': '/theme-development/creating-admin-theme',
 
@@ -161,6 +165,7 @@ export const redirects = {
   '/2.1/architecture/modular-design': '/architecture/backend.html#modular-design-in-bagisto',
 
   // Package Development
+  '/2.1/packages': '/package-development/getting-started',
   '/2.1/packages/create-package': '/package-development/getting-started',
   '/2.1/packages/create-migrations': '/package-development/migrations',
   '/2.1/packages/create-models': '/package-development/models',
@@ -192,6 +197,7 @@ export const redirects = {
   '/2.1/advanced/create-data-import': '/advanced/understanding-data-transfer',
 
   // Themes
+  '/2.1/themes': '/theme-development/getting-started',
   '/2.1/themes/create-store-theme': '/theme-development/creating-store-theme',
   '/2.1/themes/create-admin-theme': '/theme-development/creating-admin-theme',
 
@@ -227,6 +233,7 @@ export const redirects = {
   '/2.0/architecture/modular-design': '/architecture/backend.html#modular-design-in-bagisto',
 
   // Package Development
+  '/2.0/packages': '/package-development/getting-started',
   '/2.0/packages/create-package': '/package-development/getting-started',
   '/2.0/packages/create-migrations': '/package-development/migrations',
   '/2.0/packages/create-models': '/package-development/models',
@@ -258,6 +265,7 @@ export const redirects = {
   '/2.0/advanced/create-data-import': '/advanced/understanding-data-transfer',
 
   // Themes
+  '/2.0/themes': '/theme-development/getting-started',
   '/2.0/themes/create-store-theme': '/theme-development/creating-store-theme',
   '/2.0/themes/create-admin-theme': '/theme-development/creating-admin-theme',
 
@@ -294,6 +302,7 @@ export const redirects = {
   '/2.x/architecture/modular-design': '/architecture/backend.html#modular-design-in-bagisto',
 
   // Package Development
+  '/2.x/packages': '/package-development/getting-started',
   '/2.x/packages/create-package': '/package-development/getting-started',
   '/2.x/packages/create-migrations': '/package-development/migrations',
   '/2.x/packages/create-models': '/package-development/models',
@@ -325,6 +334,7 @@ export const redirects = {
   '/2.x/advanced/create-data-import': '/advanced/understanding-data-transfer',
 
   // Themes
+  '/2.x/themes': '/theme-development/getting-started',
   '/2.x/themes/create-store-theme': '/theme-development/creating-store-theme',
   '/2.x/themes/create-admin-theme': '/theme-development/creating-admin-theme',
 
@@ -355,6 +365,7 @@ export const redirects = {
   '/1.5.x/architecture/modular-design': '/architecture/backend.html#modular-design-in-bagisto',
 
   // Package Development
+  '/1.5.x/packages': '/package-development/getting-started',
   '/1.5.x/packages/create-package': '/package-development/getting-started',
   '/1.5.x/packages/create-migrations': '/package-development/migrations',
   '/1.5.x/packages/create-models': '/package-development/models',
@@ -385,6 +396,7 @@ export const redirects = {
   '/1.5.x/advanced/security-practice': '/getting-started/best-security-practice',
 
   // Themes
+  '/1.5.x/themes': '/theme-development/getting-started',
   '/1.5.x/themes/create-store-theme': '/theme-development/creating-store-theme',
   '/1.5.x/themes/create-admin-theme': '/theme-development/creating-admin-theme',
   '/1.5.x/themes/notification': '/advanced/event-listeners',
@@ -403,6 +415,7 @@ export const redirects = {
   '/1.x/introduction/docker': '/getting-started/installation.html#🐳-docker-installation',
 
   // Package Development
+  '/1.x/packages': '/package-development/getting-started',
   '/1.x/packages/create-package': '/package-development/getting-started',
   '/1.x/packages/create-migrations': '/package-development/migrations',
   '/1.x/packages/add-menu-in-admin': '/package-development/menu',
@@ -424,6 +437,7 @@ export const redirects = {
   '/1.x/advanced/security-practice': '/getting-started/best-security-practice',
 
   // Themes
+  '/1.x/themes': '/theme-development/getting-started',
   '/1.x/themes/tracer': '/theme-development/getting-started',
   '/1.x/themes/create-store-theme': '/theme-development/creating-store-theme',
   '/1.x/themes/create-admin-theme': '/theme-development/creating-admin-theme',

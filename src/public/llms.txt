@@ -6,69 +6,93 @@ A complete reference for developers building and extending Bagisto stores
 
 ## Table of Contents
 
-### Prologue
+### Getting Started with Bagisto
 
-- [Upgrade Guide](/2.3/prologue/upgrade-guide)
-- [Contribution Guide](/2.3/prologue/contribution-guide)
-
-### Introduction
-
-- [Requirements](/2.3/introduction/requirements)
-- [Installation](/2.3/introduction/installation)
-- [Docker](/2.3/introduction/docker)
-- [LLMs.txt](/2.3/introduction/llms)
+- [Why Choose Bagisto?](/getting-started/why-choose-bagisto)
+- [Before You Start](/getting-started/before-you-start)
+- [Installation](/getting-started/installation)
+- [Upgrade Guide](/getting-started/upgrade-guide)
+- [Contribution Guide](/getting-started/contribution-guide)
+- [Best Security Practices](/getting-started/best-security-practice)
+- [Deployment](/getting-started/deployment)
+- [LLMs.txt](/getting-started/llms)
 
 ### Architecture Concepts
 
-- [Packages](/2.3/architecture/packages)
-- [Frontend](/2.3/architecture/frontend)
-- [Theme](/2.3/architecture/theme)
-- [Performance](/2.3/architecture/performance)
-- [Repository Pattern](/2.3/architecture/repository-pattern)
-- [Modular Design](/2.3/architecture/modular-design)
+- [Overview](/architecture/overview)
+- [Backend](/architecture/backend)
+- [Frontend](/architecture/frontend)
 
 ### Package Development
 
-- [Getting Started](/2.3/packages/create-package)
-- [Migrations](/2.3/packages/create-migrations)
-- [Models](/2.3/packages/create-models)
-- [Repositories](/2.3/packages/store-data-through-repositories)
-- [Routes](/2.3/packages/routes)
-- [Controllers](/2.3/packages/controllers)
-- [Views](/2.3/packages/views)
-- [Localization](/2.3/packages/localization)
-- [Blade Components](/2.3/packages/blade-components)
-- [Layouts](/2.3/packages/layouts)
-- [Bundling Assets](/2.3/packages/bundling-assets)
-- [Admin Menu](/2.3/packages/add-menu-in-admin)
-- [Validation](/2.3/packages/validation)
-- [DataGrid](/2.3/packages/datagrid)
-- [Access Control List](/2.3/packages/create-acl)
-- [System Configuration](/2.3/packages/create-system-configuration)
+- [Getting Started](/package-development/getting-started)
+- [Migrations](/package-development/migrations)
+- [Models](/package-development/models)
+- [Repositories](/package-development/repositories)
+- [Routes](/package-development/routes)
+- [Controllers](/package-development/controllers)
+- [Views](/package-development/views)
+- [Localization](/package-development/localization)
+- [DataGrid](/package-development/datagrid)
+- [Menu](/package-development/menu)
+- [Access Control List](/package-development/access-control-list)
+- [System Configuration](/package-development/system-configuration)
+
+### Shipping Method Development
+
+- [Getting Started](/shipping-method-development/getting-started)
+- [Creating Your First Shipping Method](/shipping-method-development/create-your-first-shipping-method)
+- [Understanding Carrier Configuration](/shipping-method-development/understanding-carrier-configuration)
+- [Understanding Carrier Class](/shipping-method-development/understanding-carrier-class)
+- [Understanding System Configuration](/shipping-method-development/understanding-system-configuration)
+
+### Payment Method Development
+
+- [Getting Started](/payment-method-development/getting-started)
+- [Creating Your First Payment Method](/payment-method-development/create-your-first-payment-method)
+- [Understanding Payment Configuration](/payment-method-development/understanding-payment-configuration)
+- [Understanding Payment Class](/payment-method-development/understanding-payment-class)
+
+### Product Type Development
+
+- [Getting Started](/product-type-development/getting-started)
+- [Creating Your First Product Type](/product-type-development/create-your-first-product-type)
+- [Understanding Product Type Configuration](/product-type-development/understanding-product-type-configuration)
+- [Understanding Abstract Type Class](/product-type-development/understanding-abstract-type-class)
+- [Building Your Subscription Product Type](/product-type-development/building-your-subscription-product-type)
+
+### Theme Development
+
+- [Getting Started](/theme-development/getting-started)
+- [Creating Store Theme](/theme-development/creating-store-theme)
+- [Creating Admin Theme](/theme-development/creating-admin-theme)
+- [Creating Custom Theme Package](/theme-development/creating-custom-theme-package)
+- [Vite-Powered Theme Assets](/theme-development/vite-powered-theme-assets)
+- [Understanding Layouts](/theme-development/understanding-layouts)
+- [Blade Components](/theme-development/blade-components)
+- [Email Template](/theme-development/email-template)
+- [Validation](/theme-development/validation)
+
+### Performance
+
+- [Introduction](/performance/introduction)
+- [Configure Elasticsearch](/performance/configure-elasticsearch)
+- [Configure Full Page Cache](/performance/configure-fpc)
+- [Configure Varnish](/performance/configure-varnish)
+- [Configure Laravel Octane](/performance/configure-laravel-octane)
+- [Configure Load Balancing](/performance/configure-load-balancing)
 
 ### Digging Deeper
 
-- [Shipping Method](/2.3/advanced/create-shipping-method)
-- [Payment Method](/2.3/advanced/create-payment-method)
-- [Product Type](/2.3/advanced/create-product-type)
-- [Events Listeners](/2.3/advanced/events)
-- [Helpers](/2.3/advanced/helpers)
-- [Override Core Models](/2.3/advanced/override-core-model)
-- [View Render Event](/2.3/advanced/render-event)
-- [Email Template](/2.3/advanced/change-email-template.md)
-- [Configure Elasticsearch](/2.3/advanced/indexing-products-to-elasticsearch.md)
-- [Best Security Practices](/2.3/advanced/security-practice)
-- [Data Transfer](/2.3/advanced/create-data-import)
-
-### Themes
-
-- [Store Theme](/2.3/themes/create-store-theme)
-- [Admin Theme](/2.3/themes/create-admin-theme)
+- [Introduction](/advanced/introduction)
+- [Understanding Core Class](/advanced/understanding-core-class)
+- [Understanding Indexers](/advanced/understanding-indexers)
+- [Understanding Data Transfer](/advanced/understanding-data-transfer)
+- [Event Listeners](/advanced/event-listeners)
+- [View Render Events](/advanced/view-render-events)
 
 ### Bagisto APIs
 
-- [Rest API](/2.3/api/getting-started-with-the-api)
-
-### Other
-
-- [Home](/2.3/index)
+- [Introduction](/api/introduction)
+- [Rest API](/api/rest-api)
+- [GraphQL API](/api/graphql-api)
