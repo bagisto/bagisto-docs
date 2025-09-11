@@ -450,6 +450,7 @@ export const redirects = {
     '/1.x/themes/integrate-image-search-in-theme.html': '/theme-development/creating-store-theme',
 
     // Admin Theme
+    '/1.x/admin-theme': '/theme-development/creating-admin-theme',
     '/1.x/admin-theme/notification.html': '/advanced/event-listeners',
 
     // Translations
