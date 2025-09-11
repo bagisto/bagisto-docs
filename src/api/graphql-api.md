@@ -57,7 +57,7 @@ This middleware configuration ensures sessions work properly with GraphQL endpoi
 
 Add the following JWT settings to your `.env` file:
 
-```env
+```properties
 # JWT Configuration for GraphQL API
 JWT_TTL=525600
 JWT_SHOW_BLACKLIST_EXCEPTION=true

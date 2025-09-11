@@ -1,9 +1,9 @@
-import DefaultTheme from 'vitepress/theme'
+import Layout from './Layout.vue'
 import { setupRedirects } from './redirects'
 import './custom.css'
 
 export default {
-    ...DefaultTheme,
+    Layout,
 
     enhanceApp({ router }) {
         setupRedirects(router)

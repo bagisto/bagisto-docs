@@ -29,7 +29,7 @@ composer require bagisto/rest-api
 
 Add the following configuration to your `.env` file:
 
-```env
+```properties
 # Replace with your actual domain
 SANCTUM_STATEFUL_DOMAINS=http://localhost/public
 ```

@@ -1,6 +1,5 @@
 import { defineConfig } from 'vitepress'
 
-// https://vitepress.dev/reference/site-config
 export default defineConfig({
   lang: 'en-US',
   title: "Bagisto",
@@ -15,7 +14,6 @@ export default defineConfig({
   srcDir: './src',
 
   themeConfig: {
-    // https://vitepress.dev/reference/default-theme-config
     siteTitle: false,
 
     logo: {

@@ -51,7 +51,7 @@ php artisan octane:install --server=swoole
 
 Add Octane settings to your `.env` file:
 
-```env
+```properties
 # Laravel Octane Configuration
 OCTANE_SERVER=swoole
 OCTANE_HOST=0.0.0.0
@@ -146,7 +146,7 @@ Optimize workers based on your server specs:
 
 ### Environment Optimization
 
-```env
+```properties
 # Optimized settings for production
 OCTANE_WORKERS=8
 OCTANE_TASK_WORKERS=6

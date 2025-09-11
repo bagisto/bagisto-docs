@@ -27,7 +27,7 @@ Add the following configuration to your `.env` file:
 
 ::: code-group
 
-```env [Environment Setup]
+```properties [Environment Setup]
 # Enable Full Page Cache
 RESPONSE_CACHE_ENABLED=true
 

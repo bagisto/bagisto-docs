@@ -28,7 +28,7 @@ To limit the exposure of sensitive information in error messages, follow these s
 
 To restrict access to the admin area, modify the **`.htaccess`** file with the following code:
 
-```apacheconf
+```apache
 RewriteEngine On
 RewriteCond %{REQUEST_URI} .*/admin
 RewriteCond %{REMOTE_ADDR} !=<IP address>
@@ -42,7 +42,7 @@ Ensure that there are no accessible development leftovers on the server, such as
 
 To restrict access to unnecessary files, add the following code to your **`.htaccess`** file:
 
-```apacheconf
+```apache
 <FilesMatch "\.(git|zip|tar|sql)$">
     Require all denied
 </FilesMatch>
@@ -54,7 +54,7 @@ Consider using a Web Application Firewall (WAF) to analyze traffic and detect su
 
 To restrict PHP execution inside the storage directory, modify your Apache configuration file:
 
-```apacheconf
+```apache
 <Directory "~/www/bagisto/public/storage/">
     <FilesMatch "\.php$">
         Require all denied

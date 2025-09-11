@@ -138,7 +138,7 @@ return [
 ];
 ```
 
-```env [.env Configuration]
+```properties [.env Configuration]
 # Basic Elasticsearch Configuration
 ELASTICSEARCH_HOST=http://localhost:9200
 ELASTICSEARCH_USER=
@@ -161,7 +161,7 @@ ELASTICSEARCH_CLOUD_ID=your_cloud_id
 ]
 ```
 
-```env [.env for 2.0.0]
+```properties [.env for 2.0.0]
 ELASTICSEARCH_PORT=9200
 ELASTICSEARCH_HOST=localhost
 ```

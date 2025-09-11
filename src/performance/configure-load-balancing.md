@@ -108,7 +108,7 @@ Use the following database details:
 
 ::: code-group
 
-```env [Database Configuration]
+```properties [Database Configuration]
 DB_HOST=<public IP of dedicated DB server>
 DB_DATABASE=bagistodb
 DB_USERNAME=bagistouser

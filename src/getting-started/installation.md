@@ -290,7 +290,7 @@ composer require laravel/sail --dev
 
 Update your `.env` file with Sail-specific configurations:
 
-```env
+```properties
 # Database Configuration
 DB_CONNECTION=mysql
 DB_HOST=mysql

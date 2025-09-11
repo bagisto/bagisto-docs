@@ -13,6 +13,9 @@ hero:
     - theme: alt
       text: View on GitHub
       link: https://github.com/bagisto/bagisto
+  image:
+    src: /logo-large.png
+    alt: Bagisto
 
 features:
   - title: Package Development
