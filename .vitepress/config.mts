@@ -194,7 +194,14 @@ export default defineConfig({
         return
       }
 
-      const filePath = path.join(outDir, from, 'index.html')
+      let filePath
+
+      if (from.endsWith('.html')) {
+        filePath = path.join(outDir, from)
+      } else {
+        filePath = path.join(outDir, from, 'index.html')
+      }
+
       fs.mkdirSync(path.dirname(filePath), { recursive: true })
       fs.writeFileSync(filePath, makeRedirectHtml(to), 'utf-8')
       console.log(`✅ Redirect created: ${from} -> ${to}`)
