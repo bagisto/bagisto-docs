@@ -18,6 +18,7 @@ export const redirects = {
 
     // Architecture Concepts
     '/2.3/architecture/packages': '/architecture/backend',
+    '/2.3/architecture/packages.html': '/architecture/backend',
     '/2.3/architecture/frontend.html': '/architecture/frontend',
     '/2.3/architecture/theme.html': '/architecture/frontend',
     '/2.3/architecture/repository-pattern.html': '/architecture/backend.html#repository-pattern-in-bagisto',
@@ -88,6 +89,7 @@ export const redirects = {
 
     // Architecture Concepts
     '/2.2/architecture/packages': '/architecture/backend',
+    '/2.2/architecture/packages.html': '/architecture/backend',
     '/2.2/architecture/frontend.html': '/architecture/frontend',
     '/2.2/architecture/theme.html': '/architecture/frontend',
     '/2.2/architecture/repository-pattern.html': '/architecture/backend.html#repository-pattern-in-bagisto',
@@ -157,6 +159,7 @@ export const redirects = {
 
     // Architecture Concepts
     '/2.1/architecture/packages': '/architecture/backend',
+    '/2.1/architecture/packages.html': '/architecture/backend',
     '/2.1/architecture/frontend.html': '/architecture/frontend',
     '/2.1/architecture/theme.html': '/architecture/frontend',
     '/2.1/architecture/repository-pattern.html': '/architecture/backend.html#repository-pattern-in-bagisto',
@@ -225,6 +228,7 @@ export const redirects = {
 
     // Architecture Concepts
     '/2.0/architecture/packages': '/architecture/backend',
+    '/2.0/architecture/packages.html': '/architecture/backend',
     '/2.0/architecture/frontend.html': '/architecture/frontend',
     '/2.0/architecture/theme.html': '/architecture/frontend',
     '/2.0/architecture/repository-pattern.html': '/architecture/backend.html#repository-pattern-in-bagisto',
@@ -293,6 +297,7 @@ export const redirects = {
 
     // Architecture Concepts
     '/2.x/architecture/packages': '/architecture/backend',
+    '/2.x/architecture/packages.html': '/architecture/backend',
     '/2.x/architecture/frontend.html': '/architecture/frontend',
     '/2.x/architecture/theme.html': '/architecture/frontend',
     '/2.x/architecture/performance.html': '/performance/introduction',
@@ -356,6 +361,7 @@ export const redirects = {
 
     // Architecture Concepts
     '/1.5.x/architecture/packages': '/architecture/backend',
+    '/1.5.x/architecture/packages.html': '/architecture/backend',
     '/1.5.x/architecture/frontend.html': '/architecture/frontend',
     '/1.5.x/architecture/theme.html': '/architecture/frontend',
     '/1.5.x/architecture/performance.html': '/performance/introduction',
