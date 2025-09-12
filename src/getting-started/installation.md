@@ -48,6 +48,19 @@ php artisan serve
 
 Your Bagisto store will be available at `http://localhost:8000`
 
+::: tip Web Server Configuration
+If you are using Apache or Nginx, make sure to map your domain's document root to the `public/` directory of your Bagisto project. This ensures your store runs smoothly and routes, assets, and images work as expected.
+:::
+
+::: warning Image Issues?
+If you notice broken images in your store, check your `.env` file and ensure the `APP_URL` value matches exactly with your site's document root URL (e.g., `http://localhost:8000` or your production domain). A mismatch can cause asset loading problems.
+:::
+
+::: warning Mixed Content (HTTPS/HTTP) Error?
+If your homepage or assets fail to load and you see browser warnings about "mixed content," this means some resources are being loaded over HTTP while your site is served over HTTPS. This can break your site in modern browsers. See the **Mixed Content (HTTPS/HTTP) Error** section in [Common Troubleshooting](#🛠%EF%B8%8F-common-troubleshooting) below for solutions.
+:::
+
+
 ## 🖥️ GUI Installation
 
 If you prefer a web-based installer:
@@ -557,3 +570,91 @@ For Homepage Header Title - Go to ‘assets/language/en.json’
 
 * **Android:** Open the android folder in Android Studio and then right click app > new > Image Asset set Image.
 * **iOS:** Replace the icons over the path > ios/Runner/Assets.xcassets/AppIcon.appiconset
+
+## 🛠️ Common Troubleshooting
+
+If you encounter issues after installation, check the following:
+
+- **Web Server Document Root**: Ensure your Apache or Nginx document root is mapped to the `public/` directory of your Bagisto project. Incorrect mapping can cause routing, asset, or image issues.
+
+- **APP_URL for Images**: If images are broken, verify that the `APP_URL` in your `.env` file matches your site's actual URL (including port if needed). A mismatch can cause asset loading problems.
+
+- **Storage Link Issue**: If product images or uploads are not displaying, ensure you have run:
+
+  ```bash
+  php artisan storage:link
+  ```
+  This command creates a symbolic link from `public/storage` to `storage/app/public`. If you still face issues, check your server permissions and that the link exists.
+
+- **Mixed Content (HTTPS/HTTP) Error**: Mixed content errors occur when resources are loaded over HTTP while your site is served over HTTPS, causing browsers to block insecure requests and break the homepage or assets. To resolve this:
+
+  **Solution 1: Basic Checks:**
+  - Ensure `APP_URL` in your `.env` file starts with `https://` if your site uses SSL.
+  - Update any hardcoded URLs in your configuration, database, or theme files to use `https://`.
+  - Clear your application cache:
+    ```bash
+    php artisan optimize:clear
+    ```
+  - If using a CDN or proxy, make sure it is configured to serve assets over HTTPS.
+
+  **Solution 2: Setup Trusted Proxies (Laravel 11+)**
+
+  If your app is behind a load balancer, reverse proxy, or CDN (Cloudflare, AWS ELB, etc.), configure trusted proxies in `bootstrap/app.php`:
+  ```php{9,12-15}
+  <?php
+
+  ...
+
+  return Application::configure(basePath: dirname(__DIR__))
+      //
+      ->withMiddleware(function (Middleware $middleware) {
+          // Trust all proxies
+          $middleware->trustProxies(at: '*');
+          
+          // Or specify proxy IPs
+          $middleware->trustProxies(at: [
+              '192.168.1.1',
+              '10.0.0.0/8',
+          ]);
+      })
+      ->withExceptions(function (Exceptions $exceptions) {
+          //
+      })
+      ->create();
+  ```
+
+  **Solution 3: Force HTTPS Schema in Service Provider**
+
+  To force all URLs to use HTTPS, add this to the `boot()` method of your `AppServiceProvider`:
+
+  ```php{24}
+  <?php
+
+  namespace App\Providers;
+
+  use Illuminate\Support\ServiceProvider;
+  use Illuminate\Support\Facades\URL;
+
+  class AppServiceProvider extends ServiceProvider
+  {
+      /**
+       * Register any application services.
+       */
+      public function register(): void
+      {
+          //
+      }
+
+      /**
+       * Bootstrap any application services.
+       */
+      public function boot(): void
+      {
+          if (config('app.env') === 'production') {
+              URL::forceScheme('https');
+          }
+      }
+  }
+  ```
+
+  This ensures all generated URLs use HTTPS in production.
