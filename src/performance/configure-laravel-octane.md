@@ -30,6 +30,8 @@ php --ri swoole
 
 ## Installation
 
+Laravel Octane installation for Bagisto involves installing the Octane package via Composer and then configuring it to use Swoole as the application server. This process will enhance your Bagisto application's performance significantly.
+
 ### Install Laravel Octane
 
 Navigate to your Bagisto directory and install Octane:
@@ -41,143 +43,38 @@ cd /path/to/your/bagisto
 # Install Laravel Octane
 composer require laravel/octane
 
-# Install Octane with Swoole server
-php artisan octane:install --server=swoole
+# Install Octane with Swoole
+php artisan octane:install
 ```
 
-## Configuration
+::: tip Developer Note
+After running `php artisan octane:install`, the terminal will prompt you to select a server. Choose **Swoole** from the available options:
+- Swoole
+- RoadRunner
+- FrankenPHP
 
-### Environment Configuration
+We're configuring Octane with Swoole throughout this guide, so make sure to select Swoole when prompted to ensure consistency with the configuration examples provided.
+:::
 
-Add Octane settings to your `.env` file:
+## Environment Configuration
+
+After completing the installation, you'll notice that `OCTANE_SERVER=swoole` has been automatically added to the end of your `.env` file. If for some reason it's not there, you can add it manually.
 
 ```properties
-# Laravel Octane Configuration
 OCTANE_SERVER=swoole
-OCTANE_HOST=0.0.0.0
-OCTANE_PORT=8000
-OCTANE_WORKERS=4
-OCTANE_TASK_WORKERS=6
-OCTANE_MAX_REQUESTS=1000
-```
-
-### Basic Octane Configuration
-
-The installation command creates `config/octane.php`. Key settings for Bagisto:
-
-```php
-// config/octane.php
-return [
-    'server' => env('OCTANE_SERVER', 'swoole'),
-    
-    'servers' => [
-        'swoole' => [
-            'host' => env('OCTANE_HOST', '0.0.0.0'),
-            'port' => env('OCTANE_PORT', 8000),
-            'workers' => env('OCTANE_WORKERS', 4),
-            'task_workers' => env('OCTANE_TASK_WORKERS', 6),
-            'max_requests' => env('OCTANE_MAX_REQUESTS', 1000),
-        ],
-    ],
-    
-    // Warm services on worker start
-    'warm' => [
-        ...Octane::defaultServicesToWarm(),
-    ],
-];
 ```
 
 ## Running Octane
 
-### Development Mode
-
-Start Octane with auto-reload for development:
-
-```bash
-php artisan octane:start --watch
-```
-
-Access your Bagisto application at: `http://localhost:8000`
-
-### Production Mode
-
 Start Octane for production without file watching:
 
 ```bash
-php artisan octane:start --workers=8 --task-workers=6
-```
-
-### Server Management
-
-::: code-group
-
-```bash [Start Server]
-# Start with default settings
 php artisan octane:start
-
-# Start with custom workers
-php artisan octane:start --workers=4 --task-workers=6
 ```
-
-```bash [Stop/Restart]
-# Stop the server
-php artisan octane:stop
-
-# Restart the server
-php artisan octane:restart
-
-# Reload workers (without downtime)
-php artisan octane:reload
-```
-
-:::
-
-## Performance Settings
-
-### Worker Configuration
-
-Optimize workers based on your server specs:
-
-| Server Configuration | Workers | Task Workers |
-|---------------------|---------|--------------|
-| **2 CPU cores, 4GB RAM** | 4 | 4 |
-| **4 CPU cores, 8GB RAM** | 8 | 6 |
-| **8 CPU cores, 16GB RAM** | 16 | 12 |
-
-### Environment Optimization
-
-```properties
-# Optimized settings for production
-OCTANE_WORKERS=8
-OCTANE_TASK_WORKERS=6
-OCTANE_MAX_REQUESTS=2000
-OCTANE_HOST=0.0.0.0
-OCTANE_PORT=8000
-```
-
-## Monitoring
-
-### Check Server Status
-
-```bash
-# View server status
-php artisan octane:status
-
-# Monitor memory usage
-ps aux | grep octane
-```
-
-### Performance Monitoring
-
-Expected performance improvements:
-
-| Metric | Before Octane | With Octane |
-|--------|---------------|-------------|
-| **Requests/second** | 50-100 | 500-1000+ |
-| **Response time** | 200-500ms | 50-100ms |
-| **Memory efficiency** | Variable | Stable |
 
 ## Common Issues
+
+While Laravel Octane with Swoole is generally stable, you might encounter some common issues during setup or operation. Here are the most frequent problems and their solutions to help you troubleshoot your Bagisto Octane installation.
 
 ### Troubleshooting
 
@@ -188,6 +85,8 @@ Expected performance improvements:
 | **Slow startup** | Ensure database connections are properly configured |
 
 ### Debug Commands
+
+Use these diagnostic commands to verify your Octane installation, check system compatibility, and monitor running processes. These commands are essential for troubleshooting and ensuring everything is working correctly.
 
 ```bash
 # Test if Swoole is working
@@ -204,7 +103,7 @@ ps aux | grep "artisan octane"
 1. Install: `composer require laravel/octane`
 2. Setup: `php artisan octane:install --server=swoole`
 3. Configure: Update `.env` with Octane settings
-4. Run: `php artisan octane:start --watch`
+4. Run: `php artisan octane:start`
 5. Access: Visit `http://localhost:8000`
 :::
 
