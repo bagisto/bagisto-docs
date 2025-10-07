@@ -16,11 +16,20 @@
 
 ## Prerequisites
 
+Before installing Laravel Octane, ensure your system meets the basic requirements. The specific requirements may vary depending on which application server you choose (Swoole, FrankenPHP, or RoadRunner).
+
 ::: warning Requirements
-- Swoole PHP extension must be installed on your system
-- PHP 8.2 or higher
+- PHP 8.2
 - Existing Bagisto installation
 :::
+
+### Server-Specific Requirements
+
+Choose one of the following server options:
+
+#### For Swoole Server
+
+- Swoole PHP extension must be installed on your system
 
 Verify Swoole is installed:
 
@@ -28,9 +37,34 @@ Verify Swoole is installed:
 php --ri swoole
 ```
 
+#### For FrankenPHP Server  
+
+- No additional PHP extensions required
+- FrankenPHP binary will be automatically downloaded during installation
+- Supports automatic HTTPS, HTTP/2, and HTTP/3 out of the box
+
+Verify FrankenPHP (after installation):
+
+```bash
+./frankenphp version
+```
+
+#### For RoadRunner Server
+
+- No additional PHP extensions required
+- RoadRunner binary will be automatically downloaded during installation
+- Built with Go for high performance and scalability
+- Supports HTTP, gRPC, and background job processing
+
+Verify RoadRunner (after installation):
+
+```bash
+./rr version
+```
+
 ## Installation
 
-Laravel Octane installation for Bagisto involves installing the Octane package via Composer and then configuring it to use Swoole as the application server. This process will enhance your Bagisto application's performance significantly.
+Laravel Octane installation for Bagisto involves installing the Octane package via Composer and then configuring it to use Swoole, FrankenPHP, or RoadRunner as the application server. All three options will enhance your Bagisto application's performance significantly.
 
 ### Install Laravel Octane
 
@@ -43,30 +77,72 @@ cd /path/to/your/bagisto
 # Install Laravel Octane
 composer require laravel/octane
 
-# Install Octane with Swoole
+# Install Octane (will prompt for server selection)
 php artisan octane:install
 ```
 
-::: tip Developer Note
-After running `php artisan octane:install`, the terminal will prompt you to select a server. Choose **Swoole** from the available options:
-- Swoole
-- RoadRunner
-- FrankenPHP
+### Choose Your Server
 
-We're configuring Octane with Swoole throughout this guide, so make sure to select Swoole when prompted to ensure consistency with the configuration examples provided.
+::: tip Server Selection
+After running `php artisan octane:install`, the terminal will prompt you to select a server from these options:
+- **Swoole** - High-performance async PHP server with advanced features like concurrent tasks
+- **FrankenPHP** - Modern PHP server with native HTTP/2, HTTP/3, and automatic HTTPS
+- **RoadRunner** - Go-based application server with excellent performance and plugin ecosystem
+
+All three servers are excellent choices for Bagisto. This guide covers all options.
 :::
+
+### Direct Installation Options
+
+If you prefer to skip the interactive prompt:
+
+```bash
+# Install with Swoole
+php artisan octane:install --server=swoole
+
+# Install with FrankenPHP  
+php artisan octane:install --server=frankenphp
+
+# Install with RoadRunner
+php artisan octane:install --server=roadrunner
+```
+
+### RoadRunner Additional Setup
+
+For RoadRunner, you may also need to install additional packages:
+
+```bash
+# Install RoadRunner CLI and HTTP packages (optional)
+composer require spiral/roadrunner-http spiral/roadrunner-cli
+```
 
 ## Environment Configuration
 
-After completing the installation, you'll notice that `OCTANE_SERVER=swoole` has been automatically added to the end of your `.env` file. If for some reason it's not there, you can add it manually.
+After completing the installation, the appropriate server configuration will be automatically added to your `.env` file based on your selection.
+
+### For Swoole Server
 
 ```properties
 OCTANE_SERVER=swoole
 ```
 
+### For FrankenPHP Server
+
+```properties
+OCTANE_SERVER=frankenphp
+```
+
+### For RoadRunner Server
+
+```properties
+OCTANE_SERVER=roadrunner
+```
+
 ## Running Octane
 
-Start Octane for production without file watching:
+### Basic Usage
+
+Start Octane server (uses configured server from .env):
 
 ```bash
 php artisan octane:start
@@ -74,42 +150,48 @@ php artisan octane:start
 
 ## Common Issues
 
-While Laravel Octane with Swoole is generally stable, you might encounter some common issues during setup or operation. Here are the most frequent problems and their solutions to help you troubleshoot your Bagisto Octane installation.
+While Laravel Octane with Swoole, FrankenPHP, and RoadRunner is generally stable, you might encounter some common issues during setup or operation. Here are the most frequent problems and their solutions to help you troubleshoot your Bagisto Octane installation.
 
-### Troubleshooting
+### General Troubleshooting
 
 | Problem | Solution |
 |---------|----------|
-| **Port already in use** | Change `OCTANE_PORT` or stop conflicting services |
-| **Memory leaks** | Reduce `OCTANE_MAX_REQUESTS` to restart workers more frequently |
+| **Port already in use** | Change the port or stop conflicting services |
+| **Memory leaks** | Reduce the max request by specifying in the octane command |
 | **Slow startup** | Ensure database connections are properly configured |
+| **Worker crashes** | Check PHP error logs and reduce worker count if needed |
+| **Swoole extension not found** | Install via `pecl install swoole` or use package manager |
+| **FrankenPHP binary not found** | Re-run `php artisan octane:install --server=frankenphp` |
+| **RoadRunner binary not found** | Re-run `php artisan octane:install --server=roadrunner` |
 
-### Debug Commands
+::: tip Quick Start Guide
+1. **Install Laravel Octane:**
+   ```bash
+   composer require laravel/octane
+   ```
 
-Use these diagnostic commands to verify your Octane installation, check system compatibility, and monitor running processes. These commands are essential for troubleshooting and ensuring everything is working correctly.
+2. **Choose and setup your server:**
+   ```bash
+   # For Swoole
+   php artisan octane:install --server=swoole
+   
+   # For FrankenPHP
+   php artisan octane:install --server=frankenphp
+   
+   # For RoadRunner
+   php artisan octane:install --server=roadrunner
+   ```
 
-```bash
-# Test if Swoole is working
-php -m | grep swoole
+3. **Configure your `.env` file:**
+   - For Swoole: `OCTANE_SERVER=swoole`
+   - For FrankenPHP: `OCTANE_SERVER=frankenphp`
+   - For RoadRunner: `OCTANE_SERVER=roadrunner`
 
-# Check Octane installation
-php artisan octane:install --server=swoole
+4. **Start the server:**
+   ```bash
+   php artisan octane:start
+   ```
 
-# View worker processes
-ps aux | grep "artisan octane"
-```
-
-::: tip Quick Start
-1. Install: `composer require laravel/octane`
-2. Setup: `php artisan octane:install --server=swoole`
-3. Configure: Update `.env` with Octane settings
-4. Run: `php artisan octane:start`
-5. Access: Visit `http://localhost:8000`
-:::
-
-::: warning Production Notes
-- Use a process manager (like Supervisor) to keep Octane running
-- Configure a reverse proxy (Nginx) for production deployments
-- Monitor memory usage and restart workers periodically
-- Test thoroughly before deploying to production
+5. **Access your application:**
+   - Visit `http://localhost:8000`
 :::
