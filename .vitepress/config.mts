@@ -150,6 +150,7 @@ export default defineConfig({
         items: [
           { text: 'Introduction', link: '/advanced/introduction' },
           { text: 'Understanding Core Class', link: '/advanced/understanding-core-class' },
+          { text: 'Understanding Configuration', link: '/advanced/understanding-configuration' },
           { text: 'Understanding Indexers', link: '/advanced/understanding-indexers' },
           { text: 'Understanding Data Transfer', link: '/advanced/understanding-data-transfer' },
           { text: 'Event Listeners', link: '/advanced/event-listeners' },
