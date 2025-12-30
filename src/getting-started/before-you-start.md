@@ -1,4 +1,4 @@
-# Before You Start
+# Before You Start 
 
 Welcome to the Bagisto development journey! This guide will help you prepare your development environment and understand the foundational knowledge needed to work effectively with Bagisto, a powerful Laravel-based e-commerce platform.
 
