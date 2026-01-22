@@ -255,19 +255,19 @@ The quickest way to get Bagisto running with Docker:
 #### Step 1: Pull Bagisto Image
 
 ```bash
-docker pull webkul/bagisto:2.3.6
+docker pull webkul/bagisto:2.3.11
 ```
 
 #### Step 2: Run Container
 
 ```bash
-docker run -it -d -p 80:80 webkul/bagisto:2.3.6
+docker run -it -d -p 80:80 webkul/bagisto:2.3.11
 ```
 
 ::: tip Port Configuration
 If port 80 is already in use, you can use a different port:
 ```bash
-docker run -it -d -p 8082:80 webkul/bagisto:2.3.6
+docker run -it -d -p 8082:80 webkul/bagisto:2.3.11
 ```
 Then access at `http://localhost:8082`
 :::
@@ -700,7 +700,7 @@ Get the latest Bagisto release:
 # Clone the latest release
 git clone https://github.com/bagisto/bagisto.git bagisto-new
 cd bagisto-new
-git checkout v2.3.6  # Replace with latest version
+git checkout v2.3.11  # Replace with latest version
 ```
 :::
 
@@ -14973,7 +14973,7 @@ To get the version number of your Bagisto application, you can use the `core()->
 
 ```php
 $version = core()->version();
-// Returns: "v2.3.6"
+// Returns: "v2.3.11"
 ```
 
 ### Channel Management
