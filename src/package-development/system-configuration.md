@@ -42,14 +42,16 @@ return [
         'key'  => 'rma',
         'name' => 'RMA',  // Use direct text for now
         'info' => 'Return Merchandise Authorization settings',  // Use direct text for now
-        'sort' => 1
-    ], [
+        'sort' => 1,
+    
+        'setting'=> [
         'key'  => 'rma.settings',
         'name' => 'General Settings',  // Use direct text for now
         'info' => 'Configure basic RMA functionality',  // Use direct text for now
         'icon' => 'settings/settings.svg',
         'sort' => 1,
-    ], [
+    
+        'general' => [
         'key'    => 'rma.settings.general',
         'name'   => 'RMA Configuration',  // Use direct text for now
         'info'   => 'Basic RMA settings and options',  // Use direct text for now
@@ -69,6 +71,8 @@ return [
                 'type'       => 'number',
                 'validation' => 'numeric|min:1'
             ]
+          ]
+         ]     
         ]
     ]
 ];
