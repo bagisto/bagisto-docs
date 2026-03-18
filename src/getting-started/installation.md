@@ -9,7 +9,7 @@ The fastest way to get Bagisto up and running:
 ### Prerequisites
 
 Before starting, ensure you have:
-- PHP 8.2 or higher
+- PHP 8.3 or higher
 - Composer 2.5 or higher
 - MySQL 8.0.32 or higher
 - Web server (Apache/Nginx)
@@ -158,19 +158,19 @@ The quickest way to get Bagisto running with Docker:
 #### Step 1: Pull Bagisto Image
 
 ```bash
-docker pull webkul/bagisto:2.3.11
+docker pull webkul/bagisto:latest
 ```
 
 #### Step 2: Run Container
 
 ```bash
-docker run -it -d -p 80:80 webkul/bagisto:2.3.11
+docker run -it -d -p 80:80 webkul/bagisto:latest
 ```
 
 ::: tip Port Configuration
 If port 80 is already in use, you can use a different port:
 ```bash
-docker run -it -d -p 8082:80 webkul/bagisto:2.3.11
+docker run -it -d -p 8082:80 webkul/bagisto:latest
 ```
 Then access at `http://localhost:8082`
 :::

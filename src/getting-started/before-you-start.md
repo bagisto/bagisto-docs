@@ -18,19 +18,19 @@ To work efficiently with Bagisto (especially the latest versions), having a basi
 
 ### ⚡ Key Laravel Knowledge for Bagisto
 
-- [Defining routes](https://laravel.com/docs/11.x/routing) and [building controllers](https://laravel.com/docs/11.x/controllers)
-- Understanding the [Service Container](https://laravel.com/docs/11.x/container) and [Dependency Injection](https://laravel.com/docs/11.x/providers)
-- [Middleware](https://laravel.com/docs/11.x/middleware) and the request-handling flow
-- [Events](https://laravel.com/docs/11.x/events), [listeners](https://laravel.com/docs/11.x/events#defining-listeners), and [model observers](https://laravel.com/docs/11.x/eloquent#observers)
-- Working with [Eloquent ORM](https://laravel.com/docs/11.x/eloquent) and [database migrations](https://laravel.com/docs/11.x/migrations)
-- [Blade templating essentials](https://laravel.com/docs/11.x/blade)
+- [Defining routes](https://laravel.com/docs/12.x/routing) and [building controllers](https://laravel.com/docs/12.x/controllers)
+- Understanding the [Service Container](https://laravel.com/docs/12.x/container) and [Dependency Injection](https://laravel.com/docs/12.x/providers)
+- [Middleware](https://laravel.com/docs/12.x/middleware) and the request-handling flow
+- [Events](https://laravel.com/docs/12.x/events), [listeners](https://laravel.com/docs/12.x/events#defining-listeners), and [model observers](https://laravel.com/docs/12.x/eloquent#observers)
+- Working with [Eloquent ORM](https://laravel.com/docs/12.x/eloquent) and [database migrations](https://laravel.com/docs/12.x/migrations)
+- [Blade templating essentials](https://laravel.com/docs/12.x/blade)
 
 ### 🎨 Helpful Extras for Advanced Customization
 
 - [Tailwind CSS](https://tailwindcss.com/docs/installation) for modern, responsive styling
 - [Vue.js basics](https://vuejs.org/guide/introduction.html) for interactive features
-- Asset bundling with [Laravel Mix](https://laravel-mix.com/docs/6.0/installation) or [Vite](https://laravel.com/docs/11.x/vite)
-- [Creating custom Laravel packages](https://laravel.com/docs/11.x/packages)
+- Asset bundling with [Vite](https://laravel.com/docs/12.x/vite)
+- [Creating custom Laravel packages](https://laravel.com/docs/12.x/packages)
 
 ### 🔗 Learn and Connect
 
@@ -50,7 +50,7 @@ Before diving into Bagisto development, ensure your system meets these requireme
 - **Server**: Apache 2 or NGINX
 - **RAM**: 4GB or higher
 - **Node**: 23.10.0 LTS or higher
-- **PHP**: 8.2 or higher
+- **PHP**: 8.3 or higher
 - **Composer**: 2.5 or higher
 
 ### 🧩 PHP Extensions

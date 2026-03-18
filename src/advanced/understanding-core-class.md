@@ -69,7 +69,7 @@ To get the version number of your Bagisto application, you can use the `core()->
 
 ```php
 $version = core()->version();
-// Returns: "v2.3.11"
+// Returns: "2.4.0-beta6"
 ```
 
 ### Channel Management

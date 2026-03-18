@@ -12,7 +12,7 @@ Before upgrading, ensure you have:
 
 - **Database Backup** - Complete backup of your current database
 - **File Backup** - Backup of customizations and uploaded files
-- **Server Requirements** - Check if your server meets the new version requirements
+- **Server Requirements** - PHP 8.3 or higher, MySQL 8.0.32+, Composer 2.5+
 - **Downtime Planning** - Schedule maintenance window for the upgrade
 
 ## 🚀 Upgrade Process
@@ -30,7 +30,7 @@ Get the latest Bagisto release:
 # Clone the latest release
 git clone https://github.com/bagisto/bagisto.git bagisto-new
 cd bagisto-new
-git checkout v2.3.11  # Replace with latest version
+git checkout v2.4.0  # Replace with latest version tag
 ```
 :::
 
@@ -62,7 +62,7 @@ nano .env
 ```
 
 ::: tip Environment Updates
-Check the [CHANGELOG.md](https://github.com/bagisto/bagisto/blob/2.3/CHANGELOG.md) for any new environment variables that need to be added.
+Check the [CHANGELOG.md](https://github.com/bagisto/bagisto/blob/2.4/CHANGELOG.md) for any new environment variables that need to be added.
 :::
 
 ### Step 4: Database Migration
@@ -118,14 +118,20 @@ php artisan optimize:clear
 
 ## 📚 Version-Specific Guides
 
+### Upgrading from v2.3 to v2.4
+
+For detailed breaking changes and migration steps, refer to:
+- [Official UPGRADE.md](https://github.com/bagisto/bagisto/blob/2.4/UPGRADE.md)
+- [CHANGELOG.md](https://github.com/bagisto/bagisto/blob/2.4/CHANGELOG.md)
+
 ### Upgrading from v2.2 to v2.3
 
 For detailed breaking changes and migration steps, refer to:
-- [Official UPGRADE.md](https://github.com/bagisto/bagisto/blob/2.3/UPGRADE.md)
-- [CHANGELOG.md](https://github.com/bagisto/bagisto/blob/2.3/CHANGELOG.md)
+- [Official UPGRADE.md (v2.3)](https://github.com/bagisto/bagisto/blob/2.3/UPGRADE.md)
+- [CHANGELOG.md (v2.3)](https://github.com/bagisto/bagisto/blob/2.3/CHANGELOG.md)
 
 ### Upgrading from v2.1 to v2.2
 
 For detailed breaking changes and migration steps, refer to:
-- [Official UPGRADE.md](https://github.com/bagisto/bagisto/blob/2.2/UPGRADE.md)
-- [CHANGELOG.md](https://github.com/bagisto/bagisto/blob/2.2/CHANGELOG.md)
+- [Official UPGRADE.md (v2.2)](https://github.com/bagisto/bagisto/blob/2.2/UPGRADE.md)
+- [CHANGELOG.md (v2.2)](https://github.com/bagisto/bagisto/blob/2.2/CHANGELOG.md)

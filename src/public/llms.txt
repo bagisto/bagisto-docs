@@ -16,6 +16,7 @@ A complete reference for developers building and extending Bagisto stores
 - [Best Security Practices](/getting-started/best-security-practice)
 - [Deployment](/getting-started/deployment)
 - [LLMs.txt](/getting-started/llms)
+- [Skills](/getting-started/skills)
 
 ### Architecture Concepts
 
@@ -70,6 +71,7 @@ A complete reference for developers building and extending Bagisto stores
 - [Vite-Powered Theme Assets](/theme-development/vite-powered-theme-assets)
 - [Understanding Layouts](/theme-development/understanding-layouts)
 - [Blade Components](/theme-development/blade-components)
+- [Blade Tracer](/theme-development/blade-tracer)
 - [Email Template](/theme-development/email-template)
 - [Validation](/theme-development/validation)
 
@@ -90,6 +92,12 @@ A complete reference for developers building and extending Bagisto stores
 - [Understanding Data Transfer](/advanced/understanding-data-transfer)
 - [Event Listeners](/advanced/event-listeners)
 - [View Render Events](/advanced/view-render-events)
+- [Artisan Commands](/advanced/artisan-commands)
+- [Queue, Jobs & Scheduling](/advanced/queue-jobs-scheduling)
+- [Cache Strategy](/advanced/cache-strategy)
+- [Testing Workflow](/advanced/testing)
+- [Debugging Tips](/advanced/debugging)
+- [Common Pitfalls](/advanced/common-pitfalls)
 
 ### Bagisto APIs
 

@@ -155,7 +155,13 @@ export default defineConfig({
           { text: 'Understanding Indexers', link: '/advanced/understanding-indexers' },
           { text: 'Understanding Data Transfer', link: '/advanced/understanding-data-transfer' },
           { text: 'Event Listeners', link: '/advanced/event-listeners' },
-          { text: 'View Render Events', link: '/advanced/view-render-events' }
+          { text: 'View Render Events', link: '/advanced/view-render-events' },
+          { text: 'Artisan Commands', link: '/advanced/artisan-commands' },
+          { text: 'Queue, Jobs & Scheduling', link: '/advanced/queue-jobs-scheduling' },
+          { text: 'Cache Strategy', link: '/advanced/cache-strategy' },
+          { text: 'Testing Workflow', link: '/advanced/testing' },
+          { text: 'Debugging Tips', link: '/advanced/debugging' },
+          { text: 'Common Pitfalls', link: '/advanced/common-pitfalls' }
         ]
       },
       {
