@@ -48,19 +48,19 @@ To work efficiently with Bagisto (especially the latest versions), having a basi
 
 ### ⚡ Key Laravel Knowledge for Bagisto
 
-- [Defining routes](https://laravel.com/docs/11.x/routing) and [building controllers](https://laravel.com/docs/11.x/controllers)
-- Understanding the [Service Container](https://laravel.com/docs/11.x/container) and [Dependency Injection](https://laravel.com/docs/11.x/providers)
-- [Middleware](https://laravel.com/docs/11.x/middleware) and the request-handling flow
-- [Events](https://laravel.com/docs/11.x/events), [listeners](https://laravel.com/docs/11.x/events#defining-listeners), and [model observers](https://laravel.com/docs/11.x/eloquent#observers)
-- Working with [Eloquent ORM](https://laravel.com/docs/11.x/eloquent) and [database migrations](https://laravel.com/docs/11.x/migrations)
-- [Blade templating essentials](https://laravel.com/docs/11.x/blade)
+- [Defining routes](https://laravel.com/docs/12.x/routing) and [building controllers](https://laravel.com/docs/12.x/controllers)
+- Understanding the [Service Container](https://laravel.com/docs/12.x/container) and [Dependency Injection](https://laravel.com/docs/12.x/providers)
+- [Middleware](https://laravel.com/docs/12.x/middleware) and the request-handling flow
+- [Events](https://laravel.com/docs/12.x/events), [listeners](https://laravel.com/docs/12.x/events#defining-listeners), and [model observers](https://laravel.com/docs/12.x/eloquent#observers)
+- Working with [Eloquent ORM](https://laravel.com/docs/12.x/eloquent) and [database migrations](https://laravel.com/docs/12.x/migrations)
+- [Blade templating essentials](https://laravel.com/docs/12.x/blade)
 
 ### 🎨 Helpful Extras for Advanced Customization
 
 - [Tailwind CSS](https://tailwindcss.com/docs/installation) for modern, responsive styling
 - [Vue.js basics](https://vuejs.org/guide/introduction.html) for interactive features
-- Asset bundling with [Laravel Mix](https://laravel-mix.com/docs/6.0/installation) or [Vite](https://laravel.com/docs/11.x/vite)
-- [Creating custom Laravel packages](https://laravel.com/docs/11.x/packages)
+- Asset bundling with [Vite](https://laravel.com/docs/12.x/vite)
+- [Creating custom Laravel packages](https://laravel.com/docs/12.x/packages)
 
 ### 🔗 Learn and Connect
 
@@ -119,7 +119,7 @@ The fastest way to get Bagisto up and running:
 ### Prerequisites
 
 Before starting, ensure you have:
-- PHP 8.2 or higher
+- PHP 8.3 or higher
 - Composer 2.5 or higher
 - MySQL 8.0.32 or higher
 - Web server (Apache/Nginx)
@@ -700,7 +700,7 @@ Get the latest Bagisto release:
 # Clone the latest release
 git clone https://github.com/bagisto/bagisto.git bagisto-new
 cd bagisto-new
-git checkout v2.3.11  # Replace with latest version
+git checkout v2.4.0  # Replace with latest version
 ```
 :::
 
@@ -787,6 +787,12 @@ php artisan optimize:clear
 ```
 
 ## 📚 Version-Specific Guides
+
+### Upgrading from v2.3 to v2.4
+
+For detailed breaking changes and migration steps, refer to:
+- [Official UPGRADE.md](https://github.com/bagisto/bagisto/blob/2.4/UPGRADE.md)
+- [CHANGELOG.md](https://github.com/bagisto/bagisto/blob/2.4/CHANGELOG.md)
 
 ### Upgrading from v2.2 to v2.3
 
@@ -1824,7 +1830,7 @@ The dynamic user interfaces in Bagisto are powered by [Vue.js](https://vuejs.org
 
 ### Build Tool Integration
 
-In conjunction with Vue.js, Bagisto uses [Vite](https://vitejs.dev/) as the build tool. Vite offers a fast and efficient development environment, replacing the older [Laravel Mix](https://laravel.com/docs/11.x/mix) tool. The `vite.config.js` file defines the build directory path, and Vite compiles all CSS and JavaScript assets into the public directory.
+In conjunction with Vue.js, Bagisto uses [Vite](https://vitejs.dev/) as the build tool. Vite offers a fast and efficient development environment. The `vite.config.js` file defines the build directory path, and Vite compiles all CSS and JavaScript assets into the public directory.
 
 ## Blade
 
@@ -2114,7 +2120,7 @@ For our RMA (Return Merchandise Authorization) package, we'll create a migration
 This migration demonstrates how to create a realistic e-commerce table structure with proper relationships, constraints, and indexes for optimal performance.
 :::
 
-For detailed information about Laravel migrations, visit the [Laravel Documentation](https://laravel.com/docs/11.x/migrations).
+For detailed information about Laravel migrations, visit the [Laravel Documentation](https://laravel.com/docs/12.x/migrations).
 
 ## RMA Database Schema Overview
 
@@ -2392,7 +2398,7 @@ This layered approach allows Bagisto to be highly modular and extensible. Develo
 
 When creating models in Bagisto, you have two approaches: using the package generator for convenience, or manually creating the components for more control. Models in Bagisto follow Laravel's Eloquent ORM but with additional architectural layers.
 
-Learn more about Laravel Eloquent: https://laravel.com/docs/11.x/eloquent
+Learn more about Laravel Eloquent: https://laravel.com/docs/12.x/eloquent
 
 Below, we'll create a `ReturnRequest` model for an RMA package to demonstrate both approaches.
 
@@ -3259,7 +3265,7 @@ For our RMA package, we'll create routes that allow administrators to manage ret
 This section demonstrates how to create organized, secure routes for both admin and shop sections of your Bagisto package, following best practices for middleware configuration and URL structure.
 :::
 
-For detailed information on Laravel routing concepts, visit the [Laravel Documentation on Routing](https://laravel.com/docs/11.x/routing).
+For detailed information on Laravel routing concepts, visit the [Laravel Documentation on Routing](https://laravel.com/docs/12.x/routing).
 
 ## Bagisto Route Organization
 
@@ -3447,7 +3453,7 @@ For our RMA package, we'll create controllers that handle the admin interface fo
 This section demonstrates how to create organized, maintainable controllers that use dependency injection with repositories and follow Bagisto's architectural patterns for both admin and shop functionality.
 :::
 
-For detailed information on Laravel controllers, visit the [Laravel Documentation on Controllers](https://laravel.com/docs/11.x/controllers).
+For detailed information on Laravel controllers, visit the [Laravel Documentation on Controllers](https://laravel.com/docs/12.x/controllers).
 
 ## Bagisto Controller Architecture
 
@@ -3717,7 +3723,7 @@ For our RMA package, we'll create views that display return request listings and
 This section demonstrates how to create organized, reusable Blade templates that integrate with Bagisto's admin interface and follow established patterns for data presentation, starting with listing pages and progressing to form creation.
 :::
 
-For detailed information on Laravel views and Blade templating, visit the [Laravel Documentation on Views](https://laravel.com/docs/11.x/views).
+For detailed information on Laravel views and Blade templating, visit the [Laravel Documentation on Views](https://laravel.com/docs/12.x/views).
 
 ## Bagisto View Architecture
 
@@ -3963,7 +3969,7 @@ For our RMA package, we'll implement comprehensive localization that covers admi
 This section demonstrates how to create organized, maintainable translation files for your Bagisto package, register them properly with the service provider, and use them effectively in views, controllers, and other components.
 :::
 
-For detailed information on Laravel localization features, visit the [Laravel Documentation on Localization](https://laravel.com/docs/11.x/localization).
+For detailed information on Laravel localization features, visit the [Laravel Documentation on Localization](https://laravel.com/docs/12.x/localization).
 
 ## Bagisto Localization Architecture
 
@@ -6808,7 +6814,7 @@ You'll have a complete working shipping method after step 1, and steps 2-4 help 
 Before you begin, ensure you have:
 
 - **Bagisto Installation**: A working Bagisto development environment
-- **PHP Knowledge**: Familiarity with PHP 8.2+ and Laravel concepts
+- **PHP Knowledge**: Familiarity with PHP 8.3+ and Laravel concepts
 - **Package Development**: Basic understanding of [Package Development](../package-development/getting-started.md)
 - **Development Tools**: Composer, Git, and a code editor
 
@@ -8229,7 +8235,7 @@ You'll have a complete working payment method after step 1, and steps 2-3 help y
 Before you begin, ensure you have:
 
 - **Bagisto Installation**: A working Bagisto development environment
-- **PHP Knowledge**: Familiarity with PHP 8.2+ and Laravel concepts
+- **PHP Knowledge**: Familiarity with PHP 8.3+ and Laravel concepts
 - **Package Development**: Basic understanding of Laravel service providers ([Package Development Guide](../package-development/getting-started.md))
 - **Development Tools**: Composer, Git, and a code editor
 
@@ -9191,7 +9197,7 @@ You'll have a complete working product type after step 1, and steps 2-4 help you
 Before you begin, ensure you have:
 
 - **Bagisto Installation**: A working Bagisto development environment
-- **PHP Knowledge**: Familiarity with PHP 8.2+ and Laravel concepts
+- **PHP Knowledge**: Familiarity with PHP 8.3+ and Laravel concepts
 - **Package Development**: Basic understanding of Laravel service providers ([Package Development Guide](../package-development/getting-started.md))
 - **Development Tools**: Composer, Git, and a code editor
 
@@ -11246,7 +11252,7 @@ Assets in web development refer to files such as stylesheets, scripts, and image
 - **Fonts**: Custom typography and icon fonts
 
 ::: info Laravel Vite Integration
-Bagisto uses Laravel's Vite integration for modern asset compilation. For detailed information about Laravel's frontend tooling, visit the [Laravel documentation](https://laravel.com/docs/11.x/frontend#bundling-assets).
+Bagisto uses Laravel's Vite integration for modern asset compilation. For detailed information about Laravel's frontend tooling, visit the [Laravel documentation](https://laravel.com/docs/12.x/frontend#bundling-assets).
 :::
 
 ## Setting Up Your Theme Package Assets
@@ -11970,7 +11976,7 @@ If you're building a custom theme package (covered in our [Custom Theme Package]
 :::
 
 ::: info Laravel Blade Foundation
-Bagisto layouts are built on Laravel's Blade templating system. For comprehensive details about Blade components and layouts, visit the [Laravel documentation](https://laravel.com/docs/11.x/blade).
+Bagisto layouts are built on Laravel's Blade templating system. For comprehensive details about Blade components and layouts, visit the [Laravel documentation](https://laravel.com/docs/12.x/blade).
 :::
 
 ## Admin Layout
@@ -12372,7 +12378,7 @@ These components work seamlessly with the custom themes covered in our previous 
 :::
 
 ::: info Laravel Blade Foundation
-For comprehensive details about Blade components and templating, visit the [Laravel Blade documentation](https://laravel.com/docs/11.x/blade#introduction).
+For comprehensive details about Blade components and templating, visit the [Laravel Blade documentation](https://laravel.com/docs/12.x/blade#introduction).
 :::
 
 ## Shop Components
@@ -13671,7 +13677,7 @@ Before configuring Elasticsearch with Bagisto, ensure you have [Elasticsearch in
 
 ::: warning Prerequisites
 - Elasticsearch 7.0+ (recommended: 8.x)
-- PHP 8.2+ with cURL extension
+- PHP 8.3+ with cURL extension
 - Sufficient memory allocation (minimum 2GB for Elasticsearch)
 :::
 
@@ -14393,7 +14399,7 @@ VarnishCache::forget($urls);
 
 # Configure Laravel Octane
 
-[Laravel Octane](https://laravel.com/docs/11.x/octane) is a performance-boosting package designed to enhance the speed, efficiency, and scalability of Laravel applications, including Bagisto.
+[Laravel Octane](https://laravel.com/docs/12.x/octane) is a performance-boosting package designed to enhance the speed, efficiency, and scalability of Laravel applications, including Bagisto.
 
 ::: info What You'll Learn
 - Install Laravel Octane in your Bagisto application
@@ -14411,7 +14417,7 @@ VarnishCache::forget($urls);
 
 ::: warning Requirements
 - Swoole PHP extension must be installed on your system
-- PHP 8.2 or higher
+- PHP 8.3 or higher
 - Existing Bagisto installation
 :::
 
@@ -14973,7 +14979,7 @@ To get the version number of your Bagisto application, you can use the `core()->
 
 ```php
 $version = core()->version();
-// Returns: "v2.3.11"
+// Returns: "v2.4.0"
 ```
 
 ### Channel Management
@@ -17251,3 +17257,1135 @@ Ready to build with GraphQL? Here are your next steps:
 ::: tip Need Traditional REST?
 If you prefer traditional REST endpoints, check out our [REST API](./rest-api) documentation.
 :::
+# Artisan Commands Reference
+
+Bagisto provides custom Artisan commands for installation, indexing, maintenance, and data management. These are in addition to Laravel's built-in commands.
+
+## Installation
+
+### `bagisto:install`
+
+Interactive installation wizard that handles environment configuration, database setup, admin user creation, and initial data seeding.
+
+```bash
+php artisan bagisto:install
+```
+
+**Options:**
+
+| Flag | Description |
+|---|---|
+| `--skip-env-check` | Skip environment file validation |
+| `--skip-admin-creation` | Skip the admin user creation step |
+
+**Source:** `Webkul\Installer\Console\Commands\Installer`
+
+## System Information
+
+### `bagisto:version`
+
+Displays the current installed version of Bagisto.
+
+```bash
+php artisan bagisto:version
+```
+
+**Output example:**
+
+```
+2.4.0-beta6
+```
+
+**Source:** `Webkul\Core\Console\Commands\BagistoVersion`
+
+## Product Indexing
+
+### `indexer:index`
+
+Reindexes product data for price, inventory, flat catalog, and Elasticsearch indices.
+
+```bash
+# Reindex everything
+php artisan indexer:index
+
+# Reindex only specific types
+php artisan indexer:index --type=price --type=inventory
+
+# Full reindex mode (drops and rebuilds)
+php artisan indexer:index --mode=full
+```
+
+**Options:**
+
+| Flag | Values | Description |
+|---|---|---|
+| `--type` | `price`, `inventory`, `flat`, `elastic` | Select which indexer(s) to run (repeatable) |
+| `--mode` | `full`, `selective` | Full reindex vs. incremental |
+
+**Source:** `Webkul\Product\Console\Commands\Indexer`
+
+::: tip When to Reindex
+Run this after bulk product imports, price changes, or if product listings appear out of sync. For production, consider scheduling periodic reindex via cron.
+:::
+
+### `product:price-rule:index`
+
+Reindexes catalog rule pricing (discount rules applied to products at the catalog level).
+
+```bash
+php artisan product:price-rule:index
+```
+
+**Source:** `Webkul\CatalogRule\Console\Commands\PriceRuleIndex`
+
+## Currency & Exchange Rates
+
+### `exchange-rate:update`
+
+Fetches and updates currency exchange rates from configured external providers.
+
+```bash
+php artisan exchange-rate:update
+```
+
+The frequency can be configured via admin panel under **Settings > Exchange Rates**. Supported update intervals: daily, weekly, monthly.
+
+**Source:** `Webkul\Core\Console\Commands\ExchangeRateUpdate`
+
+## Marketing
+
+### `campaign:process`
+
+Processes pending marketing campaigns and sends emails to subscribed customers.
+
+```bash
+php artisan campaign:process
+```
+
+**Source:** `Webkul\Marketing\Console\Commands\EmailsCommand`
+
+::: tip Scheduling
+This command should be run periodically via cron to process queued campaigns. Add it to your server's crontab or use Laravel's task scheduler.
+:::
+
+## Invoicing
+
+### `invoice:cron`
+
+Processes overdue invoice reminders. Checks for unpaid invoices past their due date and sends reminder notifications within the configured reminders limit.
+
+```bash
+php artisan invoice:cron
+```
+
+**Source:** `Webkul\Core\Console\Commands\InvoiceOverdueCron`
+
+## Maintenance Mode
+
+Bagisto overrides Laravel's default `up` and `down` commands to also manage channel-level maintenance state.
+
+### `down`
+
+Puts the application in maintenance mode and marks all channels as under maintenance.
+
+```bash
+php artisan down
+```
+
+### `up`
+
+Brings the application out of maintenance mode and deactivates maintenance on all channels.
+
+```bash
+php artisan up
+```
+
+**Source:** `Webkul\Core\Console\Commands\DownCommand`, `Webkul\Core\Console\Commands\UpCommand`
+
+::: info Channel-Aware Maintenance
+Unlike standard Laravel, Bagisto's maintenance mode updates the `is_maintenance_on` flag on all channel records in the database, allowing the storefront to show maintenance pages per-channel.
+:::
+
+## Translation Validation
+
+### `bagisto:translations:check`
+
+Validates translation files across all packages for consistency against the English (`en`) canonical locale.
+
+```bash
+# Check all packages and locales
+php artisan bagisto:translations:check
+
+# Check a specific locale
+php artisan bagisto:translations:check --locale=fr
+
+# Check a specific package
+php artisan bagisto:translations:check --package=Admin
+
+# Show detailed key-by-key differences
+php artisan bagisto:translations:check --details
+```
+
+**Options:**
+
+| Flag | Description |
+|---|---|
+| `--locale=` | Check only a specific locale code |
+| `--package=` | Check only a specific package name |
+| `--details` | Show detailed key-level differences |
+
+**Source:** `Webkul\Core\Console\Commands\TranslationsChecker`
+
+## Common Laravel Commands Used with Bagisto
+
+These are standard Laravel commands frequently needed during Bagisto development:
+
+```bash
+# Clear all caches
+php artisan optimize:clear
+
+# Create storage symlink (required for product images)
+php artisan storage:link
+
+# Run migrations
+php artisan migrate
+
+# Seed the database
+php artisan db:seed
+
+# Fresh install (drops all tables, migrates, seeds)
+php artisan migrate:fresh --seed
+
+# Generate application key
+php artisan key:generate
+
+# Start development server
+php artisan serve
+```
+
+# Queue, Jobs & Scheduling
+
+Bagisto uses Laravel's queue system for background processing of indexing, data import/export, and search operations. By default, the queue runs synchronously (`sync` driver), but production environments should use an async driver like Redis or database.
+
+## Queue Configuration
+
+The queue driver is set in `.env`:
+
+```properties
+QUEUE_CONNECTION=sync
+```
+
+For production, switch to an async driver:
+
+```properties
+# Using Redis (recommended)
+QUEUE_CONNECTION=redis
+REDIS_HOST=127.0.0.1
+REDIS_PORT=6379
+
+# Or using the database driver
+QUEUE_CONNECTION=database
+```
+
+::: tip When to Use Async Queues
+If you have more than a few hundred products, or use Elasticsearch, switching to an async queue driver significantly improves admin panel responsiveness during product saves, imports, and catalog rule updates.
+:::
+
+## Built-in Jobs
+
+### Product Indexing Jobs
+
+These jobs update product indices when products are created, updated, or deleted:
+
+| Job Class | Package | Purpose |
+|---|---|---|
+| `UpdateCreateInventoryIndex` | `Webkul\Product` | Reindexes inventory levels for given product IDs |
+| `UpdateCreatePriceIndex` | `Webkul\Product` | Reindexes price data for given product IDs |
+| `ElasticSearch\UpdateCreateIndex` | `Webkul\Product` | Updates Elasticsearch indices for products (only runs when Elasticsearch is the configured search engine) |
+| `ElasticSearch\DeleteIndex` | `Webkul\Product` | Removes products from Elasticsearch across all channel/locale combinations |
+
+### Catalog Rule Jobs
+
+These jobs recalculate product pricing when catalog rules change:
+
+| Job Class | Package | Purpose |
+|---|---|---|
+| `UpdateCreateCatalogRuleIndex` | `Webkul\CatalogRule` | Reindexes a catalog rule and reprices associated products in batches of 100 |
+| `DeleteCatalogRuleIndex` | `Webkul\CatalogRule` | Reprices products after a catalog rule is deleted |
+| `UpdateCreateProductIndex` | `Webkul\CatalogRule` | Reindexes a single product against all catalog rules |
+
+### Data Transfer Jobs
+
+The data import system uses Laravel's job batching for large imports:
+
+| Job Class | Package | Purpose |
+|---|---|---|
+| `Import\ImportBatch` | `Webkul\DataTransfer` | Processes a batch of import records |
+| `Import\LinkBatch` | `Webkul\DataTransfer` | Links/associates imported records |
+| `Import\IndexBatch` | `Webkul\DataTransfer` | Indexes a batch of imported records |
+| `Import\Linking` | `Webkul\DataTransfer` | Full linking pass after import |
+| `Import\Indexing` | `Webkul\DataTransfer` | Full indexing pass after import |
+| `Import\Completed` | `Webkul\DataTransfer` | Post-import completion tasks |
+
+### Other Jobs
+
+| Job Class | Package | Purpose |
+|---|---|---|
+| `UpdateCreateSearchTerm` | `Webkul\Marketing` | Creates/updates search term records with usage counts |
+| `ProcessSitemap` | `Webkul\Sitemap` | Generates XML sitemaps for products, categories, and CMS pages |
+
+## Running the Queue Worker
+
+For async queue drivers, run a worker process:
+
+```bash
+# Start a queue worker
+php artisan queue:work
+
+# Process jobs from a specific queue
+php artisan queue:work --queue=default
+
+# Limit memory and timeout
+php artisan queue:work --memory=256 --timeout=120
+
+# Run once and exit (useful for cron-based processing)
+php artisan queue:work --once
+```
+
+::: warning Production Workers
+In production, use a process manager like Supervisor to keep queue workers running. See the [Laravel Queue documentation](https://laravel.com/docs/12.x/queues#supervisor-configuration) for Supervisor configuration.
+:::
+
+## Scheduled Tasks
+
+Bagisto's scheduled commands should be triggered via your server's crontab. Add the Laravel scheduler entry:
+
+```bash
+* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
+```
+
+### Commands Intended for Scheduling
+
+| Command | Suggested Frequency | Purpose |
+|---|---|---|
+| `invoice:cron` | Daily (e.g., 3:00 AM) | Send overdue invoice reminders |
+| `exchange-rate:update` | Daily / Weekly / Monthly | Update currency exchange rates |
+| `campaign:process` | Every few minutes | Process and send marketing campaign emails |
+| `product:price-rule:index` | Daily or on-demand | Reindex catalog rule pricing |
+| `indexer:index` | Daily or on-demand | Full product reindex (price, inventory, flat, elastic) |
+
+### Example Crontab Entries
+
+```bash
+# Laravel scheduler (handles all scheduled commands)
+* * * * * cd /var/www/html/bagisto && php artisan schedule:run >> /dev/null 2>&1
+
+# Or run specific commands directly:
+0 3 * * * cd /var/www/html/bagisto && php artisan invoice:cron >> /dev/null 2>&1
+0 4 * * * cd /var/www/html/bagisto && php artisan exchange-rate:update >> /dev/null 2>&1
+*/5 * * * * cd /var/www/html/bagisto && php artisan campaign:process >> /dev/null 2>&1
+0 2 * * * cd /var/www/html/bagisto && php artisan indexer:index >> /dev/null 2>&1
+```
+
+## Dispatching Jobs in Your Package
+
+To dispatch a job from your custom package, follow the standard Laravel pattern:
+
+```php
+use Webkul\Product\Jobs\UpdateCreatePriceIndex;
+
+// Dispatch to the queue
+UpdateCreatePriceIndex::dispatch($productIds);
+
+// Dispatch synchronously (bypasses queue)
+UpdateCreatePriceIndex::dispatchSync($productIds);
+```
+
+When creating custom jobs, place them in your package's `Jobs/` directory:
+
+```
+packages/Webkul/YourPackage/src/Jobs/
+└── YourCustomJob.php
+```
+
+```php
+<?php
+
+namespace Webkul\YourPackage\Jobs;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+
+class YourCustomJob implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    public function __construct(
+        protected array $data
+    ) {}
+
+    public function handle(): void
+    {
+        // Your background processing logic
+    }
+}
+```
+
+# Cache Strategy
+
+Bagisto implements a multi-layered caching strategy to optimize performance across the storefront, admin panel, and data access layers. Understanding these layers helps you build performant custom packages and debug cache-related issues.
+
+## Cache Layers Overview
+
+| Layer | Technology | Scope | Configuration |
+|---|---|---|---|
+| **Application Cache** | File / Redis / Memcached | Key-value storage for config, routes | `CACHE_STORE` in `.env` |
+| **Repository Cache** | Prettus L5 Repository | Automatic model query caching | `config/repository.php` |
+| **Full Page Cache (FPC)** | Spatie ResponseCache | Caches entire HTTP responses | `RESPONSE_CACHE_ENABLED` in `.env` |
+| **Elasticsearch** | Elasticsearch 7.17+ | Product search index | `config/elasticsearch.php` |
+| **Session Store** | Database / Redis | User session data | `SESSION_DRIVER` in `.env` |
+
+## Application Cache
+
+Configured via the `CACHE_STORE` environment variable. Default is `file`:
+
+```properties
+# .env
+CACHE_STORE=file
+```
+
+For production, Redis is recommended:
+
+```properties
+CACHE_STORE=redis
+REDIS_HOST=127.0.0.1
+REDIS_PORT=6379
+```
+
+Clear the application cache:
+
+```bash
+php artisan cache:clear
+
+# Or clear everything at once
+php artisan optimize:clear
+```
+
+## Repository Cache
+
+Bagisto uses the [Prettus L5 Repository](https://github.com/prettus/l5-repository) package, which provides automatic query-level caching for repository operations. Configuration is in `config/repository.php`.
+
+### Automatic Invalidation
+
+The `Webkul\Core\Listeners\CleanCacheRepository` listener automatically invalidates cached repository data when entities are created, updated, or deleted:
+
+```
+Event: RepositoryEntityCreated → Cache cleared for that repository
+Event: RepositoryEntityUpdated → Cache cleared for that repository
+Event: RepositoryEntityDeleted → Cache cleared for that repository
+```
+
+This is registered in `Webkul\Core\Providers\EventServiceProvider` and runs globally for all repositories.
+
+::: tip No Manual Cache Clearing Needed
+When you use the repository pattern (as Bagisto recommends), cache invalidation happens automatically. You don't need to manually clear caches after CRUD operations through repositories.
+:::
+
+## Full Page Cache (FPC)
+
+The FPC package (`Webkul\FPC`) uses [Spatie ResponseCache](https://github.com/spatie/laravel-responsecache) to cache complete HTTP responses for storefront pages.
+
+### Enabling FPC
+
+```properties
+# .env
+RESPONSE_CACHE_ENABLED=true
+```
+
+### How It Works
+
+The `CacheResponse` middleware in the Shop package caches GET responses for guest users. When content changes, event listeners automatically invalidate affected URLs:
+
+| Event | What Gets Invalidated |
+|---|---|
+| Product create/update/delete | Product page URL + category pages |
+| Category update/delete | Category page URL |
+| Review update/delete | Corresponding product page |
+| Order placed / Refund issued | Product pages (stock changes) |
+| CMS page update/delete | CMS page URL |
+| URL rewrite change | Old and new URLs |
+| Theme customization change | Full cache clear |
+| Core configuration change | Full cache clear |
+| Channel update | Full cache clear |
+
+### FPC Event Listeners
+
+These listeners are in `packages/Webkul/FPC/src/Listeners/` and are registered via `Webkul\FPC\Providers\EventServiceProvider`:
+
+- `Product.php` — Invalidates product and category URLs
+- `Category.php` — Invalidates category URLs
+- `Review.php` — Invalidates reviewed product URLs
+- `Order.php` — Invalidates product URLs for ordered items
+- `Refund.php` — Invalidates product URLs for refunded items
+- `Page.php` — Invalidates CMS page URLs
+- `URLRewrite.php` — Invalidates rewritten URLs
+- `ThemeCustomization.php` — Clears entire cache or specific URLs
+- `CoreConfig.php` — Clears entire response cache
+
+::: warning Admin Panel
+The admin panel is explicitly excluded from response caching via the `NoCacheMiddleware` applied to all admin routes. This ensures admin users always see fresh data.
+:::
+
+## Cache in Custom Packages
+
+When building custom packages that modify data visible on the storefront, make sure to invalidate FPC for affected URLs:
+
+```php
+use Spatie\ResponseCache\Facades\ResponseCache;
+
+// Clear specific URLs
+ResponseCache::forget('/products/my-product');
+
+// Clear everything
+ResponseCache::clear();
+```
+
+For repository-level cache, simply using the repository pattern ensures automatic invalidation. If you bypass the repository and use Eloquent directly, cached data may become stale.
+
+## Cache Configuration for Production
+
+Recommended `.env` settings for production:
+
+```properties
+CACHE_STORE=redis
+SESSION_DRIVER=redis
+QUEUE_CONNECTION=redis
+RESPONSE_CACHE_ENABLED=true
+
+REDIS_HOST=127.0.0.1
+REDIS_PORT=6379
+```
+
+Run these commands after deployment:
+
+```bash
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+php artisan event:cache
+```
+
+To clear all caches at once:
+
+```bash
+php artisan optimize:clear
+```
+
+# Testing Workflow
+
+Bagisto uses [Pest PHP](https://pestphp.com/) v3 as its primary testing framework, backed by PHPUnit 11. The test suite covers unit tests, feature tests, and browser-level E2E tests via Playwright.
+
+## Test Structure
+
+Tests are organized per-package under each package's `tests/` directory, with a shared bootstrap at the project root:
+
+```
+tests/
+├── Pest.php              # Global Pest configuration
+└── TestCase.php          # Base test case
+
+packages/Webkul/
+├── Admin/tests/
+│   └── Feature/          # Admin panel feature tests
+├── Core/tests/
+│   └── Unit/             # Core utility unit tests
+├── Customer/tests/
+│   └── Unit/             # Customer module unit tests
+├── DataGrid/tests/
+│   └── Unit/             # DataGrid unit tests
+├── Installer/tests/
+│   └── Feature/          # Installation wizard tests
+├── Payment/tests/        # Payment base tests
+├── PayU/tests/
+│   ├── Unit/
+│   └── Feature/
+├── Razorpay/tests/
+│   ├── Unit/
+│   └── Feature/
+├── Shop/tests/
+│   └── Feature/          # Storefront feature tests
+└── Stripe/tests/
+    ├── Unit/
+    └── Feature/
+```
+
+## Running Tests
+
+### Run All Tests
+
+```bash
+php artisan test
+```
+
+Or directly with Pest:
+
+```bash
+./vendor/bin/pest
+```
+
+### Run a Specific Test Suite
+
+The test suites are defined in `phpunit.xml`. For example, to run only admin feature tests:
+
+```bash
+./vendor/bin/pest --testsuite="Admin Feature Tests"
+```
+
+Available test suites (from `phpunit.xml`):
+
+| Suite Name | Path | Type |
+|---|---|---|
+| Admin Feature Tests | `packages/Webkul/Admin/tests/Feature` | Feature |
+| Core Unit Tests | `packages/Webkul/Core/tests/Unit` | Unit |
+| Customer Unit Tests | `packages/Webkul/Customer/tests/Unit` | Unit |
+| DataGrid Unit Tests | `packages/Webkul/DataGrid/tests/Unit` | Unit |
+| Installer Feature Tests | `packages/Webkul/Installer/tests/Feature` | Feature |
+| PayU Unit Tests | `packages/Webkul/PayU/tests/Unit` | Unit |
+| PayU Feature Tests | `packages/Webkul/PayU/tests/Feature` | Feature |
+| Razorpay Unit Tests | `packages/Webkul/Razorpay/tests/Unit` | Unit |
+| Razorpay Feature Tests | `packages/Webkul/Razorpay/tests/Feature` | Feature |
+| Shop Feature Tests | `packages/Webkul/Shop/tests/Feature` | Feature |
+| Stripe Unit Tests | `packages/Webkul/Stripe/tests/Unit` | Unit |
+| Stripe Feature Tests | `packages/Webkul/Stripe/tests/Feature` | Feature |
+
+### Run a Single Test File
+
+```bash
+./vendor/bin/pest packages/Webkul/Admin/tests/Feature/ExampleTest.php
+```
+
+### Filter by Test Name
+
+```bash
+./vendor/bin/pest --filter="it can create a product"
+```
+
+## Test Environment
+
+The test environment is configured in `phpunit.xml` with these overrides:
+
+```xml
+<env name="APP_ENV" value="testing"/>
+<env name="BCRYPT_ROUNDS" value="4"/>
+<env name="CACHE_STORE" value="array"/>
+<env name="MAIL_MAILER" value="array"/>
+<env name="SESSION_DRIVER" value="array"/>
+<env name="QUEUE_CONNECTION" value="sync"/>
+```
+
+::: tip Performance
+`BCRYPT_ROUNDS=4` speeds up tests by reducing password hashing cost. `CACHE_STORE=array` and `SESSION_DRIVER=array` use in-memory drivers for fast, isolated tests.
+:::
+
+The test bootstrap in `tests/Pest.php` also sets:
+
+```php
+ini_set('memory_limit', '1024M');
+```
+
+## Test Configuration (Pest.php)
+
+The global `tests/Pest.php` file configures which base test case each package uses:
+
+```php
+uses(Tests\TestCase::class)->in(__DIR__);
+uses(Webkul\Admin\Tests\AdminTestCase::class)->in('../packages/Webkul/Admin/tests');
+uses(Webkul\Shop\Tests\ShopTestCase::class)->in('../packages/Webkul/Shop/tests');
+uses(Webkul\Core\Tests\CoreTestCase::class)->in('../packages/Webkul/Core/tests');
+// ... and so on for each package
+```
+
+Each package-specific test case extends `Tests\TestCase` and may bootstrap package-specific fixtures, factories, or state.
+
+## Test Factories
+
+Bagisto ships with 40+ model factories in `database/factories/` for generating test data. These follow the standard Laravel factory pattern:
+
+```php
+use Webkul\Product\Models\Product;
+
+$product = Product::factory()->create();
+```
+
+The `bagisto/laravel-datafaker` dev dependency provides additional data generation utilities specific to e-commerce.
+
+## Browser Tests (Playwright)
+
+Bagisto includes Playwright E2E tests for both the admin panel and storefront. These are configured as GitHub Actions workflows:
+
+- `admin_playwright_tests.yml` — Tests admin panel UI flows
+- `shop_playwright_tests.yml` — Tests storefront UI flows
+
+To run Playwright tests locally:
+
+```bash
+npx playwright install
+npx playwright test
+```
+
+::: warning Prerequisites
+Playwright tests require a running Bagisto instance with a seeded database. Make sure you have run `php artisan migrate:fresh --seed` before running E2E tests.
+:::
+
+## Code Style (Pint)
+
+Bagisto uses [Laravel Pint](https://laravel.com/docs/12.x/pint) for code formatting. The CI runs Pint checks on every push and pull request.
+
+```bash
+# Check formatting
+./vendor/bin/pint --test
+
+# Fix formatting
+./vendor/bin/pint
+```
+
+The configuration is in `pint.json` at the project root.
+
+## CI Pipeline
+
+GitHub Actions runs these checks on every push/PR:
+
+| Workflow | What it checks |
+|---|---|
+| `pest_tests.yml` | All Pest unit and feature tests (MySQL 8.0, PHP 8.3) |
+| `pint_tests.yml` | Code style with Laravel Pint |
+| `admin_playwright_tests.yml` | Admin panel E2E tests |
+| `shop_playwright_tests.yml` | Storefront E2E tests |
+| `translation_tests.yml` | Translation file consistency |
+
+## Writing Tests for a Package
+
+When creating tests for a custom package, follow this pattern:
+
+1. Create a `tests/` directory inside your package
+2. Add a test case class extending `Tests\TestCase`
+3. Register the test namespace in `composer.json` under `autoload-dev`
+4. Add a test suite entry in `phpunit.xml`
+5. Register the test path in `tests/Pest.php`
+
+```php
+// packages/Webkul/YourPackage/tests/Feature/ExampleTest.php
+
+it('can perform expected action', function () {
+    // Arrange
+    $data = ['key' => 'value'];
+
+    // Act
+    $response = $this->post(route('your.route'), $data);
+
+    // Assert
+    $response->assertStatus(200);
+});
+```
+
+::: tip Pest Syntax
+Bagisto uses Pest's closure-based syntax (`it()`, `test()`, `expect()`) rather than PHPUnit class-based tests. Follow this convention for consistency.
+:::
+
+# Debugging Tips
+
+Bagisto includes a custom DebugBar integration and supports standard Laravel debugging tools. This guide covers practical debugging approaches for common development scenarios.
+
+## DebugBar
+
+Bagisto ships with a custom DebugBar package (`Webkul\DebugBar`) that extends [barryvdh/laravel-debugbar](https://github.com/barryvdh/laravel-debugbar) with Bagisto-specific insights.
+
+### Enabling DebugBar
+
+DebugBar is available when `APP_DEBUG=true` in your `.env` file:
+
+```properties
+APP_DEBUG=true
+```
+
+### IP Whitelisting
+
+For security, DebugBar access can be restricted to specific IPs using the `APP_DEBUG_ALLOWED_IPS` environment variable:
+
+```properties
+APP_DEBUG_ALLOWED_IPS=127.0.0.1,192.168.1.100
+```
+
+This is configured in `App\Providers\AppServiceProvider`, which checks the client IP against the whitelist before enabling DebugBar.
+
+### Bagisto Module Collector
+
+The custom **Modules** tab in DebugBar (`Webkul\DebugBar\DataCollector\ModuleCollector`) provides:
+
+- **Model Tracking** — Which Eloquent models were loaded during the request, grouped by Concord module
+- **View Tracking** — Which Blade templates were rendered, with file paths
+- **Query Tracking** — SQL queries executed, with bindings substituted and duration recorded
+- **Module Grouping** — All of the above grouped by the Webkul package that owns them
+
+This helps you understand which packages are involved in a given page load and identify N+1 query problems or unnecessary view compositions.
+
+## Logging
+
+Bagisto uses Laravel's logging system. Log configuration is in `.env`:
+
+```properties
+LOG_CHANNEL=stack
+LOG_STACK=single
+LOG_LEVEL=debug
+```
+
+### Writing Logs
+
+```php
+use Illuminate\Support\Facades\Log;
+
+Log::info('Order processed', ['order_id' => $order->id]);
+Log::error('Payment failed', ['error' => $e->getMessage()]);
+```
+
+Log files are stored in `storage/logs/laravel.log`.
+
+### Viewing Logs
+
+```bash
+# Tail the log file
+tail -f storage/logs/laravel.log
+
+# Search for specific entries
+grep "Payment failed" storage/logs/laravel.log
+```
+
+## Common Debugging Scenarios
+
+### Debugging Routes
+
+List all registered routes to find which controller handles a URL:
+
+```bash
+# All routes
+php artisan route:list
+
+# Filter by URI pattern
+php artisan route:list --path=admin/catalog
+
+# Filter by name
+php artisan route:list --name=shop
+```
+
+::: tip Route Organization
+Admin routes are in `packages/Webkul/Admin/src/Routes/` (split into `catalog-routes.php`, `sales-routes.php`, etc.). Shop routes are in `packages/Webkul/Shop/src/Routes/` (split into `store-front-routes.php`, `customer-routes.php`, `checkout-routes.php`).
+:::
+
+### Debugging Events
+
+To see what events are fired during a request, use DebugBar's Events tab. Alternatively, add a temporary wildcard listener:
+
+```php
+// In a service provider boot() method (temporary debugging only)
+Event::listen('*', function (string $event, array $data) {
+    Log::debug('Event fired: ' . $event);
+});
+```
+
+### Debugging Database Queries
+
+Enable query logging temporarily:
+
+```php
+\DB::enableQueryLog();
+
+// ... your code ...
+
+dd(\DB::getQueryLog());
+```
+
+Or use DebugBar's Queries tab, which shows all queries with execution time and the Webkul module that triggered them.
+
+### Debugging Configuration
+
+Check if a system configuration value is loading correctly:
+
+```php
+// In tinker
+php artisan tinker
+>>> core()->getConfigData('catalog.products.storefront.search_mode')
+```
+
+### Debugging Blade Views
+
+Bagisto includes a **Blade Tracer** (documented in [Theme Development > Blade Tracer](/theme-development/blade-tracer)) that helps identify which Blade template renders a given section of the page.
+
+### Debugging the Shop Middleware Stack
+
+The Shop middleware group applies these middleware in order:
+
+1. `Webkul\Shop\Http\Middleware\Theme` — Loads the active theme
+2. `Webkul\Shop\Http\Middleware\Locale` — Sets the current locale
+3. `Webkul\Shop\Http\Middleware\Currency` — Sets the current currency
+
+If the shop looks wrong (wrong theme, language, or currency), check these middleware are running and that the channel/locale/currency configuration is correct.
+
+## Useful Artisan Commands for Debugging
+
+```bash
+# Clear all caches (config, route, view, event, app cache)
+php artisan optimize:clear
+
+# Check current Bagisto version
+php artisan bagisto:version
+
+# Validate translation files
+php artisan bagisto:translations:check --details
+
+# List all registered service providers
+php artisan about
+
+# Check queue status
+php artisan queue:monitor
+```
+
+## Environment Checks
+
+Common issues and quick checks:
+
+| Symptom | Check |
+|---|---|
+| Broken images | `APP_URL` matches your domain; `php artisan storage:link` was run |
+| 500 errors | `storage/logs/laravel.log` for stack trace; permissions on `storage/` and `bootstrap/cache/` |
+| Stale data after changes | `php artisan optimize:clear`; check `RESPONSE_CACHE_ENABLED` |
+| Admin not accessible | `APP_ADMIN_URL` in `.env` matches the URL path you're using |
+| CSS/JS not loading | Run `npm run build` or `npm run dev` for Vite assets |
+| Queue jobs not processing | Check `QUEUE_CONNECTION` in `.env`; run `php artisan queue:work` |
+
+# Common Pitfalls
+
+This page documents frequent issues encountered by developers working with Bagisto, along with solutions derived from the actual codebase.
+
+## Installation & Setup
+
+### PHP Version Mismatch
+
+Bagisto requires **PHP 8.3 or higher**. The `composer.json` specifies `"php": "^8.3"`. Running on PHP 8.3 or lower will cause dependency resolution failures.
+
+```bash
+# Verify your PHP version
+php -v
+```
+
+### Missing PHP Extensions
+
+The following extensions are required (from `composer.json`):
+
+- `ext-calendar`
+- `ext-curl`
+- `ext-intl`
+- `ext-mbstring`
+- `ext-openssl`
+- `ext-pdo`
+- `ext-pdo_mysql`
+- `ext-tokenizer`
+
+```bash
+# Check installed extensions
+php -m | grep -E "calendar|curl|intl|mbstring|openssl|pdo|tokenizer"
+```
+
+### Storage Link Not Created
+
+Product images and uploads won't display without the storage symlink:
+
+```bash
+php artisan storage:link
+```
+
+This creates `public/storage` → `storage/app/public`. If images still don't load, verify `APP_URL` in `.env` matches your actual domain/port.
+
+### APP_URL Mismatch
+
+A mismatch between `APP_URL` and your actual URL causes broken assets, images, and redirects. This is especially common when switching between local development and production.
+
+```properties
+# Must match exactly, including port
+APP_URL=http://localhost:8000
+```
+
+## Database
+
+### MySQL Version
+
+Bagisto requires MySQL 8.0.32 or higher. The `utf8mb4_unicode_ci` collation is recommended for full Unicode support.
+
+### Migration Order Matters
+
+When running `php artisan migrate:fresh --seed`, Bagisto's package migrations run in the order they're discovered by Concord. If you add a custom package with foreign key dependencies on core tables, ensure your migrations have timestamps that come after the core migrations.
+
+### Database Session Driver
+
+Bagisto defaults to `SESSION_DRIVER=database`. If you run `php artisan migrate:fresh` but forget `--seed`, the sessions table exists but the application may behave unexpectedly without seed data.
+
+## Package Development
+
+### Service Provider Registration
+
+Every Bagisto package needs a service provider registered in the root `composer.json` autoload section. Forgetting this step means your package won't be discovered:
+
+```json
+"autoload": {
+    "psr-4": {
+        "Webkul\\YourPackage\\": "packages/Webkul/YourPackage/src"
+    }
+}
+```
+
+After adding, run:
+
+```bash
+composer dump-autoload
+```
+
+### Concord Module Registration
+
+Packages must extend `Webkul\Core\Providers\CoreModuleServiceProvider` (or register as a Concord module) to be properly recognized. Check that your service provider is registered in `config/concord.php` or uses Laravel's package discovery.
+
+### Bypassing the Repository Pattern
+
+Bagisto's repository cache automatically invalidates when you use repositories for CRUD. If you bypass the repository and write raw Eloquent queries, cached data can become stale. Always prefer repository methods:
+
+```php
+// ✅ Correct — uses repository, triggers cache invalidation
+$this->productRepository->update($data, $id);
+
+// ❌ Avoid — bypasses cache invalidation
+Product::where('id', $id)->update($data);
+```
+
+## Frontend & Assets
+
+### Vite Build Required
+
+After changing CSS or JavaScript in a package, you must rebuild assets:
+
+```bash
+# Development (with hot reload)
+npm run dev
+
+# Production build
+npm run build
+```
+
+Each package with frontend assets (Admin, Shop) has its own `vite.config.js`. The root `vite.config.js` handles the main application assets.
+
+### Tailwind CSS Purging
+
+If custom Tailwind classes don't appear in production, ensure your Blade file paths are included in the relevant `tailwind.config.js` content array. Tailwind only includes classes that appear in scanned files.
+
+## Caching Issues
+
+### Stale Configuration After `.env` Changes
+
+After modifying `.env`, always clear the config cache:
+
+```bash
+php artisan config:clear
+# Or clear everything
+php artisan optimize:clear
+```
+
+If you've run `php artisan config:cache`, the cached config takes precedence over `.env` values until cleared.
+
+### Response Cache Serving Old Pages
+
+If storefront pages show stale content after product/category changes, the FPC event listeners may not be covering your change. Check that `RESPONSE_CACHE_ENABLED=true` and clear manually if needed:
+
+```bash
+php artisan responsecache:clear
+```
+
+## Queue & Jobs
+
+### Sync Queue in Production
+
+The default `QUEUE_CONNECTION=sync` processes all jobs synchronously during the HTTP request. This works for development but causes timeouts in production when saving products with Elasticsearch indexing or processing large imports.
+
+Switch to `redis` or `database` driver for production and run a queue worker:
+
+```properties
+QUEUE_CONNECTION=redis
+```
+
+```bash
+php artisan queue:work
+```
+
+## Mail Configuration
+
+### Dynamic SMTP
+
+Bagisto uses a custom `bagisto-dynamic-smtp` mail driver that reads SMTP settings from the database (admin panel configuration) rather than `.env` only. If email settings in the admin panel differ from `.env`, the admin panel values take precedence.
+
+This is handled by `Webkul\Core\Providers\DynamicSmtpServiceProvider`.
+
+## Admin Panel
+
+### Custom Admin URL
+
+The admin panel URL is configured via `APP_ADMIN_URL` in `.env`:
+
+```properties
+APP_ADMIN_URL=admin
+```
+
+Changing this value requires clearing the route cache:
+
+```bash
+php artisan route:clear
+```
+
+### ACL Not Working
+
+If a custom admin menu item doesn't respect ACL, verify that:
+
+1. Your `Config/acl.php` file defines the permission key
+2. Your route or controller checks the permission with the correct key
+3. The admin role has the permission enabled
+
+## Elasticsearch
+
+### Connection Refused
+
+If product search fails with Elasticsearch errors, verify:
+
+1. Elasticsearch is running and accessible
+2. The `.env` or `config/elasticsearch.php` has the correct host URL
+3. Elasticsearch version is 7.x or 8.x compatible
+
+```bash
+# Test Elasticsearch connection
+curl http://localhost:9200
+```
+
+### Index Out of Sync
+
+After bulk changes, reindex Elasticsearch:
+
+```bash
+php artisan indexer:index --type=elastic
+```
+
+## Multi-Channel / Multi-Locale
+
+### Channel-Specific Configuration
+
+Many configuration values in Bagisto are channel-specific and locale-specific. When reading config with `core()->getConfigData()`, the current channel and locale context matters. A setting that works on one channel may return `null` on another if not configured.
+
+### Maintenance Mode is Per-Channel
+
+Bagisto's `php artisan down` command sets maintenance mode on all channels. If you only want to take down one channel, manage the `is_maintenance_on` flag directly on the channel record rather than using the artisan command.
