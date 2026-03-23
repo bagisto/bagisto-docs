@@ -16,8 +16,8 @@ This guide covers configuring Elasticsearch for indexing products from your Bagi
 Before configuring Elasticsearch with Bagisto, ensure you have [Elasticsearch installed](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html) on your system.
 
 ::: warning Prerequisites
-- Elasticsearch 7.0+ (recommended: 8.x)
-- PHP 8.2+ with cURL extension
+- Elasticsearch 8.10+ (recommended: 8.17.0)
+- PHP 8.3+ with cURL extension
 - Sufficient memory allocation (minimum 2GB for Elasticsearch)
 :::
 
@@ -36,13 +36,13 @@ http://localhost:9200
   "cluster_name" : "elasticsearch",
   "cluster_uuid" : "suPotT8zQjCOlq9dteWKyQ",
   "version" : {
-    "number" : "8.6.2",
+    "number" : "8.17.0",
     "build_flavor" : "default",
     "build_type" : "deb",
-    "build_hash" : "2d58d0f136141f03239816a4e360a8d17b6d8f29",
-    "build_date" : "2023-02-13T09:35:20.314882762Z",
+    "build_hash" : "2b6a7fed44faa321997703718f07ee0420804b41",
+    "build_date" : "2024-12-11T12:08:05.663969764Z",
     "build_snapshot" : false,
-    "lucene_version" : "9.4.2",
+    "lucene_version" : "9.12.0",
     "minimum_wire_compatibility_version" : "7.17.0",
     "minimum_index_compatibility_version" : "7.0.0"
   },

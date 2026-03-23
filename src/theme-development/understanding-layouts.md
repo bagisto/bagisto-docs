@@ -25,7 +25,7 @@ If you're building a custom theme package (covered in our [Custom Theme Package]
 :::
 
 ::: info Laravel Blade Foundation
-Bagisto layouts are built on Laravel's Blade templating system. For comprehensive details about Blade components and layouts, visit the [Laravel documentation](https://laravel.com/docs/11.x/blade).
+Bagisto layouts are built on Laravel's Blade templating system. For comprehensive details about Blade components and layouts, visit the [Laravel documentation](https://laravel.com/docs/12.x/blade).
 :::
 
 ## Admin Layout

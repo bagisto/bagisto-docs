@@ -8,7 +8,7 @@ For our RMA package, we'll create views that display return request listings and
 This section demonstrates how to create organized, reusable Blade templates that integrate with Bagisto's admin interface and follow established patterns for data presentation, starting with listing pages and progressing to form creation.
 :::
 
-For detailed information on Laravel views and Blade templating, visit the [Laravel Documentation on Views](https://laravel.com/docs/11.x/views).
+For detailed information on Laravel views and Blade templating, visit the [Laravel Documentation on Views](https://laravel.com/docs/12.x/views).
 
 ## Bagisto View Architecture
 

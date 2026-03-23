@@ -1,6 +1,6 @@
 # Configure Laravel Octane
 
-[Laravel Octane](https://laravel.com/docs/11.x/octane) is a performance-boosting package designed to enhance the speed, efficiency, and scalability of Laravel applications, including Bagisto.
+[Laravel Octane](https://laravel.com/docs/12.x/octane) is a performance-boosting package designed to enhance the speed, efficiency, and scalability of Laravel applications, including Bagisto.
 
 ::: info What You'll Learn
 - Install Laravel Octane in your Bagisto application
@@ -19,7 +19,7 @@
 Before installing Laravel Octane, ensure your system meets the basic requirements. The specific requirements may vary depending on which application server you choose (Swoole, FrankenPHP, or RoadRunner).
 
 ::: warning Requirements
-- PHP 8.2
+- PHP 8.3
 - Existing Bagisto installation
 :::
 

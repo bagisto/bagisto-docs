@@ -606,6 +606,51 @@ return [
 ];
 ```
 
+### Blade Type
+
+This field type allows you to render a custom Blade view directly inside the system configuration form. It is useful for advanced use cases where standard field types are not sufficient — such as displaying custom UI components, notices, previews, or interactive elements within the configuration page.
+
+The `blade` type requires a `path` attribute pointing to a valid Blade view. The view receives `$field` and `$child` variables that provide access to the field configuration and parent section context.
+
+#### Example
+
+**Step 1:** Define the blade field in your `system.php`:
+
+```php
+return [
+    // ...
+    [
+        'key'    => 'rma.settings.general',
+        'name'   => 'RMA Configuration',
+        'sort'   => 1,
+        'fields' => [
+            [
+                'name'  => 'return_policy_preview',
+                'title' => 'Return Policy Preview',  // Consider using translation key
+                'type'  => 'blade',
+                'path'  => 'rma::admin.configuration.return-policy-preview',
+            ],
+        ],
+    ],
+    // ...
+];
+```
+
+**Step 2:** Create the corresponding Blade view at `packages/Webkul/RMA/src/Resources/views/admin/configuration/return-policy-preview.blade.php`:
+
+```blade
+<div class="flex flex-col gap-2 rounded-lg border p-4 dark:border-gray-800">
+    <p class="text-sm text-gray-600 dark:text-gray-300">
+        This is a custom preview rendered via the blade field type.
+        You can include any HTML, Vue components, or dynamic content here.
+    </p>
+</div>
+```
+
+::: tip When to Use Blade Type
+Use the `blade` field type when you need to embed custom UI that goes beyond standard form inputs — for example, informational notices, preview panels, action buttons, or interactive widgets within your configuration page.
+:::
+
 ## Dependent Fields
 
 The `depends` feature in Bagisto's configuration system allows you to conditionally display or enable certain configuration fields based on the value of other fields. This feature is particularly useful for creating dynamic and context-sensitive configuration forms.

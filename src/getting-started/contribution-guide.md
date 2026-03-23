@@ -34,13 +34,13 @@ Choose the appropriate branch for your contribution:
 ::: code-group
 ```bash [Bug Fixes]
 # For general bug fixes (stable branch)
-git checkout v2.3
+git checkout v2.4
 git checkout -b fix/issue-description
 ```
 
 ```bash [Critical Fixes]
 # For critical bugs in stable version
-git checkout v2.3
+git checkout v2.4
 git checkout -b hotfix/critical-issue
 ```
 
@@ -55,8 +55,8 @@ git checkout -b feature/new-functionality
 
 | Type | Target Branch | Description |
 |------|--------------|-------------|
-| 🐛 **Bug Fixes** | `v2.3` (stable) | General bug fixes for stable release |
-| 🚨 **Critical Fixes** | `v2.3` (stable) | Security or critical issues |
+| 🐛 **Bug Fixes** | `v2.4` (stable) | General bug fixes for stable release |
+| 🚨 **Critical Fixes** | `v2.4` (stable) | Security or critical issues |
 | ✨ **Breaking Changes** | `master` | New features with potential breaking changes |
 
 ## 🎨 Styling Guidelines

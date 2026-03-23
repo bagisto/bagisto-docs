@@ -8,7 +8,7 @@ For our RMA (Return Merchandise Authorization) package, we'll create a migration
 This migration demonstrates how to create a realistic e-commerce table structure with proper relationships, constraints, and indexes for optimal performance.
 :::
 
-For detailed information about Laravel migrations, visit the [Laravel Documentation](https://laravel.com/docs/11.x/migrations).
+For detailed information about Laravel migrations, visit the [Laravel Documentation](https://laravel.com/docs/12.x/migrations).
 
 ## RMA Database Schema Overview
 

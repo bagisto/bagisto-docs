@@ -415,10 +415,33 @@ The following table lists the core events available in Bagisto that you can list
 | `customer.customer_group.update.after`               | This event will be fired after customer group gets updated.       | `$customerGroup`          |
 | `customer.customer_group.delete.before`              | This event will be fired before customer group gets deleted.      | `$id`                     |
 | `customer.customer_group.delete.after`               | This event will be fired after customer group gets deleted.       | `$id`                     |
+| `customer.review.create.before`                      | This event will be fired before customer review gets created.     | `$id`                     |
+| `customer.review.create.after`                       | This event will be fired after customer review gets created.      | `$review`                 |
 | `customer.review.update.before`                      | This event will be fired before customer review gets updated.     | `$id`                     |
 | `customer.review.update.after`                       | This event will be fired after customer review gets updated.      | `$review`                 |
 | `customer.review.delete.before`                      | This event will be fired before customer review gets deleted.     | `$id`                     |
 | `customer.review.delete.after`                       | This event will be fired after customer review gets deleted.      | `$id`                     |
+| `customer.compare.create.before`                     | This event will be fired before product added to compare.         | -                         |
+| `customer.compare.create.after`                      | This event will be fired after product added to compare.          | `$compareProduct`         |
+| `customer.compare.delete.before`                     | This event will be fired before product removed from compare.     | `$productId`              |
+| `customer.compare.delete.after`                      | This event will be fired after product removed from compare.      | `$productId`              |
+| `customer.compare.delete-all.before`                 | This event will be fired before all compare items removed.        | -                         |
+| `customer.compare.delete-all.after`                  | This event will be fired after all compare items removed.         | -                         |
+| `customer.wishlist.create.before`                    | This event will be fired before product added to wishlist.        | `$productId`              |
+| `customer.wishlist.create.after`                     | This event will be fired after product added to wishlist.         | `$wishlist`               |
+| `customer.wishlist.delete.before`                    | This event will be fired before wishlist item removed.            | `$id`                     |
+| `customer.wishlist.delete.after`                     | This event will be fired after wishlist item removed.             | `$id`                     |
+| `customer.wishlist.delete-all.before`                | This event will be fired before all wishlist items removed.       | -                         |
+| `customer.wishlist.delete-all.after`                 | This event will be fired after all wishlist items removed.        | -                         |
+| `customer.wishlist.move-to-cart.before`              | This event will be fired before wishlist item moved to cart.      | `$id`                     |
+| `customer.wishlist.move-to-cart.after`               | This event will be fired after wishlist item moved to cart.       | `$id`                     |
+| `customer.create.before`                             | This event will be fired before customer gets created (admin).    | -                         |
+| `customer.create.after`                              | This event will be fired after customer gets created (admin).     | `$customer`               |
+| `customer.after.logout`                              | This event will be fired after customer logout.                   | `$id`                     |
+| `customer.rma.request.create.before`                 | This event will be fired before customer creates RMA request.     | `$data`                   |
+| `customer.rma.request.create.after`                  | This event will be fired after customer creates RMA request.      | `$rma`                    |
+| `customer.rma.request.update.before`                 | This event will be fired before customer RMA request updated.     | `$id`                     |
+| `customer.rma.request.update.after`                  | This event will be fired after customer RMA request updated.      | `$rma`                    |
 | `customer.account.gdpr-request.create.before`        | This event will be fired before gdpr request created.             | -                         |
 | `customer.gdpr-request.create.after`                 | This event will be fired after gdpr request created.              | `$gdprRequest`            |
 | `customer.account.gdpr-request.update.before`        | This event will be fired before gdpr request updated.             | -                         |
@@ -479,6 +502,8 @@ The following table lists the core events available in Bagisto that you can list
 | `promotions.catalog_rule.update.after`               | This event will be fired after catalog rule gets updated.         | `$catalogRule`            |
 | `promotions.catalog_rule.delete.before`              | This event will be fired before catalog rule gets deleted.        | `$id`                     |
 | `promotions.catalog_rule.delete.after`               | This event will be fired after catalog rule gets deleted.         | `$id`                     |
+| `cart_rules.coupons.delete.before`                   | This event will be fired before cart rule coupon deleted.         | `$coupon`                 |
+| `cart_rules.coupons.delete.after`                    | This event will be fired after cart rule coupon deleted.          | `$coupon`                 |
 | `sales.order.comment.create.before`                  | This event will be fired before order comment gets created.       | -                         |
 | `sales.order.comment.create.after`                   | This event will be fired after order comment gets created.        | `$comment`                |
 | `core.channel.create.before`                         | This event will be fired before channel gets created.             | -                         |
@@ -540,6 +565,8 @@ The following table lists the core events available in Bagisto that you can list
 | `checkout.cart.collect.totals.after`                 | This event will be fired after collecting cart totals.            | `$this->cart`             |
 | `checkout.cart.calculate.items.tax.before`           | This event will be fired before calculating cart items tax.       | `$this->cart`             |
 | `checkout.cart.calculate.items.tax.after`            | This event will be fired after calculating cart items tax.        | `$this->cart`             |
+| `checkout.cart.calculate.shipping.tax.before`        | This event will be fired before calculating shipping tax.         | `$cart`                   |
+| `checkout.cart.calculate.shipping.tax.after`         | This event will be fired after calculating shipping tax.          | `$cart`                   |
 | `core.configuration.save.before`                     | This event will be fired before core configuration gets saved.    | -                         |
 | `core.configuration.save.after`                      | This event will be fired after core configuration gets saved.     | -                         |
 | `core.currency.create.before`                        | This event will be fired before currency gets created.            | -                         |
@@ -568,4 +595,58 @@ The following table lists the core events available in Bagisto that you can list
 | `sales.refund.save.after`                            | This event will be fired after order refund gets saved.           | `$refund`                 |
 | `sales.shipment.save.before`                         | This event will be fired before shipment gets saved.              | `$data`                   |
 | `sales.shipment.save.after`                          | This event will be fired after shipment gets saved.               | `$shipment`               |
+| `sales.invoice.send_duplicate_email`                 | This event will be fired when duplicate invoice email is sent.    | `['invoice' => $invoice, 'duplicate_invoice_email' => $email]` |
+| `sales.rma.rma-status.create.before`                | This event will be fired before RMA status gets created.          | -                         |
+| `sales.rma.rma-status.create.after`                 | This event will be fired after RMA status gets created.           | `$rmaStatus`              |
+| `sales.rma.rma-status.update.before`                | This event will be fired before RMA status gets updated.          | `$id`                     |
+| `sales.rma.rma-status.update.after`                 | This event will be fired after RMA status gets updated.           | `$rmaStatus`              |
+| `sales.rma.rma-status.delete.before`                | This event will be fired before RMA status gets deleted.          | `$id`                     |
+| `sales.rma.rma-status.delete.after`                 | This event will be fired after RMA status gets deleted.           | `$id`                     |
+| `sales.rma.reason.create.before`                    | This event will be fired before RMA reason gets created.          | -                         |
+| `sales.rma.reason.create.after`                     | This event will be fired after RMA reason gets created.           | `$rmaReason`              |
+| `sales.rma.reason.update.before`                    | This event will be fired before RMA reason gets updated.          | `$id`                     |
+| `sales.rma.reason.update.after`                     | This event will be fired after RMA reason gets updated.           | `$rmaReason`              |
+| `sales.rma.reason.delete.before`                    | This event will be fired before RMA reason gets deleted.          | `$id`                     |
+| `sales.rma.reason.delete.after`                     | This event will be fired after RMA reason gets deleted.           | `$id`                     |
+| `sales.rma.request.create.before`                   | This event will be fired before RMA request gets created (admin). | `$data`                   |
+| `sales.rma.request.create.after`                    | This event will be fired after RMA request gets created (admin).  | `$rma`                    |
+| `sales.rma.rules.create.before`                     | This event will be fired before RMA rule gets created.            | -                         |
+| `sales.rma.rules.create.after`                      | This event will be fired after RMA rule gets created.             | `$rmaRule`                |
+| `sales.rma.rules.update.before`                     | This event will be fired before RMA rule gets updated.            | `$id`                     |
+| `sales.rma.rules.update.after`                      | This event will be fired after RMA rule gets updated.             | `$rmaRule`                |
+| `sales.rma.rules.delete.before`                     | This event will be fired before RMA rule gets deleted.            | `$id`                     |
+| `sales.rma.rules.delete.after`                      | This event will be fired after RMA rule gets deleted.             | `$id`                     |
+| `sales.rma.custom-field.create.before`              | This event will be fired before RMA custom field gets created.    | -                         |
+| `sales.rma.custom-field.create.after`               | This event will be fired after RMA custom field gets created.     | `$rmaCustomField`         |
+| `sales.rma.custom-field.update.before`              | This event will be fired before RMA custom field gets updated.    | `$id`                     |
+| `sales.rma.custom-field.update.after`               | This event will be fired after RMA custom field gets updated.     | `$rmaCustomField`         |
+| `sales.rma.custom-field.delete.before`              | This event will be fired before RMA custom field gets deleted.    | `$id`                     |
+| `sales.rma.custom-field.delete.after`               | This event will be fired after RMA custom field gets deleted.     | `$id`                     |
+| `datagrid.saved_filter.create.before`                | This event will be fired before saved filter gets created.        | -                         |
+| `datagrid.saved_filter.create.after`                 | This event will be fired after saved filter gets created.         | `$savedFilter`            |
+| `datagrid.saved_filter.update.before`                | This event will be fired before saved filter gets updated.        | `$id`                     |
+| `datagrid.saved_filter.update.after`                 | This event will be fired after saved filter gets updated.         | `$updatedFilter`          |
+| `datagrid.saved_filter.delete.before`                | This event will be fired before saved filter gets deleted.        | `$id`                     |
+| `datagrid.saved_filter.delete.after`                 | This event will be fired after saved filter gets deleted.         | `$id`                     |
+| `data_transfer.imports.create.before`                | This event will be fired before import gets created.              | -                         |
+| `data_transfer.imports.create.after`                 | This event will be fired after import gets created.               | `$import`                 |
+| `data_transfer.imports.update.before`                | This event will be fired before import gets updated.              | -                         |
+| `data_transfer.imports.update.after`                 | This event will be fired after import gets updated.               | `$import`                 |
+| `data_transfer.imports.validate.before`              | This event will be fired before import validation starts.         | `$import`                 |
+| `data_transfer.imports.validate.after`               | This event will be fired after import validation completes.       | `$import`                 |
+| `data_transfer.imports.started`                      | This event will be fired when import process starts.              | `$import`                 |
+| `data_transfer.imports.linking`                      | This event will be fired when import linking phase starts.        | `$import`                 |
+| `data_transfer.imports.indexing`                      | This event will be fired when import indexing phase starts.       | `$import`                 |
+| `data_transfer.imports.completed`                    | This event will be fired when import process completes.           | `$import`                 |
+| `data_transfer.imports.batch.import.before`          | This event will be fired before batch import processing.          | `$batch`                  |
+| `data_transfer.imports.batch.import.after`           | This event will be fired after batch import processing.           | `$batch`                  |
+| `data_transfer.imports.batch.linking.before`         | This event will be fired before batch linking processing.         | `$batch`                  |
+| `data_transfer.imports.batch.linking.after`          | This event will be fired after batch linking processing.          | `$batch`                  |
+| `data_transfer.imports.batch.indexing.before`        | This event will be fired before batch indexing processing.        | `$batch`                  |
+| `data_transfer.imports.batch.indexing.after`         | This event will be fired after batch indexing processing.         | `$batch`                  |
+| `booking_product.booking.save.before`                | This event will be fired before booking gets saved.               | `$item`                   |
+| `booking_product.booking.save.after`                 | This event will be fired after booking gets saved.                | `$booking`                |
+| `booking_product.booking.event-ticket.save.before`   | This event will be fired before event ticket gets saved.          | `['data' => $data, 'bookingProduct' => $bookingProduct]` |
+| `booking_product.booking.event-ticket.save.after`    | This event will be fired after event ticket gets saved.           | `['tickets' => $savedTickets]` |
+| `bagisto.installed`                                  | This event will be fired after Bagisto installation completes.    | -                         |
 | `checkout.load.index`                                | This event will be fired on checkout page load.                   | -                         |

@@ -8,7 +8,7 @@ For our RMA package, we'll implement comprehensive localization that covers admi
 This section demonstrates how to create organized, maintainable translation files for your Bagisto package, register them properly with the service provider, and use them effectively in views, controllers, and other components.
 :::
 
-For detailed information on Laravel localization features, visit the [Laravel Documentation on Localization](https://laravel.com/docs/11.x/localization).
+For detailed information on Laravel localization features, visit the [Laravel Documentation on Localization](https://laravel.com/docs/12.x/localization).
 
 ## Bagisto Localization Architecture
 

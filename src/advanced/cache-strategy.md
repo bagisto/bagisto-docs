@@ -9,7 +9,7 @@ Bagisto implements a multi-layered caching strategy to optimize performance acro
 | **Application Cache** | File / Redis / Memcached | Key-value storage for config, routes | `CACHE_STORE` in `.env` |
 | **Repository Cache** | Prettus L5 Repository | Automatic model query caching | `config/repository.php` |
 | **Full Page Cache (FPC)** | Spatie ResponseCache | Caches entire HTTP responses | `RESPONSE_CACHE_ENABLED` in `.env` |
-| **Elasticsearch** | Elasticsearch 7.17+ | Product search index | `config/elasticsearch.php` |
+| **Elasticsearch** | Elasticsearch 8.10+ | Product search index | `config/elasticsearch.php` |
 | **Session Store** | Database / Redis | User session data | `SESSION_DRIVER` in `.env` |
 
 ## Application Cache

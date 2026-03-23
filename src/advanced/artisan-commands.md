@@ -34,7 +34,7 @@ php artisan bagisto:version
 **Output example:**
 
 ```
-2.4.0-beta6
+2.4.1
 ```
 
 **Source:** `Webkul\Core\Console\Commands\BagistoVersion`

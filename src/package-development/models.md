@@ -26,7 +26,7 @@ This layered approach allows Bagisto to be highly modular and extensible. Develo
 
 When creating models in Bagisto, you have two approaches: using the package generator for convenience, or manually creating the components for more control. Models in Bagisto follow Laravel's Eloquent ORM but with additional architectural layers.
 
-Learn more about Laravel Eloquent: https://laravel.com/docs/11.x/eloquent
+Learn more about Laravel Eloquent: https://laravel.com/docs/12.x/eloquent
 
 Below, we'll create a `ReturnRequest` model for an RMA package to demonstrate both approaches.
 

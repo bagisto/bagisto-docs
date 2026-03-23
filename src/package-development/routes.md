@@ -8,7 +8,7 @@ For our RMA package, we'll create routes that allow administrators to manage ret
 This section demonstrates how to create organized, secure routes for both admin and shop sections of your Bagisto package, following best practices for middleware configuration and URL structure.
 :::
 
-For detailed information on Laravel routing concepts, visit the [Laravel Documentation on Routing](https://laravel.com/docs/11.x/routing).
+For detailed information on Laravel routing concepts, visit the [Laravel Documentation on Routing](https://laravel.com/docs/12.x/routing).
 
 ## Bagisto Route Organization
 

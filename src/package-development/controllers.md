@@ -8,7 +8,7 @@ For our RMA package, we'll create controllers that handle the admin interface fo
 This section demonstrates how to create organized, maintainable controllers that use dependency injection with repositories and follow Bagisto's architectural patterns for both admin and shop functionality.
 :::
 
-For detailed information on Laravel controllers, visit the [Laravel Documentation on Controllers](https://laravel.com/docs/11.x/controllers).
+For detailed information on Laravel controllers, visit the [Laravel Documentation on Controllers](https://laravel.com/docs/12.x/controllers).
 
 ## Bagisto Controller Architecture
 

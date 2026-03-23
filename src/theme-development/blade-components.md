@@ -29,7 +29,7 @@ These components work seamlessly with the custom themes covered in our previous 
 :::
 
 ::: info Laravel Blade Foundation
-For comprehensive details about Blade components and templating, visit the [Laravel Blade documentation](https://laravel.com/docs/11.x/blade#introduction).
+For comprehensive details about Blade components and templating, visit the [Laravel Blade documentation](https://laravel.com/docs/12.x/blade#introduction).
 :::
 
 ## Shop Components
@@ -116,6 +116,21 @@ Let's assume you want to use the **`button`** component. You can call it like th
     :disabled="true"
     ::loading="true"
 />
+```
+
+### Shop Carousel
+
+The `carousel` component provides a full-screen image carousel with drag/touch support, auto-play, and pagination. It is commonly used for homepage banners and promotional sliders.
+
+| Props           | Type    | Default Value | Description                                                 |
+| --------------- | ------- | ------------- | ------------------------------------------------------------|
+| **`options`**   | Object  | `{}`          | Configuration object containing an `images` array with slide data (image URL, link, title, etc.). |
+
+Let's assume you want to use the **`carousel`** component. You can call it like this:
+
+```html
+<!-- Shop Carousel -->
+<x-shop::carousel :options="$sliderData" />
 ```
 
 ### Shop Data Grid
@@ -244,6 +259,58 @@ Let's assume you want to use the **`flat-picker`** component. You can call it li
 </x-shop::flat-picker.date>
 ```
 
+### Shop Form
+
+The `form` component provides a flexible form wrapper with CSRF protection and method spoofing support. It supports two modes: traditional server-side forms and custom Vue-based forms using the `as` attribute.
+
+| Props          | Type    | Default Value | Description                                                 |
+| -------------- | ------- | ------------- | ------------------------------------------------------------|
+| **`method`**   | String  | `'POST'`      | HTTP method for form submission. Supports `GET`, `POST`, `PUT`, `PATCH`, `DELETE`. |
+
+Let's assume you want to use the **`form`** component. You can call it like this:
+
+```html
+<!-- Shop Form (Traditional) -->
+<x-shop::form method="POST" action="{{ route('shop.checkout.save') }}">
+    <!-- Form fields -->
+    <x-shop::button
+        type="submit"
+        :title="trans('Submit')"
+    />
+</x-shop::form>
+
+<!-- Shop Form (Vue-based with validation) -->
+<x-shop::form
+    v-slot="{ meta, errors, handleSubmit }"
+    as="div"
+>
+    <form @submit="handleSubmit($event, callbackFunction)">
+        <!-- Form fields with validation -->
+    </form>
+</x-shop::form>
+```
+
+### Shop Image Zoomer
+
+The `image-zoomer` component provides a modal gallery viewer with zoom, drag, and scroll capabilities for images and videos. It supports thumbnail navigation and keyboard controls.
+
+| Props                | Type    | Default Value | Description                                                 |
+| -------------------- | ------- | ------------- | ------------------------------------------------------------|
+| **`attachments`**    | Object  | `[]`          | Array of image/video attachments to display.                 |
+| **`is-image-zooming`** | Boolean | `false`     | Controls whether the zoom modal is visible.                  |
+| **`initial-index`**  | String  | `'0'`         | Index of the initially displayed image.                      |
+
+Let's assume you want to use the **`image-zoomer`** component. You can call it like this:
+
+```html
+<!-- Shop Image Zoomer -->
+<x-shop::image-zoomer
+    ::attachments="attachments"
+    ::is-image-zooming="isImageZooming"
+    ::initial-index="initialIndex"
+/>
+```
+
 ### Shop Media (Image)
 
 The Media component in Bagisto provides a user interface for managing and displaying images/videos, allowing users to upload, edit, and delete images.:
@@ -330,6 +397,32 @@ Let's assume you want to use the **`Quantity Changer`** component on shop. You c
     name="quantity"
     value="1"
     class="gap-x-4 rounded-xl px-7 py-4"
+/>
+```
+
+### Shop Range Slider
+
+The `range-slider` component provides a dual-handle range slider for filtering numeric values such as prices. It supports integer, float, and price formatting with a minimum 10% gap between handles.
+
+| Props                          | Type    | Default Value | Description                                                 |
+| ------------------------------ | ------- | ------------- | ------------------------------------------------------------|
+| **`default-type`**             | String  | None          | Value type: `'integer'`, `'float'`, or `'price'`.            |
+| **`default-allowed-min-range`** | Number | `0`           | Minimum allowed value for the slider.                        |
+| **`default-allowed-max-range`** | Number | `100`         | Maximum allowed value for the slider.                        |
+| **`default-min-range`**        | Number  | `0`           | Initial minimum selected value.                              |
+| **`default-max-range`**        | Number  | `100`         | Initial maximum selected value.                              |
+
+Let's assume you want to use the **`range-slider`** component. You can call it like this:
+
+```html
+<!-- Shop Range Slider -->
+<x-shop::range-slider
+    default-type="price"
+    ::default-allowed-min-range="0"
+    ::default-allowed-max-range="500"
+    ::default-min-range="0"
+    ::default-max-range="500"
+    @change-range="handlePriceChange($event)"
 />
 ```
 
@@ -706,6 +799,37 @@ Let's assume you want to use the **`flat-picker`** component. You can call it li
 </x-admin::flat-picker.date>
 ```
 
+### Admin Form
+
+The `form` component provides a flexible form wrapper with CSRF protection and method spoofing support. It supports two modes: traditional server-side forms and custom Vue-based forms using the `as` attribute.
+
+| Props          | Type    | Default Value | Description                                                 |
+| -------------- | ------- | ------------- | ------------------------------------------------------------|
+| **`method`**   | String  | `'POST'`      | HTTP method for form submission. Supports `GET`, `POST`, `PUT`, `PATCH`, `DELETE`. |
+
+Let's assume you want to use the **`form`** component. You can call it like this:
+
+```html
+<!-- Admin Form (Traditional) -->
+<x-admin::form method="PUT" :action="route('admin.catalog.products.update', $product->id)">
+    <!-- Form fields -->
+    <x-admin::button
+        type="submit"
+        :title="trans('admin::app.catalog.products.edit.save-btn')"
+    />
+</x-admin::form>
+
+<!-- Admin Form (Vue-based with validation) -->
+<x-admin::form
+    v-slot="{ meta, errors, handleSubmit }"
+    as="div"
+>
+    <form @submit="handleSubmit($event, callbackFunction)">
+        <!-- Form fields with validation -->
+    </form>
+</x-admin::form>
+```
+
 ### Admin Media (Image/Video)
  
 The Media component in Bagisto provides a user interface for managing and displaying images/videos, allowing users to upload, edit, and delete images.:
@@ -824,6 +948,34 @@ Let's assume you want to use the **`shimmer`** You can call it like this.
 <x-admin::shimmer.datagrid />
 ```
 
+### Admin Star Rating
+
+The `star-rating` component provides an interactive 5-star rating display. It can be used as a read-only display or an interactive input for setting ratings.
+
+| Props          | Type    | Default Value | Description                                                 |
+| -------------- | ------- | ------------- | ------------------------------------------------------------|
+| **`name`**     | String  | `'rating'`    | Hidden field name for form submission.                       |
+| **`value`**    | Number  | `0`           | Initial rating value (0-5).                                  |
+| **`disabled`** | Boolean | `true`        | Whether the rating is read-only.                             |
+
+Let's assume you want to use the **`star-rating`** component. You can call it like this:
+
+```html
+<!-- Admin Star Rating (Read-only) -->
+<x-admin::star-rating
+    :value="$product->averageRating"
+    :disabled="true"
+/>
+
+<!-- Admin Star Rating (Interactive) -->
+<x-admin::star-rating
+    name="rating"
+    :value="0"
+    :disabled="false"
+    @change="handleRatingChange"
+/>
+```
+
 ### Admin Table
 
 The Table component provides a structured way to display tabular data in Bagisto. You can customize the appearance of the table elements using CSS. Below are some common customization options:
@@ -901,12 +1053,12 @@ The `tab-item` component represents an individual tab within the `tabs` componen
 
 You can customize the tabs and their content as per your requirements. 
 
-Let's assume you want to use the **`tabs`** component on shop. You can call it like this.
+Let's assume you want to use the **`tabs`** component on admin. You can call it like this.
 
 ```html
-<!-- Shop Tab -->
+<!-- Admin Tab -->
 <x-admin::tabs position="center">
-    <x-shop::tabs.item
+    <x-admin::tabs.item
         class="container"
         :title="Tab-1"
         :is-selected="true"
@@ -916,7 +1068,7 @@ Let's assume you want to use the **`tabs`** component on shop. You can call it l
                 Lorem Ipsum is simply dummy text of the printing and typesetting industry.
             </p>
         </div>
-    </x-shop::tabs.item>
+    </x-admin::tabs.item>
 
     <x-admin::tabs.item
         class="container"
@@ -955,6 +1107,55 @@ Let's assume you want to use the **`tinymce`** component on admin and shop. You 
     :placeholder="Content"
     :tinymce="true"
     :prompt="core()->getConfigData('general.magic_ai.content_generation.category_description_prompt')"
+/>
+```
+
+### Admin Tree View
+
+The `tree-view` component provides a hierarchical tree selection interface supporting both checkbox and radio inputs. It handles multilingual labels, supports hierarchical or individual selection modes, and dynamically renders collapsible tree items.
+
+| Props                 | Type            | Default Value    | Description                                                 |
+| --------------------- | --------------- | ---------------- | ------------------------------------------------------------|
+| **`input-type`**      | String          | `'checkbox'`     | Type of input: `'checkbox'` or `'radio'`.                    |
+| **`selection-type`**  | String          | `'hierarchical'` | Selection behavior: `'individual'` or `'hierarchical'`.      |
+| **`name-field`**      | String          | `'permissions'`  | Field name for form submission.                              |
+| **`value-field`**     | String          | `'value'`        | Field in item data containing the value.                     |
+| **`id-field`**        | String          | `'id'`           | Field in item data containing the unique identifier.         |
+| **`label-field`**     | String          | `'name'`         | Field in item data containing the display label.             |
+| **`children-field`**  | String          | `'children'`     | Field in item data containing child items.                   |
+| **`items`**           | Array/Object    | `[]`             | Tree data structure.                                         |
+| **`value`**           | Array           | `[]`             | Currently selected values.                                   |
+| **`fallback-locale`** | String          | `'en'`           | Fallback locale for translated labels.                       |
+| **`collapse`**        | Boolean         | `false`          | Whether tree items start in collapsed state.                 |
+
+Let's assume you want to use the **`tree view`** component. You can call it like this:
+
+```html
+<!-- Admin Tree View (Checkbox - Hierarchical) -->
+<x-admin::tree.view
+    input-type="checkbox"
+    selection-type="hierarchical"
+    name-field="permissions"
+    value-field="key"
+    id-field="key"
+    label-field="name"
+    children-field="children"
+    :items="$acl->items"
+    :value="$role->permissions"
+    :fallback-locale="config('app.fallback_locale')"
+    :collapse="true"
+/>
+
+<!-- Admin Tree View (Radio - Individual) -->
+<x-admin::tree.view
+    input-type="radio"
+    selection-type="individual"
+    name-field="category_id"
+    value-field="id"
+    label-field="name"
+    children-field="children"
+    :items="$categories"
+    :value="[$selectedCategoryId]"
 />
 ```
 
