@@ -769,6 +769,38 @@ return [
 ];
 ```
 
+## Configuration Value Resolution
+
+When you retrieve a configuration value using `core()->getConfigData()`, Bagisto resolves it through a fallback chain:
+
+```
+core()->getConfigData('rma.settings.general.enable')
+│
+├── 1. Core Config (Database)
+│     Checks the `core_config` table for admin-saved values.
+│     Found? → Returns the saved value.
+│
+└── 2. Fallback (No database entry)
+      │
+      ├── Laravel Config (merged via mergeConfigFrom)
+      │     For payment methods: Config::get('payment_methods.{code}.{field}')
+      │     For shipping methods: Config::get('carriers.{code}.{field}')
+      │     Found? → Returns the package config value.
+      │
+      └── System Default ('default' key in system.php field definition)
+            Returns the 'default' value from the field array,
+            or null if not defined.
+```
+
+::: info When Does Each Layer Apply?
+- **Payment and shipping methods** have package config files (`payment-methods.php`, `carriers.php`) that are merged into the Laravel config. These serve as the primary fallback when no admin-saved value exists.
+- **General package settings** (like the RMA example) typically don't have a matching Laravel config key, so the `default` value in your `system.php` field definition serves as the direct fallback.
+:::
+
+::: tip Best Practice
+For payment and shipping methods, always define essential defaults (`active`, `title`, `sort`, etc.) in your package config file (`payment-methods.php` or `carriers.php`). For other packages, use the `default` key in your `system.php` field definitions to provide sensible initial values.
+:::
+
 ## Using Configuration Values in Your Code
 
 Once you've defined your system configuration, you can access these values throughout your RMA package:

@@ -126,6 +126,34 @@ core()->getConfigData('sales.payment_methods.custom_stripe_payment.title')
 
 This retrieves the value from the admin configuration that administrators can modify.
 
+### Configuration Value Resolution
+
+Bagisto resolves configuration values using a specific fallback chain. Understanding this chain is important to ensure your payment method always has sensible values, even before an administrator saves any settings.
+
+```
+core()->getConfigData('sales.payment_methods.custom_stripe_payment.title')
+│
+├── 1. Core Config (Database)
+│     Checks the `core_config` table for admin-saved values.
+│     Found? → Returns the saved value.
+│
+└── 2. Fallback (No database entry)
+      │
+      ├── Package Config (payment-methods.php)
+      │     Checks Config::get('payment_methods.custom_stripe_payment.title')
+      │     Found? → Returns the package default.
+      │
+      └── System Default (system.php 'default' key)
+            Returns the 'default' value defined in the field configuration,
+            or null if not defined.
+```
+
+**In practice**, this means your `payment-methods.php` config file serves as the primary fallback for all fields. When a value exists in both `payment-methods.php` and as a `default` in `system.php`, the `payment-methods.php` value takes priority.
+
+::: tip Ensure Fallback Values
+Always define essential properties like `active`, `title`, `description`, and `sort` in your `payment-methods.php` config file. This ensures your payment method works correctly even before any admin configuration is saved.
+:::
+
 ### System Configuration Reference
 
 For detailed information about creating admin interface forms for your payment method, see:

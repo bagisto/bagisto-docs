@@ -185,6 +185,34 @@ $this->getConfigData('title');             // Returns 'Express Delivery (1-2 Day
 $this->getConfigData('supports.tracking'); // Returns true
 ```
 
+### 5. Value Resolution (Fallback Chain)
+
+When `getConfigData()` is called, Bagisto resolves the value using a specific fallback chain:
+
+```
+core()->getConfigData('sales.carriers.custom_express_shipping.default_rate')
+│
+├── 1. Core Config (Database)
+│     Checks the `core_config` table for admin-saved values.
+│     Found? → Returns the saved value.
+│
+└── 2. Fallback (No database entry)
+      │
+      ├── Package Config (carriers.php)
+      │     Checks Config::get('carriers.custom_express_shipping.default_rate')
+      │     Found? → Returns the package default.
+      │
+      └── System Default (system.php 'default' key)
+            Returns the 'default' value defined in the field configuration,
+            or null if not defined.
+```
+
+This means your `carriers.php` config file acts as the primary fallback for all fields. Values defined there are returned when no admin-saved value exists in the database.
+
+::: tip Ensure Fallback Values
+Always define essential properties like `active`, `title`, `default_rate`, and `type` in your `carriers.php` config file. This ensures your shipping method works correctly even before any admin configuration is saved.
+:::
+
 ## Configuration Best Practices
 
 ### 1. Naming Conventions
