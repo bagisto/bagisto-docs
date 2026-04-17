@@ -143,16 +143,136 @@ Bagisto includes Playwright E2E tests for both the admin panel and storefront. T
 - `admin_playwright_tests.yml` — Tests admin panel UI flows
 - `shop_playwright_tests.yml` — Tests storefront UI flows
 
-To run Playwright tests locally:
+### Test Structure
 
-```bash
-npx playwright install
-npx playwright test
+Playwright tests are stored inside each package under `tests/e2e-pw/`.
+
+Example layout for the Admin package:
+
+```
+packages/Webkul/Admin/tests/e2e-pw/
+├── tests/
+│   ├── catalog/
+│   │   └── product.spec.ts
+│   ├── login/
+│   │   └── admin-login.spec.ts
+│   └── ...
+├── pages/
+│   ├── AdminLoginPage.ts
+│   ├── ProductsPage.ts
+│   └── ...
+├── playwright.config.ts
+└── global-setup.ts
 ```
 
-::: warning Prerequisites
-Playwright tests require a running Bagisto instance with a seeded database. Make sure you have run `php artisan migrate:fresh --seed` before running E2E tests.
+Example layout for the Shop package:
+
+```
+packages/Webkul/Shop/tests/e2e-pw/
+├── tests/
+│   ├── checkout/
+│   │   └── checkout.spec.ts
+│   ├── registration/
+│   │   └── registration.spec.ts
+│   └── ...
+├── pages/
+│   ├── ShopHomePage.ts
+│   └── ...
+├── playwright.config.ts
+└── global-setup.ts
+```
+
+
+### Creating Playwright Tests
+
+To create a new Playwright test:
+
+1. **Use Playwright Codegen** (Recommended for beginners):
+
+```bash
+npx playwright codegen localhost:8000
+```
+
+This opens a browser where you can interact with the application, and Playwright generates the test code automatically.
+
+2. **Manual Creation**:
+
+Create a new `.spec.ts` file under the package-specific `tests/e2e-pw/tests/` directory, and use page objects from `tests/e2e-pw/pages/`.
+
+```ts
+// packages/Webkul/Admin/tests/e2e-pw/tests/catalog/product.spec.ts
+import { test, expect } from '@playwright/test';
+import { AdminLoginPage } from '../../pages/AdminLoginPage';
+import { ProductsPage } from '../../pages/ProductsPage';
+
+test('admin can create a product', async ({ page }) => {
+  const loginPage = new AdminLoginPage(page);
+  const productsPage = new ProductsPage(page);
+
+  await loginPage.goto();
+  await loginPage.login('admin@example.com', 'password');
+
+  await productsPage.goto();
+  await productsPage.createProduct({
+    name: 'Test Product',
+    price: '99.99',
+  });
+
+  await expect(page.locator('.product-name')).toContainText('Test Product');
+});
+```
+
+::: tip
+Using page objects keeps tests cleaner by separating UI interaction logic from test assertions.
 :::
+
+### Running Playwright Tests
+
+Run tests from the package root. For Admin:
+
+```bash
+cd packages/Webkul/Admin
+cd tests/e2e-pw
+ls
+# expect: playwright.config.ts  pages/  tests/
+
+npx playwright install
+npx playwright test --config=playwright.config.ts
+```
+
+Run a single Admin test:
+
+```bash
+npx playwright test --config=playwright.config.ts tests/catalog/product.spec.ts
+```
+
+For Shop:
+
+```bash
+cd packages/Webkul/Shop
+cd tests/e2e-pw
+ls
+# expect: playwright.config.ts  global-setup.ts  page-objects/  tests/
+
+npx playwright install
+npx playwright test --config=playwright.config.ts
+```
+
+Run a single Shop test:
+
+```bash
+npx playwright test --config=playwright.config.ts tests/checkout/checkout.spec.ts
+```
+
+Common commands:
+
+```bash
+# Run tests in headed mode
+npx playwright test --config=playwright.config.ts --headed
+
+# Show the HTML report
+npx playwright show-report
+```
 
 ## Code Style (Pint)
 
