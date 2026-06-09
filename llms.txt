@@ -15,8 +15,13 @@ A complete reference for developers building and extending Bagisto stores
 - [Contribution Guide](/getting-started/contribution-guide)
 - [Best Security Practices](/getting-started/best-security-practice)
 - [Deployment](/getting-started/deployment)
-- [LLMs.txt](/getting-started/llms)
-- [Skills](/getting-started/skills)
+
+### AI
+
+- [AI in Bagisto](/ai/introduction)
+- [Magic AI](/ai/magic-ai)
+- [Agent Skills](/ai/agent-skills)
+- [llms.txt](/ai/llms-txt)
 
 ### Architecture Concepts
 
