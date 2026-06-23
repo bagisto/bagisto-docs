@@ -25,6 +25,30 @@ export default defineConfig({
     },
 
     nav: [
+      {
+        text: 'AI',
+        items: [
+          {
+            text: 'Overview',
+            items: [
+              { text: 'AI in Bagisto', link: '/ai/introduction' },
+            ],
+          },
+          {
+            text: 'For your store',
+            items: [
+              { text: 'Magic AI', link: '/ai/magic-ai' },
+            ],
+          },
+          {
+            text: 'For developers & AI agents',
+            items: [
+              { text: 'Agent Skills', link: '/ai/agent-skills' },
+              { text: 'llms.txt', link: '/ai/llms-txt' },
+            ],
+          },
+        ],
+      },
       { text: 'User Guide', link: 'https://docs.bagisto.com/' },
       { text: 'Extensions', link: 'https://bagisto.com/en/extensions/' },
       { text: 'Community Forum', link: 'https://forums.bagisto.com/' },
@@ -54,9 +78,17 @@ export default defineConfig({
           { text: 'Upgrade Guide', link: '/getting-started/upgrade-guide' },
           { text: 'Contribution Guide', link: '/getting-started/contribution-guide' },
           { text: 'Best Security Practices', link: '/getting-started/best-security-practice' },
-          { text: 'Deployment', link: '/getting-started/deployment' },
-          { text: 'LLMs.txt', link: '/getting-started/llms' },
-          { text: 'Skills',link: '/getting-started/skills'}
+          { text: 'Deployment', link: '/getting-started/deployment' }
+        ]
+      },
+      {
+        text: 'AI',
+        collapsed: false,
+        items: [
+          { text: 'AI in Bagisto', link: '/ai/introduction' },
+          { text: 'Magic AI', link: '/ai/magic-ai' },
+          { text: 'Agent Skills', link: '/ai/agent-skills' },
+          { text: 'llms.txt', link: '/ai/llms-txt' }
         ]
       },
       {

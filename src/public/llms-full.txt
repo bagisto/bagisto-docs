@@ -1211,6 +1211,237 @@ For additional optimization and security configurations, you may want to conside
 For better performance in production, consider enabling OPcache and configuring your PHP-FPM settings appropriately.
 :::
 
+# AI in Bagisto
+
+Bagisto ships with AI built in — both inside your store and inside your development workflow. This section is the home for everything AI-related: store features powered by AI, and tools that make the AI agents you build with smarter about Bagisto.
+
+## For your store
+
+- Magic AI — Generate product content and images, image search, review translation, and personalised checkout messages, powered by your choice of AI provider.
+
+## For developers & AI agents
+
+- Agent Skills — Pre-built skills that teach AI coding agents (Claude Code, Cursor, Windsurf) Bagisto's conventions so they generate correct packages, payment methods, and themes.
+- llms.txt — Context files that help LLMs and AI tools understand Bagisto's architecture for more accurate, framework-aware suggestions.
+
+## Magic AI — built into your store
+
+Magic AI is a first-class Bagisto feature. Add an API key for any supported provider and you can:
+
+- Generate content — product descriptions, page copy, and more from the admin editor.
+- Generate images — create product imagery from a text prompt.
+- Image search — let shoppers search your catalog by uploading a photo.
+- Translate reviews — show customer reviews in the shopper's language.
+- Checkout messages — personalised order confirmation messages.
+
+Magic AI works with OpenAI, Anthropic, Gemini, Groq, xAI, DeepSeek, Mistral, and Ollama — pick a different model per feature, all from the admin panel.
+
+## AI for developers
+
+Bagisto also helps the AI tools you code with:
+
+- Agent Skills — install bagisto/agent-skills so your AI agent generates Bagisto-correct packages, payment methods, themes, and tests.
+- llms.txt — point Copilot, Cursor, ChatGPT, or Claude at Bagisto's context files for architecture-aware answers.
+
+# Magic AI
+
+Magic AI is Bagisto's built-in AI engine. It powers content and image generation in the
+admin panel and AI features on the storefront, using whichever AI provider you configure.
+
+It is built on the [Laravel AI](https://laravel.com/docs/ai) SDK, so a single configuration
+works across every supported provider.
+
+## Supported Providers
+
+Magic AI supports eight providers out of the box:
+
+**OpenAI** · **Anthropic** · **Gemini** · **Groq** · **xAI** · **DeepSeek** · **Mistral** · **Ollama**
+
+You pick the **model per feature**, so you can mix providers — for example, OpenAI for text and Gemini for images.
+
+::: tip Run models locally
+Ollama lets you run open-source models on your own server with no per-request cost. Set its
+URL (default `http://localhost:11434`) in the provider settings.
+:::
+
+## Configuration
+
+Everything is configured from the admin panel under **Configure → Magic AI**. There are four groups:
+
+### 1. General
+
+Enable or disable Magic AI globally.
+
+### 2. Providers
+
+Add the **API key** for each provider you want to use (Ollama also takes a base **URL**).
+You only need to configure the providers you actually plan to use.
+
+### 3. Admin Features
+
+| Feature | Description |
+|---|---|
+| **Text Generation** | AI writing assistant in admin editors (product descriptions, CMS pages, etc.). |
+| **Image Generation** | Create images from a text prompt inside the admin. |
+
+For each, toggle it on and choose which **providers** are available to admins.
+
+### 4. Storefront Features
+
+These are **channel-based** — configure them per store channel, each with its own model:
+
+| Feature | Description |
+|---|---|
+| **Image Search** | Shoppers upload a photo; Magic AI extracts keywords to search the catalog. |
+| **Review Translation** | Customer reviews are translated into the shopper's locale. |
+| **Checkout Message** | A personalised success message is generated after an order is placed. |
+
+::: warning API keys
+Provider API keys are stored as secure (password) config values. Never commit them to your
+repository — add them through the admin panel.
+:::
+
+## Using Magic AI in Code
+
+Magic AI is available through the `magic_ai()` helper or the `Webkul\MagicAI\Facades\MagicAI`
+facade. The provider is resolved automatically from the model name, and the stored API key is
+injected for you.
+
+```php
+use Webkul\MagicAI\Facades\MagicAI;
+
+// Generate text (uses the configured default model when none is passed)
+$text = magic_ai()->generateContent('Write a product description for a leather wallet.');
+
+// Generate text with a specific model
+$text = MagicAI::generateContent('Summarize this policy in one line.', 'gpt-4o');
+```
+
+### Generating Images
+
+```php
+$images = magic_ai()->generateImage('A minimalist running shoe on a white background', [
+    'n'       => 1,           // number of images
+    'size'    => '1:1',       // 1:1 (square), 3:2 (landscape), 2:3 (portrait)
+    'quality' => 'high',      // high, medium, low
+]);
+
+// Each item is a data URL: ['url' => 'data:image/png;base64,...']
+$src = $images[0]['url'];
+```
+
+### Storefront Helpers
+
+These read the model from your channel's storefront configuration automatically:
+
+```php
+// Analyze an uploaded image → comma-separated search keywords
+$keywords = magic_ai()->analyzeImage($absoluteImagePath);
+
+// Translate any text into a locale
+$translated = magic_ai()->translate($review->comment, 'fr');
+
+// Build a personalised checkout success message for an order
+$message = magic_ai()->checkoutMessage($order);
+```
+
+### Reading Config in Code
+
+All settings are readable via `core()->getConfigData()`:
+
+```php
+if (core()->getConfigData('magic_ai.general.settings.enabled')) {
+    $model = core()->getConfigData('magic_ai.storefront_features.review_translation.model');
+}
+```
+
+::: tip Extending Magic AI
+Magic AI lives in the `packages/Webkul/MagicAI` package. Provider support is driven by a single
+registry (`AiProvider`) plus a model enum per provider — adding a provider means adding one
+registry entry and one enum.
+:::
+
+
+# Agent Skills
+
+`bagisto/agent-skills` is a collection of Bagisto-specific skills for AI coding agents like
+**Claude Code, Cursor, and Windsurf**. They teach your agent Bagisto's conventions so it
+generates correct packages, payment methods, themes, and tests.
+
+## Install
+
+Install every skill:
+
+```bash
+npx skills add bagisto/agent-skills
+```
+
+Or install just the one you need:
+
+```bash
+npx skills add bagisto/agent-skills --skill "package-development"
+```
+
+## Available Skills
+
+| Skill | Use it for |
+|---|---|
+| `package-development` | Creating and structuring Bagisto packages |
+| `shipping-method-development` | Building custom shipping methods |
+| `payment-method-development` | Building payment gateways |
+| `product-type-development` | Creating custom product types |
+| `shop-theme-development` | Storefront theme development |
+| `admin-theme-development` | Admin theme development |
+| `pest-testing` | Writing Pest tests with the right patterns |
+
+Swap the `--skill` value for any name above to install it individually.
+
+## Supported Tools
+
+Claude Code · Cursor · Windsurf · any agent that supports the `skills` CLI.
+
+::: tip
+Install only the skills relevant to your work, and keep them updated alongside your Bagisto
+version. See also [llms.txt](/ai/llms-txt) for broader AI context.
+:::
+
+
+# llms.txt
+
+Bagisto publishes `llms.txt` files that describe its architecture and conventions in a
+format AI tools understand. Pointing tools like GitHub Copilot, Cursor, ChatGPT, or Claude
+at these files gives you more accurate, framework-aware suggestions.
+
+## Two Context Files
+
+| File | Content | Best for |
+|---|---|---|
+| [`llms.txt`](/llms.txt) | Core concepts, keywords, naming patterns | Quick setup, general assistance |
+| [`llms-full.txt`](/llms-full.txt) | Detailed architecture and components | Complex, custom development |
+
+Start with `llms.txt`; use `llms-full.txt` when you need deeper context.
+
+## Setup
+
+Download the files to your project root:
+
+```bash
+curl -O https://devdocs.bagisto.com/llms.txt
+curl -O https://devdocs.bagisto.com/llms-full.txt
+```
+
+Then point your AI tool at them:
+
+- **GitHub Copilot** — detects the files automatically.
+- **Cursor** — reference with `@Docs llms.txt`.
+- **ChatGPT / Claude** — upload or paste the file in your conversation.
+
+::: tip For custom packages
+Drop a project- or package-specific `llms.txt` alongside your code so agents pick up your own
+conventions too. For task-specific guidance, pair this with [Agent Skills](/ai/agent-skills).
+:::
+
+
 # Architecture Overview
 
 This document provides a comprehensive overview of Bagisto's architecture and core principles, designed to help developers understand the framework's structure and implementation approach.

@@ -1,5 +1,15 @@
 export const redirects = {
     /**
+     * Moved pages
+     *
+     * AI docs were consolidated from "Getting Started" into a dedicated "AI" section.
+     */
+    '/getting-started/llms': '/ai/llms-txt',
+    '/getting-started/llms.html': '/ai/llms-txt',
+    '/getting-started/skills': '/ai/agent-skills',
+    '/getting-started/skills.html': '/ai/agent-skills',
+
+    /**
      * Version 2.3 Redirects
      * 
      * Note: These redirects are for the legacy 2.3 documentation.
@@ -14,7 +24,7 @@ export const redirects = {
     '/2.3/introduction/installation.html': '/getting-started/installation',
     '/2.3/introduction/docker.html': '/getting-started/installation.html#🐳-docker-installation',
     '/2.3/introduction/sail.html': '/getting-started/installation.html#⛵-laravel-sail-installation',
-    '/2.3/introduction/llms.html': '/getting-started/llms',
+    '/2.3/introduction/llms.html': '/ai/llms-txt',
 
     // Architecture Concepts
     '/2.3/architecture/packages': '/architecture/backend',

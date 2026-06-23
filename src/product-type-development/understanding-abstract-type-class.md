@@ -376,16 +376,18 @@ These views are automatically included in the product edit page and have access 
 
 ### Cart Integration
 
-#### `prepareForCart(array $data): array`
+#### `prepareForCart($data)`
 
 The most important method - processes product data before adding to cart:
 
 ```php
 // Core method signature in AbstractType
-public function prepareForCart(array $data): array
+public function prepareForCart($data)
 {
     // Processes product data for cart addition
-    // Returns array of cart item data or error message
+    // Returns an array of cart item data on success,
+    // or a string error message on failure (the cart treats a
+    // string return value as an error and aborts the add-to-cart).
     // Handles pricing, validation, and product-specific logic
 }
 ```
@@ -393,11 +395,12 @@ public function prepareForCart(array $data): array
 **For subscription products:**
 
 ```php
-public function prepareForCart(array $data): array
+public function prepareForCart($data)
 {
     // Validate subscription-specific data first
     // For example, if your form passes a subscription_frequency field that needs validation
     if (empty($data['subscription_frequency'])) {
+        // Returning a string aborts the add-to-cart and surfaces this as an error message
         return 'Please select subscription frequency.';
     }
     

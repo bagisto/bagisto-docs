@@ -55,25 +55,26 @@ Or directly with Pest:
 The test suites are defined in `phpunit.xml`. For example, to run only admin feature tests:
 
 ```bash
-./vendor/bin/pest --testsuite="Admin Feature Tests"
+./vendor/bin/pest --testsuite="Admin Feature Test"
 ```
 
 Available test suites (from `phpunit.xml`):
 
 | Suite Name | Path | Type |
 |---|---|---|
-| Admin Feature Tests | `packages/Webkul/Admin/tests/Feature` | Feature |
-| Core Unit Tests | `packages/Webkul/Core/tests/Unit` | Unit |
-| Customer Unit Tests | `packages/Webkul/Customer/tests/Unit` | Unit |
-| DataGrid Unit Tests | `packages/Webkul/DataGrid/tests/Unit` | Unit |
-| Installer Feature Tests | `packages/Webkul/Installer/tests/Feature` | Feature |
-| PayU Unit Tests | `packages/Webkul/PayU/tests/Unit` | Unit |
-| PayU Feature Tests | `packages/Webkul/PayU/tests/Feature` | Feature |
-| Razorpay Unit Tests | `packages/Webkul/Razorpay/tests/Unit` | Unit |
-| Razorpay Feature Tests | `packages/Webkul/Razorpay/tests/Feature` | Feature |
-| Shop Feature Tests | `packages/Webkul/Shop/tests/Feature` | Feature |
-| Stripe Unit Tests | `packages/Webkul/Stripe/tests/Unit` | Unit |
-| Stripe Feature Tests | `packages/Webkul/Stripe/tests/Feature` | Feature |
+| Admin Feature Test | `packages/Webkul/Admin/tests/Feature` | Feature |
+| Core Unit Test | `packages/Webkul/Core/tests/Unit` | Unit |
+| Customer Unit Test | `packages/Webkul/Customer/tests/Unit` | Unit |
+| DataGrid Unit Test | `packages/Webkul/DataGrid/tests/Unit` | Unit |
+| EUWithdrawal Feature Test | `packages/Webkul/EUWithdrawal/tests/Feature` | Feature |
+| Installer Feature Test | `packages/Webkul/Installer/tests/Feature` | Feature |
+| PayU Unit Test | `packages/Webkul/PayU/tests/Unit` | Unit |
+| PayU Feature Test | `packages/Webkul/PayU/tests/Feature` | Feature |
+| Razorpay Unit Test | `packages/Webkul/Razorpay/tests/Unit` | Unit |
+| Razorpay Feature Test | `packages/Webkul/Razorpay/tests/Feature` | Feature |
+| Shop Feature Test | `packages/Webkul/Shop/tests/Feature` | Feature |
+| Stripe Unit Test | `packages/Webkul/Stripe/tests/Unit` | Unit |
+| Stripe Feature Test | `packages/Webkul/Stripe/tests/Feature` | Feature |
 
 ### Run a Single Test File
 

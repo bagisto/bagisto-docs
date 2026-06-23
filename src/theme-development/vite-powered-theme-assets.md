@@ -120,17 +120,18 @@ Don't worry about understanding every dependency listed below. While we could wa
         "build": "vite build"
     },
     "devDependencies": {
-        "autoprefixer": "^10.4.14",
-        "axios": "^1.1.2",
-        "laravel-vite-plugin": "^0.7.2",
+        "autoprefixer": "^10.4.16",
+        "axios": "^1.7.9",
+        "laravel-vite-plugin": "^1.0",
         "postcss": "^8.4.23",
         "tailwindcss": "^3.3.2",
-        "vite": "^4.0.0",
-        "vue": "^3.2.47"
+        "vite": "^5.4.12",
+        "vue": "^3.5.13"
     },
     "dependencies": {
         "@vee-validate/i18n": "^4.9.1",
         "@vee-validate/rules": "^4.9.1",
+        "@vitejs/plugin-vue": "^4.2.3",
         "mitt": "^3.0.0",
         "vee-validate": "^4.9.1",
         "vue-flatpickr": "^2.3.0"
@@ -163,6 +164,7 @@ This Vite configuration might look complex, but you don't need to understand eve
 
 ```javascript
 import { defineConfig, loadEnv } from "vite";
+import vue from "@vitejs/plugin-vue";
 import laravel from "laravel-vite-plugin";
 import path from "path";
 
@@ -185,6 +187,8 @@ export default defineConfig(({ mode }) => {
         },
 
         plugins: [
+            vue(),
+
             laravel({
                 hotFile: "../../../public/custom-theme-vite.hot",
                 publicDirectory: "../../../public",
@@ -301,29 +305,37 @@ Now let's update your theme to use the compiled assets and enhance the styling.
 
 Update your theme configuration in `config/themes.php` to include asset settings:
 
-```php{7-9}
-'custom-theme' => [
-    'name'        => 'Custom Theme Package',
-    'assets_path' => 'public/themes/shop/custom-theme',
-    'views_path'  => 'resources/themes/custom-theme/views',
+```php{9-11}
+'shop' => [
+    // ...existing themes (e.g. 'default')...
 
-    'vite'        => [
-        'hot_file'                 => 'custom-theme-vite.hot',
-        'build_directory'          => 'themes/custom-theme/build',
-        'package_assets_directory' => 'src/Resources/assets',
+    'custom-theme' => [
+        'name'        => 'Custom Theme Package',
+        'assets_path' => 'public/themes/shop/custom-theme',
+        'views_path'  => 'resources/themes/custom-theme/views',
+
+        'vite'        => [
+            'hot_file'                 => 'custom-theme-vite.hot',
+            'build_directory'          => 'themes/custom-theme/build',
+            'package_assets_directory' => 'src/Resources/assets',
+        ],
     ],
 ],
 ```
 
 ### Step 5: Configure Bagisto Vite
 
-Add your theme package to `config/bagisto-vite.php`:
+Add your theme package to the `viters` array in `config/bagisto-vite.php`:
 
 ```php
-'custom-theme' => [
-    'hot_file'                 => 'custom-theme-vite.hot',
-    'build_directory'          => 'themes/custom-theme/build',
-    'package_assets_directory' => 'src/Resources/assets',
+'viters' => [
+    // ...existing viters (admin, shop, installer)...
+
+    'custom-theme' => [
+        'hot_file'                 => 'custom-theme-vite.hot',
+        'build_directory'          => 'themes/custom-theme/build',
+        'package_assets_directory' => 'src/Resources/assets',
+    ],
 ],
 ```
 
