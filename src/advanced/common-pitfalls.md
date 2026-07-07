@@ -6,7 +6,7 @@ This page documents frequent issues encountered by developers working with Bagis
 
 ### PHP Version Mismatch
 
-Bagisto requires **PHP 8.3 or higher**. The `composer.json` specifies `"php": "^8.3"`. Running on PHP 8.2 or lower will cause dependency resolution failures.
+Bagisto requires **PHP 8.3 or 8.4**. The `composer.json` specifies `"php": ">=8.3 <8.5"`. Running on PHP 8.2 or lower — or on PHP 8.5 or higher — will cause dependency resolution failures.
 
 ```bash
 # Verify your PHP version

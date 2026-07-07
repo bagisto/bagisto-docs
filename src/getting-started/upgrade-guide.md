@@ -12,7 +12,7 @@ Before upgrading, ensure you have:
 
 - **Database Backup** - Complete backup of your current database
 - **File Backup** - Backup of customizations and uploaded files
-- **Server Requirements** - PHP 8.3 or higher, MySQL 8.0.32+, Composer 2.5+
+- **Server Requirements** - PHP 8.3 or 8.4 (PHP 8.5+ not supported yet), MySQL 8.0.32+, Composer 2.5+
 - **Downtime Planning** - Schedule maintenance window for the upgrade
 
 ## 🚀 Upgrade Process

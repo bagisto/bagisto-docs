@@ -16,8 +16,33 @@ php artisan bagisto:install
 
 | Flag | Description |
 |---|---|
-| `--skip-env-check` | Skip environment file validation |
-| `--skip-admin-creation` | Skip the admin user creation step |
+| `-n`, `--no-interaction` | Run an unattended install: ask no questions, use the existing `.env`, create the default admin user, and skip sample products. |
+| `--demo-samples` | Seed demo/sample product data. Useful together with `--no-interaction`. |
+| `--skip-env-check` | *(Deprecated — use `--no-interaction`.)* Skip environment file validation. |
+| `--skip-admin-creation` | *(Deprecated — use `--no-interaction`.)* Skip the admin user creation step and create the default admin. |
+| `--skip-cloud-promotion` | *(Deprecated — use `--no-interaction`.)* Skip the Bagisto Cloud hosting prompt. |
+| `--skip-github-star` | *(Deprecated — use `--no-interaction`.)* Alias of `--skip-cloud-promotion`. |
+
+::: warning Deprecated options
+The `--skip-*` options are superseded by the global `--no-interaction` (`-n`) flag and will be removed in a future release. Using any of them prints a deprecation warning. `--no-interaction` performs the combined behavior (skip env check + create default admin + skip the cloud prompt).
+:::
+
+**Unattended install (no questions, no sample products):**
+
+```bash
+php artisan bagisto:install --no-interaction
+```
+
+This relies on the existing `.env`, so make sure it is configured before running. It creates the default admin user:
+
+- **Email:** `admin@example.com`
+- **Password:** `admin123`
+
+**Unattended install with demo/sample products:**
+
+```bash
+php artisan bagisto:install --no-interaction --demo-samples
+```
 
 **Source:** `Webkul\Installer\Console\Commands\Installer`
 

@@ -9,7 +9,7 @@ The fastest way to get Bagisto up and running:
 ### Prerequisites
 
 Before starting, ensure you have:
-- PHP 8.3 or higher
+- PHP 8.3 or 8.4 (PHP 8.5 and above are not supported yet)
 - Composer 2.5 or higher
 - MySQL 8.0.32 or higher
 - Web server (Apache/Nginx)

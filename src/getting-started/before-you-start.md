@@ -50,7 +50,7 @@ Before diving into Bagisto development, ensure your system meets these requireme
 - **Server**: Apache 2 or NGINX
 - **RAM**: 4GB or higher
 - **Node**: 22.13.1 LTS or higher
-- **PHP**: 8.3 or higher
+- **PHP**: 8.3 or 8.4 (PHP 8.5 and above are not supported yet)
 - **Composer**: 2.5 or higher
 
 ### 🧩 PHP Extensions
