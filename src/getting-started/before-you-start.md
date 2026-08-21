@@ -72,6 +72,7 @@ date.timezone = Asia/Kolkata  # Change to your timezone
 ### 🗄️ Database
 
 - **MySQL**: Version 8.0.32 or higher
+- **MariaDB**: Version 10.3 or higher
 - **Collation**: `utf8mb4_unicode_ci` (recommended)
 
 ::: tip Quick Check
