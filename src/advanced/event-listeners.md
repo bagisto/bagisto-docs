@@ -530,12 +530,20 @@ The following table lists the core events available in Bagisto that you can list
 | `user.role.update.after`                             | This event will be fired after role gets updated.                 | `$role`                   |
 | `user.role.delete.before`                            | This event will be fired before role gets deleted.                | `$id`                     |
 | `user.role.delete.after`                             | This event will be fired after role gets deleted.                 | `$id`                     |
-| `theme_customization.create.before`                  | This event will be fired before theme customization gets created. | -                         |
-| `theme_customization.create.after`                   | This event will be fired after theme customization gets created.  | `$id`                     |
-| `theme_customization.update.before`                  | This event will be fired before theme customization gets updated. | `$id`                     |
-| `theme_customization.update.after`                   | This event will be fired after theme customization gets updated.  | `$theme`                  |
-| `theme_customization.delete.before`                  | This event will be fired before theme customization gets deleted. | `$id`                     |
-| `theme_customization.delete.after`                   | This event will be fired after theme customization gets deleted.  | `$id`                     |
+| `section.create.before`                              | This event will be fired before a section gets created.           | -                         |
+| `section.create.after`                               | This event will be fired after a section gets created.            | `$section`                |
+| `section.update.before`                              | This event will be fired before a section gets updated.           | `$id`                     |
+| `section.update.after`                               | This event will be fired after a section gets updated.            | `$section`                |
+| `section.delete.before`                              | This event will be fired before a section gets deleted.           | `$id`                     |
+| `section.delete.after`                               | This event will be fired after a section gets deleted.            | `$id`                     |
+| `section.draft.save.before`                          | This event will be fired before a section draft gets saved.       | `$id`                     |
+| `section.draft.save.after`                           | This event will be fired after a section draft gets saved.        | `$section`                |
+| `section.draft.discard.before`                       | This event will be fired before a section draft gets discarded.   | `$id`                     |
+| `section.draft.discard.after`                        | This event will be fired after a section draft gets discarded.    | `$section`                |
+| `section.reorder.before`                             | This event will be fired before sections get reordered.           | `$sectionIds`             |
+| `section.reorder.after`                              | This event will be fired after sections get reordered.            | `$sections`               |
+| `section.media.upload.before`                        | This event will be fired before section media gets uploaded.      | `$id`                     |
+| `section.media.upload.after`                         | This event will be fired after section media gets uploaded.       | `$media`                  |
 | `user.admin.create.before`                           | This event will be fired before admin gets created.               | -                         |
 | `user.admin.create.after`                            | This event will be fired after admin gets created.                | `$admin`                  |
 | `user.admin.update.before`                           | This event will be fired before admin gets updated.               | `$id`                     |

@@ -116,7 +116,7 @@ Before running Playwright tests, ensure you have both `npx` and `playwright` ins
 
 **Pint Tests (Code Formatting):**
 
-Pint is a PHP code style fixer that helps maintain consistent formatting across the codebase. It automatically applies standards like PSR-2 and PSR-12, making your code cleaner and easier to review. Before committing, run Pint to ensure your changes follow the project's coding standards.
+Pint is a PHP code style fixer that helps maintain consistent formatting across the codebase. Bagisto uses Pint's `laravel` preset, configured in `pint.json`, which builds on PSR-12. Before committing, run Pint to ensure your changes follow the project's coding standards.
 
 ```bash
 # Check code formatting
@@ -135,8 +135,8 @@ All three test types (Pest, Playwright, and Pint) must pass before your PR can b
 Bagisto follows established PHP standards for consistency and readability:
 
 ### Standards We Follow
-- **[PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)** - Coding Style Guide
-- **[PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md)** - Autoloading Standard
+- **[PSR-12](https://www.php-fig.org/psr/psr-12/)** - Extended Coding Style, applied through Pint's `laravel` preset
+- **[PSR-4](https://www.php-fig.org/psr/psr-4/)** - Autoloading Standard
 
 ### PHPDoc Example
 

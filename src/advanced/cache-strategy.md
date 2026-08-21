@@ -96,7 +96,7 @@ These listeners are in `packages/Webkul/FPC/src/Listeners/` and are registered v
 - `Refund.php` — Invalidates product URLs for refunded items
 - `Page.php` — Invalidates CMS page URLs
 - `URLRewrite.php` — Invalidates rewritten URLs
-- `ThemeCustomization.php` — Clears entire cache or specific URLs
+- `Section.php` — Clears the entire cache for layout-wide section types, or the home page otherwise
 - `CoreConfig.php` — Clears entire response cache
 
 ::: warning Admin Panel
