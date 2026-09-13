@@ -24,6 +24,14 @@ Bagisto's shipping system is built around a flexible carrier-based architecture 
 | **Carrier Classes** | Contains business logic for rate calculation | `Carriers/ClassName.php` |
 | **System Configuration** | Admin interface forms for method settings | `Config/system.php` |
 | **Service Provider** | Registers shipping method with Bagisto core | `Providers/ServiceProvider.php` |
+| **Shipping facade** | Core's collector: `Shipping::collectRates()` instantiates every configured carrier, calls `calculate()`, saves the rates on the cart and groups them for checkout | `Webkul\Shipping\Shipping`, `shipping()` helper |
+
+Two facts about the collector shape everything else:
+
+- **Rates are collected only for carts with stockable items.** The checkout skips `Shipping::collectRates()` for a cart of virtual or downloadable products, so a carrier is never asked about such a cart.
+- **A carrier is instantiated with `new`, not resolved from the container.** Constructor dependency injection in a carrier class fails; resolve what you need with `app()` inside `calculate()`.
+
+The chosen method must round-trip: the checkout posts the rate's `method` string back, and `Cart::saveShippingMethod()` accepts it only if `Shipping::isMethodCodeExists()` finds a collected rate with that method. Registering a carrier in `config('carriers')` also makes it selectable as a cart-rule condition.
 
 ### Key Features
 
@@ -66,7 +74,7 @@ You'll have a complete working shipping method after step 1, and steps 2-4 help 
 Before you begin, ensure you have:
 
 - **Bagisto Installation**: A working Bagisto development environment
-- **PHP Knowledge**: Familiarity with PHP 8.3+ and Laravel concepts
+- **PHP Knowledge**: Familiarity with PHP 8.4 (8.3 on Bagisto 2.4) and Laravel concepts
 - **Package Development**: Basic understanding of [Package Development](../package-development/getting-started.md)
 - **Development Tools**: Composer, Git, and a code editor
 

@@ -22,9 +22,11 @@ The `view_render_event()` function creates injection points in templates where e
 
 ```blade
 {!! view_render_event('event.name.here') !!}
+
+{!! view_render_event('bagisto.shop.products.view.before', ['product' => $product]) !!}
 ```
 
-When this function is called, Bagisto checks if any listeners are registered for that event and renders their content at that exact location.
+The helper lives in `packages/Webkul/Theme/src/Http/helpers.php` and has the signature `view_render_event(string $eventName, mixed $params = null)`. When it runs, `Webkul\Theme\ViewRenderEventManager` dispatches an ordinary Laravel event of that name with itself as the payload, collects the templates every listener adds, renders them with the parameters, and returns the concatenated HTML at that exact location. Most core call sites pass the model the section is about, so a listener can read it with `$viewRenderEventManager->getParam('product')`.
 
 ## How Bagisto Uses Render Events
 
@@ -66,56 +68,86 @@ In the main shop layout (`packages/Webkul/Shop/src/Resources/views/components/la
 
 ### Product Page Events
 
-In product detail pages, Bagisto provides events for different sections:
+The product page (`packages/Webkul/Shop/src/Resources/views/products/view.blade.php`) wraps each block in a pair of events and passes the product every time. The names it actually dispatches:
 
-```blade{5,9,13,16,20}
-<div class="product-details">
-    <div class="product-images">
-        <!-- Product image gallery -->
-        
-        {!! view_render_event('bagisto.shop.products.view.gallery.after') !!}
-    </div>
-    
-    <div class="product-info">
-        {!! view_render_event('bagisto.shop.products.view.info.before') !!}
-        
-        <!-- Product title, price, description -->
-        
-        {!! view_render_event('bagisto.shop.products.view.info.after') !!}
-        
-        <div class="product-actions">
-            {!! view_render_event('bagisto.shop.products.view.actions.before') !!}
-            
-            <!-- Add to cart, wishlist buttons -->
-            
-            {!! view_render_event('bagisto.shop.products.view.actions.after') !!}
-        </div>
-    </div>
-</div>
+```blade
+{!! view_render_event('bagisto.shop.products.view.before', ['product' => $product]) !!}
+
+    {!! view_render_event('bagisto.shop.products.name.before', ['product' => $product]) !!}
+    <!-- Product name -->
+    {!! view_render_event('bagisto.shop.products.name.after', ['product' => $product]) !!}
+
+    {!! view_render_event('bagisto.shop.products.rating.before', ['product' => $product]) !!}
+    <!-- Rating -->
+    {!! view_render_event('bagisto.shop.products.rating.after', ['product' => $product]) !!}
+
+    {!! view_render_event('bagisto.shop.products.price.before', ['product' => $product]) !!}
+    <!-- Price -->
+    {!! view_render_event('bagisto.shop.products.price.after', ['product' => $product]) !!}
+
+    {!! view_render_event('bagisto.shop.products.short_description.before', ['product' => $product]) !!}
+    <!-- Short description -->
+    {!! view_render_event('bagisto.shop.products.short_description.after', ['product' => $product]) !!}
+
+    {!! view_render_event('bagisto.shop.products.view.quantity.before', ['product' => $product]) !!}
+    <!-- Quantity box -->
+    {!! view_render_event('bagisto.shop.products.view.quantity.after', ['product' => $product]) !!}
+
+    {!! view_render_event('bagisto.shop.products.view.add_to_cart.before', ['product' => $product]) !!}
+    <!-- Add to cart -->
+    {!! view_render_event('bagisto.shop.products.view.add_to_cart.after', ['product' => $product]) !!}
+
+    {!! view_render_event('bagisto.shop.products.view.buy_now.before', ['product' => $product]) !!}
+    <!-- Buy now -->
+    {!! view_render_event('bagisto.shop.products.view.buy_now.after', ['product' => $product]) !!}
+
+    {!! view_render_event('bagisto.shop.products.view.additional_actions.before', ['product' => $product]) !!}
+        {!! view_render_event('bagisto.shop.products.view.compare.before', ['product' => $product]) !!}
+        <!-- Compare -->
+        {!! view_render_event('bagisto.shop.products.view.compare.after', ['product' => $product]) !!}
+    {!! view_render_event('bagisto.shop.products.view.additional_actions.after', ['product' => $product]) !!}
+
+    {!! view_render_event('bagisto.shop.products.view.description.before', ['product' => $product]) !!}
+    <!-- Description tab -->
+    {!! view_render_event('bagisto.shop.products.view.description.after', ['product' => $product]) !!}
+
+{!! view_render_event('bagisto.shop.products.view.after', ['product' => $product]) !!}
 ```
+
+The SocialShare package, for instance, adds its buttons by listening to `bagisto.shop.products.view.compare.after`; a package that wants to print something under the price would listen to `bagisto.shop.products.price.after` the same way.
 
 ### Checkout Page Events
 
-Checkout pages have numerous injection points for payment methods, shipping options, and custom fields:
+The one-page checkout (`checkout/onepage/index.blade.php` and its partials) wraps the header, breadcrumbs, each address form, the shipping and payment method lists and the order summary:
 
-```blade{3,7,11,15}
-<div class="checkout-form">
-    <div class="billing-section">
-        {!! view_render_event('bagisto.shop.checkout.billing.before') !!}
-        
-        <!-- Billing address form -->
-        
-        {!! view_render_event('bagisto.shop.checkout.billing.after') !!}
-    </div>
-    
-    <div class="payment-section">
-        {!! view_render_event('bagisto.shop.checkout.payment.before') !!}
-        
-        <!-- Payment method selection -->
-        
-        {!! view_render_event('bagisto.shop.checkout.payment.after') !!}
-    </div>
-</div>
+```blade
+{!! view_render_event('bagisto.shop.checkout.onepage.header.before') !!}
+{!! view_render_event('bagisto.shop.checkout.onepage.header.after') !!}
+
+{!! view_render_event('bagisto.shop.checkout.onepage.address.guest.billing.before') !!}
+{!! view_render_event('bagisto.shop.checkout.onepage.address.guest.billing.after') !!}
+
+{!! view_render_event('bagisto.shop.checkout.onepage.payment_methods.before') !!}
+    {!! view_render_event('bagisto.shop.checkout.onepage.payment_method.accordion.before') !!}
+        {!! view_render_event('bagisto.shop.checkout.payment-method.before') !!}
+        <!-- One payment method radio -->
+        {!! view_render_event('bagisto.shop.checkout.onepage.payment-method.image.before') !!}
+        {!! view_render_event('bagisto.shop.checkout.onepage.payment-method.image.after') !!}
+{!! view_render_event('bagisto.shop.checkout.onepage.payment_methods.after') !!}
+
+{!! view_render_event('bagisto.shop.checkout.cart.summary.grand_total.before') !!}
+{!! view_render_event('bagisto.shop.checkout.cart.summary.grand_total.after') !!}
+
+{!! view_render_event('bagisto.shop.checkout.onepage.summary.paypal_smart_button.before') !!}
+{!! view_render_event('bagisto.shop.checkout.onepage.summary.paypal_smart_button.after') !!}
+```
+
+### Finding the name you need
+
+There are over a thousand render events across the Shop and Admin views. The reliable way to find the one for a spot on a page is to open the Blade file that draws it (the [Blade Tracer](../theme-development/blade-tracer.md) shows which file that is) and read the surrounding `view_render_event()` calls, or to grep:
+
+```bash
+grep -rn "view_render_event('bagisto.admin.sales.order" packages/Webkul/Admin/src/Resources/views
 ```
 
 ::: tip Strategic Placement
@@ -132,53 +164,70 @@ To inject content into these predefined locations, you need to listen for the re
 
 ### Basic Event Listener Setup
 
-Here's how to set up event listeners for render events:
+Core packages register render listeners in their `EventServiceProvider::boot()`, the way SocialShare does:
 
-```php{16-23}
+**File:** `packages/Webkul/SocialShare/src/Providers/EventServiceProvider.php`
+
+```php
 <?php
 
-namespace Webkul\RMA\Providers;
+namespace Webkul\SocialShare\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 
-class RMAServiceProvider extends ServiceProvider
+class EventServiceProvider extends ServiceProvider
 {
     /**
-     * Bootstrap any application services.
+     * Bootstrap services.
+     *
+     * @return void
      */
-    public function boot(): void
+    public function boot()
     {
-        // Listen to render events
-        Event::listen('bagisto.shop.products.view.actions.after', function($viewRenderEventManager) {
-            $viewRenderEventManager->addTemplate('rma::shop.products.return-button');
-        });
-
-        Event::listen('bagisto.shop.customers.account.orders.view.after', function($viewRenderEventManager) {
-            $viewRenderEventManager->addTemplate('rma::shop.customers.return-request-form');
+        Event::listen('bagisto.shop.products.view.compare.after', function ($viewRenderEventManager) {
+            $viewRenderEventManager->addTemplate('social_share::share');
         });
     }
 }
 ```
 
+A package's own provider registers that `EventServiceProvider` from its `boot()` method. For the RMA example:
+
+```php
+Event::listen('bagisto.shop.products.view.additional_actions.after', function ($viewRenderEventManager) {
+    $viewRenderEventManager->addTemplate('rma::shop.products.return-button');
+});
+
+Event::listen('bagisto.shop.customers.account.orders.view.after', function ($viewRenderEventManager) {
+    $viewRenderEventManager->addTemplate('rma::shop.customers.return-request-form');
+});
+```
+
 ### Template Registration Method
 
-The `$viewRenderEventManager->addTemplate()` method accepts:
+The `$viewRenderEventManager->addTemplate($template, $params = [])` method accepts:
 
-- **Template path**: Using package notation (`package::view.path`) or direct path
-- **Data array** (optional): Additional data to pass to the template
+- **Template path**: Using package notation (`package::view.path`), rendered with the parameters
+- **Raw HTML**: A string that is not a view name is emitted as-is; `Webkul\BookingProduct\Listeners\PriceNote` uses this for a one-line note
+- **Data array** (optional): Merged into the parameters the template receives
 
-```php{3-5}
-Event::listen('bagisto.shop.checkout.payment.after', function($viewRenderEventManager) {
-    $viewRenderEventManager->addTemplate('rma::shop.checkout.return-policy', [
-        'policyUrl' => config('rma.return_policy_url'),
-        'returnDays' => config('rma.default_return_days', 30)
+The listener also receives whatever the view passed as the second argument to `view_render_event()`:
+
+```php
+Event::listen('bagisto.shop.products.price.after', function ($viewRenderEventManager) {
+    $product = $viewRenderEventManager->getParam('product');
+
+    $viewRenderEventManager->addTemplate('rma::shop.products.return-window', [
+        'returnDays' => core()->getConfigData('sales.rma.setting.default_allowed_days'),
     ]);
 });
 ```
 
+`getParams()` returns the whole array and `getEventName()` the event, which is useful for one listener bound to several events.
+
 ::: info Template Resolution
-Bagisto resolves template paths using Laravel's view system. Package notation (`rma::shop.products.return-button`) looks for templates in your package's `Resources/views` directory.
+Bagisto resolves template paths using Laravel's view system. Package notation (`rma::shop.products.return-button`) looks for templates in your package's `Resources/views` directory, and a storefront template is subject to [theme overrides](../theme-development/creating-store-theme.md#how-views-are-resolved) like any other view.
 :::
 
 ## Best Practices
@@ -194,9 +243,11 @@ Follow consistent naming patterns for your render events:
 ```
 
 **Examples:**
-- `bagisto.shop.products.view.actions.after`
-- `bagisto.admin.sales.orders.edit.form.before`
-- `bagisto.shop.checkout.billing.address.after`
+- `bagisto.shop.products.view.additional_actions.after`
+- `bagisto.admin.sales.orders.create.before`
+- `bagisto.shop.checkout.onepage.address.guest.billing.after`
+
+Almost every core event ends in `.before` or `.after`. A handful of older admin events omit the `bagisto.` prefix (`admin.settings.channels.create.create_form_controls.before`), and `bagisto.admin.layout.head` has no suffix; read the view rather than guessing a name from the convention.
 
 ### Performance Considerations
 

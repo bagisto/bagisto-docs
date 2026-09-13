@@ -18,19 +18,21 @@ To work efficiently with Bagisto (especially the latest versions), having a basi
 
 ### ⚡ Key Laravel Knowledge for Bagisto
 
-- [Defining routes](https://laravel.com/docs/12.x/routing) and [building controllers](https://laravel.com/docs/12.x/controllers)
-- Understanding the [Service Container](https://laravel.com/docs/12.x/container) and [Dependency Injection](https://laravel.com/docs/12.x/providers)
-- [Middleware](https://laravel.com/docs/12.x/middleware) and the request-handling flow
-- [Events](https://laravel.com/docs/12.x/events), [listeners](https://laravel.com/docs/12.x/events#defining-listeners), and [model observers](https://laravel.com/docs/12.x/eloquent#observers)
-- Working with [Eloquent ORM](https://laravel.com/docs/12.x/eloquent) and [database migrations](https://laravel.com/docs/12.x/migrations)
-- [Blade templating essentials](https://laravel.com/docs/12.x/blade)
+- [Defining routes](https://laravel.com/docs/routing) and [building controllers](https://laravel.com/docs/controllers)
+- Understanding the [Service Container](https://laravel.com/docs/container) and [Dependency Injection](https://laravel.com/docs/providers)
+- [Middleware](https://laravel.com/docs/middleware) and the request-handling flow
+- [Events](https://laravel.com/docs/events), [listeners](https://laravel.com/docs/events#defining-listeners), and [model observers](https://laravel.com/docs/eloquent#observers)
+- Working with [Eloquent ORM](https://laravel.com/docs/eloquent) and [database migrations](https://laravel.com/docs/migrations)
+- [Blade templating essentials](https://laravel.com/docs/blade)
+
+Bagisto 2.4 runs on Laravel 12; the current development version runs on Laravel 13. The concepts above are the same on both.
 
 ### 🎨 Helpful Extras for Advanced Customization
 
-- [Tailwind CSS](https://tailwindcss.com/docs/installation) for modern, responsive styling
+- [Tailwind CSS](https://tailwindcss.com/docs/installation) for modern, responsive styling (version 4 on the current development version, version 3 on Bagisto 2.4)
 - [Vue.js basics](https://vuejs.org/guide/introduction.html) for interactive features
-- Asset bundling with [Vite](https://laravel.com/docs/12.x/vite)
-- [Creating custom Laravel packages](https://laravel.com/docs/12.x/packages)
+- Asset bundling with [Vite](https://laravel.com/docs/vite)
+- [Creating custom Laravel packages](https://laravel.com/docs/packages)
 
 ### 🔗 Learn and Connect
 
@@ -47,16 +49,19 @@ Before diving into Bagisto development, ensure your system meets these requireme
 
 ### 🖥️ Server Configuration
 
-- **Server**: Apache 2 or NGINX
+- **Server**: Apache 2, NGINX or OpenLiteSpeed
 - **RAM**: 4GB or higher
-- **Node**: 22.13.1 LTS or higher
-- **PHP**: 8.3 or 8.4 (PHP 8.5 and above are not supported yet)
+- **Node**: 22 LTS or higher (needed only to build front-end assets and to run the Playwright tests)
+- **PHP**: 8.4 for the current development version; 8.3 or 8.4 for Bagisto 2.4. PHP 8.5 and above are not supported yet
 - **Composer**: 2.5 or higher
 
 ### 🧩 PHP Extensions
 
+`composer.json` requires `calendar`, `curl`, `intl`, `mbstring`, `openssl`, `pdo`, `pdo_mysql` and `tokenizer`. The installer additionally checks for `ctype`, `dom`, `fileinfo`, `filter`, `gd`, `hash`, `json`, `pcre`, `session` and `xml`.
+
 - **php-intl**: Required for internationalization support
-- **php-gd**: Essential for image processing and manipulation
+- **php-gd** (or **php-imagick**): Image processing; the driver is chosen with `IMAGE_DRIVER` on the current development version
+- **php-pdo_pgsql**: Only when running on PostgreSQL
 - **Other standard Laravel extensions**: Check via `php -m` command
 
 ### ⚙️ PHP Configuration
@@ -71,9 +76,22 @@ date.timezone = Asia/Kolkata  # Change to your timezone
 
 ### 🗄️ Database
 
-- **MySQL**: Version 8.0.32 or higher
-- **MariaDB**: Version 10.3 or higher
-- **Collation**: `utf8mb4_unicode_ci` (recommended)
+Bagisto is tested on three engines, and each is a first-class choice:
+
+| Engine | Version | Availability |
+|---|---|---|
+| **MySQL** | 8.0 | Bagisto 2.4 and the current development version |
+| **MariaDB** | 10.11 | Bagisto 2.4 and the current development version |
+| **PostgreSQL** | 16 | Current development version |
+
+- **Collation**: `utf8mb4_unicode_ci` on MySQL and MariaDB (recommended)
+- The installer asks which engine to use and fills in the default port. See [Database compatibility](../advanced/database-compatibility.md) for what to keep in mind when writing code that must run on all three.
+
+### 🔍 Optional services
+
+- **Elasticsearch 8.x** for catalog search on larger stores; see [Configure Elasticsearch](../performance/configure-elasticsearch.md)
+- **Redis** for the cache, session, queue and full page cache stores in production
+- **Amazon S3 or Cloudflare R2** for media on the current development version; see [File Storage](../advanced/file-storage.md)
 
 ::: tip Quick Check
 Run `php -v` and `composer --version` to verify your PHP and Composer versions meet the requirements.

@@ -2,7 +2,7 @@
 
 In Bagisto, there are two types of menus to understand:
 
-**Shop Menu**: The frontend navigation that customers see is managed through the **Categories** section in the admin panel. These menus are automatically generated from your product categories and don't require package development.
+**Shop Menu**: The category navigation customers see is generated from the catalog and needs no package work. The customer **account** menu (Orders, Addresses, Reviews, …) is a second, config-driven menu: the Shop package merges `packages/Webkul/Shop/src/Config/menu.php` into the `menu.customer` key, and a package that adds a customer-account page merges its own entry there in exactly the way shown below for the admin.
 
 **Admin Menu**: This section focuses on the backend navigation that administrators use to manage the system. Specifically, we will cover how to create custom admin menu items for your package.
 
@@ -19,9 +19,9 @@ This section demonstrates how to create admin menu items for your Bagisto packag
 Bagisto's admin menu system is hierarchical and provides multiple levels of navigation:
 
 ### Menu Levels
-- **First Level (Sidebar)**: Primary navigation items in the left sidebar
-- **Second Level (Dropdown)**: Sub-items that appear when hovering over first-level items
-- **Third Level (Tabs)**: Additional tabs within specific admin pages
+- **First Level**: Primary navigation items in the left sidebar
+- **Second Level**: Sub-items shown when a first-level item is expanded
+- **Third Level**: Nested under a second-level item, still in the sidebar (Sales → RMA → Requests, Reasons, Rules)
 
 ### Menu Components
 - **Configuration**: PHP array defining menu structure
@@ -196,12 +196,18 @@ Now that you have a working menu, let's understand the configuration options ava
 
 | Property | Type | Description |
 | -------- | ---- | ----------- |
-| **`key`** | String | Unique identifier for the menu item |
+| **`key`** | String | Unique identifier for the menu item. Must equal an ACL key, because the menu is filtered with `bouncer()->hasPermission($key)` |
 | **`name`** | String | Display name (use translation keys) |
 | **`route`** | String | Named Laravel route to link to |
 | **`sort`** | Integer | Sort order (lower numbers appear first) |
-| **`icon`** | String | CSS class for menu icon |
-| **`info`** | String | Additional information or badge text |
+| **`icon`** | String | CSS class for the menu icon, such as `icon-sales`; pass `''` for none |
+
+All five keys are required at every level; `Webkul\Core\Menu` reads them without defaults and builds `MenuItem` objects with typed properties, so a missing `icon` or `sort` throws. Core's admin menu lives in `packages/Webkul/Admin/src/Config/menu.php`, the file this page's `admin-menu.php` mirrors.
+
+Two behaviours to know:
+
+- **Parents inherit their first child's route.** After the ACL filter runs, a parent item's route is replaced by the route of its first remaining child, so the parent always lands somewhere the admin may go.
+- **The active item is matched by URL prefix, then by key.** The longest menu route that prefixes the current URL sets the current key, and every item whose key prefixes that key is highlighted. Keep route paths under the same prefix as their menu ancestors and highlighting works without any extra code.
 
 ### Creating Hierarchical Menu Structure
 
@@ -217,7 +223,7 @@ return [
         'name'  => 'RMA',  // Use 'rma::app.admin.menu.rma' for translations
         'route' => 'admin.rma.return-requests.index',
         'sort'  => 100,
-        'icon'  => 'icon-rma',
+        'icon'  => 'icon-sales',
     ],
     
     // Sub-menu: Return Requests
@@ -266,6 +272,10 @@ Make sure to create appropriate routes, controllers, and views for each menu ite
 **Grandchild Menu**: `'key' => 'rma.settings.general'` would create a third-level item
 
 The hierarchy is automatically built based on the dot notation in the key names.
+:::
+
+::: tip Command palette
+On the current development version the admin also has a command palette (Ctrl + K) that indexes the admin menu and the configuration tree automatically, so a registered menu item is searchable at once. A package can add searchable actions and aliases by merging into `command_palette`; see [Command Palette](../advanced/command-palette.md).
 :::
 
 ::: tip Menu Best Practices

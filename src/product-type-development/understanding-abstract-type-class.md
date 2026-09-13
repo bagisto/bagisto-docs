@@ -21,22 +21,33 @@ namespace Webkul\Product\Type;
 abstract class AbstractType
 {
     protected $product;
+    protected $isComposite = false;
     protected $isStockable = true;
     protected $showQuantityBox = false;
     protected $haveSufficientQuantity = true;
     protected $canBeMovedFromWishlistToCart = true;
-    // ... other properties
+    protected $canBeAddedToCartWithoutOptions = true;
+    protected $canBeCopied = true;
+    protected $hasVariants = false;
+    protected $isChildrenCalculated = false;
+    protected $skipAttributes = [];
+    protected $additionalViews = [];
 
     // Key methods you can override:
-    public function isSaleable(): bool
-    public function isStockable(): bool  
-    public function showQuantityBox(): bool
+    public function isSaleable()
+    public function isStockable()
+    public function showQuantityBox()
     public function haveSufficientQuantity(int $qty): bool
-    public function totalQuantity(): int
-    public function prepareForCart(array $data): array
+    public function totalQuantity()
+    public function prepareForCart($data)
     // ... and more
 }
 ```
+
+Most of the boolean methods simply return the matching property, so a type that only needs to flip a flag can set the property instead of overriding the method. Apart from `haveSufficientQuantity(int $qty): bool`, none of these methods declares a return type in the base class; the `: bool`, `: int`, `: array` and `: string` annotations on the examples below are additions an override may make (PHP allows narrowing) but are not what the core declares. Two members every type must provide itself:
+
+- **`getPriceIndexer()`**: not declared on the base class but called by `getFinalPrice()` and the price indexer; return `app(\Webkul\Product\Helpers\Indexers\Price\Simple::class)` unless your pricing needs its own indexer.
+- **A constructor that calls `parent::__construct()`** if you add dependencies, since the base constructor takes eight repositories that the container injects.
 
 ## Key Methods to Understand
 
@@ -321,6 +332,18 @@ protected $additionalViews = [
 ];
 ```
 
+The admin edit page includes two things for a type, in this order:
+
+```blade
+@includeIf('admin::catalog.products.edit.types.' . $product->type)
+
+@foreach ($product->getTypeInstance()->getAdditionalViews() as $view)
+    @includeIf($view)
+@endforeach
+```
+
+The first is a **conventional per-type partial** in the `admin` namespace: core's own types live at `Admin/src/Resources/views/catalog/products/edit/types/{simple,configurable,grouped,bundle,downloadable,...}.blade.php`, so a package can supply `admin::catalog.products.edit.types.subscription` by publishing it into the admin theme's view path or by [registering the view](../package-development/views.md). `$additionalViews` is the second route and takes any namespace, which makes it the easier one for a package. Both use `@includeIf`, so a missing view is skipped silently rather than raising an error; if your fields do not appear, check the view name first.
+
 #### `$skipAttributes` Property
 
 Specifies which attributes to skip for this product type:
@@ -374,6 +397,8 @@ Use `skipAttributes` to:
 These views are automatically included in the product edit page and have access to the `$product` variable.
 :::
 
+Fields added this way are saved like any other product data: `AbstractType::update()` receives the whole request, and `getTypeValidationRules()` is where their validation belongs. For the storefront there is no equivalent hook; `shop::products.view` includes the option partials of the core types from a fixed list, so a custom type adds its controls by overriding that view in a theme or through the page's `view_render_event` hooks.
+
 ### Cart Integration
 
 #### `prepareForCart($data)`
@@ -397,24 +422,24 @@ public function prepareForCart($data)
 ```php
 public function prepareForCart($data)
 {
-    // Validate subscription-specific data first
-    // For example, if your form passes a subscription_frequency field that needs validation
     if (empty($data['subscription_frequency'])) {
-        // Returning a string aborts the add-to-cart and surfaces this as an error message
-        return 'Please select subscription frequency.';
+        return trans('subscription::app.checkout.cart.missing-frequency');
     }
-    
-    // Get base cart data from parent
-    $cartData = parent::prepareForCart($data);
-    
-    // Add subscription-specific information to the cart data
-    // Note: We're accessing the first cart item [0] - if you have multiple items, you'll need to loop through them
-    $cartData[0]['additional']['subscription_frequency'] = $data['subscription_frequency'];
-    $cartData[0]['additional']['subscription_start_date'] = $data['start_date'] ?? now()->addDays(1)->format('Y-m-d');
-    
-    return $cartData;
+
+    $products = parent::prepareForCart($data);
+
+    if (is_string($products)) {
+        return $products;
+    }
+
+    $products[0]['additional']['subscription_frequency'] = $data['subscription_frequency'];
+    $products[0]['additional']['subscription_start_date'] = $data['start_date'] ?? now()->addDay()->format('Y-m-d');
+
+    return $products;
 }
 ```
+
+Leave the signature untyped, as the base class declares it: the method returns an **array** of cart-item rows on success and a **string** error message on failure (core's `Simple` type returns one when required customizable options are missing, and the cart aborts the add with that message), so a `: array` return type would throw the moment an error is reported. Check the parent's result before indexing it for the same reason. `AbstractType::prepareForCart()` itself never returns a string; it throws `InsufficientProductInventoryException` when the quantity is not available.
 
 
 

@@ -6,12 +6,14 @@ This page documents frequent issues encountered by developers working with Bagis
 
 ### PHP Version Mismatch
 
-Bagisto requires **PHP 8.3 or 8.4**. The `composer.json` specifies `"php": ">=8.3 <8.5"`. Running on PHP 8.2 or lower — or on PHP 8.5 or higher — will cause dependency resolution failures.
+The current development version requires **PHP 8.4** (`"php": "^8.4"` in `composer.json`); Bagisto 2.4 accepts **8.3 or 8.4** (`">=8.3 <8.5"`). A lower version fails at `composer install` with a platform error, which is easy to mistake for a broken install when a second PHP binary is on the `PATH`.
 
 ```bash
 # Verify your PHP version
 php -v
 ```
+
+The web installer still checks against 8.3.0, so a host on 8.3 passes the installer's requirement screen and then fails on the development version's Composer constraint.
 
 ### Missing PHP Extensions
 
@@ -52,9 +54,13 @@ APP_URL=http://localhost:8000
 
 ## Database
 
-### MySQL Version
+### Database Versions
 
-Bagisto requires MySQL 8.0.32 or higher. The `utf8mb4_unicode_ci` collation is recommended for full Unicode support.
+Bagisto runs on MySQL 8.0, MariaDB 10.11 and, on the current development version, PostgreSQL 16; these are the versions CI tests. The `utf8mb4_unicode_ci` collation is recommended on MySQL and MariaDB for full Unicode support.
+
+### PostgreSQL-only Failures
+
+Code that only ever ran on MySQL fails on PostgreSQL in predictable ways: case-sensitive `LIKE`, `CAST(… AS CHAR)` truncating to one character, `GROUP BY` rejecting a query that selects ungrouped columns, empty strings written to typed columns, and booleans coming back as `true`/`false` rather than `1`/`0`. Route raw SQL through `db_grammar()` and cast boolean columns; the full list is on [Database compatibility](./database-compatibility.md).
 
 ### Migration Order Matters
 
@@ -62,7 +68,15 @@ When running `php artisan migrate:fresh --seed`, Bagisto's package migrations ru
 
 ### Database Session Driver
 
-Bagisto defaults to `SESSION_DRIVER=database`. If you run `php artisan migrate:fresh` but forget `--seed`, the sessions table exists but the application may behave unexpectedly without seed data.
+Bagisto defaults to `SESSION_DRIVER=database`, and on the current development version to `CACHE_STORE=database` as well. If you run `php artisan migrate:fresh` but forget `--seed`, the tables exist but the application may behave unexpectedly without seed data.
+
+### Running `bagisto:install` on an existing store
+
+`bagisto:install` is the fresh-install command: it runs `db:wipe` and `migrate:fresh` before seeding. An upgrade runs `php artisan migrate` only.
+
+### Files Vanish After Switching Storage
+
+Choosing Amazon S3 or Cloudflare R2 under **Configuration → File Management** changes where new uploads go; files already on the local disk are not copied, and the storefront looks for them on the new disk. Copy `storage/app/public` to the bucket first. See [File Storage](./file-storage.md).
 
 ## Package Development
 
@@ -86,7 +100,11 @@ composer dump-autoload
 
 ### Concord Module Registration
 
-Packages must extend `Webkul\Core\Providers\CoreModuleServiceProvider` (or register as a Concord module) to be properly recognized. Check that your service provider is registered in `config/concord.php` or uses Laravel's package discovery.
+A package with models needs a `ModuleServiceProvider` (extending `Konekt\Concord\BaseModuleServiceProvider` or `Webkul\Core\Providers\CoreModuleServiceProvider`) listed in `config/concord.php`, and a `src/Resources/manifest.php` file, or its proxies resolve to `null`. See [Models](../package-development/models.md).
+
+### Admin Routes Without ACL Entries
+
+The `admin` middleware refuses any admin route that no `acl.php` maps, with a `401`, for every role except one whose permissions are set to **All**. Testing as the super admin hides it. Add an ACL entry for every admin route; see [Access Control List](../package-development/access-control-list.md).
 
 ### Bypassing the Repository Pattern
 
@@ -114,11 +132,11 @@ npm run dev
 npm run build
 ```
 
-Each package with frontend assets (Admin, Shop) has its own `vite.config.js`. The root `vite.config.js` handles the main application assets.
+Each package with frontend assets (Admin, Shop, Installer) has its own `vite.config.js`, and each build is run from that package's directory. The root `vite.config.js` handles the main application assets.
 
-### Tailwind CSS Purging
+### Missing Tailwind Classes
 
-If custom Tailwind classes don't appear in production, ensure your Blade file paths are included in the relevant `tailwind.config.js` content array. Tailwind only includes classes that appear in scanned files.
+Tailwind only emits classes it finds while scanning source files. On the current development version (Tailwind 4) the scan root is the `source("../../../")` argument at the top of each package's `app.css`, which covers the package's `src/` directory, so a class used only in a file outside the package (a theme in `resources/themes`, another package) is not generated; a class built at runtime needs a `@source inline(...)` entry. On Bagisto 2.4 (Tailwind 3) the equivalent is the `content` array in `tailwind.config.js` and the `safelist`. Icon classes are declared in `app.css` too, so an icon name that is not in the `@theme` block renders blank.
 
 ## Caching Issues
 
@@ -136,11 +154,13 @@ If you've run `php artisan config:cache`, the cached config takes precedence ove
 
 ### Response Cache Serving Old Pages
 
-If storefront pages show stale content after product/category changes, the FPC event listeners may not be covering your change. Check that `RESPONSE_CACHE_ENABLED=true` and clear manually if needed:
+If storefront pages show stale content after product/category changes, the FPC event listeners may not be covering your change. The cache is switched on under **Configuration → Cache Management → Full Page Cache** (there is no `RESPONSE_CACHE_ENABLED` variable); flush it from the same page or from the console:
 
 ```bash
 php artisan responsecache:clear
 ```
+
+Signed-in customers are never served cached pages, so a stale page reproduces only as a guest.
 
 ## Queue & Jobs
 
@@ -197,8 +217,8 @@ If a custom admin menu item doesn't respect ACL, verify that:
 If product search fails with Elasticsearch errors, verify:
 
 1. Elasticsearch is running and accessible
-2. The `.env` or `config/elasticsearch.php` has the correct host URL
-3. Elasticsearch version is 7.x or 8.x compatible
+2. The host and credentials under **Configuration → Search Engines → Elasticsearch** (or `ELASTICSEARCH_*` in `.env`, which those settings fall back to) are correct; the **Test Connection** button on that page reports `unreachable`, `unauthorized`, `incompatible` or `misconfigured`
+3. The server is an Elasticsearch 8.x cluster, which is what the `elasticsearch/elasticsearch` client targets
 
 ```bash
 # Test Elasticsearch connection
@@ -207,11 +227,13 @@ curl http://localhost:9200
 
 ### Index Out of Sync
 
-After bulk changes, reindex Elasticsearch:
+After bulk changes, rebuild the search index:
 
 ```bash
-php artisan indexer:index --type=elastic
+php artisan indexer:index --type=search --mode=full
 ```
+
+On Bagisto 2.4 the type is `elastic`. Remember that a store whose **Enable External Search Engine** switch is off searches the database whatever the mode settings say.
 
 ## Multi-Channel / Multi-Locale
 

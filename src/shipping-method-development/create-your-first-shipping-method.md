@@ -17,10 +17,10 @@ The fastest way to create a shipping method is using Bagisto's package generator
 
 ### Step 1: Install Package Generator
 
-If you haven't installed the package generator yet:
+If you haven't installed the package generator yet (it is a separate, optional development dependency; the `package:make*` commands are not part of Bagisto core, so check the generator's README for the version matching your Bagisto release):
 
 ```bash
-composer require bagisto/bagisto-package-generator
+composer require --dev bagisto/bagisto-package-generator
 ```
 
 ### Step 2: Generate Shipping Method Package
@@ -98,7 +98,7 @@ php artisan optimize:clear
 
 Now test the basic configuration that the generator created:
 
-1. **Go to Admin Panel**: Navigate to **Configure → Shipping Methods**
+1. **Go to Admin Panel**: Navigate to **Configuration → Sales → Shipping Methods**
 2. **Find Your Method**: Look for "Custom Express Shipping" section
 3. **Basic Configuration**: You'll see some basic configuration fields that can be adjusted as per your needs
 
@@ -192,66 +192,72 @@ Focus on getting your shipping method working first, then dive deeper into each 
 
 namespace Webkul\CustomExpressShipping\Carriers;
 
-use Webkul\Shipping\Carriers\AbstractShipping;
-use Webkul\Checkout\Models\CartShippingRate;
 use Webkul\Checkout\Facades\Cart;
+use Webkul\Checkout\Models\CartShippingRate;
+use Webkul\Shipping\Carriers\AbstractShipping;
 
 class CustomExpressShipping extends AbstractShipping
 {
     /**
-     * Shipping method code - must match carriers.php key.
+     * Shipping method carrier code, must match the carriers.php key.
+     *
+     * @var string
      */
     protected $code = 'custom_express_shipping';
 
     /**
-     * Calculate shipping rate for the current cart.
+     * Shipping method code, the value the checkout posts back.
+     *
+     * @var string
+     */
+    protected $method = 'custom_express_shipping_custom_express_shipping';
+
+    /**
+     * Calculate the rate for the current cart.
+     *
+     * @return CartShippingRate|false
      */
     public function calculate()
     {
-        // check if shipping method is available
         if (! $this->isAvailable()) {
             return false;
         }
 
         $cart = Cart::getCart();
-        
-        // create shipping rate object
-        $object = new CartShippingRate;
-        $object->carrier = 'custom_express_shipping';
-        $object->carrier_title = $this->getConfigData('title');
-        $object->method = 'custom_express_shipping_custom_express_shipping';
-        $object->method_title = $this->getConfigData('title');
-        $object->method_description = $this->getConfigData('description');
-        
-        // calculate rate - start with base rate
+
+        $cartShippingRate = new CartShippingRate;
+
+        $cartShippingRate->carrier = $this->getCode();
+        $cartShippingRate->carrier_title = $this->getConfigData('title');
+        $cartShippingRate->method = $this->getMethod();
+        $cartShippingRate->method_title = $this->getConfigData('title');
+        $cartShippingRate->method_description = $this->getConfigData('description');
+
         $baseRate = $this->getConfigData('default_rate');
+
         $finalRate = $baseRate;
-        
-        // express shipping logic - you can customize this
+
         if ($this->getConfigData('type') === 'per_unit') {
-            // calculate per item
             $totalItems = 0;
 
             foreach ($cart->items as $item) {
-                if ($item->product->getTypeInstance()->isStockable()) {
+                if ($item->getTypeInstance()->isStockable()) {
                     $totalItems += $item->quantity;
                 }
             }
 
             $finalRate = $baseRate * $totalItems;
-        } else {
-            // per order pricing (flat rate)
-            $finalRate = $baseRate;
         }
-        
-        // set calculated prices
-        $object->price = core()->convertPrice($finalRate);
-        $object->base_price = $finalRate;
 
-        return $object;
+        $cartShippingRate->price = core()->convertPrice($finalRate);
+        $cartShippingRate->base_price = $finalRate;
+
+        return $cartShippingRate;
     }
 }
 ```
+
+This is the shape of core's own `Webkul\Shipping\Carriers\FlatRate`. Note `$item->getTypeInstance()` (the cart item's own type, which is right for a configurable variant) and the two prices: `base_price` is in the base currency, `price` is converted to the channel currency with `core()->convertPrice()`.
 
 ### Step 4: Create System Configuration
 
@@ -270,32 +276,43 @@ return [
         'sort'   => 1,
         'fields' => [
             [
+                'name'          => 'active',
+                'title'         => 'Enabled',
+                'type'          => 'boolean',
+                'channel_based' => true,
+                'locale_based'  => false,
+            ],
+            [
                 'name'          => 'title',
                 'title'         => 'Method Title',
                 'type'          => 'text',
-                'validation'    => 'required',
+                'depends'       => 'active:1',
+                'validation'    => 'required_if:active,1',
                 'channel_based' => true,
-                'locale_based'  => true
+                'locale_based'  => true,
             ],
             [
-                'name'          => 'description', 
+                'name'          => 'description',
                 'title'         => 'Description',
                 'type'          => 'textarea',
+                'depends'       => 'active:1',
                 'channel_based' => true,
-                'locale_based'  => false
+                'locale_based'  => true,
             ],
             [
                 'name'          => 'default_rate',
-                'title'         => 'Base Rate ($)',
+                'title'         => 'Base Rate',
                 'type'          => 'text',
-                'validation'    => 'required|numeric|min:0',
+                'depends'       => 'active:1',
+                'validation'    => 'required_if:active,1|numeric|min:0',
                 'channel_based' => true,
-                'locale_based'  => false
+                'locale_based'  => false,
             ],
             [
                 'name'    => 'type',
                 'title'   => 'Pricing Type',
                 'type'    => 'select',
+                'depends' => 'active:1',
                 'options' => [
                     [
                         'title' => 'Per Order (Flat Rate)',
@@ -309,18 +326,12 @@ return [
                 'channel_based' => true,
                 'locale_based'  => false,
             ],
-            [
-                'name'          => 'active',
-                'title'         => 'Enabled',
-                'type'          => 'boolean',
-                'validation'    => 'required',
-                'channel_based' => true,
-                'locale_based'  => false
-            ]
-        ]
-    ]
+        ],
+    ],
 ];
 ```
+
+Here the `active` toggle comes first and every other field depends on it, so a disabled method hides its fields, and `required_if:active,1` rather than `required` means the page can still be saved while the method is off. Core's own carrier sections keep the toggle last and put `depends` only on the title and rate; either layout works. The `info` key is required on every item; the page breaks without it.
 
 ### Step 5: Create Service Provider
 
@@ -413,7 +424,7 @@ Now let's test your custom express shipping method:
 
 ### Step 1: Enable in Admin
 
-1. Go to **Admin Panel → Configure → Shipping Methods**
+1. Go to **Admin Panel → Configuration → Sales → Shipping Methods**
 2. Find **Custom Express Shipping** section
 3. Set **Enabled** to **Yes**
 4. Configure your rates and settings
@@ -421,7 +432,7 @@ Now let's test your custom express shipping method:
 
 ### Step 2: Frontend Testing
 
-1. Add products to cart
+1. Add a physical (simple) product to the cart; rates are only collected for carts with stockable items
 2. Proceed to checkout
 3. Enter shipping address
 4. Verify your express shipping option appears

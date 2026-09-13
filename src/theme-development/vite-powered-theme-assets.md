@@ -76,23 +76,65 @@ In the following steps, we'll create the configuration files (`package.json`, `v
 Make sure you're working within your `CustomTheme` package directory. All commands and file paths in this guide assume you're in `packages/Webkul/CustomTheme/`.
 :::
 
+::: warning Two Tailwind generations
+The current development version of Bagisto builds its storefront with **Tailwind CSS 4** through the `@tailwindcss/vite` plugin: there is no `tailwind.config.js` or PostCSS file, and the design tokens live in `app.css` under `@theme`. **Bagisto 2.4** builds with **Tailwind CSS 3**, `postcss.config.cjs` and `tailwind.config.js`. Both are shown below; follow the tab that matches the Bagisto version your theme targets. The Vite and `config/themes.php` steps are the same for both.
+:::
+
 ### Step 2: Create Base Asset Files
 
 Create your main CSS and JavaScript files for the theme:
 
 **Create `src/Resources/assets/css/app.css`:**
 
-```css
+::: code-group
+
+```css [Tailwind 4 (current)]
+/**
+ * Scan the whole package for class names, so Blade files under
+ * src/Resources/views are seen as well as this stylesheet.
+ */
+@import "tailwindcss" source("../../../");
+
+@theme {
+    --breakpoint-2xl:  1440px;
+    --breakpoint-xl:   1240px;
+    --breakpoint-lg:   1024px;
+    --breakpoint-md:   768px;
+    --breakpoint-sm:   525px;
+
+    --color-navyBlue:    #060C3B;
+    --color-lightOrange: #F6F2EB;
+
+    --font-poppins: "Poppins", sans-serif;
+}
+
+@utility container {
+    margin-inline: auto;
+    padding-inline: 90px;
+
+    @variant 2xl {
+        max-width: 1440px;
+    }
+}
+```
+
+```css [Tailwind 3 (Bagisto 2.4)]
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 ```
+
+:::
 
 **Create `src/Resources/assets/js/app.js`:**
 
 ```javascript
 import.meta.glob(["../images/**", "../fonts/**"]);
 ```
+
+::: tip Where the real tokens live
+The values above are a subset of the stock storefront's. Open `packages/Webkul/Shop/src/Resources/assets/css/app.css` (current) or `packages/Webkul/Shop/tailwind.config.js` (2.4) to copy the complete breakpoint, colour and font list so your theme's utilities line up with the components you reuse.
+:::
 
 ## Configure Asset Compilation
 
@@ -110,10 +152,42 @@ Create `package.json` with the following content:
 Don't worry about understanding every dependency listed below. While we could walk you through installing each package step-by-step, copying this complete configuration file is much easier for beginners. These are standard packages used in most modern Laravel projects with Vite and Tailwind CSS.
 :::
 
-```json
+::: code-group
+
+```json [Tailwind 4 (current)]
 {
     "name": "custom-theme",
     "private": true,
+    "type": "module",
+    "description": "Custom Theme Package for Bagisto",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build"
+    },
+    "devDependencies": {
+        "@tailwindcss/vite": "^4.0.0",
+        "axios": "^1.7.9",
+        "laravel-vite-plugin": "^1.0",
+        "tailwindcss": "^4.0.0",
+        "vite": "^6.4.2",
+        "vue": "^3.5.13"
+    },
+    "dependencies": {
+        "@vee-validate/i18n": "^4.9.1",
+        "@vee-validate/rules": "^4.9.1",
+        "@vitejs/plugin-vue": "^5.2.4",
+        "mitt": "^3.0.0",
+        "vee-validate": "^4.9.1",
+        "vue-flatpickr": "^2.3.0"
+    }
+}
+```
+
+```json [Tailwind 3 (Bagisto 2.4)]
+{
+    "name": "custom-theme",
+    "private": true,
+    "type": "module",
     "description": "Custom Theme Package for Bagisto",
     "scripts": {
         "dev": "vite",
@@ -125,19 +199,21 @@ Don't worry about understanding every dependency listed below. While we could wa
         "laravel-vite-plugin": "^1.0",
         "postcss": "^8.4.23",
         "tailwindcss": "^3.3.2",
-        "vite": "^5.4.12",
+        "vite": "^6.4.2",
         "vue": "^3.5.13"
     },
     "dependencies": {
         "@vee-validate/i18n": "^4.9.1",
         "@vee-validate/rules": "^4.9.1",
-        "@vitejs/plugin-vue": "^4.2.3",
+        "@vitejs/plugin-vue": "^5.2.4",
         "mitt": "^3.0.0",
         "vee-validate": "^4.9.1",
         "vue-flatpickr": "^2.3.0"
     }
 }
 ```
+
+:::
 
 ::: tip Package Scripts
 - `npm run dev`: Starts development server with hot reload
@@ -162,7 +238,62 @@ Create `vite.config.js` configured for your `CustomTheme` package:
 This Vite configuration might look complex, but you don't need to understand every detail right now. This setup is based on Bagisto's shop package configuration with paths adjusted for your custom theme package. You can always refer to `packages/Webkul/Shop/vite.config.js` in your Bagisto installation to see how the core shop package handles Vite configuration.
 :::
 
-```javascript
+::: code-group
+
+```javascript [Tailwind 4 (current)]
+import { defineConfig, loadEnv } from "vite";
+import vue from "@vitejs/plugin-vue";
+import laravel from "laravel-vite-plugin";
+import tailwindcss from "@tailwindcss/vite";
+import path from "path";
+
+export default defineConfig(({ mode }) => {
+    const envDir = "../../../";
+
+    Object.assign(process.env, loadEnv(mode, envDir));
+
+    return {
+        build: {
+            emptyOutDir: true,
+        },
+
+        envDir,
+
+        server: {
+            host: process.env.VITE_HOST || "localhost",
+            port: process.env.VITE_PORT || 5173,
+            cors: true,
+        },
+
+        plugins: [
+            vue(),
+
+            tailwindcss(),
+
+            laravel({
+                hotFile: "../../../public/custom-theme-vite.hot",
+                publicDirectory: "../../../public",
+                buildDirectory: "themes/custom-theme/build",
+                input: [
+                    "src/Resources/assets/css/app.css",
+                    "src/Resources/assets/js/app.js",
+                ],
+                refresh: true,
+            }),
+        ],
+
+        experimental: {
+            renderBuiltUrl(filename, { hostId, hostType, type }) {
+                if (hostType === "css") {
+                    return path.basename(filename);
+                }
+            },
+        },
+    };
+});
+```
+
+```javascript [Tailwind 3 (Bagisto 2.4)]
 import { defineConfig, loadEnv } from "vite";
 import vue from "@vitejs/plugin-vue";
 import laravel from "laravel-vite-plugin";
@@ -212,12 +343,16 @@ export default defineConfig(({ mode }) => {
 });
 ```
 
-#### Setting Up Tailwind CSS
+:::
 
-Create `tailwind.config.js` to scan your theme files:
+#### Setting Up Tailwind CSS (Bagisto 2.4 only)
+
+On the current development version, skip this and the PostCSS step: Tailwind 4 is configured entirely by the `@import "tailwindcss" source(...)` line and the `@theme` block in `app.css` you created above. The `source("../../../")` argument points at your package root so every Blade file under `src/Resources/views` is scanned; there is no `content` array.
+
+On Bagisto 2.4, create `tailwind.config.js` to scan your theme files:
 
 ::: tip Comprehensive Configuration!
-This Tailwind configuration includes all the settings used in Bagisto's shop package, giving you access to custom breakpoints, colors, and fonts that match Bagisto's design system. The `content` array tells Tailwind where to find your CSS classes, and the custom theme extensions provide Bagisto-specific styling. You can reference `packages/Webkul/Shop/tailwind.config.js` in your Bagisto installation to see the original configuration this is based on.
+This Tailwind configuration includes all the settings used in Bagisto 2.4's shop package, giving you access to custom breakpoints, colors, and fonts that match Bagisto's design system. The `content` array tells Tailwind where to find your CSS classes, and the custom theme extensions provide Bagisto-specific styling. You can reference `packages/Webkul/Shop/tailwind.config.js` in a 2.4 installation to see the original configuration this is based on.
 :::
 
 ```javascript
@@ -280,9 +415,9 @@ module.exports = {
 };
 ```
 
-#### Setting Up PostCSS
+#### Setting Up PostCSS (Bagisto 2.4 only)
 
-Create `postcss.config.js` for CSS processing:
+Create `postcss.config.cjs` for CSS processing (the `.cjs` extension is needed because `package.json` declares `"type": "module"`):
 
 ::: tip Simple CSS Processing!
 This PostCSS configuration is straightforward - it just tells PostCSS to use Tailwind CSS and Autoprefixer plugins. PostCSS processes your CSS and Autoprefixer automatically adds vendor prefixes for browser compatibility. You don't need to modify this configuration for basic theme development.
@@ -392,7 +527,7 @@ npm run dev
 You should see output similar to:
 
 ```
-VITE v4.x.x  ready in xxx ms
+VITE v6.x.x  ready in xxx ms
 
 ➜  Local:   http://localhost:5173/
 ➜  Network: use --host to expose
@@ -457,6 +592,10 @@ This copies all shop resources including:
 - Images, fonts, and other static assets
 - Complete Blade template structure
 - All shop views and components
+
+::: warning Icons are part of the stylesheet
+The storefront's `icon-*` classes are declared inside `app.css` (on the current version as `--icon-*` custom properties inside `@theme` with an `@utility icon-*` rule; on 2.4 as plain classes) and rely on the icon font under `assets/fonts`. Copy the whole `assets` directory, not only `css/`, or every icon renders blank. Class names used only in JavaScript strings are picked up because Tailwind scans `.js` files too; a class assembled at runtime needs a `@source inline(...)` entry (current) or a `safelist` entry (2.4).
+:::
 
 **Update your home view to showcase your custom theme:**
 

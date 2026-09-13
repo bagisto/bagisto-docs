@@ -4,16 +4,18 @@ A package is a self-contained module that encapsulates specific features or func
 
 By developing packages, you can introduce new functionalities, integrate third-party services, or customize existing features to better meet your business requirements. Each package is isolated, promoting clean code practices and enabling easier debugging and testing.
 
-To provide you with a practical understanding of package development, we'll be building a basic **RMA (Return Merchandise Authorization)** package throughout this documentation. This will demonstrate real-world implementation patterns and show you how different components work together.
+To provide you with a practical understanding of package development, we'll be building a basic **RMA** package throughout this documentation, a small return-request tracker. This will demonstrate real-world implementation patterns and show you how different components work together.
 
 The RMA package will include:
-- Customer return request functionality
-- Admin panel for managing returns
-- Email notifications
-- Basic reporting features
+- A `rma_requests` table, model, and repository
+- Admin routes, controllers, and a DataGrid listing
+- An admin menu entry, ACL permissions, and system configuration
+- Translations
 
 ::: warning Demonstration Purpose
 This RMA package is designed for educational purposes to demonstrate package development concepts. It includes only basic CRUD operations and simplified workflows. For production use, you would need to implement additional features like complex business rules, advanced security measures, and comprehensive error handling.
+
+Bagisto core already ships a complete RMA package at `packages/Webkul/RMA` (return requests, reasons, rules, statuses and custom fields), registered in `composer.json`, `bootstrap/providers.php` and `config/concord.php`. The tutorial builds a much smaller package under the same name so the examples read naturally. If you follow along on a real installation, give your package a different name, for example `Webkul/ReturnTracker`, so nothing you create overwrites the shipped files, and treat the core package as a reference implementation of everything covered here.
 :::
 
 ## Prerequisites
@@ -26,7 +28,7 @@ Before getting started with package development, ensure you have:
 
 ## Using Bagisto Package Generator
 
-To facilitate package development, you can use the [Bagisto Package Generator](https://github.com/bagisto/bagisto-package-generator). Follow the steps below to install it:
+To facilitate package development, you can use the [Bagisto Package Generator](https://github.com/bagisto/bagisto-package-generator). It is a separate, optional development dependency; Bagisto itself ships no `package:make` command. Follow the steps below to install it:
 
 ::: tip Package Generator Benefits
 The [Bagisto Package Generator](https://github.com/bagisto/bagisto-package-generator) automatically creates the necessary directory structure, service providers, and configuration files, saving you time and ensuring consistency across packages.
@@ -34,18 +36,20 @@ The [Bagisto Package Generator](https://github.com/bagisto/bagisto-package-gener
 
 ### Installation
 
-Install the [Bagisto Package Generator](https://github.com/bagisto/bagisto-package-generator) by running the following command in the root folder of your Bagisto application:
+Install the [Bagisto Package Generator](https://github.com/bagisto/bagisto-package-generator) as a development dependency by running the following command in the root folder of your Bagisto application:
 
 ```bash
-composer require bagisto/bagisto-package-generator
+composer require --dev bagisto/bagisto-package-generator
 ```
+
+The `package:make*` commands shown in this section come from that package. Check its README for the version that supports your Bagisto release; the commands and their output are not part of Bagisto core.
 
 ### Creating a Package
 
 Once installed, you can generate your package using the following command:
 
 ::: info Example Package
-We will assume that the package name is **"RMA"** (Return Merchandise Authorization) for demonstration purposes.
+We will assume that the package name is **"RMA"** for demonstration purposes.
 :::
 
 - If the package directory does not exist:
@@ -90,9 +94,9 @@ This ensures that the new namespace mapping is properly loaded by Composer's aut
 
 #### Register Service Provider
 
-Register your package's service provider in the `bootstrap/providers.php` file located in the root directory of your Bagisto application. Add the following line `Webkul\RMA\Providers\RMAServiceProvider::class,` just like other Bagisto service providers:
+Register your package's service provider in the `bootstrap/providers.php` file located in the root directory of your Bagisto application. The file already lists `AppServiceProvider` and every Webkul package provider; add `Webkul\RMA\Providers\RMAServiceProvider::class,` alongside them:
 
-```php{16}
+```php{12}
 <?php
 
 return [
@@ -104,11 +108,9 @@ return [
     /**
      * Webkul's service providers.
      */
-
-    /**
-     * RMA service providers.
-     */
+    Webkul\Admin\Providers\AdminServiceProvider::class,
     Webkul\RMA\Providers\RMAServiceProvider::class,
+    // ... the other Webkul providers
 ];
 ```
 
@@ -121,7 +123,7 @@ php artisan optimize:clear
 ```
 
 ::: tip Success
-Congratulations! Your RMA package is now successfully registered and ready for development. The package generator has automatically configured the basic structure, routes, and admin menu - you should now be able to see the RMA menu in the admin navigation panel. You can now start building the RMA functionality step by step according to your requirements.
+Congratulations! Your RMA package is now successfully registered and ready for development. The generator scaffolds the directory structure and the service provider; the admin menu entry, ACL permissions and routes are added in the following sections, and a menu entry only appears once a matching ACL key exists.
 :::
 
 ## Manual Setup of Files
@@ -198,7 +200,7 @@ class RMAServiceProvider extends ServiceProvider
 ```
 
 ::: info Service Provider Explanation
-The Service Provider is the central place to register your package's services, including routes, views, configurations, and other components. The `boot()` method is called after all services are registered, while `register()` is used to bind services into the container.
+The Service Provider is the central place to register your package's services, including routes, views, configurations, and other components. The `boot()` method is called after all services are registered, while `register()` is used to bind services into the container. Core packages merge configuration (`mergeConfigFrom`) and register console commands in `register()`, and load migrations, routes, views and translations in `boot()`; the following sections follow the same split.
 :::
 
 ### Register Your Package
@@ -225,9 +227,9 @@ composer dump-autoload
 
 #### Register Service Provider
 
-Register your package's service provider in the `bootstrap/providers.php` file located in the root directory of your Bagisto application. Add the following line `Webkul\RMA\Providers\RMAServiceProvider::class,` just like other Bagisto service providers:
+Register your package's service provider in the `bootstrap/providers.php` file located in the root directory of your Bagisto application, alongside the existing Webkul providers:
 
-```php{16}
+```php{12}
 <?php
 
 return [
@@ -239,11 +241,9 @@ return [
     /**
      * Webkul's service providers.
      */
-
-    /**
-     * RMA service providers.
-     */
+    Webkul\Admin\Providers\AdminServiceProvider::class,
     Webkul\RMA\Providers\RMAServiceProvider::class,
+    // ... the other Webkul providers
 ];
 ```
 
@@ -254,6 +254,10 @@ Run the following command to clear the application cache:
 ```bash
 php artisan optimize:clear
 ```
+
+::: info Two providers per package
+A package with models registers a second provider, `ModuleServiceProvider`, in `config/concord.php`. That step, and the `Resources/manifest.php` file Concord expects to find in every module, are covered in [Models](./models.md).
+:::
 
 ::: tip Package Ready
 Your package is now ready for development! Note that the [Package Generator](#using-bagisto-package-generator) creates a more complete structure with additional boilerplate files. For a full-featured setup, consider using the Package Generator method which includes controllers, models, views, and other components automatically.

@@ -38,6 +38,7 @@ export default defineConfig({
             text: 'For your store',
             items: [
               { text: 'Magic AI', link: '/ai/magic-ai' },
+              { text: 'WebMCP', link: '/ai/webmcp' },
             ],
           },
           {
@@ -87,6 +88,7 @@ export default defineConfig({
         items: [
           { text: 'AI in Bagisto', link: '/ai/introduction' },
           { text: 'Magic AI', link: '/ai/magic-ai' },
+          { text: 'WebMCP', link: '/ai/webmcp' },
           { text: 'Agent Skills', link: '/ai/agent-skills' },
           { text: 'llms.txt', link: '/ai/llms-txt' }
         ]
@@ -156,6 +158,8 @@ export default defineConfig({
         items: [
           { text: 'Getting Started', link: '/theme-development/getting-started' },
           { text: 'Creating Store Theme', link: '/theme-development/creating-store-theme' },
+          { text: 'Theme Sections', link: '/theme-development/theme-sections' },
+          { text: 'Theme Image Templates', link: '/theme-development/image-cache-templates' },
           { text: 'Creating Admin Theme', link: '/theme-development/creating-admin-theme' },
           { text: 'Creating Custom Theme Package', link: '/theme-development/creating-custom-theme-package' },
           { text: 'Vite-Powered Theme Assets', link: '/theme-development/vite-powered-theme-assets' },
@@ -186,8 +190,12 @@ export default defineConfig({
           { text: 'Understanding Core Class', link: '/advanced/understanding-core-class' },
           { text: 'Understanding Indexers', link: '/advanced/understanding-indexers' },
           { text: 'Understanding Data Transfer', link: '/advanced/understanding-data-transfer' },
+          { text: 'Database Compatibility', link: '/advanced/database-compatibility' },
+          { text: 'Search Engines', link: '/advanced/search-engines' },
+          { text: 'File Storage', link: '/advanced/file-storage' },
           { text: 'Event Listeners', link: '/advanced/event-listeners' },
           { text: 'View Render Events', link: '/advanced/view-render-events' },
+          { text: 'Command Palette', link: '/advanced/command-palette' },
           { text: 'Artisan Commands', link: '/advanced/artisan-commands' },
           { text: 'Queue, Jobs & Scheduling', link: '/advanced/queue-jobs-scheduling' },
           { text: 'Cache Strategy', link: '/advanced/cache-strategy' },

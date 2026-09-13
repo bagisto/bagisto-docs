@@ -18,7 +18,7 @@ Theme Structure for Emails:
             ├── ...
             ├── ...
             ├── ...
-            └── layouts.blade.php
+            └── layout.blade.php
 ```
 
 ::: tip Theme Integration
@@ -85,11 +85,17 @@ class CreatedNotification extends Mailable
 
 ### View Resolution
 
-The `view: 'shop::emails.orders.created'` follows the same theme resolution pattern you learned about in [Creating Store Theme](/theme-development/creating-store-theme). Bagisto will look for this view in:
+The `view: 'shop::emails.orders.created'` follows the same theme resolution pattern you learned about in [Creating Store Theme](/theme-development/creating-store-theme#how-views-are-resolved). Bagisto will look for this view in:
 
-1. **Your active theme**: `resources/themes/your-theme/views/emails/orders/created.blade.php`
-2. **Default theme**: `resources/themes/default/views/emails/orders/created.blade.php`  
+1. **Your active theme**: `resources/themes/your-theme/views/emails/orders/created.blade.php`, followed by the `views_path` of its `parent` theme if one is configured
+2. **Your theme's registered view namespace**, if the theme is a package that registered views under the theme code
 3. **Package views**: `packages/Webkul/Shop/src/Resources/views/emails/orders/created.blade.php`
+
+The default theme's directory is only consulted when your theme declares `'parent' => 'default'`.
+
+::: warning Theme overrides apply only while the theme is active
+A theme is activated by the storefront middleware for the current request. Nothing activates a theme inside a queue worker, and an admin request activates the admin theme instead. Bagisto's mailables implement `ShouldQueue`, so with a real queue driver the worker renders the package view, not your theme's copy. The override is honoured when the mail is rendered inside a storefront request, which is the case with `QUEUE_CONNECTION=sync`. If you rely on a queue, override the package view through your own package instead, or listen to the mail event and set the theme yourself.
+:::
 
 ### Email Layout System
 
@@ -140,10 +146,10 @@ Notice the path we have used: `emails/orders/created.blade.php`. This path is ex
 
 Create a custom email layout for your theme:
 
-**`resources/themes/your-theme/views/emails/layouts.blade.php`**
+**`resources/themes/your-theme/views/emails/layout.blade.php`**
 
 ::: warning Path Matching Requirement
-Notice the path we have used: `emails/layouts.blade.php`. This path must match the layout reference used in email templates. The layout component `@component('shop::emails.layout')` will look for this file in the exact path structure for view overriding to work.
+Notice the path we have used: `emails/layout.blade.php`, singular, matching `packages/Webkul/Shop/src/Resources/views/emails/layout.blade.php`. The layout component `@component('shop::emails.layout')` resolves to this exact path, so a file named `layouts.blade.php` is never picked up.
 :::
 
 ::: info Layout Override
@@ -161,7 +167,7 @@ If you're developing a theme package (as covered in [Creating Custom Theme Packa
 ::: tip Package Structure
 Simply place your email templates in your package's `src/Resources/views/emails/` directory following the same path structure:
 - `src/Resources/views/emails/orders/created.blade.php`
-- `src/Resources/views/emails/layouts.blade.php`
+- `src/Resources/views/emails/layout.blade.php`
 :::
 
 The view registration and override mechanics work exactly the same way - Laravel's view resolution will automatically find your package's email templates when the corresponding views are requested.

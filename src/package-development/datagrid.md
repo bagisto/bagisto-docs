@@ -39,10 +39,14 @@ Understanding the core properties helps you customize DataGrid behavior:
 | **`actions`**          | Array containing configurations for actions that can be performed on individual data grid entries. |
 | **`massActions`**      | Array defining actions that can be applied to multiple entries simultaneously in the data grid. |
 | **`paginator`**        | Stores an instance of `LengthAwarePaginator` for managing pagination of grid data. |
-| **`itemsPerPage`**     | Specifies the default number of items to display per page in the data grid.|
+| **`itemsPerPage`**     | Specifies the default number of items to display per page in the data grid (10). |
 | **`perPageOptions`**   | Array of options allowing users to select different numbers of items per page.  |
-| **`exportable`**       | Boolean indicating whether the data grid can exported.  |
-| **`exportFile`**       | Stores metadata related to exported data if `exportable` is enabled. |
+| **`exportFileName`**   | Name of the file produced by an export. |
+| **`exportFileExtension`** | Format of the exported file, `csv` by default; requests may ask for `csv`, `xls` or `xlsx`. |
+
+Export is switched on per request, not per class: when the request carries an `export` parameter the grid streams the file through `Webkul\DataGrid\Exports\DataGridExport`. The button that sends that request is the `<x-admin::datagrid.export :src="...">` component, which the product listing includes beside its grid.
+
+DataGrids are resolved from the container by the `datagrid()` helper, so a grid may take repositories in its constructor exactly like a controller.
 
 ## Creating Your First DataGrid
 
@@ -372,6 +376,10 @@ public function prepareQueryBuilder()
 **Apply Default Filters**: Add conditions like `->where('deleted_at', null)` if needed
 
 **Optimize for Large Datasets**: Consider indexing frequently filtered/sorted columns
+
+**Prefix table names in raw SQL**: `DB::getTablePrefix()` returns the configured `DB_PREFIX`; core grids prepend it to every table named inside `DB::raw()`
+
+**Write portable SQL**: Build `CONCAT`, `GROUP_CONCAT` and similar expressions with `db_grammar()` so the grid works on PostgreSQL as well as MySQL, and group by every selected non-aggregated column when you aggregate. See [Database compatibility](../advanced/database-compatibility.md)
 :::
 
 ### prepareColumns()
@@ -396,15 +404,42 @@ public function prepareColumns()
 
 | Key                     | Type | Description |
 | ----------------------- | ---- | ----------- |
-| **`index`**             | String | Database column name or alias |
-| **`label`**             | String | Column header text (use translations) |
-| **`type`**              | String | Data type: `string`, `integer`, `decimal`, `boolean`, `date`, `datetime` |
+| **`index`**             | String | Database column name or alias. Required |
+| **`label`**             | String | Column header text (use translations). Required |
+| **`type`**              | String | Data type: `string`, `integer`, `decimal`, `boolean`, `date`, `datetime`, `aggregate`. Required |
 | **`searchable`**        | Boolean | Enable text search for this column |
 | **`sortable`**          | Boolean | Enable column sorting |
 | **`filterable`**        | Boolean | Enable column filtering |
 | **`filterable_type`**   | String | Filter type: `dropdown`, `date_range`, `datetime_range` |
-| **`filterable_options`** | Array | Options for dropdown filters |
+| **`filterable_options`** | Array or Closure | Options for dropdown filters; a closure is called when the grid is built |
+| **`allow_multiple_values`** | Boolean | Let the user pick several filter values at once (default `true`; forced off for numeric columns) |
+| **`exportable`**        | Boolean | Include the column in exports (default `true`) |
+| **`visibility`**        | Boolean | Show the column by default (default `true`) |
 | **`closure`**           | Function | Custom formatting function |
+
+`Column::validate()` throws `InvalidColumnException` when `index`, `label` or `type` is missing, and some types constrain the filter:
+
+| Column type | Filter behaviour |
+|---|---|
+| `integer`, `decimal` | Accept an operator or a range typed into the filter: `>= 10`, `< 5`, `= 3`, or `10 - 20`. Multiple values are not allowed |
+| `boolean` | Only `dropdown`; the true/false options are supplied for you |
+| `date` | Only `date_range`, with the preset options (`today`, `yesterday`, `this_week`, `this_month`, `last_month`, `last_three_months`, `last_six_months`, `this_year`) added automatically |
+| `datetime` | Only `datetime_range`, with the same presets |
+
+Text search on `string` and `aggregate` columns uses `ILIKE` on PostgreSQL and `LIKE` elsewhere, so it is case-insensitive on every supported database.
+
+::: warning Aliases need `addFilter()`
+Sorting and filtering are written against the column's `index`. When the index is an alias or an expression (a `CONCAT`, a joined column), tell the grid which SQL to use with `addFilter()` inside `prepareQueryBuilder()`:
+
+```php
+$this->addFilter('id', 'rma_requests.id');
+$this->addFilter('customer_name', DB::raw(db_grammar()->concat('customers.first_name', "' '", 'customers.last_name')));
+```
+
+Core does this on nearly every grid; without it a filter on an aliased column produces an SQL error.
+:::
+
+Every string column is run through `strip_tags()` before your closure sees it, so a closure that echoes a raw column value is safe. Escape anything else you interpolate.
 
 ### prepareActions() (Optional)
 
@@ -425,6 +460,16 @@ public function prepareActions()
 }
 ```
 
+An action needs `title`, `method` and `url`; `index` and `icon` default to empty strings. An optional `condition` closure receives the row and hides the action when it returns `false`. Core also wraps each `addAction()` in a permission check so a role that may not edit never sees the button:
+
+```php
+if (bouncer()->hasPermission('rma.return-requests.edit')) {
+    $this->addAction([
+        // ...
+    ]);
+}
+```
+
 ### prepareMassActions() (Optional)
 
 This method defines bulk operations. Also not included in our basic example:
@@ -440,6 +485,26 @@ public function prepareMassActions()
     ]);
 }
 ```
+
+A mass action may also carry an `options` array, which renders a select beside the button and posts the chosen value; core uses it to update the status of many rows at once.
+
+### Extending a DataGrid you do not own
+
+Every grid dispatches events named after its class in snake case, so another package can add a column, filter or action to a core grid without editing it:
+
+```php
+Event::listen('datagrid.return_request_data_grid.columns.add.after', function ($datagrid) {
+    $datagrid->addColumn([
+        'index' => 'warehouse',
+        'label' => trans('rma::app.admin.return-requests.datagrid.warehouse'),
+        'type'  => 'string',
+    ]);
+});
+```
+
+The events fired, in order, are `prepare.before`, `columns.prepare.before/after` (with `columns.add.before/after` per column), `actions.prepare.before/after`, `mass_actions.prepare.before/after`, `query_builder.prepare.before/after` and, after the request has been processed, `prepare.after`. The query builder is prepared last, so a listener that adds a column runs before the query exists. The listener receives the grid instance.
+
+Saved filters are available on every grid with no extra work: the toolbar posts them to `admin.datagrid.saved_filters.*`, backed by `Webkul\DataGrid\Models\SavedFilter`.
 
 ## Expanding Your DataGrid
 
@@ -722,18 +787,21 @@ When you're ready for user interactions, let's start by adding a simple view act
 
 First, add a simple view route in your package's route file `packages/Webkul/RMA/src/Routes/admin-routes.php`:
 
-```php{5-7}
-Route::group(['middleware' => ['admin']], function () {
-    Route::prefix('admin')->group(function () {
-        Route::prefix('rma')->group(function () {
-            // ...existing routes...
+```php{9-10}
+Route::group([
+    'middleware' => ['web', 'admin'],
+    'prefix'     => config('app.admin_url'),
+], function () {
+    Route::prefix('rma/return-requests')->group(function () {
+        // ...existing routes...
 
-            Route::get('return-requests/{id}', [ReturnRequestController::class, 'show'])
-                ->name('admin.rma.return-requests.show');
-        });
+        Route::get('{id}', [ReturnRequestController::class, 'show'])
+            ->name('admin.rma.return-requests.show');
     });
 });
 ```
+
+Every admin route must also have an entry in your `acl.php`, or the `admin` middleware refuses it for every role except a super admin. The [Access Control List](./access-control-list.md) page covers this.
 
 #### Step 2: Add Basic Controller Method
 
@@ -919,22 +987,29 @@ For bulk operations, add the `prepareMassActions()` method:
 
 #### Step 1: Add Mass Delete Route
 
-```php{5-7}
-Route::group(['middleware' => ['admin']], function () {
-    Route::prefix('admin')->group(function () {
-        Route::prefix('rma')->group(function () {
-            // ...existing routes...
+```php{9-10}
+Route::group([
+    'middleware' => ['web', 'admin'],
+    'prefix'     => config('app.admin_url'),
+], function () {
+    Route::prefix('rma/return-requests')->group(function () {
+        // ...existing routes...
 
-            Route::post('return-requests/mass-delete', [ReturnRequestController::class, 'massDestroy'])
-                ->name('admin.rma.return-requests.mass-delete');
-        });
+        Route::post('mass-delete', [ReturnRequestController::class, 'massDestroy'])
+            ->name('admin.rma.return-requests.mass-delete');
     });
 });
 ```
 
+Register `mass-delete` before the `{id}` route, or the literal segment is captured as an id.
+
 #### Step 2: Add Mass Delete Controller Method
 
-```php{4-17}
+Validate the selection with the form request the Admin package provides for exactly this payload, `Webkul\Admin\Http\Requests\MassDestroyRequest`, which requires `indices` to be an array of integers:
+
+```php{4-19}
+use Webkul\Admin\Http\Requests\MassDestroyRequest;
+
 class ReturnRequestController extends Controller
 {
     // ...existing methods...
@@ -942,18 +1017,20 @@ class ReturnRequestController extends Controller
     /**
      * Mass delete return requests.
      */
-    public function massDestroy()
+    public function massDestroy(MassDestroyRequest $massDestroyRequest)
     {
-        $indices = request()->input('indices');
-        
-        foreach ($indices as $index) {
+        foreach ($massDestroyRequest->input('indices') as $index) {
             $this->returnRequestRepository->delete($index);
         }
-        
-        return response()->json(['message' => 'Selected return requests deleted successfully.']);
+
+        return response()->json([
+            'message' => trans('rma::app.admin.return-requests.datagrid.mass-delete-success'),
+        ]);
     }
 }
 ```
+
+`MassUpdateRequest` is the equivalent for a mass action that carries a `value`.
 
 #### Step 3: Add Mass Actions to DataGrid
 
@@ -981,6 +1058,7 @@ public function prepareMassActions()
     'rejected' => 'Rejected',
     'view' => 'View',
     'mass-delete' => 'Delete Selected',
+    'mass-delete-success' => 'Selected return requests deleted successfully.',
 ],
 ```
 

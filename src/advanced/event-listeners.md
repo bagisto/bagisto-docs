@@ -82,7 +82,7 @@ To create an event listener in Bagisto, you need to define a listener class with
 Let's say you are having a package like **RMA (Return Merchandise Authorization)** or some other name - let's use RMA for this practical example. This RMA package would listen to order events to manage returns effectively.
 
 ::: tip Package Development Reference
-If you want to build a package, check out our [Package Development Guide](/package-development/getting-started) where we have shown how to build an RMA package step by step. This guide covers the basics of creating packages, service providers, and directory structure before implementing event listeners.
+If you want to build a package, check out our [Package Development Guide](/package-development/getting-started) where we have shown how to build an RMA package step by step. This guide covers the basics of creating packages, service providers, and directory structure before implementing event listeners. Bagisto core ships its own `Webkul\RMA` package, whose real events (`sales.rma.request.create.before`, `customer.rma.request.create.after`, and the `sales.rma.reason.*`, `sales.rma.rules.*`, `sales.rma.rma-status.*` and `sales.rma.custom-field.*` families) are in the reference table below; the `rma.return.*` names in the examples on this page are invented for the walkthrough.
 :::
 
 ### Basic Event Listener
@@ -167,15 +167,15 @@ class EventServiceProvider extends ServiceProvider
 ```
 
 ::: info Modern Event Registration
-The `[ClassName::class, 'method']` syntax is the modern Laravel approach for registering event listeners. This provides better IDE support and refactoring capabilities compared to string-based registration.
+The `[ClassName::class, 'method']` syntax is the modern Laravel approach for registering event listeners. This provides better IDE support and refactoring capabilities compared to string-based registration. Core also uses the older `'Webkul\Payment\Listeners\GenerateInvoice@handle'` string form and `Event::listen()` calls inside `EventServiceProvider::boot()`; all three work.
 :::
 
 ::: tip RMA Package Registration
-Your package may not have an `EventServiceProvider` initially. If so, you would need to register the `EventServiceProvider` in the package's main service provider:
+Your package may not have an `EventServiceProvider` initially. If so, register it from the package's main service provider. Core packages do this in `boot()`:
 
 ```php
 // In Webkul\RMA\Providers\RMAServiceProvider
-public function register(): void
+public function boot(): void
 {
     $this->app->register(EventServiceProvider::class);
 }
@@ -354,13 +354,15 @@ public function handleOrderCreated($order): void
 
 ## Available Bagisto Events
 
-The following table lists the core events available in Bagisto that you can listen to:
+The following table lists the core events available in Bagisto that you can listen to. The set of event names is the same in Bagisto 2.4 and the current development version. Where an event is dispatched from more than one place (a single delete and a mass delete, for example) the argument shown is the one passed by the single-record controller action.
+
+Two families are not listed individually: every DataGrid dispatches `datagrid.{grid_name}.{stage}` events as it is built (see [DataGrid](../package-development/datagrid.md#extending-a-datagrid-you-do-not-own)), and every `view_render_event()` call in a Blade view dispatches an event of the same name (see [View Render Events](./view-render-events.md)).
 
 | Events Name                                          | Functionality                                                     | Arguments                 |
 | ---------------------------------------------------- | ----------------------------------------------------------------- | ------------------------- |
 | `catalog.attribute.create.before`                    | This event will be fired before attribute gets created.           | -                         |
 | `catalog.attribute.create.after`                     | This event will be fired after attribute gets created.            | `attribute`               |
-| `catalog.attribute.update.before`                    | This event will be fired before attribute gets updated.           | -                         |
+| `catalog.attribute.update.before`                    | This event will be fired before attribute gets updated.           | `$id`                     |
 | `catalog.attribute.update.after`                     | This event will be fired after attribute gets updated.            | `$attribute`              |
 | `catalog.attribute.delete.before`                    | This event will be fired before attribute gets deleted.           | `$id`                     |
 | `catalog.attribute.delete.after`                     | This event will be fired after attribute gets deleted.            | `$id`                     |
@@ -384,13 +386,15 @@ The following table lists the core events available in Bagisto that you can list
 | `catalog.product.update.after`                       | This event will be fired after product gets updated.              | `$product`                |
 | `catalog.product.delete.before`                      | This event will be fired before product gets deleted.             | `$id`                     |
 | `catalog.product.delete.after`                       | This event will be fired after product gets deleted.              | `$id`                     |
+| `catalog.product.price.reindex.before`             | This event will be fired before the price index is rebuilt.       | -                         |
+| `catalog.product.price.reindex.after`              | This event will be fired after the price index is rebuilt.        | `[$productIds]` or -      |
 | `products.datagrid.sync`                             | This event will be fired to synicing datagrid product.            | `true`                    |
 | `cms.page.create.before`                             | This event will be fired before cms page gets created.            | -                         |
 | `cms.page.create.after`                              | This event will be fired after cms page gets created.             | `$page`                   |
 | `cms.page.update.before`                             | This event will be fired before cms page gets updated.            | `$id`                     |
 | `cms.page.update.after`                              | This event will be fired after cms page gets updated.             | `$page`                   |
 | `cms.page.delete.before`                             | This event will be fired before cms page gets deleted.            | `$id`                     |
-| `cms.page.delete.after`                              | This event will be fired after cms page gets deleted.             | `id`                      |
+| `cms.page.delete.after`                              | This event will be fired after cms page gets deleted.             | `$id`                     |
 | `customer.addresses.create.before`                   | This event will be fired before customer address gets created.    | -                         |
 | `customer.addresses.create.after`                    | This event will be fired after customer address gets created.     | `$address`                |
 | `customer.addresses.update.before`                   | This event will be fired before customer address gets updated.    | `$id`                     |
@@ -398,7 +402,7 @@ The following table lists the core events available in Bagisto that you can list
 | `customer.addresses.delete.before`                   | This event will be fired before customer address gets deleted.    | `$id`                     |
 | `customer.addresses.delete.after`                    | This event will be fired after customer address gets deleted.     | `$id`                     |
 | `customer.registration.before`                       | This event will be fired before customer gets created.            | -                         |
-| `customer.registration.after`                        | This event will be fired after customer gets created.             | -                         |
+| `customer.registration.after`                        | This event will be fired after customer gets created.             | `$customer`               |
 | `customer.update.before`                             | This event will be fired before customer gets updated.            | `$id`                     |
 | `customer.update.after`                              | This event will be fired after customer gets updated.             | `$customer`               |
 | `customer.password.update.after`                     | This event will be fired after customer password gets updated.    | `$customer`               |
@@ -429,6 +433,8 @@ The following table lists the core events available in Bagisto that you can list
 | `customer.compare.delete-all.after`                  | This event will be fired after all compare items removed.         | -                         |
 | `customer.wishlist.create.before`                    | This event will be fired before product added to wishlist.        | `$productId`              |
 | `customer.wishlist.create.after`                     | This event will be fired after product added to wishlist.         | `$wishlist`               |
+| `customer.wishlist.update.before`                  | This event will be fired before a wishlist item is updated from the cart. | `$productId`              |
+| `customer.wishlist.update.after`                   | This event will be fired after a wishlist item is updated from the cart. | `$wishlistItem`           |
 | `customer.wishlist.delete.before`                    | This event will be fired before wishlist item removed.            | `$id`                     |
 | `customer.wishlist.delete.after`                     | This event will be fired after wishlist item removed.             | `$id`                     |
 | `customer.wishlist.delete-all.before`                | This event will be fired before all wishlist items removed.       | -                         |
@@ -443,6 +449,7 @@ The following table lists the core events available in Bagisto that you can list
 | `customer.rma.request.update.before`                 | This event will be fired before customer RMA request updated.     | `$id`                     |
 | `customer.rma.request.update.after`                  | This event will be fired after customer RMA request updated.      | `$rma`                    |
 | `customer.account.gdpr-request.create.before`        | This event will be fired before gdpr request created.             | -                         |
+| `customer.account.gdpr-request.create.after`       | This event will be fired after a customer submits a GDPR request. | `$gdprRequest`            |
 | `customer.gdpr-request.create.after`                 | This event will be fired after gdpr request created.              | `$gdprRequest`            |
 | `customer.account.gdpr-request.update.before`        | This event will be fired before gdpr request updated.             | -                         |
 | `customer.account.gdpr-request.update.after`         | This event will be fired after gdpr request updated.              | `$gdprRequest`            | 
@@ -502,6 +509,8 @@ The following table lists the core events available in Bagisto that you can list
 | `promotions.catalog_rule.update.after`               | This event will be fired after catalog rule gets updated.         | `$catalogRule`            |
 | `promotions.catalog_rule.delete.before`              | This event will be fired before catalog rule gets deleted.        | `$id`                     |
 | `promotions.catalog_rule.delete.after`               | This event will be fired after catalog rule gets deleted.         | `$id`                     |
+| `promotions.catalog_rule.reindex.before`           | This event will be fired before catalog rule prices are reindexed. | `[$productIds]`           |
+| `promotions.catalog_rule.reindex.after`            | This event will be fired after catalog rule prices are reindexed. | `[$productIds]`           |
 | `cart_rules.coupons.delete.before`                   | This event will be fired before cart rule coupon deleted.         | `$coupon`                 |
 | `cart_rules.coupons.delete.after`                    | This event will be fired after cart rule coupon deleted.          | `$coupon`                 |
 | `sales.order.comment.create.before`                  | This event will be fired before order comment gets created.       | -                         |
@@ -513,7 +522,7 @@ The following table lists the core events available in Bagisto that you can list
 | `core.channel.delete.before`                         | This event will be fired before channel gets deleted.             | `$id`                     |
 | `core.channel.delete.after`                          | This event will be fired after channel gets deleted.              | `$id`                     |
 | `core.exchange_rate.create.before`                   | This event will be fired before exchange rate gets created.       | -                         |
-| `core.exchange_rate.create.after`                    | This event will be fired after exchange rate gets created.        |                           |
+| `core.exchange_rate.create.after`                    | This event will be fired after exchange rate gets created.        | `$exchangeRate`           |
 | `core.exchange_rate.update.before`                   | This event will be fired before exchange rate gets updated.       | `request()->id`           |
 | `core.exchange_rate.update.after`                    | This event will be fired after exchange rate gets updated.        | `$exchangeRate`           |
 | `core.exchange_rate.delete.before`                   | This event will be fired before exchange rate gets deleted.       | `$id`                     |
@@ -534,6 +543,8 @@ The following table lists the core events available in Bagisto that you can list
 | `section.create.after`                               | This event will be fired after a section gets created.            | `$section`                |
 | `section.update.before`                              | This event will be fired before a section gets updated.           | `$id`                     |
 | `section.update.after`                               | This event will be fired after a section gets updated.            | `$section`                |
+| `appearance.theme.activate.before`                 | This event will be fired before a theme is activated on a channel. | `$channelId`              |
+| `appearance.theme.activate.after`                  | This event will be fired after a theme is activated on a channel. | `$channel`                |
 | `section.delete.before`                              | This event will be fired before a section gets deleted.           | `$id`                     |
 | `section.delete.after`                               | This event will be fired after a section gets deleted.            | `$id`                     |
 | `section.draft.save.before`                          | This event will be fired before a section draft gets saved.       | `$id`                     |

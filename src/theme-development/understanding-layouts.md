@@ -25,7 +25,7 @@ If you're building a custom theme package (covered in our [Custom Theme Package]
 :::
 
 ::: info Laravel Blade Foundation
-Bagisto layouts are built on Laravel's Blade templating system. For comprehensive details about Blade components and layouts, visit the [Laravel documentation](https://laravel.com/docs/12.x/blade).
+Bagisto layouts are built on Laravel's Blade templating system. For comprehensive details about Blade components and layouts, visit the [Laravel documentation](https://laravel.com/docs/blade).
 :::
 
 ## Admin Layout
@@ -219,6 +219,7 @@ The shop layout automatically provides:
 - **SEO**: Proper meta tags and structured data
 - **Asset Loading**: Automatic inclusion of theme CSS/JS
 - **Responsive Design**: Mobile-first responsive layout
+- **Flash messages and agent tools**: the `flash-group` toaster and the hidden [WebMCP](../ai/webmcp.md) tool declarations are part of the layout, so a page that uses it gets both
 
 ::: warning Asset Loading Behavior
 The shop layout automatically loads your active theme's compiled assets. This means:

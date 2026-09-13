@@ -1,148 +1,187 @@
 # Understanding Payment Class
 
-When you created your first payment method, you built this `CustomStripePayment` class. Now let's dive deeper into how each part works:
+When you created your first payment method, you built this `CustomStripePayment` class. Now let's dive deeper into how each part works, what the base class already gives you, and how a method that sends the customer to a gateway gets them back.
 
 ```php
 <?php
 
 namespace Webkul\CustomStripePayment\Payment;
 
+use Illuminate\Support\Facades\Storage;
 use Webkul\Payment\Payment\Payment;
 
 class CustomStripePayment extends Payment
 {
     /**
-     * Payment method code - must match payment-methods.php key.
+     * Payment method code, must match the payment-methods.php key.
+     *
+     * @var string
      */
     protected $code = 'custom_stripe_payment';
 
     /**
-     * Get redirect URL for payment processing.
-     * 
-     * Note: You need to create this route in your Routes/web.php file
-     * or return null if you don't need a redirect.
+     * Get the redirect url.
+     *
+     * @return string|null
      */
     public function getRedirectUrl()
     {
-        // return route('custom_stripe_payment.process');
-        return null; // No redirect needed for this basic example
+        return null;
     }
 
     /**
-     * Get additional details for frontend display.
+     * Get the payment method image shown at checkout.
+     *
+     * @return string
      */
-    public function getAdditionalDetails()
+    public function getImage()
     {
-        return [
-            'title' => $this->getConfigData('title'),
-            'description' => $this->getConfigData('description'),
-            'requires_card_details' => true,
-        ];
-    }
+        $url = $this->getConfigData('image');
 
-    /**
-     * Get payment method configuration data.
-     */
-    public function getConfigData($field)
-    {
-        return core()->getConfigData('sales.payment_methods.custom_stripe_payment.' . $field);
+        return $url ? Storage::url($url) : bagisto_asset('images/money-transfer.png', 'shop');
     }
 }
 ```
 
+## What the base class provides
+
+**File:** `packages/Webkul/Payment/src/Payment/Payment.php`
+
+| Member | Purpose |
+|---|---|
+| `protected $code` | The method code. Not declared on the base class, so **every method must set it**; `getCode()` returns it and `getConfigData()` builds `sales.payment_methods.{code}.{field}` from it |
+| `protected $cart` | The current cart, loaded lazily |
+| `getRedirectUrl()` | **Abstract.** Where to send the customer after they click Place Order, or nothing to create the order immediately |
+| `isAvailable()` | Whether the method is offered. Base implementation returns the `active` setting |
+| `getTitle()`, `getDescription()` | The `title` and `description` settings |
+| `getImage()` | Logo URL drawn beside the method at checkout. Base returns the `image` setting; core methods fall back to a bundled asset |
+| `getConfigData($field)` | `core()->getConfigData('sales.payment_methods.{code}.{field}')`. No need to override it |
+| `setCart()`, `getCart()`, `getCartItems()` | Access to the cart being paid for |
+| `getSortOrder()` | The `sort` setting |
+| `getAdditionalDetails()` | An array with `title` and `value`, shown on the admin order page and in order emails. Base returns the `instructions` setting under a translated title, or an empty array |
+
 ## Understanding Key Methods
 
-Let's break down each method in your `CustomStripePayment` class and understand what they do and when they're used.
-
 ### Payment Method Code
-
-The `$code` property is the foundation of your payment method - it connects all the pieces together.
 
 ```php
 protected $code = 'custom_stripe_payment';
 ```
 
-::: info When Do You Need This Property?
-Usually, you don't need to explicitly set this property because if your codes are properly set, then config data can get properly. However, if codes are not in convention then you might need this property to override the default behavior.
-:::
+This is the unique identifier that ties everything together. It must match the key in `payment-methods.php`, it forms the configuration path, and it is what the order stores in `order_payments.method`.
 
-**Purpose:** This is the unique identifier that ties everything together:
-- Must match the key in `payment-methods.php`
-- Used in configuration paths
-- References your payment method throughout Bagisto
+### Availability
+
+`Webkul\Payment\Payment::getPaymentMethods()` instantiates every configured class, calls `isAvailable()` and drops the ones that return `false`; the same check runs again server-side just before an order is created. Override it when a method should be offered only for some carts. Cash on delivery is the canonical example:
+
+```php
+public function isAvailable()
+{
+    if (! $this->cart) {
+        $this->setCart();
+    }
+
+    return $this->getConfigData('active') && $this->cart?->hasOnlyStockableItems();
+}
+```
+
+PhonePe and PayGlocal add a credentials check to `isAvailable()`, so the method disappears from checkout until its keys are configured; their currency checks (INR only, or the **Accepted Currencies** list) run in the redirect controller instead.
 
 ### Redirect URL Handling
-
-This method controls the payment flow - whether customers stay on your site or get redirected elsewhere.
 
 ```php
 public function getRedirectUrl()
 {
-    return null; // No redirect needed for this basic example
+    return null;
 }
 ```
 
-::: info Basic Example Note
-In this example, we return `null` to keep things simple. At this stage, orders will be placed directly without external redirects. However, in real-life scenarios, you might need to redirect customers to external payment gateways for actual payment processing.
-:::
+When the customer clicks **Place Order**, `Shop\Http\Controllers\API\OnepageController::storeOrder()` validates the cart, then asks `Payment::getRedirectUrl($cart)`. If the method returns a URL, the response is `{"redirect": true, "redirect_url": "..."}` and **no order is created yet**; the storefront sends the browser there. If it returns nothing, the controller creates the order from the cart and the customer lands on the success page.
 
-**Purpose:** Determines where to redirect customers for payment processing:
-- Return `null` for inline payment forms
-- Return a route for external payment pages
-- Used for gateways that require external redirects
+Core's PayPal Standard returns its own route:
 
-**When to use redirects:**
-- PayPal Checkout
-- Bank transfer instructions page
-- External payment gateway forms
+```php
+public function getRedirectUrl()
+{
+    return route('paypal.standard.redirect');
+}
+```
 
-### Frontend Display Information
+### The redirect flow
 
-This method provides all the data your payment method needs to display correctly on the checkout page.
+A redirecting method owns the return leg. The pieces, as PayPal Standard implements them:
+
+1. **A route file** loaded by your provider (`Routes/web.php` in Stripe, Razorpay, PayU, PayGlocal and PhonePe; `Http/routes.php` in PayPal). PayPal's, condensed:
+
+   ```php
+   Route::group(['middleware' => ['web']], function () {
+       Route::get('paypal/standard/redirect', [StandardController::class, 'redirect'])->name('paypal.standard.redirect');
+       Route::get('paypal/standard/success', [StandardController::class, 'success'])->name('paypal.standard.success');
+       Route::get('paypal/standard/cancel', [StandardController::class, 'cancel'])->name('paypal.standard.cancel');
+   });
+
+   Route::post('paypal/standard/ipn', [StandardController::class, 'ipn'])
+       ->name('paypal.standard.ipn')
+       ->withoutMiddleware(PreventRequestForgery::class);
+   ```
+
+   Add the `shop` middleware to the group if your redirect or return views need the theme, locale and currency to be resolved.
+
+2. **A redirect action** that sends the customer to the gateway with the cart totals.
+
+3. **A return action** that creates the order. This is the part every gateway package repeats:
+
+   ```php
+   public function success()
+   {
+       $cart = Cart::getCart();
+
+       $data = (new OrderResource($cart))->jsonSerialize();
+
+       $order = $this->orderRepository->create($data);
+
+       Cart::deActivateCart();
+
+       session()->flash('order_id', $order->id);
+
+       return redirect()->route('shop.checkout.onepage.success');
+   }
+   ```
+
+   `Webkul\Sales\Transformers\OrderResource` turns the cart into the order payload, `OrderRepository::create()` dispatches `checkout.order.save.before` and `.after` (the events invoicing, notifications and the full page cache listen to), and the success page reads `order_id` from the session and redirects away when it is missing.
+
+4. **A cancel action** that sends the customer back to the cart with a message.
+
+5. **A webhook** (PayPal's IPN, PayGlocal's settlement callback) for the case where the customer never comes back. Webhooks must opt out of CSRF with `->withoutMiddleware(PreventRequestForgery::class)` (`ValidateCsrfToken` on Bagisto 2.4), and Stripe's package additionally excludes `stripe/*` in `bootstrap/app.php`. Verify the gateway's signature before trusting the payload.
+
+A method that captures on the client, like PayPal Smart Button, keeps `getRedirectUrl()` empty and completes the payment from JavaScript on the checkout page before the order is placed; the checkout deliberately rejects an order whose method is `paypal_smart_button` through the ordinary path.
+
+### Order totals
+
+`Cart::collectTotals()` runs before validation and again after a coupon is removed, and it dispatches `checkout.cart.collect.totals.before` and `.after`. Read amounts from the cart after that (`$cart->grand_total`, `$cart->base_grand_total`) rather than recomputing them; `OrderResource` copies the same figures onto the order.
+
+### Automatic invoices
+
+`Webkul\Payment\Listeners\GenerateInvoice` invoices cash-on-delivery and money-transfer orders on `checkout.order.save.after` when their `generate_invoice` setting is on. A gateway method usually invoices once the gateway confirms payment, from its return action or webhook, with `InvoiceRepository::create()`.
+
+### Additional details
 
 ```php
 public function getAdditionalDetails()
 {
     return [
-        'title' => $this->getConfigData('title'),
-        'description' => $this->getConfigData('description'),
-        'requires_card_details' => true,
+        'title' => trans('custom-stripe::app.payment.instructions'),
+        'value' => $this->getConfigData('instructions'),
     ];
 }
 ```
 
-**Purpose:** Provides frontend with payment method information:
-- `title`: Display name from admin configuration
-- `description`: Payment method description
-- `requires_card_details`: Tells frontend to show card form
-- Custom properties for your specific needs
-
-### Configuration Data Access
-
-This method handles how your payment class retrieves configuration values from the admin panel.
-
-```php
-public function getConfigData($field)
-{
-    return core()->getConfigData('sales.payment_methods.custom_stripe_payment.' . $field);
-}
-```
-
-::: info When Do You Need This Method?
-Usually, you don't need this method because if your payment method code is properly set, then config data can get properly. However, if not in convention then you might need this method to override the default behavior.
-:::
-
-**Purpose:** Retrieves admin configuration values:
-- Builds the full configuration path
-- Accesses values set in admin panel
-- Returns the configured value for the specified field
+Only `title` and `value` are read; the admin order view and the order emails print them. Nothing on the checkout page consumes this method.
 
 ## Best Practices for Payment Classes
 
-Here are some essential practices to follow when building robust payment methods:
-
 ::: warning Implementation Note
-The methods shown in this section are **demonstration examples** for best practices. In real-world applications, you need to implement these methods according to your specific payment gateway requirements and business logic. Use these examples as reference guides and adapt them to your particular use case.
+The methods shown in this section are **demonstration examples** for best practices. In real-world applications, you need to implement these methods according to your specific payment gateway requirements and business logic.
 :::
 
 ### Error Handling
@@ -155,43 +194,21 @@ Always implement comprehensive error handling in your payment methods:
  */
 protected function handlePaymentError(\Exception $e)
 {
-    // log the error for debugging
-    \Log::error('Payment error in ' . $this->code, [
+    Log::error('Payment error in '.$this->code, [
         'error' => $e->getMessage(),
         'trace' => $e->getTraceAsString(),
     ]);
 
-    // return user-friendly error message
     return [
         'success' => false,
-        'error' => 'Payment processing failed. Please try again or contact support.',
+        'error'   => trans('custom-stripe::app.payment.failed'),
     ];
 }
 ```
 
 ### Security Considerations
 
-Always validate and sanitize data before processing payments to protect your application and customers.
-
-```php
-/**
- * Validate payment data before processing.
- */
-protected function validatePaymentData($data)
-{
-    $validator = validator($data, [
-        'amount' => 'required|numeric|min:0.01',
-        'currency' => 'required|string|size:3',
-        'customer_email' => 'required|email',
-    ]);
-
-    if ($validator->fails()) {
-        throw new \InvalidArgumentException($validator->errors()->first());
-    }
-
-    return true;
-}
-```
+Always validate the gateway's callback before acting on it: verify the signature or token with the gateway, compare the amount and currency against the cart, and never create an order from parameters the browser could have altered.
 
 ### Logging and Debugging
 
@@ -203,74 +220,14 @@ Proper logging helps you track payment activities and troubleshoot issues withou
  */
 protected function logPaymentActivity($action, $data = [])
 {
-    // remove sensitive data before logging
     $sanitizedData = array_diff_key($data, [
-        'api_key' => '',
-        'secret_key' => '',
+        'api_key'     => '',
+        'secret_key'  => '',
         'card_number' => '',
-        'cvv' => '',
+        'cvv'         => '',
     ]);
 
-    \Log::info("Payment {$action} for {$this->code}", $sanitizedData);
-}
-```
-
-### Comprehensive Error Handling
-
-Different payment scenarios require different error handling approaches. Here's how to handle various types of payment errors gracefully:
-
-```php
-/**
- * Handle different types of payment errors.
- */
-protected function handlePaymentError(\Exception $e)
-{
-    if ($e instanceof CardException) {
-        // card was declined
-        $errorMessage = $e->getError()->message;
-        
-        \Log::warning('Stripe card declined', [
-            'error_code' => $e->getError()->code,
-            'error_type' => $e->getError()->type,
-            'message' => $errorMessage,
-        ]);
-        
-        return [
-            'success' => false,
-            'error' => $errorMessage,
-            'retry_allowed' => true,
-        ];
-    } elseif ($e instanceof \Stripe\Exception\RateLimitException) {
-        // rate limit exceeded
-        \Log::error('Stripe rate limit exceeded');
-        
-        return [
-            'success' => false,
-            'error' => 'Service temporarily unavailable. Please try again in a moment.',
-            'retry_allowed' => true,
-        ];
-    } elseif ($e instanceof \Stripe\Exception\InvalidRequestException) {
-        // invalid request
-        \Log::error('Stripe invalid request', ['message' => $e->getMessage()]);
-        
-        return [
-            'success' => false,
-            'error' => 'Payment configuration error. Please contact support.',
-            'retry_allowed' => false,
-        ];
-    } else {
-        // generic error
-        \Log::error('Stripe payment error', [
-            'message' => $e->getMessage(),
-            'trace' => $e->getTraceAsString(),
-        ]);
-        
-        return [
-            'success' => false,
-            'error' => 'Payment processing failed. Please try again.',
-            'retry_allowed' => true,
-        ];
-    }
+    Log::info("Payment {$action} for {$this->code}", $sanitizedData);
 }
 ```
 

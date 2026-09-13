@@ -16,10 +16,10 @@ The fastest way to create a payment method is using Bagisto's package generator.
 
 ### Step 1: Install Package Generator
 
-If you haven't installed the package generator yet:
+If you haven't installed the package generator yet (it is a separate, optional development dependency; the `package:make*` commands are not part of Bagisto core, so check the generator's README for the version matching your Bagisto release):
 
 ```bash
-composer require bagisto/bagisto-package-generator
+composer require --dev bagisto/bagisto-package-generator
 ```
 
 ### Step 2: Generate Payment Method Package
@@ -42,7 +42,7 @@ php artisan package:make-payment-method Webkul/CustomStripePayment --force
 The generator automatically creates:
 - Proper directory structure following Bagisto conventions
 - Payment method configuration with correct schema
-- Base payment class extending AbstractPayment
+- Base payment class extending `Webkul\Payment\Payment\Payment`
 - System configuration for admin settings
 - Service provider with proper registration
 :::
@@ -138,9 +138,10 @@ return [
         'code'        => 'custom_stripe_payment',
         'title'       => 'Credit Card (Stripe)',
         'description' => 'Secure credit card payments powered by Stripe',
-        'class'       => 'Webkul\CustomStripePayment\Payment\CustomStripePayment',
-        'active'      => true,
-        'sort'        => 1,
+        'class'            => 'Webkul\CustomStripePayment\Payment\CustomStripePayment',
+        'active'           => true,
+        'generate_invoice' => false,
+        'sort'             => 1,
     ],
 ];
 ```
@@ -156,51 +157,46 @@ Create the main payment class:
 
 namespace Webkul\CustomStripePayment\Payment;
 
+use Illuminate\Support\Facades\Storage;
 use Webkul\Payment\Payment\Payment;
 
 class CustomStripePayment extends Payment
 {
     /**
-     * Payment method code - must match payment-methods.php key.
+     * Payment method code, must match the payment-methods.php key.
+     *
+     * @var string
      */
     protected $code = 'custom_stripe_payment';
 
     /**
-     * Get redirect URL for payment processing.
-     * 
-     * Note: You need to create this route in your Routes/web.php file
-     * or return null if you don't need a redirect.
+     * Get the redirect url.
+     *
+     * @return string|null
      */
     public function getRedirectUrl()
     {
-        // return route('custom_stripe_payment.process');
-        return null; // No redirect needed for this basic example
+        return null;
     }
 
     /**
-     * Get additional details for frontend display.
+     * Get the payment method image shown at checkout.
+     *
+     * @return string
      */
-    public function getAdditionalDetails()
+    public function getImage()
     {
-        return [
-            'title' => $this->getConfigData('title'),
-            'description' => $this->getConfigData('description'),
-            'requires_card_details' => true,
-        ];
-    }
+        $url = $this->getConfigData('image');
 
-    /**
-     * Get payment method configuration data.
-     */
-    public function getConfigData($field)
-    {
-        return core()->getConfigData('sales.payment_methods.custom_stripe_payment.' . $field);
+        return $url ? Storage::url($url) : bagisto_asset('images/money-transfer.png', 'shop');
     }
 }
 ```
 
+`getRedirectUrl()` is abstract on the base class, so every method must declare it; returning `null` (core's cash-on-delivery returns nothing) keeps the customer on the checkout and lets the order be placed immediately. The checkout renders `getImage()` unconditionally, so a method without an image field must still return a URL, or an empty image is drawn.
+
 ::: warning Route Configuration
-If you uncomment the `getRedirectUrl()` method to return a route, make sure to create the corresponding route in your package's `Routes/web.php` file. For basic payment methods that don't require external redirects, returning `null` is perfectly fine.
+Returning a route from `getRedirectUrl()` means writing the return leg too: the gateway's callback controller has to create the order itself. [Understanding Payment Class](./understanding-payment-class.md#the-redirect-flow) walks through that flow with core's PayPal Standard code.
 :::
 
 ### Step 4: Create System Configuration
@@ -223,14 +219,15 @@ return [
                 'name'          => 'active',
                 'title'         => 'Status',
                 'type'          => 'boolean',
-                'default_value' => true,
                 'channel_based' => true,
+                'locale_based'  => false,
             ],
             [
                 'name'          => 'title',
                 'title'         => 'Title',
                 'type'          => 'text',
-                'default_value' => 'Credit Card (Stripe)',
+                'depends'       => 'active:1',
+                'validation'    => 'required_if:active,1',
                 'channel_based' => true,
                 'locale_based'  => true,
             ],
@@ -238,20 +235,34 @@ return [
                 'name'          => 'description',
                 'title'         => 'Description',
                 'type'          => 'textarea',
-                'default_value' => 'Secure credit card payments',
+                'depends'       => 'active:1',
                 'channel_based' => true,
                 'locale_based'  => true,
             ],
             [
+                'name'          => 'image',
+                'title'         => 'Logo',
+                'type'          => 'image',
+                'depends'       => 'active:1',
+                'validation'    => 'mimes:bmp,jpeg,jpg,png,webp',
+                'channel_based' => true,
+                'locale_based'  => false,
+            ],
+            [
                 'name'          => 'sort',
                 'title'         => 'Sort Order',
-                'type'          => 'text',
-                'default_value' => '1',
+                'type'          => 'number',
+                'depends'       => 'active:1',
+                'validation'    => 'required_if:active,1|integer|min:1',
+                'channel_based' => true,
+                'locale_based'  => false,
             ],
         ],
     ],
 ];
 ```
+
+Defaults belong in `payment-methods.php`, which is why none of the fields carry one here; the fallback chain is on [Understanding Payment Configuration](./understanding-payment-configuration.md#configuration-value-resolution). `sort` is a `number` because core sorts methods numerically, and every field but `active` depends on it so the section can be saved while the method is off.
 
 ### Step 5: Create Service Provider
 
@@ -356,8 +367,8 @@ Now let's test your custom payment method:
 1. Add products to cart
 2. Proceed to checkout
 3. Enter billing address
-4. Verify your payment method appears
-5. Test payment processing
+4. Verify your payment method appears, with its title and logo
+5. Place the order: with no redirect URL the order is created at once, as with cash on delivery
 
 ## Generated vs Manual Package Structure
 

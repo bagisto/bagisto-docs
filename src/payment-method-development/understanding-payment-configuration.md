@@ -14,9 +14,10 @@ return [
         'code'        => 'custom_stripe_payment',
         'title'       => 'Credit Card (Stripe)',
         'description' => 'Secure credit card payments powered by Stripe',
-        'class'       => 'Webkul\CustomStripePayment\Payment\CustomStripePayment',
-        'active'      => true,
-        'sort'        => 1,
+        'class'            => 'Webkul\CustomStripePayment\Payment\CustomStripePayment',
+        'active'           => true,
+        'generate_invoice' => false,
+        'sort'             => 1,
     ],
 ];
 ```
@@ -25,12 +26,15 @@ return [
 
 | Property | Type | Purpose | Description |
 |----------|------|---------|-------------|
-| **`code`** | String | Unique identifier | Must match the array key and be used consistently across your payment method |
+| **`class`** | String | Payment class namespace | Full path to your payment processing class; resolved with `app($class)`, so constructor injection works. The only key core reads from this file when collecting methods |
+| **`code`** | String | Unique identifier | Must match the array key and the class's `$code` property |
 | **`title`** | String | Default display name | Shown to customers during checkout (can be overridden in admin) |
 | **`description`** | String | Payment method description | Brief explanation of the payment method |
-| **`class`** | String | Payment class namespace | Full path to your payment processing class |
 | **`active`** | Boolean | Default status | Whether the payment method is enabled by default |
-| **`sort`** | Integer | Display order | Lower numbers appear first in checkout (0 = first) |
+| **`generate_invoice`** | Boolean | Automatic invoicing | Core's `GenerateInvoice` listener creates the invoice on `checkout.order.save.after` for the built-in methods when this is on, using the `invoice_status` and `order_status` settings. A custom method that wants the same behaviour registers its own listener |
+| **`sort`** | Integer | Display order | Lower numbers appear first in checkout; sorted numerically |
+
+Except for `class`, these are defaults: `$this->getConfigData('title')` reads the admin-saved value first (see [Configuration Value Resolution](#configuration-value-resolution)).
 
 ::: tip Configuration Key Consistency
 The array key (`custom_stripe_payment`) must match the `code` property and be used consistently in:
@@ -57,14 +61,15 @@ return [
                 'name'          => 'active',
                 'title'         => 'Status',
                 'type'          => 'boolean',
-                'default_value' => true,
                 'channel_based' => true,
+                'locale_based'  => false,
             ],
             [
                 'name'          => 'title',
                 'title'         => 'Title',
                 'type'          => 'text',
-                'default_value' => 'Credit Card (Stripe)',
+                'depends'       => 'active:1',
+                'validation'    => 'required_if:active,1',
                 'channel_based' => true,
                 'locale_based'  => true,
             ],
@@ -72,15 +77,27 @@ return [
                 'name'          => 'description',
                 'title'         => 'Description',
                 'type'          => 'textarea',
-                'default_value' => 'Secure credit card payments',
+                'depends'       => 'active:1',
                 'channel_based' => true,
                 'locale_based'  => true,
             ],
             [
+                'name'          => 'image',
+                'title'         => 'Logo',
+                'type'          => 'image',
+                'depends'       => 'active:1',
+                'validation'    => 'mimes:bmp,jpeg,jpg,png,webp',
+                'channel_based' => true,
+                'locale_based'  => false,
+            ],
+            [
                 'name'          => 'sort',
                 'title'         => 'Sort Order',
-                'type'          => 'text',
-                'default_value' => '1',
+                'type'          => 'number',
+                'depends'       => 'active:1',
+                'validation'    => 'required_if:active,1|integer|min:1',
+                'channel_based' => true,
+                'locale_based'  => false,
             ],
         ],
     ],
@@ -110,11 +127,14 @@ These properties define each individual form field that administrators can confi
 |----------|---------|-------------|
 | **`name`** | Field identifier | Used to store and retrieve configuration values |
 | **`title`** | Field label | Label displayed in the admin form |
-| **`type`** | Input type | `text`, `textarea`, `boolean`, `select`, `password`, etc. |
-| **`default_value`** | Default setting | Initial value when first configured |
+| **`type`** | Input type | `text`, `textarea`, `boolean`, `select`, `password`, `image`, `number`, etc. |
+| **`default`** | Last-resort default | Used only when neither the database nor `payment-methods.php` has a value; for a payment method put defaults in `payment-methods.php` instead |
+| **`depends`** | Conditional display | `active:1` hides the field while the method is off |
 | **`channel_based`** | Multi-store support | Different values per sales channel |
 | **`locale_based`** | Multi-language support | Translatable content per language |
-| **`validation`** | Field validation | Rules like `required`, `numeric`, `email` |
+| **`validation`** | Field validation | Rules like `required_if:active,1`, `numeric`, `email` |
+
+`info` is required on the section item; the page breaks without it. The complete list of item and field keys is on [System Configuration](../package-development/system-configuration.md).
 
 ### How Configuration is Used
 

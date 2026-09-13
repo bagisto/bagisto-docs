@@ -38,18 +38,20 @@ return [
 
 | Property | Type | Required | Description |
 |----------|------|----------|-------------|
-| `code` | string | ✅ | Unique identifier for your shipping method |
-| `title` | string | ✅ | Display name shown to customers |
-| `description` | string | ❌ | Brief explanation of the shipping service |
-| `active` | boolean | ❌ | Whether the method is enabled (default: true) |
-| `class` | string | ✅ | Full namespace path to your carrier class |
+| `class` | string | ✅ | Full namespace path to your carrier class. The only key core reads from this file when collecting rates |
+| `code` | string | ❌ | Unique identifier for your shipping method. Identity actually comes from the class's `$code` property; keep the two identical |
+| `title` | string | ❌ | Default display name, used until an admin saves one |
+| `description` | string | ❌ | Default description |
+| `active` | boolean | ❌ | Default enabled state, used until an admin saves one. Both core carriers ship `true` |
 
 ### Pricing Properties
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `default_rate` | string/float | Base shipping cost before calculations |
-| `type` | string | Pricing model: `per_order` or `per_unit` |
+| `default_rate` | string/float | Base shipping cost before calculations (core's flat rate ships `'10'`) |
+| `type` | string | Pricing model: `per_order` or `per_unit` (core's flat rate ships `per_unit`; the free carrier has no `type`) |
+
+Everything except `class` is a **default value**: `$this->getConfigData('title')` reads the admin-saved value first and falls back to this file (see [Value Resolution](#5-value-resolution-fallback-chain)). Any other key you add is likewise readable through `getConfigData()` as a default, but can never be overridden from the admin unless a matching field exists in `system.php`.
 
 ::: details Property Details and Best Practices
 
@@ -168,12 +170,14 @@ Config::get('carriers')
 ```
 
 ### 3. Instantiation Phase
-When needed, Bagisto creates your carrier instance:
+When needed, Bagisto creates your carrier instance with a bare `new`, in `Webkul\Shipping\Shipping::collectRates()` and `getShippingMethods()`:
 
 ```php
 // bagisto uses the 'class' property...
 $carrier = new \Webkul\CustomExpressShipping\Carriers\CustomExpressShipping;
 ```
+
+Because the container is not involved, a carrier cannot take constructor dependencies. Resolve repositories or services inside `calculate()` with `app()` instead. (Payment methods differ: they are resolved with `app($class)`.)
 
 ### 4. Configuration Access
 Your carrier class can access configuration values:
@@ -184,6 +188,8 @@ $this->getConfigData('default_rate');      // Returns '19.99'
 $this->getConfigData('title');             // Returns 'Express Delivery (1-2 Days)'
 $this->getConfigData('supports.tracking'); // Returns true
 ```
+
+A nested key such as `supports.tracking` works only through the package-config fallback; the admin stores flat codes, so a nested value is never admin-editable.
 
 ### 5. Value Resolution (Fallback Chain)
 
@@ -248,15 +254,16 @@ Always define essential properties like `active`, `title`, `default_rate`, and `
 ### 3. Sensible Defaults
 
 ```php
-// ✅ production-ready defaults
-'active'       => false,       // Start disabled until configured
-'default_rate' => '0.00',      // Require explicit rate setting
+// ✅ explicit defaults
+'active'       => false,       // Start disabled until an admin configures it
+'default_rate' => '0.00',      // Require an explicit rate
 'type'         => 'per_order', // Most common pricing model
 
 // ❌ risky defaults
-'active'       => true,     // Could activate before configuration
 'default_rate' => '999.99', // Extremely high fallback
 ```
+
+Core's own carriers ship `'active' => true` so that a fresh install has shipping out of the box; a third-party method is better off disabled until the store owner has entered a rate.
 
 ### 4. Environment-Aware Configuration
 
@@ -275,7 +282,43 @@ Understanding common configuration patterns helps you design shipping methods th
 
 ### Pattern 1: Multi-Service Carrier
 
-This pattern is ideal when you want to offer multiple shipping speed options from the same carrier company. Each service level has its own configuration while sharing common infrastructure.
+When one carrier company offers several speeds, you have two ways to model it. The simplest is **one class returning several rates**: `calculate()` may return an array of `CartShippingRate` objects, one per service, each with its own `method` and `method_title`, and the checkout groups them under the shared `carrier_title`:
+
+```php
+public function calculate()
+{
+    if (! $this->isAvailable()) {
+        return false;
+    }
+
+    return [
+        $this->rate('express_standard', trans('express::app.standard'), 9.99),
+        $this->rate('express_priority', trans('express::app.priority'), 19.99),
+    ];
+}
+
+/**
+ * Build one rate of this carrier.
+ */
+protected function rate(string $method, string $title, float $basePrice): CartShippingRate
+{
+    $rate = new CartShippingRate;
+
+    $rate->carrier = $this->getCode();
+    $rate->carrier_title = $this->getConfigData('title');
+    $rate->method = $method;
+    $rate->method_title = $title;
+    $rate->method_description = $this->getConfigData('description');
+    $rate->price = core()->convertPrice($basePrice);
+    $rate->base_price = $basePrice;
+
+    return $rate;
+}
+```
+
+`AbstractShipping` has no `rate()` helper of its own; the one above lives in your carrier.
+
+The alternative below, one class per service level, is the shape to choose when each service needs its own admin settings, because each becomes a separate section under **Shipping Methods**.
 
 ```php
 return [

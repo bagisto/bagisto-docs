@@ -2,6 +2,10 @@
 
 Bagisto provides comprehensive API solutions to help developers integrate and extend the platform's functionality. Whether you're building mobile apps, third-party integrations, or headless commerce solutions, our APIs offer the flexibility and power you need.
 
+::: info Separate packages
+Neither API is part of the Bagisto core repository. They are installed as Composer packages, `bagisto/rest-api` and `bagisto/graphql-api`, each with its own release line. Install the release that matches your Bagisto version; the packages' own README files carry the exact version table and any install steps that change between releases, and the commands on the following pages are the ones those packages document.
+:::
+
 ## Available API Types
 
 ### REST API
@@ -16,7 +20,7 @@ The Bagisto REST API follows RESTful principles and provides complete access to 
 **Key Features:**
 - Full CRUD operations support
 - Built-in pagination for performance
-- Comprehensive documentation with interactive testing
+- Interactive Swagger documentation generated from the package
 - Laravel Sanctum authentication
 
 ::: tip Getting Started
@@ -30,14 +34,12 @@ The Bagisto GraphQL API enables flexible, efficient data fetching with a single 
 - **Headless Commerce** - Power modern frontend frameworks
 - **Mobile Apps** - Reduce bandwidth with precise data queries
 - **Custom Storefronts** - Build unique shopping experiences
-- **Real-time Applications** - Efficient data synchronization
 
 **Key Features:**
 - Single endpoint for all operations
 - Flexible query structure - fetch exactly what you need
-- Real-time subscriptions support
 - Built on Laravel Lighthouse
-- Type-safe schema with introspection
+- Type-safe schema with introspection and a GraphiQL playground
 
 ::: tip Modern Development
 GraphQL is perfect for modern frontend frameworks like React, Vue, and React Native. Check out our [GraphQL API Guide](./graphql-api) to get started.
@@ -45,10 +47,14 @@ GraphQL is perfect for modern frontend frameworks like React, Vue, and React Nat
 
 ## Authentication
 
-Both APIs use secure authentication methods:
+The two packages authenticate differently:
 
-- **REST API**: Laravel Sanctum with token-based authentication
-- **GraphQL API**: Session-based authentication with CSRF protection
+- **REST API**: Laravel Sanctum bearer tokens, issued by the package's admin and customer login endpoints
+- **GraphQL API**: JWT bearer tokens for customers and admins, with the session middleware kept on the endpoint so the guest cart works
+
+## Agents in the browser
+
+For an AI agent that acts inside the shopper's browser rather than against an API, the storefront declares its actions as [WebMCP](../ai/webmcp.md) tools. That needs no package and no token.
 
 ## What's Next?
 

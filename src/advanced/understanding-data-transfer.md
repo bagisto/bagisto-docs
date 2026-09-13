@@ -16,7 +16,7 @@ We'll create an admin user importer for a custom package called `AdminImport`. A
 
 ### Create Importer File
 
-Start by creating an `Importer.php` file under the `Helpers/Importers` directory of your package:
+Start by creating an `AdminImporter.php` file under the `Importers` directory of your package:
 
 ```
 └── packages
@@ -30,8 +30,26 @@ Start by creating an `Importer.php` file under the `Helpers/Importers` directory
 ```
 
 ::: tip Directory Structure
-The importer file should be placed directly in the `Importers` directory and named appropriately for your import type (e.g., `AdminImporter.php` for admin imports).
+Core keeps its importers under `Helpers/Importers/<Entity>/Importer.php` (`Webkul\DataTransfer\Helpers\Importers\Product\Importer` and so on). Any directory works as long as the class name in `importers.php` matches; this tutorial uses a flat `Importers` directory for brevity.
 :::
+
+## How an import runs
+
+Before writing an importer it helps to know what the framework does around it. An import record moves through a fixed set of states, defined as constants on `Webkul\DataTransfer\Helpers\Import`:
+
+`pending` → `validating` → `validated` → (`downloading`) → `processing` → `processed` → (`linking` → `linked`) → (`indexing` → `indexed`) → `completed`
+
+| Phase | What happens | Your importer's part |
+|---|---|---|
+| Validate | The file is read in chunks and every row goes through `validateRow()`. Invalid rows are recorded with `skipRow()` and can be downloaded as an error report. Rows that pass are grouped into batches of `AbstractImporter::BATCH_SIZE` (100) | `validateRow()` |
+| Images (products only) | When the import's image source is `url`, every image link in the file is fetched once before any row is written | none; provided by `DownloadsImages` |
+| Create / Delete | Each batch is handed to `importBatch()`. The import's `action` is `append` or `delete` | `importBatch()` |
+| Link | Runs when `isLinkingRequired()` is true: relationships between imported rows are resolved | `linkData()` and `$linkingRequired` |
+| Index | Runs when `isIndexingRequired()` is true: price, inventory and search indexes are rebuilt for the batch | `indexData()` and `$indexingRequired` |
+
+Each phase is a queued job under `Webkul\DataTransfer\Jobs\Import` (`ValidateChunk`, `DownloadImages`, `ImportBatch`, `LinkBatch`, `IndexBatch`, plus the `Linking`, `Indexing` and `Completed` markers), chained with `Bus::chain()` and `Bus::batch()`. With **Process in Queue** on, validation and image download are spread across workers; with it off, the admin page drives the same phases in short requests. Either way the import runs to completion on its own once saved. The events fired are `data_transfer.imports.validate.before/after`, `data_transfer.imports.batch.import.before/after`, `data_transfer.imports.batch.linking.before/after`, `data_transfer.imports.batch.indexing.before/after`, and `data_transfer.imports.started`, `.linking`, `.indexing` and `.completed`.
+
+There is no exporter framework in the package: exporting is the CSV, XLS and XLSX export built into every DataGrid.
 
 ### Implement Importer Logic
 
@@ -160,9 +178,10 @@ return [
 ```
 
 ::: tip Configuration Options
-- **title**: Display name shown in the admin panel dropdown
+- **title**: Translation key shown in the admin panel dropdown (core uses `data_transfer::app.importers.products.title`); a plain string also renders
 - **importer**: Full class name of your importer
-- **sample_paths**: Optional sample file paths for different formats
+- **sample_paths**: Optional sample file paths for different formats, resolved on the `public` disk
+- **sample_images_zip_path**: Optional, products only in core; a sample archive matching the sample sheet
 :::
 
 #### Register Configuration in Service Provider
@@ -230,6 +249,8 @@ Always call the `skipRow()` method when validation fails. This ensures proper er
 
 ##### Validation Implementation
 
+Add `use Illuminate\Support\Facades\Validator;` to the imports at the top of the class, then:
+
 ```php
 /**
  * Validates row.
@@ -266,7 +287,7 @@ public function validateRow(array $rowData, int $rowNumber): bool
 4. **Return Status**: Return boolean indicating whether the row is valid
 
 ::: info Error Handling
-The `AbstractImporter` class provides error handling utilities. For detailed implementation patterns, refer to other Bagisto importers or examine the abstract class methods.
+`skipRow($rowNumber, $errorCode, $columnName = null, $errorMessage = null)` records the failure against the row; the `$errorCode` should be one of the `AbstractImporter::ERROR_CODE_*` constants (`ERROR_CODE_INVALID_ATTRIBUTE`, `ERROR_CODE_COLUMN_NOT_FOUND`, `ERROR_CODE_SYSTEM_EXCEPTION`, and so on) so the error report groups them. What happens next depends on the import's validation strategy: `skip-errors` proceeds without the bad rows, up to the allowed error count, while `stop-on-errors` halts after validation. For detailed implementation patterns, refer to other Bagisto importers or examine the abstract class methods.
 :::
 
 #### Implementing Batch Import
@@ -290,6 +311,8 @@ The example below demonstrates direct database insertion for simplicity. In prod
 :::
 
 ##### Batch Import Implementation
+
+Add `use Illuminate\Support\Facades\DB;` to the imports, then:
 
 ```php
 /**
@@ -389,11 +412,17 @@ Bagisto's data transfer system supports multiple file formats for flexible impor
 | **Excel Legacy** | `.xls` | Legacy systems | Backward compatibility |
 | **XML** | `.xml` | Structured data | Hierarchical data, validation |
 
+The sources are `Webkul\DataTransfer\Helpers\Sources\{CSV,XLS,XLSX,XML}`, chosen by extension in `Import::getSource()`; the upload form accepts exactly those four extensions. Uploaded files, chunk state, downloaded images and error reports live on the local `private` disk, whatever the store's default disk is.
+
 ::: info File Size Recommendations
 - **CSV**: Best for files > 10MB or > 50,000 records
 - **Excel**: Ideal for files < 5MB with complex formatting
 - **XML**: Perfect for structured data with relationships
 :::
+
+### Product images
+
+The product importer can take images from three sources, chosen per import and stored as `Import::IMAGE_SOURCE_URL`, `IMAGE_SOURCE_UPLOAD` or `IMAGE_SOURCE_DIRECTORY`: `https://` links in the `images` column (fetched in the Images phase, with a same-host and private-address guard), a ZIP archive uploaded with the import, or a directory under `storage/app/import`. The choice is validated against the file, so a mismatch is reported instead of silently importing every product without images. A custom importer that carries images can reuse `Webkul\DataTransfer\Helpers\Importers\Concerns\DownloadsImages`.
 
 ## Conclusion
 

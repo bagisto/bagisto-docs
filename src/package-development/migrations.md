@@ -2,13 +2,17 @@
 
 Migrations provide version control for your database schema, allowing you to define and share database changes across different environments.
 
-For our RMA (Return Merchandise Authorization) package, we'll create a migration that establishes the database structure needed for basic CRUD operations where admin users can create and manage return requests on behalf of customers.
+For our RMA package, we'll create a migration that establishes the database structure needed for basic CRUD operations where admin users can create and manage return requests on behalf of customers.
 
 ::: info Learning Objective
-This migration demonstrates how to create a realistic e-commerce table structure with proper relationships, constraints, and indexes for optimal performance.
+This migration demonstrates how to create a table that follows Bagisto's column conventions, references core tables with foreign keys, and runs on every database Bagisto supports.
 :::
 
-For detailed information about Laravel migrations, visit the [Laravel Documentation](https://laravel.com/docs/12.x/migrations).
+For detailed information about Laravel migrations, visit the [Laravel Documentation](https://laravel.com/docs/migrations).
+
+::: warning Three databases
+Bagisto runs on MySQL, MariaDB and PostgreSQL, and CI runs every migration on all three. Bagisto 2.4 supports MySQL and MariaDB only. Write migrations with the schema builder rather than raw SQL, prefer `jsonb()` to `json()` for JSON columns (core switched its own JSON columns to `jsonb()`), and route any raw expression through `db_grammar()`; see [Database compatibility](../advanced/database-compatibility.md).
+:::
 
 ## RMA Database Schema Overview
 
@@ -59,7 +63,7 @@ class RMAServiceProvider extends ServiceProvider
 ```
 
 ::: info Service Provider Registration
-The `loadMigrationsFrom()` method tells Laravel where to find your package's migrations. This allows them to be run alongside the application's migrations using standard Artisan commands.
+The `loadMigrationsFrom()` method tells Laravel where to find your package's migrations. This allows them to be run alongside the application's migrations using standard Artisan commands. Once the package is also registered as a Concord module (see [Models](./models.md)), Concord loads the same `Database/Migrations` directory itself; core packages keep the explicit call anyway so the migrations run even before the module is registered.
 :::
 
 ## Creating Migration Files
@@ -143,9 +147,9 @@ This will automatically create the following directory structure if it doesn't e
 
 ## Writing the Migration
 
-To create the RMA requests table, copy the code provided here and paste it into your migration file. This migration creates a comprehensive table structure suitable for a real-world RMA system:
+To create the RMA requests table, copy the code provided here and paste it into your migration file:
 
-```php{17-36}
+```php{15-34}
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -156,41 +160,37 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('rma_requests', function (Blueprint $table) {
-            $table->id();
-            
-            // Customer And Order References
-            $table->unsignedInteger('customer_id');
-            $table->unsignedInteger('order_id');
-            
-            // Product Information
+            $table->increments('id');
+
+            $table->integer('customer_id')->unsigned();
+            $table->integer('order_id')->unsigned();
+
             $table->string('product_sku');
             $table->string('product_name');
             $table->integer('product_quantity');
-            
-            // Return Details
+
             $table->string('status')->default('pending');
             $table->string('reason')->nullable();
-            
-            // Comments And Notes
+
             $table->text('admin_notes')->nullable();
-            
-            // Timestamps
+
             $table->timestamps();
+
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
+
+            $table->index('status');
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('rma_requests');
     }
@@ -202,11 +202,11 @@ return new class extends Migration
 Let's break down the key components of this migration:
 
 **Primary Key:**
-- `id`: Auto-incrementing primary key for database relationships
+- `increments('id')`: An unsigned `INT` primary key. The core tables you will reference (`products`, `customers`, `orders`, …) use `increments()` rather than `id()`, which would create a `BIGINT`; a foreign key column must match the referenced key's type, so use `integer(...)->unsigned()` for those and check the migration of any other table before referencing it, since a few newer core tables do use `id()`.
 
 **Reference Fields:**
-- `customer_id`: Links to existing customer records in Bagisto
-- `order_id`: Links to specific orders for context
+- `customer_id`: Links to `customers.id`, with a foreign key so a deleted customer takes their requests with them
+- `order_id`: Links to `orders.id` in the same way
 
 **Product Information:**
 - `product_sku`: Unique product identifier 
@@ -220,6 +220,13 @@ Let's break down the key components of this migration:
 **Administrative Fields:**
 - `admin_notes`: Text field for internal comments and communication
 - `timestamps`: Laravel's created_at and updated_at for audit trails
+
+**Indexes:**
+- `status` is indexed because the DataGrid filters on it. Add an index for every column you filter or join on; the schema builder writes the right syntax for each database.
+
+::: tip Seeders
+Core keeps its seeders under `packages/Webkul/Installer/src/Database/Seeders` and runs them from `bagisto:install`. A package that needs seed data ships its own `Database/Seeders` directory and documents the `php artisan db:seed --class=` command; nothing runs it automatically.
+:::
 
 ## Run Migrations
 

@@ -19,7 +19,7 @@ Both demos include interactive testing tools where you can send real requests an
 
 ### Step 1: Install the Package
 
-Install the REST API package via Composer:
+Install the REST API package via Composer, choosing the release that matches your Bagisto version (the package README lists the pairs):
 
 ```bash
 composer require bagisto/rest-api
@@ -30,12 +30,12 @@ composer require bagisto/rest-api
 Add the following configuration to your `.env` file:
 
 ```properties
-# Replace with your actual domain
-SANCTUM_STATEFUL_DOMAINS=http://localhost/public
+# Hosts (no scheme, no path) that may use cookie-based, stateful requests
+SANCTUM_STATEFUL_DOMAINS=localhost,yourdomain.com
 ```
 
 ::: warning Domain Configuration
-Make sure to replace `http://localhost/public` with your actual domain URL. For production, use your live domain (e.g., `https://yourdomain.com`).
+Sanctum expects bare host names, comma-separated, and a port when one is used (`localhost:8000`). A value with a scheme or a path never matches. Token-based requests with an `Authorization: Bearer` header work regardless of this setting; it matters only for a browser front end on the same domain.
 :::
 
 ### Step 3: Run Installation Command
@@ -53,16 +53,16 @@ This command will:
 
 ## 📖 Documentation Access
 
-Once installed, access the interactive API documentation:
+Once installed, access the interactive API documentation under your store's URL:
 
 ### Admin API Documentation
 ```
-http://localhost/public/api/admin/documentation
+https://yourdomain.com/api/admin/documentation
 ```
 
 ### Shop API Documentation  
 ```
-http://localhost/public/api/shop/documentation
+https://yourdomain.com/api/shop/documentation
 ```
 
 ::: info Interactive Testing
@@ -85,8 +85,10 @@ Include the token in your requests:
 ```bash
 curl -H "Authorization: Bearer YOUR_TOKEN_HERE" \
      -H "Accept: application/json" \
-     http://localhost/public/api/v1/admin/get
+     https://yourdomain.com/api/v1/admin/catalog/products
 ```
+
+The exact paths, parameters and response shapes are in the Swagger documentation the package generates for your installation; treat the examples below as illustrations of the request style rather than as a reference.
 
 ## 🎯 Common Use Cases
 
@@ -111,11 +113,11 @@ fetch('/api/v1/products', {
 Connect external systems with your Bagisto store:
 
 ```php
-// Example: Sync product from external system
-$response = Http::withToken($token)->post("/api/v1/admin/catalog/products/{$productId}", [
+// Example: Update a product from an external system
+$response = Http::withToken($token)->put("https://yourdomain.com/api/v1/admin/catalog/products/{$productId}", [
     'name'  => 'Product Name',
     'sku'   => 'PROD-001',
-    'price' => 99.99
+    'price' => 99.99,
 ]);
 ```
 

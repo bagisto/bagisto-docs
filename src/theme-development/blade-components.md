@@ -29,7 +29,11 @@ These components work seamlessly with the custom themes covered in our previous 
 :::
 
 ::: info Laravel Blade Foundation
-For comprehensive details about Blade components and templating, visit the [Laravel Blade documentation](https://laravel.com/docs/12.x/blade#introduction).
+For comprehensive details about Blade components and templating, visit the [Laravel Blade documentation](https://laravel.com/docs/blade#introduction).
+:::
+
+::: info Where the components live and how props are declared
+Every component below is an anonymous Blade component under `packages/Webkul/Shop/src/Resources/views/components/` or `packages/Webkul/Admin/src/Resources/views/components/`, registered on the `shop` and `admin` namespaces; a theme overrides one by placing the same path under its `views_path` (see [Creating Store Theme](./creating-store-theme.md#how-views-are-resolved)). Most components are thin wrappers around a Vue component. A prop listed as a **Blade prop** is declared with `@props()` and takes a PHP value (`:is-active="true"`); a prop listed as a **Vue prop** is declared on the Vue component and is bound from JavaScript state with the double-colon syntax (`::attachments="attachments"`). The defaults below are read from the current component files.
 :::
 
 ## Shop Components
@@ -42,7 +46,7 @@ Bagisto provides a collapsible accordion UI element, allowing users to toggle th
 
 | Props           | Type    | Default | Description                                                 |
 | --------------- | ------- | ------- | ------------------------------------------------------------|
-| **`is-active`** | Boolean | `false` | Determines the initial state of the accordion. When set to `true`, the accordion section will be expanded by default; otherwise, it will be collapsed. |
+| **`is-active`** | Boolean | `true`  | Determines the initial state of the accordion. It is **expanded by default**; pass `:is-active="false"` to start collapsed. |
 
 | Slots           | Description                                                      |
   | ------------- | ------------------------------------------------------------------------ |
@@ -96,12 +100,10 @@ The `button` component in Bagisto provides a versatile button element that suppo
 
   | Prop            | Type          | Default Value | Description                                                            |
 | ---------------   | ------------- | ------------- | ---------------------------------------------------------------------- |
-| **`title`**       | `String`      | None          | Title text displayed on the button.                                     |
-| **`loading`**     | `Boolean`     | `false`       | Indicates whether the button is in a loading state.                      |
-| **`button-type`**  | `String`      | `'button'`    | Specifies the type of button (`'button'`, `'submit'`, `'reset'`, etc.). |
-| **`button-class`** | `String`      | `''`          | Additional classes for custom styling.                                  |
-
-You can customize the appearance of the button by passing additional props `loading`  `buttonType`  `buttonClass` respectively.
+| **`title`**       | `String`      | None          | Vue prop. Title text displayed on the button.                                     |
+| **`loading`**     | `Boolean`     | `false`       | Vue prop. Indicates whether the button is in a loading state.                      |
+| **`button-type`**  | `String`      | None          | Vue prop. Intended button type (`'button'`, `'submit'`); the component does not bind it to the `type` attribute, so pass `type="submit"` as a plain attribute when the button must submit a form. |
+| **`button-class`** | `String`      | None          | Vue prop. Classes applied to the inner `<button>`.                                  |
 
 Let's assume you want to use the **`button`** component. You can call it like this:
  
@@ -110,13 +112,14 @@ Let's assume you want to use the **`button`** component. You can call it like th
 <x-shop::button
     type="submit"
     class="secondary-button w-full max-w-full max-md:py-3 max-sm:rounded-lg max-sm:py-1.5"
-    button-type="secondary-button"
-    :loading="false"
-    :title="trans('Button')"
-    :disabled="true"
-    ::loading="true"
+    button-type="submit"
+    :title="trans('shop::app.checkout.cart.index.continue-shopping')"
+    ::loading="isStoring"
+    ::disabled="isStoring"
 />
 ```
+
+`:title` passes a fixed string, `::loading` binds the spinner to a piece of Vue state so the button shows the spinner while a request is in flight.
 
 ### Shop Carousel
 
@@ -153,7 +156,7 @@ The `drawer` component in Bagisto provides a versatile drawer that can be positi
 | Props            | Type          | Default Value | Description                                                            |
 | --------------  | ------------- | ------------- | ---------------------------------------------------------------------- |
 | **`is-active`** | `Boolean`     | `false`       | Determines whether the drawer is initially active.                      |
-| **`position`** | `String`      | `'left'`      | Specifies the position of the drawer (`top`, `bottom`, `left`, or `right`). |
+| **`position`** | `String`      | `'right'`     | Specifies the position of the drawer (`top`, `bottom`, `left`, or `right`). |
 | **`width`**    | `String`      | `'500px'`     | Specifies the width of the drawer.                                      |
 
 | Slots           | Description                                                      |
@@ -197,8 +200,8 @@ The `dropdown` component in Bagisto provides a customizable dropdown menu that c
 
 | Prop              | Type      | Default Value | Description                                                            |
 | ----------------- | --------- | ------------- | ---------------------------------------------------------------------- |
-| **`close-on-click`**| `Boolean` | `true`        | Determines whether the dropdown should close when clicking outside the menu. |
-| **`position`**    | `String`  | `'bottom-left'`| Specifies the position of the dropdown menu relative to the toggle button (`top-left`, `top-right`, `bottom-left`, `bottom-right`). |
+| **`position`**    | `String`  | `'bottom-right'`| Blade prop. Position of the menu relative to the toggle (`top-left`, `top-right`, `bottom-left`, `bottom-right`). |
+| **`close-on-click`**| `Boolean` | `true`        | Vue prop. When `true` the menu also closes after a click **inside** it; clicking outside or pressing Escape always closes it. Bind it with `::close-on-click="false"` to keep the menu open while the user interacts with its content. |
 
   | Slots           | Description                                                      |
   | ------------- | ------------------------------------------------------------------------ |
@@ -271,7 +274,7 @@ Let's assume you want to use the **`form`** component. You can call it like this
 
 ```html
 <!-- Shop Form (Traditional) -->
-<x-shop::form method="POST" action="{{ route('shop.checkout.save') }}">
+<x-shop::form method="POST" action="{{ route('shop.customers.account.addresses.store') }}">
     <!-- Form fields -->
     <x-shop::button
         type="submit"
@@ -311,24 +314,20 @@ Let's assume you want to use the **`image-zoomer`** component. You can call it l
 />
 ```
 
-### Shop Media (Image)
+### Shop Lazy Image
 
-The Media component in Bagisto provides a user interface for managing and displaying images/videos, allowing users to upload, edit, and delete images.:
+The storefront has no upload component; its media component is `media.images.lazy`, an `<img>` wrapper that defers loading until the image scrolls into view and swaps in a fallback when the source fails.
 
-| Prop Name         | Type       | Default Value | Description                                                      |
-|-------------------|-------------|---------------|------------------------------------------------------------------|
-| `name`            | `String`    |               | The name of the input field.                                      |
-| `allow-multiple` | `Boolean`   | `false`       | Whether to allow uploading multiple images.                       |
-| `show-placeholders` | `Boolean` | `true`        | Whether to show placeholder images when no images are uploaded.   |
-| `uploaded-images` | `Array`     | `[]`          | Array of uploaded images.                                         |
-| `uploaded-videos` | `Array`     | `[]`          | Array of uploaded videos.                                         |
-| `width`         | `String`    | `'100%'`      | Width of the image container.                                     |
-| `height`        | `String`    | `'auto'`      | Height of the image container.                                    |
+| Prop           | Type      | Default Value | Description                                                      |
+|----------------|-----------|---------------|------------------------------------------------------------------|
+| **`lazy`**     | `Boolean` | `true`        | Vue prop. Load the image only when it enters the viewport.        |
+| **`src`**      | `String`  | `''`          | Vue prop. Image URL, usually bound with `::src` from Vue state.   |
+| **`fallback`** | `String`  | `''`          | Vue prop. URL shown when `src` fails to load.                     |
 
-Let's assume you want to use the **`Image/Video`** component, You can call it like this.
+Any other attribute (`class`, `alt`, `width`, `height`) is passed through to the `<img>` element.
 
 ```html
-<!-- Image Component -->
+<!-- Shop Lazy Image -->
 <x-shop::media.images.lazy
     class="h-[110px] max-w-[110px] rounded-xl max-md:h-20 max-md:max-w-20"
     ::src="item.base_image.small_image_url"
@@ -336,7 +335,6 @@ Let's assume you want to use the **`Image/Video`** component, You can call it li
     width="110"
     height="110"
     ::key="item.id"
-    ::index="item.id"
 />
 ```
 
@@ -384,10 +382,12 @@ Let's assume you want to use the **`modal`** component, You can call it like thi
 
 The Quantity Changer component, provides a simple interface for users to increase or decrease a quantity value. 
 
-| Props          | Type    | Default Value | Description                       |
-| -------------- | ------- | ------------- | --------------------------------- |
-| **`name`**     | String  | `''`          | The name attribute for the hidden input field. |
-| **`value`**    | Number  | `1`           | The initial quantity value.       |
+| Props            | Type    | Default Value | Description                       |
+| ---------------- | ------- | ------------- | --------------------------------- |
+| **`name`**       | String  | `''`          | The name attribute for the hidden input field. |
+| **`value`**      | Number  | `1`           | The initial quantity value.       |
+| **`min-value`**  | Number  | `1`           | The lowest quantity the minus button allows. |
+| **`removable`**  | Boolean | `false`       | When `true`, decreasing below `min-value` emits a remove event instead of stopping (used by the mini cart). |
 
 Let's assume you want to use the **`Quantity Changer`** component on shop. You can call it like this.
 
@@ -404,13 +404,15 @@ Let's assume you want to use the **`Quantity Changer`** component on shop. You c
 
 The `range-slider` component provides a dual-handle range slider for filtering numeric values such as prices. It supports integer, float, and price formatting with a minimum 10% gap between handles.
 
-| Props                          | Type    | Default Value | Description                                                 |
-| ------------------------------ | ------- | ------------- | ------------------------------------------------------------|
-| **`default-type`**             | String  | None          | Value type: `'integer'`, `'float'`, or `'price'`.            |
-| **`default-allowed-min-range`** | Number | `0`           | Minimum allowed value for the slider.                        |
-| **`default-allowed-max-range`** | Number | `100`         | Maximum allowed value for the slider.                        |
-| **`default-min-range`**        | Number  | `0`           | Initial minimum selected value.                              |
-| **`default-max-range`**        | Number  | `100`         | Initial maximum selected value.                              |
+All five are Vue props with no defaults, so pass every one of them:
+
+| Props                          | Type    | Description                                                 |
+| ------------------------------ | ------- | ------------------------------------------------------------|
+| **`default-type`**             | String  | Value type: `'integer'`, `'float'`, or `'price'`.            |
+| **`default-allowed-min-range`** | Number | Minimum allowed value for the slider.                        |
+| **`default-allowed-max-range`** | Number | Maximum allowed value for the slider.                        |
+| **`default-min-range`**        | Number  | Initial minimum selected value.                              |
+| **`default-max-range`**        | Number  | Initial maximum selected value.                              |
 
 Let's assume you want to use the **`range-slider`** component. You can call it like this:
 
@@ -448,13 +450,13 @@ The Table component provides a structured way to display tabular data in Bagisto
 | **`Row`**      | Apply styles to `tr` elements to change their appearance, such as background color, hover effects, and borders. |
 | **`Header`**   | Customize the appearance of the header cells within the `thead` section using `th` elements. Apply styles such as font weight, text color, and background color. |
 
-Let's assume you want to use the **`Table`** component on shop. You can call it like this.
+The shop table ships `table`, `table.thead`, `table.tbody`, `table.tr`, `table.th` and `table.td`; there is a single `table.tr` used in both the head and the body (the admin table has separate `thead.tr` and `tbody.tr`).
 
 ```html
 <!-- Shop Table -->
 <x-shop::table>
     <x-shop::table.thead>
-        <x-shop::table.thead.tr>
+        <x-shop::table.tr>
             <x-shop::table.th>
                 Heading 1
             </x-shop::table.th>
@@ -462,19 +464,11 @@ Let's assume you want to use the **`Table`** component on shop. You can call it 
             <x-shop::table.th>
                 Heading 2
             </x-shop::table.th>
-
-            <x-shop::table.th>
-                Heading 3
-            </x-shop::table.th>
-
-            <x-shop::table.th>
-                Heading 4
-            </x-shop::table.th>
-        </x-shop::table.thead.tr>
+        </x-shop::table.tr>
     </x-shop::table.thead>
 
     <x-shop::table.tbody>
-        <x-shop::table.tbody.tr>
+        <x-shop::table.tr>
             <x-shop::table.td>
                 Column 1
             </x-shop::table.td>
@@ -482,15 +476,7 @@ Let's assume you want to use the **`Table`** component on shop. You can call it 
             <x-shop::table.td>
                 Column 2
             </x-shop::table.td>
-
-            <x-shop::table.td>
-                Column 3
-            </x-shop::table.td>
-
-            <x-shop::table.td>
-                Column 4
-            </x-shop::table.td>
-        </x-shop::table.thead.tr>
+        </x-shop::table.tr>
     </x-shop::table.tbody>
 </x-shop::table>
 ```
@@ -546,15 +532,28 @@ Let's assume you want to use the **`tabs`** component on shop. You can call it l
 
 ### Shop Tinymce
 
-The `tinymce` component wraps the Tinymce editor and provides additional functionalities like AI content generation.
+The `tinymce` component wraps the TinyMCE editor. The storefront build has no Magic AI button; that is an admin-only addition.
 
-| Props          | Type    | Default Value | Description                                                      |
-| -------------- | ------- | ------------- | ---------------------------------------------------------------- |
-| **`selector`** | String  | `''`          | The CSS selector for the textarea element to initialize as TinyMCE. |
-| **`field`**    | Object  | `{}`          | Vue Formulate field object.                                      |
-| **`prompt`**   | String  | `''`          | The prompt to be used for AI content generation.                 |  
+| Props          | Type    | Description                                                      |
+| -------------- | ------- | ---------------------------------------------------------------- |
+| **`selector`** | String  | Vue prop. The CSS selector for the textarea element to initialize as TinyMCE. |
+| **`field`**    | Object  | Vue prop. The VeeValidate field object the editor writes back to. |
 
-Let's assume you want to use the **`tinymce`** component on admin and shop. You can call it like this.
+You rarely mount it directly; the form control renders it when `:tinymce="true"` is passed:
+
+### Shop Products, Categories and Ratings
+
+Storefront-only components used by the home page sections and listings:
+
+| Component | Props | Purpose |
+|---|---|---|
+| `x-shop::products.card` | Vue props `product`, `mode` (`grid` or `list`) | One product tile with image, price, wishlist, compare and add-to-cart |
+| `x-shop::products.carousel` | Vue props `src` (JSON endpoint returning products), `title`, `navigation-link` | Horizontal product slider fed by an API URL, used by the "featured" and "new products" sections |
+| `x-shop::categories.carousel` | Vue props `src`, `title`, `navigation-link` | The same slider for categories |
+| `x-shop::products.ratings` | Blade props `average` (0), `total` (0), `rating` (true) | Star row with an average and review count |
+| `x-shop::carousel` | Blade prop `options` (`['images' => [...]]`) | Full-width image slider driven by theme section data |
+| `x-shop::flash-group` | none | Renders session flash messages as toasts; included by the layout |
+| `x-shop::form.control-group`, `.label`, `.control`, `.error` | see [Validation](./validation.md) | The validated form field triplet |
 
 ```html
 <!-- Shop Tinymce -->
@@ -580,7 +579,7 @@ Bagisto provides a collapsible accordion UI element, allowing users to toggle th
 
 | Props           | Type    | Default | Description                                                 |
 | --------------- | ------- | ------- | ------------------------------------------------------------|
-| **`is-active`** | Boolean | `false` | Determines the initial state of the accordion. When set to `true`, the accordion section will be expanded by default; otherwise, it will be collapsed. |
+| **`is-active`** | Boolean | `true`  | Determines the initial state of the accordion. It is **expanded by default**; pass `:is-active="false"` to start collapsed. |
 
 | Slots           | Description                                                      |
   | ------------- | ------------------------------------------------------------------------ |
@@ -613,12 +612,10 @@ The `button` component in Bagisto provides a versatile button element that suppo
 
   | Prop            | Type          | Default Value | Description                                                            |
 | ---------------   | ------------- | ------------- | ---------------------------------------------------------------------- |
-| **`title`**       | `String`      | None          | Title text displayed on the button.                                     |
-| **`loading`**     | `Boolean`     | `false`       | Indicates whether the button is in a loading state.                      |
-| **`button-type`**  | `String`      | `'button'`    | Specifies the type of button (`'button'`, `'submit'`, `'reset'`, etc.). |
-| **`button-class`** | `String`      | `''`          | Additional classes for custom styling.                                  |
-
-You can customize the appearance of the button by passing additional props `loading`  `buttonType`  `buttonClass` respectively.
+| **`title`**       | `String`      | None          | Vue prop. Title text displayed on the button.                                     |
+| **`loading`**     | `Boolean`     | `false`       | Vue prop. Indicates whether the button is in a loading state.                      |
+| **`button-type`**  | `String`      | None          | Vue prop. Not bound to the `type` attribute; pass `type="submit"` as a plain attribute when the button must submit a form. |
+| **`button-class`** | `String`      | None          | Vue prop. Classes applied to the inner `<button>`.                                  |
 
 Let's assume you want to use the **`button`** component. You can call it like this:
  
@@ -626,12 +623,11 @@ Let's assume you want to use the **`button`** component. You can call it like th
 <!-- Admin Button -->
 <x-admin::button
     type="submit"
-    class="secondary-button w-full max-w-full max-md:py-3 max-sm:rounded-lg max-sm:py-1.5"
-    button-type="secondary-button"
-    :loading="false"
-    :title="trans('Button')"
-    :disabled="true"
-    ::loading="true"
+    class="primary-button"
+    button-type="submit"
+    :title="trans('admin::app.catalog.products.edit.save-btn')"
+    ::loading="isLoading"
+    ::disabled="isLoading"
 />
 ```
 
@@ -641,9 +637,9 @@ The `charts-bar` and `charts-line` components in Bagisto provide easy-to-use cha
 
 | Prop                | Type          | Default Value | Description                                                            |
 | ------------------- | ------------- | ------------- | ---------------------------------------------------------------------- |
-| **`labels`**         | `Array` (required) | None          | An array of labels for the x-axis of the chart.                        |
-| **`datasets`**       | `Array` (required) | None          | An array of datasets containing data points for the chart.             |
-| **`aspectRatio`**    | `Number`      | `3.23`        | Optional. Aspect ratio of the chart (width / height).                   |
+| **`labels`**         | `Array`       | `[]`          | Vue prop. An array of labels for the x-axis of the chart.                        |
+| **`datasets`**       | `Array`       | None usable   | Vue prop. An array of Chart.js datasets containing data points for the chart; always pass it.             |
+| **`aspect-ratio`**    | `Number`      | `3.23`        | Vue prop. Aspect ratio of the chart (width / height).                   |
 
 You can customize the appearance of the bar chart by providing different datasets with colors, labels, and data points. Additionally, you can adjust the aspect ratio of the chart by setting the aspect-ratio prop.
 
@@ -685,6 +681,33 @@ Let's assume you want to use the **`datagrid`** component. You can call it like 
 <x-admin::datagrid :src="route('admin.catalog.products.index')" />
 ```
 
+### Admin Command Palette
+
+`<x-admin::command-palette />` is mounted once by the admin layout and opens with **Ctrl+K** (**⌘K** on macOS). It takes no props; it reads its rows from the `admin.command_palette.index` endpoint and is extended through configuration rather than markup. See [Command Palette](../advanced/command-palette.md) for the providers, the `command-palette.php` config file and how a package adds its own actions and record searches.
+
+### Admin Date Range Picker
+
+`<x-admin::date-range-picker>` is the preset-driven range picker used by the reporting pages (Today, Yesterday, This week, Last month and so on, capped at today).
+
+| Props             | Type     | Description                                                            |
+| ----------------- | -------- | ---------------------------------------------------------------------- |
+| **`start-label`** | `String` | Blade prop. Label above the start date input.                          |
+| **`end-label`**   | `String` | Blade prop. Label above the end date input.                            |
+| **`start`**       | `String` | Vue prop. Selected start date, `Y-m-d`.                                |
+| **`end`**         | `String` | Vue prop. Selected end date, `Y-m-d`.                                  |
+
+It emits `change` with the new `{ start, end }` pair:
+
+```html
+<x-admin::date-range-picker
+    :start-label="trans('admin::app.reporting.view.start-date')"
+    :end-label="trans('admin::app.reporting.view.end-date')"
+    ::start="filters.start"
+    ::end="filters.end"
+    @change="applyDateRange"
+/>
+```
+
 ### Admin Drawer
 
 The `drawer` component in Bagisto provides a versatile drawer that can be positioned on the top, bottom, left, or right side of the screen. It allows you to create interactive drawers that can contain various content such as headers, body, and footer sections. The drawer can be toggled open or closed, providing a clean and efficient way to display additional information or functionality.
@@ -692,7 +715,7 @@ The `drawer` component in Bagisto provides a versatile drawer that can be positi
 | Props            | Type          | Default Value | Description                                                            |
 | --------------  | ------------- | ------------- | ---------------------------------------------------------------------- |
 | **`is-active`** | `Boolean`     | `false`       | Determines whether the drawer is initially active.                      |
-| **`position`** | `String`      | `'left'`      | Specifies the position of the drawer (`top`, `bottom`, `left`, or `right`). |
+| **`position`** | `String`      | `'right'`     | Specifies the position of the drawer (`top`, `bottom`, `left`, or `right`). |
 | **`width`**    | `String`      | `'500px'`     | Specifies the width of the drawer.                                      |
 
 | Slots           | Description                                                      |
@@ -736,8 +759,9 @@ The `dropdown` component in Bagisto provides a customizable dropdown menu that c
 
 | Prop              | Type      | Default Value | Description                                                            |
 | ----------------- | --------- | ------------- | ---------------------------------------------------------------------- |
-| **`close-on-click`**| `Boolean` | `true`        | Determines whether the dropdown should close when clicking outside the menu. |
-| **`position`**    | `String`  | `'bottom-left'`| Specifies the position of the dropdown menu relative to the toggle button (`top-left`, `top-right`, `bottom-left`, `bottom-right`). |
+| **`position`**    | `String`  | `'bottom-left'`| Blade prop. Position of the menu relative to the toggle (`top-left`, `top-right`, `bottom-left`, `bottom-right`). |
+| **`fit-toggle`**  | `Boolean` | `false`       | Blade prop. Make the menu as wide as the toggle element. |
+| **`close-on-click`**| `Boolean` | `true`        | Vue prop. When `true` the menu also closes after a click inside it; bind `::close-on-click="false"` for menus with form controls. |
 
   | Slots           | Description                                                      |
   | ------------- | ------------------------------------------------------------------------ |
@@ -834,31 +858,38 @@ Let's assume you want to use the **`form`** component. You can call it like this
  
 The Media component in Bagisto provides a user interface for managing and displaying images/videos, allowing users to upload, edit, and delete images.:
 
-| Props               | Type        | Default Value | Description                                                      |
-|---------------------|-------------|---------------|------------------------------------------------------------------|
-| **`name`**          | `String`    |               | The name of the input field.                                      |
-| **`allow-multiple`** | `Boolean`   | `false`       | Whether to allow uploading multiple images.                       |
-| **`show-placeholders` | `Boolean` | `true`        | Whether to show placeholder images when no images are uploaded.   |
-| **`uploaded-images` | `Array`     | `[]`          | Array of uploaded images.                                         |
-| **`uploaded-videos` | `Array`     | `[]`          | Array of uploaded videos.                                         |
-| **`width`**         | `String`    | `'100%'`      | Width of the image container.                                     |
-| **`height`**        | `String`    | `'auto'`      | Height of the image container.                                    |
+`x-admin::media.images` props:
 
-Let's assume you want to use the **`Image/Video`** component, You can call it like this.
+| Props                  | Type        | Default Value | Description                                                      |
+|------------------------|-------------|---------------|------------------------------------------------------------------|
+| **`name`**             | `String`    | `'images'`    | The name of the input field.                                      |
+| **`allow-multiple`**   | `Boolean`   | `false`       | Whether to allow uploading multiple images.                       |
+| **`show-placeholders`**| `Boolean`   | `false`       | Show the front/back/left/right placeholder tiles used by the product form. |
+| **`uploaded-images`**  | `Array`     | `[]`          | Already stored images, each with `id` and `url`.                  |
+| **`width`**            | `String`    | `'120px'`     | Width of each tile.                                               |
+| **`height`**           | `String`    | `'120px'`     | Height of each tile.                                              |
+| **`enable-seo`**       | `Boolean`   | `false`       | Add the alt-text and title fields beside each tile.               |
+| **`meta-name`**        | `String`    | `''`          | Input name for that SEO metadata, for example `images[meta]`.     |
+
+`x-admin::media.videos` takes the same props except `show-placeholders`, with `uploaded-videos` in place of `uploaded-images` and a `210px` × `120px` tile. Hovering a tile reveals a delete action and an edit action; the latter replaces the file directly, or opens the SEO drawer (alt text, file name, replace) when `enable-seo` is on.
 
 ```html
 <!-- Image Component -->
 <x-admin::media.images
-    name="images"
-    allow-multiple="true"
-    show-placeholders="true"
+    name="images[files]"
+    meta-name="images[meta]"
+    :allow-multiple="true"
+    :show-placeholders="true"
+    :enable-seo="true"
     :uploaded-images="$product->images"
 />
 
 <!-- Video Component -->
 <x-admin::media.videos
     name="videos[files]"
+    meta-name="videos[meta]"
     :allow-multiple="true"
+    :enable-seo="true"
     :uploaded-videos="$product->videos"
 />
 ```
@@ -927,11 +958,15 @@ Let's assume you want to use the **`Quantity Changer`** component on shop. You c
 
 The `seo` component, assists in managing SEO-related metadata for your pages. It dynamically updates the meta title and description based on user input and provides a preview of the generated SEO metadata.
 
-| Props          | Type    | Default Value | Description                 |
-| -------------- | ------- | ------------- | --------------------------- |
-| **`slug`**     | String  | `''`          | URL slug for the page.      |
+All props are Vue props with these defaults; the component watches the named form fields and renders a live search-result preview:
 
-Let's assume you want to use the **`seo`** component. You can call it like this, It offers a convenient way to generate and display SEO-friendly content for web pages.
+| Props                        | Type    | Default Value        | Description                 |
+| ---------------------------- | ------- | -------------------- | --------------------------- |
+| **`meta-title-field`**       | String  | `'meta_title'`       | Name of the meta title input to watch. |
+| **`meta-description-field`** | String  | `'meta_description'` | Name of the meta description input to watch. |
+| **`url-key-field`**          | String  | `'url_key'`          | Name of the URL key input to watch. |
+| **`slug`**                   | String  | `''`                 | Path prefix shown before the URL key, for example `page`. |
+| **`url-type`**               | String  | `'path'`             | `path` appends the key to the store URL; `query` renders it as a query string. |
 
 ```html 
 <x-admin::seo slug="page" />
@@ -956,7 +991,7 @@ The `star-rating` component provides an interactive 5-star rating display. It ca
 | -------------- | ------- | ------------- | ------------------------------------------------------------|
 | **`name`**     | String  | `'rating'`    | Hidden field name for form submission.                       |
 | **`value`**    | Number  | `0`           | Initial rating value (0-5).                                  |
-| **`disabled`** | Boolean | `true`        | Whether the rating is read-only.                             |
+| **`disabled`** | Boolean | `true`        | Whether the rating is read-only; pass `:disabled="false"` for an input. |
 
 Let's assume you want to use the **`star-rating`** component. You can call it like this:
 
@@ -1029,7 +1064,7 @@ Let's assume you want to use the **`Table`** component on shop. You can call it 
             <x-admin::table.td>
                 Column 4
             </x-admin::table.td>
-        </x-admin::table.thead.tr>
+        </x-admin::table.tbody.tr>
     </x-admin::table.tbody>
 </x-admin::table>
 ```
@@ -1089,11 +1124,11 @@ The `tinymce` component wraps the Tinymce editor and provides additional functio
 
 | Props          | Type    | Default Value | Description                                                      |
 | -------------- | ------- | ------------- | ---------------------------------------------------------------- |
-| **`selector`** | String  | `''`          | The CSS selector for the textarea element to initialize as TinyMCE. |
-| **`field`**    | Object  | `{}`          | Vue Formulate field object.                                      |
-| **`prompt`**   | String  | `''`          | The prompt to be used for AI content generation.                 |  
+| **`selector`** | String  | `''`          | Vue prop. The CSS selector for the textarea element to initialize as TinyMCE. |
+| **`field`**    | Object  | `{}`          | Vue prop. The VeeValidate field object the editor writes back to. |
+| **`prompt`**   | String  | `''`          | Vue prop. The prompt pre-filled in the **Magic AI** dialog.       |  
 
-Let's assume you want to use the **`tinymce`** component on admin and shop. You can call it like this.
+The admin editor adds a **Magic AI** button when text generation is enabled under **Configuration → Magic AI**; it lists the models of the providers chosen there. You rarely mount it directly; the form control renders it when `:tinymce="true"` is passed:
 
 ```html
 <!-- Admin Tinymce -->
@@ -1106,7 +1141,7 @@ Let's assume you want to use the **`tinymce`** component on admin and shop. You 
     :label="Content"
     :placeholder="Content"
     :tinymce="true"
-    :prompt="core()->getConfigData('general.magic_ai.content_generation.category_description_prompt')"
+    prompt="Write a short, friendly description for this category."
 />
 ```
 
@@ -1123,27 +1158,26 @@ The `tree-view` component provides a hierarchical tree selection interface suppo
 | **`id-field`**        | String          | `'id'`           | Field in item data containing the unique identifier.         |
 | **`label-field`**     | String          | `'name'`         | Field in item data containing the display label.             |
 | **`children-field`**  | String          | `'children'`     | Field in item data containing child items.                   |
-| **`items`**           | Array/Object    | `[]`             | Tree data structure.                                         |
+| **`items`**           | JSON string     | `[]`             | Tree data, passed as a JSON string (`:items="json_encode($items)"`) because it crosses the Blade-to-Vue boundary. |
 | **`value`**           | Array           | `[]`             | Currently selected values.                                   |
-| **`fallback-locale`** | String          | `'en'`           | Fallback locale for translated labels.                       |
+| **`fallback-locale`** | String          | None             | Fallback locale for translated labels; pass `config('app.fallback_locale')`. |
 | **`collapse`**        | Boolean         | `false`          | Whether tree items start in collapsed state.                 |
+| **`searchable`**      | Boolean         | `false`          | Show a filter box above the tree.                            |
+| **`search-placeholder`** | String       | `'Search'`       | Placeholder for that filter box.                             |
 
-Let's assume you want to use the **`tree view`** component. You can call it like this:
+Only `input-type` and `selection-type` are Blade props; the rest are Vue props. This is how the role form renders the permission tree:
 
 ```html
 <!-- Admin Tree View (Checkbox - Hierarchical) -->
 <x-admin::tree.view
     input-type="checkbox"
-    selection-type="hierarchical"
-    name-field="permissions"
     value-field="key"
     id-field="key"
-    label-field="name"
-    children-field="children"
-    :items="$acl->items"
-    :value="$role->permissions"
+    searchable="true"
+    search-placeholder="{{ trans('admin::app.settings.roles.create.search-permissions') }}"
+    :items="json_encode(acl()->getItems())"
+    :value="json_encode($role->permissions ?? [])"
     :fallback-locale="config('app.fallback_locale')"
-    :collapse="true"
 />
 
 <!-- Admin Tree View (Radio - Individual) -->
@@ -1154,8 +1188,8 @@ Let's assume you want to use the **`tree view`** component. You can call it like
     value-field="id"
     label-field="name"
     children-field="children"
-    :items="$categories"
-    :value="[$selectedCategoryId]"
+    :items="json_encode($categories)"
+    :value="json_encode([$selectedCategoryId])"
 />
 ```
 

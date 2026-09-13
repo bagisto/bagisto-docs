@@ -8,7 +8,7 @@ For our RMA package, we'll implement comprehensive localization that covers admi
 This section demonstrates how to create organized, maintainable translation files for your Bagisto package, register them properly with the service provider, and use them effectively in views, controllers, and other components.
 :::
 
-For detailed information on Laravel localization features, visit the [Laravel Documentation on Localization](https://laravel.com/docs/12.x/localization).
+For detailed information on Laravel localization features, visit the [Laravel Documentation on Localization](https://laravel.com/docs/localization).
 
 ## Bagisto Localization Architecture
 
@@ -75,6 +75,10 @@ Set your default and fallback locales in `config/app.php`. These settings affect
 **Fallback Locale**: When a translation key is missing in the current locale, Laravel will attempt to find it in the fallback locale before displaying the key itself.
 
 **Environment Override**: Using `env('APP_LOCALE', 'en')` allows you to set different default locales for different environments (staging, production, etc.).
+:::
+
+::: warning The storefront does not read `config/app.php`
+`APP_LOCALE` is the starting point only. On the storefront, `Webkul\Shop\Http\Middleware\Locale` sets the locale for each request from the `locale` query parameter, then the session, then the channel's default locale, and only the locales assigned to the channel are accepted. In the admin, configuration and catalog screens resolve the locale through `core()->getRequestedLocaleCode()`. Direction (`ltr`/`rtl`) comes from the locale record, and the admin and shop layouts write it into the `<html dir>` attribute, which is what makes the 22 bundled locales, including Arabic, Persian and Hebrew, render right-to-left.
 :::
 
 ## Creating Package Localization Structure
@@ -179,7 +183,7 @@ class RMAServiceProvider extends ServiceProvider
 ```
 
 ::: tip Translation Namespace
-The `loadTranslationsFrom()` method registers translations with the `rma` namespace. This means you'll reference translation keys as `rma::admin.title` or `rma::shop.create-return` in your application.
+The `loadTranslationsFrom()` method registers translations with the `rma` namespace. The file name is the group, so a key in `lang/en/app.php` is referenced as `rma::app.admin.return-requests.title`. Core packages keep one `app.php` per locale, with `admin`, `shop` and other top-level sections inside it.
 :::
 
 ### Publishing Translations (Optional)
@@ -189,9 +193,11 @@ If you want to allow users to customize your package's translations, you can mak
 ```php
 // Add to the boot() method in RMAServiceProvider
 $this->publishes([
-    __DIR__ . '/../Resources/lang' => resource_path('lang/vendor/rma'),
+    __DIR__ . '/../Resources/lang' => lang_path('vendor/rma'),
 ], 'rma-translations');
 ```
+
+Laravel loads namespace overrides from `lang/vendor/{namespace}/{locale}/{group}.php` under the application's language path, which in Bagisto is the root `lang/` directory. Files published under `resources/lang` are never read.
 
 Users can then publish and customize your translations:
 
@@ -324,6 +330,20 @@ echo __('rma::app.admin.return-requests.title'); // Should fallback to English s
 
 **Cache Clearing**: Always clear cache after adding new translation files
 :::
+
+### Checking every locale
+
+Once you add a second locale, keep it in step with English using the checker Bagisto ships. It treats `en` as canonical, scans every package under `packages/Webkul` (and the root `lang/` directory) and reports keys that are missing from, or extra in, any other locale (an empty string counts as present, so it does not catch untranslated blanks):
+
+```bash
+# Every package, every locale
+php artisan bagisto:translations:check
+
+# One locale, one package, with the offending keys listed
+php artisan bagisto:translations:check --locale=fr --package=RMA --details
+```
+
+The same command runs in Bagisto's CI, so a core contribution that adds an English key without its 21 translations fails there.
 
 ## Your Next Step
 

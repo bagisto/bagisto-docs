@@ -119,8 +119,10 @@ Check if a system configuration value is loading correctly:
 ```php
 // In tinker
 php artisan tinker
->>> core()->getConfigData('catalog.products.storefront.search_mode')
+>>> core()->getConfigData('search_engines.general.products.storefront_mode')
 ```
+
+On the current development version the admin also has an **About** page under Configuration that lists the Bagisto version, PHP, database, cache, queue, mail and search engine drivers with a health dot for each, which is the quickest way to see what a deployment is actually running.
 
 ### Debugging Blade Views
 
@@ -128,10 +130,10 @@ Bagisto includes a **Blade Tracer** (documented in [Theme Development > Blade Tr
 
 ### Debugging the Shop Middleware Stack
 
-The Shop middleware group applies these middleware in order:
+The `shop` middleware group applies these middleware in order:
 
-1. `Webkul\Shop\Http\Middleware\Theme` — Loads the active theme
-2. `Webkul\Shop\Http\Middleware\Locale` — Sets the current locale
+1. `Webkul\Shop\Http\Middleware\Theme` — Activates the channel's theme, falling back to `themes.shop-default`
+2. `Webkul\Shop\Http\Middleware\Locale` — Sets the current locale from the request, the session or the channel default
 3. `Webkul\Shop\Http\Middleware\Currency` — Sets the current currency
 
 If the shop looks wrong (wrong theme, language, or currency), check these middleware are running and that the channel/locale/currency configuration is correct.
@@ -163,7 +165,7 @@ Common issues and quick checks:
 |---|---|
 | Broken images | `APP_URL` matches your domain; `php artisan storage:link` was run |
 | 500 errors | `storage/logs/laravel.log` for stack trace; permissions on `storage/` and `bootstrap/cache/` |
-| Stale data after changes | `php artisan optimize:clear`; check `RESPONSE_CACHE_ENABLED` |
+| Stale data after changes | `php artisan optimize:clear`; flush the full page cache under Configuration → Cache Management |
 | Admin not accessible | `APP_ADMIN_URL` in `.env` matches the URL path you're using |
 | CSS/JS not loading | Run `npm run build` or `npm run dev` for Vite assets |
 | Queue jobs not processing | Check `QUEUE_CONNECTION` in `.env`; run `php artisan queue:work` |

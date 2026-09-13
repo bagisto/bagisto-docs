@@ -24,7 +24,7 @@ mkdir -p packages/Webkul/SubscriptionProduct/src/{Type,Config,Providers}
 
 ### Step 2: Configure Product Type
 
-Create `packages/Webkul/SubscriptionProduct/src/Config/product-types.php`:
+Create `packages/Webkul/SubscriptionProduct/src/Config/product_types.php`:
 
 ```php
 <?php
@@ -32,12 +32,14 @@ Create `packages/Webkul/SubscriptionProduct/src/Config/product-types.php`:
 return [
     'subscription' => [
         'key'   => 'subscription',
-        'name'  => 'Subscription',
+        'name'  => 'subscription::app.type.subscription',
         'class' => 'Webkul\SubscriptionProduct\Type\Subscription',
-        'sort'  => 5,
+        'sort'  => 8,
     ],
 ];
 ```
+
+`name` is a translation key (core uses `product::app.type.simple` and so on); a plain string renders as-is but cannot be localized. Add the key to your package's language file when you register translations.
 
 ### Step 3: Create Product Type Class
 
@@ -54,24 +56,19 @@ use Webkul\Product\Type\AbstractType;
 class Subscription extends AbstractType
 {
     /**
-     * Returns price indexer class for a specific product type.
+     * Get the price indexer for this product type.
      *
-     * @return string
+     * @return \Webkul\Product\Helpers\Indexers\Price\Simple
      */
     public function getPriceIndexer()
     {
-        // SimpleIndexer extends AbstractIndexer, so it handles basic price indexing
-        // You can keep this as-is for most custom product types
         return app(SimpleIndexer::class);
     }
 }
 ```
 
-
-
-
 ::: tip Implementation Notes
-This basic implementation includes the essential `getPriceIndexer()` method that all product types need for proper price indexing. The `SimpleIndexer` class extends `AbstractIndexer` and handles standard price calculations - you can keep this as-is for most custom product types.
+This basic implementation includes the essential `getPriceIndexer()` method. `AbstractType` does not declare it, yet `getFinalPrice()` and the price indexer call it, so a type without it fails the first time a price is read. `Webkul\Product\Helpers\Indexers\Price\Simple` extends `Webkul\Product\Helpers\Indexers\Price\AbstractType` (a different class from the product type base) and handles a single-price product; you can keep it for most custom types.
 
 You can then override additional methods step by step according to your subscription-based product requirements:
 
@@ -102,9 +99,8 @@ class SubscriptionServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Merge product type configuration
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/product-types.php',
+            dirname(__DIR__).'/Config/product_types.php',
             'product_types'
         );
     }
@@ -170,17 +166,19 @@ After completing the setup, let's test your subscription product type:
 ### 1. Admin Interface Test
 
 1. **Navigate to Products**: Go to Admin → Catalog → Products
-2. **Create New Product**: Click "Add Product"
+2. **Create New Product**: Click "Create Product"
 3. **Select Type**: Choose "Subscription" from the dropdown
-4. **Verify Fields**: Check that subscription-specific fields appear
-5. **Save Product**: Complete the product creation process
+4. **Save Product**: Complete the product creation; the edit page shows the attribute-family fields (name, price, description, images, inventory)
+
+There are no subscription-specific fields yet: the edit page includes a per-type partial with `@includeIf('admin::catalog.products.edit.types.subscription')` and silently skips a missing one, and lists any `$additionalViews` the type declares. Both are covered on [Understanding AbstractType Class](./understanding-abstract-type-class.md#admin-interface-customization).
 
 ### 2. Frontend Validation
 
 1. **Product Page**: Visit the product page and verify display
 2. **Add to Cart**: Test cart functionality with different quantities
-3. **Cart Behavior**: Verify subscription data is preserved
-4. **Checkout**: Ensure checkout process works correctly
+3. **Checkout**: Ensure checkout process works correctly
+
+The storefront product page includes the per-type option partials (`shop::products.view.types.*`) from a fixed list of the core types, so a custom type gets the standard page: name, price, quantity box (when `showQuantityBox()` is true), add to cart and buy now. Extra controls for a custom type are added by overriding `products/view.blade.php` in a theme or by listening to the page's [render events](../advanced/view-render-events.md), for example `bagisto.shop.products.view.quantity.before`.
 
 ## What You've Built
 

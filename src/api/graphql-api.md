@@ -18,15 +18,15 @@ The demo includes GraphiQL playground where you can write queries, explore docum
 
 ### Step 1: Install the Package
 
-Install the GraphQL API package via Composer:
+Install the GraphQL API package via Composer, choosing the release that matches your Bagisto version (the package README lists the pairs):
 
 ```bash
-composer require bagisto/graphql-api 
+composer require bagisto/graphql-api
 ```
 
 ### Step 2: Configure Middleware
 
-Update your `bootstrap/app.php` file to ensure proper session handling:
+Update your `bootstrap/app.php` file to ensure proper session handling. Bagisto 2.4 and the current development version both use the Laravel 11+ application bootstrap, so the snippet is the same on either:
 
 ```php
 use Illuminate\Session\Middleware\StartSession;
@@ -50,7 +50,7 @@ return Application::configure(basePath: dirname(__DIR__))
 ```
 
 ::: warning Important Configuration
-This middleware configuration ensures sessions work properly with GraphQL endpoints, which is essential for authentication and cart management.
+Moving the session middleware from the `web` group to the global stack is what lets the `/graphql` endpoint, which is not a web route, keep a guest cart between requests. Logged-in customers and admins authenticate with a JWT bearer token instead.
 :::
 
 ### Step 3: Environment Configuration
@@ -66,9 +66,7 @@ JWT_SHOW_BLACKLIST_EXCEPTION=true
 MOBIKUL_API_KEY=your-secure-api-key-here
 ```
 
-::: tip Security Best Practice
-Generate a strong, unique API key for production environments. This key should be kept secure and only shared with your development team.
-:::
+`JWT_TTL` is the token lifetime in minutes (the value above is one year). `MOBIKUL_API_KEY` is a shared secret the package checks on requests from the Mobikul mobile apps; generate a strong random value, keep it out of version control, and rotate it if it leaks.
 
 ### Step 4: Install and Publish Assets
 

@@ -76,6 +76,36 @@ return [
 
 This configuration defines RMA-specific settings including enable/disable functionality, partial return options, and return time limits.
 
+::: warning Every item needs `info`, and keys are three levels deep
+Bagisto translates each item's `info` when it builds the configuration tree; an item without an `info` key breaks the whole Configuration area. The examples further down this page shorten the surrounding items for readability, but keep `name`, `info` and `sort` on every item you write. The page shown in the admin is always the third level (`group.section.subsection`): a URL naming a group or section alone answers with a not found.
+:::
+
+### Item and field keys
+
+| Item key | Purpose |
+|---|---|
+| `key` | Dotted path; the first segment is the group, the second the page, the third the section drawn on that page |
+| `name`, `info` | Translation keys for the title and description. Both required |
+| `sort` | Order among siblings |
+| `icon` | Group and page level only: an SVG under the admin package's `assets/images` |
+| `layout` | Page level only, current development version: hide parts of the page (see [Page layout](#page-layout)) |
+| `fields` | Section level: the inputs |
+
+| Field key | Purpose |
+|---|---|
+| `name` | The last segment of the stored code, `rma.settings.general.enable` |
+| `title`, `info` | Translation keys for the label and the help text under the input |
+| `type` | One of the [field types](#supported-field-types) |
+| `default` | Fallback when nothing has been saved |
+| `validation` | Laravel rules as a pipe string or an array (see [Validations](#validations-in-system-configuration)) |
+| `options` | For `select` and `multiselect`: an array, or a `Class@method` string resolved from the container |
+| `placeholder` | Placeholder text for text inputs |
+| `depends` | Show only when another field has one of the listed values (see [Dependent fields](#dependent-fields)) |
+| `channel_based` | Store one value per channel; the page shows the channel switcher |
+| `locale_based` | Store one value per locale; the page shows the locale switcher |
+
+`channel_based` and `locale_based` decide how a value is stored and read back. A field without them holds one global value; a field with `channel_based` set is read for the current channel, and `core()->getConfigData()` takes the channel and locale codes as its second and third arguments when you need another scope. Set them deliberately: a shipping origin is per channel, a return policy text is per locale, an API key is neither.
+
 ## Register Configuration
 
 In the `register` method, add the following code to merge your system configuration:
@@ -328,7 +358,7 @@ return [
 
 ### Color Type
 
-This field type provides a color picker input field.
+This field type provides a color picker input field. The renderer supports it, but no core setting uses it, so test it in your own page before relying on it; the same is true of the `file` type below.
 
 #### Example
 
@@ -379,7 +409,11 @@ return [
 
 ### Select Type
 
-This field type provides a select field with specified options, useful for predefined choices.
+This field type provides a select field with specified options, useful for predefined choices. `options` can also name a class and method, which Bagisto resolves from the container each time the page is built, so the list can come from the database:
+
+```php
+'options' => 'Webkul\Tax\Repositories\TaxCategoryRepository@getConfigOptions',
+```
 
 #### Example
 
@@ -648,8 +682,37 @@ return [
 ```
 
 ::: tip When to Use Blade Type
-Use the `blade` field type when you need to embed custom UI that goes beyond standard form inputs — for example, informational notices, preview panels, action buttons, or interactive widgets within your configuration page.
+Use the `blade` field type when you need to embed custom UI that goes beyond standard form inputs — for example, informational notices, preview panels, action buttons, or interactive widgets within your configuration page. Core uses it for the Cache Management buttons, the About page and the search-engine connection test.
 :::
+
+## Page layout
+
+A page that is all buttons or all read-only information does not want a save button or a channel switcher. On the current development version an item at the page level may carry a `layout` array that switches parts of the page off; anything left out stays shown.
+
+```php
+[
+    'key'    => 'rma.tools',
+    'name'   => 'rma::app.admin.system.tools',
+    'info'   => 'rma::app.admin.system.tools-info',
+    'icon'   => 'settings/settings.svg',
+    'sort'   => 2,
+    'layout' => [
+        'title_section'    => false,
+        'save_button'      => false,
+        'channel_switcher' => false,
+        'locale_switcher'  => false,
+    ],
+],
+```
+
+| Key | Hides |
+|---|---|
+| `title_section` | The describing column beside each field group; the fields then span the full width |
+| `save_button` | The Save Configuration button |
+| `channel_switcher` | The channel dropdown |
+| `locale_switcher` | The locale dropdown |
+
+When both switchers are hidden, a save resolves the channel and locale itself from the request. Bagisto 2.4 has no `layout` key; every page there shows all four elements.
 
 ## Dependent Fields
 
@@ -707,6 +770,10 @@ return [
 
 - The `depends` attribute ensures that these configuration options are only shown when the return policy feature is actually enabled, creating a cleaner and more intuitive admin interface.
 
+- Several values may be listed after the colon, separated by commas: `'depends' => 'mode:smtp,api'` shows the field when `mode` is either. The value is compared as a string, so core also writes `'depends' => 'prerender_enabled:true'`.
+
+- A field whose dependency is not met is neither shown nor validated on save, so a `required_if` rule on a dependent field is redundant; plain `required` is enough.
+
 ## Validations in System Configuration
 
 In Bagisto, validations are defined in the configuration array for each field under the `validation` key. These validations follow Laravel's validation rules, providing robust data integrity for your configuration settings.
@@ -723,6 +790,10 @@ In Bagisto, validations are defined in the configuration array for each field un
 - `max` - Ensures the field contains a value not greater than a specified maximum.
 - `min` - Ensures the field contains a value not less than a specified minimum.
 - `required_if` - Ensures the field is required if another field has a specific value.
+
+Bagisto adds four rules of its own that a `system.php` field may use by name: `comma_separated_integer`, `decimal`, `phone` and `postcode` (implemented in `Webkul\Core\Rules`). A field with no `validation` key is validated as `nullable`.
+
+The same rules are also sent to the browser, where Vee Validate checks them before the form posts. Rules only the server understands (`nullable`, `sometimes`, `present`, `filled`, `bail`) are stripped from that copy, and `min`/`max` on a `number` field are rewritten as `min_value`/`max_value`, so a rule the browser cannot run is not an error, but a rule that is wrong in Vee Validate blocks the save.
 
 #### Example RMA Configuration with Validations
 

@@ -20,6 +20,7 @@ A complete reference for developers building and extending Bagisto stores
 
 - [AI in Bagisto](/ai/introduction)
 - [Magic AI](/ai/magic-ai)
+- [WebMCP](/ai/webmcp)
 - [Agent Skills](/ai/agent-skills)
 - [llms.txt](/ai/llms-txt)
 
@@ -71,6 +72,8 @@ A complete reference for developers building and extending Bagisto stores
 
 - [Getting Started](/theme-development/getting-started)
 - [Creating Store Theme](/theme-development/creating-store-theme)
+- [Theme Sections](/theme-development/theme-sections)
+- [Theme Image Templates](/theme-development/image-cache-templates)
 - [Creating Admin Theme](/theme-development/creating-admin-theme)
 - [Creating Custom Theme Package](/theme-development/creating-custom-theme-package)
 - [Vite-Powered Theme Assets](/theme-development/vite-powered-theme-assets)
@@ -95,8 +98,12 @@ A complete reference for developers building and extending Bagisto stores
 - [Understanding Core Class](/advanced/understanding-core-class)
 - [Understanding Indexers](/advanced/understanding-indexers)
 - [Understanding Data Transfer](/advanced/understanding-data-transfer)
+- [Database Compatibility](/advanced/database-compatibility)
+- [Search Engines](/advanced/search-engines)
+- [File Storage](/advanced/file-storage)
 - [Event Listeners](/advanced/event-listeners)
 - [View Render Events](/advanced/view-render-events)
+- [Command Palette](/advanced/command-palette)
 - [Artisan Commands](/advanced/artisan-commands)
 - [Queue, Jobs & Scheduling](/advanced/queue-jobs-scheduling)
 - [Cache Strategy](/advanced/cache-strategy)

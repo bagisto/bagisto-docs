@@ -20,7 +20,7 @@ Bagisto's product system is built around a flexible type-based architecture that
 
 | Component | Purpose | Location |
 |-----------|---------|----------|
-| **Product Types Configuration** | Defines product type properties | `Config/product-types.php` |
+| **Product Types Configuration** | Defines product type properties | `Config/product_types.php` |
 | **Product Type Classes** | Contains business logic for product behavior | `Type/ClassName.php` |
 | **`AbstractType` Base Class** | Provides core functionality | Extended by custom classes |
 | **Service Provider** | Registers product type | `Providers/ServiceProvider.php` |
@@ -65,7 +65,7 @@ You'll have a complete working product type after step 1, and steps 2-4 help you
 Before you begin, ensure you have:
 
 - **Bagisto Installation**: A working Bagisto development environment
-- **PHP Knowledge**: Familiarity with PHP 8.3+ and Laravel concepts
+- **PHP Knowledge**: Familiarity with PHP 8.4 (8.3 on Bagisto 2.4) and Laravel concepts
 - **Package Development**: Basic understanding of Laravel service providers ([Package Development Guide](../package-development/getting-started.md))
 - **Development Tools**: Composer, Git, and a code editor
 
@@ -108,23 +108,19 @@ Subscription Product Type Package
 
 ## Built-in Product Types Reference
 
-Understanding Bagisto's built-in product types helps you decide what to customize:
+Bagisto registers seven types in `packages/Webkul/Product/src/Config/product_types.php`. Each is a class under `Webkul\Product\Type` (the `BookingProduct` package supplies the booking models, admin forms and storefront views, while the type class itself sits with the others) and is the best reference for a custom type that resembles it:
 
-### Simple Products
-- **Use Case**: Basic products with straightforward pricing and inventory
-- **Features**: Standard pricing, inventory tracking, simple cart behavior
+| Type | Class | What it is |
+|---|---|---|
+| `simple` | `Simple` | A physical item with its own price and stock |
+| `configurable` | `Configurable` | A parent whose variants (size, colour) are simple products; the customer picks options on the product page |
+| `virtual` | `Virtual` | A non-physical product with no shipping; still has stock |
+| `downloadable` | `Downloadable` | A virtual product sold with downloadable links; the customer downloads files from their account |
+| `grouped` | `Grouped` | Several simple products shown together, each added to the cart in its own quantity |
+| `bundle` | `Bundle` | A kit built from options the customer chooses; priced from the chosen option products |
+| `booking` | `Booking` | Appointments, events, rentals and tables, with slots and dates |
 
-### Configurable Products
-- **Use Case**: Products with variations (size, color, etc.)
-- **Features**: Variant management, attribute-based pricing
-
-### Virtual Products
-- **Use Case**: Non-physical products or services
-- **Features**: No shipping required, downloadable content
-
-### Grouped Products
-- **Use Case**: Related products sold together
-- **Features**: Bundle pricing, component selection
+Every one of them declares `getPriceIndexer()`, has an admin edit partial under `Admin/src/Resources/views/catalog/products/edit/types/`, and, where the storefront needs extra controls, a partial under `Shop/src/Resources/views/products/view/types/`.
 
 ## When to Create Custom Product Types
 

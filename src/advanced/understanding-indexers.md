@@ -78,22 +78,14 @@ Maintains accurate pricing by applying catalog rules, promotions, and discounts 
 The catalog rule indexer runs daily to ensure promotional pricing remains accurate. This prevents expired offers from displaying incorrect prices.
 :::
 
-### Elasticsearch Integration
+### Search Indexing
 
-Leverages Elasticsearch's powerful search capabilities to provide fast, scalable product search functionality.
+When an external search engine is enabled, the search indexer keeps its index in step with the catalog: one Elasticsearch index per channel and locale, carrying the product's attributes, prices and category names.
 
-**Advanced Search Features:**
-- **Full-text Search**: Comprehensive product content indexing
-- **Faceted Navigation**: Dynamic filtering and categorization
-- **Autocomplete**: Real-time search suggestions
-- **Analytics**: Search performance and user behavior insights
-
-::: tip Performance Impact
-Elasticsearch can handle millions of products while maintaining sub-second search response times. Perfect for large catalogs and complex search requirements.
-:::
+On the current development version the indexer is resolved through `SearchEngineManager::indexer()`, so the same jobs work for the database engine (where a no-op indexer is used) and for Elasticsearch. On Bagisto 2.4 the Elasticsearch indexer is invoked directly and the jobs check the engine setting themselves.
 
 **Configuration Reference:**
-For detailed Elasticsearch setup, see [Configure Elasticsearch](../performance/configure-elasticsearch) guide.
+The engine, the per-context modes and the connection are described on [Search Engines](./search-engines.md); the cluster setup is on [Configure Elasticsearch](../performance/configure-elasticsearch).
 
 ## Managing Indexers
 
@@ -108,8 +100,8 @@ php artisan indexer:index {--type=*} {--mode=*}
 ```
 
 **Parameters:**
-- `--type`: Specifies which indexers to reindex (optional)
-- `--mode`: Sets reindexing mode - `full` or `selective` (default: selective)
+- `--type`: Specifies which indexers to reindex (optional, repeatable): `inventory`, `price`, `flat`, `search` (`elastic` on Bagisto 2.4)
+- `--mode`: Sets reindexing mode - `full` or `selective` (default: selective). The search indexer only runs in `full` mode
 
 ### Common Re-indexing Operations
 
@@ -133,6 +125,9 @@ php artisan indexer:index --type=inventory
 
 # Re-index only flat tables
 php artisan indexer:index --type=flat
+
+# Rebuild the search index (Elasticsearch)
+php artisan indexer:index --type=search --mode=full
 ```
 
 ### Automated Scheduling
@@ -144,11 +139,15 @@ Bagisto automatically schedules critical indexers to maintain data accuracy:
 | **Price Indexer** | Daily at 00:01 | Updates product pricing |
 | **Catalog Rules** | Daily at 00:01 | Applies promotional pricing |
 
+The registrations live in the packages that own the commands, `Webkul\Product\Providers\ProductServiceProvider` and `Webkul\CatalogRule\Providers\CatalogRuleServiceProvider`:
+
 ```php
-// Scheduled commands in Laravel
-$schedule->command('indexer:index --type=price')->dailyAt('00:01');
-$schedule->command('product:price-rule:index')->dailyAt('00:01');
+$this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
+    $schedule->command('indexer:index --type=price')->dailyAt('00:01');
+});
 ```
+
+The price indexer dispatches `catalog.product.price.reindex.before` and `.after`, and the catalog rule indexer `promotions.catalog_rule.reindex.before` and `.after`, so a listener (the full page cache is one) can react once prices have changed.
 
 ::: warning Production Requirement
 For automated scheduling to work in production, ensure you have added the Laravel scheduler cron entry to your server's crontab:
@@ -174,18 +173,16 @@ The following examples demonstrate indexing implementation from the **Product Li
 
 #### Automatic Index Updates
 
+**File:** `packages/Webkul/Product/src/Listeners/Product.php`
+
 ```php
-// Product Listener Example - Real Bagisto Implementation
 public function afterCreate($product)
 {
-    // Refresh flat index immediately
     $this->flatIndexer->refresh($product);
-    
-    // Get all related product IDs (variants, bundles, grouped)
+
     $productIds = $this->getAllRelatedProductIds($product);
-    
-    // Queue Elasticsearch indexing
-    UpdateCreateElasticSearchIndexJob::dispatch($productIds);
+
+    IndexSearchJob::dispatch($productIds);
 }
 ```
 
@@ -196,27 +193,29 @@ When products are updated, multiple indexers run in sequence to maintain data co
 ```php
 public function afterUpdate($product)
 {
-    // Update flat index first
     $this->flatIndexer->refresh($product);
-    
+
     $productIds = $this->getAllRelatedProductIds($product);
-    
-    // Chain indexing jobs for optimal performance
+
     Bus::chain([
         new UpdateCreateInventoryIndexJob($productIds),
-        new UpdateCreatePriceIndexJob($productIds), 
-        new UpdateCreateElasticSearchIndexJob($productIds),
+        new UpdateCreatePriceIndexJob($productIds),
+        new IndexSearchJob($productIds),
     ])->dispatch();
 }
 ```
+
+`IndexSearchJob` is `Webkul\Product\Jobs\Search\IndexProducts` (`Jobs\ElasticSearch\UpdateCreateIndex` on Bagisto 2.4). The flat index is refreshed synchronously because the admin listing reads it on the very next request; the rest is queued.
 
 ### Event-Driven Indexing
 
 ::: info Automatic Updates
 Bagisto automatically triggers indexing through Laravel events:
-- **Product Created**: Flat and Elasticsearch indexes update
-- **Product Updated**: Inventory, Price, and Elasticsearch indexes update in sequence  
-- **Product Deleted**: Elasticsearch index removes product data
+- **Product Created**: Flat and search indexes update
+- **Product Updated**: Inventory, Price, and search indexes update in sequence
+- **Product Deleted**: The product is removed from the search index; a configurable parent whose variant was deleted is reindexed
+- **Order placed / refunded**: The inventory index of the ordered products updates
+- **Product import**: The importer dispatches the same jobs per batch, and the Index phase of an import rebuilds price, inventory and search data for every imported row
 :::
 
 ### Performance Optimization Strategies
@@ -226,7 +225,7 @@ Before diving into optimization strategies, it's important to understand that Ba
 #### Job Queuing
 ```php
 // Jobs are queued to prevent blocking user interactions
-UpdateCreateElasticSearchIndexJob::dispatch($productIds);
+IndexSearchJob::dispatch($productIds);
 
 // Chained jobs ensure proper sequence
 Bus::chain([
@@ -234,6 +233,8 @@ Bus::chain([
     new UpdateCreatePriceIndexJob($productIds),
 ])->dispatch();
 ```
+
+With `QUEUE_CONNECTION=sync` (the shipped default) all of this still runs inside the request that saved the product, which is why a store with Elasticsearch or a large catalog should move to a real queue driver; see [Queue, Jobs & Scheduling](./queue-jobs-scheduling.md).
 
 #### Batch Processing
 ```php

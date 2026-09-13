@@ -26,7 +26,7 @@ This layered approach allows Bagisto to be highly modular and extensible. Develo
 
 When creating models in Bagisto, you have two approaches: using the package generator for convenience, or manually creating the components for more control. Models in Bagisto follow Laravel's Eloquent ORM but with additional architectural layers.
 
-Learn more about Laravel Eloquent: https://laravel.com/docs/12.x/eloquent
+Learn more about Laravel Eloquent: https://laravel.com/docs/eloquent
 
 Below, we'll create a `ReturnRequest` model for an RMA package to demonstrate both approaches.
 
@@ -190,8 +190,15 @@ class ReturnRequest extends Model implements ReturnRequestContract
 ::: info Model Properties Explained
 **Table Property Convention:**
 - **`protected $table = 'rma_requests';`** - Explicitly defines the table name for this model
-- **Why needed?** Laravel's default convention would expect `return_requests` (plural snake_case of model name), but we're using `rma_requests` to namespace our table with the package prefix
-- **Best Practice:** Always use package prefixes (`rma_`, `blog_`, etc.) to avoid table name conflicts with core Bagisto tables or other packages
+- **Why needed?** Laravel would derive `return_requests` from the class name, which is not the table we created. Declare `$table` whenever the two differ, and consider declaring it anyway so the mapping survives a class rename; many core models do, and the rest rely on the convention
+- **Best Practice:** Prefix table names with the package name (`blog_posts`, `loyalty_points`) when a bare name could collide with a core Bagisto table or another package
+
+**Contract location is not optional:**
+- Concord derives the contract from the model's class name: `Webkul\RMA\Models\ReturnRequest` must implement `Webkul\RMA\Contracts\ReturnRequest`. Put the interface anywhere else and registration fails.
+
+**Casts and relationships:**
+- Core models declare `protected $casts` (an array), not a `casts()` method. Boolean columns must be cast, or they read back as `1`/`0` on MySQL and `true`/`false` on PostgreSQL.
+- Relationships always point at the proxy, never the concrete class: `$this->belongsTo(OrderProxy::modelClass(), 'order_id')`. That is what keeps a relationship working when another package overrides the related model.
 
 **Fillable Array:**
 - **Purpose:** Defines which attributes can be mass-assigned using `create()` or `update()` methods
@@ -244,6 +251,11 @@ use Konekt\Concord\BaseModuleServiceProvider;
 
 class ModuleServiceProvider extends BaseModuleServiceProvider
 {
+    /**
+     * Models.
+     *
+     * @var array
+     */
     protected $models = [
         \Webkul\RMA\Models\ReturnRequest::class,
     ];
@@ -254,11 +266,28 @@ class ModuleServiceProvider extends BaseModuleServiceProvider
 **What This Does:**
 
 - **`$models` Array**: Lists all models in your package that should be registered with Concord
-- **`BaseModuleServiceProvider`**: Provides the functionality to register models, enums, and other components
+- **`BaseModuleServiceProvider`**: Provides the functionality to register models, enums, and other components. It also exposes `$enums` and `$requests` arrays for a package that ships enums or form requests it wants resolvable through Concord
 - **Automatic Discovery**: Concord uses this list to set up proxies and dependency injection
 
 This registration enables features like model swapping, where other packages can extend or replace your models without modifying your code.
+
+Several core packages extend `Webkul\Core\Providers\CoreModuleServiceProvider` instead. It is a thin subclass that skips Concord's migration publishing step and is otherwise identical; either base class works.
 :::
+
+### The manifest file
+
+Bagisto configures Concord with `Webkul\Core\CoreConvention`, which looks for a module manifest at `src/Resources/manifest.php`. Registration works without it; the manifest supplies the name and version that `php artisan concord:modules` lists, and every core package ships one, so add it:
+
+**File:** `packages/Webkul/RMA/src/Resources/manifest.php`
+
+```php
+<?php
+
+return [
+    'name'    => 'Webkul Bagisto RMA',
+    'version' => core()->version(),
+];
+```
 
 ### Registering with Concord
 
@@ -473,40 +502,40 @@ class Product extends BaseProduct
      */
     public function isReturnable(): bool
     {
-        return $this->status && $this->type !== 'digital';
+        return ! in_array($this->type, ['virtual', 'downloadable']);
     }
 }
 ```
 
+The registered product types are `simple`, `configurable`, `grouped`, `bundle`, `downloadable`, `virtual` and `booking` (see `packages/Webkul/Product/src/Config/product_types.php`). Note that `status` is an EAV attribute, not a column on `products`, so it is read through the attribute layer rather than as a plain property.
+
 **2. Register the Override**
 
-Register the model override in your main service provider:
+Register the override in your package's `ModuleServiceProvider` by keying the `$models` entry with the contract it replaces:
 
-```php{15-18}
+```php{12}
 <?php
 
 namespace Webkul\RMA\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use Konekt\Concord\BaseModuleServiceProvider;
 
-class RMAServiceProvider extends ServiceProvider
+class ModuleServiceProvider extends BaseModuleServiceProvider
 {
-    // Other methods...
-
-    public function boot()
-    {
-        // Other boot logic...
-
-        $this->app->concord->registerModel(
-            \Webkul\Product\Contracts\Product::class,
-            \Webkul\RMA\Models\Product::class
-        );
-    }
+    /**
+     * Models.
+     *
+     * @var array
+     */
+    protected $models = [
+        \Webkul\RMA\Models\ReturnRequest::class,
+        \Webkul\Product\Contracts\Product::class => \Webkul\RMA\Models\Product::class,
+    ];
 }
 ```
 
 ::: tip Model Override Registration
-This method registers your extended model with Concord's dependency injection system. When any part of Bagisto requests the Product contract, your extended model will be used instead of the core model.
+A string key in `$models` is treated as the contract and the value as the model that now implements it. When any part of Bagisto requests the Product contract, or calls `ProductProxy::modelClass()`, your extended model is used instead of the core model. Because Concord registers modules in the order of `config/concord.php`, list your module after the one it overrides.
 :::
 
 **3. Use Everywhere via Repository**

@@ -69,7 +69,7 @@ To get the version number of your Bagisto application, you can use the `core()->
 
 ```php
 $version = core()->version();
-// Returns: "2.4.1"
+// Returns the value of Core::BAGISTO_VERSION, e.g. "2.4.10" or "2.5.0-beta2"
 ```
 
 ### Channel Management
@@ -92,14 +92,19 @@ The `core()->getCurrentChannel()` method retrieves the current channel being acc
 ```php
 $currentChannel = core()->getCurrentChannel();
 // Returns: Current channel model with all properties
+
+$channel = core()->getCurrentChannel('shop.example.com');
+// The hostname is honoured only on the first resolution; once the channel
+// middleware has resolved the request's channel, the argument is ignored
 ```
 
 #### Set the current channel
 
-Dynamically change the active channel:
+Dynamically change the active channel, or the default channel:
 
 ```php
 core()->setCurrentChannel($channel);
+core()->setDefaultChannel($channel);
 ```
 
 #### Get current channel code
@@ -149,6 +154,9 @@ Get just the channel code from the current request:
 
 ```php
 $requestedCode = core()->getRequestedChannelCode();
+
+// Return null instead of falling back to the current channel
+$requestedCode = core()->getRequestedChannelCode(fallback: false);
 ```
 
 #### Get channel name
@@ -214,6 +222,14 @@ $validLocaleCode = core()->getRequestedLocaleCodeInRequestedChannel();
 ```
 
 If not found, this method sets the channel's default locale code.
+
+#### Get every requested locale code
+
+The configuration locale switcher may post `all`; this expands it to every locale code, or returns the single requested one:
+
+```php
+$localeCodes = core()->getRequestedLocaleCodes();
+```
 
 ### Currency Management
 
@@ -340,10 +356,8 @@ $formattedPrice = core()->formatPrice($price, $currencyCode);
 Format a price with the base currency symbol:
 
 ```php
-$formattedBasePrice = core()->formatBasePrice($price, $isEncoded = false);
+$formattedBasePrice = core()->formatBasePrice($price);
 ```
-
-The `$isEncoded` parameter controls whether to encode the currency symbol.
 
 ### Date and Time Helpers
 
@@ -386,9 +400,14 @@ $formattedDate = core()->formatDate($date = null, $format = 'd-m-Y H:i:s');
 Get specific configuration values with channel and locale context:
 
 ```php
-$configValue = core()->getConfigData($field, $channelCode = null, $localeCode = null);
+$configValue = core()->getConfigData($field, $currentChannelCode = null, $currentLocaleCode = null);
 // Delegates to system_config()->getConfigData()
+
+$enabled = core()->getConfigData('catalog.products.omnibus.is_enabled', 'default');
+// Read the value stored for the "default" channel regardless of the current one
 ```
+
+The channel and locale default to the current ones. A value that has never been saved falls back to the package config merged under the same key (payment methods, carriers) and then to the field's `default` in `system.php`; see [Configuration Value Resolution](../package-development/system-configuration.md#configuration-value-resolution).
 
 #### Get configuration field
 
@@ -507,10 +526,10 @@ $instance = core()->getSingletonInstance($className);
 
 #### Tax-related helpers
 
-Generate tax rate identifiers for view elements:
+Generate tax rate identifiers for view elements (a static method):
 
 ```php
-$taxIdentifier = core()->taxRateAsIdentifier($taxRate);
+$taxIdentifier = Core::taxRateAsIdentifier($taxRate);
 // Returns: Tax rate with dots replaced by underscores
 ```
 
@@ -544,6 +563,39 @@ $speculationRules = core()->getSpeculationRules();
 ```
 
 This method generates speculation rules for browser performance optimization, including prerender and prefetch configurations.
+
+## Other global helpers
+
+`core()` is one of a family of helper functions, each defined in a package's `src/Http/helpers.php` and each returning a facade root or container binding. They are available everywhere without imports.
+
+| Helper | Package | Returns |
+|---|---|---|
+| `core()` | Core | `Webkul\Core\Core` |
+| `menu()` | Core | `Webkul\Core\Menu`; `menu()->getItems(Menu::ADMIN)` |
+| `acl()` | Core | `Webkul\Core\Acl` |
+| `system_config()` | Core | `Webkul\Core\SystemConfig` |
+| `db_grammar()` | Core | `Webkul\Core\Contracts\DatabaseGrammar` for the current database; development version only. See [Database compatibility](./database-compatibility.md) |
+| `clean_path(string $path)` | Core | The path with empty segments removed |
+| `clean_content(string $content)` | Core | HTML purified and stripped of Blade directives |
+| `array_permutation(array $input)` | Core | Every combination of an array of arrays |
+| `themes()` | Theme | `Webkul\Theme\Themes`; `themes()->current()`, `themes()->set($code)` |
+| `bagisto_asset(string $path, ?string $namespace = null)` | Theme | The Vite URL of a theme asset |
+| `bagisto_theme_storage()` | Theme | `Webkul\Theme\ThemeStorage` for section media URLs; development version only |
+| `view_render_event(string $eventName, mixed $params = null)` | Theme | Rendered listener output. See [View Render Events](./view-render-events.md) |
+| `product_image()` | Product | `Webkul\Product\ProductImage` |
+| `product_video()` | Product | `Webkul\Product\ProductVideo` |
+| `product_toolbar()` | Product | `Webkul\Product\Helpers\Toolbar` (sort orders and page limits) |
+| `image_manager()` | ImageCache | `Illuminate\Image\ImageManager` (`Intervention\Image\ImageManager` on 2.4) |
+| `image_urls(string $path, ?string $key = null)` | ImageCache | The `*_image_url` set for a stored path. See [Image Cache Templates](../theme-development/image-cache-templates.md) |
+| `datagrid(string $class)` | DataGrid | A resolved DataGrid instance |
+| `cart()` | Checkout | `Webkul\Checkout\Cart` |
+| `payment()` | Payment | `Webkul\Payment\Payment` |
+| `shipping()` | Shipping | `Webkul\Shipping\Shipping` |
+| `magic_ai()` | MagicAI | `Webkul\MagicAI\MagicAI` |
+| `bouncer()` | User | `Webkul\User\Bouncer`; `hasPermission()`, `allow()` |
+| `two_factor_authentication()` | User | `Webkul\User\TwoFactorAuthentication` |
+
+There is no `theme()`, `visitor()` or `money_format()` helper.
 
 ## Best Practices
 

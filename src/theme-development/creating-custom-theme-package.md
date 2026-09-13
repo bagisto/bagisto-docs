@@ -276,6 +276,27 @@ Visit your store's homepage to see your package theme in action!
 3. **Test Homepage**: Visit your store frontend to see the updated theme
 :::
 
+## Skipping the publish step
+
+Publishing copies files into `resources/themes`, which means two copies of every view. The view finder offers a second route that needs no copying: when a theme other than `default` is active, any view namespace registered under the **theme code** is searched before the Shop package.
+
+Register your package views under the theme code and drop the `publishes()` call:
+
+```php
+public function boot(): void
+{
+    $this->loadViewsFrom(__DIR__.'/../Resources/views', 'custom-theme');
+}
+```
+
+With `custom-theme` active, `shop::home.index` now resolves to `packages/Webkul/CustomTheme/src/Resources/views/home/index.blade.php` directly. If you prefer a different namespace name, register it under that name and add `'views_namespace' => 'that-name'` to the theme's block in `config/themes.php`.
+
+Keep `views_path` pointing at a directory anyway. It is still searched first, which gives a store running your theme a place to override individual files of the package without forking it. The full order is described in [How views are resolved](./creating-store-theme.md#how-views-are-resolved).
+
+::: warning Not for the default theme
+This shortcut is skipped when the active theme code is `default`, so a package cannot use it to restyle the stock theme. Give your theme its own code.
+:::
+
 ## Package Development Workflow
 
 Now that your theme package is set up, here's how to work with it effectively during development:

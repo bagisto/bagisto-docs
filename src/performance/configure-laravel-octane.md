@@ -1,6 +1,6 @@
 # Configure Laravel Octane
 
-[Laravel Octane](https://laravel.com/docs/12.x/octane) is a performance-boosting package designed to enhance the speed, efficiency, and scalability of Laravel applications, including Bagisto.
+[Laravel Octane](https://laravel.com/docs/octane) is a performance-boosting package designed to enhance the speed, efficiency, and scalability of Laravel applications, including Bagisto.
 
 ::: info What You'll Learn
 - Install Laravel Octane in your Bagisto application
@@ -19,7 +19,7 @@
 Before installing Laravel Octane, ensure your system meets the basic requirements. The specific requirements may vary depending on which application server you choose (Swoole, FrankenPHP, or RoadRunner).
 
 ::: warning Requirements
-- PHP 8.3
+- The PHP version your Bagisto release requires (8.4 on the current development version, 8.3 or 8.4 on Bagisto 2.4)
 - Existing Bagisto installation
 :::
 
@@ -68,18 +68,17 @@ Laravel Octane installation for Bagisto involves installing the Octane package v
 
 ### Install Laravel Octane
 
-Navigate to your Bagisto directory and install Octane:
+`laravel/octane` is already in Bagisto's `composer.json`, so only the server needs installing. The `octane:install` command writes `config/octane.php`, which Bagisto does not ship:
 
 ```bash
 # Navigate to your Bagisto project
 cd /path/to/your/bagisto
 
-# Install Laravel Octane
-composer require laravel/octane
-
 # Install Octane (will prompt for server selection)
 php artisan octane:install
 ```
+
+Bagisto's theme registry and channel resolution are written to be safe under a long-lived worker (the `Themes` class guards its request lookups, and the admin test case clears the resolved theme between requests for the same reason), but any package you add must avoid keeping request state in static properties or singletons.
 
 ### Choose Your Server
 
@@ -165,10 +164,7 @@ While Laravel Octane with Swoole, FrankenPHP, and RoadRunner is generally stable
 | **RoadRunner binary not found** | Re-run `php artisan octane:install --server=roadrunner` |
 
 ::: tip Quick Start Guide
-1. **Install Laravel Octane:**
-   ```bash
-   composer require laravel/octane
-   ```
+1. **Laravel Octane is already installed** with Bagisto's dependencies.
 
 2. **Choose and setup your server:**
    ```bash

@@ -17,12 +17,15 @@ Bagisto's admin theme system is managed through the same `config/themes.php` fil
 
 | Property | Description |
 |----------|-------------|
-| `admin-default` | Specifies which theme is currently active for the admin panel |
-| `name` | Display name shown in the admin theme selector |
-| `views_path` | Directory path containing Blade template files |
-| `assets_path` | Directory path for CSS, JavaScript, and image files |
-| `parent` | Optional parent theme for inheritance (advanced usage) |
-| `vite` | Asset bundling configuration for development and production |
+| `admin-default` | Specifies which theme is currently active for the admin panel. Unlike storefront themes, the admin theme is not chosen per channel |
+| `name` | Display name of the theme |
+| `views_path` | Directory, relative to the project root, containing this theme's Blade overrides of `packages/Webkul/Admin/src/Resources/views` |
+| `assets_path` | Directory for the theme's built assets. Declared for every theme, but asset URLs are generated from the `vite` block |
+| `parent` | Optional code of another admin theme whose `views_path` is searched after this theme's own |
+| `views_namespace` | Optional. The view namespace a theme package registered its views under, if it differs from the theme code |
+| `vite` | The hot file, build directory and package assets directory the admin layout uses to load this theme's compiled CSS and JavaScript |
+
+Admin themes have no `customize` key; sections and image templates are storefront concepts. Views resolve exactly as described in [How views are resolved](./creating-store-theme.md#how-views-are-resolved), with `admin::` in place of `shop::` and the admin theme in place of the channel theme.
 
 ### Default Admin Theme Configuration
 
@@ -206,7 +209,7 @@ We're using the default `<x-admin::layouts>` component since we haven't created 
 :::
 
 ::: warning Styling Limitations & Development Approach
-When using the default admin layout, you're inheriting the existing CSS compilation optimized for the default admin theme. Some custom styling classes might not be available since they weren't included in the original build process.
+When using the default admin layout, you're inheriting the existing CSS compilation optimized for the default admin theme. Tailwind only emits classes it finds while scanning the Admin package, so a class used only in your theme's Blade files will not exist in the stylesheet.
 
 **This basic approach is intentional** - we're focusing on core admin theme concepts first before diving into complex development tooling. In real-world admin theme development, you would typically set up your own complete development environment including:
 

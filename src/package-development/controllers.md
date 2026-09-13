@@ -8,7 +8,7 @@ For our RMA package, we'll create controllers that handle the admin interface fo
 This section demonstrates how to create organized, maintainable controllers that use dependency injection with repositories and follow Bagisto's architectural patterns for both admin and shop functionality.
 :::
 
-For detailed information on Laravel controllers, visit the [Laravel Documentation on Controllers](https://laravel.com/docs/12.x/controllers).
+For detailed information on Laravel controllers, visit the [Laravel Documentation on Controllers](https://laravel.com/docs/controllers).
 
 ## Bagisto Controller Architecture
 
@@ -83,6 +83,12 @@ class Controller extends BaseController
 - **ValidatesRequests**: Provides request validation capabilities
 
 **Inheritance**: Extends Laravel's base controller while maintaining package isolation
+
+**Alternative**: Admin controllers may instead extend `Webkul\Admin\Http\Controllers\Controller`, which carries the same three traits plus a `redirectToLogin()` helper. Every core admin controller does; the later pages of this tutorial use it too.
+:::
+
+::: tip Events around writes
+Core controllers dispatch a `before` and `after` event around every create, update and delete, for example `Event::dispatch('sales.rma.request.create.before')` and `Event::dispatch('sales.rma.request.create.after', $rma)`. Do the same in your package so other packages can react without editing your code; the [Event Listeners](../advanced/event-listeners.md) page lists the naming convention.
 :::
 
 ## Creating Controllers
@@ -218,7 +224,7 @@ use Illuminate\Support\Facades\Route;
 use Webkul\RMA\Http\Controllers\Shop\ReturnRequestController;
 
 Route::group([
-    'middleware' => ['web', 'locale', 'theme', 'currency']
+    'middleware' => ['web', 'shop']
 ], function () {
     /**
      * Customer return request routes.

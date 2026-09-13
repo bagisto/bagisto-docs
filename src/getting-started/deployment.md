@@ -84,7 +84,7 @@ server {
     error_page 404 /index.php;
 
     location ~ ^/index\.php(/|$) {
-        fastcgi_pass unix:/var/run/php/php8.3-fpm.sock;
+        fastcgi_pass unix:/var/run/php/php8.4-fpm.sock;
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
         include fastcgi_params;
         fastcgi_hide_header X-Powered-By;
@@ -95,6 +95,8 @@ server {
     }
 }
 ```
+
+Use the socket of the PHP version your release runs on: `php8.4-fpm.sock` for the current development version, `php8.3-fpm.sock` or `php8.4-fpm.sock` for Bagisto 2.4.
 
 ### ⚡ Nginx FastCGI Cache
 
@@ -115,7 +117,7 @@ if ($request_uri ~* "/(admin|checkout|cart|customer|api)") { set $skip_cache 1; 
 if ($http_cookie ~* "bagisto_session")                     { set $skip_cache 1; }
 
 location ~ ^/index\.php(/|$) {
-    fastcgi_pass unix:/var/run/php/php8.3-fpm.sock;
+    fastcgi_pass unix:/var/run/php/php8.4-fpm.sock;
     fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
     include fastcgi_params;
 
@@ -264,6 +266,10 @@ Add the following inside your `<VirtualHost>` block:
 Exclude the cart, checkout, customer, admin and API (as above) so personalized/authenticated responses are never cached.
 :::
 
+## 🐳 Docker
+
+If you would rather not configure a web server, the official images bundle one of the three servers above with MySQL, MariaDB or PostgreSQL, under Supervisor, and accept the same `.env` values as environment variables. They are described on the [Installation](./installation.md#method-1-using-docker-hub-recommended) page and in `docker/production/README.md` in the repository.
+
 ## ⚡ Optimization
 
 Before deploying your application, make sure to run the following optimization commands:
@@ -272,12 +278,24 @@ Before deploying your application, make sure to run the following optimization c
 php artisan optimize
 ```
 
+Bagisto's own caches are on by default; check the [Cache Strategy](../advanced/cache-strategy.md) page for the environment keys to point them at Redis, and run a queue worker and the scheduler:
+
+```shell
+# Supervisor or systemd
+php artisan queue:work --tries=3
+
+# crontab
+* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
+```
+
+Without a worker, every mail, index update and import runs inside a web request; without the scheduler, catalog rule prices, exchange rates and invoice reminders do not update.
+
 For additional optimization and security configurations, you may want to consider:
 
-- Enabling SSL/TLS encryption
+- Enabling SSL/TLS encryption and setting `APP_URL` to the `https://` origin
 - Implementing proper firewall rules
 - Setting up monitoring and logging
-- Configuring caching mechanisms
+- Serving media from [S3 or R2](../advanced/file-storage.md) when running more than one web server
 
 ::: tip Performance
 For better performance in production, consider enabling OPcache and configuring your PHP-FPM settings appropriately.

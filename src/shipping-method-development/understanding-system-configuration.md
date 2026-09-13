@@ -11,7 +11,7 @@ This guide covers:
 
 ## Basic Configuration Structure
 
-System configuration creates admin interface fields for your shipping method:
+System configuration creates admin interface fields for your shipping method. The section's `key` must be `sales.carriers.{code}`, which places it under **Configuration → Sales → Shipping Methods** and is the path `getConfigData()` reads:
 
 **File:** `packages/Webkul/CustomExpressShipping/src/Config/system.php`
 
@@ -23,30 +23,49 @@ return [
         'key'    => 'sales.carriers.custom_express_shipping',
         'name'   => 'Custom Express Shipping',
         'info'   => 'Configure the Custom Express Shipping method settings.',
-        'sort'   => 1,
+        'sort'   => 3,
         'fields' => [
             [
                 'name'          => 'active',
                 'title'         => 'Enable Method',
                 'type'          => 'boolean',
-                'default_value' => true,
+                'channel_based' => true,
+                'locale_based'  => false,
             ],
             [
                 'name'          => 'title',
                 'title'         => 'Method Title',
                 'type'          => 'text',
-                'default_value' => 'Express Delivery',
+                'depends'       => 'active:1',
+                'validation'    => 'required_if:active,1',
+                'channel_based' => true,
+                'locale_based'  => true,
             ],
             [
                 'name'          => 'default_rate',
                 'title'         => 'Shipping Rate',
                 'type'          => 'text',
-                'default_value' => '19.99',
-                'validation'    => 'numeric|min:0',
+                'depends'       => 'active:1',
+                'validation'    => 'required_if:active,1|numeric|min:0',
+                'channel_based' => true,
+                'locale_based'  => false,
             ],
-        ]
-    ]
+        ],
+    ],
 ];
+```
+
+Points that match core's own carrier sections:
+
+- **`info` is required** on the item; the configuration page fails without it.
+- **Defaults go in `carriers.php`**, not here. The field key that a `system.php` field honours is `default`, and it is only consulted when neither the database nor `carriers.php` has a value.
+- **`depends => 'active:1'`** hides the other fields while the method is off, and `required_if:active,1` lets the page save in that state; a bare `required` would block saving until the method is switched on.
+- **`channel_based`** gives each channel its own rate and title; **`locale_based`** on `title` and `description` lets them be translated.
+
+The section is merged into the `core` configuration key from your service provider:
+
+```php
+$this->mergeConfigFrom(dirname(__DIR__).'/Config/system.php', 'core');
 ```
 
 ## Field Types and Validation
@@ -58,28 +77,25 @@ Complete guide to creating admin configuration interfaces with all field types a
 
 ## Accessing Configuration Data
 
-Once you've defined your configuration fields, you can access their values in your carrier class using the `getConfigData()` method:
+Once you've defined your configuration fields, you can access their values in your carrier class using the `getConfigData()` method, which reads `sales.carriers.{code}.{field}` and applies the fallback chain described on [Understanding Carrier Configuration](./understanding-carrier-configuration.md#5-value-resolution-fallback-chain):
 
-### In Your Carrier Class
-
-The most common place to access configuration data is in your carrier's `calculate()` method:
 ```php
 public function calculate()
 {
-    // get configuration values
-    $isActive = $this->getConfigData('active');
-    $title = $this->getConfigData('title');
-    $rate = $this->getConfigData('default_rate');
-    
-    // use in your logic
-    if (! $isActive) {
+    if (! $this->isAvailable()) {
         return false;
     }
-    
-    $shippingRate = new CartShippingRate;
-    $shippingRate->price = $rate;
-    
-    return $shippingRate;
+
+    $rate = new CartShippingRate;
+
+    $rate->carrier = $this->getCode();
+    $rate->carrier_title = $this->getConfigData('title');
+    $rate->method = $this->getMethod();
+    $rate->method_title = $this->getConfigData('title');
+    $rate->price = core()->convertPrice($this->getConfigData('default_rate'));
+    $rate->base_price = $this->getConfigData('default_rate');
+
+    return $rate;
 }
 ```
 

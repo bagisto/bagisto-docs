@@ -50,13 +50,17 @@ return [
     ], [
         'key'   => 'rma.return-requests.view',
         'name'  => 'View',  // Using direct text for now
-        'route' => 'admin.rma.return-requests.view',
+        'route' => 'admin.rma.return-requests.show',
         'sort'  => 1,
     ],
 ];
 ```
 
-In the above code, we start with a simple ACL configuration using direct text for permission names. This creates a hierarchical structure: main module (RMA) → sub-module (Return Requests) → specific action (View).
+In the above code, we start with a simple ACL configuration using direct text for permission names. This creates a hierarchical structure: main module (RMA) → sub-module (Return Requests) → specific action (View). The `view` entry names the `admin.rma.return-requests.show` route, which the DataGrid page adds when it wires the row action; every route named here must exist.
+
+::: warning The ACL is the gate, not a label
+`Webkul\User\Http\Middleware\Bouncer` (the `admin` middleware) builds a map of route name → permission key from every `acl.php` and aborts with `401` when the current route is **not in that map at all**, as well as when the role lacks the permission. Only a short list of shared routes (notifications, saved filters, the TinyMCE upload, account and two-factor pages) is exempt. Roles whose permission type is **All** skip the check, so test with a custom role before shipping. The upshot: every admin route your package registers needs an ACL entry, and the ACL entry's `route` must be a real route name.
+:::
 
 ## Adding Translations
 
@@ -107,7 +111,7 @@ return [
     ], [
         'key'   => 'rma.return-requests.view',
         'name'  => 'rma::app.admin.acl.view',  // Now using translation key
-        'route' => 'admin.rma.return-requests.view',
+        'route' => 'admin.rma.return-requests.show',
         'sort'  => 1,
     ],
 ];
@@ -205,10 +209,12 @@ Now that you have a working ACL setup, let's understand the configuration option
 
 | Property | Type | Description |
 | -------- | ---- | ----------- |
-| **`key`** | String | Unique identifier for the permission |
+| **`key`** | String | Unique identifier for the permission. Dotted keys nest: `rma.return-requests.view` sits under `rma.return-requests`, which sits under `rma` |
 | **`name`** | String | Display name in admin roles interface |
-| **`route`** | String | Named Laravel route to protect |
+| **`route`** | String or array | The route name, or a list of route names, this permission unlocks. Core lists several when one permission covers a listing, its search endpoint and its export |
 | **`sort`** | Integer | Sort order in permissions list |
+
+All four are required. The tree is built from the dotted keys, so a child whose parent key is not declared is dropped silently. The Admin package's own test, `Admin/tests/Feature/Acl/PermissionCoverageTest.php`, asserts that every admin route is covered by an ACL entry; a package with tests should assert the same for its own routes.
 
 ### Creating Hierarchical ACL Structure
 
@@ -232,7 +238,7 @@ return [
     ], [
         'key'   => 'rma.return-requests.view',
         'name'  => 'View',  // Consider using translation key: rma::app.admin.acl.view
-        'route' => 'admin.rma.return-requests.view',
+        'route' => 'admin.rma.return-requests.show',
         'sort'  => 1,
     ], [
         'key'   => 'rma.return-requests.create',
@@ -271,7 +277,7 @@ return [
 ::: info ACL Structure Explanation
 **Hierarchical Structure**: Uses dot notation (e.g., `rma.return-requests.view`) to create permission hierarchy
 
-**Translation Keys**: Uses `rma::app.acl.*` pattern for internationalization support
+**Translation Keys**: Uses the `rma::app.admin.acl.*` pattern for internationalization support
 
 **Array Format**: Each permission is a separate array element, similar to Bagisto core modules like Sales
 
@@ -289,6 +295,8 @@ To check permissions in your controllers or views, use Bagisto's built-in method
 
 ### In Controllers
 
+The `admin` middleware already enforces the permission mapped to the current route, so a controller rarely needs to check again. When one action does something that deserves a second, finer permission, use `bouncer()->allow()`, which aborts with `401` on failure:
+
 ```php
 <?php
 
@@ -298,17 +306,19 @@ use Webkul\Admin\Http\Controllers\Controller;
 
 class ReturnRequestController extends Controller
 {
-    public function index()
+    /**
+     * Approve a return request.
+     */
+    public function approve(int $id)
     {
-        // Check if user has RMA permission
-        if (! bouncer()->hasPermission('rma')) {
-            abort(401, 'Unauthorized access.');
-        }
-        
+        bouncer()->allow('rma.return-requests.approve');
+
         // Your controller logic here
     }
 }
 ```
+
+`bouncer()->hasPermission($key)` returns a boolean for the cases where you want to branch rather than abort.
 
 ### In Blade Views
 

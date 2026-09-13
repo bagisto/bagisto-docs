@@ -24,7 +24,10 @@ use Webkul\Product\Type\AbstractType;
 
 class Subscription extends AbstractType
 {
-    // Basic implementation - just extends `AbstractType`
+    public function getPriceIndexer()
+    {
+        return app(SimpleIndexer::class);
+    }
 }
 ```
 
@@ -47,93 +50,91 @@ use Webkul\Product\Type\AbstractType;
 class Subscription extends AbstractType
 {
     /**
-     * Returns price indexer class for a specific product type.
+     * Subscriptions do not use inventory.
      *
-     * @return string
+     * @var bool
+     */
+    protected $isStockable = false;
+
+    /**
+     * Allow customers to pick how many seats they subscribe.
+     *
+     * @var bool
+     */
+    protected $showQuantityBox = true;
+
+    /**
+     * Get the price indexer for this product type.
+     *
+     * @return \Webkul\Product\Helpers\Indexers\Price\Simple
      */
     public function getPriceIndexer()
     {
-        // SimpleIndexer extends AbstractIndexer, so it handles basic price indexing
-        // You can keep this as-is for most custom product types
         return app(SimpleIndexer::class);
     }
-    
+
     /**
-     * Subscriptions don't use traditional inventory.
+     * Check if the subscription is available for purchase.
+     *
+     * @return bool
      */
-    public function isStockable(): bool
+    public function isSaleable()
     {
-        return false;
-    }
-    
-    /**
-     * Allow customers to select quantity for multiple subscription slots.
-     */
-    public function showQuantityBox(): bool
-    {
-        return true;
-    }
-    
-    /**
-     * Check if subscription is available for purchase.
-     */
-    public function isSaleable(): bool
-    {
-        // Check basic conditions first
         if (! parent::isSaleable()) {
             return false;
         }
-        
-        // Add your custom subscription-specific availability logic here
-        return true;
+
+        return (bool) $this->product->subscription_frequency;
     }
-    
+
     /**
-     * Check if enough subscription slots are available.
-     * Note: Assumes you have a `subscription_slots` attribute on your product.
+     * Check if enough subscription seats are available.
      */
     public function haveSufficientQuantity(int $qty): bool
     {
-        // Add your custom subscription-specific availability logic here
-        // For now, returning true to allow all quantities (you'll customize this based on your subscription slots logic)
-        return true;
+        return $qty <= $this->totalQuantity();
     }
-    
+
     /**
-     * Return total available subscription slots.
-     * Note: Assumes you have a `subscription_slots` attribute on your product.
+     * Return the total number of subscription seats.
+     *
+     * @return int
      */
-    public function totalQuantity(): int
+    public function totalQuantity()
     {
-        // Add your custom subscription-specific availability logic here
-        // For example, you might have a custom attribute like `subscription_slots`
-        return $this->product->subscription_slots ?? 0;
+        return (int) ($this->product->subscription_slots ?? 0);
     }
-    
+
     /**
-     * Prepare subscription data for cart.
-     * Note: Assumes your frontend form sends 'subscription_frequency' in the request data.
+     * Prepare subscription data for the cart.
+     *
+     * @param  array  $data
+     * @return array|string
      */
-    public function prepareForCart($data): array
+    public function prepareForCart($data)
     {
-        // Validate subscription-specific data first
-        // For example, if your form passes a subscription_frequency field that needs validation
         if (empty($data['subscription_frequency'])) {
-            return 'Please select subscription frequency.';
+            return trans('subscription::app.checkout.cart.missing-frequency');
         }
-        
-        // Get base cart data from parent
-        $cartData = parent::prepareForCart($data);
-        
-        // Add subscription-specific information to the cart data
-        // Note: We're accessing the first cart item [0] - if you have multiple items, you'll need to loop through them
-        $cartData[0]['additional']['subscription_frequency'] = $data['subscription_frequency'];
-        $cartData[0]['additional']['subscription_start_date'] = $data['start_date'] ?? now()->addDays(1)->format('Y-m-d');
-        
-        return $cartData;
+
+        $products = parent::prepareForCart($data);
+
+        if (is_string($products)) {
+            return $products;
+        }
+
+        $products[0]['additional']['subscription_frequency'] = $data['subscription_frequency'];
+        $products[0]['additional']['subscription_start_date'] = $data['start_date'] ?? now()->addDay()->format('Y-m-d');
+
+        return $products;
     }
 }
 ```
+
+Two details worth noticing:
+
+- `isStockable` and `showQuantityBox` are set as **properties** because the base methods just return them; overriding the method is only needed when the answer depends on the product.
+- `prepareForCart()` stays untyped and checks the parent's result, because the cart treats a string return as an error message (core's `Simple` type returns one when required customizable options are missing) and a type that extends `Simple` inherits that. `subscription_frequency` and `subscription_slots` are assumed to be attributes you have added to the attribute family; `AbstractType::update()` saves them like any other attribute.
 
 ## Testing Your Subscription Product Type
 
@@ -164,12 +165,28 @@ php artisan tinker
 3. **Verify the quantity box appears on frontend**
 4. **Test adding to cart with different quantities**
 
+### Test with Pest
+
+A product-type test is a plain feature test; the `ProductTestBench` trait creates indexed products of every core type, and a custom type is created the same way through the factory by passing `type`:
+
+```php
+use Webkul\Product\Models\Product;
+
+it('keeps subscription products out of stock checks', function () {
+    $product = Product::factory()->create(['type' => 'subscription']);
+
+    expect($product->getTypeInstance()->isStockable())->toBeFalse();
+});
+```
+
+See [Testing Workflow](../advanced/testing.md) for the suite layout.
+
 ## What You've Accomplished
 
 Congratulations! You've successfully completed the product type development journey and built a complete subscription product type for Bagisto:
 
 ### ✅ Complete Product Type System
-- **Configuration**: `Config/product-types.php` registers your subscription type
+- **Configuration**: `Config/product_types.php` registers your subscription type
 - **Service Provider**: `SubscriptionServiceProvider` loads your configuration  
 - **Product Type Class**: `Subscription` implements custom business logic
 - **Integration**: Works seamlessly with Bagisto's admin and frontend

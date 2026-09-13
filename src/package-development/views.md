@@ -8,7 +8,7 @@ For our RMA package, we'll create views that display return request listings and
 This section demonstrates how to create organized, reusable Blade templates that integrate with Bagisto's admin interface and follow established patterns for data presentation, starting with listing pages and progressing to form creation.
 :::
 
-For detailed information on Laravel views and Blade templating, visit the [Laravel Documentation on Views](https://laravel.com/docs/12.x/views).
+For detailed information on Laravel views and Blade templating, visit the [Laravel Documentation on Views](https://laravel.com/docs/views).
 
 ## Bagisto View Architecture
 
@@ -112,6 +112,22 @@ class RMAServiceProvider extends ServiceProvider
 ::: tip View Namespace
 The `loadViewsFrom()` method registers views with the `rma` namespace, allowing you to reference them as `rma::admin.return-requests.index` instead of using full file paths.
 :::
+
+### Blade components, render events and themes
+
+Three more things a package's views usually need:
+
+- **Your own `<x-rma::…>` components.** `loadViewsFrom()` registers views, not components. Register the components directory too, as the Admin and Shop packages do:
+
+  ```php
+  Blade::anonymousComponentPath(__DIR__.'/../Resources/views/components', 'rma');
+  ```
+
+- **Extension points for others.** Core views are full of `{!! view_render_event('bagisto.admin.…') !!}` calls, which is how a third-party package injects markup into a page it does not own. Emit them in your own views, before and after each block someone might want to extend. See [View Render Events](../advanced/view-render-events.md).
+
+- **Storefront views can be overridden per theme.** A shop view your package renders is looked up in the active theme's `views_path` before your package, exactly like the Shop package's own views, so a store can restyle it without touching your code. Storefront pages also expect a breadcrumb trail registered in `routes/breadcrumbs.php`; the `<x-shop::breadcrumbs>` component fails for a route with none. See [Creating Store Theme](../theme-development/creating-store-theme.md#how-views-are-resolved).
+
+If your package ships CSS or JavaScript, register a Vite build for it in `config/bagisto-vite.php` so `bagisto_asset('css/app.css', 'rma')` resolves; the [Vite-Powered Theme Assets](../theme-development/vite-powered-theme-assets.md) page walks through the build.
 
 ## Creating Admin Listing View
 

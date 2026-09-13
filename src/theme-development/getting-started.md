@@ -63,6 +63,15 @@ Master Bagisto's layout system and component architecture.
 **🧩 [Blade Components →](./blade-components.md)**  
 Learn to use and customize Bagisto's pre-built components.
 
+### Step 5: Extend What the Merchant Can Customize
+A theme is not only Blade and CSS. From `config/themes.php` it also declares what the Appearance editor offers and which image sizes the storefront can request:
+
+**🧱 [Theme Sections →](./theme-sections.md)**  
+Choose, reorder, replace or add the section types a merchant can place on the home page.
+
+**🖼️ [Image Cache Templates →](./image-cache-templates.md)**  
+Register your own image sizes and attach them to product, category and swatch image URLs.
+
 ## Development Tips
 
 ::: tip Best Practices
@@ -75,8 +84,9 @@ Learn to use and customize Bagisto's pre-built components.
 ::: warning Common Pitfalls
 - **Don't Skip Basics**: Understanding the resources approach helps with package development
 - **Avoid Hardcoding**: Use Bagisto's configuration and helper functions
-- **Theme Conflicts**: Be careful when overriding core templates
+- **Theme Conflicts**: Be careful when overriding core templates; a file only overrides when its path mirrors the package view exactly
 - **Asset Caching**: Clear caches during development to see changes
+- **Never edit `packages/Webkul/Shop`**: Everything a theme needs is reachable through `config/themes.php` and your own `views_path`; edits to the package are lost on update
 :::
 
 ## What's Next?

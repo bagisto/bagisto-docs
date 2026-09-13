@@ -34,13 +34,13 @@ Choose the appropriate branch for your contribution:
 ::: code-group
 ```bash [Bug Fixes]
 # For general bug fixes (stable branch)
-git checkout v2.4
+git checkout 2.4
 git checkout -b fix/issue-description
 ```
 
 ```bash [Critical Fixes]
 # For critical bugs in stable version
-git checkout v2.4
+git checkout 2.4
 git checkout -b hotfix/critical-issue
 ```
 
@@ -55,9 +55,11 @@ git checkout -b feature/new-functionality
 
 | Type | Target Branch | Description |
 |------|--------------|-------------|
-| 🐛 **Bug Fixes** | `v2.4` (stable) | General bug fixes for stable release |
-| 🚨 **Critical Fixes** | `v2.4` (stable) | Security or critical issues |
-| ✨ **Breaking Changes** | `master` | New features with potential breaking changes |
+| 🐛 **Bug Fixes** | `2.4` (stable) | General bug fixes for the supported release line; they are merged forward into `master` |
+| 🚨 **Critical Fixes** | `2.4` (stable) | Security or critical issues |
+| ✨ **Breaking Changes** | `master` | New features with potential breaking changes, released as the next minor version |
+
+Add an entry to `CHANGELOG.md` on the branch you target, under the **Unreleased** heading, in the style of the existing entries.
 
 ## 🎨 Styling Guidelines
 
@@ -90,29 +92,39 @@ To run Pest tests, navigate to your project's root directory and use the followi
 
 ```bash
 # Run the full test suite
-php artisan test
+vendor/bin/pest
+
+# Run one suite
+vendor/bin/pest --testsuite="Admin Feature Test"
 
 # Run specific test files
-php artisan test tests/Feature/YourTestFile.php
-
-# Run tests with coverage
-php artisan test --coverage
+vendor/bin/pest packages/Webkul/Admin/tests/Feature/Catalog/ProductTest.php
 ```
+
+CI runs the suite against MySQL, MariaDB and PostgreSQL, so a change that touches SQL should be tried on more than one engine; see [Testing Workflow](../advanced/testing.md).
 
 **Playwright Tests (End-to-End Tests):**
 
-To run Playwright tests, navigate to the root directory of either the `Shop` or `Admin` package, then execute:
+To run Playwright tests, navigate to the root directory of the `Admin`, `Shop` or `Installer` package, then execute:
 
 ```bash
-# Run Playwright tests from the package root
-npx playwright test --config=tests/e2e-pw/playwright.config.ts
+npm install && npm run install:browsers
+npm run test:e2e
 ```
 
-This command will execute all end-to-end tests defined in the Playwright configuration for the selected package.
+Admin and Shop need a running, seeded store at `APP_URL`; Installer runs against an uninstalled application. On Bagisto 2.4, which has no `test:e2e` script, run `npx playwright test --config=tests/e2e-pw/playwright.config.ts` instead.
 
-::: tip Prerequisite
-Before running Playwright tests, ensure you have both `npx` and `playwright` installed in your development environment.
+::: tip Pull requests and Playwright
+The Playwright workflow runs on a pull request only when it carries the **Need Playwright Testing** label, because it spans 60 shards across three databases. Pest, Pint and the translation check run on every push.
 :::
+
+**Translations:**
+
+Every new English string needs its 21 translations, and CI enforces it:
+
+```bash
+php artisan bagisto:translations:check
+```
 
 **Pint Tests (Code Formatting):**
 
@@ -127,7 +139,7 @@ vendor/bin/pint
 ```
 
 ::: warning Important
-All three test types (Pest, Playwright, and Pint) must pass before your PR can be merged. Run tests locally to avoid CI failures.
+Pest, Pint and the translation check must pass before your PR can be merged, and Playwright when it is requested. Run them locally to avoid CI failures.
 :::
 
 ## 📝 Coding Standards
@@ -154,6 +166,19 @@ protected function registerFacades($loader, $concrete = null, $shared = false): 
     // Implementation here
 }
 ```
+
+Two conventions Pint does not enforce and reviewers do: a docblock on every class member and no comments inside method bodies, and a condition with more than one expression split one expression per line with `&&` or `||` leading the next line:
+
+```php
+if (
+    $user->isActive()
+    && $user->hasRole('admin')
+) {
+    return true;
+}
+```
+
+The repository's `AGENTS.md` and `CLAUDE.md` describe these conventions in full for contributors and for AI coding tools.
 
 ::: tip Automatic Formatting
 You can use Pint to automatically format your code according to these standards:

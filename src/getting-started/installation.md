@@ -9,10 +9,10 @@ The fastest way to get Bagisto up and running:
 ### Prerequisites
 
 Before starting, ensure you have:
-- PHP 8.3 or 8.4 (PHP 8.5 and above are not supported yet)
+- PHP 8.4 (Bagisto 2.4 also runs on 8.3; PHP 8.5 and above are not supported yet)
 - Composer 2.5 or higher
-- MySQL 8.0.32 or higher
-- Web server (Apache/Nginx)
+- MySQL 8.0, MariaDB 10.11 or, on the current development version, PostgreSQL 16
+- Web server (Apache/Nginx/OpenLiteSpeed)
 
 ::: tip System Requirements
 If you haven't checked the system requirements yet, please review the [Before You Start](/getting-started/before-you-start#system-requirements) guide.
@@ -38,7 +38,11 @@ cd my-bagisto-store
 php artisan bagisto:install
 ```
 
-Follow the interactive prompts to configure your application, database, and admin account.
+Follow the interactive prompts to configure your application, database, and admin account. The database step asks which engine you use (MySQL, MariaDB or PostgreSQL) and fills in the matching port. For an unattended install that reads an existing `.env`, use `--no-interaction`, and add `--demo-samples` to seed sample products; see [Artisan Commands](../advanced/artisan-commands.md#bagisto-install).
+
+::: warning Fresh installs only
+`bagisto:install` wipes the database before it seeds. Do not run it on a store that already has data; the [Upgrade Guide](./upgrade-guide.md) uses `php artisan migrate`.
+:::
 
 ### Step 4: Start Development Server
 
@@ -134,6 +138,13 @@ php artisan storage:link
 php artisan optimize:clear
 ```
 
+The seeders create the default admin (`admin@example.com` / `admin123`), the default channel, locales, currencies and attribute families, but no sample products. To add the demo catalog afterwards:
+
+```bash
+php artisan db:seed --class="Webkul\Installer\Database\Seeders\ProductTableSeeder"
+php artisan indexer:index --mode=full
+```
+
 ### Step 4: Launch Store
 
 ```bash
@@ -153,7 +164,17 @@ Perfect for containerized environments and easy deployment across different syst
 
 ### Method 1: Using Docker Hub (Recommended)
 
-The quickest way to get Bagisto running with Docker:
+The quickest way to get Bagisto running with Docker. The production images are built from `docker/production/` in the Bagisto repository and bundle a web server and a database, one image per combination:
+
+| Tag suffix | Web server | Database |
+|---|---|---|
+| `-nginx`, `-nginx-mysql` | Nginx + PHP-FPM | MySQL 8.0 |
+| `-nginx-mariadb` | Nginx + PHP-FPM | MariaDB 10.11 |
+| `-nginx-postgres` | Nginx + PHP-FPM | PostgreSQL 16 |
+| `-apache`, `-apache-mysql`, `-apache-mariadb`, `-apache-postgres` | Apache + mod_php | as named |
+| `-litespeed`, `-litespeed-mysql`, `-litespeed-mariadb`, `-litespeed-postgres` | OpenLiteSpeed | as named |
+
+`webkul/bagisto:latest` is Nginx with MySQL; pin a release with the version, for example `webkul/bagisto:2.5.0-nginx-postgres`. The PostgreSQL images exist for the current development version onward.
 
 #### Step 1: Pull Bagisto Image
 
@@ -170,10 +191,12 @@ docker run -it -d -p 80:80 webkul/bagisto:latest
 ::: tip Port Configuration
 If port 80 is already in use, you can use a different port:
 ```bash
-docker run -it -d -p 8082:80 webkul/bagisto:latest
+docker run -it -d -p 8082:80 -e APP_URL=http://localhost:8082 webkul/bagisto:latest
 ```
 Then access at `http://localhost:8082`
 :::
+
+The entrypoint reads `APP_URL`, `APP_KEY`, `APP_LOCALE`, `APP_CURRENCY`, `APP_TIMEZONE` and `APP_ADMIN_URL`, plus the `DB_*` variables. Setting `DB_HOST` to anything other than `127.0.0.1` or `localhost` skips the bundled database and waits for the external one. The default admin is `admin@example.com` / `admin123`.
 
 #### Step 3: Access Your Store
 
@@ -272,15 +295,17 @@ You can get Bagisto in two ways:
 
 ### Step 2: Install Sail
 
-For a fresh project clone, install dependencies:
+For a fresh project clone, install dependencies (use `php83-composer` for Bagisto 2.4):
 ```bash
 docker run --rm \
     -u "$(id -u):$(id -g)" \
     -v "$(pwd):/var/www/html" \
     -w /var/www/html \
-    laravelsail/php83-composer:latest \
+    laravelsail/php84-composer:latest \
     composer require laravel/sail --dev --ignore-platform-reqs
 ```
+
+Bagisto's `docker-compose.yml` is a Sail file; it is not used by the production images above.
 
 For existing projects:
 ```bash

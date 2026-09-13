@@ -22,15 +22,20 @@ Bagisto's payment system is built around a flexible method-based architecture th
 | **Payment Methods Configuration** | Defines payment method properties | `Config/payment-methods.php` |
 | **Payment Classes** | Contains payment processing logic | `Payment/ClassName.php` |
 | **System Configuration** | Admin interface forms | `Config/system.php` |
+| **Routes and controller** | The gateway redirect, return and webhook endpoints, for methods that leave the site | `Routes/web.php`, `Http/Controllers/` |
 | **Service Provider** | Registers payment method | `Providers/ServiceProvider.php` |
+| **Payment facade** | Core's collector: `Payment::getPaymentMethods()` resolves every configured class, keeps the available ones and sorts them; `Payment::getRedirectUrl($cart)` asks the chosen method where to send the customer | `Webkul\Payment\Payment`, `payment()` helper |
 
 ### Key Features
 
 - **Flexible Payment Processing**: Support for redirects, APIs, webhooks, or custom flows
 - **Configuration Management**: Admin-friendly settings interface
 - **Multi-channel Support**: Different settings per sales channel
-- **Security Ready**: Built-in CSRF protection and secure handling
 - **Extensible Architecture**: Easy integration with third-party gateways
+
+### Reference implementations in core
+
+Every gateway Bagisto ships is a package built exactly this way, and the best documentation for a flow is the closest one: `Webkul\Payment` (`cashondelivery`, `moneytransfer`; no redirect), `Webkul\Paypal` (Standard: redirect and IPN webhook; Smart Button: client-side capture), `Webkul\Stripe`, `Webkul\Razorpay`, `Webkul\PayU`, `Webkul\PhonePe` and `Webkul\PayGlocal` (hosted checkout with a signed return token and a settlement webhook).
 
 ## Development Workflow
 
@@ -60,7 +65,7 @@ You'll have a complete working payment method after step 1, and steps 2-3 help y
 Before you begin, ensure you have:
 
 - **Bagisto Installation**: A working Bagisto development environment
-- **PHP Knowledge**: Familiarity with PHP 8.3+ and Laravel concepts
+- **PHP Knowledge**: Familiarity with PHP 8.4 (8.3 on Bagisto 2.4) and Laravel concepts
 - **Package Development**: Basic understanding of Laravel service providers ([Package Development Guide](../package-development/getting-started.md))
 - **Development Tools**: Composer, Git, and a code editor
 
@@ -88,7 +93,7 @@ Custom Stripe Payment Package
 │   ├── Payment/
 │   │   └── CustomStripePayment.php     # Payment processing logic
 │   ├── Config/
-│   │   ├── payment_methods.php         # Payment method definition
+│   │   ├── payment-methods.php         # Payment method definition
 │   │   └── system.php                  # Admin interface configuration
 │   └── Providers/
 │       └── ServiceProvider.php         # Package registration

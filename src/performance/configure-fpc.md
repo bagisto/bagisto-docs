@@ -19,54 +19,70 @@ Bagisto uses the proven [Spatie Laravel Responsecache Package](https://github.co
 
 ## Configuration
 
-Before enabling Full Page Cache, ensure your environment meets the minimum requirements and that you have a backup of your `.env` and configuration files. Proper configuration is essential for optimal performance and to avoid serving outdated content.
-
 ### Enable Full Page Cache
 
-Add the following configuration to your `.env` file:
+The switch is in the admin. Go to **Configuration → Cache Management → Full Page Cache**:
 
-::: code-group
+- **Enabled** turns caching on or off (on by default).
+- **Lifetime** is how long a rendered page is kept, in minutes. Leave it empty to use the value from `config/responsecache.php`.
+- **Flush** empties the cache so every storefront page is rendered again on its next visit.
 
-```properties [Environment Setup]
-# Enable Full Page Cache
-RESPONSE_CACHE_ENABLED=true
+`Webkul\FPC\CacheProfiles\FullPageCacheProfile` reads these two settings (`cache_management.full_page_cache.settings.enabled` and `.lifetime`) on every request. There is no `RESPONSE_CACHE_ENABLED` environment variable; `config/responsecache.php` hard-codes `'enabled' => true` and leaves the decision to the admin.
 
-# Optional: Set cache lifetime (in minutes)
-RESPONSE_CACHE_LIFETIME=10080  # 1 week
+### Environment keys
 
-# Optional: Set cache driver
-RESPONSE_CACHE_DRIVER=file     # file, redis, memcached, dynamodb
+Where the cache is stored and its default lifetime come from `.env`:
+
+```properties
+# Cache store used for responses: file, redis, memcached, dynamodb
+RESPONSE_CACHE_DRIVER=file
+
+# Default lifetime in seconds, used when the admin lifetime is empty
+RESPONSE_CACHE_LIFETIME=604800
+
+# Optional tag, for stores that support tagging
+RESPONSE_CACHE_TAG=
+
+# Bypass a cached page from a client by sending this header
+CACHE_BYPASS_HEADER_NAME=
+CACHE_BYPASS_HEADER_VALUE=
 ```
 
-```bash [Quick Enable]
-# Add to your .env file
-echo "RESPONSE_CACHE_ENABLED=true" >> .env
-```
+None of these is present in `.env.example`; add the ones you need. With `APP_DEBUG=true` every response carries `Bagisto-FPC`, `Bagisto-FPC-Age`, `Bagisto-FPC-Status` and `Bagisto-FPC-Key` headers that show whether a page came from the cache and under which key.
 
-:::
+### Configuration file
 
-### Configure Cache Settings
-
-Customize cache behavior in `config/responsecache.php`:
+`config/responsecache.php` wires Bagisto's profile, hasher, serializer and replacers into Spatie's package:
 
 ```php
-// config/responsecache.php
-
 return [
-    // Enable/disable cache
-    'enabled' => env('RESPONSE_CACHE_ENABLED', false),
-    
-    // Cache lifetime in minutes
-    'cache_lifetime_in_minutes' => env('RESPONSE_CACHE_LIFETIME', 60 * 24 * 7), // 1 week
-    
-    // Cache store to use
-    'cache_store' => env('RESPONSE_CACHE_DRIVER', 'file'),
-    
-    // Add cache headers for debugging
-    'add_cache_time_header' => env('APP_DEBUG', false),
-    'cache_time_header_name' => 'laravel-responsecache',
+    'enabled' => true,
+
+    'cache' => [
+        'store' => env('RESPONSE_CACHE_DRIVER', 'file'),
+        'lifetime_in_seconds' => (int) env('RESPONSE_CACHE_LIFETIME', 60 * 60 * 24 * 7),
+        'tag' => env('RESPONSE_CACHE_TAG', ''),
+    ],
+
+    'ignored_query_parameters' => [
+        'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'fbclid',
+    ],
+
+    'cache_profile' => Webkul\FPC\CacheProfiles\FullPageCacheProfile::class,
+    'hasher' => Webkul\FPC\Hasher\DefaultHasher::class,
+    'serializer' => Spatie\ResponseCache\Serializers\JsonSerializer::class,
+
+    'replacers' => [
+        Spatie\ResponseCache\Replacers\CsrfTokenReplacer::class,
+        Webkul\FPC\Replacers\FlashMessagesReplacer::class,
+        Webkul\FPC\Replacers\MiniCartReplacer::class,
+    ],
 ];
 ```
+
+::: info Bagisto 2.4
+2.4 uses `spatie/laravel-responsecache` 7 with a flat configuration file: the keys are `cache_store`, `cache_lifetime_in_seconds`, `cache_tag`, `add_cache_time_header` and `cache_time_header_name`, the serializer is the default one and there is no `ignored_query_parameters` list. The admin toggle, lifetime and flush button are the same.
+:::
 
 ## Supported Features
 
@@ -74,21 +90,21 @@ Bagisto FPC supports advanced features such as automatic cache invalidation, sel
 
 ### Cached Pages
 
-Full Page Cache optimally works with these page types:
+Only routes carrying the `cache.response` middleware are cached. In the Shop package those are:
 
-| Page Type | Performance Gain | SEO Impact |
-|-----------|------------------|------------|
-| **Home Page** | 🚀 Excellent | ⭐ High |
-| **Category Pages** | 🚀 Excellent | ⭐ High |
-| **Product Pages** | 🚀 Excellent | ⭐ Very High |
-| **CMS Pages** | 🚀 Excellent | ⭐ High |
+| Route | Page |
+|---|---|
+| `shop.home.index` | Home page |
+| `shop.product_or_category.index` | Every product and category page (the slug fallback) |
+| `shop.cms.page` | CMS pages |
+| `shop.home.contact_us` | Contact page |
+| `shop.search.index` | Search results; only the `query` parameter is part of the cache key |
+| `shop.compare.index` | Compare page |
 
-::: tip CMS Page Caching
-CMS pages (About Us, Privacy Policy, Terms & Conditions, etc.) are ideal candidates for Full Page Cache since they rarely change and benefit significantly from caching. This improves load times for important informational pages that customers frequently visit.
-:::
+A page is cached once per host, channel, locale and currency. Tracking parameters (`utm_*`, `gclid`, `fbclid`) are ignored when building the key.
 
 ::: warning Dynamic Content
-Pages with user-specific content (cart, wishlist, account) are automatically excluded from caching to ensure personalized experiences.
+Signed-in customers are never served cached pages, and their requests never fill the cache. The cart, checkout, account pages, the appearance preview and the admin are not on the list above. Inside a cached page the CSRF token, flash messages and the mini cart are replaced on every request, so they stay live.
 :::
 
 ### Cache Drivers
@@ -128,17 +144,11 @@ Target a specific page for cache removal:
 php artisan responsecache:clear --url=https://yourstore.com/products/sample-product
 ```
 
-::: warning Cache Clearing
-Always clear cache after:
-- Product updates
-- Category changes
-- Price modifications
-- Inventory updates
-:::
+The same command is what the **Flush** button on the Cache Management page runs, and **Clear All Cache** on that page runs it after `optimize:clear`.
 
 ## Cache Invalidation
 
-Bagisto's Full Page Cache (FPC) system uses event-driven cache invalidation to ensure data consistency while maintaining optimal performance. Here's how real-world cache invalidation works with actual Bagisto examples:
+Bagisto's Full Page Cache (FPC) system uses event-driven cache invalidation, so product, category, price, review, order, CMS, URL rewrite, section, channel and configuration changes drop the affected pages on their own. The event-to-listener map is on [Cache Strategy](../advanced/cache-strategy.md#what-invalidates-the-cache). Here's how real-world cache invalidation works with actual Bagisto examples:
 
 ### Product Cache Invalidation
 
@@ -146,40 +156,34 @@ When products are updated in Bagisto, the FPC system automatically invalidates r
 
 ::: code-group
 
-```php [Product Listener - Real Bagisto Implementation]
+```php [Product Listener]
 <?php
+
 namespace Webkul\FPC\Listeners;
 
-use Spatie\ResponseCache\Facades\ResponseCache;
-use Webkul\Product\Repositories\ProductBundleOptionProductRepository;
-use Webkul\Product\Repositories\ProductGroupedProductRepository;
-use Webkul\Product\Repositories\ProductRepository;
+use Webkul\FPC\Concerns\ForgetsPages;
 
 class Product
 {
-    ...
+    use ForgetsPages;
+
     /**
-     * Update or create product page cache
-     *
-     * @param \Webkul\Product\Contracts\Product $product
-     * @return void
+     * Forget the product's own page, every category page it sits in and the home page.
      */
     public function afterUpdate($product)
     {
-        $urls = $this->getForgettableUrls($product);
-        
-        ResponseCache::forget($urls);
+        $this->forgetPages($this->getForgettableUrls($product));
     }
-    ...
 }
 ```
 
-```php [Event Registration - Bagisto FPC]
+```php [Event Registration]
 <?php
 
 namespace Webkul\FPC\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Webkul\FPC\Listeners\Product;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -189,16 +193,16 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        ...
         'catalog.product.update.after' => [
-            'Webkul\FPC\Listeners\Product@afterUpdate',
+            [Product::class, 'afterUpdate'],
         ],
-        ...
     ];
 }
 ```
 
 :::
+
+`ForgetsPages::forgetPages()` expands each path to every channel host and every locale and currency combination, because each of those is a separate cache entry, and `getForgettableUrls()` includes the parent bundle, grouped and configurable products so a variant change refreshes the page shoppers actually visit.
 
 ## Performance Optimization
 
@@ -239,12 +243,11 @@ redis-cli info stats
 ### Production Checklist
 
 ::: warning Production Considerations
-- ✅ Configure appropriate cache lifetime
-- ✅ Set up cache invalidation events
+- ✅ Set `RESPONSE_CACHE_DRIVER=redis` on a multi-server deployment so every node shares one cache
+- ✅ Choose a lifetime that matches how often prices and stock change
+- ✅ Invalidate from your own packages when they change what a cached page shows
 - ✅ Monitor cache hit rates
-- ✅ Implement cache warming for critical pages
-- ✅ Configure proper cache drivers
-- ✅ Set up monitoring and alerting
+- ✅ Keep `APP_DEBUG=false`, which also removes the `Bagisto-FPC-*` diagnostic headers
 :::
 
 ::: tip Developer Note

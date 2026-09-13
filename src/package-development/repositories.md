@@ -260,12 +260,35 @@ class ReturnRequestRepository extends Repository
      */
     public function getRecent(int $limit = 10)
     {
-        return $this->orderBy('created_at', 'desc')
-            ->limit($limit)
-            ->get();
+        return $this->orderBy('created_at', 'desc')->limit($limit);
     }
 }
 ```
+
+`limit()` already executes the query and returns the results, so there is no `get()` after it.
+
+## What the base repository adds
+
+`Webkul\Core\Eloquent\Repository` extends Prettus with a few methods core relies on, and with caching:
+
+| Method | Purpose |
+|---|---|
+| `findOneByField($field, $value)` | First record where `$field = $value`, or `null` |
+| `findOneWhere(array $where)` | First record matching several conditions, or `null` |
+| `count(array $where = [])` | Count, optionally constrained |
+| `sum($column)`, `avg($column)` | Aggregates over the current criteria |
+| `getModel()` | The underlying model instance |
+| `resetModel()` | Drop the query state built up by `with()`, `orderBy()` and friends |
+
+The repository implements Prettus' `CacheableInterface`, but caching is **opt-in**: `config/repository.php` ships with `'enabled' => false`, and only the repositories listed under `cache.repositories` there are cached at all. For those, `all()`, `paginate()` and the finders are cached under a key that carries a generation token that every `create()`, `update()` and `delete()` through the repository bumps; `find()` and `findOrFail()` are redefined in `Webkul\Core\Eloquent\Repository` and always hit the database. A repository in your own package caches nothing unless you add it to that list. The same file sets the default page size of 15.
+
+Raw SQL inside a repository must go through `db_grammar()` so it runs on PostgreSQL as well as MySQL:
+
+```php
+$this->model->select(DB::raw(db_grammar()->concat('first_name', "' '", 'last_name').' as full_name'));
+```
+
+See [Database compatibility](../advanced/database-compatibility.md) for the full list of grammar methods.
 
 ## Testing Your Repository
 
