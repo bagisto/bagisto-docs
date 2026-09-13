@@ -11,7 +11,7 @@ The fastest way to get Bagisto up and running:
 Before starting, ensure you have:
 - PHP 8.4 (Bagisto 2.4 also runs on 8.3; PHP 8.5 and above are not supported yet)
 - Composer 2.5 or higher
-- MySQL 8.0, MariaDB 10.11 or, on the current development version, PostgreSQL 16
+- MySQL 8.0, MariaDB 10.11 or, on Bagisto 2.5, PostgreSQL 16
 - Web server (Apache/Nginx/OpenLiteSpeed)
 
 ::: tip System Requirements
@@ -174,7 +174,7 @@ The quickest way to get Bagisto running with Docker. The production images are b
 | `-apache`, `-apache-mysql`, `-apache-mariadb`, `-apache-postgres` | Apache + mod_php | as named |
 | `-litespeed`, `-litespeed-mysql`, `-litespeed-mariadb`, `-litespeed-postgres` | OpenLiteSpeed | as named |
 
-`webkul/bagisto:latest` is Nginx with MySQL; pin a release with the version, for example `webkul/bagisto:2.5.0-nginx-postgres`. The PostgreSQL images exist for the current development version onward.
+`webkul/bagisto:latest` is Nginx with MySQL; pin a release with the version, for example `webkul/bagisto:2.5.0-nginx-postgres`. The PostgreSQL images exist for Bagisto 2.5 onward.
 
 #### Step 1: Pull Bagisto Image
 

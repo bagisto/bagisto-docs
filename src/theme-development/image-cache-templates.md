@@ -12,7 +12,7 @@ This is the second half of a theme's `customize` key; the first half,
 
 ::: info Availability
 Per-theme image templates (`customize.image_cache`) ship in both Bagisto 2.4
-and the current development version. The template class's type hints differ
+and Bagisto 2.5. The template class's type hints differ
 between the two lines; see [Writing a template class](#writing-a-template-class).
 :::
 
@@ -132,13 +132,13 @@ class Small extends BaseSmall
 ```
 
 ::: warning The image type differs between versions
-The current development version processes images with Laravel's
+Bagisto 2.5 processes images with Laravel's
 `Illuminate\Image` component, so `applyFilter()` receives and returns
 `Illuminate\Image\Image`. **Bagisto 2.4** uses Intervention Image directly and
 the signature is `applyFilter(ImageInterface $image): ImageInterface` with
 `Intervention\Image\Interfaces\ImageInterface`. The method calls you make
-(`cover()`, `resize()`, `scale()` and so on) are the same in both. On the
-development version a closure is no longer accepted as a template; it must be a
+(`cover()`, `resize()`, `scale()` and so on) are the same in both. On Bagisto 2.5
+a closure is no longer accepted as a template; it must be a
 class.
 :::
 

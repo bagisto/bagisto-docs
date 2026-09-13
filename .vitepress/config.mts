@@ -37,7 +37,7 @@ export default defineConfig({
           {
             text: 'For your store',
             items: [
-              { text: 'Magic AI', link: '/ai/magic-ai' },
+              { text: 'Generative AI (Magic AI)', link: '/ai/magic-ai' },
               { text: 'WebMCP', link: '/ai/webmcp' },
             ],
           },
@@ -87,7 +87,7 @@ export default defineConfig({
         collapsed: false,
         items: [
           { text: 'AI in Bagisto', link: '/ai/introduction' },
-          { text: 'Magic AI', link: '/ai/magic-ai' },
+          { text: 'Generative AI (Magic AI)', link: '/ai/magic-ai' },
           { text: 'WebMCP', link: '/ai/webmcp' },
           { text: 'Agent Skills', link: '/ai/agent-skills' },
           { text: 'llms.txt', link: '/ai/llms-txt' }

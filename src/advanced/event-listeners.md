@@ -354,7 +354,7 @@ public function handleOrderCreated($order): void
 
 ## Available Bagisto Events
 
-The following table lists the core events available in Bagisto that you can listen to. The set of event names is the same in Bagisto 2.4 and the current development version. Where an event is dispatched from more than one place (a single delete and a mass delete, for example) the argument shown is the one passed by the single-record controller action.
+The following table lists the core events available in Bagisto that you can listen to. The set of event names is the same in Bagisto 2.4 and 2.5. Where an event is dispatched from more than one place (a single delete and a mass delete, for example) the argument shown is the one passed by the single-record controller action.
 
 Two families are not listed individually: every DataGrid dispatches `datagrid.{grid_name}.{stage}` events as it is built (see [DataGrid](../package-development/datagrid.md#extending-a-datagrid-you-do-not-own)), and every `view_render_event()` call in a Blade view dispatches an event of the same name (see [View Render Events](./view-render-events.md)).
 

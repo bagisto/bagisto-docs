@@ -26,7 +26,7 @@ composer require bagisto/graphql-api
 
 ### Step 2: Configure Middleware
 
-Update your `bootstrap/app.php` file to ensure proper session handling. Bagisto 2.4 and the current development version both use the Laravel 11+ application bootstrap, so the snippet is the same on either:
+Update your `bootstrap/app.php` file to ensure proper session handling. Bagisto 2.4 and 2.5 both use the Laravel 11+ application bootstrap, so the snippet is the same on either:
 
 ```php
 use Illuminate\Session\Middleware\StartSession;

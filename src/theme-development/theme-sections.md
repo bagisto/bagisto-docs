@@ -13,9 +13,9 @@ feature is in the user guide under Appearance.
 
 ::: info Availability
 Per-theme section types (`customize.sections`) ship in both Bagisto 2.4 and the
-current development version, and the section type classes on this page work on
+Bagisto 2.5, and the section type classes on this page work on
 both. One helper differs: `bagisto_theme_storage()`, used in the rendering
-example, exists only on the current development version; on 2.4 resolve stored
+example, exists only on Bagisto 2.5; on 2.4 resolve stored
 image paths with `Storage::url($path)` instead.
 :::
 

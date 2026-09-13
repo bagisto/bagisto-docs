@@ -15,7 +15,7 @@ Bagisto implements a multi-layered caching strategy to optimize performance acro
 
 ## Application Cache
 
-Configured via the `CACHE_STORE` environment variable. The shipped `.env.example` uses the `database` store on the current development version (`file` on Bagisto 2.4); the `cache` table is created by a root migration.
+Configured via the `CACHE_STORE` environment variable. The shipped `.env.example` uses the `database` store on Bagisto 2.5 (`file` on Bagisto 2.4); the `cache` table is created by a root migration.
 
 ```properties
 # .env

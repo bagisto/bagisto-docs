@@ -6,8 +6,9 @@ web page declare **tools** an in-browser AI agent may call, through a
 WebMCP tools, so a browser agent can search the catalog, open a product, manage the wishlist
 and reach the cart or checkout on a shopper's behalf without scraping the page.
 
-The feature is part of the `Shop` package on Bagisto 2.4 and the current development version.
-It needs no configuration and is inert in a browser without the API.
+The feature is part of the `Shop` package on Bagisto 2.4 and 2.5. It needs no configuration
+and is inert in a browser without the API. It is the agentic side of Bagisto's AI: the
+generative side, content produced by a model, is [Generative AI (Magic AI)](./magic-ai.md).
 
 ## What is declared
 
@@ -108,8 +109,9 @@ the corresponding form, which is the same behaviour an agent triggers.
 
 ## Relation to other agent features
 
-- **Magic AI** ([Magic AI](./magic-ai.md)) is server-side and merchant-facing; WebMCP is
-  client-side and shopper-facing. They do not depend on each other.
+- **Generative AI** ([Magic AI](./magic-ai.md)) is server-side and produces content for the
+  merchant and the shopper; WebMCP is client-side and lets an agent act. They do not depend
+  on each other.
 - The REST and GraphQL APIs ([Bagisto APIs](../api/introduction.md)) are the right surface for
   an agent that runs outside a browser; WebMCP is for agents that live in the shopper's
   browser session.

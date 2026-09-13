@@ -14,7 +14,7 @@ Bagisto is built on a modern, robust technology stack leveraging proven [Open So
 
 The exact versions depend on the release line you run:
 
-| | Current development version | Bagisto 2.4 |
+| | Bagisto 2.5 | Bagisto 2.4 |
 |---|---|---|
 | PHP | 8.4 | 8.3 or 8.4 |
 | Laravel | 13 | 12 |
@@ -24,7 +24,7 @@ The exact versions depend on the release line you run:
 | Test runner | Pest 5 | Pest 3 |
 | Databases | MySQL 8, MariaDB 10.11, PostgreSQL 16 | MySQL 8, MariaDB 10.11 |
 
-On the current development version all three databases are first-class and covered by the CI matrix; the [Database Compatibility](../advanced/database-compatibility.md) page explains the `db_grammar()` abstraction that keeps package code portable across them. Bagisto 2.4 supports MySQL and MariaDB only.
+On Bagisto 2.5 all three databases are first-class and covered by the CI matrix; the [Database Compatibility](../advanced/database-compatibility.md) page explains the `db_grammar()` abstraction that keeps package code portable across them. Bagisto 2.4 supports MySQL and MariaDB only.
 
 ## Core Architecture Principles
 

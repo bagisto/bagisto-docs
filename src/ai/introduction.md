@@ -1,7 +1,8 @@
 # AI in Bagisto
 
-Bagisto ships with AI built in, on three fronts: **generative AI** that writes, translates
-and draws for the merchant and the shopper, **agentic AI** hooks that let an AI agent act on
+Bagisto has **generative AI built into the platform**. Branded Magic AI, it writes,
+translates and draws for the merchant and the shopper on the AI provider of your choice, with
+nothing extra to install. Alongside it sit **agentic AI** hooks that let an AI agent act on
 the storefront, and tooling that makes the coding agents *you* build with fluent in Bagisto.
 Together they are Bagisto's path to **agentic commerce**, where an AI assistant can help run
 a store and an AI agent can shop it on someone's behalf. This page is the home for all of it.
@@ -10,10 +11,10 @@ a store and an AI agent can shop it on someone's behalf. This page is the home f
 
 <div class="ai-cards">
   <a class="ai-card" href="/ai/magic-ai.html">
-    <div class="ai-card__title">✨ Magic AI</div>
+    <div class="ai-card__title">✨ Generative AI (Magic AI)</div>
     <div class="ai-card__desc">
-      Generative AI for the store: product content &amp; images, image search, review
-      translation and personalised checkout messages, on the AI provider of your choice.
+      Built-in generative AI for the store: product content &amp; images, image search,
+      review translation and personalised checkout messages, on the AI provider of your choice.
     </div>
   </a>
 
@@ -52,7 +53,7 @@ The terms are used deliberately, because they describe different things:
 
 | Term | Meaning here | Where Bagisto has it today |
 |---|---|---|
-| **Generative AI** | A model produces content: text, translations, keywords, images | [Magic AI](/ai/magic-ai): product and page copy, product images, review translation, the keywords behind image search, the checkout message |
+| **Generative AI** | A model produces content: text, translations, keywords, images | [Magic AI](/ai/magic-ai), in the core: product and page copy, product images, review translation, the keywords behind image search, the checkout message |
 | **Agentic AI** | An AI agent performs actions through tools rather than only producing text | [WebMCP](/ai/webmcp): seven storefront actions exposed to browser agents; [Agent Skills](/ai/agent-skills): coding agents that build Bagisto packages and themes |
 | **Agentic commerce** | Commerce in which AI assists the merchant and can act for the shopper | The combination of the two above, in the core, with no separate product to install |
 
@@ -60,10 +61,10 @@ What Bagisto does **not** claim: Magic AI does not run your store on its own, an
 not complete a purchase without the shopper. Every generated text is applied by an admin, and
 every WebMCP tool ends in an ordinary storefront page where the person is still in charge.
 
-## Magic AI — generative AI built into your store
+## Generative AI (Magic AI) — built into your store
 
-[Magic AI](/ai/magic-ai) is a first-class Bagisto feature. Add an API key for any
-supported provider and you can:
+[Generative AI](/ai/magic-ai) is a first-class Bagisto feature, shipped as the Magic AI
+package. Add an API key for any supported provider and you can:
 
 - ✍️ **Generate content** — product descriptions, page copy, and more from the admin editor.
 - 🖼️ **Generate images** — create product imagery from a text prompt.
@@ -71,17 +72,17 @@ supported provider and you can:
 - 🌐 **Translate reviews** — show customer reviews in the shopper's language.
 - 🎉 **Checkout messages** — personalised order confirmation messages.
 
-Magic AI works with **OpenAI, Anthropic, Gemini, Groq, xAI, DeepSeek, Mistral, and Ollama**.
+It works with **OpenAI, Anthropic, Gemini, Groq, xAI, DeepSeek, Mistral, and Ollama**.
 Admin features let you choose which providers are offered; storefront features are
-configured per channel with a model each.
+configured per channel with a model each. Generated text and images are suggestions until an
+admin applies them.
 
 ## WebMCP — agentic AI on the storefront
 
 [WebMCP](/ai/webmcp) is the browser-side counterpart. The storefront layout declares its
 search, product, wishlist, cart, checkout and newsletter actions as tools, and registers them
 with `navigator.modelContext.provideContext()` when the browser supports it. In every other
-browser the markup is inert. It is available on Bagisto 2.4 and the current development
-version alike.
+browser the markup is inert. It is available on Bagisto 2.4 and 2.5 alike.
 
 ## AI for developers
 
@@ -93,5 +94,5 @@ Bagisto also helps the AI tools *you* code with:
   context files for architecture-aware answers.
 
 ::: tip Where to start
-Building a store? Start with **[Magic AI](/ai/magic-ai)**. Letting agents shop it? Read **[WebMCP](/ai/webmcp)**. Writing code? Install **[Agent Skills](/ai/agent-skills)**.
+Building a store? Start with **[Generative AI (Magic AI)](/ai/magic-ai)**. Letting agents shop it? Read **[WebMCP](/ai/webmcp)**. Writing code? Install **[Agent Skills](/ai/agent-skills)**.
 :::

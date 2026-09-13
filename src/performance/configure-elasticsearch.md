@@ -22,7 +22,7 @@ Before configuring Elasticsearch with Bagisto, ensure you have [Elasticsearch in
 :::
 
 ::: info Two ways to configure
-On the current development version the connection is configured in the admin under **Configure → Search Engines**, with `.env` as a fallback. On Bagisto 2.4 the connection comes from `.env` and `config/elasticsearch.php` only, and the engine is chosen under **Configure → Catalog → Products → Search**. Both are covered below.
+On Bagisto 2.5 the connection is configured in the admin under **Configure → Search Engines**, with `.env` as a fallback. On Bagisto 2.4 the connection comes from `.env` and `config/elasticsearch.php` only, and the engine is chosen under **Configure → Catalog → Products → Search**. Both are covered below.
 :::
 
 ### Verify Installation
@@ -61,7 +61,7 @@ curl -X GET 'http://localhost:9200'
 
 ## Configuration Setup
 
-### From the admin (current development version)
+### From the admin (Bagisto 2.5)
 
 Open **Configure → Search Engines**:
 
@@ -85,7 +85,7 @@ Behind this screen sits `Webkul\Product\Services\Search\SearchEngineManager`, de
 
 ### From the environment file
 
-Bagisto reads `config/elasticsearch.php`, which is populated from `.env`. On the development version the admin settings above are copied over these at boot when they are filled in; on Bagisto 2.4 this is the only configuration.
+Bagisto reads `config/elasticsearch.php`, which is populated from `.env`. On Bagisto 2.5 the admin settings above are copied over these at boot when they are filled in; on Bagisto 2.4 this is the only configuration.
 
 ::: code-group
 
@@ -233,7 +233,7 @@ On Bagisto 2.4 the type is `elastic`:
 php artisan indexer:index --type=elastic --mode=full
 ```
 
-The search indexer runs only when an external engine is enabled (development version) or the engine setting is `elastic` (2.4), so enable the engine first.
+The search indexer runs only when an external engine is enabled (Bagisto 2.5) or the engine setting is `elastic` (2.4), so enable the engine first.
 
 ::: warning Queue Driver Configuration
 If your `QUEUE_CONNECTION` in `.env` is set to `database`, `redis`, or any driver other than `sync`, you must run the queue worker to process indexing jobs:
@@ -289,7 +289,7 @@ yellow open   products_default_en_index    AbcDef1234567890       1   1      150
 
 Enable Elasticsearch in your Bagisto admin panel and test frontend search:
 
-**Admin Configuration (current development version):**
+**Admin Configuration (Bagisto 2.5):**
 1. Go to **Configure → Search Engines → General**
 2. Switch on **Enable External Search Engine** and set **Default Search Engine** to **Elasticsearch**
 3. Save the configuration

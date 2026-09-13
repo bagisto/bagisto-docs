@@ -1,13 +1,16 @@
-# Magic AI
+# Generative AI (Magic AI)
 
-Magic AI is Bagisto's built-in generative AI engine. It powers content and image generation
-in the admin panel and AI features on the storefront, using whichever AI provider you
-configure. It is the merchant-facing half of Bagisto's [agentic commerce](./introduction.md)
-story; the shopper-facing half, agents acting on the storefront, is [WebMCP](./webmcp.md).
+Bagisto's generative AI is built into the core as the **Magic AI** package. It generates
+content and images in the admin panel and powers three AI features on the storefront, using
+whichever AI provider you configure. This page is the developer's view of it: how it is
+configured, how to call it from code, and where to extend it. The merchant's view is in the
+user guide.
 
 It is built on the [Laravel AI](https://laravel.com/docs/ai) SDK, so a single configuration
-works across every supported provider. The package is the same on Bagisto 2.4 and the current
-development version; only the SDK version underneath differs.
+works across every supported provider. The package is the same on Bagisto 2.4 and 2.5; only
+the SDK version underneath differs. Where an AI agent *acts* on the storefront rather than
+producing content, see [WebMCP](./webmcp.md), Bagisto's agentic counterpart; the two do not
+depend on each other.
 
 ## Supported Providers
 
@@ -43,7 +46,7 @@ Everything is configured from the admin panel under **Configure → Magic AI**. 
 
 ### 1. General
 
-Enable or disable Magic AI globally (`magic_ai.general.settings.enabled`).
+Enable or disable generative AI globally (`magic_ai.general.settings.enabled`).
 
 ### 2. Providers
 
@@ -78,10 +81,10 @@ Provider API keys are stored as secure (password) config values. Never commit th
 repository — add them through the admin panel.
 :::
 
-## Using Magic AI in Code
+## Using Generative AI in Code
 
-Magic AI is available through the `magic_ai()` helper or the `Webkul\MagicAI\Facades\MagicAI`
-facade. The provider is resolved automatically from the model name, and the stored API key is
+The generative AI service is available through the `magic_ai()` helper or the
+`Webkul\MagicAI\Facades\MagicAI` facade. The provider is resolved automatically from the model name, and the stored API key is
 injected for you.
 
 ```php
@@ -151,7 +154,7 @@ AiProvider::resolveModel('gpt-4.1')?->provider();     // Lab::OpenAI
 ```
 
 ::: tip Extending Magic AI
-Magic AI lives in the `packages/Webkul/MagicAI` package. Provider support is driven by a single
+The generative AI layer lives in the `packages/Webkul/MagicAI` package. Provider support is driven by a single
 registry (`AiProvider::$providers`) plus one model enum per provider implementing
 `AiModelContract`; adding a provider the Laravel AI SDK supports means adding one registry
 entry and one enum.

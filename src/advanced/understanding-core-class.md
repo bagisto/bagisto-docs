@@ -582,13 +582,13 @@ This method generates speculation rules for browser performance optimization, in
 | `menu()` | Core | `Webkul\Core\Menu`; `menu()->getItems(Menu::ADMIN)` |
 | `acl()` | Core | `Webkul\Core\Acl` |
 | `system_config()` | Core | `Webkul\Core\SystemConfig` |
-| `db_grammar()` | Core | `Webkul\Core\Contracts\DatabaseGrammar` for the current database; development version only. See [Database compatibility](./database-compatibility.md) |
+| `db_grammar()` | Core | `Webkul\Core\Contracts\DatabaseGrammar` for the current database; Bagisto 2.5 only. See [Database compatibility](./database-compatibility.md) |
 | `clean_path(string $path)` | Core | The path with empty segments removed |
 | `clean_content(string $content)` | Core | HTML purified and stripped of Blade directives |
 | `array_permutation(array $input)` | Core | Every combination of an array of arrays |
 | `themes()` | Theme | `Webkul\Theme\Themes`; `themes()->current()`, `themes()->set($code)` |
 | `bagisto_asset(string $path, ?string $namespace = null)` | Theme | The Vite URL of a theme asset |
-| `bagisto_theme_storage()` | Theme | `Webkul\Theme\ThemeStorage` for section media URLs; development version only |
+| `bagisto_theme_storage()` | Theme | `Webkul\Theme\ThemeStorage` for section media URLs; Bagisto 2.5 only |
 | `view_render_event(string $eventName, mixed $params = null)` | Theme | Rendered listener output. See [View Render Events](./view-render-events.md) |
 | `product_image()` | Product | `Webkul\Product\ProductImage` |
 | `product_video()` | Product | `Webkul\Product\ProductVideo` |

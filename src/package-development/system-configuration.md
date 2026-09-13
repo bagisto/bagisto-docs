@@ -88,7 +88,7 @@ Bagisto translates each item's `info` when it builds the configuration tree; an 
 | `name`, `info` | Translation keys for the title and description. Both required |
 | `sort` | Order among siblings |
 | `icon` | Group and page level only: an SVG under the admin package's `assets/images` |
-| `layout` | Page level only, current development version: hide parts of the page (see [Page layout](#page-layout)) |
+| `layout` | Page level only, Bagisto 2.5: hide parts of the page (see [Page layout](#page-layout)) |
 | `fields` | Section level: the inputs |
 
 | Field key | Purpose |
@@ -687,7 +687,7 @@ Use the `blade` field type when you need to embed custom UI that goes beyond sta
 
 ## Page layout
 
-A page that is all buttons or all read-only information does not want a save button or a channel switcher. On the current development version an item at the page level may carry a `layout` array that switches parts of the page off; anything left out stays shown.
+A page that is all buttons or all read-only information does not want a save button or a channel switcher. On Bagisto 2.5 an item at the page level may carry a `layout` array that switches parts of the page off; anything left out stays shown.
 
 ```php
 [

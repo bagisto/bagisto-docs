@@ -15,7 +15,7 @@ Bagisto uses [Tailwind CSS](https://tailwindcss.com/) for its styling needs. Tai
 
 How Tailwind is configured depends on the release line:
 
-- **Current development version (Tailwind 4)**: there is no `tailwind.config.js`. Each package's `app.css` imports Tailwind and declares where to scan for classes with `@import "tailwindcss" source("../../../")`, defines design tokens in an `@theme {}` block, and registers the icon font's utilities with `@utility`. The `@tailwindcss/vite` plugin compiles it; there is no PostCSS step.
+- **Bagisto 2.5 (Tailwind 4)**: there is no `tailwind.config.js`. Each package's `app.css` imports Tailwind and declares where to scan for classes with `@import "tailwindcss" source("../../../")`, defines design tokens in an `@theme {}` block, and registers the icon font's utilities with `@utility`. The `@tailwindcss/vite` plugin compiles it; there is no PostCSS step.
 - **Bagisto 2.4 (Tailwind 3)**: each package carries a `tailwind.config.js` listing the Blade and JavaScript paths to scan, and a `postcss.config.cjs` runs Tailwind through PostCSS.
 
 Both shapes, with the exact files, are shown side by side on [Vite-Powered Theme Assets](../theme-development/vite-powered-theme-assets.md).

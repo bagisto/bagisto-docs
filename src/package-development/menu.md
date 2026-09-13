@@ -275,7 +275,7 @@ The hierarchy is automatically built based on the dot notation in the key names.
 :::
 
 ::: tip Command palette
-On the current development version the admin also has a command palette (Ctrl + K) that indexes the admin menu and the configuration tree automatically, so a registered menu item is searchable at once. A package can add searchable actions and aliases by merging into `command_palette`; see [Command Palette](../advanced/command-palette.md).
+On Bagisto 2.5 the admin also has a command palette (Ctrl + K) that indexes the admin menu and the configuration tree automatically, so a registered menu item is searchable at once. A package can add searchable actions and aliases by merging into `command_palette`; see [Command Palette](../advanced/command-palette.md).
 :::
 
 ::: tip Menu Best Practices

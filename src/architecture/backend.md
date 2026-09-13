@@ -110,7 +110,7 @@ Bagisto comes with a comprehensive collection of packages that demonstrate the p
 
 Laravel packages are the primary way of adding functionality. The following features are distributed into packages to enhance the application and allow developers to follow the standard way of developing custom functionality.
 
-Below is a detailed overview of the default packages available in Bagisto, each showcasing how the modular design and repository pattern work together to create a robust, scalable e-commerce solution. The current development version ships 42 packages under `packages/Webkul/`; Bagisto 2.4 ships the same set minus `Omnibus`.
+Below is a detailed overview of the default packages available in Bagisto, each showcasing how the modular design and repository pattern work together to create a robust, scalable e-commerce solution. Bagisto 2.5 ships 42 packages under `packages/Webkul/`; Bagisto 2.4 ships the same set minus `Omnibus`.
 
 ### Admin
 
@@ -412,7 +412,7 @@ The Inventory package in Bagisto offers comprehensive tools to manage and track 
 
 ### MagicAI 
 
-The MagicAI package is Bagisto's generative AI layer: text and image generation, image search, review translation and checkout messages in the admin and the storefront, through the Laravel AI SDK and any of eight providers. It is documented on the [Magic AI](../ai/magic-ai.md) page; the storefront's agent tools live in the Shop package and are documented under [WebMCP](../ai/webmcp.md).
+The MagicAI package is Bagisto's generative AI layer: text and image generation, image search, review translation and checkout messages in the admin and the storefront, through the Laravel AI SDK and any of eight providers. It is documented on the [Generative AI (Magic AI)](../ai/magic-ai.md) page; the storefront's agent tools live in the Shop package and are documented under [WebMCP](../ai/webmcp.md).
 
 ### Marketing 
 
@@ -424,7 +424,7 @@ The Notification package in Bagisto handles all functionalities related to notif
 
 ### Omnibus
 
-Present in the current development version only. Records a snapshot of a product's price whenever it changes (checked every fifteen minutes by a scheduled command) and, when enabled under **Configure → Catalog → Products → Omnibus**, shows the lowest price of the last 30 days next to a discounted price on the storefront, as the EU Omnibus directive requires. Two scheduled commands take the snapshots and purge the old ones; see [Artisan Commands](../advanced/artisan-commands.md).
+Present in Bagisto 2.5 only. Records a snapshot of a product's price whenever it changes (checked every fifteen minutes by a scheduled command) and, when enabled under **Configure → Catalog → Products → Omnibus**, shows the lowest price of the last 30 days next to a discounted price on the storefront, as the EU Omnibus directive requires. Two scheduled commands take the snapshots and purge the old ones; see [Artisan Commands](../advanced/artisan-commands.md).
 
 ### Payment
 

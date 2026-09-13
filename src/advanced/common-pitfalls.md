@@ -6,14 +6,14 @@ This page documents frequent issues encountered by developers working with Bagis
 
 ### PHP Version Mismatch
 
-The current development version requires **PHP 8.4** (`"php": "^8.4"` in `composer.json`); Bagisto 2.4 accepts **8.3 or 8.4** (`">=8.3 <8.5"`). A lower version fails at `composer install` with a platform error, which is easy to mistake for a broken install when a second PHP binary is on the `PATH`.
+Bagisto 2.5 requires **PHP 8.4** (`"php": "^8.4"` in `composer.json`); Bagisto 2.4 accepts **8.3 or 8.4** (`">=8.3 <8.5"`). A lower version fails at `composer install` with a platform error, which is easy to mistake for a broken install when a second PHP binary is on the `PATH`.
 
 ```bash
 # Verify your PHP version
 php -v
 ```
 
-The web installer still checks against 8.3.0, so a host on 8.3 passes the installer's requirement screen and then fails on the development version's Composer constraint.
+The web installer still checks against 8.3.0, so a host on 8.3 passes the installer's requirement screen and then fails on Bagisto 2.5's Composer constraint.
 
 ### Missing PHP Extensions
 
@@ -56,7 +56,7 @@ APP_URL=http://localhost:8000
 
 ### Database Versions
 
-Bagisto runs on MySQL 8.0, MariaDB 10.11 and, on the current development version, PostgreSQL 16; these are the versions CI tests. The `utf8mb4_unicode_ci` collation is recommended on MySQL and MariaDB for full Unicode support.
+Bagisto runs on MySQL 8.0, MariaDB 10.11 and, on Bagisto 2.5, PostgreSQL 16; these are the versions CI tests. The `utf8mb4_unicode_ci` collation is recommended on MySQL and MariaDB for full Unicode support.
 
 ### PostgreSQL-only Failures
 
@@ -68,7 +68,7 @@ When running `php artisan migrate:fresh --seed`, Bagisto's package migrations ru
 
 ### Database Session Driver
 
-Bagisto defaults to `SESSION_DRIVER=database`, and on the current development version to `CACHE_STORE=database` as well. If you run `php artisan migrate:fresh` but forget `--seed`, the tables exist but the application may behave unexpectedly without seed data.
+Bagisto defaults to `SESSION_DRIVER=database`, and on Bagisto 2.5 to `CACHE_STORE=database` as well. If you run `php artisan migrate:fresh` but forget `--seed`, the tables exist but the application may behave unexpectedly without seed data.
 
 ### Running `bagisto:install` on an existing store
 
@@ -136,7 +136,7 @@ Each package with frontend assets (Admin, Shop, Installer) has its own `vite.con
 
 ### Missing Tailwind Classes
 
-Tailwind only emits classes it finds while scanning source files. On the current development version (Tailwind 4) the scan root is the `source("../../../")` argument at the top of each package's `app.css`, which covers the package's `src/` directory, so a class used only in a file outside the package (a theme in `resources/themes`, another package) is not generated; a class built at runtime needs a `@source inline(...)` entry. On Bagisto 2.4 (Tailwind 3) the equivalent is the `content` array in `tailwind.config.js` and the `safelist`. Icon classes are declared in `app.css` too, so an icon name that is not in the `@theme` block renders blank.
+Tailwind only emits classes it finds while scanning source files. On Bagisto 2.5 (Tailwind 4) the scan root is the `source("../../../")` argument at the top of each package's `app.css`, which covers the package's `src/` directory, so a class used only in a file outside the package (a theme in `resources/themes`, another package) is not generated; a class built at runtime needs a `@source inline(...)` entry. On Bagisto 2.4 (Tailwind 3) the equivalent is the `content` array in `tailwind.config.js` and the `safelist`. Icon classes are declared in `app.css` too, so an icon name that is not in the `@theme` block renders blank.
 
 ## Caching Issues
 

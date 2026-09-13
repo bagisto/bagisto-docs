@@ -77,7 +77,7 @@ Make sure you're working within your `CustomTheme` package directory. All comman
 :::
 
 ::: warning Two Tailwind generations
-The current development version of Bagisto builds its storefront with **Tailwind CSS 4** through the `@tailwindcss/vite` plugin: there is no `tailwind.config.js` or PostCSS file, and the design tokens live in `app.css` under `@theme`. **Bagisto 2.4** builds with **Tailwind CSS 3**, `postcss.config.cjs` and `tailwind.config.js`. Both are shown below; follow the tab that matches the Bagisto version your theme targets. The Vite and `config/themes.php` steps are the same for both.
+Bagisto 2.5 builds its storefront with **Tailwind CSS 4** through the `@tailwindcss/vite` plugin: there is no `tailwind.config.js` or PostCSS file, and the design tokens live in `app.css` under `@theme`. **Bagisto 2.4** builds with **Tailwind CSS 3**, `postcss.config.cjs` and `tailwind.config.js`. Both are shown below; follow the tab that matches the Bagisto version your theme targets. The Vite and `config/themes.php` steps are the same for both.
 :::
 
 ### Step 2: Create Base Asset Files
@@ -88,7 +88,7 @@ Create your main CSS and JavaScript files for the theme:
 
 ::: code-group
 
-```css [Tailwind 4 (current)]
+```css [Tailwind 4 (2.5)]
 /**
  * Scan the whole package for class names, so Blade files under
  * src/Resources/views are seen as well as this stylesheet.
@@ -133,7 +133,7 @@ import.meta.glob(["../images/**", "../fonts/**"]);
 ```
 
 ::: tip Where the real tokens live
-The values above are a subset of the stock storefront's. Open `packages/Webkul/Shop/src/Resources/assets/css/app.css` (current) or `packages/Webkul/Shop/tailwind.config.js` (2.4) to copy the complete breakpoint, colour and font list so your theme's utilities line up with the components you reuse.
+The values above are a subset of the stock storefront's. Open `packages/Webkul/Shop/src/Resources/assets/css/app.css` (2.5) or `packages/Webkul/Shop/tailwind.config.js` (2.4) to copy the complete breakpoint, colour and font list so your theme's utilities line up with the components you reuse.
 :::
 
 ## Configure Asset Compilation
@@ -154,7 +154,7 @@ Don't worry about understanding every dependency listed below. While we could wa
 
 ::: code-group
 
-```json [Tailwind 4 (current)]
+```json [Tailwind 4 (2.5)]
 {
     "name": "custom-theme",
     "private": true,
@@ -240,7 +240,7 @@ This Vite configuration might look complex, but you don't need to understand eve
 
 ::: code-group
 
-```javascript [Tailwind 4 (current)]
+```javascript [Tailwind 4 (2.5)]
 import { defineConfig, loadEnv } from "vite";
 import vue from "@vitejs/plugin-vue";
 import laravel from "laravel-vite-plugin";
@@ -347,7 +347,7 @@ export default defineConfig(({ mode }) => {
 
 #### Setting Up Tailwind CSS (Bagisto 2.4 only)
 
-On the current development version, skip this and the PostCSS step: Tailwind 4 is configured entirely by the `@import "tailwindcss" source(...)` line and the `@theme` block in `app.css` you created above. The `source("../../../")` argument points at your package root so every Blade file under `src/Resources/views` is scanned; there is no `content` array.
+On Bagisto 2.5, skip this and the PostCSS step: Tailwind 4 is configured entirely by the `@import "tailwindcss" source(...)` line and the `@theme` block in `app.css` you created above. The `source("../../../")` argument points at your package root so every Blade file under `src/Resources/views` is scanned; there is no `content` array.
 
 On Bagisto 2.4, create `tailwind.config.js` to scan your theme files:
 
@@ -594,7 +594,7 @@ This copies all shop resources including:
 - All shop views and components
 
 ::: warning Icons are part of the stylesheet
-The storefront's `icon-*` classes are declared inside `app.css` (on the current version as `--icon-*` custom properties inside `@theme` with an `@utility icon-*` rule; on 2.4 as plain classes) and rely on the icon font under `assets/fonts`. Copy the whole `assets` directory, not only `css/`, or every icon renders blank. Class names used only in JavaScript strings are picked up because Tailwind scans `.js` files too; a class assembled at runtime needs a `@source inline(...)` entry (current) or a `safelist` entry (2.4).
+The storefront's `icon-*` classes are declared inside `app.css` (on Bagisto 2.5 as `--icon-*` custom properties inside `@theme` with an `@utility icon-*` rule; on 2.4 as plain classes) and rely on the icon font under `assets/fonts`. Copy the whole `assets` directory, not only `css/`, or every icon renders blank. Class names used only in JavaScript strings are picked up because Tailwind scans `.js` files too; a class assembled at runtime needs a `@source inline(...)` entry (2.5) or a `safelist` entry (2.4).
 :::
 
 **Update your home view to showcase your custom theme:**

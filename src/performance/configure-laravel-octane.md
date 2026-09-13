@@ -19,7 +19,7 @@
 Before installing Laravel Octane, ensure your system meets the basic requirements. The specific requirements may vary depending on which application server you choose (Swoole, FrankenPHP, or RoadRunner).
 
 ::: warning Requirements
-- The PHP version your Bagisto release requires (8.4 on the current development version, 8.3 or 8.4 on Bagisto 2.4)
+- The PHP version your Bagisto release requires (8.4 on Bagisto 2.5, 8.3 or 8.4 on Bagisto 2.4)
 - Existing Bagisto installation
 :::
 

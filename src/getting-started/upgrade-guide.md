@@ -12,7 +12,7 @@ Before upgrading, ensure you have:
 
 - **Database Backup** - Complete backup of your current database
 - **File Backup** - Backup of customizations and uploaded files
-- **Server Requirements** - PHP 8.4 for the current development version (8.3 or 8.4 for 2.4), MySQL 8.0 or MariaDB 10.11 (PostgreSQL 16 from the development version), Composer 2.5+
+- **Server Requirements** - PHP 8.4 for Bagisto 2.5 (8.3 or 8.4 for 2.4), MySQL 8.0 or MariaDB 10.11 (PostgreSQL 16 from Bagisto 2.5), Composer 2.5+
 - **Downtime Planning** - Schedule maintenance window for the upgrade
 
 ## 🚀 Upgrade Process

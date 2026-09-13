@@ -96,7 +96,7 @@ server {
 }
 ```
 
-Use the socket of the PHP version your release runs on: `php8.4-fpm.sock` for the current development version, `php8.3-fpm.sock` or `php8.4-fpm.sock` for Bagisto 2.4.
+Use the socket of the PHP version your release runs on: `php8.4-fpm.sock` for Bagisto 2.5, `php8.3-fpm.sock` or `php8.4-fpm.sock` for Bagisto 2.4.
 
 ### ⚡ Nginx FastCGI Cache
 

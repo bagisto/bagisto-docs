@@ -3,7 +3,7 @@
 Bagisto runs on MySQL 8.0, MariaDB 10.11 and PostgreSQL 16, and its continuous integration runs the whole Pest suite and the Playwright suites against all three. A package or customization that only ever ran on MySQL will usually break on PostgreSQL in one of a handful of predictable ways. This page lists the abstractions Bagisto provides so you do not have to write dialect-specific SQL, and the pitfalls those abstractions exist for.
 
 ::: info Availability
-PostgreSQL support, the `db_grammar()` helper and everything else on this page belong to the current development version. **Bagisto 2.4 supports MySQL and MariaDB only** and has no `db_grammar()`; on 2.4 the MySQL syntax shown in the right-hand columns is what you write directly.
+PostgreSQL support, the `db_grammar()` helper and everything else on this page belong to Bagisto 2.5. **Bagisto 2.4 supports MySQL and MariaDB only** and has no `db_grammar()`; on 2.4 the MySQL syntax shown in the right-hand columns is what you write directly.
 :::
 
 ## Which database is running

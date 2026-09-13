@@ -82,7 +82,7 @@ The catalog rule indexer runs daily to ensure promotional pricing remains accura
 
 When an external search engine is enabled, the search indexer keeps its index in step with the catalog: one Elasticsearch index per channel and locale, carrying the product's attributes, prices and category names.
 
-On the current development version the indexer is resolved through `SearchEngineManager::indexer()`, so the same jobs work for the database engine (where a no-op indexer is used) and for Elasticsearch. On Bagisto 2.4 the Elasticsearch indexer is invoked directly and the jobs check the engine setting themselves.
+On Bagisto 2.5 the indexer is resolved through `SearchEngineManager::indexer()`, so the same jobs work for the database engine (where a no-op indexer is used) and for Elasticsearch. On Bagisto 2.4 the Elasticsearch indexer is invoked directly and the jobs check the engine setting themselves.
 
 **Configuration Reference:**
 The engine, the per-context modes and the connection are described on [Search Engines](./search-engines.md); the cluster setup is on [Configure Elasticsearch](../performance/configure-elasticsearch).

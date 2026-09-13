@@ -1,6 +1,6 @@
 # Testing Workflow
 
-Bagisto uses [Pest PHP](https://pestphp.com/) as its primary testing framework, backed by PHPUnit. The current development version runs Pest 5 on PHPUnit 13; Bagisto 2.4 runs Pest 3 on PHPUnit 11. The test suite covers unit tests, feature tests, and browser-level E2E tests via Playwright.
+Bagisto uses [Pest PHP](https://pestphp.com/) as its primary testing framework, backed by PHPUnit. Bagisto 2.5 runs Pest 5 on PHPUnit 13; Bagisto 2.4 runs Pest 3 on PHPUnit 11. The test suite covers unit tests, feature tests, and browser-level E2E tests via Playwright.
 
 ## Test Structure
 
@@ -10,8 +10,8 @@ Tests are organized per-package under each package's `tests/` directory, with a 
 tests/
 ├── Pest.php              # Global Pest configuration
 ├── TestCase.php          # Base test case
-├── Datasets/             # Datasets shared by every package (development version)
-└── Unit/                 # Cross-package tests that need no database (development version)
+├── Datasets/             # Datasets shared by every package (Bagisto 2.5)
+└── Unit/                 # Cross-package tests that need no database (Bagisto 2.5)
 
 packages/Webkul/
 ├── Admin/tests/
@@ -50,7 +50,7 @@ The test suites are defined in `phpunit.xml`. For example, to run only admin fea
 vendor/bin/pest --testsuite="Admin Feature Test"
 ```
 
-Suites on the current development version:
+Suites on Bagisto 2.5:
 
 | Suite Name | Path |
 |---|---|
@@ -75,7 +75,7 @@ Suites on the current development version:
 | Stripe Unit Test, Stripe Feature Test | `packages/Webkul/Stripe/tests/…` |
 | Tax Unit Test | `packages/Webkul/Tax/tests/Unit` |
 
-Bagisto 2.4 has the Admin, Core, Customer, DataGrid, EUWithdrawal, FPC, Installer, PayGlocal, PayU, Razorpay, Shop and Stripe suites; the others were added on the development version. Packages without a `tests/` directory (PhonePe, Checkout, RMA, and others) have no suite, and a `<testsuite>` pointing at a path that does not exist makes PHPUnit error, so write the tests first.
+Bagisto 2.4 has the Admin, Core, Customer, DataGrid, EUWithdrawal, FPC, Installer, PayGlocal, PayU, Razorpay, Shop and Stripe suites; the others were added in Bagisto 2.5. Packages without a `tests/` directory (PhonePe, Checkout, RMA, and others) have no suite, and a `<testsuite>` pointing at a path that does not exist makes PHPUnit error, so write the tests first.
 
 ### Run a Single Test File
 
@@ -138,7 +138,7 @@ Each package-specific test case extends `Tests\TestCase` and mixes in the benche
 
 ## Shared test infrastructure
 
-These helpers exist on the current development version and are the way to write a test that needs a product, an order or a configuration value:
+These helpers exist on Bagisto 2.5 and are the way to write a test that needs a product, an order or a configuration value:
 
 | Helper | Where | What it gives you |
 |---|---|---|

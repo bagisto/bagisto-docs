@@ -3,7 +3,7 @@
 The admin command palette (Ctrl + K, or ⌘ K) searches menus, configuration settings, actions and live records from one box, and can be walked level by level from a section to a page to a record to what may be done with it. Everything it shows is filtered by the signed-in admin's ACL. The merchant-facing description is in the user guide; this page is about what the palette indexes and how a package adds to it.
 
 ::: info Availability
-The command palette is part of the current development version. Bagisto 2.4 has the header Mega Search only.
+The command palette is part of Bagisto 2.5. Bagisto 2.4 has the header Mega Search only.
 :::
 
 ## What is indexed

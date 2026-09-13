@@ -122,7 +122,7 @@ php artisan tinker
 >>> core()->getConfigData('search_engines.general.products.storefront_mode')
 ```
 
-On the current development version the admin also has an **About** page under Configuration that lists the Bagisto version, PHP, database, cache, queue, mail and search engine drivers with a health dot for each, which is the quickest way to see what a deployment is actually running.
+On Bagisto 2.5 the admin also has an **About** page under Configuration that lists the Bagisto version, PHP, database, cache, queue, mail and search engine drivers with a health dot for each, which is the quickest way to see what a deployment is actually running.
 
 ### Debugging Blade Views
 

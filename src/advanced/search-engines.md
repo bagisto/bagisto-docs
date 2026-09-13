@@ -3,7 +3,7 @@
 Product search on the storefront, in the admin product grid and in the catalog API is routed through one manager that picks an **engine** per **context**. The database engine is always available; Elasticsearch is the alternative. This page describes the pieces a developer meets: the manager, the contracts, the configuration keys and the indexing jobs. Installing and pointing Bagisto at an Elasticsearch cluster is on [Configure Elasticsearch](../performance/configure-elasticsearch.md).
 
 ::: info Two implementations
-The current development version has the engine-agnostic design described here (`Webkul\Product\Services\Search`). **Bagisto 2.4** reaches Elasticsearch through `Webkul\Product\Repositories\ElasticSearchRepository`, chooses the engine per call with `ProductRepository::setSearchEngine('elastic')`, and keeps its settings under `catalog.products.search` in the admin plus the `.env` file for the connection. The differences are called out below.
+Bagisto 2.5 has the engine-agnostic design described here (`Webkul\Product\Services\Search`). **Bagisto 2.4** reaches Elasticsearch through `Webkul\Product\Repositories\ElasticSearchRepository`, chooses the engine per call with `ProductRepository::setSearchEngine('elastic')`, and keeps its settings under `catalog.products.search` in the admin plus the `.env` file for the connection. The differences are called out below.
 :::
 
 ## How a query is routed
@@ -102,7 +102,7 @@ A full rebuild is done from the console:
 php artisan indexer:index --type=search --mode=full
 ```
 
-`search` only runs when an external engine is enabled and only in `full` mode; there is no selective search reindex. On 2.4 the type is `elastic`. Run it after enabling Elasticsearch on an existing catalog, after changing `index_prefix`, and after the upgrade to the development version, whose index mapping added `category_name`.
+`search` only runs when an external engine is enabled and only in `full` mode; there is no selective search reindex. On 2.4 the type is `elastic`. Run it after enabling Elasticsearch on an existing catalog, after changing `index_prefix`, and after the upgrade to Bagisto 2.5, whose index mapping added `category_name`.
 
 ## Related
 

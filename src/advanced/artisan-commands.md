@@ -24,7 +24,7 @@ The command wipes the database (`db:wipe` followed by `migrate:fresh`) before se
 :::
 
 ::: info Bagisto 2.4
-2.4 additionally accepts the deprecated `--skip-env-check`, `--skip-admin-creation`, `--skip-cloud-promotion` and `--skip-github-star` options, each of which prints a deprecation warning and is covered by `--no-interaction`. They have been removed in the current development version.
+2.4 additionally accepts the deprecated `--skip-env-check`, `--skip-admin-creation`, `--skip-cloud-promotion` and `--skip-github-star` options, each of which prints a deprecation warning and is covered by `--no-interaction`. They have been removed in Bagisto 2.5.
 :::
 
 **Unattended install (no questions, no sample products):**
@@ -44,7 +44,7 @@ This relies on the existing `.env`, so make sure it is configured before running
 php artisan bagisto:install --no-interaction --demo-samples
 ```
 
-In interactive mode the database step offers MySQL, MariaDB and PostgreSQL and fills in the matching default port (PostgreSQL is available on the current development version only).
+In interactive mode the database step offers MySQL, MariaDB and PostgreSQL and fills in the matching default port (PostgreSQL is available on Bagisto 2.5 only).
 
 **Source:** `Webkul\Installer\Console\Commands\Installer`
 
@@ -146,7 +146,7 @@ php artisan invoice:cron
 
 ## Omnibus Price Snapshots
 
-Both commands belong to the `Webkul\Omnibus` package, which ships with the current development version only.
+Both commands belong to the `Webkul\Omnibus` package, which ships with Bagisto 2.5 only.
 
 ### `omnibus:snapshot-prices`
 
@@ -239,8 +239,8 @@ Packages register their schedules in their service providers; `bootstrap/app.php
 | `product:price-rule:index` | Daily at 00:01 | `Webkul\CatalogRule\Providers\CatalogRuleServiceProvider` |
 | `indexer:index --type=price` | Daily at 00:01 | `Webkul\Product\Providers\ProductServiceProvider` |
 | `campaign:process` | Daily | `Webkul\Marketing\Providers\MarketingServiceProvider` |
-| `omnibus:snapshot-prices` | Every fifteen minutes | `Webkul\Omnibus\Providers\OmnibusServiceProvider` (development version) |
-| `omnibus:purge-old-snapshots` | Daily | `OmnibusServiceProvider` (development version) |
+| `omnibus:snapshot-prices` | Every fifteen minutes | `Webkul\Omnibus\Providers\OmnibusServiceProvider` (Bagisto 2.5) |
+| `omnibus:purge-old-snapshots` | Daily | `OmnibusServiceProvider` (Bagisto 2.5) |
 
 ```bash
 * * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1

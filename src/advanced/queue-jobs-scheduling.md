@@ -123,8 +123,8 @@ Bagisto's scheduled commands are registered by the packages that own them, throu
 | `product:price-rule:index` | Daily at 00:01 | Reindex catalog rule pricing |
 | `indexer:index --type=price` | Daily at 00:01 | Rebuild the price index so date-bound special prices take effect |
 | `campaign:process` | Daily | Send marketing campaign emails |
-| `omnibus:snapshot-prices` | Every fifteen minutes | Record price snapshots (development version) |
-| `omnibus:purge-old-snapshots` | Daily | Drop snapshots past the retention window (development version) |
+| `omnibus:snapshot-prices` | Every fifteen minutes | Record price snapshots (Bagisto 2.5) |
+| `omnibus:purge-old-snapshots` | Daily | Drop snapshots past the retention window (Bagisto 2.5) |
 
 `packages/Webkul/Core/tests/Unit/ScheduleTest.php` asserts these registrations, so a change to the schedule is a change to that test.
 

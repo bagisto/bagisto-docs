@@ -20,7 +20,7 @@ Whether your customers prefer local payment gateways or international options, B
 
 ## 🤖 Generative AI and Agentic Commerce, Built In
 
-Bagisto ships with AI in the core rather than as an add-on. [Magic AI](../ai/magic-ai.md) brings generative AI to the admin and the storefront: it writes product and page copy, generates product images, translates reviews, understands the photos shoppers search with, and personalises the order confirmation, on any of eight AI providers including self-hosted Ollama. On the storefront, [WebMCP](../ai/webmcp.md) declares the shop's actions as tools for browser AI agents, so an agent can search, open a product, manage a wishlist and reach checkout for the shopper. Developers get [agent skills and llms.txt](../ai/introduction.md) that teach their coding agents Bagisto's conventions. See [AI in Bagisto](../ai/introduction.md) for what each capability does and does not do.
+Bagisto ships with generative AI in the core rather than as an add-on. [Generative AI (Magic AI)](../ai/magic-ai.md) works in the admin and on the storefront: it writes product and page copy, generates product images, translates reviews, understands the photos shoppers search with, and personalises the order confirmation, on any of eight AI providers including self-hosted Ollama. On the storefront, [WebMCP](../ai/webmcp.md) declares the shop's actions as tools for browser AI agents, so an agent can search, open a product, manage a wishlist and reach checkout for the shopper. Developers get [agent skills and llms.txt](../ai/introduction.md) that teach their coding agents Bagisto's conventions. See [AI in Bagisto](../ai/introduction.md) for what each capability does and does not do.
 
 ## 🎯 Visual Builder for Effortless Store Customization
 

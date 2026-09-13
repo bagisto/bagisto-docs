@@ -1,9 +1,9 @@
 # File Storage
 
-Product images, category banners, theme section media, uploaded search images and every other file Bagisto writes go to Laravel's **default filesystem disk**. Out of the box that is the local `public` disk, which `php artisan storage:link` exposes at `public/storage`. On the current development version the disk can also be Amazon S3 or Cloudflare R2, chosen from the admin, and this page explains how that switch works and what it does not do.
+Product images, category banners, theme section media, uploaded search images and every other file Bagisto writes go to Laravel's **default filesystem disk**. Out of the box that is the local `public` disk, which `php artisan storage:link` exposes at `public/storage`. On Bagisto 2.5 the disk can also be Amazon S3 or Cloudflare R2, chosen from the admin, and this page explains how that switch works and what it does not do.
 
 ::: info Availability
-The `r2` disk, the `league/flysystem-aws-s3-v3` dependency and the **Configure → File Management** section belong to the current development version. Bagisto 2.4 ships the `s3` disk definition in `config/filesystems.php` but no admin switch and no S3 adapter; there, install `league/flysystem-aws-s3-v3` yourself and set `FILESYSTEM_DISK=s3` in `.env`.
+The `r2` disk, the `league/flysystem-aws-s3-v3` dependency and the **Configure → File Management** section belong to Bagisto 2.5. Bagisto 2.4 ships the `s3` disk definition in `config/filesystems.php` but no admin switch and no S3 adapter; there, install `league/flysystem-aws-s3-v3` yourself and set `FILESYSTEM_DISK=s3` in `.env`.
 :::
 
 ## Disks
@@ -45,7 +45,7 @@ Switching the default disk changes where files are written from now on. Files al
 Two pieces of core were changed so that a remote disk behaves like a local one:
 
 - **Image cache.** `image_urls()` always returns `/cache/{template}/{path}` URLs, and `Webkul\ImageCache\Http\Controllers\ImageCacheController` reads the file through `Storage::get()` on the default disk before falling back to the local paths in `config/imagecache.php`. So product, category and swatch images are resized whichever disk holds them. On Bagisto 2.4 a non-local disk short-circuits to `Storage::url($path)` and serves the original file unresized.
-- **Theme media.** `bagisto_theme_storage()` (`Webkul\Theme\ThemeStorage`) resolves section images at render time: a local disk yields a site-relative URL, a remote disk yields `Storage::url($path)`. Paths in `theme_section_translations` are stored bare, without host or `storage/` prefix, so a domain change or a disk change does not break them. Two migrations on the development version rewrite older rows into this form.
+- **Theme media.** `bagisto_theme_storage()` (`Webkul\Theme\ThemeStorage`) resolves section images at render time: a local disk yields a site-relative URL, a remote disk yields `Storage::url($path)`. Paths in `theme_section_translations` are stored bare, without host or `storage/` prefix, so a domain change or a disk change does not break them. Two migrations on Bagisto 2.5 rewrite older rows into this form.
 
 ## Environment keys
 
