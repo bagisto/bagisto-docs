@@ -21,7 +21,7 @@ Bagisto uses the proven [Spatie Laravel Responsecache Package](https://github.co
 
 ### Enable Full Page Cache
 
-The switch is in the admin. Go to **Configuration → Cache Management → Full Page Cache**:
+The switch is in the admin. Go to **Configure → Cache Management → Full Page Cache**:
 
 - **Enabled** turns caching on or off (on by default).
 - **Lifetime** is how long a rendered page is kept, in minutes. Leave it empty to use the value from `config/responsecache.php`.
@@ -55,6 +55,13 @@ None of these is present in `.env.example`; add the ones you need. With `APP_DEB
 `config/responsecache.php` wires Bagisto's profile, hasher, serializer and replacers into Spatie's package:
 
 ```php
+use Spatie\ResponseCache\Replacers\CsrfTokenReplacer;
+use Spatie\ResponseCache\Serializers\JsonSerializer;
+use Webkul\FPC\CacheProfiles\FullPageCacheProfile;
+use Webkul\FPC\Hasher\DefaultHasher;
+use Webkul\FPC\Replacers\FlashMessagesReplacer;
+use Webkul\FPC\Replacers\MiniCartReplacer;
+
 return [
     'enabled' => true,
 
@@ -68,14 +75,14 @@ return [
         'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'fbclid',
     ],
 
-    'cache_profile' => Webkul\FPC\CacheProfiles\FullPageCacheProfile::class,
-    'hasher' => Webkul\FPC\Hasher\DefaultHasher::class,
-    'serializer' => Spatie\ResponseCache\Serializers\JsonSerializer::class,
+    'cache_profile' => FullPageCacheProfile::class,
+    'hasher' => DefaultHasher::class,
+    'serializer' => JsonSerializer::class,
 
     'replacers' => [
-        Spatie\ResponseCache\Replacers\CsrfTokenReplacer::class,
-        Webkul\FPC\Replacers\FlashMessagesReplacer::class,
-        Webkul\FPC\Replacers\MiniCartReplacer::class,
+        CsrfTokenReplacer::class,
+        FlashMessagesReplacer::class,
+        MiniCartReplacer::class,
     ],
 ];
 ```
@@ -126,7 +133,7 @@ Choose the best cache driver for your infrastructure:
 
 ## Cache Management
 
-Full Page Cache can be managed easily using artisan commands and configuration options. You can clear the entire cache, target specific URLs, or automate cache clearing through event listeners. This ensures your store always serves up-to-date content while maintaining high performance.
+Full Page Cache is managed with artisan commands and configuration options. You can clear the entire cache, target specific URLs, or automate cache clearing through event listeners. This ensures your store always serves up-to-date content while maintaining high performance.
 
 ### Clear All Cache
 

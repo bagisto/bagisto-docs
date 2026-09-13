@@ -102,7 +102,7 @@ class RMAOrderListener
     {
         // Create RMA eligibility record for the order
         Log::info('Order created - checking RMA eligibility', ['order_id' => $order->id]);
-        
+
         // Check if order items are eligible for returns
         $this->createRMAEligibilityForOrder($order);
     }
@@ -229,8 +229,8 @@ Here's a complete example showing how to integrate RMA functionality using event
 
 namespace Webkul\RMA\Listeners;
 
-use Webkul\RMA\Services\RMAService;
 use Illuminate\Support\Facades\Log;
+use Webkul\RMA\Services\RMAService;
 
 class RMAOrderListener
 {
@@ -242,15 +242,15 @@ class RMAOrderListener
     {
         try {
             $this->rmaService->createEligibilityRecords($order);
-            
+
             Log::info('RMA eligibility created for order', [
                 'order_id' => $order->id,
-                'customer_id' => $order->customer_id
+                'customer_id' => $order->customer_id,
             ]);
         } catch (\Exception $e) {
             Log::error('Failed to create RMA eligibility', [
                 'order_id' => $order->id,
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
         }
     }
@@ -258,7 +258,7 @@ class RMAOrderListener
     public function handleOrderDelivered($order): void
     {
         $this->rmaService->activateReturnWindow($order);
-        
+
         // Dispatch custom RMA event
         event('rma.return.window.activated', $order);
     }
@@ -280,11 +280,11 @@ class EventServiceProvider extends ServiceProvider
         'checkout.order.save.after' => [
             [RMAOrderListener::class, 'handleOrderCreated'],
         ],
-        
+
         'sales.order.update-status.after' => [
             [RMAOrderListener::class, 'handleOrderDelivered'],
         ],
-        
+
         // Custom RMA events
         'rma.return.window.activated' => [
             [RMANotificationListener::class, 'sendReturnEligibilityEmail'],
@@ -339,13 +339,13 @@ public function handleOrderCreated($order): void
 {
     try {
         $this->createRMAEligibilityForOrder($order);
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         Log::error('Failed to create RMA eligibility', [
             'order_id' => $order->id,
             'error' => $e->getMessage(),
-            'trace' => $e->getTraceAsString()
+            'trace' => $e->getTraceAsString(),
         ]);
-        
+
         // Don't break the order creation process
         // Consider alternative handling or notification
     }

@@ -430,7 +430,7 @@ Let's assume you want to use the **`range-slider`** component. You can call it l
 
 ### Shop Shimmer
 
-Prebuilt `shimmer` effects are available in Bagisto. You can easily use them.
+Prebuilt `shimmer` skeletons are shown while a grid or form loads its data.
 
 Let's assume you want to use the **`shimmer`** You can call it like this.
 
@@ -974,7 +974,7 @@ All props are Vue props with these defaults; the component watches the named for
 
 ### Admin Shimmer
 
-Prebuilt `shimmer` effects are available in Bagisto. You can easily use them.
+Prebuilt `shimmer` skeletons are shown while a grid or form loads its data.
 
 Let's assume you want to use the **`shimmer`** You can call it like this.
 
@@ -1128,7 +1128,7 @@ The `tinymce` component wraps the Tinymce editor and provides additional functio
 | **`field`**    | Object  | `{}`          | Vue prop. The VeeValidate field object the editor writes back to. |
 | **`prompt`**   | String  | `''`          | Vue prop. The prompt pre-filled in the **Magic AI** dialog.       |  
 
-The admin editor adds a **Magic AI** button when text generation is enabled under **Configuration → Magic AI**; it lists the models of the providers chosen there. You rarely mount it directly; the form control renders it when `:tinymce="true"` is passed:
+The admin editor adds a **Magic AI** button when text generation is enabled under **Configure → Magic AI**; it lists the models of the providers chosen there. You rarely mount it directly; the form control renders it when `:tinymce="true"` is passed:
 
 ```html
 <!-- Admin Tinymce -->

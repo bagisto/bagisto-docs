@@ -11,13 +11,13 @@ In the previous section, we created `config/payment-methods.php`. Let's understa
 
 return [
     'custom_stripe_payment' => [
-        'code'        => 'custom_stripe_payment',
-        'title'       => 'Credit Card (Stripe)',
+        'code' => 'custom_stripe_payment',
+        'title' => 'Credit Card (Stripe)',
         'description' => 'Secure credit card payments powered by Stripe',
-        'class'            => 'Webkul\CustomStripePayment\Payment\CustomStripePayment',
-        'active'           => true,
+        'class' => 'Webkul\CustomStripePayment\Payment\CustomStripePayment',
+        'active' => true,
         'generate_invoice' => false,
-        'sort'             => 1,
+        'sort' => 1,
     ],
 ];
 ```
@@ -52,52 +52,52 @@ We also created `system.php` for the admin interface. Let's understand what we b
 
 return [
     [
-        'key'    => 'sales.payment_methods.custom_stripe_payment',
-        'name'   => 'Custom Stripe Payment',
-        'info'   => 'Custom Stripe Payment Method Configuration',
-        'sort'   => 1,
+        'key' => 'sales.payment_methods.custom_stripe_payment',
+        'name' => 'Custom Stripe Payment',
+        'info' => 'Custom Stripe Payment Method Configuration',
+        'sort' => 1,
         'fields' => [
             [
-                'name'          => 'active',
-                'title'         => 'Status',
-                'type'          => 'boolean',
+                'name' => 'active',
+                'title' => 'Status',
+                'type' => 'boolean',
                 'channel_based' => true,
-                'locale_based'  => false,
+                'locale_based' => false,
             ],
             [
-                'name'          => 'title',
-                'title'         => 'Title',
-                'type'          => 'text',
-                'depends'       => 'active:1',
-                'validation'    => 'required_if:active,1',
+                'name' => 'title',
+                'title' => 'Title',
+                'type' => 'text',
+                'depends' => 'active:1',
+                'validation' => 'required_if:active,1',
                 'channel_based' => true,
-                'locale_based'  => true,
+                'locale_based' => true,
             ],
             [
-                'name'          => 'description',
-                'title'         => 'Description',
-                'type'          => 'textarea',
-                'depends'       => 'active:1',
+                'name' => 'description',
+                'title' => 'Description',
+                'type' => 'textarea',
+                'depends' => 'active:1',
                 'channel_based' => true,
-                'locale_based'  => true,
+                'locale_based' => true,
             ],
             [
-                'name'          => 'image',
-                'title'         => 'Logo',
-                'type'          => 'image',
-                'depends'       => 'active:1',
-                'validation'    => 'mimes:bmp,jpeg,jpg,png,webp',
+                'name' => 'image',
+                'title' => 'Logo',
+                'type' => 'image',
+                'depends' => 'active:1',
+                'validation' => 'mimes:bmp,jpeg,jpg,png,webp',
                 'channel_based' => true,
-                'locale_based'  => false,
+                'locale_based' => false,
             ],
             [
-                'name'          => 'sort',
-                'title'         => 'Sort Order',
-                'type'          => 'number',
-                'depends'       => 'active:1',
-                'validation'    => 'required_if:active,1|integer|min:1',
+                'name' => 'sort',
+                'title' => 'Sort Order',
+                'type' => 'number',
+                'depends' => 'active:1',
+                'validation' => 'required_if:active,1|integer|min:1',
                 'channel_based' => true,
-                'locale_based'  => false,
+                'locale_based' => false,
             ],
         ],
     ],
@@ -140,7 +140,7 @@ These properties define each individual form field that administrators can confi
 
 When you call `$this->getConfigData('title')` in your payment class, Bagisto looks up:
 
-```
+```text
 core()->getConfigData('sales.payment_methods.custom_stripe_payment.title')
 ```
 
@@ -150,7 +150,7 @@ This retrieves the value from the admin configuration that administrators can mo
 
 Bagisto resolves configuration values using a specific fallback chain. Understanding this chain is important to ensure your payment method always has sensible values, even before an administrator saves any settings.
 
-```
+```text
 core()->getConfigData('sales.payment_methods.custom_stripe_payment.title')
 │
 ├── 1. Core Config (Database)

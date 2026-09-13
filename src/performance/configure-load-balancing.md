@@ -6,7 +6,7 @@ This guide provides a step-by-step approach to deploying Bagisto on AWS with an 
 - Dedicated MySQL server for better performance
 - Bagisto on multiple EC2 instances behind a Load Balancer
 - Amazon S3 for storage instead of local file storage
-- AMI to easily scale new instances
+- AMI to scale new instances
 - Application Load Balancer (ALB) for traffic distribution
 - SSL and domain configuration for secure access
 :::

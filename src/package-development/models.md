@@ -52,9 +52,7 @@ The package generator creates three interconnected files that work together:
 
 namespace Webkul\RMA\Contracts;
 
-interface ReturnRequest
-{
-}
+interface ReturnRequest {}
 ```
 
 **2. Model Proxy** - `packages/Webkul/RMA/src/Models/ReturnRequestProxy.php`
@@ -65,9 +63,7 @@ namespace Webkul\RMA\Models;
 
 use Konekt\Concord\Proxies\ModelProxy;
 
-class ReturnRequestProxy extends ModelProxy
-{
-}
+class ReturnRequestProxy extends ModelProxy {}
 ```
 
 **3. Base Model** - `packages/Webkul/RMA/src/Models/ReturnRequest.php`
@@ -102,9 +98,7 @@ mkdir -p packages/Webkul/RMA/src/Contracts
 
 namespace Webkul\RMA\Contracts;
 
-interface ReturnRequest
-{
-}
+interface ReturnRequest {}
 ```
 
 #### Step 2: Create the Proxy
@@ -122,9 +116,7 @@ namespace Webkul\RMA\Models;
 
 use Konekt\Concord\Proxies\ModelProxy;
 
-class ReturnRequestProxy extends ModelProxy
-{
-}
+class ReturnRequestProxy extends ModelProxy {}
 ```
 
 #### Step 3: Create the Base Model
@@ -248,6 +240,7 @@ packages
 namespace Webkul\RMA\Providers;
 
 use Konekt\Concord\BaseModuleServiceProvider;
+use Webkul\RMA\Models\ReturnRequest;
 
 class ModuleServiceProvider extends BaseModuleServiceProvider
 {
@@ -257,7 +250,7 @@ class ModuleServiceProvider extends BaseModuleServiceProvider
      * @var array
      */
     protected $models = [
-        \Webkul\RMA\Models\ReturnRequest::class,
+        ReturnRequest::class,
     ];
 }
 ```
@@ -284,7 +277,7 @@ Bagisto configures Concord with `Webkul\Core\CoreConvention`, which looks for a 
 <?php
 
 return [
-    'name'    => 'Webkul Bagisto RMA',
+    'name' => 'Webkul Bagisto RMA',
     'version' => core()->version(),
 ];
 ```
@@ -299,10 +292,12 @@ Finally, register your ModuleServiceProvider with Bagisto's Concord system by ad
 ```php{6}
 <?php
 
+use Webkul\RMA\Providers\ModuleServiceProvider;
+
 return [
     'modules' => [
         // Other service providers...
-        \Webkul\RMA\Providers\ModuleServiceProvider::class,
+        ModuleServiceProvider::class,
     ],
 ];
 ```
@@ -316,24 +311,27 @@ php artisan tinker
 ```
 
 ```php
+use Webkul\RMA\Models\ReturnRequest;
+use Webkul\RMA\Models\ReturnRequestProxy;
+
 // Test model creation via direct model
-\Webkul\RMA\Models\ReturnRequest::create([
+ReturnRequest::create([
     'customer_id' => 1,
     'order_id' => 1,
     'product_sku' => 'SAMPLE-001',
     'product_name' => 'Test Product 1',
     'product_quantity' => 1,
-    'reason' => 'Defective Item'
+    'reason' => 'Defective Item',
 ]);
 
 // Test model creation via proxy
-\Webkul\RMA\Models\ReturnRequestProxy::create([
+ReturnRequestProxy::create([
     'customer_id' => 2,
     'order_id' => 2,
     'product_sku' => 'SAMPLE-002',
     'product_name' => 'Test Product 2',
     'product_quantity' => 1,
-    'reason' => 'Defective Item'
+    'reason' => 'Defective Item',
 ]);
 ```
 
@@ -350,7 +348,7 @@ When working with Bagisto models, you might encounter several common issues. Her
 ### 1. Model Proxy Registration Errors
 
 **Error:**
-```
+```text
 TypeError: Konekt\Concord\Proxies\ModelProxy::targetClass(): Return value must be of type string, null returned.
 ```
 
@@ -380,7 +378,7 @@ TypeError: Konekt\Concord\Proxies\ModelProxy::targetClass(): Return value must b
 ### 2. Table Not Found Errors
 
 **Error:**
-```
+```text
 SQLSTATE[42S02]: Base table or view not found: 1146 Table 'bagisto.rma_requests' doesn't exist
 ```
 
@@ -403,7 +401,7 @@ SQLSTATE[42S02]: Base table or view not found: 1146 Table 'bagisto.rma_requests'
 ### 3. Namespace and Autoloading Issues
 
 **Error:**
-```
+```text
 Class 'Webkul\RMA\Models\ReturnRequest' not found
 ```
 
@@ -425,7 +423,7 @@ Class 'Webkul\RMA\Models\ReturnRequest' not found
 ### 4. Fillable Attribute Errors
 
 **Error:**
-```
+```text
 Illuminate\Database\Eloquent\MassAssignmentException: customer_id
 ```
 
@@ -447,7 +445,7 @@ protected $fillable = [
 ### 5. Contract Implementation Issues
 
 **Error:**
-```
+```text
 Class must implement interface Webkul\RMA\Contracts\ReturnRequest
 ```
 
@@ -519,6 +517,8 @@ Register the override in your package's `ModuleServiceProvider` by keying the `$
 namespace Webkul\RMA\Providers;
 
 use Konekt\Concord\BaseModuleServiceProvider;
+use Webkul\Product\Contracts\Product;
+use Webkul\RMA\Models\ReturnRequest;
 
 class ModuleServiceProvider extends BaseModuleServiceProvider
 {
@@ -528,8 +528,8 @@ class ModuleServiceProvider extends BaseModuleServiceProvider
      * @var array
      */
     protected $models = [
-        \Webkul\RMA\Models\ReturnRequest::class,
-        \Webkul\Product\Contracts\Product::class => \Webkul\RMA\Models\Product::class,
+        ReturnRequest::class,
+        Product::class => \Webkul\RMA\Models\Product::class,
     ];
 }
 ```
@@ -555,7 +555,7 @@ class SomeController extends Controller
     public function checkReturnable($productId)
     {
         $product = $this->productRepository->find($productId);
-        
+
         // This automatically uses your extended model
         return $product->isReturnable();
     }

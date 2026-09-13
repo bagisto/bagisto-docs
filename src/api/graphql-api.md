@@ -87,7 +87,7 @@ This command will:
 
 Access the interactive GraphQL playground:
 
-```
+```text
 http://your-domain.com/graphiql
 ```
 
@@ -95,7 +95,7 @@ http://your-domain.com/graphiql
 
 For programmatic access or tools like Postman:
 
-```
+```text
 http://your-domain.com/graphql
 ```
 

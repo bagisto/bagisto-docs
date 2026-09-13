@@ -445,13 +445,13 @@ Update your theme configuration in `config/themes.php` to include asset settings
     // ...existing themes (e.g. 'default')...
 
     'custom-theme' => [
-        'name'        => 'Custom Theme Package',
+        'name' => 'Custom Theme Package',
         'assets_path' => 'public/themes/shop/custom-theme',
-        'views_path'  => 'resources/themes/custom-theme/views',
+        'views_path' => 'resources/themes/custom-theme/views',
 
-        'vite'        => [
-            'hot_file'                 => 'custom-theme-vite.hot',
-            'build_directory'          => 'themes/custom-theme/build',
+        'vite' => [
+            'hot_file' => 'custom-theme-vite.hot',
+            'build_directory' => 'themes/custom-theme/build',
             'package_assets_directory' => 'src/Resources/assets',
         ],
     ],
@@ -467,8 +467,8 @@ Add your theme package to the `viters` array in `config/bagisto-vite.php`:
     // ...existing viters (admin, shop, installer)...
 
     'custom-theme' => [
-        'hot_file'                 => 'custom-theme-vite.hot',
-        'build_directory'          => 'themes/custom-theme/build',
+        'hot_file' => 'custom-theme-vite.hot',
+        'build_directory' => 'themes/custom-theme/build',
         'package_assets_directory' => 'src/Resources/assets',
     ],
 ],
@@ -526,7 +526,7 @@ npm run dev
 
 You should see output similar to:
 
-```
+```text
 VITE v6.x.x  ready in xxx ms
 
 ➜  Local:   http://localhost:5173/

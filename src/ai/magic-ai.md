@@ -1,7 +1,9 @@
 # Magic AI
 
-Magic AI is Bagisto's built-in AI engine. It powers content and image generation in the
-admin panel and AI features on the storefront, using whichever AI provider you configure.
+Magic AI is Bagisto's built-in generative AI engine. It powers content and image generation
+in the admin panel and AI features on the storefront, using whichever AI provider you
+configure. It is the merchant-facing half of Bagisto's [agentic commerce](./introduction.md)
+story; the shopper-facing half, agents acting on the storefront, is [WebMCP](./webmcp.md).
 
 It is built on the [Laravel AI](https://laravel.com/docs/ai) SDK, so a single configuration
 works across every supported provider. The package is the same on Bagisto 2.4 and the current
@@ -37,7 +39,7 @@ URL (default `http://localhost:11434`) in the provider settings.
 
 ## Configuration
 
-Everything is configured from the admin panel under **Configuration → Magic AI**. There are four groups:
+Everything is configured from the admin panel under **Configure → Magic AI**. There are four groups:
 
 ### 1. General
 
@@ -96,14 +98,17 @@ $text = MagicAI::generateContent('Summarize this policy in one line.', 'gpt-4.1'
 
 ```php
 $images = magic_ai()->generateImage('A minimalist running shoe on a white background', [
-    'n'       => 1,           // number of images
-    'size'    => '1:1',       // 1:1 (square), 3:2 (landscape), 2:3 (portrait)
-    'quality' => 'high',      // high, medium, low
+    'n' => 1,
+    'size' => '1:1',
+    'quality' => 'high',
 ], 'gpt-image-1');
 
-// Each item is a data URL: ['url' => 'data:image/png;base64,...']
 $src = $images[0]['url'];
 ```
+
+The options are `n` (how many images), `size` (`1:1` square, `3:2` landscape or `2:3`
+portrait) and `quality` (`high`, `medium` or `low`). Each returned item is an array with a
+`url` key holding a `data:image/png;base64,…` URL.
 
 Providers whose API has no size or quality parameters (xAI, for one) get those requirements
 written into the prompt instead.

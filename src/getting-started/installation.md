@@ -80,7 +80,7 @@ composer create-project bagisto/bagisto
 ```
 
 Configure your web server's document root to the `public/` directory inside your Bagisto project (e.g., `/path/to/bagisto/public`), then visit:
-```
+```text
 http://localhost/
 ```
 
@@ -379,7 +379,7 @@ To view logs: `vendor/bin/sail logs`
 ### Production Environment
 
 Access your store using your domain:
-```
+```text
 https://yourdomain.com
 ```
 
@@ -398,7 +398,7 @@ Then visit: `http://localhost:8000`
 ### Admin Panel
 
 Access the admin panel at:
-```
+```text
 https://yourdomain.com/admin
 ```
 
@@ -413,7 +413,7 @@ Change the default admin credentials immediately after installation!
 ### Customer Registration
 
 Customers can register at:
-```
+```text
 https://yourdomain.com/customer/register
 ```
 

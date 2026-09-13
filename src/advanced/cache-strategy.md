@@ -8,9 +8,9 @@ Bagisto implements a multi-layered caching strategy to optimize performance acro
 |---|---|---|---|
 | **Application Cache** | Database / File / Redis / Memcached | Key-value storage for config, routes, repository results | `CACHE_STORE` in `.env` |
 | **Repository Cache** | Prettus L5 Repository on top of the application cache | Automatic model query caching | `config/repository.php` |
-| **Full Page Cache (FPC)** | Spatie ResponseCache | Caches entire HTTP responses | **Configuration → Cache Management** and `config/responsecache.php` |
+| **Full Page Cache (FPC)** | Spatie ResponseCache | Caches entire HTTP responses | **Configure → Cache Management** and `config/responsecache.php` |
 | **Image Cache** | HTTP caching only | Resized images | `config/imagecache.php` |
-| **Search Index** | Elasticsearch | Product search index | **Configuration → Search Engines** |
+| **Search Index** | Elasticsearch | Product search index | **Configure → Search Engines** |
 | **Session Store** | Database / Redis | User session data | `SESSION_DRIVER` in `.env` |
 
 ## Application Cache
@@ -59,7 +59,7 @@ The FPC package (`Webkul\FPC`) uses [Spatie ResponseCache](https://github.com/sp
 
 ### Enabling FPC
 
-The switch is in the admin: **Configuration → Cache Management → Full Page Cache** has an **Enabled** toggle (on by default), a **Lifetime** in minutes and a **Flush** button. `config/responsecache.php` hard-codes `'enabled' => true`; the `RESPONSE_CACHE_ENABLED` variable is not read. The environment keys that do apply are `RESPONSE_CACHE_DRIVER` (default `file`) and `RESPONSE_CACHE_LIFETIME` in seconds (default one week), which the admin lifetime overrides when set.
+The switch is in the admin: **Configure → Cache Management → Full Page Cache** has an **Enabled** toggle (on by default), a **Lifetime** in minutes and a **Flush** button. `config/responsecache.php` hard-codes `'enabled' => true`; the `RESPONSE_CACHE_ENABLED` variable is not read. The environment keys that do apply are `RESPONSE_CACHE_DRIVER` (default `file`) and `RESPONSE_CACHE_LIFETIME` in seconds (default one week), which the admin lifetime overrides when set.
 
 ### How It Works
 
@@ -137,7 +137,7 @@ php artisan view:cache
 php artisan event:cache
 ```
 
-The buttons under **Configuration → Cache Management** run `config:cache`, `route:cache`, `view:cache` and `optimize` on the build side, and `config:clear`, `cache:clear`, `clear-compiled`, `event:clear`, `route:clear`, `view:clear` and `optimize:clear` on the clear side (`Webkul\Admin\Services\CacheManagerService`); the full page cache has its own **Flush** button. To clear all caches at once:
+The buttons under **Configure → Cache Management** run `config:cache`, `route:cache`, `view:cache` and `optimize` on the build side, and `config:clear`, `cache:clear`, `clear-compiled`, `event:clear`, `route:clear`, `view:clear` and `optimize:clear` on the clear side (`Webkul\Admin\Services\CacheManagerService`); the full page cache has its own **Flush** button. To clear all caches at once:
 
 ```bash
 php artisan optimize:clear

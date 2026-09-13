@@ -16,10 +16,10 @@ The `Config/product_types.php` file is a simple PHP array that registers your pr
 
 return [
     'subscription' => [
-        'key'   => 'subscription',
-        'name'  => 'subscription::app.type.subscription',
+        'key' => 'subscription',
+        'name' => 'subscription::app.type.subscription',
         'class' => 'Webkul\SubscriptionProduct\Type\Subscription',
-        'sort'  => 8,
+        'sort' => 8,
     ],
 ];
 ```
@@ -65,17 +65,17 @@ You can register multiple product types in one configuration file:
 
 return [
     'subscription' => [
-        'key'   => 'subscription',
-        'name'  => 'subscription::app.type.subscription',
+        'key' => 'subscription',
+        'name' => 'subscription::app.type.subscription',
         'class' => 'Webkul\SubscriptionProduct\Type\Subscription',
-        'sort'  => 8,
+        'sort' => 8,
     ],
 
     'rental' => [
-        'key'   => 'rental',
-        'name'  => 'subscription::app.type.rental',
+        'key' => 'rental',
+        'name' => 'subscription::app.type.rental',
         'class' => 'Webkul\SubscriptionProduct\Type\Rental',
-        'sort'  => 9,
+        'sort' => 9,
     ],
 ];
 ```
@@ -86,10 +86,10 @@ Because configuration is merged by key, a package can replace the class behind a
 
 ```php
 'simple' => [
-    'key'   => 'simple',
-    'name'  => 'product::app.type.simple',
+    'key' => 'simple',
+    'name' => 'product::app.type.simple',
     'class' => 'Webkul\SubscriptionProduct\Type\Simple',
-    'sort'  => 1,
+    'sort' => 1,
 ],
 ```
 

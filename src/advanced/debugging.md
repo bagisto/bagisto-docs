@@ -94,7 +94,7 @@ To see what events are fired during a request, use DebugBar's Events tab. Altern
 ```php
 // In a service provider boot() method (temporary debugging only)
 Event::listen('*', function (string $event, array $data) {
-    Log::debug('Event fired: ' . $event);
+    Log::debug('Event fired: '.$event);
 });
 ```
 
@@ -103,11 +103,11 @@ Event::listen('*', function (string $event, array $data) {
 Enable query logging temporarily:
 
 ```php
-\DB::enableQueryLog();
+DB::enableQueryLog();
 
 // ... your code ...
 
-dd(\DB::getQueryLog());
+dd(DB::getQueryLog());
 ```
 
 Or use DebugBar's Queries tab, which shows all queries with execution time and the Webkul module that triggered them.
@@ -165,7 +165,7 @@ Common issues and quick checks:
 |---|---|
 | Broken images | `APP_URL` matches your domain; `php artisan storage:link` was run |
 | 500 errors | `storage/logs/laravel.log` for stack trace; permissions on `storage/` and `bootstrap/cache/` |
-| Stale data after changes | `php artisan optimize:clear`; flush the full page cache under Configuration → Cache Management |
+| Stale data after changes | `php artisan optimize:clear`; flush the full page cache under **Configure → Cache Management** |
 | Admin not accessible | `APP_ADMIN_URL` in `.env` matches the URL path you're using |
 | CSS/JS not loading | Run `npm run build` or `npm run dev` for Vite assets |
 | Queue jobs not processing | Check `QUEUE_CONNECTION` in `.env`; run `php artisan queue:work` |

@@ -141,15 +141,15 @@ class ContactController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name'    => 'required|string|max:255',
-            'email'   => 'required|email|max:255',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
             'subject' => 'required|string|max:255',
             'message' => 'required|string|max:1000',
         ]);
 
         // Process the validated data
         // This could be saving to database, sending email, etc.
-        
+
         return redirect()->back()->with('success', 'Message sent successfully!');
     }
 }
@@ -163,13 +163,11 @@ Here's an example of how to use validation with custom messages:
 
 ```php
 <?php
- 
+
 namespace App\Http\Controllers;
-    
-use App\Http\Controllers\Controller;
+
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-    
+
 class PostController extends Controller
 {
     /**
@@ -178,8 +176,8 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'name'    => 'required',
-            'email'   => 'required|email',
+            'name' => 'required',
+            'email' => 'required|email',
             'message' => 'required|max:250',
         ];
 
@@ -188,7 +186,7 @@ class PostController extends Controller
         ];
 
         $this->validate($request, $rules, $customMessages);
-        
+
         // Process the validated data
         return redirect()->back()->with('success', 'Post created successfully!');
     }

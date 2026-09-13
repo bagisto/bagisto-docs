@@ -6,7 +6,7 @@ Bagisto uses [Pest PHP](https://pestphp.com/) as its primary testing framework, 
 
 Tests are organized per-package under each package's `tests/` directory, with a shared bootstrap at the project root:
 
-```
+```text
 tests/
 ├── Pest.php              # Global Pest configuration
 ├── TestCase.php          # Base test case
@@ -124,9 +124,13 @@ ini_set('memory_limit', '1024M');
 The global `tests/Pest.php` file binds each package's tests to its test case:
 
 ```php
-uses(Webkul\Admin\Tests\AdminTestCase::class)->in('../packages/Webkul/Admin/tests');
-uses(Webkul\Shop\Tests\ShopTestCase::class)->in('../packages/Webkul/Shop/tests');
-uses(Webkul\Core\Tests\CoreTestCase::class)->in('../packages/Webkul/Core/tests');
+use Webkul\Admin\Tests\AdminTestCase;
+use Webkul\Core\Tests\CoreTestCase;
+use Webkul\Shop\Tests\ShopTestCase;
+
+uses(AdminTestCase::class)->in('../packages/Webkul/Admin/tests');
+uses(ShopTestCase::class)->in('../packages/Webkul/Shop/tests');
+uses(CoreTestCase::class)->in('../packages/Webkul/Core/tests');
 // ... and so on for each package
 ```
 

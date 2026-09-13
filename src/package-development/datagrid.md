@@ -102,11 +102,11 @@ class ReturnRequestDataGrid extends DataGrid
     public function prepareColumns()
     {
         $this->addColumn([
-            'index'      => 'id',
-            'label'      => trans('rma::app.admin.return-requests.datagrid.id'),
-            'type'       => 'integer',
+            'index' => 'id',
+            'label' => trans('rma::app.admin.return-requests.datagrid.id'),
+            'type' => 'integer',
             'searchable' => false,
-            'sortable'   => true,
+            'sortable' => true,
             'filterable' => false,
         ]);
     }
@@ -137,7 +137,7 @@ return [
         'return-requests' => [
             'title' => 'RMA Listing Title',
             'content' => 'RMA Listing Content',
-            
+
             'datagrid' => [
                 'id' => 'ID',
             ],
@@ -161,9 +161,9 @@ Update your admin controller to use the DataGrid:
 
 namespace Webkul\RMA\Http\Controllers\Admin;
 
+use Webkul\RMA\DataGrids\Admin\ReturnRequestDataGrid;
 use Webkul\RMA\Http\Controllers\Controller;
 use Webkul\RMA\Repositories\ReturnRequestRepository;
-use Webkul\RMA\DataGrids\Admin\ReturnRequestDataGrid;
 
 class ReturnRequestController extends Controller
 {
@@ -390,11 +390,11 @@ This method defines how each column should behave. Our simple example:
 public function prepareColumns()
 {
     $this->addColumn([
-        'index'      => 'id',
-        'label'      => trans('rma::app.admin.return-requests.datagrid.id'),
-        'type'       => 'integer',
+        'index' => 'id',
+        'label' => trans('rma::app.admin.return-requests.datagrid.id'),
+        'type' => 'integer',
         'searchable' => false,
-        'sortable'   => true,
+        'sortable' => true,
         'filterable' => false,
     ]);
 }
@@ -449,11 +449,11 @@ This method defines row-level actions (like edit, delete buttons). We didn't inc
 public function prepareActions()
 {
     $this->addAction([
-        'index'  => 'edit',
-        'icon'   => 'icon-edit',
-        'title'  => 'Edit',
+        'index' => 'edit',
+        'icon' => 'icon-edit',
+        'title' => 'Edit',
         'method' => 'GET',
-        'url'    => function ($row) {
+        'url' => function ($row) {
             return route('admin.rma.return-requests.edit', $row->id);
         },
     ]);
@@ -478,10 +478,10 @@ This method defines bulk operations. Also not included in our basic example:
 public function prepareMassActions()
 {
     $this->addMassAction([
-        'icon'   => 'icon-delete',
-        'title'  => 'Delete Selected',
+        'icon' => 'icon-delete',
+        'title' => 'Delete Selected',
         'method' => 'POST',
-        'url'    => route('admin.rma.return-requests.mass-delete'),
+        'url' => route('admin.rma.return-requests.mass-delete'),
     ]);
 }
 ```
@@ -497,7 +497,7 @@ Event::listen('datagrid.return_request_data_grid.columns.add.after', function ($
     $datagrid->addColumn([
         'index' => 'warehouse',
         'label' => trans('rma::app.admin.return-requests.datagrid.warehouse'),
-        'type'  => 'string',
+        'type' => 'string',
     ]);
 });
 ```
@@ -536,20 +536,20 @@ Add the new column to your `prepareColumns()` method:
 public function prepareColumns()
 {
     $this->addColumn([
-        'index'      => 'id',
-        'label'      => trans('rma::app.admin.return-requests.datagrid.id'),
-        'type'       => 'integer',
+        'index' => 'id',
+        'label' => trans('rma::app.admin.return-requests.datagrid.id'),
+        'type' => 'integer',
         'searchable' => false,
-        'sortable'   => true,
+        'sortable' => true,
         'filterable' => false,
     ]);
 
     $this->addColumn([
-        'index'      => 'product_name',
-        'label'      => trans('rma::app.admin.return-requests.datagrid.product-name'),
-        'type'       => 'string',
+        'index' => 'product_name',
+        'label' => trans('rma::app.admin.return-requests.datagrid.product-name'),
+        'type' => 'string',
         'searchable' => true,
-        'sortable'   => true,
+        'sortable' => true,
         'filterable' => false,
     ]);
 }
@@ -592,13 +592,13 @@ public function prepareColumns()
     // ...existing columns...
 
     $this->addColumn([
-        'index'              => 'status',
-        'label'              => trans('rma::app.admin.return-requests.datagrid.status'),
-        'type'               => 'string',
-        'searchable'         => false,
-        'sortable'           => true,
-        'filterable'         => true,
-        'filterable_type'    => 'dropdown',
+        'index' => 'status',
+        'label' => trans('rma::app.admin.return-requests.datagrid.status'),
+        'type' => 'string',
+        'searchable' => false,
+        'sortable' => true,
+        'filterable' => true,
+        'filterable_type' => 'dropdown',
         'filterable_options' => [
             [
                 'label' => trans('rma::app.admin.return-requests.datagrid.pending'),
@@ -644,13 +644,13 @@ public function prepareColumns()
     // ...existing columns...
 
     $this->addColumn([
-        'index'              => 'status',
-        'label'              => trans('rma::app.admin.return-requests.datagrid.status'),
-        'type'               => 'string',
-        'searchable'         => false,
-        'sortable'           => true,
-        'filterable'         => true,
-        'filterable_type'    => 'dropdown',
+        'index' => 'status',
+        'label' => trans('rma::app.admin.return-requests.datagrid.status'),
+        'type' => 'string',
+        'searchable' => false,
+        'sortable' => true,
+        'filterable' => true,
+        'filterable_type' => 'dropdown',
         'filterable_options' => [
             [
                 'label' => trans('rma::app.admin.return-requests.datagrid.pending'),
@@ -666,7 +666,7 @@ public function prepareColumns()
             ],
         ],
         'closure' => function ($row) {
-            return "<span class='badge label-info'>" . ucfirst($row->status) . "</span>";
+            return "<span class='badge label-info'>".ucfirst($row->status).'</span>';
         },
     ]);
 }
@@ -748,7 +748,7 @@ Here are simple examples of other closure implementations you might use:
 ```php
 'closure' => function ($row) {
     return strlen($row->description) > 30 
-        ? substr($row->description, 0, 30) . '...'
+        ? substr($row->description, 0, 30).'...'
         : $row->description;
 },
 ```
@@ -790,7 +790,7 @@ First, add a simple view route in your package's route file `packages/Webkul/RMA
 ```php{9-10}
 Route::group([
     'middleware' => ['web', 'admin'],
-    'prefix'     => config('app.admin_url'),
+    'prefix' => config('app.admin_url'),
 ], function () {
     Route::prefix('rma/return-requests')->group(function () {
         // ...existing routes...
@@ -818,7 +818,7 @@ class ReturnRequestController extends Controller
     public function show($id)
     {
         $returnRequest = $this->returnRequestRepository->findOrFail($id);
-        
+
         return view('rma::admin.return-requests.show', compact('returnRequest'));
     }
 }
@@ -831,7 +831,7 @@ Create the view template for displaying individual return requests:
 **Create:** `packages/Webkul/RMA/src/Resources/views/admin/return-requests/show.blade.php`
 
 ::: tip Quick Implementation
-Don't worry about understanding every part of this view template right now. Simply copy and paste the code below - it's a standard admin detail page that follows Bagisto's design patterns. Focus on understanding how the DataGrid action connects to this view.
+Don't worry about understanding every part of this view template right now. Copy and paste the code below - it's a standard admin detail page that follows Bagisto's design patterns. Focus on understanding how the DataGrid action connects to this view.
 :::
 
 ```blade
@@ -904,10 +904,10 @@ Now add the `prepareActions()` method to your DataGrid with just the view action
 public function prepareActions()
 {
     $this->addAction([
-        'icon'   => 'icon-view',
-        'title'  => trans('rma::app.admin.return-requests.datagrid.view'),
+        'icon' => 'icon-view',
+        'title' => trans('rma::app.admin.return-requests.datagrid.view'),
         'method' => 'GET',
-        'url'    => function ($row) {
+        'url' => function ($row) {
             return route('admin.rma.return-requests.show', $row->id);
         },
     ]);
@@ -949,28 +949,28 @@ Once you're comfortable with basic actions, you can add edit and delete actions:
 public function prepareActions()
 {
     $this->addAction([
-        'icon'   => 'icon-view',
-        'title'  => trans('rma::app.admin.return-requests.datagrid.view'),
+        'icon' => 'icon-view',
+        'title' => trans('rma::app.admin.return-requests.datagrid.view'),
         'method' => 'GET',
-        'url'    => function ($row) {
+        'url' => function ($row) {
             return route('admin.rma.return-requests.show', $row->id);
         },
     ]);
 
     $this->addAction([
-        'icon'   => 'icon-edit',
-        'title'  => trans('rma::app.admin.return-requests.datagrid.edit'),
+        'icon' => 'icon-edit',
+        'title' => trans('rma::app.admin.return-requests.datagrid.edit'),
         'method' => 'GET',
-        'url'    => function ($row) {
+        'url' => function ($row) {
             return route('admin.rma.return-requests.edit', $row->id);
         },
     ]);
 
     $this->addAction([
-        'icon'   => 'icon-delete',
-        'title'  => trans('rma::app.admin.return-requests.datagrid.delete'),
+        'icon' => 'icon-delete',
+        'title' => trans('rma::app.admin.return-requests.datagrid.delete'),
         'method' => 'DELETE',
-        'url'    => function ($row) {
+        'url' => function ($row) {
             return route('admin.rma.return-requests.delete', $row->id);
         },
     ]);
@@ -990,7 +990,7 @@ For bulk operations, add the `prepareMassActions()` method:
 ```php{9-10}
 Route::group([
     'middleware' => ['web', 'admin'],
-    'prefix'     => config('app.admin_url'),
+    'prefix' => config('app.admin_url'),
 ], function () {
     Route::prefix('rma/return-requests')->group(function () {
         // ...existing routes...
@@ -1038,10 +1038,10 @@ class ReturnRequestController extends Controller
 public function prepareMassActions()
 {
     $this->addMassAction([
-        'icon'   => 'icon-delete',
-        'title'  => trans('rma::app.admin.return-requests.datagrid.mass-delete'),
+        'icon' => 'icon-delete',
+        'title' => trans('rma::app.admin.return-requests.datagrid.mass-delete'),
         'method' => 'POST',
-        'url'    => route('admin.rma.return-requests.mass-delete'),
+        'url' => route('admin.rma.return-requests.mass-delete'),
     ]);
 }
 ```

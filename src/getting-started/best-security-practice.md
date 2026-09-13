@@ -88,7 +88,7 @@ Implementing the following HTTP security headers enhances web security:
 
 Set the **`Strict-Transport-Security`** response header to instruct the browser to access the application only using HTTPS:
 
-```
+```text
 Strict-Transport-Security: max-age=<expire-time>
 ```
 
@@ -96,7 +96,7 @@ Strict-Transport-Security: max-age=<expire-time>
 
 Set the **`X-XSS-Protection`** response header to enable browsers to detect and prevent cross-site scripting (XSS) attacks:
 
-```
+```text
 X-XSS-Protection: 1; mode=block
 ```
 
@@ -104,7 +104,7 @@ X-XSS-Protection: 1; mode=block
 
 The **`X-Frame-Options`** response header protects applications against clickjacking attacks. It specifies whether the content can be displayed within frames:
 
-```
+```text
 X-Frame-Options: deny
 ```
 
@@ -112,7 +112,7 @@ X-Frame-Options: deny
 
 The **`X-Content-Type-Options`** response header forces the browser to disable MIME sniffing, preventing MIME sniffing vulnerabilities:
 
-```
+```text
 X-Content-Type-Options: nosniff
 ```
 

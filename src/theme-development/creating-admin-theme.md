@@ -59,13 +59,13 @@ return [
 
     'admin' => [
         'default' => [
-            'name'        => 'Default',
+            'name' => 'Default',
             'assets_path' => 'public/themes/admin/default',
-            'views_path'  => 'resources/admin-themes/default/views',
+            'views_path' => 'resources/admin-themes/default/views',
 
-            'vite'        => [
-                'hot_file'                 => 'admin-default-vite.hot',
-                'build_directory'          => 'themes/admin/default/build',
+            'vite' => [
+                'hot_file' => 'admin-default-vite.hot',
+                'build_directory' => 'themes/admin/default/build',
                 'package_assets_directory' => 'src/Resources/assets',
             ],
         ],
@@ -94,25 +94,25 @@ return [
 
     'admin' => [
         'default' => [
-            'name'        => 'Default',
+            'name' => 'Default',
             'assets_path' => 'public/themes/admin/default',
-            'views_path'  => 'resources/admin-themes/default/views',
+            'views_path' => 'resources/admin-themes/default/views',
 
-            'vite'        => [
-                'hot_file'                 => 'admin-default-vite.hot',
-                'build_directory'          => 'themes/admin/default/build',
+            'vite' => [
+                'hot_file' => 'admin-default-vite.hot',
+                'build_directory' => 'themes/admin/default/build',
                 'package_assets_directory' => 'src/Resources/assets',
             ],
         ],
 
         'custom-admin-theme' => [
-            'name'        => 'Custom Admin Theme',
+            'name' => 'Custom Admin Theme',
             'assets_path' => 'public/themes/admin/custom-admin-theme',
-            'views_path'  => 'resources/admin-themes/custom-admin-theme/views',
+            'views_path' => 'resources/admin-themes/custom-admin-theme/views',
 
-            'vite'        => [
-                'hot_file'                 => 'admin-default-vite.hot',
-                'build_directory'          => 'themes/admin/default/build',
+            'vite' => [
+                'hot_file' => 'admin-default-vite.hot',
+                'build_directory' => 'themes/admin/default/build',
                 'package_assets_directory' => 'src/Resources/assets',
             ],
         ],
@@ -239,7 +239,7 @@ Update the `admin-default` value in your `config/themes.php` file:
 
 return [
     'admin-default' => 'custom-admin-theme', // Changed from 'default'
-    
+
     'admin' => [
         // ...existing themes
     ],

@@ -76,9 +76,9 @@ use Webkul\Theme\Enums\SectionTypeEnum;
 return [
     'shop' => [
         'default' => [
-            'name'        => 'Default',
+            'name' => 'Default',
             'assets_path' => 'public/themes/shop/default',
-            'views_path'  => 'resources/themes/default/views',
+            'views_path' => 'resources/themes/default/views',
 
             // ...
 
@@ -118,7 +118,7 @@ The rules, as implemented in `Webkul\Theme\SectionSchema::types()`:
 
 ::: warning Sections belong to a theme and a channel
 Stored sections are keyed by theme code. Removing a type from a theme's list
-does not delete sections already created with it; they simply can no longer be
+does not delete sections already created with it; they can no longer be
 added. Renaming a code orphans the existing rows.
 :::
 
@@ -181,8 +181,8 @@ A slider-style type with an image, a heading and a link per slide:
 
 namespace Webkul\Fashion\Sections;
 
-use Webkul\Theme\SectionSchema;
 use Webkul\Theme\Sections\SectionType;
+use Webkul\Theme\SectionSchema;
 
 class HeroBanner extends SectionType
 {
@@ -208,11 +208,11 @@ class HeroBanner extends SectionType
     {
         return [
             [
-                'key'       => 'slides',
-                'type'      => SectionSchema::REPEATER,
-                'label'     => trans('fashion::app.sections.slides'),
+                'key' => 'slides',
+                'type' => SectionSchema::REPEATER,
+                'label' => trans('fashion::app.sections.slides'),
                 'add_label' => trans('fashion::app.sections.add-slide'),
-                'fields'    => [
+                'fields' => [
                     ['key' => 'image', 'type' => SectionSchema::IMAGE, 'label' => trans('fashion::app.sections.image')],
                     ['key' => 'heading', 'type' => SectionSchema::TEXT, 'label' => trans('fashion::app.sections.heading')],
                     ['key' => 'link', 'type' => SectionSchema::TEXT, 'label' => $this->label('link')],

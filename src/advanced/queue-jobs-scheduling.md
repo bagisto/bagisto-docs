@@ -144,7 +144,7 @@ UpdateCreatePriceIndex::dispatchSync($productIds);
 
 When creating custom jobs, place them in your package's `Jobs/` directory:
 
-```
+```text
 packages/Webkul/YourPackage/src/Jobs/
 └── YourCustomJob.php
 ```

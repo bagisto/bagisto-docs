@@ -33,12 +33,12 @@ Actions are things an operator starts rather than places they go. Pages and sett
 ```php
 'actions' => [
     [
-        'title'      => 'rma::app.admin.command-palette.create-reason',
-        'parent'     => 'sales.rma.reasons',
-        'route'      => 'admin.sales.rma.reasons.index',
+        'title' => 'rma::app.admin.command-palette.create-reason',
+        'parent' => 'sales.rma.reasons',
+        'route' => 'admin.sales.rma.reasons.index',
         'permission' => 'sales.rma.reasons.create',
-        'icon'       => 'icon-add',
-        'keywords'   => ['return', 'reason'],
+        'icon' => 'icon-add',
+        'keywords' => ['return', 'reason'],
     ],
 ],
 ```
@@ -70,18 +70,18 @@ A record source turns one of your search endpoints into a palette group:
 ```php
 'records' => [
     [
-        'key'        => 'rma',
-        'node'       => 'sales.rma.requests',
-        'title'      => 'rma::app.admin.command-palette.records',
+        'key' => 'rma',
+        'node' => 'sales.rma.requests',
+        'title' => 'rma::app.admin.command-palette.records',
         'permission' => 'sales.rma.requests',
-        'endpoint'   => 'admin.sales.rma.requests.search',
-        'index'      => 'admin.sales.rma.requests.index',
-        'link'       => 'admin.sales.rma.requests.view',
-        'label'      => ['increment_id'],
-        'prefix'     => '#',
-        'meta'       => 'status',
-        'icon'       => 'icon-sales',
-        'actions'    => [
+        'endpoint' => 'admin.sales.rma.requests.search',
+        'index' => 'admin.sales.rma.requests.index',
+        'link' => 'admin.sales.rma.requests.view',
+        'label' => ['increment_id'],
+        'prefix' => '#',
+        'meta' => 'status',
+        'icon' => 'icon-sales',
+        'actions' => [
             ['title' => 'admin::app.command-palette.record-actions.view', 'route' => 'admin.sales.rma.requests.view', 'permission' => 'sales.rma.requests.view', 'icon' => 'icon-view'],
         ],
     ],

@@ -21,14 +21,14 @@ The carrier configuration file defines all the essential properties of your ship
 
 return [
     'custom_express_shipping' => [
-        'code'         => 'custom_express_shipping',
-        'title'        => 'Express Delivery (1-2 Days)',
-        'description'  => 'Premium express shipping with tracking and insurance',
-        'active'       => true,
+        'code' => 'custom_express_shipping',
+        'title' => 'Express Delivery (1-2 Days)',
+        'description' => 'Premium express shipping with tracking and insurance',
+        'active' => true,
         'default_rate' => '19.99',
-        'type'         => 'per_order',
-        'class'        => 'Webkul\CustomExpressShipping\Carriers\CustomExpressShipping',
-    ]
+        'type' => 'per_order',
+        'class' => 'Webkul\CustomExpressShipping\Carriers\CustomExpressShipping',
+    ],
 ];
 ```
 
@@ -90,47 +90,47 @@ For more sophisticated shipping methods, you can extend the configuration:
 return [
     'custom_express_shipping' => [
         // core properties
-        'code'         => 'custom_express_shipping',
-        'title'        => 'Express Delivery (1-2 Days)',
-        'description'  => 'Premium express shipping with tracking and insurance',
-        'active'       => true,
-        'class'        => 'Webkul\CustomExpressShipping\Carriers\CustomExpressShipping',
-        
+        'code' => 'custom_express_shipping',
+        'title' => 'Express Delivery (1-2 Days)',
+        'description' => 'Premium express shipping with tracking and insurance',
+        'active' => true,
+        'class' => 'Webkul\CustomExpressShipping\Carriers\CustomExpressShipping',
+
         // pricing configuration
-        'default_rate'            => '19.99',
-        'type'                    => 'per_order',
+        'default_rate' => '19.99',
+        'type' => 'per_order',
         'free_shipping_threshold' => '100.00',
-        
+
         // service features
         'supports' => [
-            'tracking'           => true,
-            'insurance'          => true,
+            'tracking' => true,
+            'insurance' => true,
             'signature_required' => false,
-            'weekend_delivery'   => true,
+            'weekend_delivery' => true,
         ],
-        
+
         // availability rules
         'availability' => [
             'weight_limit' => 50.0, // kg
 
             'size_limit' => [
                 'length' => 100, // cm
-                'width'  => 80,  // cm  
+                'width' => 80,  // cm
                 'height' => 60,  // cm
             ],
 
             'restricted_postcodes' => ['12345', '67890'],
-            'business_days_only'   => false,
+            'business_days_only' => false,
         ],
-        
+
         // api configuration (if using external service)
         'api_config' => [
-            'endpoint'      => env('EXPRESS_SHIPPING_API_URL'),
-            'api_key'       => env('EXPRESS_SHIPPING_API_KEY'),
-            'timeout'       => 30,
+            'endpoint' => env('EXPRESS_SHIPPING_API_URL'),
+            'api_key' => env('EXPRESS_SHIPPING_API_KEY'),
+            'timeout' => 30,
             'fallback_rate' => '25.00',
         ],
-    ]
+    ],
 ];
 ```
 
@@ -156,7 +156,7 @@ When Bagisto starts, your service provider merges the carrier configuration:
 ```php
 // in your service provider...
 $this->mergeConfigFrom(
-    dirname(__DIR__) . '/Config/carriers.php',
+    dirname(__DIR__).'/Config/carriers.php',
     'carriers'
 );
 ```
@@ -173,8 +173,10 @@ Config::get('carriers')
 When needed, Bagisto creates your carrier instance with a bare `new`, in `Webkul\Shipping\Shipping::collectRates()` and `getShippingMethods()`:
 
 ```php
+use Webkul\CustomExpressShipping\Carriers\CustomExpressShipping;
+
 // bagisto uses the 'class' property...
-$carrier = new \Webkul\CustomExpressShipping\Carriers\CustomExpressShipping;
+$carrier = new CustomExpressShipping;
 ```
 
 Because the container is not involved, a carrier cannot take constructor dependencies. Resolve repositories or services inside `calculate()` with `app()` instead. (Payment methods differ: they are resolved with `app($class)`.)
@@ -195,7 +197,7 @@ A nested key such as `supports.tracking` works only through the package-config f
 
 When `getConfigData()` is called, Bagisto resolves the value using a specific fallback chain:
 
-```
+```text
 core()->getConfigData('sales.carriers.custom_express_shipping.default_rate')
 │
 ├── 1. Core Config (Database)
@@ -226,14 +228,14 @@ Always define essential properties like `active`, `title`, `default_rate`, and `
 ```php
 // ✅ good naming
 'premium_express_delivery' => [
-    'code'  => 'premium_express_delivery',
+    'code' => 'premium_express_delivery',
     'title' => 'Premium Express (Next Day)',
     'class' => 'Vendor\Package\Carriers\PremiumExpressDelivery',
 ]
 
 // ❌ avoid
 'PED' => [
-    'code'  => 'ped',
+    'code' => 'ped',
     'title' => 'PED',
     'class' => 'Vendor\Package\Carriers\PED',
 ]
@@ -243,11 +245,11 @@ Always define essential properties like `active`, `title`, `default_rate`, and `
 
 ```php
 // ✅ clear and informative
-'title'       => 'Express Delivery (1-2 Business Days)',
+'title' => 'Express Delivery (1-2 Business Days)',
 'description' => 'Fast shipping with tracking and insurance included',
 
 // ❌ vague
-'title'       => 'Fast Shipping',
+'title' => 'Fast Shipping',
 'description' => 'Quick delivery',
 ```
 
@@ -255,9 +257,9 @@ Always define essential properties like `active`, `title`, `default_rate`, and `
 
 ```php
 // ✅ explicit defaults
-'active'       => false,       // Start disabled until an admin configures it
+'active' => false,       // Start disabled until an admin configures it
 'default_rate' => '0.00',      // Require an explicit rate
-'type'         => 'per_order', // Most common pricing model
+'type' => 'per_order', // Most common pricing model
 
 // ❌ risky defaults
 'default_rate' => '999.99', // Extremely high fallback
@@ -269,10 +271,10 @@ Core's own carriers ship `'active' => true` so that a fresh install has shipping
 
 ```php
 'api_config' => [
-    'endpoint'   => env('SHIPPING_API_URL', 'https://api.example.com'),
-    'api_key'    => env('SHIPPING_API_KEY'),
+    'endpoint' => env('SHIPPING_API_URL', 'https://api.example.com'),
+    'api_key' => env('SHIPPING_API_KEY'),
     'debug_mode' => env('SHIPPING_DEBUG', false),
-    'timeout'    => env('SHIPPING_TIMEOUT', 30),
+    'timeout' => env('SHIPPING_TIMEOUT', 30),
 ],
 ```
 
@@ -323,32 +325,32 @@ The alternative below, one class per service level, is the shape to choose when 
 ```php
 return [
     'express_standard' => [
-        'code'     => 'express_standard',
-        'title'    => 'Express Standard (2-3 Days)',
-        'rate'     => '9.99',
-        'class'    => 'Vendor\Express\Carriers\ExpressStandard',
+        'code' => 'express_standard',
+        'title' => 'Express Standard (2-3 Days)',
+        'rate' => '9.99',
+        'class' => 'Vendor\Express\Carriers\ExpressStandard',
         'features' => ['tracking'],
-        'days'     => '2-3',
+        'days' => '2-3',
     ],
 
     'express_priority' => [
-        'code'       => 'express_priority', 
-        'title'      => 'Express Priority (1-2 Days)',
-        'rate'       => '19.99',
-        'class'      => 'Vendor\Express\Carriers\ExpressPriority',
-        'features'   => ['tracking', 'insurance', 'weekend'],
-        'days'       => '1-2',
+        'code' => 'express_priority',
+        'title' => 'Express Priority (1-2 Days)',
+        'rate' => '19.99',
+        'class' => 'Vendor\Express\Carriers\ExpressPriority',
+        'features' => ['tracking', 'insurance', 'weekend'],
+        'days' => '1-2',
         'max_weight' => 30.0,
     ],
 
     'express_overnight' => [
-        'code'          => 'express_overnight',
-        'title'         => 'Express Overnight',
-        'rate'          => '39.99', 
-        'class'         => 'Vendor\Express\Carriers\ExpressOvernight',
-        'features'      => ['tracking', 'insurance', 'signature'],
-        'days'          => '1',
-        'max_weight'    => 20.0,
+        'code' => 'express_overnight',
+        'title' => 'Express Overnight',
+        'rate' => '39.99',
+        'class' => 'Vendor\Express\Carriers\ExpressOvernight',
+        'features' => ['tracking', 'insurance', 'signature'],
+        'days' => '1',
+        'max_weight' => 20.0,
         'business_only' => true,
     ],
 ];
@@ -380,36 +382,36 @@ This pattern structures configuration around specific features and services, mak
 
 ```php
 'premium_shipping' => [
-    'code'      => 'premium_shipping',
-    'title'     => 'Premium White Glove Service',
-    'class'     => 'Vendor\Premium\Carriers\PremiumShipping',
+    'code' => 'premium_shipping',
+    'title' => 'Premium White Glove Service',
+    'class' => 'Vendor\Premium\Carriers\PremiumShipping',
     'base_rate' => '49.99',
     
     'features' => [
         'white_glove' => [
-            'fee'       => '25.00',
+            'fee' => '25.00',
             'min_value' => 500.00,
         ],
 
         'assembly' => [
-            'fee'   => '75.00',
+            'fee' => '75.00',
             'types' => ['furniture', 'equipment'],
         ],
 
         'appointment' => [
-            'fee'   => '15.00',
+            'fee' => '15.00',
             'slots' => ['morning', 'afternoon', 'evening'],
         ],
 
         'packaging' => [
-            'fee'      => '12.00',
+            'fee' => '12.00',
             'includes' => ['bubble_wrap', 'corner_protection'],
         ],
     ],
     
     'discounts' => [
-        'bundle_all'      => 0.25,
-        'volume_min'      => 1000.00,
+        'bundle_all' => 0.25,
+        'volume_min' => 1000.00,
         'volume_discount' => 0.10,
     ],
     
@@ -447,41 +449,41 @@ This pattern optimizes shipping for different geographic regions, each with uniq
 
 ```php
 'international_express' => [
-    'code'  => 'international_express',
+    'code' => 'international_express',
     'title' => 'International Express Shipping',
     'class' => 'Vendor\International\Carriers\InternationalExpress',
     
     'regions' => [
         'north_america' => [
-            'countries'  => ['US', 'CA', 'MX'],
-            'rate'       => '29.99',
-            'days'       => '3-5',
-            'features'   => ['tracking', 'customs_clearance', 'saturday'],
+            'countries' => ['US', 'CA', 'MX'],
+            'rate' => '29.99',
+            'days' => '3-5',
+            'features' => ['tracking', 'customs_clearance', 'saturday'],
             'max_weight' => 70.0,
             'prohibited' => ['batteries', 'liquids'],
         ],
 
         'europe' => [
-            'countries'   => ['GB', 'DE', 'FR', 'IT', 'ES'],
-            'rate'        => '39.99', 
-            'days'        => '5-7',
-            'features'    => ['tracking', 'customs_clearance'],
-            'max_weight'  => 50.0,
-            'prohibited'  => ['food', 'plants', 'medicines'],
+            'countries' => ['GB', 'DE', 'FR', 'IT', 'ES'],
+            'rate' => '39.99', 
+            'days' => '5-7',
+            'features' => ['tracking', 'customs_clearance'],
+            'max_weight' => 50.0,
+            'prohibited' => ['food', 'plants', 'medicines'],
             'brexit_docs' => true,
         ],
 
         'asia_pacific' => [
-            'countries'   => ['JP', 'AU', 'SG', 'HK'],
-            'rate'        => '49.99',
-            'days'        => '7-10',
-            'max_weight'  => 30.0,
-            'prohibited'  => ['electronics', 'food'],
+            'countries' => ['JP', 'AU', 'SG', 'HK'],
+            'rate' => '49.99',
+            'days' => '7-10',
+            'max_weight' => 30.0,
+            'prohibited' => ['electronics', 'food'],
             'local_agent' => true,
         ],
     ],
     
-    'currency'      => 'USD',
+    'currency' => 'USD',
     'fallback_rate' => '75.00',
 ];
 ```
@@ -514,21 +516,21 @@ For carriers that integrate with external shipping APIs, this pattern manages AP
 
 ```php
 'fedex_integration' => [
-    'code'  => 'fedex_integration',
+    'code' => 'fedex_integration',
     'title' => 'FedEx Express',
     'class' => 'Vendor\FedEx\Carriers\FedExIntegration',
     
     'api' => [
         'environment' => env('FEDEX_ENV', 'sandbox'),
 
-        'endpoints'   => [
+        'endpoints' => [
             'production' => 'https://apis.fedex.com/rate/v1/rates/quotes',
-            'sandbox'    => 'https://apis-sandbox.fedex.com/rate/v1/rates/quotes',
+            'sandbox' => 'https://apis-sandbox.fedex.com/rate/v1/rates/quotes',
         ],
 
         'credentials' => [
             'api_key' => env('FEDEX_API_KEY'),
-            'secret'  => env('FEDEX_SECRET_KEY'),
+            'secret' => env('FEDEX_SECRET_KEY'),
             'account' => env('FEDEX_ACCOUNT'),
         ],
 
@@ -537,24 +539,24 @@ For carriers that integrate with external shipping APIs, this pattern manages AP
     ],
     
     'services' => [
-        'FEDEX_GROUND'       => 'FedEx Ground',
-        'FEDEX_2_DAY'        => 'FedEx 2Day',
+        'FEDEX_GROUND' => 'FedEx Ground',
+        'FEDEX_2_DAY' => 'FedEx 2Day',
         'STANDARD_OVERNIGHT' => 'FedEx Standard Overnight',
         'PRIORITY_OVERNIGHT' => 'FedEx Priority Overnight',
     ],
     
     'cache' => [
         'enabled' => true,
-        'ttl'     => 300, // 5 minutes
-        'prefix'  => 'fedex_rates_',
+        'ttl' => 300, // 5 minutes
+        'prefix' => 'fedex_rates_',
     ],
     
     'fallback' => [
         'enabled' => true,
 
-        'rates'   => [
-            'ground'    => '8.99',
-            'express'   => '24.99',
+        'rates' => [
+            'ground' => '8.99',
+            'express' => '24.99',
             'overnight' => '45.99',
         ],
 
@@ -563,9 +565,9 @@ For carriers that integrate with external shipping APIs, this pattern manages AP
     
     'features' => [
         'real_time_rates' => true,
-        'live_tracking'   => true,
-        'insurance'       => true,
-        'signature'       => true,
+        'live_tracking' => true,
+        'insurance' => true,
+        'signature' => true,
     ],
 ];
 ```

@@ -39,9 +39,11 @@ php artisan vendor:publish --provider="Webkul\Varnish\Providers\VarnishServicePr
 Configure the alias in `config/varnish.php`:
 
 ```php
+use Webkul\Varnish\Facades\VarnishCache;
+
 return [
     'aliases' => [
-        'Varnish' => \Webkul\Varnish\Facades\VarnishCache::class,
+        'Varnish' => VarnishCache::class,
     ],
 ];
 ```
@@ -63,7 +65,7 @@ Install Varnish 6.x on your server.
 
 Replace `/etc/varnish/default.vcl` with the provided file:
 
-```
+```text
 Varnish/vcls/6.0.vcl
 ```
 
@@ -83,8 +85,7 @@ In `config/esi_views.php`, define a key and its Blade view path:
 
 ```php
 return [
-    'customer-desktop-dropdown' =>
-        'varnish::shop.components.layouts.header.desktop.customer-dropdown',
+    'customer-desktop-dropdown' => 'varnish::shop.components.layouts.header.desktop.customer-dropdown',
 ];
 ```
 

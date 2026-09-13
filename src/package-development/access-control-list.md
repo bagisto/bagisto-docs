@@ -16,7 +16,7 @@ To configure Access Control List (ACL) settings in Bagisto, follow these structu
 
  Begin by creating a new file named `acl.php` within the `Config` directory of your package located at `packages/Webkul/RMA/src/Config`:
 
-```
+```text
 └── packages
       └── Webkul
          └── RMA
@@ -38,20 +38,20 @@ Add the following code to `acl.php`:
 
 return [
     [
-        'key'   => 'rma',
-        'name'  => 'RMA',  // Using direct text for now
+        'key' => 'rma',
+        'name' => 'RMA',  // Using direct text for now
         'route' => 'admin.rma.return-requests.index',
-        'sort'  => 1,
+        'sort' => 1,
     ], [
-        'key'   => 'rma.return-requests',
-        'name'  => 'Return Requests',  // Using direct text for now
+        'key' => 'rma.return-requests',
+        'name' => 'Return Requests',  // Using direct text for now
         'route' => 'admin.rma.return-requests.index',
-        'sort'  => 1,
+        'sort' => 1,
     ], [
-        'key'   => 'rma.return-requests.view',
-        'name'  => 'View',  // Using direct text for now
+        'key' => 'rma.return-requests.view',
+        'name' => 'View',  // Using direct text for now
         'route' => 'admin.rma.return-requests.show',
-        'sort'  => 1,
+        'sort' => 1,
     ],
 ];
 ```
@@ -76,11 +76,11 @@ Create or update your translation file `packages/Webkul/RMA/src/Resources/lang/e
 return [
     'admin' => [
         // ...existing admin translations...
-        
+
         'menu' => [
             'rma' => 'RMA',
         ],
-        
+
         'acl' => [
             'rma' => 'RMA',
             'return-requests' => 'Return Requests',
@@ -99,20 +99,20 @@ Replace the direct text with translation keys in your `acl.php`:
 
 return [
     [
-        'key'   => 'rma',
-        'name'  => 'rma::app.admin.acl.rma',  // Now using translation key
+        'key' => 'rma',
+        'name' => 'rma::app.admin.acl.rma',  // Now using translation key
         'route' => 'admin.rma.return-requests.index',
-        'sort'  => 1,
+        'sort' => 1,
     ], [
-        'key'   => 'rma.return-requests',
-        'name'  => 'rma::app.admin.acl.return-requests',  // Now using translation key
+        'key' => 'rma.return-requests',
+        'name' => 'rma::app.admin.acl.return-requests',  // Now using translation key
         'route' => 'admin.rma.return-requests.index',
-        'sort'  => 1,
+        'sort' => 1,
     ], [
-        'key'   => 'rma.return-requests.view',
-        'name'  => 'rma::app.admin.acl.view',  // Now using translation key
+        'key' => 'rma.return-requests.view',
+        'name' => 'rma::app.admin.acl.view',  // Now using translation key
         'route' => 'admin.rma.return-requests.show',
-        'sort'  => 1,
+        'sort' => 1,
     ],
 ];
 ```
@@ -144,12 +144,12 @@ class RMAServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/admin-menu.php',
+            dirname(__DIR__).'/Config/admin-menu.php',
             'menu.admin'
         );
 
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/acl.php',
+            dirname(__DIR__).'/Config/acl.php',
             'acl'
         );
     }
@@ -159,14 +159,14 @@ class RMAServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
-        
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/admin-routes.php');
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/shop-routes.php');
-        
-        $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'rma');
-        
-        $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'rma');
+        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+
+        $this->loadRoutesFrom(__DIR__.'/../Routes/admin-routes.php');
+        $this->loadRoutesFrom(__DIR__.'/../Routes/shop-routes.php');
+
+        $this->loadViewsFrom(__DIR__.'/../Resources/views', 'rma');
+
+        $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'rma');
     }
 }
 ```
@@ -226,50 +226,50 @@ For packages with multiple admin sections, you can create hierarchical permissio
 return [
     // Main RMA permission
     [
-        'key'   => 'rma',
-        'name'  => 'RMA',  // Consider using translation key: rma::app.admin.acl.rma
+        'key' => 'rma',
+        'name' => 'RMA',  // Consider using translation key: rma::app.admin.acl.rma
         'route' => 'admin.rma.return-requests.index',
-        'sort'  => 1,
+        'sort' => 1,
     ], [
-        'key'   => 'rma.return-requests',
-        'name'  => 'Return Requests',  // Consider using translation key: rma::app.admin.acl.return-requests
+        'key' => 'rma.return-requests',
+        'name' => 'Return Requests',  // Consider using translation key: rma::app.admin.acl.return-requests
         'route' => 'admin.rma.return-requests.index',
-        'sort'  => 1,
+        'sort' => 1,
     ], [
-        'key'   => 'rma.return-requests.view',
-        'name'  => 'View',  // Consider using translation key: rma::app.admin.acl.view
+        'key' => 'rma.return-requests.view',
+        'name' => 'View',  // Consider using translation key: rma::app.admin.acl.view
         'route' => 'admin.rma.return-requests.show',
-        'sort'  => 1,
+        'sort' => 1,
     ], [
-        'key'   => 'rma.return-requests.create',
-        'name'  => 'Create',  // Consider using translation key: rma::app.admin.acl.create
+        'key' => 'rma.return-requests.create',
+        'name' => 'Create',  // Consider using translation key: rma::app.admin.acl.create
         'route' => 'admin.rma.return-requests.create',
-        'sort'  => 2,
+        'sort' => 2,
     ], [
-        'key'   => 'rma.return-requests.edit',
-        'name'  => 'Edit',  // Consider using translation key: rma::app.admin.acl.edit
+        'key' => 'rma.return-requests.edit',
+        'name' => 'Edit',  // Consider using translation key: rma::app.admin.acl.edit
         'route' => 'admin.rma.return-requests.edit',
-        'sort'  => 3,
+        'sort' => 3,
     ], [
-        'key'   => 'rma.return-requests.delete',
-        'name'  => 'Delete',  // Consider using translation key: rma::app.admin.acl.delete
+        'key' => 'rma.return-requests.delete',
+        'name' => 'Delete',  // Consider using translation key: rma::app.admin.acl.delete
         'route' => 'admin.rma.return-requests.delete',
-        'sort'  => 4,
+        'sort' => 4,
     ], [
-        'key'   => 'rma.settings',
-        'name'  => 'Settings',  // Consider using translation key: rma::app.admin.acl.settings
+        'key' => 'rma.settings',
+        'name' => 'Settings',  // Consider using translation key: rma::app.admin.acl.settings
         'route' => 'admin.rma.settings.index',
-        'sort'  => 2,
+        'sort' => 2,
     ], [
-        'key'   => 'rma.settings.view',
-        'name'  => 'View',  // Consider using translation key: rma::app.admin.acl.view
+        'key' => 'rma.settings.view',
+        'name' => 'View',  // Consider using translation key: rma::app.admin.acl.view
         'route' => 'admin.rma.settings.view',
-        'sort'  => 1,
+        'sort' => 1,
     ], [
-        'key'   => 'rma.settings.edit',
-        'name'  => 'Edit',  // Consider using translation key: rma::app.admin.acl.edit
+        'key' => 'rma.settings.edit',
+        'name' => 'Edit',  // Consider using translation key: rma::app.admin.acl.edit
         'route' => 'admin.rma.settings.edit',
-        'sort'  => 2,
+        'sort' => 2,
     ],
 ];
 ```

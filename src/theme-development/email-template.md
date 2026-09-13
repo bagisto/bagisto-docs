@@ -10,7 +10,7 @@ Email templates in Bagisto follow the same theming principles as your storefront
 
 Bagisto's email system uses Laravel's Mailable classes combined with Blade templates, following the same view resolution patterns as your theme:
 
-```
+```text
 Theme Structure for Emails:
 └── resources/themes/your-theme/
     └── views/
@@ -165,7 +165,7 @@ We are assuming you will change the layout to match your theme design, so we kee
 If you're developing a theme package (as covered in [Creating Custom Theme Package](/theme-development/creating-custom-theme-package)), email template customization follows the same principles as Method 1.
 
 ::: tip Package Structure
-Simply place your email templates in your package's `src/Resources/views/emails/` directory following the same path structure:
+Place your email templates in your package's `src/Resources/views/emails/` directory following the same path structure:
 - `src/Resources/views/emails/orders/created.blade.php`
 - `src/Resources/views/emails/layout.blade.php`
 :::

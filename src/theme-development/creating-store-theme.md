@@ -60,27 +60,27 @@ return [
 
     'shop' => [
         'default' => [
-            'name'        => 'Default',
+            'name' => 'Default',
             'assets_path' => 'public/themes/shop/default',
-            'views_path'  => 'resources/themes/default/views',
+            'views_path' => 'resources/themes/default/views',
 
-            'vite'        => [
-                'hot_file'                 => 'shop-default-vite.hot',
-                'build_directory'          => 'themes/shop/default/build',
+            'vite' => [
+                'hot_file' => 'shop-default-vite.hot',
+                'build_directory' => 'themes/shop/default/build',
                 'package_assets_directory' => 'src/Resources/assets',
             ],
 
-            'customize'   => [
+            'customize' => [
                 'sections' => [
                     SectionTypeEnum::IMAGE_CAROUSEL,
                     // ...
                 ],
 
                 'image_cache' => [
-                    'templates'       => [],
-                    'product_images'  => [],
+                    'templates' => [],
+                    'product_images' => [],
                     'category_images' => [],
-                    'swatch_images'   => [],
+                    'swatch_images' => [],
                 ],
             ],
         ],
@@ -109,25 +109,25 @@ return [
 
     'shop' => [
         'default' => [
-            'name'        => 'Default',
+            'name' => 'Default',
             'assets_path' => 'public/themes/shop/default',
-            'views_path'  => 'resources/themes/default/views',
+            'views_path' => 'resources/themes/default/views',
 
-            'vite'        => [
-                'hot_file'                 => 'shop-default-vite.hot',
-                'build_directory'          => 'themes/shop/default/build',
+            'vite' => [
+                'hot_file' => 'shop-default-vite.hot',
+                'build_directory' => 'themes/shop/default/build',
                 'package_assets_directory' => 'src/Resources/assets',
             ],
         ],
 
         'custom-theme' => [
-            'name'        => 'Custom Theme',
+            'name' => 'Custom Theme',
             'assets_path' => 'public/themes/shop/custom-theme',
-            'views_path'  => 'resources/themes/custom-theme/views',
+            'views_path' => 'resources/themes/custom-theme/views',
 
-            'vite'        => [
-                'hot_file'                 => 'shop-default-vite.hot',
-                'build_directory'          => 'themes/shop/default/build',
+            'vite' => [
+                'hot_file' => 'shop-default-vite.hot',
+                'build_directory' => 'themes/shop/default/build',
                 'package_assets_directory' => 'src/Resources/assets',
             ],
         ],

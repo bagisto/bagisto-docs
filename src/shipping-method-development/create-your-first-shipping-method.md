@@ -79,12 +79,15 @@ composer dump-autoload
 ```php{8}
 <?php
 
+use App\Providers\AppServiceProvider;
+use Webkul\CustomExpressShipping\Providers\CustomExpressShippingServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    
+    AppServiceProvider::class,
+
     // ... other providers ...
-    
-    Webkul\CustomExpressShipping\Providers\CustomExpressShippingServiceProvider::class,
+
+    CustomExpressShippingServiceProvider::class,
 ];
 ```
 
@@ -98,7 +101,7 @@ php artisan optimize:clear
 
 Now test the basic configuration that the generator created:
 
-1. **Go to Admin Panel**: Navigate to **Configuration → Sales → Shipping Methods**
+1. **Go to Admin Panel**: Navigate to **Configure → Sales → Shipping Methods**
 2. **Find Your Method**: Look for "Custom Express Shipping" section
 3. **Basic Configuration**: You'll see some basic configuration fields that can be adjusted as per your needs
 
@@ -150,14 +153,14 @@ Create the carriers configuration file that defines your shipping method propert
 
 return [
     'custom_express_shipping' => [
-        'code'         => 'custom_express_shipping',
-        'title'        => 'Express Delivery (1-2 Days)',
-        'description'  => 'Premium express shipping with tracking and insurance',
-        'active'       => true,
+        'code' => 'custom_express_shipping',
+        'title' => 'Express Delivery (1-2 Days)',
+        'description' => 'Premium express shipping with tracking and insurance',
+        'active' => true,
         'default_rate' => '19.99',
-        'type'         => 'per_order',
-        'class'        => 'Webkul\CustomExpressShipping\Carriers\CustomExpressShipping',
-    ]
+        'type' => 'per_order',
+        'class' => 'Webkul\CustomExpressShipping\Carriers\CustomExpressShipping',
+    ],
 ];
 ```
 
@@ -270,48 +273,48 @@ Create the admin interface configuration for your shipping method:
 
 return [
     [
-        'key'    => 'sales.carriers.custom_express_shipping',
-        'name'   => 'Custom Express Shipping',
-        'info'   => 'Configure the Custom Express Shipping method settings.',
-        'sort'   => 1,
+        'key' => 'sales.carriers.custom_express_shipping',
+        'name' => 'Custom Express Shipping',
+        'info' => 'Configure the Custom Express Shipping method settings.',
+        'sort' => 1,
         'fields' => [
             [
-                'name'          => 'active',
-                'title'         => 'Enabled',
-                'type'          => 'boolean',
+                'name' => 'active',
+                'title' => 'Enabled',
+                'type' => 'boolean',
                 'channel_based' => true,
-                'locale_based'  => false,
+                'locale_based' => false,
             ],
             [
-                'name'          => 'title',
-                'title'         => 'Method Title',
-                'type'          => 'text',
-                'depends'       => 'active:1',
-                'validation'    => 'required_if:active,1',
+                'name' => 'title',
+                'title' => 'Method Title',
+                'type' => 'text',
+                'depends' => 'active:1',
+                'validation' => 'required_if:active,1',
                 'channel_based' => true,
-                'locale_based'  => true,
+                'locale_based' => true,
             ],
             [
-                'name'          => 'description',
-                'title'         => 'Description',
-                'type'          => 'textarea',
-                'depends'       => 'active:1',
+                'name' => 'description',
+                'title' => 'Description',
+                'type' => 'textarea',
+                'depends' => 'active:1',
                 'channel_based' => true,
-                'locale_based'  => true,
+                'locale_based' => true,
             ],
             [
-                'name'          => 'default_rate',
-                'title'         => 'Base Rate',
-                'type'          => 'text',
-                'depends'       => 'active:1',
-                'validation'    => 'required_if:active,1|numeric|min:0',
+                'name' => 'default_rate',
+                'title' => 'Base Rate',
+                'type' => 'text',
+                'depends' => 'active:1',
+                'validation' => 'required_if:active,1|numeric|min:0',
                 'channel_based' => true,
-                'locale_based'  => false,
+                'locale_based' => false,
             ],
             [
-                'name'    => 'type',
-                'title'   => 'Pricing Type',
-                'type'    => 'select',
+                'name' => 'type',
+                'title' => 'Pricing Type',
+                'type' => 'select',
                 'depends' => 'active:1',
                 'options' => [
                     [
@@ -324,7 +327,7 @@ return [
                     ],
                 ],
                 'channel_based' => true,
-                'locale_based'  => false,
+                'locale_based' => false,
             ],
         ],
     ],
@@ -355,13 +358,13 @@ class CustomExpressShippingServiceProvider extends ServiceProvider
     {
         // merge carrier configuration
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/carriers.php',
+            dirname(__DIR__).'/Config/carriers.php',
             'carriers'
         );
 
-        // merge system configuration  
+        // merge system configuration
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/system.php',
+            dirname(__DIR__).'/Config/system.php',
             'core'
         );
     }
@@ -369,9 +372,7 @@ class CustomExpressShippingServiceProvider extends ServiceProvider
     /**
      * Bootstrap services.
      */
-    public function boot(): void
-    {
-    }
+    public function boot(): void {}
 }
 ```
 
@@ -403,12 +404,15 @@ composer dump-autoload
 ```php{8}
 <?php
 
+use App\Providers\AppServiceProvider;
+use Webkul\CustomExpressShipping\Providers\CustomExpressShippingServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    
+    AppServiceProvider::class,
+
     // ... other providers ...
-    
-    Webkul\CustomExpressShipping\Providers\CustomExpressShippingServiceProvider::class,
+
+    CustomExpressShippingServiceProvider::class,
 ];
 ```
 
@@ -424,7 +428,7 @@ Now let's test your custom express shipping method:
 
 ### Step 1: Enable in Admin
 
-1. Go to **Admin Panel → Configuration → Sales → Shipping Methods**
+1. Go to **Configure → Sales → Shipping Methods**
 2. Find **Custom Express Shipping** section
 3. Set **Enabled** to **Yes**
 4. Configure your rates and settings

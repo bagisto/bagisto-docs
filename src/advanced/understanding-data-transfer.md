@@ -18,7 +18,7 @@ We'll create an admin user importer for a custom package called `AdminImport`. A
 
 Start by creating an `AdminImporter.php` file under the `Importers` directory of your package:
 
-```
+```text
 └── packages
     └── Webkul
         └── AdminImport
@@ -61,9 +61,9 @@ Create the importer class by extending `AbstractImporter` and implementing the r
 namespace Webkul\AdminImport\Importers;
 
 use Illuminate\Support\Facades\Event;
+use Webkul\DataTransfer\Contracts\ImportBatch as ImportBatchContract;
 use Webkul\DataTransfer\Helpers\Import;
 use Webkul\DataTransfer\Helpers\Importers\AbstractImporter;
-use Webkul\DataTransfer\Contracts\ImportBatch as ImportBatchContract;
 
 class AdminImporter extends AbstractImporter
 {
@@ -104,7 +104,7 @@ class AdminImporter extends AbstractImporter
         $batch = $this->importBatchRepository->update([
             'state' => Import::STATE_PROCESSED,
 
-            'summary'      => [
+            'summary' => [
                 'created' => $this->getCreatedItemsCount(),
                 'updated' => $this->getUpdatedItemsCount(),
                 'deleted' => $this->getDeletedItemsCount(),
@@ -112,7 +112,7 @@ class AdminImporter extends AbstractImporter
         ], $batch->id);
 
         Event::dispatch('data_transfer.imports.batch.import.after', $batch);
-        
+
         return true;
     }
 }
@@ -164,14 +164,14 @@ Create a configuration file to define your custom importer settings:
 
 return [
     'admins' => [
-        'title'    => 'Admin Users', // add translation key if needed
+        'title' => 'Admin Users', // add translation key if needed
         'importer' => 'Webkul\AdminImport\Importers\AdminImporter',
 
         'sample_paths' => [
-            'csv'  => 'data-transfer/samples/csv/admins.csv',
-            'xls'  => 'data-transfer/samples/xls/admins.xls',
+            'csv' => 'data-transfer/samples/csv/admins.csv',
+            'xls' => 'data-transfer/samples/xls/admins.xls',
             'xlsx' => 'data-transfer/samples/xlsx/admins.xlsx',
-            'xml'  => 'data-transfer/samples/xml/admins.xml',
+            'xml' => 'data-transfer/samples/xml/admins.xml',
         ],
     ],
 ];
@@ -210,9 +210,7 @@ class AdminImportServiceProvider extends ServiceProvider
     /**
      * Bootstrap services.
      */
-    public function boot(): void
-    {
-    }
+    public function boot(): void {}
 }
 ```
 
@@ -258,11 +256,11 @@ Add `use Illuminate\Support\Facades\Validator;` to the imports at the top of the
 public function validateRow(array $rowData, int $rowNumber): bool
 {
     $validator = Validator::make($rowData, [
-        'name'     => 'required',
-        'email'    => 'required|email',
+        'name' => 'required',
+        'email' => 'required|email',
         'password' => 'required',
-        'status'   => 'required',
-        'role_id'  => 'required',
+        'status' => 'required',
+        'role_id' => 'required',
     ]);
 
     if ($validator->fails()) {
@@ -352,7 +350,7 @@ public function importBatch(ImportBatchContract $batch): bool
     $batch = $this->importBatchRepository->update([
         'state' => Import::STATE_PROCESSED,
 
-        'summary'      => [
+        'summary' => [
             'created' => $this->getCreatedItemsCount(),
             'updated' => $this->getUpdatedItemsCount(),
             'deleted' => $this->getDeletedItemsCount(),
@@ -360,7 +358,7 @@ public function importBatch(ImportBatchContract $batch): bool
     ], $batch->id);
 
     Event::dispatch('data_transfer.imports.batch.import.after', $batch);
-    
+
     return true;
 }
 ```
@@ -387,7 +385,7 @@ public function importBatch(ImportBatchContract $batch): bool
 
 Your final package structure should look like this:
 
-```
+```text
 └── packages
     └── Webkul
         └── AdminImport

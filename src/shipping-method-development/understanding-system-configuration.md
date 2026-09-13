@@ -11,7 +11,7 @@ This guide covers:
 
 ## Basic Configuration Structure
 
-System configuration creates admin interface fields for your shipping method. The section's `key` must be `sales.carriers.{code}`, which places it under **Configuration → Sales → Shipping Methods** and is the path `getConfigData()` reads:
+System configuration creates admin interface fields for your shipping method. The section's `key` must be `sales.carriers.{code}`, which places it under **Configure → Sales → Shipping Methods** and is the path `getConfigData()` reads:
 
 **File:** `packages/Webkul/CustomExpressShipping/src/Config/system.php`
 
@@ -20,35 +20,35 @@ System configuration creates admin interface fields for your shipping method. Th
 
 return [
     [
-        'key'    => 'sales.carriers.custom_express_shipping',
-        'name'   => 'Custom Express Shipping',
-        'info'   => 'Configure the Custom Express Shipping method settings.',
-        'sort'   => 3,
+        'key' => 'sales.carriers.custom_express_shipping',
+        'name' => 'Custom Express Shipping',
+        'info' => 'Configure the Custom Express Shipping method settings.',
+        'sort' => 3,
         'fields' => [
             [
-                'name'          => 'active',
-                'title'         => 'Enable Method',
-                'type'          => 'boolean',
+                'name' => 'active',
+                'title' => 'Enable Method',
+                'type' => 'boolean',
                 'channel_based' => true,
-                'locale_based'  => false,
+                'locale_based' => false,
             ],
             [
-                'name'          => 'title',
-                'title'         => 'Method Title',
-                'type'          => 'text',
-                'depends'       => 'active:1',
-                'validation'    => 'required_if:active,1',
+                'name' => 'title',
+                'title' => 'Method Title',
+                'type' => 'text',
+                'depends' => 'active:1',
+                'validation' => 'required_if:active,1',
                 'channel_based' => true,
-                'locale_based'  => true,
+                'locale_based' => true,
             ],
             [
-                'name'          => 'default_rate',
-                'title'         => 'Shipping Rate',
-                'type'          => 'text',
-                'depends'       => 'active:1',
-                'validation'    => 'required_if:active,1|numeric|min:0',
+                'name' => 'default_rate',
+                'title' => 'Shipping Rate',
+                'type' => 'text',
+                'depends' => 'active:1',
+                'validation' => 'required_if:active,1|numeric|min:0',
                 'channel_based' => true,
-                'locale_based'  => false,
+                'locale_based' => false,
             ],
         ],
     ],

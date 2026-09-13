@@ -23,7 +23,7 @@ Before starting this guide, make sure you have completed the [Creating Store The
 
 ## Understanding Package Structure
 
-Bagisto follows Laravel's package development conventions. A theme package contains all theme-related files in a self-contained structure that can be easily distributed and maintained.
+Bagisto follows Laravel's package development conventions. A theme package contains all theme-related files in a self-contained structure that can be distributed and maintained.
 
 ### Package vs Basic Theme Comparison
 
@@ -82,8 +82,6 @@ class CustomThemeServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
-     *
-     * @return void
      */
     public function register(): void
     {
@@ -92,13 +90,11 @@ class CustomThemeServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap services.
-     *
-     * @return void
      */
     public function boot(): void
     {
         $this->publishes([
-            __DIR__ . '/../Resources/views' => resource_path('themes/custom-theme/views'),
+            __DIR__.'/../Resources/views' => resource_path('themes/custom-theme/views'),
         ], 'custom-theme-views');
     }
 }
@@ -123,7 +119,7 @@ Take the home page template you created in the basic theme tutorial and move it 
 `packages/Webkul/CustomTheme/src/Resources/views/home/index.blade.php`
 
 ::: tip Moving Existing Files
-If you have an existing basic theme, you can simply copy the entire `views` directory from `resources/themes/custom-theme/views/` to `packages/Webkul/CustomTheme/src/Resources/views/` to move all your existing customizations.
+If you have an existing basic theme, copy the entire `views` directory from `resources/themes/custom-theme/views/` to `packages/Webkul/CustomTheme/src/Resources/views/` to move all your existing customizations.
 :::
 
 **Example template content:**
@@ -191,12 +187,15 @@ Add your service provider to `bootstrap/providers.php`:
 ```php{8}
 <?php
 
+use App\Providers\AppServiceProvider;
+use Webkul\CustomTheme\Providers\CustomThemeServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    
+    AppServiceProvider::class,
+
     // Other service providers...
-    
-    Webkul\CustomTheme\Providers\CustomThemeServiceProvider::class,
+
+    CustomThemeServiceProvider::class,
 ];
 ```
 
@@ -216,25 +215,25 @@ return [
 
     'shop' => [
         'default' => [
-            'name'        => 'Default',
+            'name' => 'Default',
             'assets_path' => 'public/themes/shop/default',
-            'views_path'  => 'resources/themes/default/views',
+            'views_path' => 'resources/themes/default/views',
 
-            'vite'        => [
-                'hot_file'                 => 'shop-default-vite.hot',
-                'build_directory'          => 'themes/shop/default/build',
+            'vite' => [
+                'hot_file' => 'shop-default-vite.hot',
+                'build_directory' => 'themes/shop/default/build',
                 'package_assets_directory' => 'src/Resources/assets',
             ],
         ],
 
         'custom-theme' => [
-            'name'        => 'Custom Theme Package',
+            'name' => 'Custom Theme Package',
             'assets_path' => 'public/themes/shop/custom-theme',
-            'views_path'  => 'resources/themes/custom-theme/views',
+            'views_path' => 'resources/themes/custom-theme/views',
 
-            'vite'        => [
-                'hot_file'                 => 'shop-default-vite.hot',
-                'build_directory'          => 'themes/shop/default/build',
+            'vite' => [
+                'hot_file' => 'shop-default-vite.hot',
+                'build_directory' => 'themes/shop/default/build',
                 'package_assets_directory' => 'src/Resources/assets',
             ],
         ],

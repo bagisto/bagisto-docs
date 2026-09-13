@@ -157,9 +157,8 @@ Bagisto follows established PHP standards for consistency and readability:
  * Register a service with CoreServiceProvider.
  *
  * @param  string|array  $loader
- * @param  \Closure|string|null  $concrete
+ * @param  Closure|string|null  $concrete
  * @param  bool  $shared
- * @return void
  */
 protected function registerFacades($loader, $concrete = null, $shared = false): void
 {

@@ -90,8 +90,6 @@ class ReturnRequestRepository extends Repository
 {
     /**
      * Specify the Model contract class name.
-     *
-     * @return string
      */
     public function model(): string
     {
@@ -144,7 +142,7 @@ $returnRequest = $this->returnRequestRepository->findOrFail($id);
 
 // Get first record matching conditions
 $firstPending = $this->returnRequestRepository->findWhere([
-    'status' => 'pending'
+    'status' => 'pending',
 ])->first();
 ```
 
@@ -154,7 +152,7 @@ $firstPending = $this->returnRequestRepository->findWhere([
 // Update by ID
 $returnRequest = $this->returnRequestRepository->update([
     'status' => 'approved',
-    'admin_notes' => 'Approved for return'
+    'admin_notes' => 'Approved for return',
 ], $id);
 ```
 
@@ -182,7 +180,7 @@ $specificReturns = $this->returnRequestRepository->findWhereIn('id', [1, 2, 3, 4
 // Find records where field value is between two values
 $recentReturns = $this->returnRequestRepository->findWhereBetween('created_at', [
     '2024-01-01',
-    '2024-12-31'
+    '2024-12-31',
 ]);
 ```
 
@@ -238,7 +236,7 @@ class ReturnRequestRepository extends Repository
     {
         return $this->findWhere([
             'customer_id' => $customerId,
-            'status' => 'pending'
+            'status' => 'pending',
         ]);
     }
 
@@ -310,7 +308,7 @@ $return = $repository->create([
     'product_name' => 'Test Product',
     'product_quantity' => 1,
     'reason' => 'Testing repository',
-    'status' => 'pending'
+    'status' => 'pending',
 ]);
 
 // Test retrieval

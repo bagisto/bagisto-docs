@@ -99,17 +99,21 @@ Register your package's service provider in the `bootstrap/providers.php` file l
 ```php{12}
 <?php
 
+use App\Providers\AppServiceProvider;
+use Webkul\Admin\Providers\AdminServiceProvider;
+use Webkul\RMA\Providers\RMAServiceProvider;
+
 return [
     /**
      * Application service providers.
      */
-    App\Providers\AppServiceProvider::class,
+    AppServiceProvider::class,
 
     /**
      * Webkul's service providers.
      */
-    Webkul\Admin\Providers\AdminServiceProvider::class,
-    Webkul\RMA\Providers\RMAServiceProvider::class,
+    AdminServiceProvider::class,
+    RMAServiceProvider::class,
     // ... the other Webkul providers
 ];
 ```
@@ -138,7 +142,7 @@ Manual setup requires good understanding of Laravel package development. If you'
 
 Inside the `packages/Webkul` folder, create a folder with your package name. Your structure should look like this:
 
-```
+```text
 └── packages
     └── Webkul
         └── RMA
@@ -146,7 +150,7 @@ Inside the `packages/Webkul` folder, create a folder with your package name. You
 
 In your package folder, create a folder named as `src`. This is where you'll put all your package-related files. Your updated structure will look like this:
 
-```
+```text
 └── packages
     └── Webkul
         └── RMA
@@ -157,7 +161,7 @@ In your package folder, create a folder named as `src`. This is where you'll put
 
 In the `src` folder, create a folder named as `Providers`. Inside that folder, create a file named as `RMAServiceProvider.php`. Your structure should look like this:
 
-```
+```text
 └── packages
     └── Webkul
         └── RMA
@@ -186,7 +190,7 @@ class RMAServiceProvider extends ServiceProvider
     {
         //
     }
-    
+
     /**
      * Bootstrap services.
      *
@@ -232,17 +236,21 @@ Register your package's service provider in the `bootstrap/providers.php` file l
 ```php{12}
 <?php
 
+use App\Providers\AppServiceProvider;
+use Webkul\Admin\Providers\AdminServiceProvider;
+use Webkul\RMA\Providers\RMAServiceProvider;
+
 return [
     /**
      * Application service providers.
      */
-    App\Providers\AppServiceProvider::class,
+    AppServiceProvider::class,
 
     /**
      * Webkul's service providers.
      */
-    Webkul\Admin\Providers\AdminServiceProvider::class,
-    Webkul\RMA\Providers\RMAServiceProvider::class,
+    AdminServiceProvider::class,
+    RMAServiceProvider::class,
     // ... the other Webkul providers
 ];
 ```

@@ -56,12 +56,12 @@ This command will:
 Once installed, access the interactive API documentation under your store's URL:
 
 ### Admin API Documentation
-```
+```text
 https://yourdomain.com/api/admin/documentation
 ```
 
 ### Shop API Documentation  
-```
+```text
 https://yourdomain.com/api/shop/documentation
 ```
 
@@ -115,8 +115,8 @@ Connect external systems with your Bagisto store:
 ```php
 // Example: Update a product from an external system
 $response = Http::withToken($token)->put("https://yourdomain.com/api/v1/admin/catalog/products/{$productId}", [
-    'name'  => 'Product Name',
-    'sku'   => 'PROD-001',
+    'name' => 'Product Name',
+    'sku' => 'PROD-001',
     'price' => 99.99,
 ]);
 ```

@@ -63,10 +63,10 @@ Create `packages/Webkul/RMA/src/Http/Controllers/Controller.php`:
 
 namespace Webkul\RMA\Http\Controllers;
 
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {
@@ -197,8 +197,8 @@ use Illuminate\Support\Facades\Route;
 use Webkul\RMA\Http\Controllers\Admin\ReturnRequestController;
 
 Route::group([
-    'middleware' => ['web', 'admin'], 
-    'prefix' => config('app.admin_url')
+    'middleware' => ['web', 'admin'],
+    'prefix' => config('app.admin_url'),
 ], function () {
     /**
      * Return request routes.
@@ -224,7 +224,7 @@ use Illuminate\Support\Facades\Route;
 use Webkul\RMA\Http\Controllers\Shop\ReturnRequestController;
 
 Route::group([
-    'middleware' => ['web', 'shop']
+    'middleware' => ['web', 'shop'],
 ], function () {
     /**
      * Customer return request routes.

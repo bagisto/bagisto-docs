@@ -24,7 +24,7 @@ between the two lines; see [Writing a template class](#writing-a-template-class)
    that file maps `small`, `medium` and `large` to
    `Webkul\Shop\CacheFilters\{Small,Medium,Large}`, which pick their size from
    the URL: product images use the sizes set in
-   **Configuration → Catalog → Products** (or 100×100, 350×360 and 560×610),
+   **Configure → Catalog → Products** (or 100×100, 350×360 and 560×610),
    category images 80, 110 and 165 pixels square, swatches 60, 210 and 330,
    and anything else, such as a slider image, 768×280, 1024×372 and 1280×467.
 2. **Theme templates** come from
@@ -48,22 +48,22 @@ public `applyFilter()` method.
 ```php
 'shop' => [
     'fashion' => [
-        'name'        => 'Fashion',
+        'name' => 'Fashion',
         'assets_path' => 'public/themes/shop/fashion',
-        'views_path'  => 'resources/themes/fashion/views',
+        'views_path' => 'resources/themes/fashion/views',
 
         // ...
 
         'customize' => [
             'image_cache' => [
                 'templates' => [
-                    'small'        => \Webkul\Fashion\ImageTemplates\Small::class,
+                    'small' => \Webkul\Fashion\ImageTemplates\Small::class,
                     'product_card' => \Webkul\Fashion\ImageTemplates\ProductCard::class,
                 ],
 
-                'product_images'  => ['product_card'],
+                'product_images' => ['product_card'],
                 'category_images' => [],
-                'swatch_images'   => [],
+                'swatch_images' => [],
             ],
         ],
     ],
@@ -154,12 +154,12 @@ URLs are built:
 $image = product_image()->getProductBaseImage($product);
 
 // [
-//     'small_image_url'        => 'https://store.test/cache/small/product/1/abc.webp',
-//     'medium_image_url'       => '...',
-//     'large_image_url'        => '...',
+//     'small_image_url' => 'https://store.test/cache/small/product/1/abc.webp',
+//     'medium_image_url' => '...',
+//     'large_image_url' => '...',
 //     'product_card_image_url' => 'https://store.test/cache/product_card/product/1/abc.webp',
-//     'original_image_url'     => '...',
-//     'alt'                    => 'Product name',
+//     'original_image_url' => '...',
+//     'alt' => 'Product name',
 // ]
 ```
 

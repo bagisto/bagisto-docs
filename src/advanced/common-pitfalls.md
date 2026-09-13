@@ -76,7 +76,7 @@ Bagisto defaults to `SESSION_DRIVER=database`, and on the current development ve
 
 ### Files Vanish After Switching Storage
 
-Choosing Amazon S3 or Cloudflare R2 under **Configuration → File Management** changes where new uploads go; files already on the local disk are not copied, and the storefront looks for them on the new disk. Copy `storage/app/public` to the bucket first. See [File Storage](./file-storage.md).
+Choosing Amazon S3 or Cloudflare R2 under **Configure → File Management** changes where new uploads go; files already on the local disk are not copied, and the storefront looks for them on the new disk. Copy `storage/app/public` to the bucket first. See [File Storage](./file-storage.md).
 
 ## Package Development
 
@@ -154,7 +154,7 @@ If you've run `php artisan config:cache`, the cached config takes precedence ove
 
 ### Response Cache Serving Old Pages
 
-If storefront pages show stale content after product/category changes, the FPC event listeners may not be covering your change. The cache is switched on under **Configuration → Cache Management → Full Page Cache** (there is no `RESPONSE_CACHE_ENABLED` variable); flush it from the same page or from the console:
+If storefront pages show stale content after product/category changes, the FPC event listeners may not be covering your change. The cache is switched on under **Configure → Cache Management → Full Page Cache** (there is no `RESPONSE_CACHE_ENABLED` variable); flush it from the same page or from the console:
 
 ```bash
 php artisan responsecache:clear
@@ -217,7 +217,7 @@ If a custom admin menu item doesn't respect ACL, verify that:
 If product search fails with Elasticsearch errors, verify:
 
 1. Elasticsearch is running and accessible
-2. The host and credentials under **Configuration → Search Engines → Elasticsearch** (or `ELASTICSEARCH_*` in `.env`, which those settings fall back to) are correct; the **Test Connection** button on that page reports `unreachable`, `unauthorized`, `incompatible` or `misconfigured`
+2. The host and credentials under **Configure → Search Engines → Elasticsearch** (or `ELASTICSEARCH_*` in `.env`, which those settings fall back to) are correct; the **Test Connection** button on that page reports `unreachable`, `unauthorized`, `incompatible` or `misconfigured`
 3. The server is an Elasticsearch 8.x cluster, which is what the `elasticsearch/elasticsearch` client targets
 
 ```bash

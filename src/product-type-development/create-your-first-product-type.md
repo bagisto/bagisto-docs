@@ -31,10 +31,10 @@ Create `packages/Webkul/SubscriptionProduct/src/Config/product_types.php`:
 
 return [
     'subscription' => [
-        'key'   => 'subscription',
-        'name'  => 'subscription::app.type.subscription',
+        'key' => 'subscription',
+        'name' => 'subscription::app.type.subscription',
         'class' => 'Webkul\SubscriptionProduct\Type\Subscription',
-        'sort'  => 8,
+        'sort' => 8,
     ],
 ];
 ```
@@ -50,6 +50,7 @@ Create `packages/Webkul/SubscriptionProduct/src/Type/Subscription.php`:
 
 namespace Webkul\SubscriptionProduct\Type;
 
+use Webkul\Product\Helpers\Indexers\Price\Simple;
 use Webkul\Product\Helpers\Indexers\Price\Simple as SimpleIndexer;
 use Webkul\Product\Type\AbstractType;
 
@@ -58,7 +59,7 @@ class Subscription extends AbstractType
     /**
      * Get the price indexer for this product type.
      *
-     * @return \Webkul\Product\Helpers\Indexers\Price\Simple
+     * @return Simple
      */
     public function getPriceIndexer()
     {
@@ -144,12 +145,15 @@ composer dump-autoload
 ```php{8}
 <?php
 
+use App\Providers\AppServiceProvider;
+use Webkul\SubscriptionProduct\Providers\SubscriptionServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    
+    AppServiceProvider::class,
+
     // ... other providers ...
-    
-    Webkul\SubscriptionProduct\Providers\SubscriptionServiceProvider::class,
+
+    SubscriptionServiceProvider::class,
 ];
 ```
 

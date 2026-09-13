@@ -192,7 +192,7 @@ Always implement comprehensive error handling in your payment methods:
 /**
  * Handle payment errors gracefully.
  */
-protected function handlePaymentError(\Exception $e)
+protected function handlePaymentError(Exception $e)
 {
     Log::error('Payment error in '.$this->code, [
         'error' => $e->getMessage(),
@@ -201,7 +201,7 @@ protected function handlePaymentError(\Exception $e)
 
     return [
         'success' => false,
-        'error'   => trans('custom-stripe::app.payment.failed'),
+        'error' => trans('custom-stripe::app.payment.failed'),
     ];
 }
 ```
@@ -221,10 +221,10 @@ Proper logging helps you track payment activities and troubleshoot issues withou
 protected function logPaymentActivity($action, $data = [])
 {
     $sanitizedData = array_diff_key($data, [
-        'api_key'     => '',
-        'secret_key'  => '',
+        'api_key' => '',
+        'secret_key' => '',
         'card_number' => '',
-        'cvv'         => '',
+        'cvv' => '',
     ]);
 
     Log::info("Payment {$action} for {$this->code}", $sanitizedData);

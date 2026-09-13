@@ -170,14 +170,14 @@ class RMAServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
-        
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/admin-routes.php');
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/shop-routes.php');
-        
-        $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'rma');
-        
-        $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'rma');
+        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+
+        $this->loadRoutesFrom(__DIR__.'/../Routes/admin-routes.php');
+        $this->loadRoutesFrom(__DIR__.'/../Routes/shop-routes.php');
+
+        $this->loadViewsFrom(__DIR__.'/../Resources/views', 'rma');
+
+        $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'rma');
     }
 }
 ```
@@ -193,7 +193,7 @@ If you want to allow users to customize your package's translations, you can mak
 ```php
 // Add to the boot() method in RMAServiceProvider
 $this->publishes([
-    __DIR__ . '/../Resources/lang' => lang_path('vendor/rma'),
+    __DIR__.'/../Resources/lang' => lang_path('vendor/rma'),
 ], 'rma-translations');
 ```
 
@@ -271,7 +271,7 @@ class ReturnRequestController extends Controller
 ```
 
 ::: tip Simple Controller Integration
-For now, our controller simply renders the view. As we add more functionality like create, edit, and delete operations, we'll expand the translation usage for success messages and validation feedback.
+For now, our controller only renders the view. As we add more functionality like create, edit, and delete operations, we'll expand the translation usage for success messages and validation feedback.
 :::
 
 ### Translation Helper Functions
@@ -319,7 +319,7 @@ App::setLocale('en');
 echo __('rma::app.admin.return-requests.title'); // Should output: "RMA Listing Title"
 
 // Test fallback behavior
-App::setLocale('fr'); 
+App::setLocale('fr');
 echo __('rma::app.admin.return-requests.title'); // Should fallback to English since French not defined
 ```
 

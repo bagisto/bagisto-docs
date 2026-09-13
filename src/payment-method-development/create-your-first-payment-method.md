@@ -76,12 +76,15 @@ composer dump-autoload
 ```php{8}
 <?php
 
+use App\Providers\AppServiceProvider;
+use Webkul\CustomStripePayment\Providers\CustomStripePaymentServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    
+    AppServiceProvider::class,
+
     // ... other providers ...
-    
-    Webkul\CustomStripePayment\Providers\CustomStripePaymentServiceProvider::class,
+
+    CustomStripePaymentServiceProvider::class,
 ];
 ```
 
@@ -95,7 +98,7 @@ php artisan optimize:clear
 
 Now test the basic configuration that the generator created:
 
-1. **Go to Admin Panel**: Navigate to **Configuration → Sales → Payment Methods**
+1. **Go to Admin Panel**: Navigate to **Configure → Sales → Payment Methods**
 2. **Find Your Method**: Look for "Custom Stripe Payment" section
 3. **Basic Configuration**: You'll see some basic configuration fields that can be adjusted as per your needs
 
@@ -135,13 +138,13 @@ Create the payment methods configuration file:
 
 return [
     'custom_stripe_payment' => [
-        'code'        => 'custom_stripe_payment',
-        'title'       => 'Credit Card (Stripe)',
+        'code' => 'custom_stripe_payment',
+        'title' => 'Credit Card (Stripe)',
         'description' => 'Secure credit card payments powered by Stripe',
-        'class'            => 'Webkul\CustomStripePayment\Payment\CustomStripePayment',
-        'active'           => true,
+        'class' => 'Webkul\CustomStripePayment\Payment\CustomStripePayment',
+        'active' => true,
         'generate_invoice' => false,
-        'sort'             => 1,
+        'sort' => 1,
     ],
 ];
 ```
@@ -210,52 +213,52 @@ Create the admin interface configuration:
 
 return [
     [
-        'key'    => 'sales.payment_methods.custom_stripe_payment',
-        'name'   => 'Custom Stripe Payment',
-        'info'   => 'Custom Stripe Payment Method Configuration',
-        'sort'   => 1,
+        'key' => 'sales.payment_methods.custom_stripe_payment',
+        'name' => 'Custom Stripe Payment',
+        'info' => 'Custom Stripe Payment Method Configuration',
+        'sort' => 1,
         'fields' => [
             [
-                'name'          => 'active',
-                'title'         => 'Status',
-                'type'          => 'boolean',
+                'name' => 'active',
+                'title' => 'Status',
+                'type' => 'boolean',
                 'channel_based' => true,
-                'locale_based'  => false,
+                'locale_based' => false,
             ],
             [
-                'name'          => 'title',
-                'title'         => 'Title',
-                'type'          => 'text',
-                'depends'       => 'active:1',
-                'validation'    => 'required_if:active,1',
+                'name' => 'title',
+                'title' => 'Title',
+                'type' => 'text',
+                'depends' => 'active:1',
+                'validation' => 'required_if:active,1',
                 'channel_based' => true,
-                'locale_based'  => true,
+                'locale_based' => true,
             ],
             [
-                'name'          => 'description',
-                'title'         => 'Description',
-                'type'          => 'textarea',
-                'depends'       => 'active:1',
+                'name' => 'description',
+                'title' => 'Description',
+                'type' => 'textarea',
+                'depends' => 'active:1',
                 'channel_based' => true,
-                'locale_based'  => true,
+                'locale_based' => true,
             ],
             [
-                'name'          => 'image',
-                'title'         => 'Logo',
-                'type'          => 'image',
-                'depends'       => 'active:1',
-                'validation'    => 'mimes:bmp,jpeg,jpg,png,webp',
+                'name' => 'image',
+                'title' => 'Logo',
+                'type' => 'image',
+                'depends' => 'active:1',
+                'validation' => 'mimes:bmp,jpeg,jpg,png,webp',
                 'channel_based' => true,
-                'locale_based'  => false,
+                'locale_based' => false,
             ],
             [
-                'name'          => 'sort',
-                'title'         => 'Sort Order',
-                'type'          => 'number',
-                'depends'       => 'active:1',
-                'validation'    => 'required_if:active,1|integer|min:1',
+                'name' => 'sort',
+                'title' => 'Sort Order',
+                'type' => 'number',
+                'depends' => 'active:1',
+                'validation' => 'required_if:active,1|integer|min:1',
                 'channel_based' => true,
-                'locale_based'  => false,
+                'locale_based' => false,
             ],
         ],
     ],
@@ -286,13 +289,13 @@ class CustomStripePaymentServiceProvider extends ServiceProvider
     {
         // merge payment method configuration
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/payment-methods.php',
+            dirname(__DIR__).'/Config/payment-methods.php',
             'payment_methods'
         );
 
-        // merge system configuration  
+        // merge system configuration
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/system.php',
+            dirname(__DIR__).'/Config/system.php',
             'core'
         );
     }
@@ -300,9 +303,7 @@ class CustomStripePaymentServiceProvider extends ServiceProvider
     /**
      * Bootstrap services.
      */
-    public function boot(): void
-    {
-    }
+    public function boot(): void {}
 }
 ```
 
@@ -335,12 +336,15 @@ composer dump-autoload
 ```php{8}
 <?php
 
+use App\Providers\AppServiceProvider;
+use Webkul\CustomStripePayment\Providers\CustomStripePaymentServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    
+    AppServiceProvider::class,
+
     // ... other providers ...
-    
-    Webkul\CustomStripePayment\Providers\CustomStripePaymentServiceProvider::class,
+
+    CustomStripePaymentServiceProvider::class,
 ];
 ```
 
@@ -356,7 +360,7 @@ Now let's test your custom payment method:
 
 ### Step 1: Enable in Admin
 
-1. Go to **Admin Panel → Configuration → Sales → Payment Methods**
+1. Go to **Configure → Sales → Payment Methods**
 2. Find **Custom Stripe Payment** section
 3. Set **Enabled** to **Yes**
 4. Configure your payment settings

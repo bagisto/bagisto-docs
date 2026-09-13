@@ -75,15 +75,15 @@ Create `packages/Webkul/RMA/src/Routes/admin-routes.php`:
 use Illuminate\Support\Facades\Route;
 
 Route::group([
-    'middleware' => ['web', 'admin'], 
-    'prefix' => config('app.admin_url')
+    'middleware' => ['web', 'admin'],
+    'prefix' => config('app.admin_url'),
 ], function () {
     /**
      * Return request routes.
      */
     Route::prefix('rma/return-requests')->group(function () {
         /**
-         * First route. 
+         * First route.
          */
         Route::get('', function () {
             return 'Admin RMA Return Requests List';
@@ -115,7 +115,7 @@ Create `packages/Webkul/RMA/src/Routes/shop-routes.php`:
 use Illuminate\Support\Facades\Route;
 
 Route::group([
-    'middleware' => ['web', 'shop']
+    'middleware' => ['web', 'shop'],
 ], function () {
     // Leave it blank for now...
 });
@@ -165,10 +165,10 @@ class RMAServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
-        
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/admin-routes.php');
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/shop-routes.php');
+        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+
+        $this->loadRoutesFrom(__DIR__.'/../Routes/admin-routes.php');
+        $this->loadRoutesFrom(__DIR__.'/../Routes/shop-routes.php');
     }
 }
 ```

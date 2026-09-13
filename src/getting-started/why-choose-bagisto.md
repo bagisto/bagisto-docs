@@ -18,6 +18,10 @@ Bagisto comes with robust SEO features right out of the box, helping your store 
 
 Whether your customers prefer local payment gateways or international options, Bagisto has you covered. With support for multiple payment methods and seamless integration with major shipping providers, order fulfillment becomes smooth and efficient.
 
+## 🤖 Generative AI and Agentic Commerce, Built In
+
+Bagisto ships with AI in the core rather than as an add-on. [Magic AI](../ai/magic-ai.md) brings generative AI to the admin and the storefront: it writes product and page copy, generates product images, translates reviews, understands the photos shoppers search with, and personalises the order confirmation, on any of eight AI providers including self-hosted Ollama. On the storefront, [WebMCP](../ai/webmcp.md) declares the shop's actions as tools for browser AI agents, so an agent can search, open a product, manage a wishlist and reach checkout for the shopper. Developers get [agent skills and llms.txt](../ai/introduction.md) that teach their coding agents Bagisto's conventions. See [AI in Bagisto](../ai/introduction.md) for what each capability does and does not do.
+
 ## 🎯 Visual Builder for Effortless Store Customization
 
 Want to design your store without writing code? Check out [Bagisto Visual](https://visual.bagistoplus.com/), a powerful visual builder created by our dedicated community contributors. Build and customize your Bagisto store with an intuitive drag-and-drop interface, making professional eCommerce design accessible to everyone. Explore it on [GitHub](https://github.com/bagistoplus/visual) and see how easy store building can be.

@@ -1,9 +1,10 @@
 # AI in Bagisto
 
-Bagisto ships with AI built in — both **inside your store** and **inside your development
-workflow**. This page is the home for everything AI-related: store features powered by AI,
-the hooks that let AI agents shop your store, and tools that make the AI agents *you* build
-with smarter about Bagisto.
+Bagisto ships with AI built in, on three fronts: **generative AI** that writes, translates
+and draws for the merchant and the shopper, **agentic AI** hooks that let an AI agent act on
+the storefront, and tooling that makes the coding agents *you* build with fluent in Bagisto.
+Together they are Bagisto's path to **agentic commerce**, where an AI assistant can help run
+a store and an AI agent can shop it on someone's behalf. This page is the home for all of it.
 
 <div class="ai-cards__group-title">For your store</div>
 
@@ -11,16 +12,16 @@ with smarter about Bagisto.
   <a class="ai-card" href="/ai/magic-ai.html">
     <div class="ai-card__title">✨ Magic AI</div>
     <div class="ai-card__desc">
-      Generate product content &amp; images, image search, review translation and personalised
-      checkout messages — powered by your choice of AI provider.
+      Generative AI for the store: product content &amp; images, image search, review
+      translation and personalised checkout messages, on the AI provider of your choice.
     </div>
   </a>
 
   <a class="ai-card" href="/ai/webmcp.html">
     <div class="ai-card__title">🤖 WebMCP</div>
     <div class="ai-card__desc">
-      Storefront tools declared for browser AI agents, so an agent can search, open a product,
-      manage the wishlist and reach checkout on a shopper's behalf.
+      Agentic AI on the storefront: tools declared for browser agents, so an agent can search,
+      open a product, manage the wishlist and reach checkout on a shopper's behalf.
     </div>
   </a>
 </div>
@@ -45,20 +46,21 @@ with smarter about Bagisto.
   </a>
 </div>
 
-## Agentic commerce
+## Three kinds of AI, and what each one does
 
-"Agentic commerce" means two things for a store: the merchant's own work is assisted by
-AI, and the shopper may be an AI agent acting for a person. Bagisto covers both sides with
-features that are already in the core, and this section describes exactly what each one
-does rather than what it might grow into.
+The terms are used deliberately, because they describe different things:
 
-| Side | Feature | What it does today |
+| Term | Meaning here | Where Bagisto has it today |
 |---|---|---|
-| Merchant | [Magic AI](/ai/magic-ai) | Writes and translates content, generates images, answers image searches, personalises the order confirmation |
-| Shopper | [WebMCP](/ai/webmcp) | Declares seven storefront actions to browsers that expose the WebMCP `navigator.modelContext` API, so an agent in the browser can act on the page |
-| Developer | [Agent Skills](/ai/agent-skills), [llms.txt](/ai/llms-txt) | Give coding agents Bagisto's conventions and architecture |
+| **Generative AI** | A model produces content: text, translations, keywords, images | [Magic AI](/ai/magic-ai): product and page copy, product images, review translation, the keywords behind image search, the checkout message |
+| **Agentic AI** | An AI agent performs actions through tools rather than only producing text | [WebMCP](/ai/webmcp): seven storefront actions exposed to browser agents; [Agent Skills](/ai/agent-skills): coding agents that build Bagisto packages and themes |
+| **Agentic commerce** | Commerce in which AI assists the merchant and can act for the shopper | The combination of the two above, in the core, with no separate product to install |
 
-## Magic AI — built into your store
+What Bagisto does **not** claim: Magic AI does not run your store on its own, and WebMCP does
+not complete a purchase without the shopper. Every generated text is applied by an admin, and
+every WebMCP tool ends in an ordinary storefront page where the person is still in charge.
+
+## Magic AI — generative AI built into your store
 
 [Magic AI](/ai/magic-ai) is a first-class Bagisto feature. Add an API key for any
 supported provider and you can:
@@ -73,7 +75,7 @@ Magic AI works with **OpenAI, Anthropic, Gemini, Groq, xAI, DeepSeek, Mistral, a
 Admin features let you choose which providers are offered; storefront features are
 configured per channel with a model each.
 
-## WebMCP — let agents shop
+## WebMCP — agentic AI on the storefront
 
 [WebMCP](/ai/webmcp) is the browser-side counterpart. The storefront layout declares its
 search, product, wishlist, cart, checkout and newsletter actions as tools, and registers them

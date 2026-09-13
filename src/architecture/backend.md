@@ -19,7 +19,7 @@ Bagisto is built on a modular architecture that enhances flexibility, scalabilit
 
 Every Bagisto module follows a standardized structure that ensures consistency and simplifies management. A typical module includes:
 
-```
+```text
 packages/Webkul/Module/
 ├── src/
 │   ├── Config/
@@ -106,7 +106,7 @@ By adopting the **Repository Pattern** with the Prettus Repository package, Bagi
 
 ## Available Packages In Bagisto
 
-Bagisto comes with a comprehensive collection of packages that demonstrate the power of its modular architecture and repository pattern implementation. Each package follows the same standardized structure and design principles, allowing developers to easily understand, extend, and customize functionality across the entire platform.
+Bagisto comes with a comprehensive collection of packages that demonstrate the power of its modular architecture and repository pattern implementation. Each package follows the same standardized structure and design principles, allowing developers to understand, extend, and customize functionality across the entire platform.
 
 Laravel packages are the primary way of adding functionality. The following features are distributed into packages to enhance the application and allow developers to follow the standard way of developing custom functionality.
 
@@ -378,13 +378,13 @@ This package provides advanced caching mechanisms to store generated pages in me
 
 ### GDPR
 
-The GDPR Package in Bagisto allows customers to easily raise requests to update, modify, or delete their personal data stored on the platform. This feature empowers customers by giving them greater control over their information and ensures that businesses comply with data protection laws like the GDPR.
+The GDPR Package in Bagisto lets customers raise requests to update, modify, or delete their personal data stored on the platform. This feature empowers customers by giving them greater control over their information and ensures that businesses comply with data protection laws like the GDPR.
 
 #### Key Features of the GDPR Package
 
 - Customer-Initiated Data Modification Requests
     - Customers can raise requests to modify or update their personal details (such as email, name, address, etc.) in their account settings.
-    - Customers can easily request to delete their personal data from the system. This is in accordance with the GDPR’s "Right to Erasure," which allows individuals to request the deletion of their data from systems that no longer need it.
+    - Customers can request to delete their personal data from the system. This is in accordance with the GDPR’s "Right to Erasure," which allows individuals to request the deletion of their data from systems that no longer need it.
     - Customers can revoke consent for data processing, allowing businesses to stop collecting or using their data. The system keeps track of revocation timestamps (revoked_at), ensuring compliance with GDPR.
     - While the customers can submit requests, the admin can review, approve, or reject them via the admin panel. The admin can also track the progress and history of these requests.
 
@@ -412,7 +412,7 @@ The Inventory package in Bagisto offers comprehensive tools to manage and track 
 
 ### MagicAI 
 
-The MagicAI package integrates text and image generation, image search, review translation and checkout messages into the admin and the storefront, through the Laravel AI SDK and any of eight providers. It is documented on the [Magic AI](../ai/magic-ai.md) page.
+The MagicAI package is Bagisto's generative AI layer: text and image generation, image search, review translation and checkout messages in the admin and the storefront, through the Laravel AI SDK and any of eight providers. It is documented on the [Magic AI](../ai/magic-ai.md) page; the storefront's agent tools live in the Shop package and are documented under [WebMCP](../ai/webmcp.md).
 
 ### Marketing 
 
@@ -522,7 +522,7 @@ The SocialLogin package in Bagisto empowers e-commerce businesses to enhance use
 
 ### SocialShare
 
- This package enables customers to easily share products, categories, and content across various social media platforms, enhancing visibility and engagement.
+ This package lets customers share products, categories, and content across various social media platforms, enhancing visibility and engagement.
 
 ### Tax
 

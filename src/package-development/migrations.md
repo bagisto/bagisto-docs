@@ -57,7 +57,7 @@ class RMAServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
     }
 }
 ```
@@ -237,7 +237,7 @@ php artisan migrate
 ```
 
 You should see output similar to:
-```
+```text
 2025_01_01_000000_create_rma_requests_table ............... 75.34ms DONE
 ```
 

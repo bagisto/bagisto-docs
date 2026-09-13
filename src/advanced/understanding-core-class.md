@@ -43,13 +43,21 @@ The Core class maintains several protected properties for caching and performanc
 
 ```php
 protected $currentChannel;    // Cached current channel
-protected $defaultChannel;    // Cached default channel  
+
+protected $defaultChannel;    // Cached default channel
+
 protected $currentCurrency;   // Cached current currency
+
 protected $baseCurrency;      // Cached base currency
+
 protected $currentLocale;     // Cached current locale
+
 protected $guestCustomerGroup; // Cached guest customer group
+
 protected $exchangeRates = []; // Cached exchange rates
+
 protected $taxCategoriesById = []; // Cached tax categories
+
 protected $singletonInstances = []; // Cached singleton instances
 ```
 

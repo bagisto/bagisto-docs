@@ -84,7 +84,7 @@ php artisan indexer:index --mode=full
 | `--type` | `inventory`, `price`, `flat`, `search` | Select which indexer(s) to run (repeatable). Default: all four |
 | `--mode` | `full`, `selective` | Full reindex vs. incremental (default `selective`) |
 
-The `search` indexer runs only when an external search engine is enabled in **Configuration → Search Engines**, and only in `full` mode. An unknown type prints a warning rather than failing.
+The `search` indexer runs only when an external search engine is enabled in **Configure → Search Engines**, and only in `full` mode. An unknown type prints a warning rather than failing.
 
 ::: info Bagisto 2.4
 On 2.4 the search indexer is selected with `--type=elastic`, and it runs only when the search engine setting is `elastic`.
@@ -116,7 +116,7 @@ Fetches and updates currency exchange rates from the configured external provide
 php artisan exchange-rate:update
 ```
 
-The provider, its API key and the schedule are set under **Configuration → General → Exchange Rates**; the schedule is applied by the Laravel scheduler when enabled there.
+The provider, its API key and the schedule are set under **Configure → General → Exchange Rates**; the schedule is applied by the Laravel scheduler when enabled there.
 
 **Source:** `Webkul\Core\Console\Commands\ExchangeRateUpdate`
 

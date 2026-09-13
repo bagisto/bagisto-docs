@@ -44,7 +44,7 @@ abstract class AbstractType
 }
 ```
 
-Most of the boolean methods simply return the matching property, so a type that only needs to flip a flag can set the property instead of overriding the method. Apart from `haveSufficientQuantity(int $qty): bool`, none of these methods declares a return type in the base class; the `: bool`, `: int`, `: array` and `: string` annotations on the examples below are additions an override may make (PHP allows narrowing) but are not what the core declares. Two members every type must provide itself:
+Most of the boolean methods return the matching property, so a type that only needs to flip a flag can set the property instead of overriding the method. Apart from `haveSufficientQuantity(int $qty): bool`, none of these methods declares a return type in the base class; the `: bool`, `: int`, `: array` and `: string` annotations on the examples below are additions an override may make (PHP allows narrowing) but are not what the core declares. Two members every type must provide itself:
 
 - **`getPriceIndexer()`**: not declared on the base class but called by `getFinalPrice()` and the price indexer; return `app(\Webkul\Product\Helpers\Indexers\Price\Simple::class)` unless your pricing needs its own indexer.
 - **A constructor that calls `parent::__construct()`** if you add dependencies, since the base constructor takes eight repositories that the container injects.
@@ -209,18 +209,18 @@ public function getProductPrices(): array
 public function getProductPrices(): array
 {
     $basePrice = $this->product->price;
-    
+
     // Apply subscription discount if applicable
     $subscriptionDiscount = $this->product->subscription_discount ?? 0;
     $finalPrice = $basePrice - ($basePrice * $subscriptionDiscount / 100);
-    
+
     return [
         'regular' => [
-            'price'           => core()->convertPrice($basePrice),
+            'price' => core()->convertPrice($basePrice),
             'formatted_price' => core()->currency($basePrice),
         ],
-        'final'   => [
-            'price'           => core()->convertPrice($finalPrice),
+        'final' => [
+            'price' => core()->convertPrice($finalPrice),
             'formatted_price' => core()->currency($finalPrice),
         ],
     ];
@@ -248,7 +248,7 @@ public function getPriceHtml(): string
     // You can customize the pricing view for subscriptions
     return view('subscription::products.prices.subscription', [
         'product' => $this->product,
-        'prices'  => $this->getProductPrices(),
+        'prices' => $this->getProductPrices(),
         'subscription_info' => [
             'frequency' => $this->product->subscription_frequency,
             'discount' => $this->product->subscription_discount,
@@ -280,11 +280,11 @@ public function getTypeValidationRules(): array
 public function getTypeValidationRules(): array
 {
     return [
-        'subscription_frequency'     => 'required|in:weekly,monthly,quarterly,yearly',
-        'subscription_discount'      => 'nullable|numeric|min:0|max:100',
-        'subscription_duration'      => 'nullable|integer|min:1',
-        'subscription_trial_period'  => 'nullable|integer|min:0',
-        'subscription_slots'         => 'required|integer|min:1',
+        'subscription_frequency' => 'required|in:weekly,monthly,quarterly,yearly',
+        'subscription_discount' => 'nullable|numeric|min:0|max:100',
+        'subscription_duration' => 'nullable|integer|min:1',
+        'subscription_trial_period' => 'nullable|integer|min:0',
+        'subscription_slots' => 'required|integer|min:1',
     ];
 }
 ```
@@ -295,11 +295,11 @@ public function getTypeValidationRules(): array
 public function getTypeValidationRules(): array
 {
     return [
-        'downloadable_links.*.type'       => 'required',
-        'downloadable_links.*.file'       => 'required_if:type,==,file',
-        'downloadable_links.*.file_name'  => 'required_if:type,==,file',
-        'downloadable_links.*.url'        => 'required_if:type,==,url',
-        'downloadable_links.*.downloads'  => 'required',
+        'downloadable_links.*.type' => 'required',
+        'downloadable_links.*.file' => 'required_if:type,==,file',
+        'downloadable_links.*.file_name' => 'required_if:type,==,file',
+        'downloadable_links.*.url' => 'required_if:type,==,url',
+        'downloadable_links.*.downloads' => 'required',
         'downloadable_links.*.sort_order' => 'required',
     ];
 }

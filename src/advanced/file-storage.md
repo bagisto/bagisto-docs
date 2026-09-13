@@ -3,7 +3,7 @@
 Product images, category banners, theme section media, uploaded search images and every other file Bagisto writes go to Laravel's **default filesystem disk**. Out of the box that is the local `public` disk, which `php artisan storage:link` exposes at `public/storage`. On the current development version the disk can also be Amazon S3 or Cloudflare R2, chosen from the admin, and this page explains how that switch works and what it does not do.
 
 ::: info Availability
-The `r2` disk, the `league/flysystem-aws-s3-v3` dependency and the **Configuration → File Management** section belong to the current development version. Bagisto 2.4 ships the `s3` disk definition in `config/filesystems.php` but no admin switch and no S3 adapter; there, install `league/flysystem-aws-s3-v3` yourself and set `FILESYSTEM_DISK=s3` in `.env`.
+The `r2` disk, the `league/flysystem-aws-s3-v3` dependency and the **Configure → File Management** section belong to the current development version. Bagisto 2.4 ships the `s3` disk definition in `config/filesystems.php` but no admin switch and no S3 adapter; there, install `league/flysystem-aws-s3-v3` yourself and set `FILESYSTEM_DISK=s3` in `.env`.
 :::
 
 ## Disks

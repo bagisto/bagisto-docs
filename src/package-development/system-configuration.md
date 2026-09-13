@@ -16,7 +16,7 @@ To create system configuration for your package, follow these structured steps:
 
 Begin by creating a new file named `system.php` within the `Config` directory of your package located at `packages/Webkul/RMA/src/Config`:
 
-```
+```text
 └── packages
     └── Webkul
         └── RMA
@@ -39,38 +39,38 @@ Inside the `system.php` file, include the following code to define your RMA conf
 
 return [
     [
-        'key'  => 'rma',
+        'key' => 'rma',
         'name' => 'RMA',  // Use direct text for now
         'info' => 'Return Merchandise Authorization settings',  // Use direct text for now
-        'sort' => 1
+        'sort' => 1,
     ], [
-        'key'  => 'rma.settings',
+        'key' => 'rma.settings',
         'name' => 'General Settings',  // Use direct text for now
         'info' => 'Configure basic RMA functionality',  // Use direct text for now
         'icon' => 'settings/settings.svg',
         'sort' => 1,
     ], [
-        'key'    => 'rma.settings.general',
-        'name'   => 'RMA Configuration',  // Use direct text for now
-        'info'   => 'Basic RMA settings and options',  // Use direct text for now
-        'sort'   => 1,
+        'key' => 'rma.settings.general',
+        'name' => 'RMA Configuration',  // Use direct text for now
+        'info' => 'Basic RMA settings and options',  // Use direct text for now
+        'sort' => 1,
         'fields' => [
             [
-                'name'  => 'enable',
+                'name' => 'enable',
                 'title' => 'Enable RMA',  // Use direct text for now
-                'type'  => 'boolean'
+                'type' => 'boolean',
             ], [
-                'name'  => 'allow_partial_returns',
+                'name' => 'allow_partial_returns',
                 'title' => 'Allow Partial Returns',  // Use direct text for now
-                'type'  => 'boolean',
+                'type' => 'boolean',
             ], [
-                'name'       => 'max_return_days',
-                'title'      => 'Maximum Return Days',  // Use direct text for now
-                'type'       => 'number',
-                'validation' => 'numeric|min:1'
-            ]
-        ]
-    ]
+                'name' => 'max_return_days',
+                'title' => 'Maximum Return Days',  // Use direct text for now
+                'type' => 'number',
+                'validation' => 'numeric|min:1',
+            ],
+        ],
+    ],
 ];
 ```
 
@@ -125,17 +125,17 @@ class RMAServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/admin-menu.php',
+            dirname(__DIR__).'/Config/admin-menu.php',
             'menu.admin'
         );
 
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/acl.php',
+            dirname(__DIR__).'/Config/acl.php',
             'acl'
         );
 
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/system.php',
+            dirname(__DIR__).'/Config/system.php',
             'core'
         );
     }
@@ -145,14 +145,14 @@ class RMAServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
-        
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/admin-routes.php');
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/shop-routes.php');
-        
-        $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'rma');
-        
-        $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'rma');
+        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+
+        $this->loadRoutesFrom(__DIR__.'/../Routes/admin-routes.php');
+        $this->loadRoutesFrom(__DIR__.'/../Routes/shop-routes.php');
+
+        $this->loadViewsFrom(__DIR__.'/../Resources/views', 'rma');
+
+        $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'rma');
     }
 }
 ```
@@ -168,7 +168,7 @@ Now you can test your system configuration:
 php artisan optimize:clear
 
 # Visit the admin panel
-# Navigate to: Configuration → RMA
+# Navigate to: Configure → RMA
 ```
 
 **Expected Results:**
@@ -203,17 +203,17 @@ Update your translation file `packages/Webkul/RMA/src/Resources/lang/en/app.php`
 return [
     'admin' => [
         // ...existing admin translations...
-        
+
         'menu' => [
             'rma' => 'RMA',
         ],
-        
+
         'acl' => [
             'rma' => 'RMA',
             'return-requests' => 'Return Requests',
             'view' => 'View',
         ],
-        
+
         'system' => [
             'rma' => 'RMA',
             'rma-info' => 'Return Merchandise Authorization settings',
@@ -238,38 +238,38 @@ Replace the direct text with translation keys in your `system.php`:
 
 return [
     [
-        'key'  => 'rma',
+        'key' => 'rma',
         'name' => 'rma::app.admin.system.rma',  // Now using translation key
         'info' => 'rma::app.admin.system.rma-info',  // Now using translation key
-        'sort' => 1
+        'sort' => 1,
     ], [
-        'key'  => 'rma.settings',
+        'key' => 'rma.settings',
         'name' => 'rma::app.admin.system.general-settings',  // Now using translation key
         'info' => 'rma::app.admin.system.general-settings-info',  // Now using translation key
         'icon' => 'settings/settings.svg',
         'sort' => 1,
     ], [
-        'key'    => 'rma.settings.general',
-        'name'   => 'rma::app.admin.system.rma-configuration',  // Now using translation key
-        'info'   => 'rma::app.admin.system.rma-configuration-info',  // Now using translation key
-        'sort'   => 1,
+        'key' => 'rma.settings.general',
+        'name' => 'rma::app.admin.system.rma-configuration',  // Now using translation key
+        'info' => 'rma::app.admin.system.rma-configuration-info',  // Now using translation key
+        'sort' => 1,
         'fields' => [
             [
-                'name'  => 'enable',
+                'name' => 'enable',
                 'title' => 'rma::app.admin.system.enable-rma',  // Now using translation key
-                'type'  => 'boolean'
+                'type' => 'boolean',
             ], [
-                'name'  => 'allow_partial_returns',
+                'name' => 'allow_partial_returns',
                 'title' => 'rma::app.admin.system.allow-partial-returns',  // Now using translation key
-                'type'  => 'boolean',
+                'type' => 'boolean',
             ], [
-                'name'       => 'max_return_days',
-                'title'      => 'rma::app.admin.system.max-return-days',  // Now using translation key
-                'type'       => 'number',
-                'validation' => 'numeric|min:1'
-            ]
-        ]
-    ]
+                'name' => 'max_return_days',
+                'title' => 'rma::app.admin.system.max-return-days',  // Now using translation key
+                'type' => 'number',
+                'validation' => 'numeric|min:1',
+            ],
+        ],
+    ],
 ];
 ```
 
@@ -287,14 +287,14 @@ This field type provides an input field of type text, useful for simple text con
 return [
     // ...
     [
-        'key'    => 'rma.settings.general',
-        'name'   => 'RMA Configuration',
-        'sort'   => 1,
+        'key' => 'rma.settings.general',
+        'name' => 'RMA Configuration',
+        'sort' => 1,
         'fields' => [
             [
-                'name'    => 'return_email',
-                'title'   => 'Return Request Email',  // Consider using translation key
-                'type'    => 'text',
+                'name' => 'return_email',
+                'title' => 'Return Request Email',  // Consider using translation key
+                'type' => 'text',
                 'default' => 'returns@yourstore.com',
                 'validation' => 'email',
             ],
@@ -314,14 +314,14 @@ This field type provides a password input field for sensitive information.
 return [
     // ...
     [
-        'key'    => 'rma.settings.api',
-        'name'   => 'API Configuration',
-        'sort'   => 1,
+        'key' => 'rma.settings.api',
+        'name' => 'API Configuration',
+        'sort' => 1,
         'fields' => [
             [
-                'name'       => 'api_secret',
-                'title'      => 'API Secret Key',  // Consider using translation key
-                'type'       => 'password',
+                'name' => 'api_secret',
+                'title' => 'API Secret Key',  // Consider using translation key
+                'type' => 'password',
                 'validation' => 'required',
             ],
         ],
@@ -340,14 +340,14 @@ This field type provides an input field for numeric values.
 return [
     // ...
     [
-        'key'    => 'rma.settings.general',
-        'name'   => 'RMA Configuration',
-        'sort'   => 1,
+        'key' => 'rma.settings.general',
+        'name' => 'RMA Configuration',
+        'sort' => 1,
         'fields' => [
             [
-                'name'       => 'max_return_days',
-                'title'      => 'Maximum Return Days',  // Consider using translation key
-                'type'       => 'number',
+                'name' => 'max_return_days',
+                'title' => 'Maximum Return Days',  // Consider using translation key
+                'type' => 'number',
                 'validation' => 'required|numeric|min:1|max:365',
             ],
         ],
@@ -366,14 +366,14 @@ This field type provides a color picker input field. The renderer supports it, b
 return [
     // ...
     [
-        'key'    => 'rma.settings.appearance',
-        'name'   => 'Appearance Settings',
-        'sort'   => 1,
+        'key' => 'rma.settings.appearance',
+        'name' => 'Appearance Settings',
+        'sort' => 1,
         'fields' => [
             [
-                'name'    => 'return_button_color',
-                'title'   => 'Return Button Color',  // Consider using translation key
-                'type'    => 'color',
+                'name' => 'return_button_color',
+                'title' => 'Return Button Color',  // Consider using translation key
+                'type' => 'color',
                 'default' => '#007bff',
             ],
         ],
@@ -392,14 +392,14 @@ This field type provides an enable/disable switch, perfect for feature toggles.
 return [
     // ...
     [
-        'key'    => 'rma.settings.general',
-        'name'   => 'RMA Configuration',
-        'sort'   => 1,
+        'key' => 'rma.settings.general',
+        'name' => 'RMA Configuration',
+        'sort' => 1,
         'fields' => [
             [
-                'name'  => 'enable_auto_approval',
+                'name' => 'enable_auto_approval',
                 'title' => 'Auto-approve Return Requests',  // Consider using translation key
-                'type'  => 'boolean',
+                'type' => 'boolean',
             ],
         ],
     ],
@@ -421,14 +421,14 @@ This field type provides a select field with specified options, useful for prede
 return [
     // ...
     [
-        'key'    => 'rma.settings.general',
-        'name'   => 'RMA Configuration',
-        'sort'   => 1,
+        'key' => 'rma.settings.general',
+        'name' => 'RMA Configuration',
+        'sort' => 1,
         'fields' => [
             [
-                'name'    => 'default_return_status',
-                'title'   => 'Default Return Status',  // Consider using translation key
-                'type'    => 'select',
+                'name' => 'default_return_status',
+                'title' => 'Default Return Status',  // Consider using translation key
+                'type' => 'select',
                 'options' => [
                     [
                         'title' => 'Pending Review',
@@ -458,14 +458,14 @@ This field type provides a multiselect field allowing multiple option selections
 return [
     // ...
     [
-        'key'    => 'rma.settings.general',
-        'name'   => 'RMA Configuration',
-        'sort'   => 1,
+        'key' => 'rma.settings.general',
+        'name' => 'RMA Configuration',
+        'sort' => 1,
         'fields' => [
             [
-                'name'    => 'allowed_return_reasons',
-                'title'   => 'Allowed Return Reasons',  // Consider using translation key
-                'type'    => 'multiselect',
+                'name' => 'allowed_return_reasons',
+                'title' => 'Allowed Return Reasons',  // Consider using translation key
+                'type' => 'multiselect',
                 'options' => [
                     [
                         'title' => 'Defective Product',
@@ -498,14 +498,14 @@ This field type provides a textarea field, mostly used for longer text content.
 return [
     // ...
     [
-        'key'    => 'rma.settings.general',
-        'name'   => 'RMA Configuration',
-        'sort'   => 1,
+        'key' => 'rma.settings.general',
+        'name' => 'RMA Configuration',
+        'sort' => 1,
         'fields' => [
             [
-                'name'  => 'return_policy_text',
+                'name' => 'return_policy_text',
                 'title' => 'Return Policy Description',  // Consider using translation key
-                'type'  => 'textarea'
+                'type' => 'textarea',
             ],
         ],
     ],
@@ -523,14 +523,14 @@ This field type provides a rich text editor with TinyMCE for formatted content.
 return [
     // ...
     [
-        'key'    => 'rma.settings.content',
-        'name'   => 'Content Settings',
-        'sort'   => 1,
+        'key' => 'rma.settings.content',
+        'name' => 'Content Settings',
+        'sort' => 1,
         'fields' => [
             [
-                'name'  => 'return_instructions',
+                'name' => 'return_instructions',
                 'title' => 'Return Instructions (Rich Text)',  // Consider using translation key
-                'type'  => 'editor'
+                'type' => 'editor',
             ],
         ],
     ],
@@ -548,14 +548,14 @@ This field type provides a file upload option for uploading images.
 return [
     // ...
     [
-        'key'    => 'rma.settings.general',
-        'name'   => 'RMA Configuration',
-        'sort'   => 1,
+        'key' => 'rma.settings.general',
+        'name' => 'RMA Configuration',
+        'sort' => 1,
         'fields' => [
             [
-                'name'       => 'return_label_logo',
-                'title'      => 'Return Label Logo',  // Consider using translation key
-                'type'       => 'image',
+                'name' => 'return_label_logo',
+                'title' => 'Return Label Logo',  // Consider using translation key
+                'type' => 'image',
                 'validation' => 'mimes:bmp,jpeg,jpg,png,webp,svg',
             ],
         ],
@@ -574,14 +574,14 @@ This field type provides a file upload option for documents and other file types
 return [
     // ...
     [
-        'key'    => 'rma.settings.documents',
-        'name'   => 'Document Settings',
-        'sort'   => 1,
+        'key' => 'rma.settings.documents',
+        'name' => 'Document Settings',
+        'sort' => 1,
         'fields' => [
             [
-                'name'       => 'return_policy_pdf',
-                'title'      => 'Return Policy Document',  // Consider using translation key
-                'type'       => 'file',
+                'name' => 'return_policy_pdf',
+                'title' => 'Return Policy Document',  // Consider using translation key
+                'type' => 'file',
                 'validation' => 'mimes:pdf,doc,docx|max:10240', // 10MB max
             ],
         ],
@@ -600,14 +600,14 @@ This field type provides a dropdown of available countries.
 return [
     // ...
     [
-        'key'    => 'rma.settings.location',
-        'name'   => 'Location Settings',
-        'sort'   => 1,
+        'key' => 'rma.settings.location',
+        'name' => 'Location Settings',
+        'sort' => 1,
         'fields' => [
             [
-                'name'  => 'return_center_country',
+                'name' => 'return_center_country',
                 'title' => 'Return Center Country',  // Consider using translation key
-                'type'  => 'country',
+                'type' => 'country',
             ],
         ],
     ],
@@ -625,14 +625,14 @@ This field type provides a dropdown of states/provinces based on the selected co
 return [
     // ...
     [
-        'key'    => 'rma.settings.location',
-        'name'   => 'Location Settings',
-        'sort'   => 1,
+        'key' => 'rma.settings.location',
+        'name' => 'Location Settings',
+        'sort' => 1,
         'fields' => [
             [
-                'name'  => 'return_center_state',
+                'name' => 'return_center_state',
                 'title' => 'Return Center State/Province',  // Consider using translation key
-                'type'  => 'state',
+                'type' => 'state',
             ],
         ],
     ],
@@ -654,15 +654,15 @@ The `blade` type requires a `path` attribute pointing to a valid Blade view. The
 return [
     // ...
     [
-        'key'    => 'rma.settings.general',
-        'name'   => 'RMA Configuration',
-        'sort'   => 1,
+        'key' => 'rma.settings.general',
+        'name' => 'RMA Configuration',
+        'sort' => 1,
         'fields' => [
             [
-                'name'  => 'return_policy_preview',
+                'name' => 'return_policy_preview',
                 'title' => 'Return Policy Preview',  // Consider using translation key
-                'type'  => 'blade',
-                'path'  => 'rma::admin.configuration.return-policy-preview',
+                'type' => 'blade',
+                'path' => 'rma::admin.configuration.return-policy-preview',
             ],
         ],
     ],
@@ -691,16 +691,16 @@ A page that is all buttons or all read-only information does not want a save but
 
 ```php
 [
-    'key'    => 'rma.tools',
-    'name'   => 'rma::app.admin.system.tools',
-    'info'   => 'rma::app.admin.system.tools-info',
-    'icon'   => 'settings/settings.svg',
-    'sort'   => 2,
+    'key' => 'rma.tools',
+    'name' => 'rma::app.admin.system.tools',
+    'info' => 'rma::app.admin.system.tools-info',
+    'icon' => 'settings/settings.svg',
+    'sort' => 2,
     'layout' => [
-        'title_section'    => false,
-        'save_button'      => false,
+        'title_section' => false,
+        'save_button' => false,
         'channel_switcher' => false,
-        'locale_switcher'  => false,
+        'locale_switcher' => false,
     ],
 ],
 ```
@@ -726,34 +726,34 @@ Consider the following RMA configuration example:
 return [
     // ...
     [
-        'key'    => 'rma.settings.return_policy',
-        'name'   => 'Return Policy Settings',  // Consider using translation key
-        'sort'   => 2,
+        'key' => 'rma.settings.return_policy',
+        'name' => 'Return Policy Settings',  // Consider using translation key
+        'sort' => 2,
         'fields' => [
             [
-                'name'  => 'enable_return_policy',
+                'name' => 'enable_return_policy',
                 'title' => 'Enable Return Policy',  // Consider using translation key
-                'type'  => 'boolean',
+                'type' => 'boolean',
             ], [
-                'name'       => 'max_return_days',
-                'title'      => 'Maximum Return Days',  // Consider using translation key
-                'type'       => 'number',
+                'name' => 'max_return_days',
+                'title' => 'Maximum Return Days',  // Consider using translation key
+                'type' => 'number',
                 'validation' => 'required_if:enable_return_policy,1|numeric|min:1',
-                'depends'    => 'enable_return_policy:1',
-            ], [
-                'name'    => 'auto_approve_returns',
-                'title'   => 'Auto-approve Returns',  // Consider using translation key
-                'type'    => 'boolean',
                 'depends' => 'enable_return_policy:1',
             ], [
-                'name'    => 'require_return_reason',
-                'title'   => 'Require Return Reason',  // Consider using translation key
-                'type'    => 'boolean',
+                'name' => 'auto_approve_returns',
+                'title' => 'Auto-approve Returns',  // Consider using translation key
+                'type' => 'boolean',
                 'depends' => 'enable_return_policy:1',
             ], [
-                'name'    => 'return_policy_text',
-                'title'   => 'Return Policy Description',  // Consider using translation key
-                'type'    => 'textarea',
+                'name' => 'require_return_reason',
+                'title' => 'Require Return Reason',  // Consider using translation key
+                'type' => 'boolean',
+                'depends' => 'enable_return_policy:1',
+            ], [
+                'name' => 'return_policy_text',
+                'title' => 'Return Policy Description',  // Consider using translation key
+                'type' => 'textarea',
                 'depends' => 'enable_return_policy:1',
             ],
         ],
@@ -800,39 +800,39 @@ The same rules are also sent to the browser, where Vee Validate checks them befo
 ```php
 return [
     [
-        'key'    => 'rma.settings.validation_example',
-        'name'   => 'RMA Validation Examples',  // Consider using translation key
-        'sort'   => 1,
+        'key' => 'rma.settings.validation_example',
+        'name' => 'RMA Validation Examples',  // Consider using translation key
+        'sort' => 1,
         'fields' => [
             [
-                'name'       => 'return_email',
-                'title'      => 'Return Request Email',  // Consider using translation key
-                'type'       => 'text',
+                'name' => 'return_email',
+                'title' => 'Return Request Email',  // Consider using translation key
+                'type' => 'text',
                 'validation' => 'required|email|max:255',
             ],
             [
-                'name'       => 'max_return_days',
-                'title'      => 'Maximum Return Days',  // Consider using translation key
-                'type'       => 'number',
+                'name' => 'max_return_days',
+                'title' => 'Maximum Return Days',  // Consider using translation key
+                'type' => 'number',
                 'validation' => 'required|numeric|min:1|max:365',
             ],
             [
-                'name'       => 'enable_notifications',
-                'title'      => 'Enable Email Notifications',  // Consider using translation key
-                'type'       => 'boolean',
+                'name' => 'enable_notifications',
+                'title' => 'Enable Email Notifications',  // Consider using translation key
+                'type' => 'boolean',
                 'validation' => 'required|boolean',
             ],
             [
-                'name'       => 'notification_email',
-                'title'      => 'Notification Email',  // Consider using translation key
-                'type'       => 'text',
+                'name' => 'notification_email',
+                'title' => 'Notification Email',  // Consider using translation key
+                'type' => 'text',
                 'validation' => 'required_if:enable_notifications,1|email',
-                'depends'    => 'enable_notifications:1',
+                'depends' => 'enable_notifications:1',
             ],
             [
-                'name'       => 'return_label_logo',
-                'title'      => 'Return Label Logo',  // Consider using translation key
-                'type'       => 'image',
+                'name' => 'return_label_logo',
+                'title' => 'Return Label Logo',  // Consider using translation key
+                'type' => 'image',
                 'validation' => 'mimes:jpeg,jpg,png|max:2048',
             ],
         ],
@@ -844,7 +844,7 @@ return [
 
 When you retrieve a configuration value using `core()->getConfigData()`, Bagisto resolves it through a fallback chain:
 
-```
+```text
 core()->getConfigData('rma.settings.general.enable')
 │
 ├── 1. Core Config (Database)
@@ -883,8 +883,6 @@ Once you've defined your system configuration, you can access these values throu
 
 namespace Webkul\RMA\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 class ReturnRequestController extends Controller
 {
     public function create()
@@ -892,11 +890,11 @@ class ReturnRequestController extends Controller
         $isRmaEnabled = core()->getConfigData('rma.settings.general.enable');
 
         $maxReturnDays = core()->getConfigData('rma.settings.general.max_return_days');
-        
+
         if (! $isRmaEnabled) {
             return redirect()->back()->with('error', 'RMA is currently disabled.');
         }
-        
+
         // Your logic here
     }
 }

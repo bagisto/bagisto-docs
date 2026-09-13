@@ -58,7 +58,7 @@ return [
 
 ### Enable the Tracer
 
-To enable the Blade Tracer, simply change the `tracer` value to `true`:
+To enable the Blade Tracer, change the `tracer` value to `true`:
 
 ```php
 'tracer' => true,

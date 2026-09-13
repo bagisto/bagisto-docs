@@ -137,7 +137,7 @@ Bagisto is a dynamic store — never cache the cart, checkout, customer account,
 
 To serve Bagisto with OpenLiteSpeed, point a virtual host at the `public/` directory and route everything through `index.php`. Below is a virtual host config file (e.g. `conf/vhosts/bagisto.conf`):
 
-```
+```text
 docRoot                   $VH_ROOT/public
 enableGzip                1
 
@@ -168,7 +168,7 @@ context / {
 
 OpenLiteSpeed ships the built-in **LSCache** module. Enable it at the server level (`WebAdmin → Server Configuration → Module → cache`, or in `httpd_config.conf`):
 
-```
+```text
 module cache {
   enableCache             1
   qsCache                 1
@@ -182,7 +182,7 @@ module cache {
 
 Then, in the vhost `rewrite` rules, mark public storefront pages as cacheable while excluding the dynamic areas:
 
-```
+```text
 rewrite {
   enable                  1
   rules                   <<<END_rules

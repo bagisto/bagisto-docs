@@ -22,14 +22,14 @@ Before configuring Elasticsearch with Bagisto, ensure you have [Elasticsearch in
 :::
 
 ::: info Two ways to configure
-On the current development version the connection is configured in the admin under **Configuration → Search Engines**, with `.env` as a fallback. On Bagisto 2.4 the connection comes from `.env` and `config/elasticsearch.php` only, and the engine is chosen under **Configuration → Catalog → Products → Search**. Both are covered below.
+On the current development version the connection is configured in the admin under **Configure → Search Engines**, with `.env` as a fallback. On Bagisto 2.4 the connection comes from `.env` and `config/elasticsearch.php` only, and the engine is chosen under **Configure → Catalog → Products → Search**. Both are covered below.
 :::
 
 ### Verify Installation
 
 Elasticsearch runs on port `9200` by default. Test your installation by visiting:
 
-```
+```text
 http://localhost:9200
 ```
 
@@ -63,7 +63,7 @@ curl -X GET 'http://localhost:9200'
 
 ### From the admin (current development version)
 
-Open **Configuration → Search Engines**:
+Open **Configure → Search Engines**:
 
 1. Under **General → Settings**, switch on **Enable External Search Engine** and choose **Elasticsearch** as the default engine.
 2. Under **General → Products**, leave **Admin Search Mode** and **Storefront Search Mode** on **Use Default**, or pick a different engine per context.
@@ -91,6 +91,7 @@ Bagisto reads `config/elasticsearch.php`, which is populated from `.env`. On the
 
 ```php [config/elasticsearch.php]
 <?php
+
 // config/elasticsearch.php
 
 return [
@@ -269,7 +270,7 @@ Large product catalogs may take several minutes to index. Consider running index
 Verify your products have been indexed successfully:
 
 **Browser Method:**
-```
+```text
 http://localhost:9200/_cat/indices?v
 ```
 
@@ -279,7 +280,7 @@ curl -X GET 'http://localhost:9200/_cat/indices?v'
 ```
 
 **Expected Output:**
-```
+```text
 health status index                        uuid                   pri rep docs.count docs.deleted store.size pri.store.size
 yellow open   products_default_en_index    AbcDef1234567890       1   1      1500           0      2.5mb          2.5mb
 ```
@@ -289,12 +290,12 @@ yellow open   products_default_en_index    AbcDef1234567890       1   1      150
 Enable Elasticsearch in your Bagisto admin panel and test frontend search:
 
 **Admin Configuration (current development version):**
-1. Go to **Configuration → Search Engines → General**
+1. Go to **Configure → Search Engines → General**
 2. Switch on **Enable External Search Engine** and set **Default Search Engine** to **Elasticsearch**
 3. Save the configuration
 
 **Admin Configuration (Bagisto 2.4):**
-1. Go to **Configuration → Catalog → Products → Search**
+1. Go to **Configure → Catalog → Products → Search**
 2. Set **Search Engine**, **Admin Search Mode** and **Storefront Search Mode** to **Elasticsearch**
 3. Save the configuration
 

@@ -22,6 +22,10 @@ features:
     details: Learn how to create a new package for Bagisto and extend its functionality with custom modules, repositories, and service providers.
     icon: 📦
     link: /package-development/getting-started
+  - title: AI & Agentic Commerce
+    details: Generative AI with Magic AI, agentic storefront tools with WebMCP, and skills that make AI coding agents fluent in Bagisto.
+    icon: 🤖
+    link: /ai/introduction
   - title: Bagisto API (REST & GraphQL)
     details: Fast, flexible REST and GraphQL APIs to power modern commerce experiences.
     icon: 🔌

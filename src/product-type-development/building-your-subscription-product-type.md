@@ -44,6 +44,7 @@ If you're not familiar with the `AbstractType` methods we're implementing below,
 
 namespace Webkul\SubscriptionProduct\Type;
 
+use Webkul\Product\Helpers\Indexers\Price\Simple;
 use Webkul\Product\Helpers\Indexers\Price\Simple as SimpleIndexer;
 use Webkul\Product\Type\AbstractType;
 
@@ -66,7 +67,7 @@ class Subscription extends AbstractType
     /**
      * Get the price indexer for this product type.
      *
-     * @return \Webkul\Product\Helpers\Indexers\Price\Simple
+     * @return Simple
      */
     public function getPriceIndexer()
     {

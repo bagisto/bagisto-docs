@@ -6,7 +6,7 @@ In Bagisto, there are two types of menus to understand:
 
 **Admin Menu**: This section focuses on the backend navigation that administrators use to manage the system. Specifically, we will cover how to create custom admin menu items for your package.
 
-Admin menus provide navigation structure for your package's administrative interface in Bagisto. They allow administrators to easily access different sections and features of your package from the admin panel sidebar.
+Admin menus provide navigation structure for your package's administrative interface in Bagisto. They allow administrators to reach different sections and features of your package from the admin panel sidebar.
 
 For our RMA package, we'll create a simple admin menu that provides access to the return requests listing page, demonstrating how to integrate your package seamlessly into Bagisto's admin navigation.
 
@@ -60,11 +60,11 @@ Create `packages/Webkul/RMA/src/Config/admin-menu.php`:
 
 return [
     [
-        'key'   => 'rma',
-        'name'  => 'RMA',
+        'key' => 'rma',
+        'name' => 'RMA',
         'route' => 'admin.rma.return-requests.index',
-        'sort'  => 100, // Order position `100` places it near the end of the menu
-        'icon'  => '',
+        'sort' => 100, // Order position `100` places it near the end of the menu
+        'icon' => '',
     ],
 ];
 ```
@@ -91,7 +91,7 @@ Update your translation file `packages/Webkul/RMA/src/Resources/lang/en/app.php`
 return [
     'admin' => [
         // ...existing translations...
-        
+
         'menu' => [
             'rma' => 'RMA',
         ],
@@ -106,11 +106,11 @@ Now update your menu configuration to use translations:
 
 return [
     [
-        'key'   => 'rma',
-        'name'  => 'rma::app.admin.menu.rma',
+        'key' => 'rma',
+        'name' => 'rma::app.admin.menu.rma',
         'route' => 'admin.rma.return-requests.index',
-        'sort'  => 100,
-        'icon'  => '',
+        'sort' => 100,
+        'icon' => '',
     ],
 ];
 ```
@@ -136,7 +136,7 @@ class RMAServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/admin-menu.php',
+            dirname(__DIR__).'/Config/admin-menu.php',
             'menu.admin'
         );
     }
@@ -146,14 +146,14 @@ class RMAServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
-        
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/admin-routes.php');
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/shop-routes.php');
-        
-        $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'rma');
-        
-        $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'rma');
+        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+
+        $this->loadRoutesFrom(__DIR__.'/../Routes/admin-routes.php');
+        $this->loadRoutesFrom(__DIR__.'/../Routes/shop-routes.php');
+
+        $this->loadViewsFrom(__DIR__.'/../Resources/views', 'rma');
+
+        $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'rma');
     }
 }
 ```
@@ -219,38 +219,38 @@ In Bagisto, hierarchical menus are created by using dot notation in the `key` pr
 return [
     // Main RMA menu item
     [
-        'key'   => 'rma',
-        'name'  => 'RMA',  // Use 'rma::app.admin.menu.rma' for translations
+        'key' => 'rma',
+        'name' => 'RMA',  // Use 'rma::app.admin.menu.rma' for translations
         'route' => 'admin.rma.return-requests.index',
-        'sort'  => 100,
-        'icon'  => 'icon-sales',
+        'sort' => 100,
+        'icon' => 'icon-sales',
     ],
-    
+
     // Sub-menu: Return Requests
     [
-        'key'   => 'rma.return-requests',
-        'name'  => 'Return Requests',  // Use 'rma::app.admin.menu.return-requests' for translations
+        'key' => 'rma.return-requests',
+        'name' => 'Return Requests',  // Use 'rma::app.admin.menu.return-requests' for translations
         'route' => 'admin.rma.return-requests.index',
-        'sort'  => 1,
-        'icon'  => '',
+        'sort' => 1,
+        'icon' => '',
     ],
-    
+
     // Sub-menu: RMA Settings
     [
-        'key'   => 'rma.settings',
-        'name'  => 'Settings',  // Use 'rma::app.admin.menu.settings' for translations
+        'key' => 'rma.settings',
+        'name' => 'Settings',  // Use 'rma::app.admin.menu.settings' for translations
         'route' => 'admin.rma.return-requests.index',  // Same route for demo
-        'sort'  => 2,
-        'icon'  => '',
+        'sort' => 2,
+        'icon' => '',
     ],
-    
+
     // Sub-menu: Reports (if needed)
     [
-        'key'   => 'rma.reports',
-        'name'  => 'Reports',  // Use 'rma::app.admin.menu.reports' for translations
+        'key' => 'rma.reports',
+        'name' => 'Reports',  // Use 'rma::app.admin.menu.reports' for translations
         'route' => 'admin.rma.return-requests.index',  // Same route for demo
-        'sort'  => 3,
-        'icon'  => '',
+        'sort' => 3,
+        'icon' => '',
     ],
 ];
 ```
