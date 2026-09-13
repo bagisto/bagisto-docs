@@ -24,6 +24,10 @@ Bagisto comes with robust SEO features right out of the box, helping your store 
 
 Whether your customers prefer local payment gateways or international options, Bagisto has you covered. With support for multiple payment methods and seamless integration with major shipping providers, order fulfillment becomes smooth and efficient.
 
+## 🤖 Generative AI and Agentic Commerce, Built In
+
+Bagisto ships with AI in the core rather than as an add-on. [Magic AI](../ai/magic-ai.md) brings generative AI to the admin and the storefront: it writes product and page copy, generates product images, translates reviews, understands the photos shoppers search with, and personalises the order confirmation, on any of eight AI providers including self-hosted Ollama. On the storefront, [WebMCP](../ai/webmcp.md) declares the shop's actions as tools for browser AI agents, so an agent can search, open a product, manage a wishlist and reach checkout for the shopper. Developers get [agent skills and llms.txt](../ai/introduction.md) that teach their coding agents Bagisto's conventions. See [AI in Bagisto](../ai/introduction.md) for what each capability does and does not do.
+
 ## 🎯 Visual Builder for Effortless Store Customization
 
 Want to design your store without writing code? Check out [Bagisto Visual](https://visual.bagistoplus.com/), a powerful visual builder created by our dedicated community contributors. Build and customize your Bagisto store with an intuitive drag-and-drop interface, making professional eCommerce design accessible to everyone. Explore it on [GitHub](https://github.com/bagistoplus/visual) and see how easy store building can be.
@@ -213,7 +217,7 @@ composer create-project bagisto/bagisto
 ```
 
 Configure your web server's document root to the `public/` directory inside your Bagisto project (e.g., `/path/to/bagisto/public`), then visit:
-```
+```text
 http://localhost/
 ```
 
@@ -512,7 +516,7 @@ To view logs: `vendor/bin/sail logs`
 ### Production Environment
 
 Access your store using your domain:
-```
+```text
 https://yourdomain.com
 ```
 
@@ -531,7 +535,7 @@ Then visit: `http://localhost:8000`
 ### Admin Panel
 
 Access the admin panel at:
-```
+```text
 https://yourdomain.com/admin
 ```
 
@@ -546,7 +550,7 @@ Change the default admin credentials immediately after installation!
 ### Customer Registration
 
 Customers can register at:
-```
+```text
 https://yourdomain.com/customer/register
 ```
 
@@ -939,7 +943,7 @@ The 2.5 line moves to Laravel 13 and PHP 8.4 and changes several things a custom
 |---|---|
 | Platform | PHP 8.4 and Laravel 13; Pest 5 and PHPUnit 13 for tests; `prettus/l5-repository` 4, `kalnoy/nestedset` 7, `laravel/tinker` 3, `barryvdh/laravel-debugbar` 4 (its facade moved to `Fruitcake\LaravelDebugbar`) |
 | Front end | Tailwind CSS 4 in the Admin, Shop and Installer packages: `tailwind.config.js` and PostCSS are gone, tokens live in `app.css` under `@theme`, several icon classes were renamed or removed. A custom theme built on Tailwind 3 must be migrated; see [Vite-Powered Theme Assets](../theme-development/vite-powered-theme-assets.md) |
-| Search | The Elasticsearch repository became an engine behind `SearchEngineManager`; `ProductRepository::setSearchEngine()` is now `setSearchContext()`, the index jobs were renamed, `indexer:index --type=elastic` is `--type=search`, and settings moved from `catalog.products.search` to **Configuration → Search Engines** (a migration carries them over). Rebuild the index after upgrading. See [Search Engines](../advanced/search-engines.md) |
+| Search | The Elasticsearch repository became an engine behind `SearchEngineManager`; `ProductRepository::setSearchEngine()` is now `setSearchContext()`, the index jobs were renamed, `indexer:index --type=elastic` is `--type=search`, and settings moved from `catalog.products.search` to **Configure → Search Engines** (a migration carries them over). Rebuild the index after upgrading. See [Search Engines](../advanced/search-engines.md) |
 | Configuration codes | `catalog.products.storefront.buy_now_button_display` → `catalog.products.product_view_page.buy_now_button_display`, `sales.checkout.my_cart.summary` → `sales.checkout.mini_cart.summary`, and `customer.settings.social_login.enable_linkedin-openid` → `enable_linkedin`; migrations rename stored values |
 | Images | `config/image.php` became `config/images.php` (`IMAGE_DRIVER`), `image_manager()` returns Laravel's `Illuminate\Image\ImageManager`, and image cache templates must be classes with a public `applyFilter()`; see [Image Cache Templates](../theme-development/image-cache-templates.md) |
 | Theme media | Section image paths are stored bare; two migrations rewrite existing rows, and they compare hosts against `APP_URL`, so set it correctly **before** migrating |
@@ -1130,9 +1134,8 @@ Bagisto follows established PHP standards for consistency and readability:
  * Register a service with CoreServiceProvider.
  *
  * @param  string|array  $loader
- * @param  \Closure|string|null  $concrete
+ * @param  Closure|string|null  $concrete
  * @param  bool  $shared
- * @return void
  */
 protected function registerFacades($loader, $concrete = null, $shared = false): void
 {
@@ -1266,7 +1269,7 @@ Implementing the following HTTP security headers enhances web security:
 
 Set the **`Strict-Transport-Security`** response header to instruct the browser to access the application only using HTTPS:
 
-```
+```text
 Strict-Transport-Security: max-age=<expire-time>
 ```
 
@@ -1274,7 +1277,7 @@ Strict-Transport-Security: max-age=<expire-time>
 
 Set the **`X-XSS-Protection`** response header to enable browsers to detect and prevent cross-site scripting (XSS) attacks:
 
-```
+```text
 X-XSS-Protection: 1; mode=block
 ```
 
@@ -1282,7 +1285,7 @@ X-XSS-Protection: 1; mode=block
 
 The **`X-Frame-Options`** response header protects applications against clickjacking attacks. It specifies whether the content can be displayed within frames:
 
-```
+```text
 X-Frame-Options: deny
 ```
 
@@ -1290,7 +1293,7 @@ X-Frame-Options: deny
 
 The **`X-Content-Type-Options`** response header forces the browser to disable MIME sniffing, preventing MIME sniffing vulnerabilities:
 
-```
+```text
 X-Content-Type-Options: nosniff
 ```
 
@@ -1443,7 +1446,7 @@ Bagisto is a dynamic store — never cache the cart, checkout, customer account,
 
 To serve Bagisto with OpenLiteSpeed, point a virtual host at the `public/` directory and route everything through `index.php`. Below is a virtual host config file (e.g. `conf/vhosts/bagisto.conf`):
 
-```
+```text
 docRoot                   $VH_ROOT/public
 enableGzip                1
 
@@ -1474,7 +1477,7 @@ context / {
 
 OpenLiteSpeed ships the built-in **LSCache** module. Enable it at the server level (`WebAdmin → Server Configuration → Module → cache`, or in `httpd_config.conf`):
 
-```
+```text
 module cache {
   enableCache             1
   qsCache                 1
@@ -1488,7 +1491,7 @@ module cache {
 
 Then, in the vhost `rewrite` rules, mark public storefront pages as cacheable while excluding the dynamic areas:
 
-```
+```text
 rewrite {
   enable                  1
   rules                   <<<END_rules
@@ -1609,10 +1612,11 @@ For better performance in production, consider enabling OPcache and configuring 
 
 # AI in Bagisto
 
-Bagisto ships with AI built in — both **inside your store** and **inside your development
-workflow**. This page is the home for everything AI-related: store features powered by AI,
-the hooks that let AI agents shop your store, and tools that make the AI agents *you* build
-with smarter about Bagisto.
+Bagisto ships with AI built in, on three fronts: **generative AI** that writes, translates
+and draws for the merchant and the shopper, **agentic AI** hooks that let an AI agent act on
+the storefront, and tooling that makes the coding agents *you* build with fluent in Bagisto.
+Together they are Bagisto's path to **agentic commerce**, where an AI assistant can help run
+a store and an AI agent can shop it on someone's behalf. This page is the home for all of it.
 
 <div class="ai-cards__group-title">For your store</div>
 
@@ -1620,16 +1624,16 @@ with smarter about Bagisto.
   <a class="ai-card" href="/ai/magic-ai.html">
     <div class="ai-card__title">✨ Magic AI</div>
     <div class="ai-card__desc">
-      Generate product content &amp; images, image search, review translation and personalised
-      checkout messages — powered by your choice of AI provider.
+      Generative AI for the store: product content &amp; images, image search, review
+      translation and personalised checkout messages, on the AI provider of your choice.
     </div>
   </a>
 
   <a class="ai-card" href="/ai/webmcp.html">
     <div class="ai-card__title">🤖 WebMCP</div>
     <div class="ai-card__desc">
-      Storefront tools declared for browser AI agents, so an agent can search, open a product,
-      manage the wishlist and reach checkout on a shopper's behalf.
+      Agentic AI on the storefront: tools declared for browser agents, so an agent can search,
+      open a product, manage the wishlist and reach checkout on a shopper's behalf.
     </div>
   </a>
 </div>
@@ -1654,20 +1658,21 @@ with smarter about Bagisto.
   </a>
 </div>
 
-## Agentic commerce
+## Three kinds of AI, and what each one does
 
-"Agentic commerce" means two things for a store: the merchant's own work is assisted by
-AI, and the shopper may be an AI agent acting for a person. Bagisto covers both sides with
-features that are already in the core, and this section describes exactly what each one
-does rather than what it might grow into.
+The terms are used deliberately, because they describe different things:
 
-| Side | Feature | What it does today |
+| Term | Meaning here | Where Bagisto has it today |
 |---|---|---|
-| Merchant | [Magic AI](/ai/magic-ai) | Writes and translates content, generates images, answers image searches, personalises the order confirmation |
-| Shopper | [WebMCP](/ai/webmcp) | Declares seven storefront actions to browsers that expose the WebMCP `navigator.modelContext` API, so an agent in the browser can act on the page |
-| Developer | [Agent Skills](/ai/agent-skills), [llms.txt](/ai/llms-txt) | Give coding agents Bagisto's conventions and architecture |
+| **Generative AI** | A model produces content: text, translations, keywords, images | [Magic AI](/ai/magic-ai): product and page copy, product images, review translation, the keywords behind image search, the checkout message |
+| **Agentic AI** | An AI agent performs actions through tools rather than only producing text | [WebMCP](/ai/webmcp): seven storefront actions exposed to browser agents; [Agent Skills](/ai/agent-skills): coding agents that build Bagisto packages and themes |
+| **Agentic commerce** | Commerce in which AI assists the merchant and can act for the shopper | The combination of the two above, in the core, with no separate product to install |
 
-## Magic AI — built into your store
+What Bagisto does **not** claim: Magic AI does not run your store on its own, and WebMCP does
+not complete a purchase without the shopper. Every generated text is applied by an admin, and
+every WebMCP tool ends in an ordinary storefront page where the person is still in charge.
+
+## Magic AI — generative AI built into your store
 
 [Magic AI](/ai/magic-ai) is a first-class Bagisto feature. Add an API key for any
 supported provider and you can:
@@ -1682,7 +1687,7 @@ Magic AI works with **OpenAI, Anthropic, Gemini, Groq, xAI, DeepSeek, Mistral, a
 Admin features let you choose which providers are offered; storefront features are
 configured per channel with a model each.
 
-## WebMCP — let agents shop
+## WebMCP — agentic AI on the storefront
 
 [WebMCP](/ai/webmcp) is the browser-side counterpart. The storefront layout declares its
 search, product, wishlist, cart, checkout and newsletter actions as tools, and registers them
@@ -1705,8 +1710,10 @@ Building a store? Start with **[Magic AI](/ai/magic-ai)**. Letting agents shop i
 
 # Magic AI
 
-Magic AI is Bagisto's built-in AI engine. It powers content and image generation in the
-admin panel and AI features on the storefront, using whichever AI provider you configure.
+Magic AI is Bagisto's built-in generative AI engine. It powers content and image generation
+in the admin panel and AI features on the storefront, using whichever AI provider you
+configure. It is the merchant-facing half of Bagisto's [agentic commerce](./introduction.md)
+story; the shopper-facing half, agents acting on the storefront, is [WebMCP](./webmcp.md).
 
 It is built on the [Laravel AI](https://laravel.com/docs/ai) SDK, so a single configuration
 works across every supported provider. The package is the same on Bagisto 2.4 and the current
@@ -1742,7 +1749,7 @@ URL (default `http://localhost:11434`) in the provider settings.
 
 ## Configuration
 
-Everything is configured from the admin panel under **Configuration → Magic AI**. There are four groups:
+Everything is configured from the admin panel under **Configure → Magic AI**. There are four groups:
 
 ### 1. General
 
@@ -1801,14 +1808,17 @@ $text = MagicAI::generateContent('Summarize this policy in one line.', 'gpt-4.1'
 
 ```php
 $images = magic_ai()->generateImage('A minimalist running shoe on a white background', [
-    'n'       => 1,           // number of images
-    'size'    => '1:1',       // 1:1 (square), 3:2 (landscape), 2:3 (portrait)
-    'quality' => 'high',      // high, medium, low
+    'n' => 1,
+    'size' => '1:1',
+    'quality' => 'high',
 ], 'gpt-image-1');
 
-// Each item is a data URL: ['url' => 'data:image/png;base64,...']
 $src = $images[0]['url'];
 ```
+
+The options are `n` (how many images), `size` (`1:1` square, `3:2` landscape or `2:3`
+portrait) and `quality` (`high`, `medium` or `low`). Each returned item is an array with a
+`url` key holding a `data:image/png;base64,…` URL.
 
 Providers whose API has no size or quality parameters (xAI, for one) get those requirements
 written into the prompt instead.
@@ -2144,7 +2154,7 @@ Bagisto is built on a modular architecture that enhances flexibility, scalabilit
 
 Every Bagisto module follows a standardized structure that ensures consistency and simplifies management. A typical module includes:
 
-```
+```text
 packages/Webkul/Module/
 ├── src/
 │   ├── Config/
@@ -2231,7 +2241,7 @@ By adopting the **Repository Pattern** with the Prettus Repository package, Bagi
 
 ## Available Packages In Bagisto
 
-Bagisto comes with a comprehensive collection of packages that demonstrate the power of its modular architecture and repository pattern implementation. Each package follows the same standardized structure and design principles, allowing developers to easily understand, extend, and customize functionality across the entire platform.
+Bagisto comes with a comprehensive collection of packages that demonstrate the power of its modular architecture and repository pattern implementation. Each package follows the same standardized structure and design principles, allowing developers to understand, extend, and customize functionality across the entire platform.
 
 Laravel packages are the primary way of adding functionality. The following features are distributed into packages to enhance the application and allow developers to follow the standard way of developing custom functionality.
 
@@ -2503,13 +2513,13 @@ This package provides advanced caching mechanisms to store generated pages in me
 
 ### GDPR
 
-The GDPR Package in Bagisto allows customers to easily raise requests to update, modify, or delete their personal data stored on the platform. This feature empowers customers by giving them greater control over their information and ensures that businesses comply with data protection laws like the GDPR.
+The GDPR Package in Bagisto lets customers raise requests to update, modify, or delete their personal data stored on the platform. This feature empowers customers by giving them greater control over their information and ensures that businesses comply with data protection laws like the GDPR.
 
 #### Key Features of the GDPR Package
 
 - Customer-Initiated Data Modification Requests
     - Customers can raise requests to modify or update their personal details (such as email, name, address, etc.) in their account settings.
-    - Customers can easily request to delete their personal data from the system. This is in accordance with the GDPR’s "Right to Erasure," which allows individuals to request the deletion of their data from systems that no longer need it.
+    - Customers can request to delete their personal data from the system. This is in accordance with the GDPR’s "Right to Erasure," which allows individuals to request the deletion of their data from systems that no longer need it.
     - Customers can revoke consent for data processing, allowing businesses to stop collecting or using their data. The system keeps track of revocation timestamps (revoked_at), ensuring compliance with GDPR.
     - While the customers can submit requests, the admin can review, approve, or reject them via the admin panel. The admin can also track the progress and history of these requests.
 
@@ -2537,7 +2547,7 @@ The Inventory package in Bagisto offers comprehensive tools to manage and track 
 
 ### MagicAI 
 
-The MagicAI package integrates text and image generation, image search, review translation and checkout messages into the admin and the storefront, through the Laravel AI SDK and any of eight providers. It is documented on the [Magic AI](../ai/magic-ai.md) page.
+The MagicAI package is Bagisto's generative AI layer: text and image generation, image search, review translation and checkout messages in the admin and the storefront, through the Laravel AI SDK and any of eight providers. It is documented on the [Magic AI](../ai/magic-ai.md) page; the storefront's agent tools live in the Shop package and are documented under [WebMCP](../ai/webmcp.md).
 
 ### Marketing 
 
@@ -2647,7 +2657,7 @@ The SocialLogin package in Bagisto empowers e-commerce businesses to enhance use
 
 ### SocialShare
 
- This package enables customers to easily share products, categories, and content across various social media platforms, enhancing visibility and engagement.
+ This package lets customers share products, categories, and content across various social media platforms, enhancing visibility and engagement.
 
 ### Tax
 
@@ -2842,17 +2852,21 @@ Register your package's service provider in the `bootstrap/providers.php` file l
 ```php{12}
 <?php
 
+use App\Providers\AppServiceProvider;
+use Webkul\Admin\Providers\AdminServiceProvider;
+use Webkul\RMA\Providers\RMAServiceProvider;
+
 return [
     /**
      * Application service providers.
      */
-    App\Providers\AppServiceProvider::class,
+    AppServiceProvider::class,
 
     /**
      * Webkul's service providers.
      */
-    Webkul\Admin\Providers\AdminServiceProvider::class,
-    Webkul\RMA\Providers\RMAServiceProvider::class,
+    AdminServiceProvider::class,
+    RMAServiceProvider::class,
     // ... the other Webkul providers
 ];
 ```
@@ -2881,7 +2895,7 @@ Manual setup requires good understanding of Laravel package development. If you'
 
 Inside the `packages/Webkul` folder, create a folder with your package name. Your structure should look like this:
 
-```
+```text
 └── packages
     └── Webkul
         └── RMA
@@ -2889,7 +2903,7 @@ Inside the `packages/Webkul` folder, create a folder with your package name. You
 
 In your package folder, create a folder named as `src`. This is where you'll put all your package-related files. Your updated structure will look like this:
 
-```
+```text
 └── packages
     └── Webkul
         └── RMA
@@ -2900,7 +2914,7 @@ In your package folder, create a folder named as `src`. This is where you'll put
 
 In the `src` folder, create a folder named as `Providers`. Inside that folder, create a file named as `RMAServiceProvider.php`. Your structure should look like this:
 
-```
+```text
 └── packages
     └── Webkul
         └── RMA
@@ -2929,7 +2943,7 @@ class RMAServiceProvider extends ServiceProvider
     {
         //
     }
-    
+
     /**
      * Bootstrap services.
      *
@@ -2975,17 +2989,21 @@ Register your package's service provider in the `bootstrap/providers.php` file l
 ```php{12}
 <?php
 
+use App\Providers\AppServiceProvider;
+use Webkul\Admin\Providers\AdminServiceProvider;
+use Webkul\RMA\Providers\RMAServiceProvider;
+
 return [
     /**
      * Application service providers.
      */
-    App\Providers\AppServiceProvider::class,
+    AppServiceProvider::class,
 
     /**
      * Webkul's service providers.
      */
-    Webkul\Admin\Providers\AdminServiceProvider::class,
-    Webkul\RMA\Providers\RMAServiceProvider::class,
+    AdminServiceProvider::class,
+    RMAServiceProvider::class,
     // ... the other Webkul providers
 ];
 ```
@@ -3073,7 +3091,7 @@ class RMAServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
     }
 }
 ```
@@ -3253,7 +3271,7 @@ php artisan migrate
 ```
 
 You should see output similar to:
-```
+```text
 2025_01_01_000000_create_rma_requests_table ............... 75.34ms DONE
 ```
 
@@ -3335,9 +3353,7 @@ The package generator creates three interconnected files that work together:
 
 namespace Webkul\RMA\Contracts;
 
-interface ReturnRequest
-{
-}
+interface ReturnRequest {}
 ```
 
 **2. Model Proxy** - `packages/Webkul/RMA/src/Models/ReturnRequestProxy.php`
@@ -3348,9 +3364,7 @@ namespace Webkul\RMA\Models;
 
 use Konekt\Concord\Proxies\ModelProxy;
 
-class ReturnRequestProxy extends ModelProxy
-{
-}
+class ReturnRequestProxy extends ModelProxy {}
 ```
 
 **3. Base Model** - `packages/Webkul/RMA/src/Models/ReturnRequest.php`
@@ -3385,9 +3399,7 @@ mkdir -p packages/Webkul/RMA/src/Contracts
 
 namespace Webkul\RMA\Contracts;
 
-interface ReturnRequest
-{
-}
+interface ReturnRequest {}
 ```
 
 #### Step 2: Create the Proxy
@@ -3405,9 +3417,7 @@ namespace Webkul\RMA\Models;
 
 use Konekt\Concord\Proxies\ModelProxy;
 
-class ReturnRequestProxy extends ModelProxy
-{
-}
+class ReturnRequestProxy extends ModelProxy {}
 ```
 
 #### Step 3: Create the Base Model
@@ -3531,6 +3541,7 @@ packages
 namespace Webkul\RMA\Providers;
 
 use Konekt\Concord\BaseModuleServiceProvider;
+use Webkul\RMA\Models\ReturnRequest;
 
 class ModuleServiceProvider extends BaseModuleServiceProvider
 {
@@ -3540,7 +3551,7 @@ class ModuleServiceProvider extends BaseModuleServiceProvider
      * @var array
      */
     protected $models = [
-        \Webkul\RMA\Models\ReturnRequest::class,
+        ReturnRequest::class,
     ];
 }
 ```
@@ -3567,7 +3578,7 @@ Bagisto configures Concord with `Webkul\Core\CoreConvention`, which looks for a 
 <?php
 
 return [
-    'name'    => 'Webkul Bagisto RMA',
+    'name' => 'Webkul Bagisto RMA',
     'version' => core()->version(),
 ];
 ```
@@ -3582,10 +3593,12 @@ Finally, register your ModuleServiceProvider with Bagisto's Concord system by ad
 ```php{6}
 <?php
 
+use Webkul\RMA\Providers\ModuleServiceProvider;
+
 return [
     'modules' => [
         // Other service providers...
-        \Webkul\RMA\Providers\ModuleServiceProvider::class,
+        ModuleServiceProvider::class,
     ],
 ];
 ```
@@ -3599,24 +3612,27 @@ php artisan tinker
 ```
 
 ```php
+use Webkul\RMA\Models\ReturnRequest;
+use Webkul\RMA\Models\ReturnRequestProxy;
+
 // Test model creation via direct model
-\Webkul\RMA\Models\ReturnRequest::create([
+ReturnRequest::create([
     'customer_id' => 1,
     'order_id' => 1,
     'product_sku' => 'SAMPLE-001',
     'product_name' => 'Test Product 1',
     'product_quantity' => 1,
-    'reason' => 'Defective Item'
+    'reason' => 'Defective Item',
 ]);
 
 // Test model creation via proxy
-\Webkul\RMA\Models\ReturnRequestProxy::create([
+ReturnRequestProxy::create([
     'customer_id' => 2,
     'order_id' => 2,
     'product_sku' => 'SAMPLE-002',
     'product_name' => 'Test Product 2',
     'product_quantity' => 1,
-    'reason' => 'Defective Item'
+    'reason' => 'Defective Item',
 ]);
 ```
 
@@ -3633,7 +3649,7 @@ When working with Bagisto models, you might encounter several common issues. Her
 ### 1. Model Proxy Registration Errors
 
 **Error:**
-```
+```text
 TypeError: Konekt\Concord\Proxies\ModelProxy::targetClass(): Return value must be of type string, null returned.
 ```
 
@@ -3663,7 +3679,7 @@ TypeError: Konekt\Concord\Proxies\ModelProxy::targetClass(): Return value must b
 ### 2. Table Not Found Errors
 
 **Error:**
-```
+```text
 SQLSTATE[42S02]: Base table or view not found: 1146 Table 'bagisto.rma_requests' doesn't exist
 ```
 
@@ -3686,7 +3702,7 @@ SQLSTATE[42S02]: Base table or view not found: 1146 Table 'bagisto.rma_requests'
 ### 3. Namespace and Autoloading Issues
 
 **Error:**
-```
+```text
 Class 'Webkul\RMA\Models\ReturnRequest' not found
 ```
 
@@ -3708,7 +3724,7 @@ Class 'Webkul\RMA\Models\ReturnRequest' not found
 ### 4. Fillable Attribute Errors
 
 **Error:**
-```
+```text
 Illuminate\Database\Eloquent\MassAssignmentException: customer_id
 ```
 
@@ -3730,7 +3746,7 @@ protected $fillable = [
 ### 5. Contract Implementation Issues
 
 **Error:**
-```
+```text
 Class must implement interface Webkul\RMA\Contracts\ReturnRequest
 ```
 
@@ -3802,6 +3818,8 @@ Register the override in your package's `ModuleServiceProvider` by keying the `$
 namespace Webkul\RMA\Providers;
 
 use Konekt\Concord\BaseModuleServiceProvider;
+use Webkul\Product\Contracts\Product;
+use Webkul\RMA\Models\ReturnRequest;
 
 class ModuleServiceProvider extends BaseModuleServiceProvider
 {
@@ -3811,8 +3829,8 @@ class ModuleServiceProvider extends BaseModuleServiceProvider
      * @var array
      */
     protected $models = [
-        \Webkul\RMA\Models\ReturnRequest::class,
-        \Webkul\Product\Contracts\Product::class => \Webkul\RMA\Models\Product::class,
+        ReturnRequest::class,
+        Product::class => \Webkul\RMA\Models\Product::class,
     ];
 }
 ```
@@ -3838,7 +3856,7 @@ class SomeController extends Controller
     public function checkReturnable($productId)
     {
         $product = $this->productRepository->find($productId);
-        
+
         // This automatically uses your extended model
         return $product->isReturnable();
     }
@@ -3973,8 +3991,6 @@ class ReturnRequestRepository extends Repository
 {
     /**
      * Specify the Model contract class name.
-     *
-     * @return string
      */
     public function model(): string
     {
@@ -4027,7 +4043,7 @@ $returnRequest = $this->returnRequestRepository->findOrFail($id);
 
 // Get first record matching conditions
 $firstPending = $this->returnRequestRepository->findWhere([
-    'status' => 'pending'
+    'status' => 'pending',
 ])->first();
 ```
 
@@ -4037,7 +4053,7 @@ $firstPending = $this->returnRequestRepository->findWhere([
 // Update by ID
 $returnRequest = $this->returnRequestRepository->update([
     'status' => 'approved',
-    'admin_notes' => 'Approved for return'
+    'admin_notes' => 'Approved for return',
 ], $id);
 ```
 
@@ -4065,7 +4081,7 @@ $specificReturns = $this->returnRequestRepository->findWhereIn('id', [1, 2, 3, 4
 // Find records where field value is between two values
 $recentReturns = $this->returnRequestRepository->findWhereBetween('created_at', [
     '2024-01-01',
-    '2024-12-31'
+    '2024-12-31',
 ]);
 ```
 
@@ -4121,7 +4137,7 @@ class ReturnRequestRepository extends Repository
     {
         return $this->findWhere([
             'customer_id' => $customerId,
-            'status' => 'pending'
+            'status' => 'pending',
         ]);
     }
 
@@ -4193,7 +4209,7 @@ $return = $repository->create([
     'product_name' => 'Test Product',
     'product_quantity' => 1,
     'reason' => 'Testing repository',
-    'status' => 'pending'
+    'status' => 'pending',
 ]);
 
 // Test retrieval
@@ -4295,15 +4311,15 @@ Create `packages/Webkul/RMA/src/Routes/admin-routes.php`:
 use Illuminate\Support\Facades\Route;
 
 Route::group([
-    'middleware' => ['web', 'admin'], 
-    'prefix' => config('app.admin_url')
+    'middleware' => ['web', 'admin'],
+    'prefix' => config('app.admin_url'),
 ], function () {
     /**
      * Return request routes.
      */
     Route::prefix('rma/return-requests')->group(function () {
         /**
-         * First route. 
+         * First route.
          */
         Route::get('', function () {
             return 'Admin RMA Return Requests List';
@@ -4335,7 +4351,7 @@ Create `packages/Webkul/RMA/src/Routes/shop-routes.php`:
 use Illuminate\Support\Facades\Route;
 
 Route::group([
-    'middleware' => ['web', 'shop']
+    'middleware' => ['web', 'shop'],
 ], function () {
     // Leave it blank for now...
 });
@@ -4385,10 +4401,10 @@ class RMAServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
-        
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/admin-routes.php');
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/shop-routes.php');
+        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+
+        $this->loadRoutesFrom(__DIR__.'/../Routes/admin-routes.php');
+        $this->loadRoutesFrom(__DIR__.'/../Routes/shop-routes.php');
     }
 }
 ```
@@ -4491,10 +4507,10 @@ Create `packages/Webkul/RMA/src/Http/Controllers/Controller.php`:
 
 namespace Webkul\RMA\Http\Controllers;
 
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {
@@ -4625,8 +4641,8 @@ use Illuminate\Support\Facades\Route;
 use Webkul\RMA\Http\Controllers\Admin\ReturnRequestController;
 
 Route::group([
-    'middleware' => ['web', 'admin'], 
-    'prefix' => config('app.admin_url')
+    'middleware' => ['web', 'admin'],
+    'prefix' => config('app.admin_url'),
 ], function () {
     /**
      * Return request routes.
@@ -4652,7 +4668,7 @@ use Illuminate\Support\Facades\Route;
 use Webkul\RMA\Http\Controllers\Shop\ReturnRequestController;
 
 Route::group([
-    'middleware' => ['web', 'shop']
+    'middleware' => ['web', 'shop'],
 ], function () {
     /**
      * Customer return request routes.
@@ -4803,12 +4819,12 @@ class RMAServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
-        
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/admin-routes.php');
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/shop-routes.php');
-        
-        $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'rma');
+        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+
+        $this->loadRoutesFrom(__DIR__.'/../Routes/admin-routes.php');
+        $this->loadRoutesFrom(__DIR__.'/../Routes/shop-routes.php');
+
+        $this->loadViewsFrom(__DIR__.'/../Resources/views', 'rma');
     }
 }
 ```
@@ -5136,14 +5152,14 @@ class RMAServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
-        
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/admin-routes.php');
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/shop-routes.php');
-        
-        $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'rma');
-        
-        $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'rma');
+        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+
+        $this->loadRoutesFrom(__DIR__.'/../Routes/admin-routes.php');
+        $this->loadRoutesFrom(__DIR__.'/../Routes/shop-routes.php');
+
+        $this->loadViewsFrom(__DIR__.'/../Resources/views', 'rma');
+
+        $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'rma');
     }
 }
 ```
@@ -5159,7 +5175,7 @@ If you want to allow users to customize your package's translations, you can mak
 ```php
 // Add to the boot() method in RMAServiceProvider
 $this->publishes([
-    __DIR__ . '/../Resources/lang' => lang_path('vendor/rma'),
+    __DIR__.'/../Resources/lang' => lang_path('vendor/rma'),
 ], 'rma-translations');
 ```
 
@@ -5237,7 +5253,7 @@ class ReturnRequestController extends Controller
 ```
 
 ::: tip Simple Controller Integration
-For now, our controller simply renders the view. As we add more functionality like create, edit, and delete operations, we'll expand the translation usage for success messages and validation feedback.
+For now, our controller only renders the view. As we add more functionality like create, edit, and delete operations, we'll expand the translation usage for success messages and validation feedback.
 :::
 
 ### Translation Helper Functions
@@ -5285,7 +5301,7 @@ App::setLocale('en');
 echo __('rma::app.admin.return-requests.title'); // Should output: "RMA Listing Title"
 
 // Test fallback behavior
-App::setLocale('fr'); 
+App::setLocale('fr');
 echo __('rma::app.admin.return-requests.title'); // Should fallback to English since French not defined
 ```
 
@@ -5433,11 +5449,11 @@ class ReturnRequestDataGrid extends DataGrid
     public function prepareColumns()
     {
         $this->addColumn([
-            'index'      => 'id',
-            'label'      => trans('rma::app.admin.return-requests.datagrid.id'),
-            'type'       => 'integer',
+            'index' => 'id',
+            'label' => trans('rma::app.admin.return-requests.datagrid.id'),
+            'type' => 'integer',
             'searchable' => false,
-            'sortable'   => true,
+            'sortable' => true,
             'filterable' => false,
         ]);
     }
@@ -5468,7 +5484,7 @@ return [
         'return-requests' => [
             'title' => 'RMA Listing Title',
             'content' => 'RMA Listing Content',
-            
+
             'datagrid' => [
                 'id' => 'ID',
             ],
@@ -5492,9 +5508,9 @@ Update your admin controller to use the DataGrid:
 
 namespace Webkul\RMA\Http\Controllers\Admin;
 
+use Webkul\RMA\DataGrids\Admin\ReturnRequestDataGrid;
 use Webkul\RMA\Http\Controllers\Controller;
 use Webkul\RMA\Repositories\ReturnRequestRepository;
-use Webkul\RMA\DataGrids\Admin\ReturnRequestDataGrid;
 
 class ReturnRequestController extends Controller
 {
@@ -5721,11 +5737,11 @@ This method defines how each column should behave. Our simple example:
 public function prepareColumns()
 {
     $this->addColumn([
-        'index'      => 'id',
-        'label'      => trans('rma::app.admin.return-requests.datagrid.id'),
-        'type'       => 'integer',
+        'index' => 'id',
+        'label' => trans('rma::app.admin.return-requests.datagrid.id'),
+        'type' => 'integer',
         'searchable' => false,
-        'sortable'   => true,
+        'sortable' => true,
         'filterable' => false,
     ]);
 }
@@ -5780,11 +5796,11 @@ This method defines row-level actions (like edit, delete buttons). We didn't inc
 public function prepareActions()
 {
     $this->addAction([
-        'index'  => 'edit',
-        'icon'   => 'icon-edit',
-        'title'  => 'Edit',
+        'index' => 'edit',
+        'icon' => 'icon-edit',
+        'title' => 'Edit',
         'method' => 'GET',
-        'url'    => function ($row) {
+        'url' => function ($row) {
             return route('admin.rma.return-requests.edit', $row->id);
         },
     ]);
@@ -5809,10 +5825,10 @@ This method defines bulk operations. Also not included in our basic example:
 public function prepareMassActions()
 {
     $this->addMassAction([
-        'icon'   => 'icon-delete',
-        'title'  => 'Delete Selected',
+        'icon' => 'icon-delete',
+        'title' => 'Delete Selected',
         'method' => 'POST',
-        'url'    => route('admin.rma.return-requests.mass-delete'),
+        'url' => route('admin.rma.return-requests.mass-delete'),
     ]);
 }
 ```
@@ -5828,7 +5844,7 @@ Event::listen('datagrid.return_request_data_grid.columns.add.after', function ($
     $datagrid->addColumn([
         'index' => 'warehouse',
         'label' => trans('rma::app.admin.return-requests.datagrid.warehouse'),
-        'type'  => 'string',
+        'type' => 'string',
     ]);
 });
 ```
@@ -5867,20 +5883,20 @@ Add the new column to your `prepareColumns()` method:
 public function prepareColumns()
 {
     $this->addColumn([
-        'index'      => 'id',
-        'label'      => trans('rma::app.admin.return-requests.datagrid.id'),
-        'type'       => 'integer',
+        'index' => 'id',
+        'label' => trans('rma::app.admin.return-requests.datagrid.id'),
+        'type' => 'integer',
         'searchable' => false,
-        'sortable'   => true,
+        'sortable' => true,
         'filterable' => false,
     ]);
 
     $this->addColumn([
-        'index'      => 'product_name',
-        'label'      => trans('rma::app.admin.return-requests.datagrid.product-name'),
-        'type'       => 'string',
+        'index' => 'product_name',
+        'label' => trans('rma::app.admin.return-requests.datagrid.product-name'),
+        'type' => 'string',
         'searchable' => true,
-        'sortable'   => true,
+        'sortable' => true,
         'filterable' => false,
     ]);
 }
@@ -5923,13 +5939,13 @@ public function prepareColumns()
     // ...existing columns...
 
     $this->addColumn([
-        'index'              => 'status',
-        'label'              => trans('rma::app.admin.return-requests.datagrid.status'),
-        'type'               => 'string',
-        'searchable'         => false,
-        'sortable'           => true,
-        'filterable'         => true,
-        'filterable_type'    => 'dropdown',
+        'index' => 'status',
+        'label' => trans('rma::app.admin.return-requests.datagrid.status'),
+        'type' => 'string',
+        'searchable' => false,
+        'sortable' => true,
+        'filterable' => true,
+        'filterable_type' => 'dropdown',
         'filterable_options' => [
             [
                 'label' => trans('rma::app.admin.return-requests.datagrid.pending'),
@@ -5975,13 +5991,13 @@ public function prepareColumns()
     // ...existing columns...
 
     $this->addColumn([
-        'index'              => 'status',
-        'label'              => trans('rma::app.admin.return-requests.datagrid.status'),
-        'type'               => 'string',
-        'searchable'         => false,
-        'sortable'           => true,
-        'filterable'         => true,
-        'filterable_type'    => 'dropdown',
+        'index' => 'status',
+        'label' => trans('rma::app.admin.return-requests.datagrid.status'),
+        'type' => 'string',
+        'searchable' => false,
+        'sortable' => true,
+        'filterable' => true,
+        'filterable_type' => 'dropdown',
         'filterable_options' => [
             [
                 'label' => trans('rma::app.admin.return-requests.datagrid.pending'),
@@ -5997,7 +6013,7 @@ public function prepareColumns()
             ],
         ],
         'closure' => function ($row) {
-            return "<span class='badge label-info'>" . ucfirst($row->status) . "</span>";
+            return "<span class='badge label-info'>".ucfirst($row->status).'</span>';
         },
     ]);
 }
@@ -6079,7 +6095,7 @@ Here are simple examples of other closure implementations you might use:
 ```php
 'closure' => function ($row) {
     return strlen($row->description) > 30 
-        ? substr($row->description, 0, 30) . '...'
+        ? substr($row->description, 0, 30).'...'
         : $row->description;
 },
 ```
@@ -6121,7 +6137,7 @@ First, add a simple view route in your package's route file `packages/Webkul/RMA
 ```php{9-10}
 Route::group([
     'middleware' => ['web', 'admin'],
-    'prefix'     => config('app.admin_url'),
+    'prefix' => config('app.admin_url'),
 ], function () {
     Route::prefix('rma/return-requests')->group(function () {
         // ...existing routes...
@@ -6149,7 +6165,7 @@ class ReturnRequestController extends Controller
     public function show($id)
     {
         $returnRequest = $this->returnRequestRepository->findOrFail($id);
-        
+
         return view('rma::admin.return-requests.show', compact('returnRequest'));
     }
 }
@@ -6162,7 +6178,7 @@ Create the view template for displaying individual return requests:
 **Create:** `packages/Webkul/RMA/src/Resources/views/admin/return-requests/show.blade.php`
 
 ::: tip Quick Implementation
-Don't worry about understanding every part of this view template right now. Simply copy and paste the code below - it's a standard admin detail page that follows Bagisto's design patterns. Focus on understanding how the DataGrid action connects to this view.
+Don't worry about understanding every part of this view template right now. Copy and paste the code below - it's a standard admin detail page that follows Bagisto's design patterns. Focus on understanding how the DataGrid action connects to this view.
 :::
 
 ```blade
@@ -6235,10 +6251,10 @@ Now add the `prepareActions()` method to your DataGrid with just the view action
 public function prepareActions()
 {
     $this->addAction([
-        'icon'   => 'icon-view',
-        'title'  => trans('rma::app.admin.return-requests.datagrid.view'),
+        'icon' => 'icon-view',
+        'title' => trans('rma::app.admin.return-requests.datagrid.view'),
         'method' => 'GET',
-        'url'    => function ($row) {
+        'url' => function ($row) {
             return route('admin.rma.return-requests.show', $row->id);
         },
     ]);
@@ -6280,28 +6296,28 @@ Once you're comfortable with basic actions, you can add edit and delete actions:
 public function prepareActions()
 {
     $this->addAction([
-        'icon'   => 'icon-view',
-        'title'  => trans('rma::app.admin.return-requests.datagrid.view'),
+        'icon' => 'icon-view',
+        'title' => trans('rma::app.admin.return-requests.datagrid.view'),
         'method' => 'GET',
-        'url'    => function ($row) {
+        'url' => function ($row) {
             return route('admin.rma.return-requests.show', $row->id);
         },
     ]);
 
     $this->addAction([
-        'icon'   => 'icon-edit',
-        'title'  => trans('rma::app.admin.return-requests.datagrid.edit'),
+        'icon' => 'icon-edit',
+        'title' => trans('rma::app.admin.return-requests.datagrid.edit'),
         'method' => 'GET',
-        'url'    => function ($row) {
+        'url' => function ($row) {
             return route('admin.rma.return-requests.edit', $row->id);
         },
     ]);
 
     $this->addAction([
-        'icon'   => 'icon-delete',
-        'title'  => trans('rma::app.admin.return-requests.datagrid.delete'),
+        'icon' => 'icon-delete',
+        'title' => trans('rma::app.admin.return-requests.datagrid.delete'),
         'method' => 'DELETE',
-        'url'    => function ($row) {
+        'url' => function ($row) {
             return route('admin.rma.return-requests.delete', $row->id);
         },
     ]);
@@ -6321,7 +6337,7 @@ For bulk operations, add the `prepareMassActions()` method:
 ```php{9-10}
 Route::group([
     'middleware' => ['web', 'admin'],
-    'prefix'     => config('app.admin_url'),
+    'prefix' => config('app.admin_url'),
 ], function () {
     Route::prefix('rma/return-requests')->group(function () {
         // ...existing routes...
@@ -6369,10 +6385,10 @@ class ReturnRequestController extends Controller
 public function prepareMassActions()
 {
     $this->addMassAction([
-        'icon'   => 'icon-delete',
-        'title'  => trans('rma::app.admin.return-requests.datagrid.mass-delete'),
+        'icon' => 'icon-delete',
+        'title' => trans('rma::app.admin.return-requests.datagrid.mass-delete'),
         'method' => 'POST',
-        'url'    => route('admin.rma.return-requests.mass-delete'),
+        'url' => route('admin.rma.return-requests.mass-delete'),
     ]);
 }
 ```
@@ -6415,7 +6431,7 @@ In Bagisto, there are two types of menus to understand:
 
 **Admin Menu**: This section focuses on the backend navigation that administrators use to manage the system. Specifically, we will cover how to create custom admin menu items for your package.
 
-Admin menus provide navigation structure for your package's administrative interface in Bagisto. They allow administrators to easily access different sections and features of your package from the admin panel sidebar.
+Admin menus provide navigation structure for your package's administrative interface in Bagisto. They allow administrators to reach different sections and features of your package from the admin panel sidebar.
 
 For our RMA package, we'll create a simple admin menu that provides access to the return requests listing page, demonstrating how to integrate your package seamlessly into Bagisto's admin navigation.
 
@@ -6469,11 +6485,11 @@ Create `packages/Webkul/RMA/src/Config/admin-menu.php`:
 
 return [
     [
-        'key'   => 'rma',
-        'name'  => 'RMA',
+        'key' => 'rma',
+        'name' => 'RMA',
         'route' => 'admin.rma.return-requests.index',
-        'sort'  => 100, // Order position `100` places it near the end of the menu
-        'icon'  => '',
+        'sort' => 100, // Order position `100` places it near the end of the menu
+        'icon' => '',
     ],
 ];
 ```
@@ -6500,7 +6516,7 @@ Update your translation file `packages/Webkul/RMA/src/Resources/lang/en/app.php`
 return [
     'admin' => [
         // ...existing translations...
-        
+
         'menu' => [
             'rma' => 'RMA',
         ],
@@ -6515,11 +6531,11 @@ Now update your menu configuration to use translations:
 
 return [
     [
-        'key'   => 'rma',
-        'name'  => 'rma::app.admin.menu.rma',
+        'key' => 'rma',
+        'name' => 'rma::app.admin.menu.rma',
         'route' => 'admin.rma.return-requests.index',
-        'sort'  => 100,
-        'icon'  => '',
+        'sort' => 100,
+        'icon' => '',
     ],
 ];
 ```
@@ -6545,7 +6561,7 @@ class RMAServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/admin-menu.php',
+            dirname(__DIR__).'/Config/admin-menu.php',
             'menu.admin'
         );
     }
@@ -6555,14 +6571,14 @@ class RMAServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
-        
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/admin-routes.php');
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/shop-routes.php');
-        
-        $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'rma');
-        
-        $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'rma');
+        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+
+        $this->loadRoutesFrom(__DIR__.'/../Routes/admin-routes.php');
+        $this->loadRoutesFrom(__DIR__.'/../Routes/shop-routes.php');
+
+        $this->loadViewsFrom(__DIR__.'/../Resources/views', 'rma');
+
+        $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'rma');
     }
 }
 ```
@@ -6628,38 +6644,38 @@ In Bagisto, hierarchical menus are created by using dot notation in the `key` pr
 return [
     // Main RMA menu item
     [
-        'key'   => 'rma',
-        'name'  => 'RMA',  // Use 'rma::app.admin.menu.rma' for translations
+        'key' => 'rma',
+        'name' => 'RMA',  // Use 'rma::app.admin.menu.rma' for translations
         'route' => 'admin.rma.return-requests.index',
-        'sort'  => 100,
-        'icon'  => 'icon-sales',
+        'sort' => 100,
+        'icon' => 'icon-sales',
     ],
-    
+
     // Sub-menu: Return Requests
     [
-        'key'   => 'rma.return-requests',
-        'name'  => 'Return Requests',  // Use 'rma::app.admin.menu.return-requests' for translations
+        'key' => 'rma.return-requests',
+        'name' => 'Return Requests',  // Use 'rma::app.admin.menu.return-requests' for translations
         'route' => 'admin.rma.return-requests.index',
-        'sort'  => 1,
-        'icon'  => '',
+        'sort' => 1,
+        'icon' => '',
     ],
-    
+
     // Sub-menu: RMA Settings
     [
-        'key'   => 'rma.settings',
-        'name'  => 'Settings',  // Use 'rma::app.admin.menu.settings' for translations
+        'key' => 'rma.settings',
+        'name' => 'Settings',  // Use 'rma::app.admin.menu.settings' for translations
         'route' => 'admin.rma.return-requests.index',  // Same route for demo
-        'sort'  => 2,
-        'icon'  => '',
+        'sort' => 2,
+        'icon' => '',
     ],
-    
+
     // Sub-menu: Reports (if needed)
     [
-        'key'   => 'rma.reports',
-        'name'  => 'Reports',  // Use 'rma::app.admin.menu.reports' for translations
+        'key' => 'rma.reports',
+        'name' => 'Reports',  // Use 'rma::app.admin.menu.reports' for translations
         'route' => 'admin.rma.return-requests.index',  // Same route for demo
-        'sort'  => 3,
-        'icon'  => '',
+        'sort' => 3,
+        'icon' => '',
     ],
 ];
 ```
@@ -6727,7 +6743,7 @@ To configure Access Control List (ACL) settings in Bagisto, follow these structu
 
  Begin by creating a new file named `acl.php` within the `Config` directory of your package located at `packages/Webkul/RMA/src/Config`:
 
-```
+```text
 └── packages
       └── Webkul
          └── RMA
@@ -6749,20 +6765,20 @@ Add the following code to `acl.php`:
 
 return [
     [
-        'key'   => 'rma',
-        'name'  => 'RMA',  // Using direct text for now
+        'key' => 'rma',
+        'name' => 'RMA',  // Using direct text for now
         'route' => 'admin.rma.return-requests.index',
-        'sort'  => 1,
+        'sort' => 1,
     ], [
-        'key'   => 'rma.return-requests',
-        'name'  => 'Return Requests',  // Using direct text for now
+        'key' => 'rma.return-requests',
+        'name' => 'Return Requests',  // Using direct text for now
         'route' => 'admin.rma.return-requests.index',
-        'sort'  => 1,
+        'sort' => 1,
     ], [
-        'key'   => 'rma.return-requests.view',
-        'name'  => 'View',  // Using direct text for now
+        'key' => 'rma.return-requests.view',
+        'name' => 'View',  // Using direct text for now
         'route' => 'admin.rma.return-requests.show',
-        'sort'  => 1,
+        'sort' => 1,
     ],
 ];
 ```
@@ -6787,11 +6803,11 @@ Create or update your translation file `packages/Webkul/RMA/src/Resources/lang/e
 return [
     'admin' => [
         // ...existing admin translations...
-        
+
         'menu' => [
             'rma' => 'RMA',
         ],
-        
+
         'acl' => [
             'rma' => 'RMA',
             'return-requests' => 'Return Requests',
@@ -6810,20 +6826,20 @@ Replace the direct text with translation keys in your `acl.php`:
 
 return [
     [
-        'key'   => 'rma',
-        'name'  => 'rma::app.admin.acl.rma',  // Now using translation key
+        'key' => 'rma',
+        'name' => 'rma::app.admin.acl.rma',  // Now using translation key
         'route' => 'admin.rma.return-requests.index',
-        'sort'  => 1,
+        'sort' => 1,
     ], [
-        'key'   => 'rma.return-requests',
-        'name'  => 'rma::app.admin.acl.return-requests',  // Now using translation key
+        'key' => 'rma.return-requests',
+        'name' => 'rma::app.admin.acl.return-requests',  // Now using translation key
         'route' => 'admin.rma.return-requests.index',
-        'sort'  => 1,
+        'sort' => 1,
     ], [
-        'key'   => 'rma.return-requests.view',
-        'name'  => 'rma::app.admin.acl.view',  // Now using translation key
+        'key' => 'rma.return-requests.view',
+        'name' => 'rma::app.admin.acl.view',  // Now using translation key
         'route' => 'admin.rma.return-requests.show',
-        'sort'  => 1,
+        'sort' => 1,
     ],
 ];
 ```
@@ -6855,12 +6871,12 @@ class RMAServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/admin-menu.php',
+            dirname(__DIR__).'/Config/admin-menu.php',
             'menu.admin'
         );
 
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/acl.php',
+            dirname(__DIR__).'/Config/acl.php',
             'acl'
         );
     }
@@ -6870,14 +6886,14 @@ class RMAServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
-        
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/admin-routes.php');
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/shop-routes.php');
-        
-        $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'rma');
-        
-        $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'rma');
+        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+
+        $this->loadRoutesFrom(__DIR__.'/../Routes/admin-routes.php');
+        $this->loadRoutesFrom(__DIR__.'/../Routes/shop-routes.php');
+
+        $this->loadViewsFrom(__DIR__.'/../Resources/views', 'rma');
+
+        $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'rma');
     }
 }
 ```
@@ -6937,50 +6953,50 @@ For packages with multiple admin sections, you can create hierarchical permissio
 return [
     // Main RMA permission
     [
-        'key'   => 'rma',
-        'name'  => 'RMA',  // Consider using translation key: rma::app.admin.acl.rma
+        'key' => 'rma',
+        'name' => 'RMA',  // Consider using translation key: rma::app.admin.acl.rma
         'route' => 'admin.rma.return-requests.index',
-        'sort'  => 1,
+        'sort' => 1,
     ], [
-        'key'   => 'rma.return-requests',
-        'name'  => 'Return Requests',  // Consider using translation key: rma::app.admin.acl.return-requests
+        'key' => 'rma.return-requests',
+        'name' => 'Return Requests',  // Consider using translation key: rma::app.admin.acl.return-requests
         'route' => 'admin.rma.return-requests.index',
-        'sort'  => 1,
+        'sort' => 1,
     ], [
-        'key'   => 'rma.return-requests.view',
-        'name'  => 'View',  // Consider using translation key: rma::app.admin.acl.view
+        'key' => 'rma.return-requests.view',
+        'name' => 'View',  // Consider using translation key: rma::app.admin.acl.view
         'route' => 'admin.rma.return-requests.show',
-        'sort'  => 1,
+        'sort' => 1,
     ], [
-        'key'   => 'rma.return-requests.create',
-        'name'  => 'Create',  // Consider using translation key: rma::app.admin.acl.create
+        'key' => 'rma.return-requests.create',
+        'name' => 'Create',  // Consider using translation key: rma::app.admin.acl.create
         'route' => 'admin.rma.return-requests.create',
-        'sort'  => 2,
+        'sort' => 2,
     ], [
-        'key'   => 'rma.return-requests.edit',
-        'name'  => 'Edit',  // Consider using translation key: rma::app.admin.acl.edit
+        'key' => 'rma.return-requests.edit',
+        'name' => 'Edit',  // Consider using translation key: rma::app.admin.acl.edit
         'route' => 'admin.rma.return-requests.edit',
-        'sort'  => 3,
+        'sort' => 3,
     ], [
-        'key'   => 'rma.return-requests.delete',
-        'name'  => 'Delete',  // Consider using translation key: rma::app.admin.acl.delete
+        'key' => 'rma.return-requests.delete',
+        'name' => 'Delete',  // Consider using translation key: rma::app.admin.acl.delete
         'route' => 'admin.rma.return-requests.delete',
-        'sort'  => 4,
+        'sort' => 4,
     ], [
-        'key'   => 'rma.settings',
-        'name'  => 'Settings',  // Consider using translation key: rma::app.admin.acl.settings
+        'key' => 'rma.settings',
+        'name' => 'Settings',  // Consider using translation key: rma::app.admin.acl.settings
         'route' => 'admin.rma.settings.index',
-        'sort'  => 2,
+        'sort' => 2,
     ], [
-        'key'   => 'rma.settings.view',
-        'name'  => 'View',  // Consider using translation key: rma::app.admin.acl.view
+        'key' => 'rma.settings.view',
+        'name' => 'View',  // Consider using translation key: rma::app.admin.acl.view
         'route' => 'admin.rma.settings.view',
-        'sort'  => 1,
+        'sort' => 1,
     ], [
-        'key'   => 'rma.settings.edit',
-        'name'  => 'Edit',  // Consider using translation key: rma::app.admin.acl.edit
+        'key' => 'rma.settings.edit',
+        'name' => 'Edit',  // Consider using translation key: rma::app.admin.acl.edit
         'route' => 'admin.rma.settings.edit',
-        'sort'  => 2,
+        'sort' => 2,
     ],
 ];
 ```
@@ -7090,7 +7106,7 @@ To create system configuration for your package, follow these structured steps:
 
 Begin by creating a new file named `system.php` within the `Config` directory of your package located at `packages/Webkul/RMA/src/Config`:
 
-```
+```text
 └── packages
     └── Webkul
         └── RMA
@@ -7113,38 +7129,38 @@ Inside the `system.php` file, include the following code to define your RMA conf
 
 return [
     [
-        'key'  => 'rma',
+        'key' => 'rma',
         'name' => 'RMA',  // Use direct text for now
         'info' => 'Return Merchandise Authorization settings',  // Use direct text for now
-        'sort' => 1
+        'sort' => 1,
     ], [
-        'key'  => 'rma.settings',
+        'key' => 'rma.settings',
         'name' => 'General Settings',  // Use direct text for now
         'info' => 'Configure basic RMA functionality',  // Use direct text for now
         'icon' => 'settings/settings.svg',
         'sort' => 1,
     ], [
-        'key'    => 'rma.settings.general',
-        'name'   => 'RMA Configuration',  // Use direct text for now
-        'info'   => 'Basic RMA settings and options',  // Use direct text for now
-        'sort'   => 1,
+        'key' => 'rma.settings.general',
+        'name' => 'RMA Configuration',  // Use direct text for now
+        'info' => 'Basic RMA settings and options',  // Use direct text for now
+        'sort' => 1,
         'fields' => [
             [
-                'name'  => 'enable',
+                'name' => 'enable',
                 'title' => 'Enable RMA',  // Use direct text for now
-                'type'  => 'boolean'
+                'type' => 'boolean',
             ], [
-                'name'  => 'allow_partial_returns',
+                'name' => 'allow_partial_returns',
                 'title' => 'Allow Partial Returns',  // Use direct text for now
-                'type'  => 'boolean',
+                'type' => 'boolean',
             ], [
-                'name'       => 'max_return_days',
-                'title'      => 'Maximum Return Days',  // Use direct text for now
-                'type'       => 'number',
-                'validation' => 'numeric|min:1'
-            ]
-        ]
-    ]
+                'name' => 'max_return_days',
+                'title' => 'Maximum Return Days',  // Use direct text for now
+                'type' => 'number',
+                'validation' => 'numeric|min:1',
+            ],
+        ],
+    ],
 ];
 ```
 
@@ -7199,17 +7215,17 @@ class RMAServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/admin-menu.php',
+            dirname(__DIR__).'/Config/admin-menu.php',
             'menu.admin'
         );
 
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/acl.php',
+            dirname(__DIR__).'/Config/acl.php',
             'acl'
         );
 
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/system.php',
+            dirname(__DIR__).'/Config/system.php',
             'core'
         );
     }
@@ -7219,14 +7235,14 @@ class RMAServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
-        
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/admin-routes.php');
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/shop-routes.php');
-        
-        $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'rma');
-        
-        $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'rma');
+        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+
+        $this->loadRoutesFrom(__DIR__.'/../Routes/admin-routes.php');
+        $this->loadRoutesFrom(__DIR__.'/../Routes/shop-routes.php');
+
+        $this->loadViewsFrom(__DIR__.'/../Resources/views', 'rma');
+
+        $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'rma');
     }
 }
 ```
@@ -7242,7 +7258,7 @@ Now you can test your system configuration:
 php artisan optimize:clear
 
 # Visit the admin panel
-# Navigate to: Configuration → RMA
+# Navigate to: Configure → RMA
 ```
 
 **Expected Results:**
@@ -7277,17 +7293,17 @@ Update your translation file `packages/Webkul/RMA/src/Resources/lang/en/app.php`
 return [
     'admin' => [
         // ...existing admin translations...
-        
+
         'menu' => [
             'rma' => 'RMA',
         ],
-        
+
         'acl' => [
             'rma' => 'RMA',
             'return-requests' => 'Return Requests',
             'view' => 'View',
         ],
-        
+
         'system' => [
             'rma' => 'RMA',
             'rma-info' => 'Return Merchandise Authorization settings',
@@ -7312,38 +7328,38 @@ Replace the direct text with translation keys in your `system.php`:
 
 return [
     [
-        'key'  => 'rma',
+        'key' => 'rma',
         'name' => 'rma::app.admin.system.rma',  // Now using translation key
         'info' => 'rma::app.admin.system.rma-info',  // Now using translation key
-        'sort' => 1
+        'sort' => 1,
     ], [
-        'key'  => 'rma.settings',
+        'key' => 'rma.settings',
         'name' => 'rma::app.admin.system.general-settings',  // Now using translation key
         'info' => 'rma::app.admin.system.general-settings-info',  // Now using translation key
         'icon' => 'settings/settings.svg',
         'sort' => 1,
     ], [
-        'key'    => 'rma.settings.general',
-        'name'   => 'rma::app.admin.system.rma-configuration',  // Now using translation key
-        'info'   => 'rma::app.admin.system.rma-configuration-info',  // Now using translation key
-        'sort'   => 1,
+        'key' => 'rma.settings.general',
+        'name' => 'rma::app.admin.system.rma-configuration',  // Now using translation key
+        'info' => 'rma::app.admin.system.rma-configuration-info',  // Now using translation key
+        'sort' => 1,
         'fields' => [
             [
-                'name'  => 'enable',
+                'name' => 'enable',
                 'title' => 'rma::app.admin.system.enable-rma',  // Now using translation key
-                'type'  => 'boolean'
+                'type' => 'boolean',
             ], [
-                'name'  => 'allow_partial_returns',
+                'name' => 'allow_partial_returns',
                 'title' => 'rma::app.admin.system.allow-partial-returns',  // Now using translation key
-                'type'  => 'boolean',
+                'type' => 'boolean',
             ], [
-                'name'       => 'max_return_days',
-                'title'      => 'rma::app.admin.system.max-return-days',  // Now using translation key
-                'type'       => 'number',
-                'validation' => 'numeric|min:1'
-            ]
-        ]
-    ]
+                'name' => 'max_return_days',
+                'title' => 'rma::app.admin.system.max-return-days',  // Now using translation key
+                'type' => 'number',
+                'validation' => 'numeric|min:1',
+            ],
+        ],
+    ],
 ];
 ```
 
@@ -7361,14 +7377,14 @@ This field type provides an input field of type text, useful for simple text con
 return [
     // ...
     [
-        'key'    => 'rma.settings.general',
-        'name'   => 'RMA Configuration',
-        'sort'   => 1,
+        'key' => 'rma.settings.general',
+        'name' => 'RMA Configuration',
+        'sort' => 1,
         'fields' => [
             [
-                'name'    => 'return_email',
-                'title'   => 'Return Request Email',  // Consider using translation key
-                'type'    => 'text',
+                'name' => 'return_email',
+                'title' => 'Return Request Email',  // Consider using translation key
+                'type' => 'text',
                 'default' => 'returns@yourstore.com',
                 'validation' => 'email',
             ],
@@ -7388,14 +7404,14 @@ This field type provides a password input field for sensitive information.
 return [
     // ...
     [
-        'key'    => 'rma.settings.api',
-        'name'   => 'API Configuration',
-        'sort'   => 1,
+        'key' => 'rma.settings.api',
+        'name' => 'API Configuration',
+        'sort' => 1,
         'fields' => [
             [
-                'name'       => 'api_secret',
-                'title'      => 'API Secret Key',  // Consider using translation key
-                'type'       => 'password',
+                'name' => 'api_secret',
+                'title' => 'API Secret Key',  // Consider using translation key
+                'type' => 'password',
                 'validation' => 'required',
             ],
         ],
@@ -7414,14 +7430,14 @@ This field type provides an input field for numeric values.
 return [
     // ...
     [
-        'key'    => 'rma.settings.general',
-        'name'   => 'RMA Configuration',
-        'sort'   => 1,
+        'key' => 'rma.settings.general',
+        'name' => 'RMA Configuration',
+        'sort' => 1,
         'fields' => [
             [
-                'name'       => 'max_return_days',
-                'title'      => 'Maximum Return Days',  // Consider using translation key
-                'type'       => 'number',
+                'name' => 'max_return_days',
+                'title' => 'Maximum Return Days',  // Consider using translation key
+                'type' => 'number',
                 'validation' => 'required|numeric|min:1|max:365',
             ],
         ],
@@ -7440,14 +7456,14 @@ This field type provides a color picker input field. The renderer supports it, b
 return [
     // ...
     [
-        'key'    => 'rma.settings.appearance',
-        'name'   => 'Appearance Settings',
-        'sort'   => 1,
+        'key' => 'rma.settings.appearance',
+        'name' => 'Appearance Settings',
+        'sort' => 1,
         'fields' => [
             [
-                'name'    => 'return_button_color',
-                'title'   => 'Return Button Color',  // Consider using translation key
-                'type'    => 'color',
+                'name' => 'return_button_color',
+                'title' => 'Return Button Color',  // Consider using translation key
+                'type' => 'color',
                 'default' => '#007bff',
             ],
         ],
@@ -7466,14 +7482,14 @@ This field type provides an enable/disable switch, perfect for feature toggles.
 return [
     // ...
     [
-        'key'    => 'rma.settings.general',
-        'name'   => 'RMA Configuration',
-        'sort'   => 1,
+        'key' => 'rma.settings.general',
+        'name' => 'RMA Configuration',
+        'sort' => 1,
         'fields' => [
             [
-                'name'  => 'enable_auto_approval',
+                'name' => 'enable_auto_approval',
                 'title' => 'Auto-approve Return Requests',  // Consider using translation key
-                'type'  => 'boolean',
+                'type' => 'boolean',
             ],
         ],
     ],
@@ -7495,14 +7511,14 @@ This field type provides a select field with specified options, useful for prede
 return [
     // ...
     [
-        'key'    => 'rma.settings.general',
-        'name'   => 'RMA Configuration',
-        'sort'   => 1,
+        'key' => 'rma.settings.general',
+        'name' => 'RMA Configuration',
+        'sort' => 1,
         'fields' => [
             [
-                'name'    => 'default_return_status',
-                'title'   => 'Default Return Status',  // Consider using translation key
-                'type'    => 'select',
+                'name' => 'default_return_status',
+                'title' => 'Default Return Status',  // Consider using translation key
+                'type' => 'select',
                 'options' => [
                     [
                         'title' => 'Pending Review',
@@ -7532,14 +7548,14 @@ This field type provides a multiselect field allowing multiple option selections
 return [
     // ...
     [
-        'key'    => 'rma.settings.general',
-        'name'   => 'RMA Configuration',
-        'sort'   => 1,
+        'key' => 'rma.settings.general',
+        'name' => 'RMA Configuration',
+        'sort' => 1,
         'fields' => [
             [
-                'name'    => 'allowed_return_reasons',
-                'title'   => 'Allowed Return Reasons',  // Consider using translation key
-                'type'    => 'multiselect',
+                'name' => 'allowed_return_reasons',
+                'title' => 'Allowed Return Reasons',  // Consider using translation key
+                'type' => 'multiselect',
                 'options' => [
                     [
                         'title' => 'Defective Product',
@@ -7572,14 +7588,14 @@ This field type provides a textarea field, mostly used for longer text content.
 return [
     // ...
     [
-        'key'    => 'rma.settings.general',
-        'name'   => 'RMA Configuration',
-        'sort'   => 1,
+        'key' => 'rma.settings.general',
+        'name' => 'RMA Configuration',
+        'sort' => 1,
         'fields' => [
             [
-                'name'  => 'return_policy_text',
+                'name' => 'return_policy_text',
                 'title' => 'Return Policy Description',  // Consider using translation key
-                'type'  => 'textarea'
+                'type' => 'textarea',
             ],
         ],
     ],
@@ -7597,14 +7613,14 @@ This field type provides a rich text editor with TinyMCE for formatted content.
 return [
     // ...
     [
-        'key'    => 'rma.settings.content',
-        'name'   => 'Content Settings',
-        'sort'   => 1,
+        'key' => 'rma.settings.content',
+        'name' => 'Content Settings',
+        'sort' => 1,
         'fields' => [
             [
-                'name'  => 'return_instructions',
+                'name' => 'return_instructions',
                 'title' => 'Return Instructions (Rich Text)',  // Consider using translation key
-                'type'  => 'editor'
+                'type' => 'editor',
             ],
         ],
     ],
@@ -7622,14 +7638,14 @@ This field type provides a file upload option for uploading images.
 return [
     // ...
     [
-        'key'    => 'rma.settings.general',
-        'name'   => 'RMA Configuration',
-        'sort'   => 1,
+        'key' => 'rma.settings.general',
+        'name' => 'RMA Configuration',
+        'sort' => 1,
         'fields' => [
             [
-                'name'       => 'return_label_logo',
-                'title'      => 'Return Label Logo',  // Consider using translation key
-                'type'       => 'image',
+                'name' => 'return_label_logo',
+                'title' => 'Return Label Logo',  // Consider using translation key
+                'type' => 'image',
                 'validation' => 'mimes:bmp,jpeg,jpg,png,webp,svg',
             ],
         ],
@@ -7648,14 +7664,14 @@ This field type provides a file upload option for documents and other file types
 return [
     // ...
     [
-        'key'    => 'rma.settings.documents',
-        'name'   => 'Document Settings',
-        'sort'   => 1,
+        'key' => 'rma.settings.documents',
+        'name' => 'Document Settings',
+        'sort' => 1,
         'fields' => [
             [
-                'name'       => 'return_policy_pdf',
-                'title'      => 'Return Policy Document',  // Consider using translation key
-                'type'       => 'file',
+                'name' => 'return_policy_pdf',
+                'title' => 'Return Policy Document',  // Consider using translation key
+                'type' => 'file',
                 'validation' => 'mimes:pdf,doc,docx|max:10240', // 10MB max
             ],
         ],
@@ -7674,14 +7690,14 @@ This field type provides a dropdown of available countries.
 return [
     // ...
     [
-        'key'    => 'rma.settings.location',
-        'name'   => 'Location Settings',
-        'sort'   => 1,
+        'key' => 'rma.settings.location',
+        'name' => 'Location Settings',
+        'sort' => 1,
         'fields' => [
             [
-                'name'  => 'return_center_country',
+                'name' => 'return_center_country',
                 'title' => 'Return Center Country',  // Consider using translation key
-                'type'  => 'country',
+                'type' => 'country',
             ],
         ],
     ],
@@ -7699,14 +7715,14 @@ This field type provides a dropdown of states/provinces based on the selected co
 return [
     // ...
     [
-        'key'    => 'rma.settings.location',
-        'name'   => 'Location Settings',
-        'sort'   => 1,
+        'key' => 'rma.settings.location',
+        'name' => 'Location Settings',
+        'sort' => 1,
         'fields' => [
             [
-                'name'  => 'return_center_state',
+                'name' => 'return_center_state',
                 'title' => 'Return Center State/Province',  // Consider using translation key
-                'type'  => 'state',
+                'type' => 'state',
             ],
         ],
     ],
@@ -7728,15 +7744,15 @@ The `blade` type requires a `path` attribute pointing to a valid Blade view. The
 return [
     // ...
     [
-        'key'    => 'rma.settings.general',
-        'name'   => 'RMA Configuration',
-        'sort'   => 1,
+        'key' => 'rma.settings.general',
+        'name' => 'RMA Configuration',
+        'sort' => 1,
         'fields' => [
             [
-                'name'  => 'return_policy_preview',
+                'name' => 'return_policy_preview',
                 'title' => 'Return Policy Preview',  // Consider using translation key
-                'type'  => 'blade',
-                'path'  => 'rma::admin.configuration.return-policy-preview',
+                'type' => 'blade',
+                'path' => 'rma::admin.configuration.return-policy-preview',
             ],
         ],
     ],
@@ -7765,16 +7781,16 @@ A page that is all buttons or all read-only information does not want a save but
 
 ```php
 [
-    'key'    => 'rma.tools',
-    'name'   => 'rma::app.admin.system.tools',
-    'info'   => 'rma::app.admin.system.tools-info',
-    'icon'   => 'settings/settings.svg',
-    'sort'   => 2,
+    'key' => 'rma.tools',
+    'name' => 'rma::app.admin.system.tools',
+    'info' => 'rma::app.admin.system.tools-info',
+    'icon' => 'settings/settings.svg',
+    'sort' => 2,
     'layout' => [
-        'title_section'    => false,
-        'save_button'      => false,
+        'title_section' => false,
+        'save_button' => false,
         'channel_switcher' => false,
-        'locale_switcher'  => false,
+        'locale_switcher' => false,
     ],
 ],
 ```
@@ -7800,34 +7816,34 @@ Consider the following RMA configuration example:
 return [
     // ...
     [
-        'key'    => 'rma.settings.return_policy',
-        'name'   => 'Return Policy Settings',  // Consider using translation key
-        'sort'   => 2,
+        'key' => 'rma.settings.return_policy',
+        'name' => 'Return Policy Settings',  // Consider using translation key
+        'sort' => 2,
         'fields' => [
             [
-                'name'  => 'enable_return_policy',
+                'name' => 'enable_return_policy',
                 'title' => 'Enable Return Policy',  // Consider using translation key
-                'type'  => 'boolean',
+                'type' => 'boolean',
             ], [
-                'name'       => 'max_return_days',
-                'title'      => 'Maximum Return Days',  // Consider using translation key
-                'type'       => 'number',
+                'name' => 'max_return_days',
+                'title' => 'Maximum Return Days',  // Consider using translation key
+                'type' => 'number',
                 'validation' => 'required_if:enable_return_policy,1|numeric|min:1',
-                'depends'    => 'enable_return_policy:1',
-            ], [
-                'name'    => 'auto_approve_returns',
-                'title'   => 'Auto-approve Returns',  // Consider using translation key
-                'type'    => 'boolean',
                 'depends' => 'enable_return_policy:1',
             ], [
-                'name'    => 'require_return_reason',
-                'title'   => 'Require Return Reason',  // Consider using translation key
-                'type'    => 'boolean',
+                'name' => 'auto_approve_returns',
+                'title' => 'Auto-approve Returns',  // Consider using translation key
+                'type' => 'boolean',
                 'depends' => 'enable_return_policy:1',
             ], [
-                'name'    => 'return_policy_text',
-                'title'   => 'Return Policy Description',  // Consider using translation key
-                'type'    => 'textarea',
+                'name' => 'require_return_reason',
+                'title' => 'Require Return Reason',  // Consider using translation key
+                'type' => 'boolean',
+                'depends' => 'enable_return_policy:1',
+            ], [
+                'name' => 'return_policy_text',
+                'title' => 'Return Policy Description',  // Consider using translation key
+                'type' => 'textarea',
                 'depends' => 'enable_return_policy:1',
             ],
         ],
@@ -7874,39 +7890,39 @@ The same rules are also sent to the browser, where Vee Validate checks them befo
 ```php
 return [
     [
-        'key'    => 'rma.settings.validation_example',
-        'name'   => 'RMA Validation Examples',  // Consider using translation key
-        'sort'   => 1,
+        'key' => 'rma.settings.validation_example',
+        'name' => 'RMA Validation Examples',  // Consider using translation key
+        'sort' => 1,
         'fields' => [
             [
-                'name'       => 'return_email',
-                'title'      => 'Return Request Email',  // Consider using translation key
-                'type'       => 'text',
+                'name' => 'return_email',
+                'title' => 'Return Request Email',  // Consider using translation key
+                'type' => 'text',
                 'validation' => 'required|email|max:255',
             ],
             [
-                'name'       => 'max_return_days',
-                'title'      => 'Maximum Return Days',  // Consider using translation key
-                'type'       => 'number',
+                'name' => 'max_return_days',
+                'title' => 'Maximum Return Days',  // Consider using translation key
+                'type' => 'number',
                 'validation' => 'required|numeric|min:1|max:365',
             ],
             [
-                'name'       => 'enable_notifications',
-                'title'      => 'Enable Email Notifications',  // Consider using translation key
-                'type'       => 'boolean',
+                'name' => 'enable_notifications',
+                'title' => 'Enable Email Notifications',  // Consider using translation key
+                'type' => 'boolean',
                 'validation' => 'required|boolean',
             ],
             [
-                'name'       => 'notification_email',
-                'title'      => 'Notification Email',  // Consider using translation key
-                'type'       => 'text',
+                'name' => 'notification_email',
+                'title' => 'Notification Email',  // Consider using translation key
+                'type' => 'text',
                 'validation' => 'required_if:enable_notifications,1|email',
-                'depends'    => 'enable_notifications:1',
+                'depends' => 'enable_notifications:1',
             ],
             [
-                'name'       => 'return_label_logo',
-                'title'      => 'Return Label Logo',  // Consider using translation key
-                'type'       => 'image',
+                'name' => 'return_label_logo',
+                'title' => 'Return Label Logo',  // Consider using translation key
+                'type' => 'image',
                 'validation' => 'mimes:jpeg,jpg,png|max:2048',
             ],
         ],
@@ -7918,7 +7934,7 @@ return [
 
 When you retrieve a configuration value using `core()->getConfigData()`, Bagisto resolves it through a fallback chain:
 
-```
+```text
 core()->getConfigData('rma.settings.general.enable')
 │
 ├── 1. Core Config (Database)
@@ -7957,8 +7973,6 @@ Once you've defined your system configuration, you can access these values throu
 
 namespace Webkul\RMA\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 class ReturnRequestController extends Controller
 {
     public function create()
@@ -7966,11 +7980,11 @@ class ReturnRequestController extends Controller
         $isRmaEnabled = core()->getConfigData('rma.settings.general.enable');
 
         $maxReturnDays = core()->getConfigData('rma.settings.general.max_return_days');
-        
+
         if (! $isRmaEnabled) {
             return redirect()->back()->with('error', 'RMA is currently disabled.');
         }
-        
+
         // Your logic here
     }
 }
@@ -8225,12 +8239,15 @@ composer dump-autoload
 ```php{8}
 <?php
 
+use App\Providers\AppServiceProvider;
+use Webkul\CustomExpressShipping\Providers\CustomExpressShippingServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    
+    AppServiceProvider::class,
+
     // ... other providers ...
-    
-    Webkul\CustomExpressShipping\Providers\CustomExpressShippingServiceProvider::class,
+
+    CustomExpressShippingServiceProvider::class,
 ];
 ```
 
@@ -8244,7 +8261,7 @@ php artisan optimize:clear
 
 Now test the basic configuration that the generator created:
 
-1. **Go to Admin Panel**: Navigate to **Configuration → Sales → Shipping Methods**
+1. **Go to Admin Panel**: Navigate to **Configure → Sales → Shipping Methods**
 2. **Find Your Method**: Look for "Custom Express Shipping" section
 3. **Basic Configuration**: You'll see some basic configuration fields that can be adjusted as per your needs
 
@@ -8296,14 +8313,14 @@ Create the carriers configuration file that defines your shipping method propert
 
 return [
     'custom_express_shipping' => [
-        'code'         => 'custom_express_shipping',
-        'title'        => 'Express Delivery (1-2 Days)',
-        'description'  => 'Premium express shipping with tracking and insurance',
-        'active'       => true,
+        'code' => 'custom_express_shipping',
+        'title' => 'Express Delivery (1-2 Days)',
+        'description' => 'Premium express shipping with tracking and insurance',
+        'active' => true,
         'default_rate' => '19.99',
-        'type'         => 'per_order',
-        'class'        => 'Webkul\CustomExpressShipping\Carriers\CustomExpressShipping',
-    ]
+        'type' => 'per_order',
+        'class' => 'Webkul\CustomExpressShipping\Carriers\CustomExpressShipping',
+    ],
 ];
 ```
 
@@ -8416,48 +8433,48 @@ Create the admin interface configuration for your shipping method:
 
 return [
     [
-        'key'    => 'sales.carriers.custom_express_shipping',
-        'name'   => 'Custom Express Shipping',
-        'info'   => 'Configure the Custom Express Shipping method settings.',
-        'sort'   => 1,
+        'key' => 'sales.carriers.custom_express_shipping',
+        'name' => 'Custom Express Shipping',
+        'info' => 'Configure the Custom Express Shipping method settings.',
+        'sort' => 1,
         'fields' => [
             [
-                'name'          => 'active',
-                'title'         => 'Enabled',
-                'type'          => 'boolean',
+                'name' => 'active',
+                'title' => 'Enabled',
+                'type' => 'boolean',
                 'channel_based' => true,
-                'locale_based'  => false,
+                'locale_based' => false,
             ],
             [
-                'name'          => 'title',
-                'title'         => 'Method Title',
-                'type'          => 'text',
-                'depends'       => 'active:1',
-                'validation'    => 'required_if:active,1',
+                'name' => 'title',
+                'title' => 'Method Title',
+                'type' => 'text',
+                'depends' => 'active:1',
+                'validation' => 'required_if:active,1',
                 'channel_based' => true,
-                'locale_based'  => true,
+                'locale_based' => true,
             ],
             [
-                'name'          => 'description',
-                'title'         => 'Description',
-                'type'          => 'textarea',
-                'depends'       => 'active:1',
+                'name' => 'description',
+                'title' => 'Description',
+                'type' => 'textarea',
+                'depends' => 'active:1',
                 'channel_based' => true,
-                'locale_based'  => true,
+                'locale_based' => true,
             ],
             [
-                'name'          => 'default_rate',
-                'title'         => 'Base Rate',
-                'type'          => 'text',
-                'depends'       => 'active:1',
-                'validation'    => 'required_if:active,1|numeric|min:0',
+                'name' => 'default_rate',
+                'title' => 'Base Rate',
+                'type' => 'text',
+                'depends' => 'active:1',
+                'validation' => 'required_if:active,1|numeric|min:0',
                 'channel_based' => true,
-                'locale_based'  => false,
+                'locale_based' => false,
             ],
             [
-                'name'    => 'type',
-                'title'   => 'Pricing Type',
-                'type'    => 'select',
+                'name' => 'type',
+                'title' => 'Pricing Type',
+                'type' => 'select',
                 'depends' => 'active:1',
                 'options' => [
                     [
@@ -8470,7 +8487,7 @@ return [
                     ],
                 ],
                 'channel_based' => true,
-                'locale_based'  => false,
+                'locale_based' => false,
             ],
         ],
     ],
@@ -8501,13 +8518,13 @@ class CustomExpressShippingServiceProvider extends ServiceProvider
     {
         // merge carrier configuration
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/carriers.php',
+            dirname(__DIR__).'/Config/carriers.php',
             'carriers'
         );
 
-        // merge system configuration  
+        // merge system configuration
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/system.php',
+            dirname(__DIR__).'/Config/system.php',
             'core'
         );
     }
@@ -8515,9 +8532,7 @@ class CustomExpressShippingServiceProvider extends ServiceProvider
     /**
      * Bootstrap services.
      */
-    public function boot(): void
-    {
-    }
+    public function boot(): void {}
 }
 ```
 
@@ -8549,12 +8564,15 @@ composer dump-autoload
 ```php{8}
 <?php
 
+use App\Providers\AppServiceProvider;
+use Webkul\CustomExpressShipping\Providers\CustomExpressShippingServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    
+    AppServiceProvider::class,
+
     // ... other providers ...
-    
-    Webkul\CustomExpressShipping\Providers\CustomExpressShippingServiceProvider::class,
+
+    CustomExpressShippingServiceProvider::class,
 ];
 ```
 
@@ -8570,7 +8588,7 @@ Now let's test your custom express shipping method:
 
 ### Step 1: Enable in Admin
 
-1. Go to **Admin Panel → Configuration → Sales → Shipping Methods**
+1. Go to **Configure → Sales → Shipping Methods**
 2. Find **Custom Express Shipping** section
 3. Set **Enabled** to **Yes**
 4. Configure your rates and settings
@@ -8694,14 +8712,14 @@ The carrier configuration file defines all the essential properties of your ship
 
 return [
     'custom_express_shipping' => [
-        'code'         => 'custom_express_shipping',
-        'title'        => 'Express Delivery (1-2 Days)',
-        'description'  => 'Premium express shipping with tracking and insurance',
-        'active'       => true,
+        'code' => 'custom_express_shipping',
+        'title' => 'Express Delivery (1-2 Days)',
+        'description' => 'Premium express shipping with tracking and insurance',
+        'active' => true,
         'default_rate' => '19.99',
-        'type'         => 'per_order',
-        'class'        => 'Webkul\CustomExpressShipping\Carriers\CustomExpressShipping',
-    ]
+        'type' => 'per_order',
+        'class' => 'Webkul\CustomExpressShipping\Carriers\CustomExpressShipping',
+    ],
 ];
 ```
 
@@ -8763,47 +8781,47 @@ For more sophisticated shipping methods, you can extend the configuration:
 return [
     'custom_express_shipping' => [
         // core properties
-        'code'         => 'custom_express_shipping',
-        'title'        => 'Express Delivery (1-2 Days)',
-        'description'  => 'Premium express shipping with tracking and insurance',
-        'active'       => true,
-        'class'        => 'Webkul\CustomExpressShipping\Carriers\CustomExpressShipping',
-        
+        'code' => 'custom_express_shipping',
+        'title' => 'Express Delivery (1-2 Days)',
+        'description' => 'Premium express shipping with tracking and insurance',
+        'active' => true,
+        'class' => 'Webkul\CustomExpressShipping\Carriers\CustomExpressShipping',
+
         // pricing configuration
-        'default_rate'            => '19.99',
-        'type'                    => 'per_order',
+        'default_rate' => '19.99',
+        'type' => 'per_order',
         'free_shipping_threshold' => '100.00',
-        
+
         // service features
         'supports' => [
-            'tracking'           => true,
-            'insurance'          => true,
+            'tracking' => true,
+            'insurance' => true,
             'signature_required' => false,
-            'weekend_delivery'   => true,
+            'weekend_delivery' => true,
         ],
-        
+
         // availability rules
         'availability' => [
             'weight_limit' => 50.0, // kg
 
             'size_limit' => [
                 'length' => 100, // cm
-                'width'  => 80,  // cm  
+                'width' => 80,  // cm
                 'height' => 60,  // cm
             ],
 
             'restricted_postcodes' => ['12345', '67890'],
-            'business_days_only'   => false,
+            'business_days_only' => false,
         ],
-        
+
         // api configuration (if using external service)
         'api_config' => [
-            'endpoint'      => env('EXPRESS_SHIPPING_API_URL'),
-            'api_key'       => env('EXPRESS_SHIPPING_API_KEY'),
-            'timeout'       => 30,
+            'endpoint' => env('EXPRESS_SHIPPING_API_URL'),
+            'api_key' => env('EXPRESS_SHIPPING_API_KEY'),
+            'timeout' => 30,
             'fallback_rate' => '25.00',
         ],
-    ]
+    ],
 ];
 ```
 
@@ -8829,7 +8847,7 @@ When Bagisto starts, your service provider merges the carrier configuration:
 ```php
 // in your service provider...
 $this->mergeConfigFrom(
-    dirname(__DIR__) . '/Config/carriers.php',
+    dirname(__DIR__).'/Config/carriers.php',
     'carriers'
 );
 ```
@@ -8846,8 +8864,10 @@ Config::get('carriers')
 When needed, Bagisto creates your carrier instance with a bare `new`, in `Webkul\Shipping\Shipping::collectRates()` and `getShippingMethods()`:
 
 ```php
+use Webkul\CustomExpressShipping\Carriers\CustomExpressShipping;
+
 // bagisto uses the 'class' property...
-$carrier = new \Webkul\CustomExpressShipping\Carriers\CustomExpressShipping;
+$carrier = new CustomExpressShipping;
 ```
 
 Because the container is not involved, a carrier cannot take constructor dependencies. Resolve repositories or services inside `calculate()` with `app()` instead. (Payment methods differ: they are resolved with `app($class)`.)
@@ -8868,7 +8888,7 @@ A nested key such as `supports.tracking` works only through the package-config f
 
 When `getConfigData()` is called, Bagisto resolves the value using a specific fallback chain:
 
-```
+```text
 core()->getConfigData('sales.carriers.custom_express_shipping.default_rate')
 │
 ├── 1. Core Config (Database)
@@ -8899,14 +8919,14 @@ Always define essential properties like `active`, `title`, `default_rate`, and `
 ```php
 // ✅ good naming
 'premium_express_delivery' => [
-    'code'  => 'premium_express_delivery',
+    'code' => 'premium_express_delivery',
     'title' => 'Premium Express (Next Day)',
     'class' => 'Vendor\Package\Carriers\PremiumExpressDelivery',
 ]
 
 // ❌ avoid
 'PED' => [
-    'code'  => 'ped',
+    'code' => 'ped',
     'title' => 'PED',
     'class' => 'Vendor\Package\Carriers\PED',
 ]
@@ -8916,11 +8936,11 @@ Always define essential properties like `active`, `title`, `default_rate`, and `
 
 ```php
 // ✅ clear and informative
-'title'       => 'Express Delivery (1-2 Business Days)',
+'title' => 'Express Delivery (1-2 Business Days)',
 'description' => 'Fast shipping with tracking and insurance included',
 
 // ❌ vague
-'title'       => 'Fast Shipping',
+'title' => 'Fast Shipping',
 'description' => 'Quick delivery',
 ```
 
@@ -8928,9 +8948,9 @@ Always define essential properties like `active`, `title`, `default_rate`, and `
 
 ```php
 // ✅ explicit defaults
-'active'       => false,       // Start disabled until an admin configures it
+'active' => false,       // Start disabled until an admin configures it
 'default_rate' => '0.00',      // Require an explicit rate
-'type'         => 'per_order', // Most common pricing model
+'type' => 'per_order', // Most common pricing model
 
 // ❌ risky defaults
 'default_rate' => '999.99', // Extremely high fallback
@@ -8942,10 +8962,10 @@ Core's own carriers ship `'active' => true` so that a fresh install has shipping
 
 ```php
 'api_config' => [
-    'endpoint'   => env('SHIPPING_API_URL', 'https://api.example.com'),
-    'api_key'    => env('SHIPPING_API_KEY'),
+    'endpoint' => env('SHIPPING_API_URL', 'https://api.example.com'),
+    'api_key' => env('SHIPPING_API_KEY'),
     'debug_mode' => env('SHIPPING_DEBUG', false),
-    'timeout'    => env('SHIPPING_TIMEOUT', 30),
+    'timeout' => env('SHIPPING_TIMEOUT', 30),
 ],
 ```
 
@@ -8996,32 +9016,32 @@ The alternative below, one class per service level, is the shape to choose when 
 ```php
 return [
     'express_standard' => [
-        'code'     => 'express_standard',
-        'title'    => 'Express Standard (2-3 Days)',
-        'rate'     => '9.99',
-        'class'    => 'Vendor\Express\Carriers\ExpressStandard',
+        'code' => 'express_standard',
+        'title' => 'Express Standard (2-3 Days)',
+        'rate' => '9.99',
+        'class' => 'Vendor\Express\Carriers\ExpressStandard',
         'features' => ['tracking'],
-        'days'     => '2-3',
+        'days' => '2-3',
     ],
 
     'express_priority' => [
-        'code'       => 'express_priority', 
-        'title'      => 'Express Priority (1-2 Days)',
-        'rate'       => '19.99',
-        'class'      => 'Vendor\Express\Carriers\ExpressPriority',
-        'features'   => ['tracking', 'insurance', 'weekend'],
-        'days'       => '1-2',
+        'code' => 'express_priority',
+        'title' => 'Express Priority (1-2 Days)',
+        'rate' => '19.99',
+        'class' => 'Vendor\Express\Carriers\ExpressPriority',
+        'features' => ['tracking', 'insurance', 'weekend'],
+        'days' => '1-2',
         'max_weight' => 30.0,
     ],
 
     'express_overnight' => [
-        'code'          => 'express_overnight',
-        'title'         => 'Express Overnight',
-        'rate'          => '39.99', 
-        'class'         => 'Vendor\Express\Carriers\ExpressOvernight',
-        'features'      => ['tracking', 'insurance', 'signature'],
-        'days'          => '1',
-        'max_weight'    => 20.0,
+        'code' => 'express_overnight',
+        'title' => 'Express Overnight',
+        'rate' => '39.99',
+        'class' => 'Vendor\Express\Carriers\ExpressOvernight',
+        'features' => ['tracking', 'insurance', 'signature'],
+        'days' => '1',
+        'max_weight' => 20.0,
         'business_only' => true,
     ],
 ];
@@ -9053,36 +9073,36 @@ This pattern structures configuration around specific features and services, mak
 
 ```php
 'premium_shipping' => [
-    'code'      => 'premium_shipping',
-    'title'     => 'Premium White Glove Service',
-    'class'     => 'Vendor\Premium\Carriers\PremiumShipping',
+    'code' => 'premium_shipping',
+    'title' => 'Premium White Glove Service',
+    'class' => 'Vendor\Premium\Carriers\PremiumShipping',
     'base_rate' => '49.99',
     
     'features' => [
         'white_glove' => [
-            'fee'       => '25.00',
+            'fee' => '25.00',
             'min_value' => 500.00,
         ],
 
         'assembly' => [
-            'fee'   => '75.00',
+            'fee' => '75.00',
             'types' => ['furniture', 'equipment'],
         ],
 
         'appointment' => [
-            'fee'   => '15.00',
+            'fee' => '15.00',
             'slots' => ['morning', 'afternoon', 'evening'],
         ],
 
         'packaging' => [
-            'fee'      => '12.00',
+            'fee' => '12.00',
             'includes' => ['bubble_wrap', 'corner_protection'],
         ],
     ],
     
     'discounts' => [
-        'bundle_all'      => 0.25,
-        'volume_min'      => 1000.00,
+        'bundle_all' => 0.25,
+        'volume_min' => 1000.00,
         'volume_discount' => 0.10,
     ],
     
@@ -9120,41 +9140,41 @@ This pattern optimizes shipping for different geographic regions, each with uniq
 
 ```php
 'international_express' => [
-    'code'  => 'international_express',
+    'code' => 'international_express',
     'title' => 'International Express Shipping',
     'class' => 'Vendor\International\Carriers\InternationalExpress',
     
     'regions' => [
         'north_america' => [
-            'countries'  => ['US', 'CA', 'MX'],
-            'rate'       => '29.99',
-            'days'       => '3-5',
-            'features'   => ['tracking', 'customs_clearance', 'saturday'],
+            'countries' => ['US', 'CA', 'MX'],
+            'rate' => '29.99',
+            'days' => '3-5',
+            'features' => ['tracking', 'customs_clearance', 'saturday'],
             'max_weight' => 70.0,
             'prohibited' => ['batteries', 'liquids'],
         ],
 
         'europe' => [
-            'countries'   => ['GB', 'DE', 'FR', 'IT', 'ES'],
-            'rate'        => '39.99', 
-            'days'        => '5-7',
-            'features'    => ['tracking', 'customs_clearance'],
-            'max_weight'  => 50.0,
-            'prohibited'  => ['food', 'plants', 'medicines'],
+            'countries' => ['GB', 'DE', 'FR', 'IT', 'ES'],
+            'rate' => '39.99', 
+            'days' => '5-7',
+            'features' => ['tracking', 'customs_clearance'],
+            'max_weight' => 50.0,
+            'prohibited' => ['food', 'plants', 'medicines'],
             'brexit_docs' => true,
         ],
 
         'asia_pacific' => [
-            'countries'   => ['JP', 'AU', 'SG', 'HK'],
-            'rate'        => '49.99',
-            'days'        => '7-10',
-            'max_weight'  => 30.0,
-            'prohibited'  => ['electronics', 'food'],
+            'countries' => ['JP', 'AU', 'SG', 'HK'],
+            'rate' => '49.99',
+            'days' => '7-10',
+            'max_weight' => 30.0,
+            'prohibited' => ['electronics', 'food'],
             'local_agent' => true,
         ],
     ],
     
-    'currency'      => 'USD',
+    'currency' => 'USD',
     'fallback_rate' => '75.00',
 ];
 ```
@@ -9187,21 +9207,21 @@ For carriers that integrate with external shipping APIs, this pattern manages AP
 
 ```php
 'fedex_integration' => [
-    'code'  => 'fedex_integration',
+    'code' => 'fedex_integration',
     'title' => 'FedEx Express',
     'class' => 'Vendor\FedEx\Carriers\FedExIntegration',
     
     'api' => [
         'environment' => env('FEDEX_ENV', 'sandbox'),
 
-        'endpoints'   => [
+        'endpoints' => [
             'production' => 'https://apis.fedex.com/rate/v1/rates/quotes',
-            'sandbox'    => 'https://apis-sandbox.fedex.com/rate/v1/rates/quotes',
+            'sandbox' => 'https://apis-sandbox.fedex.com/rate/v1/rates/quotes',
         ],
 
         'credentials' => [
             'api_key' => env('FEDEX_API_KEY'),
-            'secret'  => env('FEDEX_SECRET_KEY'),
+            'secret' => env('FEDEX_SECRET_KEY'),
             'account' => env('FEDEX_ACCOUNT'),
         ],
 
@@ -9210,24 +9230,24 @@ For carriers that integrate with external shipping APIs, this pattern manages AP
     ],
     
     'services' => [
-        'FEDEX_GROUND'       => 'FedEx Ground',
-        'FEDEX_2_DAY'        => 'FedEx 2Day',
+        'FEDEX_GROUND' => 'FedEx Ground',
+        'FEDEX_2_DAY' => 'FedEx 2Day',
         'STANDARD_OVERNIGHT' => 'FedEx Standard Overnight',
         'PRIORITY_OVERNIGHT' => 'FedEx Priority Overnight',
     ],
     
     'cache' => [
         'enabled' => true,
-        'ttl'     => 300, // 5 minutes
-        'prefix'  => 'fedex_rates_',
+        'ttl' => 300, // 5 minutes
+        'prefix' => 'fedex_rates_',
     ],
     
     'fallback' => [
         'enabled' => true,
 
-        'rates'   => [
-            'ground'    => '8.99',
-            'express'   => '24.99',
+        'rates' => [
+            'ground' => '8.99',
+            'express' => '24.99',
             'overnight' => '45.99',
         ],
 
@@ -9236,9 +9256,9 @@ For carriers that integrate with external shipping APIs, this pattern manages AP
     
     'features' => [
         'real_time_rates' => true,
-        'live_tracking'   => true,
-        'insurance'       => true,
-        'signature'       => true,
+        'live_tracking' => true,
+        'insurance' => true,
+        'signature' => true,
     ],
 ];
 ```
@@ -9504,7 +9524,7 @@ This guide covers:
 
 ## Basic Configuration Structure
 
-System configuration creates admin interface fields for your shipping method. The section's `key` must be `sales.carriers.{code}`, which places it under **Configuration → Sales → Shipping Methods** and is the path `getConfigData()` reads:
+System configuration creates admin interface fields for your shipping method. The section's `key` must be `sales.carriers.{code}`, which places it under **Configure → Sales → Shipping Methods** and is the path `getConfigData()` reads:
 
 **File:** `packages/Webkul/CustomExpressShipping/src/Config/system.php`
 
@@ -9513,35 +9533,35 @@ System configuration creates admin interface fields for your shipping method. Th
 
 return [
     [
-        'key'    => 'sales.carriers.custom_express_shipping',
-        'name'   => 'Custom Express Shipping',
-        'info'   => 'Configure the Custom Express Shipping method settings.',
-        'sort'   => 3,
+        'key' => 'sales.carriers.custom_express_shipping',
+        'name' => 'Custom Express Shipping',
+        'info' => 'Configure the Custom Express Shipping method settings.',
+        'sort' => 3,
         'fields' => [
             [
-                'name'          => 'active',
-                'title'         => 'Enable Method',
-                'type'          => 'boolean',
+                'name' => 'active',
+                'title' => 'Enable Method',
+                'type' => 'boolean',
                 'channel_based' => true,
-                'locale_based'  => false,
+                'locale_based' => false,
             ],
             [
-                'name'          => 'title',
-                'title'         => 'Method Title',
-                'type'          => 'text',
-                'depends'       => 'active:1',
-                'validation'    => 'required_if:active,1',
+                'name' => 'title',
+                'title' => 'Method Title',
+                'type' => 'text',
+                'depends' => 'active:1',
+                'validation' => 'required_if:active,1',
                 'channel_based' => true,
-                'locale_based'  => true,
+                'locale_based' => true,
             ],
             [
-                'name'          => 'default_rate',
-                'title'         => 'Shipping Rate',
-                'type'          => 'text',
-                'depends'       => 'active:1',
-                'validation'    => 'required_if:active,1|numeric|min:0',
+                'name' => 'default_rate',
+                'title' => 'Shipping Rate',
+                'type' => 'text',
+                'depends' => 'active:1',
+                'validation' => 'required_if:active,1|numeric|min:0',
                 'channel_based' => true,
-                'locale_based'  => false,
+                'locale_based' => false,
             ],
         ],
     ],
@@ -9796,12 +9816,15 @@ composer dump-autoload
 ```php{8}
 <?php
 
+use App\Providers\AppServiceProvider;
+use Webkul\CustomStripePayment\Providers\CustomStripePaymentServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    
+    AppServiceProvider::class,
+
     // ... other providers ...
-    
-    Webkul\CustomStripePayment\Providers\CustomStripePaymentServiceProvider::class,
+
+    CustomStripePaymentServiceProvider::class,
 ];
 ```
 
@@ -9815,7 +9838,7 @@ php artisan optimize:clear
 
 Now test the basic configuration that the generator created:
 
-1. **Go to Admin Panel**: Navigate to **Configuration → Sales → Payment Methods**
+1. **Go to Admin Panel**: Navigate to **Configure → Sales → Payment Methods**
 2. **Find Your Method**: Look for "Custom Stripe Payment" section
 3. **Basic Configuration**: You'll see some basic configuration fields that can be adjusted as per your needs
 
@@ -9855,13 +9878,13 @@ Create the payment methods configuration file:
 
 return [
     'custom_stripe_payment' => [
-        'code'        => 'custom_stripe_payment',
-        'title'       => 'Credit Card (Stripe)',
+        'code' => 'custom_stripe_payment',
+        'title' => 'Credit Card (Stripe)',
         'description' => 'Secure credit card payments powered by Stripe',
-        'class'            => 'Webkul\CustomStripePayment\Payment\CustomStripePayment',
-        'active'           => true,
+        'class' => 'Webkul\CustomStripePayment\Payment\CustomStripePayment',
+        'active' => true,
         'generate_invoice' => false,
-        'sort'             => 1,
+        'sort' => 1,
     ],
 ];
 ```
@@ -9930,52 +9953,52 @@ Create the admin interface configuration:
 
 return [
     [
-        'key'    => 'sales.payment_methods.custom_stripe_payment',
-        'name'   => 'Custom Stripe Payment',
-        'info'   => 'Custom Stripe Payment Method Configuration',
-        'sort'   => 1,
+        'key' => 'sales.payment_methods.custom_stripe_payment',
+        'name' => 'Custom Stripe Payment',
+        'info' => 'Custom Stripe Payment Method Configuration',
+        'sort' => 1,
         'fields' => [
             [
-                'name'          => 'active',
-                'title'         => 'Status',
-                'type'          => 'boolean',
+                'name' => 'active',
+                'title' => 'Status',
+                'type' => 'boolean',
                 'channel_based' => true,
-                'locale_based'  => false,
+                'locale_based' => false,
             ],
             [
-                'name'          => 'title',
-                'title'         => 'Title',
-                'type'          => 'text',
-                'depends'       => 'active:1',
-                'validation'    => 'required_if:active,1',
+                'name' => 'title',
+                'title' => 'Title',
+                'type' => 'text',
+                'depends' => 'active:1',
+                'validation' => 'required_if:active,1',
                 'channel_based' => true,
-                'locale_based'  => true,
+                'locale_based' => true,
             ],
             [
-                'name'          => 'description',
-                'title'         => 'Description',
-                'type'          => 'textarea',
-                'depends'       => 'active:1',
+                'name' => 'description',
+                'title' => 'Description',
+                'type' => 'textarea',
+                'depends' => 'active:1',
                 'channel_based' => true,
-                'locale_based'  => true,
+                'locale_based' => true,
             ],
             [
-                'name'          => 'image',
-                'title'         => 'Logo',
-                'type'          => 'image',
-                'depends'       => 'active:1',
-                'validation'    => 'mimes:bmp,jpeg,jpg,png,webp',
+                'name' => 'image',
+                'title' => 'Logo',
+                'type' => 'image',
+                'depends' => 'active:1',
+                'validation' => 'mimes:bmp,jpeg,jpg,png,webp',
                 'channel_based' => true,
-                'locale_based'  => false,
+                'locale_based' => false,
             ],
             [
-                'name'          => 'sort',
-                'title'         => 'Sort Order',
-                'type'          => 'number',
-                'depends'       => 'active:1',
-                'validation'    => 'required_if:active,1|integer|min:1',
+                'name' => 'sort',
+                'title' => 'Sort Order',
+                'type' => 'number',
+                'depends' => 'active:1',
+                'validation' => 'required_if:active,1|integer|min:1',
                 'channel_based' => true,
-                'locale_based'  => false,
+                'locale_based' => false,
             ],
         ],
     ],
@@ -10006,13 +10029,13 @@ class CustomStripePaymentServiceProvider extends ServiceProvider
     {
         // merge payment method configuration
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/payment-methods.php',
+            dirname(__DIR__).'/Config/payment-methods.php',
             'payment_methods'
         );
 
-        // merge system configuration  
+        // merge system configuration
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/system.php',
+            dirname(__DIR__).'/Config/system.php',
             'core'
         );
     }
@@ -10020,9 +10043,7 @@ class CustomStripePaymentServiceProvider extends ServiceProvider
     /**
      * Bootstrap services.
      */
-    public function boot(): void
-    {
-    }
+    public function boot(): void {}
 }
 ```
 
@@ -10055,12 +10076,15 @@ composer dump-autoload
 ```php{8}
 <?php
 
+use App\Providers\AppServiceProvider;
+use Webkul\CustomStripePayment\Providers\CustomStripePaymentServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    
+    AppServiceProvider::class,
+
     // ... other providers ...
-    
-    Webkul\CustomStripePayment\Providers\CustomStripePaymentServiceProvider::class,
+
+    CustomStripePaymentServiceProvider::class,
 ];
 ```
 
@@ -10076,7 +10100,7 @@ Now let's test your custom payment method:
 
 ### Step 1: Enable in Admin
 
-1. Go to **Admin Panel → Configuration → Sales → Payment Methods**
+1. Go to **Configure → Sales → Payment Methods**
 2. Find **Custom Stripe Payment** section
 3. Set **Enabled** to **Yes**
 4. Configure your payment settings
@@ -10155,13 +10179,13 @@ In the previous section, we created `config/payment-methods.php`. Let's understa
 
 return [
     'custom_stripe_payment' => [
-        'code'        => 'custom_stripe_payment',
-        'title'       => 'Credit Card (Stripe)',
+        'code' => 'custom_stripe_payment',
+        'title' => 'Credit Card (Stripe)',
         'description' => 'Secure credit card payments powered by Stripe',
-        'class'            => 'Webkul\CustomStripePayment\Payment\CustomStripePayment',
-        'active'           => true,
+        'class' => 'Webkul\CustomStripePayment\Payment\CustomStripePayment',
+        'active' => true,
         'generate_invoice' => false,
-        'sort'             => 1,
+        'sort' => 1,
     ],
 ];
 ```
@@ -10196,52 +10220,52 @@ We also created `system.php` for the admin interface. Let's understand what we b
 
 return [
     [
-        'key'    => 'sales.payment_methods.custom_stripe_payment',
-        'name'   => 'Custom Stripe Payment',
-        'info'   => 'Custom Stripe Payment Method Configuration',
-        'sort'   => 1,
+        'key' => 'sales.payment_methods.custom_stripe_payment',
+        'name' => 'Custom Stripe Payment',
+        'info' => 'Custom Stripe Payment Method Configuration',
+        'sort' => 1,
         'fields' => [
             [
-                'name'          => 'active',
-                'title'         => 'Status',
-                'type'          => 'boolean',
+                'name' => 'active',
+                'title' => 'Status',
+                'type' => 'boolean',
                 'channel_based' => true,
-                'locale_based'  => false,
+                'locale_based' => false,
             ],
             [
-                'name'          => 'title',
-                'title'         => 'Title',
-                'type'          => 'text',
-                'depends'       => 'active:1',
-                'validation'    => 'required_if:active,1',
+                'name' => 'title',
+                'title' => 'Title',
+                'type' => 'text',
+                'depends' => 'active:1',
+                'validation' => 'required_if:active,1',
                 'channel_based' => true,
-                'locale_based'  => true,
+                'locale_based' => true,
             ],
             [
-                'name'          => 'description',
-                'title'         => 'Description',
-                'type'          => 'textarea',
-                'depends'       => 'active:1',
+                'name' => 'description',
+                'title' => 'Description',
+                'type' => 'textarea',
+                'depends' => 'active:1',
                 'channel_based' => true,
-                'locale_based'  => true,
+                'locale_based' => true,
             ],
             [
-                'name'          => 'image',
-                'title'         => 'Logo',
-                'type'          => 'image',
-                'depends'       => 'active:1',
-                'validation'    => 'mimes:bmp,jpeg,jpg,png,webp',
+                'name' => 'image',
+                'title' => 'Logo',
+                'type' => 'image',
+                'depends' => 'active:1',
+                'validation' => 'mimes:bmp,jpeg,jpg,png,webp',
                 'channel_based' => true,
-                'locale_based'  => false,
+                'locale_based' => false,
             ],
             [
-                'name'          => 'sort',
-                'title'         => 'Sort Order',
-                'type'          => 'number',
-                'depends'       => 'active:1',
-                'validation'    => 'required_if:active,1|integer|min:1',
+                'name' => 'sort',
+                'title' => 'Sort Order',
+                'type' => 'number',
+                'depends' => 'active:1',
+                'validation' => 'required_if:active,1|integer|min:1',
                 'channel_based' => true,
-                'locale_based'  => false,
+                'locale_based' => false,
             ],
         ],
     ],
@@ -10284,7 +10308,7 @@ These properties define each individual form field that administrators can confi
 
 When you call `$this->getConfigData('title')` in your payment class, Bagisto looks up:
 
-```
+```text
 core()->getConfigData('sales.payment_methods.custom_stripe_payment.title')
 ```
 
@@ -10294,7 +10318,7 @@ This retrieves the value from the admin configuration that administrators can mo
 
 Bagisto resolves configuration values using a specific fallback chain. Understanding this chain is important to ensure your payment method always has sensible values, even before an administrator saves any settings.
 
-```
+```text
 core()->getConfigData('sales.payment_methods.custom_stripe_payment.title')
 │
 ├── 1. Core Config (Database)
@@ -10529,7 +10553,7 @@ Always implement comprehensive error handling in your payment methods:
 /**
  * Handle payment errors gracefully.
  */
-protected function handlePaymentError(\Exception $e)
+protected function handlePaymentError(Exception $e)
 {
     Log::error('Payment error in '.$this->code, [
         'error' => $e->getMessage(),
@@ -10538,7 +10562,7 @@ protected function handlePaymentError(\Exception $e)
 
     return [
         'success' => false,
-        'error'   => trans('custom-stripe::app.payment.failed'),
+        'error' => trans('custom-stripe::app.payment.failed'),
     ];
 }
 ```
@@ -10558,10 +10582,10 @@ Proper logging helps you track payment activities and troubleshoot issues withou
 protected function logPaymentActivity($action, $data = [])
 {
     $sanitizedData = array_diff_key($data, [
-        'api_key'     => '',
-        'secret_key'  => '',
+        'api_key' => '',
+        'secret_key' => '',
         'card_number' => '',
-        'cvv'         => '',
+        'cvv' => '',
     ]);
 
     Log::info("Payment {$action} for {$this->code}", $sanitizedData);
@@ -10753,10 +10777,10 @@ Create `packages/Webkul/SubscriptionProduct/src/Config/product_types.php`:
 
 return [
     'subscription' => [
-        'key'   => 'subscription',
-        'name'  => 'subscription::app.type.subscription',
+        'key' => 'subscription',
+        'name' => 'subscription::app.type.subscription',
         'class' => 'Webkul\SubscriptionProduct\Type\Subscription',
-        'sort'  => 8,
+        'sort' => 8,
     ],
 ];
 ```
@@ -10772,6 +10796,7 @@ Create `packages/Webkul/SubscriptionProduct/src/Type/Subscription.php`:
 
 namespace Webkul\SubscriptionProduct\Type;
 
+use Webkul\Product\Helpers\Indexers\Price\Simple;
 use Webkul\Product\Helpers\Indexers\Price\Simple as SimpleIndexer;
 use Webkul\Product\Type\AbstractType;
 
@@ -10780,7 +10805,7 @@ class Subscription extends AbstractType
     /**
      * Get the price indexer for this product type.
      *
-     * @return \Webkul\Product\Helpers\Indexers\Price\Simple
+     * @return Simple
      */
     public function getPriceIndexer()
     {
@@ -10866,12 +10891,15 @@ composer dump-autoload
 ```php{8}
 <?php
 
+use App\Providers\AppServiceProvider;
+use Webkul\SubscriptionProduct\Providers\SubscriptionServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    
+    AppServiceProvider::class,
+
     // ... other providers ...
-    
-    Webkul\SubscriptionProduct\Providers\SubscriptionServiceProvider::class,
+
+    SubscriptionServiceProvider::class,
 ];
 ```
 
@@ -10954,10 +10982,10 @@ The `Config/product_types.php` file is a simple PHP array that registers your pr
 
 return [
     'subscription' => [
-        'key'   => 'subscription',
-        'name'  => 'subscription::app.type.subscription',
+        'key' => 'subscription',
+        'name' => 'subscription::app.type.subscription',
         'class' => 'Webkul\SubscriptionProduct\Type\Subscription',
-        'sort'  => 8,
+        'sort' => 8,
     ],
 ];
 ```
@@ -11003,17 +11031,17 @@ You can register multiple product types in one configuration file:
 
 return [
     'subscription' => [
-        'key'   => 'subscription',
-        'name'  => 'subscription::app.type.subscription',
+        'key' => 'subscription',
+        'name' => 'subscription::app.type.subscription',
         'class' => 'Webkul\SubscriptionProduct\Type\Subscription',
-        'sort'  => 8,
+        'sort' => 8,
     ],
 
     'rental' => [
-        'key'   => 'rental',
-        'name'  => 'subscription::app.type.rental',
+        'key' => 'rental',
+        'name' => 'subscription::app.type.rental',
         'class' => 'Webkul\SubscriptionProduct\Type\Rental',
-        'sort'  => 9,
+        'sort' => 9,
     ],
 ];
 ```
@@ -11024,10 +11052,10 @@ Because configuration is merged by key, a package can replace the class behind a
 
 ```php
 'simple' => [
-    'key'   => 'simple',
-    'name'  => 'product::app.type.simple',
+    'key' => 'simple',
+    'name' => 'product::app.type.simple',
     'class' => 'Webkul\SubscriptionProduct\Type\Simple',
-    'sort'  => 1,
+    'sort' => 1,
 ],
 ```
 
@@ -11098,7 +11126,7 @@ abstract class AbstractType
 }
 ```
 
-Most of the boolean methods simply return the matching property, so a type that only needs to flip a flag can set the property instead of overriding the method. Apart from `haveSufficientQuantity(int $qty): bool`, none of these methods declares a return type in the base class; the `: bool`, `: int`, `: array` and `: string` annotations on the examples below are additions an override may make (PHP allows narrowing) but are not what the core declares. Two members every type must provide itself:
+Most of the boolean methods return the matching property, so a type that only needs to flip a flag can set the property instead of overriding the method. Apart from `haveSufficientQuantity(int $qty): bool`, none of these methods declares a return type in the base class; the `: bool`, `: int`, `: array` and `: string` annotations on the examples below are additions an override may make (PHP allows narrowing) but are not what the core declares. Two members every type must provide itself:
 
 - **`getPriceIndexer()`**: not declared on the base class but called by `getFinalPrice()` and the price indexer; return `app(\Webkul\Product\Helpers\Indexers\Price\Simple::class)` unless your pricing needs its own indexer.
 - **A constructor that calls `parent::__construct()`** if you add dependencies, since the base constructor takes eight repositories that the container injects.
@@ -11263,18 +11291,18 @@ public function getProductPrices(): array
 public function getProductPrices(): array
 {
     $basePrice = $this->product->price;
-    
+
     // Apply subscription discount if applicable
     $subscriptionDiscount = $this->product->subscription_discount ?? 0;
     $finalPrice = $basePrice - ($basePrice * $subscriptionDiscount / 100);
-    
+
     return [
         'regular' => [
-            'price'           => core()->convertPrice($basePrice),
+            'price' => core()->convertPrice($basePrice),
             'formatted_price' => core()->currency($basePrice),
         ],
-        'final'   => [
-            'price'           => core()->convertPrice($finalPrice),
+        'final' => [
+            'price' => core()->convertPrice($finalPrice),
             'formatted_price' => core()->currency($finalPrice),
         ],
     ];
@@ -11302,7 +11330,7 @@ public function getPriceHtml(): string
     // You can customize the pricing view for subscriptions
     return view('subscription::products.prices.subscription', [
         'product' => $this->product,
-        'prices'  => $this->getProductPrices(),
+        'prices' => $this->getProductPrices(),
         'subscription_info' => [
             'frequency' => $this->product->subscription_frequency,
             'discount' => $this->product->subscription_discount,
@@ -11334,11 +11362,11 @@ public function getTypeValidationRules(): array
 public function getTypeValidationRules(): array
 {
     return [
-        'subscription_frequency'     => 'required|in:weekly,monthly,quarterly,yearly',
-        'subscription_discount'      => 'nullable|numeric|min:0|max:100',
-        'subscription_duration'      => 'nullable|integer|min:1',
-        'subscription_trial_period'  => 'nullable|integer|min:0',
-        'subscription_slots'         => 'required|integer|min:1',
+        'subscription_frequency' => 'required|in:weekly,monthly,quarterly,yearly',
+        'subscription_discount' => 'nullable|numeric|min:0|max:100',
+        'subscription_duration' => 'nullable|integer|min:1',
+        'subscription_trial_period' => 'nullable|integer|min:0',
+        'subscription_slots' => 'required|integer|min:1',
     ];
 }
 ```
@@ -11349,11 +11377,11 @@ public function getTypeValidationRules(): array
 public function getTypeValidationRules(): array
 {
     return [
-        'downloadable_links.*.type'       => 'required',
-        'downloadable_links.*.file'       => 'required_if:type,==,file',
-        'downloadable_links.*.file_name'  => 'required_if:type,==,file',
-        'downloadable_links.*.url'        => 'required_if:type,==,url',
-        'downloadable_links.*.downloads'  => 'required',
+        'downloadable_links.*.type' => 'required',
+        'downloadable_links.*.file' => 'required_if:type,==,file',
+        'downloadable_links.*.file_name' => 'required_if:type,==,file',
+        'downloadable_links.*.url' => 'required_if:type,==,url',
+        'downloadable_links.*.downloads' => 'required',
         'downloadable_links.*.sort_order' => 'required',
     ];
 }
@@ -11583,6 +11611,7 @@ If you're not familiar with the `AbstractType` methods we're implementing below,
 
 namespace Webkul\SubscriptionProduct\Type;
 
+use Webkul\Product\Helpers\Indexers\Price\Simple;
 use Webkul\Product\Helpers\Indexers\Price\Simple as SimpleIndexer;
 use Webkul\Product\Type\AbstractType;
 
@@ -11605,7 +11634,7 @@ class Subscription extends AbstractType
     /**
      * Get the price indexer for this product type.
      *
-     * @return \Webkul\Product\Helpers\Indexers\Price\Simple
+     * @return Simple
      */
     public function getPriceIndexer()
     {
@@ -11902,27 +11931,27 @@ return [
 
     'shop' => [
         'default' => [
-            'name'        => 'Default',
+            'name' => 'Default',
             'assets_path' => 'public/themes/shop/default',
-            'views_path'  => 'resources/themes/default/views',
+            'views_path' => 'resources/themes/default/views',
 
-            'vite'        => [
-                'hot_file'                 => 'shop-default-vite.hot',
-                'build_directory'          => 'themes/shop/default/build',
+            'vite' => [
+                'hot_file' => 'shop-default-vite.hot',
+                'build_directory' => 'themes/shop/default/build',
                 'package_assets_directory' => 'src/Resources/assets',
             ],
 
-            'customize'   => [
+            'customize' => [
                 'sections' => [
                     SectionTypeEnum::IMAGE_CAROUSEL,
                     // ...
                 ],
 
                 'image_cache' => [
-                    'templates'       => [],
-                    'product_images'  => [],
+                    'templates' => [],
+                    'product_images' => [],
                     'category_images' => [],
-                    'swatch_images'   => [],
+                    'swatch_images' => [],
                 ],
             ],
         ],
@@ -11951,25 +11980,25 @@ return [
 
     'shop' => [
         'default' => [
-            'name'        => 'Default',
+            'name' => 'Default',
             'assets_path' => 'public/themes/shop/default',
-            'views_path'  => 'resources/themes/default/views',
+            'views_path' => 'resources/themes/default/views',
 
-            'vite'        => [
-                'hot_file'                 => 'shop-default-vite.hot',
-                'build_directory'          => 'themes/shop/default/build',
+            'vite' => [
+                'hot_file' => 'shop-default-vite.hot',
+                'build_directory' => 'themes/shop/default/build',
                 'package_assets_directory' => 'src/Resources/assets',
             ],
         ],
 
         'custom-theme' => [
-            'name'        => 'Custom Theme',
+            'name' => 'Custom Theme',
             'assets_path' => 'public/themes/shop/custom-theme',
-            'views_path'  => 'resources/themes/custom-theme/views',
+            'views_path' => 'resources/themes/custom-theme/views',
 
-            'vite'        => [
-                'hot_file'                 => 'shop-default-vite.hot',
-                'build_directory'          => 'themes/shop/default/build',
+            'vite' => [
+                'hot_file' => 'shop-default-vite.hot',
+                'build_directory' => 'themes/shop/default/build',
                 'package_assets_directory' => 'src/Resources/assets',
             ],
         ],
@@ -12212,9 +12241,9 @@ use Webkul\Theme\Enums\SectionTypeEnum;
 return [
     'shop' => [
         'default' => [
-            'name'        => 'Default',
+            'name' => 'Default',
             'assets_path' => 'public/themes/shop/default',
-            'views_path'  => 'resources/themes/default/views',
+            'views_path' => 'resources/themes/default/views',
 
             // ...
 
@@ -12254,7 +12283,7 @@ The rules, as implemented in `Webkul\Theme\SectionSchema::types()`:
 
 ::: warning Sections belong to a theme and a channel
 Stored sections are keyed by theme code. Removing a type from a theme's list
-does not delete sections already created with it; they simply can no longer be
+does not delete sections already created with it; they can no longer be
 added. Renaming a code orphans the existing rows.
 :::
 
@@ -12317,8 +12346,8 @@ A slider-style type with an image, a heading and a link per slide:
 
 namespace Webkul\Fashion\Sections;
 
-use Webkul\Theme\SectionSchema;
 use Webkul\Theme\Sections\SectionType;
+use Webkul\Theme\SectionSchema;
 
 class HeroBanner extends SectionType
 {
@@ -12344,11 +12373,11 @@ class HeroBanner extends SectionType
     {
         return [
             [
-                'key'       => 'slides',
-                'type'      => SectionSchema::REPEATER,
-                'label'     => trans('fashion::app.sections.slides'),
+                'key' => 'slides',
+                'type' => SectionSchema::REPEATER,
+                'label' => trans('fashion::app.sections.slides'),
                 'add_label' => trans('fashion::app.sections.add-slide'),
-                'fields'    => [
+                'fields' => [
                     ['key' => 'image', 'type' => SectionSchema::IMAGE, 'label' => trans('fashion::app.sections.image')],
                     ['key' => 'heading', 'type' => SectionSchema::TEXT, 'label' => trans('fashion::app.sections.heading')],
                     ['key' => 'link', 'type' => SectionSchema::TEXT, 'label' => $this->label('link')],
@@ -12593,7 +12622,7 @@ between the two lines; see [Writing a template class](#writing-a-template-class)
    that file maps `small`, `medium` and `large` to
    `Webkul\Shop\CacheFilters\{Small,Medium,Large}`, which pick their size from
    the URL: product images use the sizes set in
-   **Configuration → Catalog → Products** (or 100×100, 350×360 and 560×610),
+   **Configure → Catalog → Products** (or 100×100, 350×360 and 560×610),
    category images 80, 110 and 165 pixels square, swatches 60, 210 and 330,
    and anything else, such as a slider image, 768×280, 1024×372 and 1280×467.
 2. **Theme templates** come from
@@ -12617,22 +12646,22 @@ public `applyFilter()` method.
 ```php
 'shop' => [
     'fashion' => [
-        'name'        => 'Fashion',
+        'name' => 'Fashion',
         'assets_path' => 'public/themes/shop/fashion',
-        'views_path'  => 'resources/themes/fashion/views',
+        'views_path' => 'resources/themes/fashion/views',
 
         // ...
 
         'customize' => [
             'image_cache' => [
                 'templates' => [
-                    'small'        => \Webkul\Fashion\ImageTemplates\Small::class,
+                    'small' => \Webkul\Fashion\ImageTemplates\Small::class,
                     'product_card' => \Webkul\Fashion\ImageTemplates\ProductCard::class,
                 ],
 
-                'product_images'  => ['product_card'],
+                'product_images' => ['product_card'],
                 'category_images' => [],
-                'swatch_images'   => [],
+                'swatch_images' => [],
             ],
         ],
     ],
@@ -12723,12 +12752,12 @@ URLs are built:
 $image = product_image()->getProductBaseImage($product);
 
 // [
-//     'small_image_url'        => 'https://store.test/cache/small/product/1/abc.webp',
-//     'medium_image_url'       => '...',
-//     'large_image_url'        => '...',
+//     'small_image_url' => 'https://store.test/cache/small/product/1/abc.webp',
+//     'medium_image_url' => '...',
+//     'large_image_url' => '...',
 //     'product_card_image_url' => 'https://store.test/cache/product_card/product/1/abc.webp',
-//     'original_image_url'     => '...',
-//     'alt'                    => 'Product name',
+//     'original_image_url' => '...',
+//     'alt' => 'Product name',
 // ]
 ```
 
@@ -12830,13 +12859,13 @@ return [
 
     'admin' => [
         'default' => [
-            'name'        => 'Default',
+            'name' => 'Default',
             'assets_path' => 'public/themes/admin/default',
-            'views_path'  => 'resources/admin-themes/default/views',
+            'views_path' => 'resources/admin-themes/default/views',
 
-            'vite'        => [
-                'hot_file'                 => 'admin-default-vite.hot',
-                'build_directory'          => 'themes/admin/default/build',
+            'vite' => [
+                'hot_file' => 'admin-default-vite.hot',
+                'build_directory' => 'themes/admin/default/build',
                 'package_assets_directory' => 'src/Resources/assets',
             ],
         ],
@@ -12865,25 +12894,25 @@ return [
 
     'admin' => [
         'default' => [
-            'name'        => 'Default',
+            'name' => 'Default',
             'assets_path' => 'public/themes/admin/default',
-            'views_path'  => 'resources/admin-themes/default/views',
+            'views_path' => 'resources/admin-themes/default/views',
 
-            'vite'        => [
-                'hot_file'                 => 'admin-default-vite.hot',
-                'build_directory'          => 'themes/admin/default/build',
+            'vite' => [
+                'hot_file' => 'admin-default-vite.hot',
+                'build_directory' => 'themes/admin/default/build',
                 'package_assets_directory' => 'src/Resources/assets',
             ],
         ],
 
         'custom-admin-theme' => [
-            'name'        => 'Custom Admin Theme',
+            'name' => 'Custom Admin Theme',
             'assets_path' => 'public/themes/admin/custom-admin-theme',
-            'views_path'  => 'resources/admin-themes/custom-admin-theme/views',
+            'views_path' => 'resources/admin-themes/custom-admin-theme/views',
 
-            'vite'        => [
-                'hot_file'                 => 'admin-default-vite.hot',
-                'build_directory'          => 'themes/admin/default/build',
+            'vite' => [
+                'hot_file' => 'admin-default-vite.hot',
+                'build_directory' => 'themes/admin/default/build',
                 'package_assets_directory' => 'src/Resources/assets',
             ],
         ],
@@ -13010,7 +13039,7 @@ Update the `admin-default` value in your `config/themes.php` file:
 
 return [
     'admin-default' => 'custom-admin-theme', // Changed from 'default'
-    
+
     'admin' => [
         // ...existing themes
     ],
@@ -13068,7 +13097,7 @@ Before starting this guide, make sure you have completed the [Creating Store The
 
 ## Understanding Package Structure
 
-Bagisto follows Laravel's package development conventions. A theme package contains all theme-related files in a self-contained structure that can be easily distributed and maintained.
+Bagisto follows Laravel's package development conventions. A theme package contains all theme-related files in a self-contained structure that can be distributed and maintained.
 
 ### Package vs Basic Theme Comparison
 
@@ -13127,8 +13156,6 @@ class CustomThemeServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
-     *
-     * @return void
      */
     public function register(): void
     {
@@ -13137,13 +13164,11 @@ class CustomThemeServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap services.
-     *
-     * @return void
      */
     public function boot(): void
     {
         $this->publishes([
-            __DIR__ . '/../Resources/views' => resource_path('themes/custom-theme/views'),
+            __DIR__.'/../Resources/views' => resource_path('themes/custom-theme/views'),
         ], 'custom-theme-views');
     }
 }
@@ -13168,7 +13193,7 @@ Take the home page template you created in the basic theme tutorial and move it 
 `packages/Webkul/CustomTheme/src/Resources/views/home/index.blade.php`
 
 ::: tip Moving Existing Files
-If you have an existing basic theme, you can simply copy the entire `views` directory from `resources/themes/custom-theme/views/` to `packages/Webkul/CustomTheme/src/Resources/views/` to move all your existing customizations.
+If you have an existing basic theme, copy the entire `views` directory from `resources/themes/custom-theme/views/` to `packages/Webkul/CustomTheme/src/Resources/views/` to move all your existing customizations.
 :::
 
 **Example template content:**
@@ -13236,12 +13261,15 @@ Add your service provider to `bootstrap/providers.php`:
 ```php{8}
 <?php
 
+use App\Providers\AppServiceProvider;
+use Webkul\CustomTheme\Providers\CustomThemeServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    
+    AppServiceProvider::class,
+
     // Other service providers...
-    
-    Webkul\CustomTheme\Providers\CustomThemeServiceProvider::class,
+
+    CustomThemeServiceProvider::class,
 ];
 ```
 
@@ -13261,25 +13289,25 @@ return [
 
     'shop' => [
         'default' => [
-            'name'        => 'Default',
+            'name' => 'Default',
             'assets_path' => 'public/themes/shop/default',
-            'views_path'  => 'resources/themes/default/views',
+            'views_path' => 'resources/themes/default/views',
 
-            'vite'        => [
-                'hot_file'                 => 'shop-default-vite.hot',
-                'build_directory'          => 'themes/shop/default/build',
+            'vite' => [
+                'hot_file' => 'shop-default-vite.hot',
+                'build_directory' => 'themes/shop/default/build',
                 'package_assets_directory' => 'src/Resources/assets',
             ],
         ],
 
         'custom-theme' => [
-            'name'        => 'Custom Theme Package',
+            'name' => 'Custom Theme Package',
             'assets_path' => 'public/themes/shop/custom-theme',
-            'views_path'  => 'resources/themes/custom-theme/views',
+            'views_path' => 'resources/themes/custom-theme/views',
 
-            'vite'        => [
-                'hot_file'                 => 'shop-default-vite.hot',
-                'build_directory'          => 'themes/shop/default/build',
+            'vite' => [
+                'hot_file' => 'shop-default-vite.hot',
+                'build_directory' => 'themes/shop/default/build',
                 'package_assets_directory' => 'src/Resources/assets',
             ],
         ],
@@ -13893,13 +13921,13 @@ Update your theme configuration in `config/themes.php` to include asset settings
     // ...existing themes (e.g. 'default')...
 
     'custom-theme' => [
-        'name'        => 'Custom Theme Package',
+        'name' => 'Custom Theme Package',
         'assets_path' => 'public/themes/shop/custom-theme',
-        'views_path'  => 'resources/themes/custom-theme/views',
+        'views_path' => 'resources/themes/custom-theme/views',
 
-        'vite'        => [
-            'hot_file'                 => 'custom-theme-vite.hot',
-            'build_directory'          => 'themes/custom-theme/build',
+        'vite' => [
+            'hot_file' => 'custom-theme-vite.hot',
+            'build_directory' => 'themes/custom-theme/build',
             'package_assets_directory' => 'src/Resources/assets',
         ],
     ],
@@ -13915,8 +13943,8 @@ Add your theme package to the `viters` array in `config/bagisto-vite.php`:
     // ...existing viters (admin, shop, installer)...
 
     'custom-theme' => [
-        'hot_file'                 => 'custom-theme-vite.hot',
-        'build_directory'          => 'themes/custom-theme/build',
+        'hot_file' => 'custom-theme-vite.hot',
+        'build_directory' => 'themes/custom-theme/build',
         'package_assets_directory' => 'src/Resources/assets',
     ],
 ],
@@ -13974,7 +14002,7 @@ npm run dev
 
 You should see output similar to:
 
-```
+```text
 VITE v6.x.x  ready in xxx ms
 
 ➜  Local:   http://localhost:5173/
@@ -15158,7 +15186,7 @@ Let's assume you want to use the **`range-slider`** component. You can call it l
 
 ### Shop Shimmer
 
-Prebuilt `shimmer` effects are available in Bagisto. You can easily use them.
+Prebuilt `shimmer` skeletons are shown while a grid or form loads its data.
 
 Let's assume you want to use the **`shimmer`** You can call it like this.
 
@@ -15702,7 +15730,7 @@ All props are Vue props with these defaults; the component watches the named for
 
 ### Admin Shimmer
 
-Prebuilt `shimmer` effects are available in Bagisto. You can easily use them.
+Prebuilt `shimmer` skeletons are shown while a grid or form loads its data.
 
 Let's assume you want to use the **`shimmer`** You can call it like this.
 
@@ -15856,7 +15884,7 @@ The `tinymce` component wraps the Tinymce editor and provides additional functio
 | **`field`**    | Object  | `{}`          | Vue prop. The VeeValidate field object the editor writes back to. |
 | **`prompt`**   | String  | `''`          | Vue prop. The prompt pre-filled in the **Magic AI** dialog.       |  
 
-The admin editor adds a **Magic AI** button when text generation is enabled under **Configuration → Magic AI**; it lists the models of the providers chosen there. You rarely mount it directly; the form control renders it when `:tinymce="true"` is passed:
+The admin editor adds a **Magic AI** button when text generation is enabled under **Configure → Magic AI**; it lists the models of the providers chosen there. You rarely mount it directly; the form control renders it when `:tinymce="true"` is passed:
 
 ```html
 <!-- Admin Tinymce -->
@@ -16072,7 +16100,7 @@ return [
 
 ### Enable the Tracer
 
-To enable the Blade Tracer, simply change the `tracer` value to `true`:
+To enable the Blade Tracer, change the `tracer` value to `true`:
 
 ```php
 'tracer' => true,
@@ -16224,7 +16252,7 @@ Email templates in Bagisto follow the same theming principles as your storefront
 
 Bagisto's email system uses Laravel's Mailable classes combined with Blade templates, following the same view resolution patterns as your theme:
 
-```
+```text
 Theme Structure for Emails:
 └── resources/themes/your-theme/
     └── views/
@@ -16379,7 +16407,7 @@ We are assuming you will change the layout to match your theme design, so we kee
 If you're developing a theme package (as covered in [Creating Custom Theme Package](/theme-development/creating-custom-theme-package)), email template customization follows the same principles as Method 1.
 
 ::: tip Package Structure
-Simply place your email templates in your package's `src/Resources/views/emails/` directory following the same path structure:
+Place your email templates in your package's `src/Resources/views/emails/` directory following the same path structure:
 - `src/Resources/views/emails/orders/created.blade.php`
 - `src/Resources/views/emails/layout.blade.php`
 :::
@@ -16531,15 +16559,15 @@ class ContactController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name'    => 'required|string|max:255',
-            'email'   => 'required|email|max:255',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
             'subject' => 'required|string|max:255',
             'message' => 'required|string|max:1000',
         ]);
 
         // Process the validated data
         // This could be saving to database, sending email, etc.
-        
+
         return redirect()->back()->with('success', 'Message sent successfully!');
     }
 }
@@ -16553,13 +16581,11 @@ Here's an example of how to use validation with custom messages:
 
 ```php
 <?php
- 
+
 namespace App\Http\Controllers;
-    
-use App\Http\Controllers\Controller;
+
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-    
+
 class PostController extends Controller
 {
     /**
@@ -16568,8 +16594,8 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'name'    => 'required',
-            'email'   => 'required|email',
+            'name' => 'required',
+            'email' => 'required|email',
             'message' => 'required|max:250',
         ];
 
@@ -16578,7 +16604,7 @@ class PostController extends Controller
         ];
 
         $this->validate($request, $rules, $customMessages);
-        
+
         // Process the validated data
         return redirect()->back()->with('success', 'Post created successfully!');
     }
@@ -16714,14 +16740,14 @@ Before configuring Elasticsearch with Bagisto, ensure you have [Elasticsearch in
 :::
 
 ::: info Two ways to configure
-On the current development version the connection is configured in the admin under **Configuration → Search Engines**, with `.env` as a fallback. On Bagisto 2.4 the connection comes from `.env` and `config/elasticsearch.php` only, and the engine is chosen under **Configuration → Catalog → Products → Search**. Both are covered below.
+On the current development version the connection is configured in the admin under **Configure → Search Engines**, with `.env` as a fallback. On Bagisto 2.4 the connection comes from `.env` and `config/elasticsearch.php` only, and the engine is chosen under **Configure → Catalog → Products → Search**. Both are covered below.
 :::
 
 ### Verify Installation
 
 Elasticsearch runs on port `9200` by default. Test your installation by visiting:
 
-```
+```text
 http://localhost:9200
 ```
 
@@ -16755,7 +16781,7 @@ curl -X GET 'http://localhost:9200'
 
 ### From the admin (current development version)
 
-Open **Configuration → Search Engines**:
+Open **Configure → Search Engines**:
 
 1. Under **General → Settings**, switch on **Enable External Search Engine** and choose **Elasticsearch** as the default engine.
 2. Under **General → Products**, leave **Admin Search Mode** and **Storefront Search Mode** on **Use Default**, or pick a different engine per context.
@@ -16783,6 +16809,7 @@ Bagisto reads `config/elasticsearch.php`, which is populated from `.env`. On the
 
 ```php [config/elasticsearch.php]
 <?php
+
 // config/elasticsearch.php
 
 return [
@@ -16961,7 +16988,7 @@ Large product catalogs may take several minutes to index. Consider running index
 Verify your products have been indexed successfully:
 
 **Browser Method:**
-```
+```text
 http://localhost:9200/_cat/indices?v
 ```
 
@@ -16971,7 +16998,7 @@ curl -X GET 'http://localhost:9200/_cat/indices?v'
 ```
 
 **Expected Output:**
-```
+```text
 health status index                        uuid                   pri rep docs.count docs.deleted store.size pri.store.size
 yellow open   products_default_en_index    AbcDef1234567890       1   1      1500           0      2.5mb          2.5mb
 ```
@@ -16981,12 +17008,12 @@ yellow open   products_default_en_index    AbcDef1234567890       1   1      150
 Enable Elasticsearch in your Bagisto admin panel and test frontend search:
 
 **Admin Configuration (current development version):**
-1. Go to **Configuration → Search Engines → General**
+1. Go to **Configure → Search Engines → General**
 2. Switch on **Enable External Search Engine** and set **Default Search Engine** to **Elasticsearch**
 3. Save the configuration
 
 **Admin Configuration (Bagisto 2.4):**
-1. Go to **Configuration → Catalog → Products → Search**
+1. Go to **Configure → Catalog → Products → Search**
 2. Set **Search Engine**, **Admin Search Mode** and **Storefront Search Mode** to **Elasticsearch**
 3. Save the configuration
 
@@ -17057,7 +17084,7 @@ Bagisto uses the proven [Spatie Laravel Responsecache Package](https://github.co
 
 ### Enable Full Page Cache
 
-The switch is in the admin. Go to **Configuration → Cache Management → Full Page Cache**:
+The switch is in the admin. Go to **Configure → Cache Management → Full Page Cache**:
 
 - **Enabled** turns caching on or off (on by default).
 - **Lifetime** is how long a rendered page is kept, in minutes. Leave it empty to use the value from `config/responsecache.php`.
@@ -17091,6 +17118,13 @@ None of these is present in `.env.example`; add the ones you need. With `APP_DEB
 `config/responsecache.php` wires Bagisto's profile, hasher, serializer and replacers into Spatie's package:
 
 ```php
+use Spatie\ResponseCache\Replacers\CsrfTokenReplacer;
+use Spatie\ResponseCache\Serializers\JsonSerializer;
+use Webkul\FPC\CacheProfiles\FullPageCacheProfile;
+use Webkul\FPC\Hasher\DefaultHasher;
+use Webkul\FPC\Replacers\FlashMessagesReplacer;
+use Webkul\FPC\Replacers\MiniCartReplacer;
+
 return [
     'enabled' => true,
 
@@ -17104,14 +17138,14 @@ return [
         'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'fbclid',
     ],
 
-    'cache_profile' => Webkul\FPC\CacheProfiles\FullPageCacheProfile::class,
-    'hasher' => Webkul\FPC\Hasher\DefaultHasher::class,
-    'serializer' => Spatie\ResponseCache\Serializers\JsonSerializer::class,
+    'cache_profile' => FullPageCacheProfile::class,
+    'hasher' => DefaultHasher::class,
+    'serializer' => JsonSerializer::class,
 
     'replacers' => [
-        Spatie\ResponseCache\Replacers\CsrfTokenReplacer::class,
-        Webkul\FPC\Replacers\FlashMessagesReplacer::class,
-        Webkul\FPC\Replacers\MiniCartReplacer::class,
+        CsrfTokenReplacer::class,
+        FlashMessagesReplacer::class,
+        MiniCartReplacer::class,
     ],
 ];
 ```
@@ -17162,7 +17196,7 @@ Choose the best cache driver for your infrastructure:
 
 ## Cache Management
 
-Full Page Cache can be managed easily using artisan commands and configuration options. You can clear the entire cache, target specific URLs, or automate cache clearing through event listeners. This ensures your store always serves up-to-date content while maintaining high performance.
+Full Page Cache is managed with artisan commands and configuration options. You can clear the entire cache, target specific URLs, or automate cache clearing through event listeners. This ensures your store always serves up-to-date content while maintaining high performance.
 
 ### Clear All Cache
 
@@ -17331,9 +17365,11 @@ php artisan vendor:publish --provider="Webkul\Varnish\Providers\VarnishServicePr
 Configure the alias in `config/varnish.php`:
 
 ```php
+use Webkul\Varnish\Facades\VarnishCache;
+
 return [
     'aliases' => [
-        'Varnish' => \Webkul\Varnish\Facades\VarnishCache::class,
+        'Varnish' => VarnishCache::class,
     ],
 ];
 ```
@@ -17355,7 +17391,7 @@ Install Varnish 6.x on your server.
 
 Replace `/etc/varnish/default.vcl` with the provided file:
 
-```
+```text
 Varnish/vcls/6.0.vcl
 ```
 
@@ -17375,8 +17411,7 @@ In `config/esi_views.php`, define a key and its Blade view path:
 
 ```php
 return [
-    'customer-desktop-dropdown' =>
-        'varnish::shop.components.layouts.header.desktop.customer-dropdown',
+    'customer-desktop-dropdown' => 'varnish::shop.components.layouts.header.desktop.customer-dropdown',
 ];
 ```
 
@@ -17663,7 +17698,7 @@ This guide provides a step-by-step approach to deploying Bagisto on AWS with an 
 - Dedicated MySQL server for better performance
 - Bagisto on multiple EC2 instances behind a Load Balancer
 - Amazon S3 for storage instead of local file storage
-- AMI to easily scale new instances
+- AMI to scale new instances
 - Application Load Balancer (ALB) for traffic distribution
 - SSL and domain configuration for secure access
 :::
@@ -17990,13 +18025,21 @@ The Core class maintains several protected properties for caching and performanc
 
 ```php
 protected $currentChannel;    // Cached current channel
-protected $defaultChannel;    // Cached default channel  
+
+protected $defaultChannel;    // Cached default channel
+
 protected $currentCurrency;   // Cached current currency
+
 protected $baseCurrency;      // Cached base currency
+
 protected $currentLocale;     // Cached current locale
+
 protected $guestCustomerGroup; // Cached guest customer group
+
 protected $exchangeRates = []; // Cached exchange rates
+
 protected $taxCategoriesById = []; // Cached tax categories
+
 protected $singletonInstances = []; // Cached singleton instances
 ```
 
@@ -18857,7 +18900,7 @@ We'll create an admin user importer for a custom package called `AdminImport`. A
 
 Start by creating an `AdminImporter.php` file under the `Importers` directory of your package:
 
-```
+```text
 └── packages
     └── Webkul
         └── AdminImport
@@ -18900,9 +18943,9 @@ Create the importer class by extending `AbstractImporter` and implementing the r
 namespace Webkul\AdminImport\Importers;
 
 use Illuminate\Support\Facades\Event;
+use Webkul\DataTransfer\Contracts\ImportBatch as ImportBatchContract;
 use Webkul\DataTransfer\Helpers\Import;
 use Webkul\DataTransfer\Helpers\Importers\AbstractImporter;
-use Webkul\DataTransfer\Contracts\ImportBatch as ImportBatchContract;
 
 class AdminImporter extends AbstractImporter
 {
@@ -18943,7 +18986,7 @@ class AdminImporter extends AbstractImporter
         $batch = $this->importBatchRepository->update([
             'state' => Import::STATE_PROCESSED,
 
-            'summary'      => [
+            'summary' => [
                 'created' => $this->getCreatedItemsCount(),
                 'updated' => $this->getUpdatedItemsCount(),
                 'deleted' => $this->getDeletedItemsCount(),
@@ -18951,7 +18994,7 @@ class AdminImporter extends AbstractImporter
         ], $batch->id);
 
         Event::dispatch('data_transfer.imports.batch.import.after', $batch);
-        
+
         return true;
     }
 }
@@ -19003,14 +19046,14 @@ Create a configuration file to define your custom importer settings:
 
 return [
     'admins' => [
-        'title'    => 'Admin Users', // add translation key if needed
+        'title' => 'Admin Users', // add translation key if needed
         'importer' => 'Webkul\AdminImport\Importers\AdminImporter',
 
         'sample_paths' => [
-            'csv'  => 'data-transfer/samples/csv/admins.csv',
-            'xls'  => 'data-transfer/samples/xls/admins.xls',
+            'csv' => 'data-transfer/samples/csv/admins.csv',
+            'xls' => 'data-transfer/samples/xls/admins.xls',
             'xlsx' => 'data-transfer/samples/xlsx/admins.xlsx',
-            'xml'  => 'data-transfer/samples/xml/admins.xml',
+            'xml' => 'data-transfer/samples/xml/admins.xml',
         ],
     ],
 ];
@@ -19049,9 +19092,7 @@ class AdminImportServiceProvider extends ServiceProvider
     /**
      * Bootstrap services.
      */
-    public function boot(): void
-    {
-    }
+    public function boot(): void {}
 }
 ```
 
@@ -19097,11 +19138,11 @@ Add `use Illuminate\Support\Facades\Validator;` to the imports at the top of the
 public function validateRow(array $rowData, int $rowNumber): bool
 {
     $validator = Validator::make($rowData, [
-        'name'     => 'required',
-        'email'    => 'required|email',
+        'name' => 'required',
+        'email' => 'required|email',
         'password' => 'required',
-        'status'   => 'required',
-        'role_id'  => 'required',
+        'status' => 'required',
+        'role_id' => 'required',
     ]);
 
     if ($validator->fails()) {
@@ -19191,7 +19232,7 @@ public function importBatch(ImportBatchContract $batch): bool
     $batch = $this->importBatchRepository->update([
         'state' => Import::STATE_PROCESSED,
 
-        'summary'      => [
+        'summary' => [
             'created' => $this->getCreatedItemsCount(),
             'updated' => $this->getUpdatedItemsCount(),
             'deleted' => $this->getDeletedItemsCount(),
@@ -19199,7 +19240,7 @@ public function importBatch(ImportBatchContract $batch): bool
     ], $batch->id);
 
     Event::dispatch('data_transfer.imports.batch.import.after', $batch);
-    
+
     return true;
 }
 ```
@@ -19226,7 +19267,7 @@ public function importBatch(ImportBatchContract $batch): bool
 
 Your final package structure should look like this:
 
-```
+```text
 └── packages
     └── Webkul
         └── AdminImport
@@ -19517,7 +19558,7 @@ php artisan indexer:index --type=search --mode=full
 Product images, category banners, theme section media, uploaded search images and every other file Bagisto writes go to Laravel's **default filesystem disk**. Out of the box that is the local `public` disk, which `php artisan storage:link` exposes at `public/storage`. On the current development version the disk can also be Amazon S3 or Cloudflare R2, chosen from the admin, and this page explains how that switch works and what it does not do.
 
 ::: info Availability
-The `r2` disk, the `league/flysystem-aws-s3-v3` dependency and the **Configuration → File Management** section belong to the current development version. Bagisto 2.4 ships the `s3` disk definition in `config/filesystems.php` but no admin switch and no S3 adapter; there, install `league/flysystem-aws-s3-v3` yourself and set `FILESYSTEM_DISK=s3` in `.env`.
+The `r2` disk, the `league/flysystem-aws-s3-v3` dependency and the **Configure → File Management** section belong to the current development version. Bagisto 2.4 ships the `s3` disk definition in `config/filesystems.php` but no admin switch and no S3 adapter; there, install `league/flysystem-aws-s3-v3` yourself and set `FILESYSTEM_DISK=s3` in `.env`.
 :::
 
 ## Disks
@@ -19701,7 +19742,7 @@ class RMAOrderListener
     {
         // Create RMA eligibility record for the order
         Log::info('Order created - checking RMA eligibility', ['order_id' => $order->id]);
-        
+
         // Check if order items are eligible for returns
         $this->createRMAEligibilityForOrder($order);
     }
@@ -19828,8 +19869,8 @@ Here's a complete example showing how to integrate RMA functionality using event
 
 namespace Webkul\RMA\Listeners;
 
-use Webkul\RMA\Services\RMAService;
 use Illuminate\Support\Facades\Log;
+use Webkul\RMA\Services\RMAService;
 
 class RMAOrderListener
 {
@@ -19841,15 +19882,15 @@ class RMAOrderListener
     {
         try {
             $this->rmaService->createEligibilityRecords($order);
-            
+
             Log::info('RMA eligibility created for order', [
                 'order_id' => $order->id,
-                'customer_id' => $order->customer_id
+                'customer_id' => $order->customer_id,
             ]);
         } catch (\Exception $e) {
             Log::error('Failed to create RMA eligibility', [
                 'order_id' => $order->id,
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
         }
     }
@@ -19857,7 +19898,7 @@ class RMAOrderListener
     public function handleOrderDelivered($order): void
     {
         $this->rmaService->activateReturnWindow($order);
-        
+
         // Dispatch custom RMA event
         event('rma.return.window.activated', $order);
     }
@@ -19879,11 +19920,11 @@ class EventServiceProvider extends ServiceProvider
         'checkout.order.save.after' => [
             [RMAOrderListener::class, 'handleOrderCreated'],
         ],
-        
+
         'sales.order.update-status.after' => [
             [RMAOrderListener::class, 'handleOrderDelivered'],
         ],
-        
+
         // Custom RMA events
         'rma.return.window.activated' => [
             [RMANotificationListener::class, 'sendReturnEligibilityEmail'],
@@ -19938,13 +19979,13 @@ public function handleOrderCreated($order): void
 {
     try {
         $this->createRMAEligibilityForOrder($order);
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         Log::error('Failed to create RMA eligibility', [
             'order_id' => $order->id,
             'error' => $e->getMessage(),
-            'trace' => $e->getTraceAsString()
+            'trace' => $e->getTraceAsString(),
         ]);
-        
+
         // Don't break the order creation process
         // Consider alternative handling or notification
     }
@@ -20565,12 +20606,12 @@ Actions are things an operator starts rather than places they go. Pages and sett
 ```php
 'actions' => [
     [
-        'title'      => 'rma::app.admin.command-palette.create-reason',
-        'parent'     => 'sales.rma.reasons',
-        'route'      => 'admin.sales.rma.reasons.index',
+        'title' => 'rma::app.admin.command-palette.create-reason',
+        'parent' => 'sales.rma.reasons',
+        'route' => 'admin.sales.rma.reasons.index',
         'permission' => 'sales.rma.reasons.create',
-        'icon'       => 'icon-add',
-        'keywords'   => ['return', 'reason'],
+        'icon' => 'icon-add',
+        'keywords' => ['return', 'reason'],
     ],
 ],
 ```
@@ -20602,18 +20643,18 @@ A record source turns one of your search endpoints into a palette group:
 ```php
 'records' => [
     [
-        'key'        => 'rma',
-        'node'       => 'sales.rma.requests',
-        'title'      => 'rma::app.admin.command-palette.records',
+        'key' => 'rma',
+        'node' => 'sales.rma.requests',
+        'title' => 'rma::app.admin.command-palette.records',
         'permission' => 'sales.rma.requests',
-        'endpoint'   => 'admin.sales.rma.requests.search',
-        'index'      => 'admin.sales.rma.requests.index',
-        'link'       => 'admin.sales.rma.requests.view',
-        'label'      => ['increment_id'],
-        'prefix'     => '#',
-        'meta'       => 'status',
-        'icon'       => 'icon-sales',
-        'actions'    => [
+        'endpoint' => 'admin.sales.rma.requests.search',
+        'index' => 'admin.sales.rma.requests.index',
+        'link' => 'admin.sales.rma.requests.view',
+        'label' => ['increment_id'],
+        'prefix' => '#',
+        'meta' => 'status',
+        'icon' => 'icon-sales',
+        'actions' => [
             ['title' => 'admin::app.command-palette.record-actions.view', 'route' => 'admin.sales.rma.requests.view', 'permission' => 'sales.rma.requests.view', 'icon' => 'icon-view'],
         ],
     ],
@@ -20764,7 +20805,7 @@ php artisan indexer:index --mode=full
 | `--type` | `inventory`, `price`, `flat`, `search` | Select which indexer(s) to run (repeatable). Default: all four |
 | `--mode` | `full`, `selective` | Full reindex vs. incremental (default `selective`) |
 
-The `search` indexer runs only when an external search engine is enabled in **Configuration → Search Engines**, and only in `full` mode. An unknown type prints a warning rather than failing.
+The `search` indexer runs only when an external search engine is enabled in **Configure → Search Engines**, and only in `full` mode. An unknown type prints a warning rather than failing.
 
 ::: info Bagisto 2.4
 On 2.4 the search indexer is selected with `--type=elastic`, and it runs only when the search engine setting is `elastic`.
@@ -20796,7 +20837,7 @@ Fetches and updates currency exchange rates from the configured external provide
 php artisan exchange-rate:update
 ```
 
-The provider, its API key and the schedule are set under **Configuration → General → Exchange Rates**; the schedule is applied by the Laravel scheduler when enabled there.
+The provider, its API key and the schedule are set under **Configure → General → Exchange Rates**; the schedule is applied by the Laravel scheduler when enabled there.
 
 **Source:** `Webkul\Core\Console\Commands\ExchangeRateUpdate`
 
@@ -21109,7 +21150,7 @@ UpdateCreatePriceIndex::dispatchSync($productIds);
 
 When creating custom jobs, place them in your package's `Jobs/` directory:
 
-```
+```text
 packages/Webkul/YourPackage/src/Jobs/
 └── YourCustomJob.php
 ```
@@ -21169,9 +21210,9 @@ Bagisto implements a multi-layered caching strategy to optimize performance acro
 |---|---|---|---|
 | **Application Cache** | Database / File / Redis / Memcached | Key-value storage for config, routes, repository results | `CACHE_STORE` in `.env` |
 | **Repository Cache** | Prettus L5 Repository on top of the application cache | Automatic model query caching | `config/repository.php` |
-| **Full Page Cache (FPC)** | Spatie ResponseCache | Caches entire HTTP responses | **Configuration → Cache Management** and `config/responsecache.php` |
+| **Full Page Cache (FPC)** | Spatie ResponseCache | Caches entire HTTP responses | **Configure → Cache Management** and `config/responsecache.php` |
 | **Image Cache** | HTTP caching only | Resized images | `config/imagecache.php` |
-| **Search Index** | Elasticsearch | Product search index | **Configuration → Search Engines** |
+| **Search Index** | Elasticsearch | Product search index | **Configure → Search Engines** |
 | **Session Store** | Database / Redis | User session data | `SESSION_DRIVER` in `.env` |
 
 ## Application Cache
@@ -21220,7 +21261,7 @@ The FPC package (`Webkul\FPC`) uses [Spatie ResponseCache](https://github.com/sp
 
 ### Enabling FPC
 
-The switch is in the admin: **Configuration → Cache Management → Full Page Cache** has an **Enabled** toggle (on by default), a **Lifetime** in minutes and a **Flush** button. `config/responsecache.php` hard-codes `'enabled' => true`; the `RESPONSE_CACHE_ENABLED` variable is not read. The environment keys that do apply are `RESPONSE_CACHE_DRIVER` (default `file`) and `RESPONSE_CACHE_LIFETIME` in seconds (default one week), which the admin lifetime overrides when set.
+The switch is in the admin: **Configure → Cache Management → Full Page Cache** has an **Enabled** toggle (on by default), a **Lifetime** in minutes and a **Flush** button. `config/responsecache.php` hard-codes `'enabled' => true`; the `RESPONSE_CACHE_ENABLED` variable is not read. The environment keys that do apply are `RESPONSE_CACHE_DRIVER` (default `file`) and `RESPONSE_CACHE_LIFETIME` in seconds (default one week), which the admin lifetime overrides when set.
 
 ### How It Works
 
@@ -21298,7 +21339,7 @@ php artisan view:cache
 php artisan event:cache
 ```
 
-The buttons under **Configuration → Cache Management** run `config:cache`, `route:cache`, `view:cache` and `optimize` on the build side, and `config:clear`, `cache:clear`, `clear-compiled`, `event:clear`, `route:clear`, `view:clear` and `optimize:clear` on the clear side (`Webkul\Admin\Services\CacheManagerService`); the full page cache has its own **Flush** button. To clear all caches at once:
+The buttons under **Configure → Cache Management** run `config:cache`, `route:cache`, `view:cache` and `optimize` on the build side, and `config:clear`, `cache:clear`, `clear-compiled`, `event:clear`, `route:clear`, `view:clear` and `optimize:clear` on the clear side (`Webkul\Admin\Services\CacheManagerService`); the full page cache has its own **Flush** button. To clear all caches at once:
 
 ```bash
 php artisan optimize:clear
@@ -21312,7 +21353,7 @@ Bagisto uses [Pest PHP](https://pestphp.com/) as its primary testing framework, 
 
 Tests are organized per-package under each package's `tests/` directory, with a shared bootstrap at the project root:
 
-```
+```text
 tests/
 ├── Pest.php              # Global Pest configuration
 ├── TestCase.php          # Base test case
@@ -21430,9 +21471,13 @@ ini_set('memory_limit', '1024M');
 The global `tests/Pest.php` file binds each package's tests to its test case:
 
 ```php
-uses(Webkul\Admin\Tests\AdminTestCase::class)->in('../packages/Webkul/Admin/tests');
-uses(Webkul\Shop\Tests\ShopTestCase::class)->in('../packages/Webkul/Shop/tests');
-uses(Webkul\Core\Tests\CoreTestCase::class)->in('../packages/Webkul/Core/tests');
+use Webkul\Admin\Tests\AdminTestCase;
+use Webkul\Core\Tests\CoreTestCase;
+use Webkul\Shop\Tests\ShopTestCase;
+
+uses(AdminTestCase::class)->in('../packages/Webkul/Admin/tests');
+uses(ShopTestCase::class)->in('../packages/Webkul/Shop/tests');
+uses(CoreTestCase::class)->in('../packages/Webkul/Core/tests');
 // ... and so on for each package
 ```
 
@@ -21652,7 +21697,7 @@ To see what events are fired during a request, use DebugBar's Events tab. Altern
 ```php
 // In a service provider boot() method (temporary debugging only)
 Event::listen('*', function (string $event, array $data) {
-    Log::debug('Event fired: ' . $event);
+    Log::debug('Event fired: '.$event);
 });
 ```
 
@@ -21661,11 +21706,11 @@ Event::listen('*', function (string $event, array $data) {
 Enable query logging temporarily:
 
 ```php
-\DB::enableQueryLog();
+DB::enableQueryLog();
 
 // ... your code ...
 
-dd(\DB::getQueryLog());
+dd(DB::getQueryLog());
 ```
 
 Or use DebugBar's Queries tab, which shows all queries with execution time and the Webkul module that triggered them.
@@ -21723,7 +21768,7 @@ Common issues and quick checks:
 |---|---|
 | Broken images | `APP_URL` matches your domain; `php artisan storage:link` was run |
 | 500 errors | `storage/logs/laravel.log` for stack trace; permissions on `storage/` and `bootstrap/cache/` |
-| Stale data after changes | `php artisan optimize:clear`; flush the full page cache under Configuration → Cache Management |
+| Stale data after changes | `php artisan optimize:clear`; flush the full page cache under **Configure → Cache Management** |
 | Admin not accessible | `APP_ADMIN_URL` in `.env` matches the URL path you're using |
 | CSS/JS not loading | Run `npm run build` or `npm run dev` for Vite assets |
 | Queue jobs not processing | Check `QUEUE_CONNECTION` in `.env`; run `php artisan queue:work` |
@@ -21806,7 +21851,7 @@ Bagisto defaults to `SESSION_DRIVER=database`, and on the current development ve
 
 ### Files Vanish After Switching Storage
 
-Choosing Amazon S3 or Cloudflare R2 under **Configuration → File Management** changes where new uploads go; files already on the local disk are not copied, and the storefront looks for them on the new disk. Copy `storage/app/public` to the bucket first. See [File Storage](./file-storage.md).
+Choosing Amazon S3 or Cloudflare R2 under **Configure → File Management** changes where new uploads go; files already on the local disk are not copied, and the storefront looks for them on the new disk. Copy `storage/app/public` to the bucket first. See [File Storage](./file-storage.md).
 
 ## Package Development
 
@@ -21884,7 +21929,7 @@ If you've run `php artisan config:cache`, the cached config takes precedence ove
 
 ### Response Cache Serving Old Pages
 
-If storefront pages show stale content after product/category changes, the FPC event listeners may not be covering your change. The cache is switched on under **Configuration → Cache Management → Full Page Cache** (there is no `RESPONSE_CACHE_ENABLED` variable); flush it from the same page or from the console:
+If storefront pages show stale content after product/category changes, the FPC event listeners may not be covering your change. The cache is switched on under **Configure → Cache Management → Full Page Cache** (there is no `RESPONSE_CACHE_ENABLED` variable); flush it from the same page or from the console:
 
 ```bash
 php artisan responsecache:clear
@@ -21947,7 +21992,7 @@ If a custom admin menu item doesn't respect ACL, verify that:
 If product search fails with Elasticsearch errors, verify:
 
 1. Elasticsearch is running and accessible
-2. The host and credentials under **Configuration → Search Engines → Elasticsearch** (or `ELASTICSEARCH_*` in `.env`, which those settings fall back to) are correct; the **Test Connection** button on that page reports `unreachable`, `unauthorized`, `incompatible` or `misconfigured`
+2. The host and credentials under **Configure → Search Engines → Elasticsearch** (or `ELASTICSEARCH_*` in `.env`, which those settings fall back to) are correct; the **Test Connection** button on that page reports `unreachable`, `unauthorized`, `incompatible` or `misconfigured`
 3. The server is an Elasticsearch 8.x cluster, which is what the `elasticsearch/elasticsearch` client targets
 
 ```bash
@@ -22098,12 +22143,12 @@ This command will:
 Once installed, access the interactive API documentation under your store's URL:
 
 ### Admin API Documentation
-```
+```text
 https://yourdomain.com/api/admin/documentation
 ```
 
 ### Shop API Documentation  
-```
+```text
 https://yourdomain.com/api/shop/documentation
 ```
 
@@ -22157,8 +22202,8 @@ Connect external systems with your Bagisto store:
 ```php
 // Example: Update a product from an external system
 $response = Http::withToken($token)->put("https://yourdomain.com/api/v1/admin/catalog/products/{$productId}", [
-    'name'  => 'Product Name',
-    'sku'   => 'PROD-001',
+    'name' => 'Product Name',
+    'sku' => 'PROD-001',
     'price' => 99.99,
 ]);
 ```
@@ -22260,7 +22305,7 @@ This command will:
 
 Access the interactive GraphQL playground:
 
-```
+```text
 http://your-domain.com/graphiql
 ```
 
@@ -22268,7 +22313,7 @@ http://your-domain.com/graphiql
 
 For programmatic access or tools like Postman:
 
-```
+```text
 http://your-domain.com/graphql
 ```
 
