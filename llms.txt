@@ -19,7 +19,7 @@ A complete reference for developers building and extending Bagisto stores
 ### AI
 
 - [AI in Bagisto](/ai/introduction)
-- [Magic AI](/ai/magic-ai)
+- [Generative AI (Magic AI)](/ai/magic-ai)
 - [WebMCP](/ai/webmcp)
 - [Agent Skills](/ai/agent-skills)
 - [llms.txt](/ai/llms-txt)

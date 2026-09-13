@@ -26,7 +26,7 @@ Whether your customers prefer local payment gateways or international options, B
 
 ## 🤖 Generative AI and Agentic Commerce, Built In
 
-Bagisto ships with AI in the core rather than as an add-on. [Magic AI](../ai/magic-ai.md) brings generative AI to the admin and the storefront: it writes product and page copy, generates product images, translates reviews, understands the photos shoppers search with, and personalises the order confirmation, on any of eight AI providers including self-hosted Ollama. On the storefront, [WebMCP](../ai/webmcp.md) declares the shop's actions as tools for browser AI agents, so an agent can search, open a product, manage a wishlist and reach checkout for the shopper. Developers get [agent skills and llms.txt](../ai/introduction.md) that teach their coding agents Bagisto's conventions. See [AI in Bagisto](../ai/introduction.md) for what each capability does and does not do.
+Bagisto ships with generative AI in the core rather than as an add-on. [Generative AI (Magic AI)](../ai/magic-ai.md) works in the admin and on the storefront: it writes product and page copy, generates product images, translates reviews, understands the photos shoppers search with, and personalises the order confirmation, on any of eight AI providers including self-hosted Ollama. On the storefront, [WebMCP](../ai/webmcp.md) declares the shop's actions as tools for browser AI agents, so an agent can search, open a product, manage a wishlist and reach checkout for the shopper. Developers get [agent skills and llms.txt](../ai/introduction.md) that teach their coding agents Bagisto's conventions. See [AI in Bagisto](../ai/introduction.md) for what each capability does and does not do.
 
 ## 🎯 Visual Builder for Effortless Store Customization
 
@@ -63,11 +63,11 @@ To work efficiently with Bagisto (especially the latest versions), having a basi
 - Working with [Eloquent ORM](https://laravel.com/docs/eloquent) and [database migrations](https://laravel.com/docs/migrations)
 - [Blade templating essentials](https://laravel.com/docs/blade)
 
-Bagisto 2.4 runs on Laravel 12; the current development version runs on Laravel 13. The concepts above are the same on both.
+Bagisto 2.4 runs on Laravel 12; Bagisto 2.5 runs on Laravel 13. The concepts above are the same on both.
 
 ### 🎨 Helpful Extras for Advanced Customization
 
-- [Tailwind CSS](https://tailwindcss.com/docs/installation) for modern, responsive styling (version 4 on the current development version, version 3 on Bagisto 2.4)
+- [Tailwind CSS](https://tailwindcss.com/docs/installation) for modern, responsive styling (version 4 on Bagisto 2.5, version 3 on Bagisto 2.4)
 - [Vue.js basics](https://vuejs.org/guide/introduction.html) for interactive features
 - Asset bundling with [Vite](https://laravel.com/docs/vite)
 - [Creating custom Laravel packages](https://laravel.com/docs/packages)
@@ -90,7 +90,7 @@ Before diving into Bagisto development, ensure your system meets these requireme
 - **Server**: Apache 2, NGINX or OpenLiteSpeed
 - **RAM**: 4GB or higher
 - **Node**: 22 LTS or higher (needed only to build front-end assets and to run the Playwright tests)
-- **PHP**: 8.4 for the current development version; 8.3 or 8.4 for Bagisto 2.4. PHP 8.5 and above are not supported yet
+- **PHP**: 8.4 for Bagisto 2.5; 8.3 or 8.4 for Bagisto 2.4. PHP 8.5 and above are not supported yet
 - **Composer**: 2.5 or higher
 
 ### 🧩 PHP Extensions
@@ -98,7 +98,7 @@ Before diving into Bagisto development, ensure your system meets these requireme
 `composer.json` requires `calendar`, `curl`, `intl`, `mbstring`, `openssl`, `pdo`, `pdo_mysql` and `tokenizer`. The installer additionally checks for `ctype`, `dom`, `fileinfo`, `filter`, `gd`, `hash`, `json`, `pcre`, `session` and `xml`.
 
 - **php-intl**: Required for internationalization support
-- **php-gd** (or **php-imagick**): Image processing; the driver is chosen with `IMAGE_DRIVER` on the current development version
+- **php-gd** (or **php-imagick**): Image processing; the driver is chosen with `IMAGE_DRIVER` on Bagisto 2.5
 - **php-pdo_pgsql**: Only when running on PostgreSQL
 - **Other standard Laravel extensions**: Check via `php -m` command
 
@@ -118,9 +118,9 @@ Bagisto is tested on three engines, and each is a first-class choice:
 
 | Engine | Version | Availability |
 |---|---|---|
-| **MySQL** | 8.0 | Bagisto 2.4 and the current development version |
-| **MariaDB** | 10.11 | Bagisto 2.4 and the current development version |
-| **PostgreSQL** | 16 | Current development version |
+| **MySQL** | 8.0 | Bagisto 2.4 and 2.5 |
+| **MariaDB** | 10.11 | Bagisto 2.4 and 2.5 |
+| **PostgreSQL** | 16 | Bagisto 2.5 |
 
 - **Collation**: `utf8mb4_unicode_ci` on MySQL and MariaDB (recommended)
 - The installer asks which engine to use and fills in the default port. See [Database compatibility](../advanced/database-compatibility.md) for what to keep in mind when writing code that must run on all three.
@@ -129,7 +129,7 @@ Bagisto is tested on three engines, and each is a first-class choice:
 
 - **Elasticsearch 8.x** for catalog search on larger stores; see [Configure Elasticsearch](../performance/configure-elasticsearch.md)
 - **Redis** for the cache, session, queue and full page cache stores in production
-- **Amazon S3 or Cloudflare R2** for media on the current development version; see [File Storage](../advanced/file-storage.md)
+- **Amazon S3 or Cloudflare R2** for media on Bagisto 2.5; see [File Storage](../advanced/file-storage.md)
 
 ::: tip Quick Check
 Run `php -v` and `composer --version` to verify your PHP and Composer versions meet the requirements.
@@ -148,7 +148,7 @@ The fastest way to get Bagisto up and running:
 Before starting, ensure you have:
 - PHP 8.4 (Bagisto 2.4 also runs on 8.3; PHP 8.5 and above are not supported yet)
 - Composer 2.5 or higher
-- MySQL 8.0, MariaDB 10.11 or, on the current development version, PostgreSQL 16
+- MySQL 8.0, MariaDB 10.11 or, on Bagisto 2.5, PostgreSQL 16
 - Web server (Apache/Nginx/OpenLiteSpeed)
 
 ::: tip System Requirements
@@ -311,7 +311,7 @@ The quickest way to get Bagisto running with Docker. The production images are b
 | `-apache`, `-apache-mysql`, `-apache-mariadb`, `-apache-postgres` | Apache + mod_php | as named |
 | `-litespeed`, `-litespeed-mysql`, `-litespeed-mariadb`, `-litespeed-postgres` | OpenLiteSpeed | as named |
 
-`webkul/bagisto:latest` is Nginx with MySQL; pin a release with the version, for example `webkul/bagisto:2.5.0-nginx-postgres`. The PostgreSQL images exist for the current development version onward.
+`webkul/bagisto:latest` is Nginx with MySQL; pin a release with the version, for example `webkul/bagisto:2.5.0-nginx-postgres`. The PostgreSQL images exist for Bagisto 2.5 onward.
 
 #### Step 1: Pull Bagisto Image
 
@@ -823,7 +823,7 @@ Before upgrading, ensure you have:
 
 - **Database Backup** - Complete backup of your current database
 - **File Backup** - Backup of customizations and uploaded files
-- **Server Requirements** - PHP 8.4 for the current development version (8.3 or 8.4 for 2.4), MySQL 8.0 or MariaDB 10.11 (PostgreSQL 16 from the development version), Composer 2.5+
+- **Server Requirements** - PHP 8.4 for Bagisto 2.5 (8.3 or 8.4 for 2.4), MySQL 8.0 or MariaDB 10.11 (PostgreSQL 16 from Bagisto 2.5), Composer 2.5+
 - **Downtime Planning** - Schedule maintenance window for the upgrade
 
 ## 🚀 Upgrade Process
@@ -1405,7 +1405,7 @@ server {
 }
 ```
 
-Use the socket of the PHP version your release runs on: `php8.4-fpm.sock` for the current development version, `php8.3-fpm.sock` or `php8.4-fpm.sock` for Bagisto 2.4.
+Use the socket of the PHP version your release runs on: `php8.4-fpm.sock` for Bagisto 2.5, `php8.3-fpm.sock` or `php8.4-fpm.sock` for Bagisto 2.4.
 
 ### ⚡ Nginx FastCGI Cache
 
@@ -1612,8 +1612,9 @@ For better performance in production, consider enabling OPcache and configuring 
 
 # AI in Bagisto
 
-Bagisto ships with AI built in, on three fronts: **generative AI** that writes, translates
-and draws for the merchant and the shopper, **agentic AI** hooks that let an AI agent act on
+Bagisto has **generative AI built into the platform**. Branded Magic AI, it writes,
+translates and draws for the merchant and the shopper on the AI provider of your choice, with
+nothing extra to install. Alongside it sit **agentic AI** hooks that let an AI agent act on
 the storefront, and tooling that makes the coding agents *you* build with fluent in Bagisto.
 Together they are Bagisto's path to **agentic commerce**, where an AI assistant can help run
 a store and an AI agent can shop it on someone's behalf. This page is the home for all of it.
@@ -1622,10 +1623,10 @@ a store and an AI agent can shop it on someone's behalf. This page is the home f
 
 <div class="ai-cards">
   <a class="ai-card" href="/ai/magic-ai.html">
-    <div class="ai-card__title">✨ Magic AI</div>
+    <div class="ai-card__title">✨ Generative AI (Magic AI)</div>
     <div class="ai-card__desc">
-      Generative AI for the store: product content &amp; images, image search, review
-      translation and personalised checkout messages, on the AI provider of your choice.
+      Built-in generative AI for the store: product content &amp; images, image search,
+      review translation and personalised checkout messages, on the AI provider of your choice.
     </div>
   </a>
 
@@ -1664,7 +1665,7 @@ The terms are used deliberately, because they describe different things:
 
 | Term | Meaning here | Where Bagisto has it today |
 |---|---|---|
-| **Generative AI** | A model produces content: text, translations, keywords, images | [Magic AI](/ai/magic-ai): product and page copy, product images, review translation, the keywords behind image search, the checkout message |
+| **Generative AI** | A model produces content: text, translations, keywords, images | [Magic AI](/ai/magic-ai), in the core: product and page copy, product images, review translation, the keywords behind image search, the checkout message |
 | **Agentic AI** | An AI agent performs actions through tools rather than only producing text | [WebMCP](/ai/webmcp): seven storefront actions exposed to browser agents; [Agent Skills](/ai/agent-skills): coding agents that build Bagisto packages and themes |
 | **Agentic commerce** | Commerce in which AI assists the merchant and can act for the shopper | The combination of the two above, in the core, with no separate product to install |
 
@@ -1672,10 +1673,10 @@ What Bagisto does **not** claim: Magic AI does not run your store on its own, an
 not complete a purchase without the shopper. Every generated text is applied by an admin, and
 every WebMCP tool ends in an ordinary storefront page where the person is still in charge.
 
-## Magic AI — generative AI built into your store
+## Generative AI (Magic AI) — built into your store
 
-[Magic AI](/ai/magic-ai) is a first-class Bagisto feature. Add an API key for any
-supported provider and you can:
+[Generative AI](/ai/magic-ai) is a first-class Bagisto feature, shipped as the Magic AI
+package. Add an API key for any supported provider and you can:
 
 - ✍️ **Generate content** — product descriptions, page copy, and more from the admin editor.
 - 🖼️ **Generate images** — create product imagery from a text prompt.
@@ -1683,17 +1684,17 @@ supported provider and you can:
 - 🌐 **Translate reviews** — show customer reviews in the shopper's language.
 - 🎉 **Checkout messages** — personalised order confirmation messages.
 
-Magic AI works with **OpenAI, Anthropic, Gemini, Groq, xAI, DeepSeek, Mistral, and Ollama**.
+It works with **OpenAI, Anthropic, Gemini, Groq, xAI, DeepSeek, Mistral, and Ollama**.
 Admin features let you choose which providers are offered; storefront features are
-configured per channel with a model each.
+configured per channel with a model each. Generated text and images are suggestions until an
+admin applies them.
 
 ## WebMCP — agentic AI on the storefront
 
 [WebMCP](/ai/webmcp) is the browser-side counterpart. The storefront layout declares its
 search, product, wishlist, cart, checkout and newsletter actions as tools, and registers them
 with `navigator.modelContext.provideContext()` when the browser supports it. In every other
-browser the markup is inert. It is available on Bagisto 2.4 and the current development
-version alike.
+browser the markup is inert. It is available on Bagisto 2.4 and 2.5 alike.
 
 ## AI for developers
 
@@ -1705,19 +1706,22 @@ Bagisto also helps the AI tools *you* code with:
   context files for architecture-aware answers.
 
 ::: tip Where to start
-Building a store? Start with **[Magic AI](/ai/magic-ai)**. Letting agents shop it? Read **[WebMCP](/ai/webmcp)**. Writing code? Install **[Agent Skills](/ai/agent-skills)**.
+Building a store? Start with **[Generative AI (Magic AI)](/ai/magic-ai)**. Letting agents shop it? Read **[WebMCP](/ai/webmcp)**. Writing code? Install **[Agent Skills](/ai/agent-skills)**.
 :::
 
-# Magic AI
+# Generative AI (Magic AI)
 
-Magic AI is Bagisto's built-in generative AI engine. It powers content and image generation
-in the admin panel and AI features on the storefront, using whichever AI provider you
-configure. It is the merchant-facing half of Bagisto's [agentic commerce](./introduction.md)
-story; the shopper-facing half, agents acting on the storefront, is [WebMCP](./webmcp.md).
+Bagisto's generative AI is built into the core as the **Magic AI** package. It generates
+content and images in the admin panel and powers three AI features on the storefront, using
+whichever AI provider you configure. This page is the developer's view of it: how it is
+configured, how to call it from code, and where to extend it. The merchant's view is in the
+user guide.
 
 It is built on the [Laravel AI](https://laravel.com/docs/ai) SDK, so a single configuration
-works across every supported provider. The package is the same on Bagisto 2.4 and the current
-development version; only the SDK version underneath differs.
+works across every supported provider. The package is the same on Bagisto 2.4 and 2.5; only
+the SDK version underneath differs. Where an AI agent *acts* on the storefront rather than
+producing content, see [WebMCP](./webmcp.md), Bagisto's agentic counterpart; the two do not
+depend on each other.
 
 ## Supported Providers
 
@@ -1753,7 +1757,7 @@ Everything is configured from the admin panel under **Configure → Magic AI**. 
 
 ### 1. General
 
-Enable or disable Magic AI globally (`magic_ai.general.settings.enabled`).
+Enable or disable generative AI globally (`magic_ai.general.settings.enabled`).
 
 ### 2. Providers
 
@@ -1788,10 +1792,10 @@ Provider API keys are stored as secure (password) config values. Never commit th
 repository — add them through the admin panel.
 :::
 
-## Using Magic AI in Code
+## Using Generative AI in Code
 
-Magic AI is available through the `magic_ai()` helper or the `Webkul\MagicAI\Facades\MagicAI`
-facade. The provider is resolved automatically from the model name, and the stored API key is
+The generative AI service is available through the `magic_ai()` helper or the
+`Webkul\MagicAI\Facades\MagicAI` facade. The provider is resolved automatically from the model name, and the stored API key is
 injected for you.
 
 ```php
@@ -1861,7 +1865,7 @@ AiProvider::resolveModel('gpt-4.1')?->provider();     // Lab::OpenAI
 ```
 
 ::: tip Extending Magic AI
-Magic AI lives in the `packages/Webkul/MagicAI` package. Provider support is driven by a single
+The generative AI layer lives in the `packages/Webkul/MagicAI` package. Provider support is driven by a single
 registry (`AiProvider::$providers`) plus one model enum per provider implementing
 `AiModelContract`; adding a provider the Laravel AI SDK supports means adding one registry
 entry and one enum.
@@ -1875,8 +1879,9 @@ web page declare **tools** an in-browser AI agent may call, through a
 WebMCP tools, so a browser agent can search the catalog, open a product, manage the wishlist
 and reach the cart or checkout on a shopper's behalf without scraping the page.
 
-The feature is part of the `Shop` package on Bagisto 2.4 and the current development version.
-It needs no configuration and is inert in a browser without the API.
+The feature is part of the `Shop` package on Bagisto 2.4 and 2.5. It needs no configuration
+and is inert in a browser without the API. It is the agentic side of Bagisto's AI: the
+generative side, content produced by a model, is [Generative AI (Magic AI)](./magic-ai.md).
 
 ## What is declared
 
@@ -1977,8 +1982,9 @@ the corresponding form, which is the same behaviour an agent triggers.
 
 ## Relation to other agent features
 
-- **Magic AI** ([Magic AI](./magic-ai.md)) is server-side and merchant-facing; WebMCP is
-  client-side and shopper-facing. They do not depend on each other.
+- **Generative AI** ([Magic AI](./magic-ai.md)) is server-side and produces content for the
+  merchant and the shopper; WebMCP is client-side and lets an agent act. They do not depend
+  on each other.
 - The REST and GraphQL APIs ([Bagisto APIs](../api/introduction.md)) are the right surface for
   an agent that runs outside a browser; WebMCP is for agents that live in the shopper's
   browser session.
@@ -2077,7 +2083,7 @@ Bagisto is built on a modern, robust technology stack leveraging proven [Open So
 
 The exact versions depend on the release line you run:
 
-| | Current development version | Bagisto 2.4 |
+| | Bagisto 2.5 | Bagisto 2.4 |
 |---|---|---|
 | PHP | 8.4 | 8.3 or 8.4 |
 | Laravel | 13 | 12 |
@@ -2087,7 +2093,7 @@ The exact versions depend on the release line you run:
 | Test runner | Pest 5 | Pest 3 |
 | Databases | MySQL 8, MariaDB 10.11, PostgreSQL 16 | MySQL 8, MariaDB 10.11 |
 
-On the current development version all three databases are first-class and covered by the CI matrix; the [Database Compatibility](../advanced/database-compatibility.md) page explains the `db_grammar()` abstraction that keeps package code portable across them. Bagisto 2.4 supports MySQL and MariaDB only.
+On Bagisto 2.5 all three databases are first-class and covered by the CI matrix; the [Database Compatibility](../advanced/database-compatibility.md) page explains the `db_grammar()` abstraction that keeps package code portable across them. Bagisto 2.4 supports MySQL and MariaDB only.
 
 ## Core Architecture Principles
 
@@ -2245,7 +2251,7 @@ Bagisto comes with a comprehensive collection of packages that demonstrate the p
 
 Laravel packages are the primary way of adding functionality. The following features are distributed into packages to enhance the application and allow developers to follow the standard way of developing custom functionality.
 
-Below is a detailed overview of the default packages available in Bagisto, each showcasing how the modular design and repository pattern work together to create a robust, scalable e-commerce solution. The current development version ships 42 packages under `packages/Webkul/`; Bagisto 2.4 ships the same set minus `Omnibus`.
+Below is a detailed overview of the default packages available in Bagisto, each showcasing how the modular design and repository pattern work together to create a robust, scalable e-commerce solution. Bagisto 2.5 ships 42 packages under `packages/Webkul/`; Bagisto 2.4 ships the same set minus `Omnibus`.
 
 ### Admin
 
@@ -2547,7 +2553,7 @@ The Inventory package in Bagisto offers comprehensive tools to manage and track 
 
 ### MagicAI 
 
-The MagicAI package is Bagisto's generative AI layer: text and image generation, image search, review translation and checkout messages in the admin and the storefront, through the Laravel AI SDK and any of eight providers. It is documented on the [Magic AI](../ai/magic-ai.md) page; the storefront's agent tools live in the Shop package and are documented under [WebMCP](../ai/webmcp.md).
+The MagicAI package is Bagisto's generative AI layer: text and image generation, image search, review translation and checkout messages in the admin and the storefront, through the Laravel AI SDK and any of eight providers. It is documented on the [Generative AI (Magic AI)](../ai/magic-ai.md) page; the storefront's agent tools live in the Shop package and are documented under [WebMCP](../ai/webmcp.md).
 
 ### Marketing 
 
@@ -2559,7 +2565,7 @@ The Notification package in Bagisto handles all functionalities related to notif
 
 ### Omnibus
 
-Present in the current development version only. Records a snapshot of a product's price whenever it changes (checked every fifteen minutes by a scheduled command) and, when enabled under **Configure → Catalog → Products → Omnibus**, shows the lowest price of the last 30 days next to a discounted price on the storefront, as the EU Omnibus directive requires. Two scheduled commands take the snapshots and purge the old ones; see [Artisan Commands](../advanced/artisan-commands.md).
+Present in Bagisto 2.5 only. Records a snapshot of a product's price whenever it changes (checked every fifteen minutes by a scheduled command) and, when enabled under **Configure → Catalog → Products → Omnibus**, shows the lowest price of the last 30 days next to a discounted price on the storefront, as the EU Omnibus directive requires. Two scheduled commands take the snapshots and purge the old ones; see [Artisan Commands](../advanced/artisan-commands.md).
 
 ### Payment
 
@@ -2704,7 +2710,7 @@ Bagisto uses [Tailwind CSS](https://tailwindcss.com/) for its styling needs. Tai
 
 How Tailwind is configured depends on the release line:
 
-- **Current development version (Tailwind 4)**: there is no `tailwind.config.js`. Each package's `app.css` imports Tailwind and declares where to scan for classes with `@import "tailwindcss" source("../../../")`, defines design tokens in an `@theme {}` block, and registers the icon font's utilities with `@utility`. The `@tailwindcss/vite` plugin compiles it; there is no PostCSS step.
+- **Bagisto 2.5 (Tailwind 4)**: there is no `tailwind.config.js`. Each package's `app.css` imports Tailwind and declares where to scan for classes with `@import "tailwindcss" source("../../../")`, defines design tokens in an `@theme {}` block, and registers the icon font's utilities with `@utility`. The `@tailwindcss/vite` plugin compiles it; there is no PostCSS step.
 - **Bagisto 2.4 (Tailwind 3)**: each package carries a `tailwind.config.js` listing the Blade and JavaScript paths to scan, and a `postcss.config.cjs` runs Tailwind through PostCSS.
 
 Both shapes, with the exact files, are shown side by side on [Vite-Powered Theme Assets](../theme-development/vite-powered-theme-assets.md).
@@ -6700,7 +6706,7 @@ The hierarchy is automatically built based on the dot notation in the key names.
 :::
 
 ::: tip Command palette
-On the current development version the admin also has a command palette (Ctrl + K) that indexes the admin menu and the configuration tree automatically, so a registered menu item is searchable at once. A package can add searchable actions and aliases by merging into `command_palette`; see [Command Palette](../advanced/command-palette.md).
+On Bagisto 2.5 the admin also has a command palette (Ctrl + K) that indexes the admin menu and the configuration tree automatically, so a registered menu item is searchable at once. A package can add searchable actions and aliases by merging into `command_palette`; see [Command Palette](../advanced/command-palette.md).
 :::
 
 ::: tip Menu Best Practices
@@ -7178,7 +7184,7 @@ Bagisto translates each item's `info` when it builds the configuration tree; an 
 | `name`, `info` | Translation keys for the title and description. Both required |
 | `sort` | Order among siblings |
 | `icon` | Group and page level only: an SVG under the admin package's `assets/images` |
-| `layout` | Page level only, current development version: hide parts of the page (see [Page layout](#page-layout)) |
+| `layout` | Page level only, Bagisto 2.5: hide parts of the page (see [Page layout](#page-layout)) |
 | `fields` | Section level: the inputs |
 
 | Field key | Purpose |
@@ -7777,7 +7783,7 @@ Use the `blade` field type when you need to embed custom UI that goes beyond sta
 
 ## Page layout
 
-A page that is all buttons or all read-only information does not want a save button or a channel switcher. On the current development version an item at the page level may carry a `layout` array that switches parts of the page off; anything left out stays shown.
+A page that is all buttons or all read-only information does not want a save button or a channel switcher. On Bagisto 2.5 an item at the page level may carry a `layout` array that switches parts of the page off; anything left out stays shown.
 
 ```php
 [
@@ -12178,9 +12184,9 @@ feature is in the user guide under Appearance.
 
 ::: info Availability
 Per-theme section types (`customize.sections`) ship in both Bagisto 2.4 and the
-current development version, and the section type classes on this page work on
+Bagisto 2.5, and the section type classes on this page work on
 both. One helper differs: `bagisto_theme_storage()`, used in the rendering
-example, exists only on the current development version; on 2.4 resolve stored
+example, exists only on Bagisto 2.5; on 2.4 resolve stored
 image paths with `Storage::url($path)` instead.
 :::
 
@@ -12610,7 +12616,7 @@ This is the second half of a theme's `customize` key; the first half,
 
 ::: info Availability
 Per-theme image templates (`customize.image_cache`) ship in both Bagisto 2.4
-and the current development version. The template class's type hints differ
+and Bagisto 2.5. The template class's type hints differ
 between the two lines; see [Writing a template class](#writing-a-template-class).
 :::
 
@@ -12730,13 +12736,13 @@ class Small extends BaseSmall
 ```
 
 ::: warning The image type differs between versions
-The current development version processes images with Laravel's
+Bagisto 2.5 processes images with Laravel's
 `Illuminate\Image` component, so `applyFilter()` receives and returns
 `Illuminate\Image\Image`. **Bagisto 2.4** uses Intervention Image directly and
 the signature is `applyFilter(ImageInterface $image): ImageInterface` with
 `Intervention\Image\Interfaces\ImageInterface`. The method calls you make
-(`cover()`, `resize()`, `scale()` and so on) are the same in both. On the
-development version a closure is no longer accepted as a template; it must be a
+(`cover()`, `resize()`, `scale()` and so on) are the same in both. On Bagisto 2.5
+a closure is no longer accepted as a template; it must be a
 class.
 :::
 
@@ -13553,7 +13559,7 @@ Make sure you're working within your `CustomTheme` package directory. All comman
 :::
 
 ::: warning Two Tailwind generations
-The current development version of Bagisto builds its storefront with **Tailwind CSS 4** through the `@tailwindcss/vite` plugin: there is no `tailwind.config.js` or PostCSS file, and the design tokens live in `app.css` under `@theme`. **Bagisto 2.4** builds with **Tailwind CSS 3**, `postcss.config.cjs` and `tailwind.config.js`. Both are shown below; follow the tab that matches the Bagisto version your theme targets. The Vite and `config/themes.php` steps are the same for both.
+Bagisto 2.5 builds its storefront with **Tailwind CSS 4** through the `@tailwindcss/vite` plugin: there is no `tailwind.config.js` or PostCSS file, and the design tokens live in `app.css` under `@theme`. **Bagisto 2.4** builds with **Tailwind CSS 3**, `postcss.config.cjs` and `tailwind.config.js`. Both are shown below; follow the tab that matches the Bagisto version your theme targets. The Vite and `config/themes.php` steps are the same for both.
 :::
 
 ### Step 2: Create Base Asset Files
@@ -13564,7 +13570,7 @@ Create your main CSS and JavaScript files for the theme:
 
 ::: code-group
 
-```css [Tailwind 4 (current)]
+```css [Tailwind 4 (2.5)]
 /**
  * Scan the whole package for class names, so Blade files under
  * src/Resources/views are seen as well as this stylesheet.
@@ -13609,7 +13615,7 @@ import.meta.glob(["../images/**", "../fonts/**"]);
 ```
 
 ::: tip Where the real tokens live
-The values above are a subset of the stock storefront's. Open `packages/Webkul/Shop/src/Resources/assets/css/app.css` (current) or `packages/Webkul/Shop/tailwind.config.js` (2.4) to copy the complete breakpoint, colour and font list so your theme's utilities line up with the components you reuse.
+The values above are a subset of the stock storefront's. Open `packages/Webkul/Shop/src/Resources/assets/css/app.css` (2.5) or `packages/Webkul/Shop/tailwind.config.js` (2.4) to copy the complete breakpoint, colour and font list so your theme's utilities line up with the components you reuse.
 :::
 
 ## Configure Asset Compilation
@@ -13630,7 +13636,7 @@ Don't worry about understanding every dependency listed below. While we could wa
 
 ::: code-group
 
-```json [Tailwind 4 (current)]
+```json [Tailwind 4 (2.5)]
 {
     "name": "custom-theme",
     "private": true,
@@ -13716,7 +13722,7 @@ This Vite configuration might look complex, but you don't need to understand eve
 
 ::: code-group
 
-```javascript [Tailwind 4 (current)]
+```javascript [Tailwind 4 (2.5)]
 import { defineConfig, loadEnv } from "vite";
 import vue from "@vitejs/plugin-vue";
 import laravel from "laravel-vite-plugin";
@@ -13823,7 +13829,7 @@ export default defineConfig(({ mode }) => {
 
 #### Setting Up Tailwind CSS (Bagisto 2.4 only)
 
-On the current development version, skip this and the PostCSS step: Tailwind 4 is configured entirely by the `@import "tailwindcss" source(...)` line and the `@theme` block in `app.css` you created above. The `source("../../../")` argument points at your package root so every Blade file under `src/Resources/views` is scanned; there is no `content` array.
+On Bagisto 2.5, skip this and the PostCSS step: Tailwind 4 is configured entirely by the `@import "tailwindcss" source(...)` line and the `@theme` block in `app.css` you created above. The `source("../../../")` argument points at your package root so every Blade file under `src/Resources/views` is scanned; there is no `content` array.
 
 On Bagisto 2.4, create `tailwind.config.js` to scan your theme files:
 
@@ -14070,7 +14076,7 @@ This copies all shop resources including:
 - All shop views and components
 
 ::: warning Icons are part of the stylesheet
-The storefront's `icon-*` classes are declared inside `app.css` (on the current version as `--icon-*` custom properties inside `@theme` with an `@utility icon-*` rule; on 2.4 as plain classes) and rely on the icon font under `assets/fonts`. Copy the whole `assets` directory, not only `css/`, or every icon renders blank. Class names used only in JavaScript strings are picked up because Tailwind scans `.js` files too; a class assembled at runtime needs a `@source inline(...)` entry (current) or a `safelist` entry (2.4).
+The storefront's `icon-*` classes are declared inside `app.css` (on Bagisto 2.5 as `--icon-*` custom properties inside `@theme` with an `@utility icon-*` rule; on 2.4 as plain classes) and rely on the icon font under `assets/fonts`. Copy the whole `assets` directory, not only `css/`, or every icon renders blank. Class names used only in JavaScript strings are picked up because Tailwind scans `.js` files too; a class assembled at runtime needs a `@source inline(...)` entry (2.5) or a `safelist` entry (2.4).
 :::
 
 **Update your home view to showcase your custom theme:**
@@ -16740,7 +16746,7 @@ Before configuring Elasticsearch with Bagisto, ensure you have [Elasticsearch in
 :::
 
 ::: info Two ways to configure
-On the current development version the connection is configured in the admin under **Configure → Search Engines**, with `.env` as a fallback. On Bagisto 2.4 the connection comes from `.env` and `config/elasticsearch.php` only, and the engine is chosen under **Configure → Catalog → Products → Search**. Both are covered below.
+On Bagisto 2.5 the connection is configured in the admin under **Configure → Search Engines**, with `.env` as a fallback. On Bagisto 2.4 the connection comes from `.env` and `config/elasticsearch.php` only, and the engine is chosen under **Configure → Catalog → Products → Search**. Both are covered below.
 :::
 
 ### Verify Installation
@@ -16779,7 +16785,7 @@ curl -X GET 'http://localhost:9200'
 
 ## Configuration Setup
 
-### From the admin (current development version)
+### From the admin (Bagisto 2.5)
 
 Open **Configure → Search Engines**:
 
@@ -16803,7 +16809,7 @@ Behind this screen sits `Webkul\Product\Services\Search\SearchEngineManager`, de
 
 ### From the environment file
 
-Bagisto reads `config/elasticsearch.php`, which is populated from `.env`. On the development version the admin settings above are copied over these at boot when they are filled in; on Bagisto 2.4 this is the only configuration.
+Bagisto reads `config/elasticsearch.php`, which is populated from `.env`. On Bagisto 2.5 the admin settings above are copied over these at boot when they are filled in; on Bagisto 2.4 this is the only configuration.
 
 ::: code-group
 
@@ -16951,7 +16957,7 @@ On Bagisto 2.4 the type is `elastic`:
 php artisan indexer:index --type=elastic --mode=full
 ```
 
-The search indexer runs only when an external engine is enabled (development version) or the engine setting is `elastic` (2.4), so enable the engine first.
+The search indexer runs only when an external engine is enabled (Bagisto 2.5) or the engine setting is `elastic` (2.4), so enable the engine first.
 
 ::: warning Queue Driver Configuration
 If your `QUEUE_CONNECTION` in `.env` is set to `database`, `redis`, or any driver other than `sync`, you must run the queue worker to process indexing jobs:
@@ -17007,7 +17013,7 @@ yellow open   products_default_en_index    AbcDef1234567890       1   1      150
 
 Enable Elasticsearch in your Bagisto admin panel and test frontend search:
 
-**Admin Configuration (current development version):**
+**Admin Configuration (Bagisto 2.5):**
 1. Go to **Configure → Search Engines → General**
 2. Switch on **Enable External Search Engine** and set **Default Search Engine** to **Elasticsearch**
 3. Save the configuration
@@ -17517,7 +17523,7 @@ VarnishCache::forget($urls);
 Before installing Laravel Octane, ensure your system meets the basic requirements. The specific requirements may vary depending on which application server you choose (Swoole, FrankenPHP, or RoadRunner).
 
 ::: warning Requirements
-- The PHP version your Bagisto release requires (8.4 on the current development version, 8.3 or 8.4 on Bagisto 2.4)
+- The PHP version your Bagisto release requires (8.4 on Bagisto 2.5, 8.3 or 8.4 on Bagisto 2.4)
 - Existing Bagisto installation
 :::
 
@@ -18564,13 +18570,13 @@ This method generates speculation rules for browser performance optimization, in
 | `menu()` | Core | `Webkul\Core\Menu`; `menu()->getItems(Menu::ADMIN)` |
 | `acl()` | Core | `Webkul\Core\Acl` |
 | `system_config()` | Core | `Webkul\Core\SystemConfig` |
-| `db_grammar()` | Core | `Webkul\Core\Contracts\DatabaseGrammar` for the current database; development version only. See [Database compatibility](./database-compatibility.md) |
+| `db_grammar()` | Core | `Webkul\Core\Contracts\DatabaseGrammar` for the current database; Bagisto 2.5 only. See [Database compatibility](./database-compatibility.md) |
 | `clean_path(string $path)` | Core | The path with empty segments removed |
 | `clean_content(string $content)` | Core | HTML purified and stripped of Blade directives |
 | `array_permutation(array $input)` | Core | Every combination of an array of arrays |
 | `themes()` | Theme | `Webkul\Theme\Themes`; `themes()->current()`, `themes()->set($code)` |
 | `bagisto_asset(string $path, ?string $namespace = null)` | Theme | The Vite URL of a theme asset |
-| `bagisto_theme_storage()` | Theme | `Webkul\Theme\ThemeStorage` for section media URLs; development version only |
+| `bagisto_theme_storage()` | Theme | `Webkul\Theme\ThemeStorage` for section media URLs; Bagisto 2.5 only |
 | `view_render_event(string $eventName, mixed $params = null)` | Theme | Rendered listener output. See [View Render Events](./view-render-events.md) |
 | `product_image()` | Product | `Webkul\Product\ProductImage` |
 | `product_video()` | Product | `Webkul\Product\ProductVideo` |
@@ -18690,7 +18696,7 @@ The catalog rule indexer runs daily to ensure promotional pricing remains accura
 
 When an external search engine is enabled, the search indexer keeps its index in step with the catalog: one Elasticsearch index per channel and locale, carrying the product's attributes, prices and category names.
 
-On the current development version the indexer is resolved through `SearchEngineManager::indexer()`, so the same jobs work for the database engine (where a no-op indexer is used) and for Elasticsearch. On Bagisto 2.4 the Elasticsearch indexer is invoked directly and the jobs check the engine setting themselves.
+On Bagisto 2.5 the indexer is resolved through `SearchEngineManager::indexer()`, so the same jobs work for the database engine (where a no-op indexer is used) and for Elasticsearch. On Bagisto 2.4 the Elasticsearch indexer is invoked directly and the jobs check the engine setting themselves.
 
 **Configuration Reference:**
 The engine, the per-context modes and the connection are described on [Search Engines](./search-engines.md); the cluster setup is on [Configure Elasticsearch](../performance/configure-elasticsearch).
@@ -19340,7 +19346,7 @@ For more advanced data transfer scenarios, explore the existing Bagisto importer
 Bagisto runs on MySQL 8.0, MariaDB 10.11 and PostgreSQL 16, and its continuous integration runs the whole Pest suite and the Playwright suites against all three. A package or customization that only ever ran on MySQL will usually break on PostgreSQL in one of a handful of predictable ways. This page lists the abstractions Bagisto provides so you do not have to write dialect-specific SQL, and the pitfalls those abstractions exist for.
 
 ::: info Availability
-PostgreSQL support, the `db_grammar()` helper and everything else on this page belong to the current development version. **Bagisto 2.4 supports MySQL and MariaDB only** and has no `db_grammar()`; on 2.4 the MySQL syntax shown in the right-hand columns is what you write directly.
+PostgreSQL support, the `db_grammar()` helper and everything else on this page belong to Bagisto 2.5. **Bagisto 2.4 supports MySQL and MariaDB only** and has no `db_grammar()`; on 2.4 the MySQL syntax shown in the right-hand columns is what you write directly.
 :::
 
 ## Which database is running
@@ -19446,7 +19452,7 @@ The [Testing Workflow](./testing.md) page has the full setup; the [DataGrid](../
 Product search on the storefront, in the admin product grid and in the catalog API is routed through one manager that picks an **engine** per **context**. The database engine is always available; Elasticsearch is the alternative. This page describes the pieces a developer meets: the manager, the contracts, the configuration keys and the indexing jobs. Installing and pointing Bagisto at an Elasticsearch cluster is on [Configure Elasticsearch](../performance/configure-elasticsearch.md).
 
 ::: info Two implementations
-The current development version has the engine-agnostic design described here (`Webkul\Product\Services\Search`). **Bagisto 2.4** reaches Elasticsearch through `Webkul\Product\Repositories\ElasticSearchRepository`, chooses the engine per call with `ProductRepository::setSearchEngine('elastic')`, and keeps its settings under `catalog.products.search` in the admin plus the `.env` file for the connection. The differences are called out below.
+Bagisto 2.5 has the engine-agnostic design described here (`Webkul\Product\Services\Search`). **Bagisto 2.4** reaches Elasticsearch through `Webkul\Product\Repositories\ElasticSearchRepository`, chooses the engine per call with `ProductRepository::setSearchEngine('elastic')`, and keeps its settings under `catalog.products.search` in the admin plus the `.env` file for the connection. The differences are called out below.
 :::
 
 ## How a query is routed
@@ -19545,7 +19551,7 @@ A full rebuild is done from the console:
 php artisan indexer:index --type=search --mode=full
 ```
 
-`search` only runs when an external engine is enabled and only in `full` mode; there is no selective search reindex. On 2.4 the type is `elastic`. Run it after enabling Elasticsearch on an existing catalog, after changing `index_prefix`, and after the upgrade to the development version, whose index mapping added `category_name`.
+`search` only runs when an external engine is enabled and only in `full` mode; there is no selective search reindex. On 2.4 the type is `elastic`. Run it after enabling Elasticsearch on an existing catalog, after changing `index_prefix`, and after the upgrade to Bagisto 2.5, whose index mapping added `category_name`.
 
 ## Related
 
@@ -19555,10 +19561,10 @@ php artisan indexer:index --type=search --mode=full
 
 # File Storage
 
-Product images, category banners, theme section media, uploaded search images and every other file Bagisto writes go to Laravel's **default filesystem disk**. Out of the box that is the local `public` disk, which `php artisan storage:link` exposes at `public/storage`. On the current development version the disk can also be Amazon S3 or Cloudflare R2, chosen from the admin, and this page explains how that switch works and what it does not do.
+Product images, category banners, theme section media, uploaded search images and every other file Bagisto writes go to Laravel's **default filesystem disk**. Out of the box that is the local `public` disk, which `php artisan storage:link` exposes at `public/storage`. On Bagisto 2.5 the disk can also be Amazon S3 or Cloudflare R2, chosen from the admin, and this page explains how that switch works and what it does not do.
 
 ::: info Availability
-The `r2` disk, the `league/flysystem-aws-s3-v3` dependency and the **Configure → File Management** section belong to the current development version. Bagisto 2.4 ships the `s3` disk definition in `config/filesystems.php` but no admin switch and no S3 adapter; there, install `league/flysystem-aws-s3-v3` yourself and set `FILESYSTEM_DISK=s3` in `.env`.
+The `r2` disk, the `league/flysystem-aws-s3-v3` dependency and the **Configure → File Management** section belong to Bagisto 2.5. Bagisto 2.4 ships the `s3` disk definition in `config/filesystems.php` but no admin switch and no S3 adapter; there, install `league/flysystem-aws-s3-v3` yourself and set `FILESYSTEM_DISK=s3` in `.env`.
 :::
 
 ## Disks
@@ -19600,7 +19606,7 @@ Switching the default disk changes where files are written from now on. Files al
 Two pieces of core were changed so that a remote disk behaves like a local one:
 
 - **Image cache.** `image_urls()` always returns `/cache/{template}/{path}` URLs, and `Webkul\ImageCache\Http\Controllers\ImageCacheController` reads the file through `Storage::get()` on the default disk before falling back to the local paths in `config/imagecache.php`. So product, category and swatch images are resized whichever disk holds them. On Bagisto 2.4 a non-local disk short-circuits to `Storage::url($path)` and serves the original file unresized.
-- **Theme media.** `bagisto_theme_storage()` (`Webkul\Theme\ThemeStorage`) resolves section images at render time: a local disk yields a site-relative URL, a remote disk yields `Storage::url($path)`. Paths in `theme_section_translations` are stored bare, without host or `storage/` prefix, so a domain change or a disk change does not break them. Two migrations on the development version rewrite older rows into this form.
+- **Theme media.** `bagisto_theme_storage()` (`Webkul\Theme\ThemeStorage`) resolves section images at render time: a local disk yields a site-relative URL, a remote disk yields `Storage::url($path)`. Paths in `theme_section_translations` are stored bare, without host or `storage/` prefix, so a domain change or a disk change does not break them. Two migrations on Bagisto 2.5 rewrite older rows into this form.
 
 ## Environment keys
 
@@ -19994,7 +20000,7 @@ public function handleOrderCreated($order): void
 
 ## Available Bagisto Events
 
-The following table lists the core events available in Bagisto that you can listen to. The set of event names is the same in Bagisto 2.4 and the current development version. Where an event is dispatched from more than one place (a single delete and a mass delete, for example) the argument shown is the one passed by the single-record controller action.
+The following table lists the core events available in Bagisto that you can listen to. The set of event names is the same in Bagisto 2.4 and 2.5. Where an event is dispatched from more than one place (a single delete and a mass delete, for example) the argument shown is the one passed by the single-record controller action.
 
 Two families are not listed individually: every DataGrid dispatches `datagrid.{grid_name}.{stage}` events as it is built (see [DataGrid](../package-development/datagrid.md#extending-a-datagrid-you-do-not-own)), and every `view_render_event()` call in a Blade view dispatches an event of the same name (see [View Render Events](./view-render-events.md)).
 
@@ -20576,7 +20582,7 @@ Render events add minimal overhead, but consider these guidelines:
 The admin command palette (Ctrl + K, or ⌘ K) searches menus, configuration settings, actions and live records from one box, and can be walked level by level from a section to a page to a record to what may be done with it. Everything it shows is filtered by the signed-in admin's ACL. The merchant-facing description is in the user guide; this page is about what the palette indexes and how a package adds to it.
 
 ::: info Availability
-The command palette is part of the current development version. Bagisto 2.4 has the header Mega Search only.
+The command palette is part of Bagisto 2.5. Bagisto 2.4 has the header Mega Search only.
 :::
 
 ## What is indexed
@@ -20745,7 +20751,7 @@ The command wipes the database (`db:wipe` followed by `migrate:fresh`) before se
 :::
 
 ::: info Bagisto 2.4
-2.4 additionally accepts the deprecated `--skip-env-check`, `--skip-admin-creation`, `--skip-cloud-promotion` and `--skip-github-star` options, each of which prints a deprecation warning and is covered by `--no-interaction`. They have been removed in the current development version.
+2.4 additionally accepts the deprecated `--skip-env-check`, `--skip-admin-creation`, `--skip-cloud-promotion` and `--skip-github-star` options, each of which prints a deprecation warning and is covered by `--no-interaction`. They have been removed in Bagisto 2.5.
 :::
 
 **Unattended install (no questions, no sample products):**
@@ -20765,7 +20771,7 @@ This relies on the existing `.env`, so make sure it is configured before running
 php artisan bagisto:install --no-interaction --demo-samples
 ```
 
-In interactive mode the database step offers MySQL, MariaDB and PostgreSQL and fills in the matching default port (PostgreSQL is available on the current development version only).
+In interactive mode the database step offers MySQL, MariaDB and PostgreSQL and fills in the matching default port (PostgreSQL is available on Bagisto 2.5 only).
 
 **Source:** `Webkul\Installer\Console\Commands\Installer`
 
@@ -20867,7 +20873,7 @@ php artisan invoice:cron
 
 ## Omnibus Price Snapshots
 
-Both commands belong to the `Webkul\Omnibus` package, which ships with the current development version only.
+Both commands belong to the `Webkul\Omnibus` package, which ships with Bagisto 2.5 only.
 
 ### `omnibus:snapshot-prices`
 
@@ -20960,8 +20966,8 @@ Packages register their schedules in their service providers; `bootstrap/app.php
 | `product:price-rule:index` | Daily at 00:01 | `Webkul\CatalogRule\Providers\CatalogRuleServiceProvider` |
 | `indexer:index --type=price` | Daily at 00:01 | `Webkul\Product\Providers\ProductServiceProvider` |
 | `campaign:process` | Daily | `Webkul\Marketing\Providers\MarketingServiceProvider` |
-| `omnibus:snapshot-prices` | Every fifteen minutes | `Webkul\Omnibus\Providers\OmnibusServiceProvider` (development version) |
-| `omnibus:purge-old-snapshots` | Daily | `OmnibusServiceProvider` (development version) |
+| `omnibus:snapshot-prices` | Every fifteen minutes | `Webkul\Omnibus\Providers\OmnibusServiceProvider` (Bagisto 2.5) |
+| `omnibus:purge-old-snapshots` | Daily | `OmnibusServiceProvider` (Bagisto 2.5) |
 
 ```bash
 * * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
@@ -21129,8 +21135,8 @@ Bagisto's scheduled commands are registered by the packages that own them, throu
 | `product:price-rule:index` | Daily at 00:01 | Reindex catalog rule pricing |
 | `indexer:index --type=price` | Daily at 00:01 | Rebuild the price index so date-bound special prices take effect |
 | `campaign:process` | Daily | Send marketing campaign emails |
-| `omnibus:snapshot-prices` | Every fifteen minutes | Record price snapshots (development version) |
-| `omnibus:purge-old-snapshots` | Daily | Drop snapshots past the retention window (development version) |
+| `omnibus:snapshot-prices` | Every fifteen minutes | Record price snapshots (Bagisto 2.5) |
+| `omnibus:purge-old-snapshots` | Daily | Drop snapshots past the retention window (Bagisto 2.5) |
 
 `packages/Webkul/Core/tests/Unit/ScheduleTest.php` asserts these registrations, so a change to the schedule is a change to that test.
 
@@ -21217,7 +21223,7 @@ Bagisto implements a multi-layered caching strategy to optimize performance acro
 
 ## Application Cache
 
-Configured via the `CACHE_STORE` environment variable. The shipped `.env.example` uses the `database` store on the current development version (`file` on Bagisto 2.4); the `cache` table is created by a root migration.
+Configured via the `CACHE_STORE` environment variable. The shipped `.env.example` uses the `database` store on Bagisto 2.5 (`file` on Bagisto 2.4); the `cache` table is created by a root migration.
 
 ```properties
 # .env
@@ -21347,7 +21353,7 @@ php artisan optimize:clear
 
 # Testing Workflow
 
-Bagisto uses [Pest PHP](https://pestphp.com/) as its primary testing framework, backed by PHPUnit. The current development version runs Pest 5 on PHPUnit 13; Bagisto 2.4 runs Pest 3 on PHPUnit 11. The test suite covers unit tests, feature tests, and browser-level E2E tests via Playwright.
+Bagisto uses [Pest PHP](https://pestphp.com/) as its primary testing framework, backed by PHPUnit. Bagisto 2.5 runs Pest 5 on PHPUnit 13; Bagisto 2.4 runs Pest 3 on PHPUnit 11. The test suite covers unit tests, feature tests, and browser-level E2E tests via Playwright.
 
 ## Test Structure
 
@@ -21357,8 +21363,8 @@ Tests are organized per-package under each package's `tests/` directory, with a 
 tests/
 ├── Pest.php              # Global Pest configuration
 ├── TestCase.php          # Base test case
-├── Datasets/             # Datasets shared by every package (development version)
-└── Unit/                 # Cross-package tests that need no database (development version)
+├── Datasets/             # Datasets shared by every package (Bagisto 2.5)
+└── Unit/                 # Cross-package tests that need no database (Bagisto 2.5)
 
 packages/Webkul/
 ├── Admin/tests/
@@ -21397,7 +21403,7 @@ The test suites are defined in `phpunit.xml`. For example, to run only admin fea
 vendor/bin/pest --testsuite="Admin Feature Test"
 ```
 
-Suites on the current development version:
+Suites on Bagisto 2.5:
 
 | Suite Name | Path |
 |---|---|
@@ -21422,7 +21428,7 @@ Suites on the current development version:
 | Stripe Unit Test, Stripe Feature Test | `packages/Webkul/Stripe/tests/…` |
 | Tax Unit Test | `packages/Webkul/Tax/tests/Unit` |
 
-Bagisto 2.4 has the Admin, Core, Customer, DataGrid, EUWithdrawal, FPC, Installer, PayGlocal, PayU, Razorpay, Shop and Stripe suites; the others were added on the development version. Packages without a `tests/` directory (PhonePe, Checkout, RMA, and others) have no suite, and a `<testsuite>` pointing at a path that does not exist makes PHPUnit error, so write the tests first.
+Bagisto 2.4 has the Admin, Core, Customer, DataGrid, EUWithdrawal, FPC, Installer, PayGlocal, PayU, Razorpay, Shop and Stripe suites; the others were added in Bagisto 2.5. Packages without a `tests/` directory (PhonePe, Checkout, RMA, and others) have no suite, and a `<testsuite>` pointing at a path that does not exist makes PHPUnit error, so write the tests first.
 
 ### Run a Single Test File
 
@@ -21485,7 +21491,7 @@ Each package-specific test case extends `Tests\TestCase` and mixes in the benche
 
 ## Shared test infrastructure
 
-These helpers exist on the current development version and are the way to write a test that needs a product, an order or a configuration value:
+These helpers exist on Bagisto 2.5 and are the way to write a test that needs a product, an order or a configuration value:
 
 | Helper | Where | What it gives you |
 |---|---|---|
@@ -21725,7 +21731,7 @@ php artisan tinker
 >>> core()->getConfigData('search_engines.general.products.storefront_mode')
 ```
 
-On the current development version the admin also has an **About** page under Configuration that lists the Bagisto version, PHP, database, cache, queue, mail and search engine drivers with a health dot for each, which is the quickest way to see what a deployment is actually running.
+On Bagisto 2.5 the admin also has an **About** page under Configuration that lists the Bagisto version, PHP, database, cache, queue, mail and search engine drivers with a health dot for each, which is the quickest way to see what a deployment is actually running.
 
 ### Debugging Blade Views
 
@@ -21781,14 +21787,14 @@ This page documents frequent issues encountered by developers working with Bagis
 
 ### PHP Version Mismatch
 
-The current development version requires **PHP 8.4** (`"php": "^8.4"` in `composer.json`); Bagisto 2.4 accepts **8.3 or 8.4** (`">=8.3 <8.5"`). A lower version fails at `composer install` with a platform error, which is easy to mistake for a broken install when a second PHP binary is on the `PATH`.
+Bagisto 2.5 requires **PHP 8.4** (`"php": "^8.4"` in `composer.json`); Bagisto 2.4 accepts **8.3 or 8.4** (`">=8.3 <8.5"`). A lower version fails at `composer install` with a platform error, which is easy to mistake for a broken install when a second PHP binary is on the `PATH`.
 
 ```bash
 # Verify your PHP version
 php -v
 ```
 
-The web installer still checks against 8.3.0, so a host on 8.3 passes the installer's requirement screen and then fails on the development version's Composer constraint.
+The web installer still checks against 8.3.0, so a host on 8.3 passes the installer's requirement screen and then fails on Bagisto 2.5's Composer constraint.
 
 ### Missing PHP Extensions
 
@@ -21831,7 +21837,7 @@ APP_URL=http://localhost:8000
 
 ### Database Versions
 
-Bagisto runs on MySQL 8.0, MariaDB 10.11 and, on the current development version, PostgreSQL 16; these are the versions CI tests. The `utf8mb4_unicode_ci` collation is recommended on MySQL and MariaDB for full Unicode support.
+Bagisto runs on MySQL 8.0, MariaDB 10.11 and, on Bagisto 2.5, PostgreSQL 16; these are the versions CI tests. The `utf8mb4_unicode_ci` collation is recommended on MySQL and MariaDB for full Unicode support.
 
 ### PostgreSQL-only Failures
 
@@ -21843,7 +21849,7 @@ When running `php artisan migrate:fresh --seed`, Bagisto's package migrations ru
 
 ### Database Session Driver
 
-Bagisto defaults to `SESSION_DRIVER=database`, and on the current development version to `CACHE_STORE=database` as well. If you run `php artisan migrate:fresh` but forget `--seed`, the tables exist but the application may behave unexpectedly without seed data.
+Bagisto defaults to `SESSION_DRIVER=database`, and on Bagisto 2.5 to `CACHE_STORE=database` as well. If you run `php artisan migrate:fresh` but forget `--seed`, the tables exist but the application may behave unexpectedly without seed data.
 
 ### Running `bagisto:install` on an existing store
 
@@ -21911,7 +21917,7 @@ Each package with frontend assets (Admin, Shop, Installer) has its own `vite.con
 
 ### Missing Tailwind Classes
 
-Tailwind only emits classes it finds while scanning source files. On the current development version (Tailwind 4) the scan root is the `source("../../../")` argument at the top of each package's `app.css`, which covers the package's `src/` directory, so a class used only in a file outside the package (a theme in `resources/themes`, another package) is not generated; a class built at runtime needs a `@source inline(...)` entry. On Bagisto 2.4 (Tailwind 3) the equivalent is the `content` array in `tailwind.config.js` and the `safelist`. Icon classes are declared in `app.css` too, so an icon name that is not in the `@theme` block renders blank.
+Tailwind only emits classes it finds while scanning source files. On Bagisto 2.5 (Tailwind 4) the scan root is the `source("../../../")` argument at the top of each package's `app.css`, which covers the package's `src/` directory, so a class used only in a file outside the package (a theme in `resources/themes`, another package) is not generated; a class built at runtime needs a `@source inline(...)` entry. On Bagisto 2.4 (Tailwind 3) the equivalent is the `content` array in `tailwind.config.js` and the `safelist`. Icon classes are declared in `app.css` too, so an icon name that is not in the `@theme` block renders blank.
 
 ## Caching Issues
 
@@ -22244,7 +22250,7 @@ composer require bagisto/graphql-api
 
 ### Step 2: Configure Middleware
 
-Update your `bootstrap/app.php` file to ensure proper session handling. Bagisto 2.4 and the current development version both use the Laravel 11+ application bootstrap, so the snippet is the same on either:
+Update your `bootstrap/app.php` file to ensure proper session handling. Bagisto 2.4 and 2.5 both use the Laravel 11+ application bootstrap, so the snippet is the same on either:
 
 ```php
 use Illuminate\Session\Middleware\StartSession;
