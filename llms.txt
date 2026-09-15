@@ -11,10 +11,10 @@ A complete reference for developers building and extending Bagisto stores
 - [Why Choose Bagisto?](/getting-started/why-choose-bagisto)
 - [Before You Start](/getting-started/before-you-start)
 - [Installation](/getting-started/installation)
+- [Deployment](/getting-started/deployment)
+- [Best Security Practices](/getting-started/best-security-practice)
 - [Upgrade Guide](/getting-started/upgrade-guide)
 - [Contribution Guide](/getting-started/contribution-guide)
-- [Best Security Practices](/getting-started/best-security-practice)
-- [Deployment](/getting-started/deployment)
 
 ### AI
 
@@ -26,9 +26,9 @@ A complete reference for developers building and extending Bagisto stores
 
 ### Architecture Concepts
 
-- [Overview](/architecture/overview)
-- [Backend](/architecture/backend)
-- [Frontend](/architecture/frontend)
+- [Architecture Overview](/architecture/overview)
+- [Backend Architecture](/architecture/backend)
+- [Frontend Architecture](/architecture/frontend)
 
 ### Package Development
 
@@ -44,44 +44,48 @@ A complete reference for developers building and extending Bagisto stores
 - [Menu](/package-development/menu)
 - [Access Control List](/package-development/access-control-list)
 - [System Configuration](/package-development/system-configuration)
+- [Events, Commands and Tests](/package-development/events-commands-and-tests)
 
 ### Shipping Method Development
 
 - [Getting Started](/shipping-method-development/getting-started)
 - [Creating Your First Shipping Method](/shipping-method-development/create-your-first-shipping-method)
 - [Understanding Carrier Configuration](/shipping-method-development/understanding-carrier-configuration)
-- [Understanding Carrier Class](/shipping-method-development/understanding-carrier-class)
-- [Understanding System Configuration](/shipping-method-development/understanding-system-configuration)
+- [Understanding the Carrier Class](/shipping-method-development/understanding-carrier-class)
 
 ### Payment Method Development
 
 - [Getting Started](/payment-method-development/getting-started)
 - [Creating Your First Payment Method](/payment-method-development/create-your-first-payment-method)
 - [Understanding Payment Configuration](/payment-method-development/understanding-payment-configuration)
-- [Understanding Payment Class](/payment-method-development/understanding-payment-class)
+- [Understanding the Payment Class](/payment-method-development/understanding-payment-class)
 
 ### Product Type Development
 
 - [Getting Started](/product-type-development/getting-started)
 - [Creating Your First Product Type](/product-type-development/create-your-first-product-type)
 - [Understanding Product Type Configuration](/product-type-development/understanding-product-type-configuration)
-- [Understanding Abstract Type Class](/product-type-development/understanding-abstract-type-class)
+- [Understanding the AbstractType Class](/product-type-development/understanding-abstract-type-class)
 - [Building Your Subscription Product Type](/product-type-development/building-your-subscription-product-type)
 
 ### Theme Development
 
 - [Getting Started](/theme-development/getting-started)
-- [Creating Store Theme](/theme-development/creating-store-theme)
-- [Theme Sections](/theme-development/theme-sections)
-- [Theme Image Templates](/theme-development/image-cache-templates)
-- [Creating Admin Theme](/theme-development/creating-admin-theme)
-- [Creating Custom Theme Package](/theme-development/creating-custom-theme-package)
+- [Creating a Store Theme](/theme-development/creating-store-theme)
+- [Creating a Custom Theme Package](/theme-development/creating-custom-theme-package)
 - [Vite-Powered Theme Assets](/theme-development/vite-powered-theme-assets)
 - [Understanding Layouts](/theme-development/understanding-layouts)
 - [Blade Components](/theme-development/blade-components)
-- [Blade Tracer](/theme-development/blade-tracer)
+- [Theme Sections](/theme-development/theme-sections)
+- [Image Cache](/theme-development/image-cache-templates)
 - [Email Template](/theme-development/email-template)
 - [Validation](/theme-development/validation)
+- [Creating an Admin Theme](/theme-development/creating-admin-theme)
+
+### Tools
+
+- [Package Generator](/tools/package-generator)
+- [Blade Tracer](/tools/blade-tracer)
 
 ### Performance
 
@@ -95,24 +99,28 @@ A complete reference for developers building and extending Bagisto stores
 ### Digging Deeper
 
 - [Introduction](/advanced/introduction)
-- [Understanding Core Class](/advanced/understanding-core-class)
-- [Understanding Indexers](/advanced/understanding-indexers)
-- [Understanding Data Transfer](/advanced/understanding-data-transfer)
-- [Database Compatibility](/advanced/database-compatibility)
-- [Search Engines](/advanced/search-engines)
-- [File Storage](/advanced/file-storage)
+- [Understanding the Core Class](/advanced/understanding-core-class)
 - [Event Listeners](/advanced/event-listeners)
 - [View Render Events](/advanced/view-render-events)
 - [Command Palette](/advanced/command-palette)
 - [Artisan Commands](/advanced/artisan-commands)
-- [Queue, Jobs & Scheduling](/advanced/queue-jobs-scheduling)
+- [Queues, Jobs and Scheduling](/advanced/queue-jobs-scheduling)
 - [Cache Strategy](/advanced/cache-strategy)
-- [Testing Workflow](/advanced/testing)
+- [Understanding Indexers](/advanced/understanding-indexers)
+- [Search Engines](/advanced/search-engines)
+- [Understanding Data Transfer](/advanced/understanding-data-transfer)
+- [File Storage](/advanced/file-storage)
+- [Database Compatibility](/advanced/database-compatibility)
+- [Testing Overview](/advanced/testing)
+- [Testing with Pest](/advanced/testing-with-pest)
+- [Testing with Playwright](/advanced/testing-with-playwright)
+- [Coding Standards](/advanced/coding-standards)
 - [Debugging Tips](/advanced/debugging)
 - [Common Pitfalls](/advanced/common-pitfalls)
 
 ### Bagisto APIs
 
 - [Introduction](/api/introduction)
-- [Rest API](/api/rest-api)
+- [Installation](/api/installation)
+- [REST API](/api/rest-api)
 - [GraphQL API](/api/graphql-api)
