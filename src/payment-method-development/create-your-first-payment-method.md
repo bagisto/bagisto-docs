@@ -1,137 +1,40 @@
 # Creating Your First Payment Method
 
-Let's create a custom payment method using both approaches available in Bagisto. We'll explore the package generator for quick setup and the manual method for complete understanding.
+This page builds the `Webkul\CustomStripePayment` package: a payment method with a logo and a sort order in the admin, which places the order as soon as the customer confirms.
 
-::: info What You'll Learn
-This guide covers the complete process of creating a **Custom Stripe Payment** method, including:
-- Package structure setup (generator vs manual)
-- Configuration file creation
-- Payment processing implementation
-- Admin interface integration
+::: tip Package Generator
+The [Package Generator](../tools/package-generator.md#payment-and-shipping-method-packages) can scaffold a payment method package for you. This page builds it by hand, so you see every file and how it's registered.
 :::
 
-## Method 1: Using Bagisto Package Generator (Quick Setup)
+## What You'll Build
 
-The fastest way to create a payment method is using Bagisto's package generator.
+```text
+packages/Webkul/CustomStripePayment
+└── src
+    ├── Config
+    │   ├── payment-methods.php
+    │   └── system.php
+    ├── Payment
+    │   └── CustomStripePayment.php
+    └── Providers
+        └── CustomStripePaymentServiceProvider.php
+```
 
-### Step 1: Install Package Generator
+<a id="method-2-manual-setup-complete-understanding"></a>
 
-If you haven't installed the package generator yet (it is a separate, optional development dependency; the `package:make*` commands are not part of Bagisto core, so check the generator's README for the version matching your Bagisto release):
+## Step 1: Create the Package Structure
+
+From the Bagisto root, create the package's folders:
 
 ```bash
-composer require --dev bagisto/bagisto-package-generator
+mkdir -p packages/Webkul/CustomStripePayment/src/{Config,Payment,Providers}
 ```
 
-### Step 2: Generate Payment Method Package
+## Step 2: Add the Payment Method Configuration
 
-Navigate to your Bagisto root directory and run:
+This file registers the payment method and holds its default settings.
 
-```bash
-php artisan package:make-payment-method Webkul/CustomStripePayment
-```
-
-### Step 3: Handle Existing Package (If Needed)
-
-If the package directory already exists, use the `--force` flag:
-
-```bash
-php artisan package:make-payment-method Webkul/CustomStripePayment --force
-```
-
-::: tip Package Generator Benefits
-The generator automatically creates:
-- Proper directory structure following Bagisto conventions
-- Payment method configuration with correct schema
-- Base payment class extending `Webkul\Payment\Payment\Payment`
-- System configuration for admin settings
-- Service provider with proper registration
-:::
-
-### Step 4: Register the Generated Package
-
-After generating the package, you need to register it with Bagisto:
-
-**Add to composer.json** (in Bagisto root directory):
-
-```json{5}
-{
-    "autoload": {
-        ...
-        "psr-4": {
-            // Other PSR-4 namespaces
-            "Webkul\\CustomStripePayment\\": "packages/Webkul/CustomStripePayment/src"
-        }
-    }
-}
-```
-
-**Update autoloader:**
-
-```bash
-composer dump-autoload
-```
-
-**Register service provider** in `bootstrap/providers.php`:
-
-```php{8}
-<?php
-
-use App\Providers\AppServiceProvider;
-use Webkul\CustomStripePayment\Providers\CustomStripePaymentServiceProvider;
-
-return [
-    AppServiceProvider::class,
-
-    // ... other providers ...
-
-    CustomStripePaymentServiceProvider::class,
-];
-```
-
-**Clear caches:**
-
-```bash
-php artisan optimize:clear
-```
-
-### Step 5: Configure Your Payment Method
-
-Now test the basic configuration that the generator created:
-
-1. **Go to Admin Panel**: Navigate to **Configure → Sales → Payment Methods**
-2. **Find Your Method**: Look for "Custom Stripe Payment" section
-3. **Basic Configuration**: You'll see some basic configuration fields that can be adjusted as per your needs
-
-::: tip Translation Note
-You may notice some translation keys are missing as we haven't registered translation files yet. For complete localization setup, refer to the [Localization section in Package Development](../package-development/localization.md). The main purpose here is to understand payment method functionality.
-:::
-
-::: info Generator Creates Basic Configuration
-The package generator creates a simple payment method with:
-- **Basic payment processing**: Simple payment handling logic
-- **Basic admin fields**: Essential configuration options
-- **Standard structure**: Following Bagisto conventions
-
-For advanced features like webhook handling, refund processing, or complex payment flows, you'll need to customize the generated code or use the manual approach below.
-:::
-
-## Method 2: Manual Setup (Complete Understanding)
-
-For developers who want to understand every component, let's create the payment method manually.
-
-### Step 1: Create Package Directory Structure
-
-Create the directory structure for your payment method package:
-
-```bash
-mkdir -p packages/Webkul/CustomStripePayment/src/{Payment,Config,Providers}
-```
-
-### Step 2: Create Payment Method Configuration
-
-Create the payment methods configuration file:
-
-**Create:** `packages/Webkul/CustomStripePayment/src/Config/payment-methods.php`
+**File:** `packages/Webkul/CustomStripePayment/src/Config/payment-methods.php`
 
 ```php
 <?php
@@ -143,17 +46,18 @@ return [
         'description' => 'Secure credit card payments powered by Stripe',
         'class' => 'Webkul\CustomStripePayment\Payment\CustomStripePayment',
         'active' => true,
-        'generate_invoice' => false,
         'sort' => 1,
     ],
 ];
 ```
 
-### Step 3: Create Payment Class
+Core reads only `class` from this file when it lists payment methods. The other keys are defaults that the class's `getConfigData()` returns until an admin saves a value, which is why the method is offered as soon as the package is registered.
 
-Create the main payment class:
+## Step 3: Create the Payment Class
 
-**Create:** `packages/Webkul/CustomStripePayment/src/Payment/CustomStripePayment.php`
+The class names the method's code, says where to send the customer, and gives the logo shown at checkout.
+
+**File:** `packages/Webkul/CustomStripePayment/src/Payment/CustomStripePayment.php`
 
 ```php
 <?php
@@ -191,22 +95,18 @@ class CustomStripePayment extends Payment
     {
         $url = $this->getConfigData('image');
 
-        return $url ? Storage::url($url) : bagisto_asset('images/money-transfer.png', 'shop');
+        return $url ? Storage::url($url) : bagisto_asset('images/stripe.png', 'shop');
     }
 }
 ```
 
-`getRedirectUrl()` is abstract on the base class, so every method must declare it; returning `null` (core's cash-on-delivery returns nothing) keeps the customer on the checkout and lets the order be placed immediately. The checkout renders `getImage()` unconditionally, so a method without an image field must still return a URL, or an empty image is drawn.
+`getRedirectUrl()` is abstract on the base class; returning `null` keeps the customer on the checkout and has the order created at once. Returning a URL means writing the return leg that creates the order, which [Understanding the Payment Class](./understanding-payment-class.md#the-redirect-flow) walks through. The checkout draws `getImage()` for every method, so the fallback, the Stripe logo the Shop theme ships, avoids an empty image until a logo is uploaded.
 
-::: warning Route Configuration
-Returning a route from `getRedirectUrl()` means writing the return leg too: the gateway's callback controller has to create the order itself. [Understanding Payment Class](./understanding-payment-class.md#the-redirect-flow) walks through that flow with core's PayPal Standard code.
-:::
+## Step 4: Add the System Configuration
 
-### Step 4: Create System Configuration
+This section gives the method its settings under **Configure → Sales → Payment Methods**.
 
-Create the admin interface configuration:
-
-**Create:** `packages/Webkul/CustomStripePayment/src/Config/system.php`
+**File:** `packages/Webkul/CustomStripePayment/src/Config/system.php`
 
 ```php
 <?php
@@ -265,13 +165,13 @@ return [
 ];
 ```
 
-Defaults belong in `payment-methods.php`, which is why none of the fields carry one here; the fallback chain is on [Understanding Payment Configuration](./understanding-payment-configuration.md#configuration-value-resolution). `sort` is a `number` because core sorts methods numerically, and every field but `active` depends on it so the section can be saved while the method is off.
+The `key` must be `sales.payment_methods.` followed by the method code, and `info` is required. Keep the boolean `active` field: saving the Payment Methods page reads it from every method and refuses to save when none is on. [Understanding Payment Configuration](./understanding-payment-configuration.md#system-configuration) explains the other fields and the validation rules.
 
-### Step 5: Create Service Provider
+## Step 5: Create the Service Provider
 
-Create the service provider to register your payment method:
+The provider merges both configuration files.
 
-**Create:** `packages/Webkul/CustomStripePayment/src/Providers/CustomStripePaymentServiceProvider.php`
+**File:** `packages/Webkul/CustomStripePayment/src/Providers/CustomStripePaymentServiceProvider.php`
 
 ```php
 <?php
@@ -287,13 +187,11 @@ class CustomStripePaymentServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // merge payment method configuration
         $this->mergeConfigFrom(
             dirname(__DIR__).'/Config/payment-methods.php',
             'payment_methods'
         );
 
-        // merge system configuration
         $this->mergeConfigFrom(
             dirname(__DIR__).'/Config/system.php',
             'core'
@@ -307,33 +205,29 @@ class CustomStripePaymentServiceProvider extends ServiceProvider
 }
 ```
 
-### Step 6: Register Your Package
+`payment-methods.php` joins `config('payment_methods')`, which the checkout reads; `system.php` joins `config('core')`, which the admin configuration reads.
 
-After creating all the files, you need to register your package with Bagisto:
+## Step 6: Register the Package
 
-**Add to composer.json** (in Bagisto root directory):
+Add the namespace to the root `composer.json` and the provider to `bootstrap/providers.php`. [Package Development](../package-development/getting-started.md#autoload-the-namespace) explains both files.
 
-```json{5}
+**File:** `composer.json`
+
+```json
 {
-    "autoload": {
-        ...
-        "psr-4": {
-            // Other PSR-4 namespaces
-            "Webkul\\CustomStripePayment\\": "packages/Webkul/CustomStripePayment/src"
-        }
+  "autoload": {
+    "psr-4": {
+      "Webkul\\CustomStripePayment\\": "packages/Webkul/CustomStripePayment/src"
     }
+  }
 }
 ```
 
-**Update autoloader:**
+The block shows only the entry to add; keep the others.
 
-```bash
-composer dump-autoload
-```
+**File:** `bootstrap/providers.php`
 
-**Register service provider** in `bootstrap/providers.php`:
-
-```php{8}
+```php{4,11}
 <?php
 
 use App\Providers\AppServiceProvider;
@@ -342,86 +236,36 @@ use Webkul\CustomStripePayment\Providers\CustomStripePaymentServiceProvider;
 return [
     AppServiceProvider::class,
 
-    // ... other providers ...
+    // ...
 
     CustomStripePaymentServiceProvider::class,
 ];
 ```
 
-**Clear caches:**
+Then regenerate the autoloader and clear the cached configuration:
 
 ```bash
+composer dump-autoload
+
 php artisan optimize:clear
 ```
 
-## Testing Your Payment Method
+## Test It
 
-Now let's test your custom payment method:
+1. In the admin, open **Configure → Sales → Payment Methods**. A **Custom Stripe Payment** section is listed with the core methods.
+2. Add a product to the cart and go to checkout. After the address step, and the shipping step for a cart that ships, **Credit Card (Stripe)** is offered with the Stripe logo.
+3. Choose it and place the order. The order is created at once and the customer lands on the success page, because `getRedirectUrl()` returns `null`.
+4. Open the order in the admin. Its payment method reads **Credit Card (Stripe)**.
+5. Cover the method with a Pest test: `Webkul\Payment\Tests\Concerns\ProvidePaymentHelpers::createCartWithItems($paymentMethod)` builds an addressed customer cart paid by the method you name; see [Testing with Pest](../advanced/testing-with-pest.md#test-benches).
 
-### Step 1: Enable in Admin
+## Things to Watch
 
-1. Go to **Configure → Sales → Payment Methods**
-2. Find **Custom Stripe Payment** section
-3. Set **Enabled** to **Yes**
-4. Configure your payment settings
-5. Click **Save Configuration**
+- **Declare `$code`.** The base class doesn't, so a class without it makes `getCode()` throw as soon as the checkout lists payment methods, and the payment step fails for every method.
+- **Use a code of your own.** `mergeConfigFrom()` keeps keys that are already set, so reusing `stripe` or `cashondelivery` leaves core's class in place. To change a core method instead, see [Understanding Payment Configuration](./understanding-payment-configuration.md#things-to-watch).
+- **A saved setting applies to one channel,** and a translated field such as the title to one locale. Saving the section replaces the `payment-methods.php` defaults only for the channel and locale selected in the switchers.
 
-### Step 2: Frontend Testing
+## Next Step
 
-1. Add products to cart
-2. Proceed to checkout
-3. Enter billing address
-4. Verify your payment method appears, with its title and logo
-5. Place the order: with no redirect URL the order is created at once, as with cash on delivery
+The method works. Next, see what each configuration key does and how a setting is resolved.
 
-## Generated vs Manual Package Structure
-
-Both methods create the same final structure:
-
-```text
-packages
-└── Webkul
-    └── CustomStripePayment
-        └── src
-            ├── Payment
-            │   └── CustomStripePayment.php                 # Payment processing logic
-            ├── Config
-            │   ├── payment-methods.php                     # Payment method definition
-            │   └── system.php                              # Admin configuration
-            └── Providers
-                └── CustomStripePaymentServiceProvider.php  # Registration
-```
-
-::: tip Choosing Your Approach
-**Use Package Generator When:**
-- Quick prototyping or testing
-- Following standard Bagisto patterns
-- Building simple payment methods
-- Learning Bagisto basics
-
-**Use Manual Setup When:**
-- Need complete control over code
-- Building complex payment logic
-- Want to understand every component
-- Customizing beyond standard patterns
-:::
-
-## Your Next Steps
-
-Congratulations! You've successfully created a custom payment method for Bagisto. Your payment method now integrates seamlessly with the checkout process.
-
-**Key Achievements:**
-- ✅ Built a complete payment method from scratch
-- ✅ Implemented basic payment processing logic
-- ✅ Created admin configuration interface
-- ✅ Integrated with Bagisto's payment system
-
-### Continue Learning
-
-Now that you have a working payment method, dive deeper into specific components:
-
-**📖 [Understanding Payment Configuration →](./understanding-payment-configuration.md)**
-Learn about payment method configuration properties and system settings.
-
-**📖 [Understanding Payment Class →](./understanding-payment-class.md)**
-Master the payment processing logic and implementation details.
+**Continue to:** [Understanding Payment Configuration](./understanding-payment-configuration.md)

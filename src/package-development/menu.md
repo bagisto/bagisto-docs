@@ -1,134 +1,55 @@
 # Menu
 
-In Bagisto, there are two types of menus to understand:
+On this page you add **FAQ** to the admin sidebar, linking to the listing. The sidebar is built from configuration: core's entries live in `packages/Webkul/Admin/src/Config/menu.php`, merged into the `menu.admin` key, and a package merges a file of its own into the same key.
 
-**Shop Menu**: The category navigation customers see is generated from the catalog and needs no package work. The customer **account** menu (Orders, Addresses, Reviews, …) is a second, config-driven menu: the Shop package merges `packages/Webkul/Shop/src/Config/menu.php` into the `menu.customer` key, and a package that adds a customer-account page merges its own entry there in exactly the way shown below for the admin.
+<a id="creating-the-menu-configuration"></a>
+<a id="basic-menu-properties"></a>
+<a id="understanding-menu-configuration-options"></a>
 
-**Admin Menu**: This section focuses on the backend navigation that administrators use to manage the system. Specifically, we will cover how to create custom admin menu items for your package.
+## Create the Menu File
 
-Admin menus provide navigation structure for your package's administrative interface in Bagisto. They allow administrators to reach different sections and features of your package from the admin panel sidebar.
-
-For our RMA package, we'll create a simple admin menu that provides access to the return requests listing page, demonstrating how to integrate your package seamlessly into Bagisto's admin navigation.
-
-::: info Learning Objective
-This section demonstrates how to create admin menu items for your Bagisto package, providing intuitive navigation for administrators to access your package's features.
-:::
-
-## Understanding Bagisto Admin Menu
-
-Bagisto's admin menu system is hierarchical and provides multiple levels of navigation:
-
-### Menu Levels
-- **First Level**: Primary navigation items in the left sidebar
-- **Second Level**: Sub-items shown when a first-level item is expanded
-- **Third Level**: Nested under a second-level item, still in the sidebar (Sales → RMA → Requests, Reasons, Rules)
-
-### Menu Components
-- **Configuration**: PHP array defining menu structure
-- **Routes**: Named routes that menu items link to
-- **Icons**: CSS classes for menu item icons
-- **Permissions**: Access control for menu visibility
-
-## Creating Your First Admin Menu
-
-Let's create a simple admin menu for our RMA package that provides access to the return requests listing page.
-
-### Directory Structure
-
-Create the configuration directory structure in your package:
-
-```bash
-mkdir -p packages/Webkul/RMA/src/Config
-```
-
-```text
-packages
-└── Webkul
-    └── RMA
-        └── src
-            ├── ...
-            └── Config
-                └── admin-menu.php
-```
-
-### Creating the Menu Configuration
-
-Create `packages/Webkul/RMA/src/Config/admin-menu.php`:
+**File:** `packages/Webkul/Faq/src/Config/admin-menu.php`
 
 ```php
 <?php
 
 return [
     [
-        'key' => 'rma',
-        'name' => 'RMA',
-        'route' => 'admin.rma.return-requests.index',
-        'sort' => 100, // Order position `100` places it near the end of the menu
-        'icon' => '',
+        'key' => 'faq',
+        'name' => 'faq::app.admin.menu.faq',
+        'route' => 'admin.faq.index',
+        'sort' => 11,
+        'icon' => 'icon-information',
     ],
 ];
 ```
 
-::: info Simple Menu Explanation
-**Key**: Unique identifier `rma` for our menu item
+| Key | Meaning |
+|---|---|
+| `key` | The entry's identifier. Dots nest entries, so `faq.categories` sits under `faq`. It is also the ACL key that decides who sees the entry |
+| `name` | A translation key, translated when the menu is built |
+| `route` | The name of the route the entry opens |
+| `sort` | The order among siblings. Core's top-level entries run from 1 (Dashboard) to 10 (Configure) |
+| `icon` | A class from the admin icon font, such as `icon-cms`, `icon-settings` or `icon-information`, or `''` for none |
 
-**Name**: Display text `RMA` that appears in the admin sidebar
+Every entry needs all five keys. `Webkul\Core\Menu` reads them without defaults, so a missing key fails with `Undefined array key` on every admin page, and the typed constructor of `Webkul\Core\Menu\MenuItem` rejects a `sort` or `icon` that is `null`.
 
-**Route**: Points to our DataGrid listing page we created earlier
+<a id="registering-the-menu-configuration"></a>
 
-**Sort**: Order position `100` places it near the end of the menu
+## Merge It into the Admin Menu
 
-**Icon**: Left empty for this tutorial - you can add any icon class as per your requirement
-:::
+Configuration is merged in `register()`, as `AdminServiceProvider` merges core's menu:
 
-### Adding Menu Translations
-
-Update your translation file `packages/Webkul/RMA/src/Resources/lang/en/app.php` to include menu translations:
-
-```php{6-9}
-<?php
-
-return [
-    'admin' => [
-        // ...existing translations...
-
-        'menu' => [
-            'rma' => 'RMA',
-        ],
-    ],
-];
-```
-
-Now update your menu configuration to use translations:
-
-```php{6}
-<?php
-
-return [
-    [
-        'key' => 'rma',
-        'name' => 'rma::app.admin.menu.rma',
-        'route' => 'admin.rma.return-requests.index',
-        'sort' => 100,
-        'icon' => '',
-    ],
-];
-```
-
-### Registering the Menu Configuration
-
-Update your package's service provider to register the admin menu configuration:
-
-**Update:** `packages/Webkul/RMA/src/Providers/RMAServiceProvider.php`
+**File:** `packages/Webkul/Faq/src/Providers/FaqServiceProvider.php`
 
 ```php{14-17}
 <?php
 
-namespace Webkul\RMA\Providers;
+namespace Webkul\Faq\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class RMAServiceProvider extends ServiceProvider
+class FaqServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -149,153 +70,105 @@ class RMAServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
 
         $this->loadRoutesFrom(__DIR__.'/../Routes/admin-routes.php');
+
         $this->loadRoutesFrom(__DIR__.'/../Routes/shop-routes.php');
 
-        $this->loadViewsFrom(__DIR__.'/../Resources/views', 'rma');
+        $this->loadViewsFrom(__DIR__.'/../Resources/views', 'faq');
 
-        $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'rma');
+        $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'faq');
     }
 }
 ```
 
-### Testing Your Admin Menu
+## Add the Label
 
-Now you can test your admin menu:
+Add a `menu` group under `admin` in the language file, and the same key in every other locale:
 
-```bash
-# Clear cache
-php artisan optimize:clear
-
-# Visit the admin panel
-# Login to: http://your-app.com/admin
-```
-
-**Expected Results:**
-- **Menu Item Visible**: "RMA" appears in the admin sidebar
-- **Navigation Works**: Clicking the menu takes you to the return requests DataGrid
-- **Translation Active**: Menu uses translation keys for internationalization
-
-::: info Simple Menu Testing Checklist
-**Core Functionality:**
-- ✅ RMA menu item appears in admin sidebar
-- ✅ Clicking menu navigates to return requests page  
-- ✅ No console errors or broken links
-- ✅ Menu integrates seamlessly with existing Bagisto admin menus
-
-**What's Working:**
-- ✅ Simple, single-level menu item
-- ✅ Direct link to your DataGrid page
-- ✅ Translation support enabled
-:::
-
-## Understanding Menu Configuration Options
-
-Now that you have a working menu, let's understand the configuration options available:
-
-### Basic Menu Properties
-
-| Property | Type | Description |
-| -------- | ---- | ----------- |
-| **`key`** | String | Unique identifier for the menu item. Must equal an ACL key, because the menu is filtered with `bouncer()->hasPermission($key)` |
-| **`name`** | String | Display name (use translation keys) |
-| **`route`** | String | Named Laravel route to link to |
-| **`sort`** | Integer | Sort order (lower numbers appear first) |
-| **`icon`** | String | CSS class for the menu icon, such as `icon-sales`; pass `''` for none |
-
-All five keys are required at every level; `Webkul\Core\Menu` reads them without defaults and builds `MenuItem` objects with typed properties, so a missing `icon` or `sort` throws. Core's admin menu lives in `packages/Webkul/Admin/src/Config/menu.php`, the file this page's `admin-menu.php` mirrors.
-
-Two behaviours to know:
-
-- **Parents inherit their first child's route.** After the ACL filter runs, a parent item's route is replaced by the route of its first remaining child, so the parent always lands somewhere the admin may go.
-- **The active item is matched by URL prefix, then by key.** The longest menu route that prefixes the current URL sets the current key, and every item whose key prefixes that key is highlighted. Keep route paths under the same prefix as their menu ancestors and highlighting works without any extra code.
-
-### Creating Hierarchical Menu Structure
-
-In Bagisto, hierarchical menus are created by using dot notation in the `key` property, not through nested arrays. Each menu level is defined as a separate array item. Here's how to create a multi-level menu structure:
+**File:** `packages/Webkul/Faq/src/Resources/lang/en/app.php`
 
 ```php
 <?php
 
 return [
-    // Main RMA menu item
-    [
-        'key' => 'rma',
-        'name' => 'RMA',  // Use 'rma::app.admin.menu.rma' for translations
-        'route' => 'admin.rma.return-requests.index',
-        'sort' => 100,
-        'icon' => 'icon-sales',
+    'admin' => [
+        // ...
+
+        'menu' => [
+            'faq' => 'FAQ',
+        ],
     ],
 
-    // Sub-menu: Return Requests
+    // ...
+];
+```
+
+<a id="testing-your-admin-menu"></a>
+
+## Test It
+
+Clear the cached configuration, then reload the admin:
+
+```bash
+php artisan optimize:clear
+```
+
+1. **FAQ** appears at the end of the sidebar and opens `/admin/faq`.
+2. Open `/admin/faq/create`. **FAQ** stays highlighted, because the page's URL starts with the entry's URL.
+
+## How the Sidebar Uses the Entries
+
+- **Visibility follows the ACL.** `Webkul\Core\Menu` drops every entry for which `bouncer()->hasPermission($key)` is false. The default administrator holds every key; an admin with a custom role sees **FAQ** once [Access Control List](./access-control-list.md) defines the `faq` permission and the role is given it.
+- **A parent opens its first visible child.** After that filter, an entry with children takes the route of its first remaining child, so a parent always leads somewhere the admin may go.
+- **The current entry is found by URL.** The entry whose URL is the longest prefix of the current URL becomes current, and every entry whose key is a prefix of its key is highlighted with it. Keep a section's pages under its entry's URL, as `/admin/faq/create` is under `/admin/faq`.
+
+<a id="creating-hierarchical-menu-structure"></a>
+
+## Nested Entries
+
+A second level is another entry whose key starts with its parent's. Suppose the package later gains categories with their own `admin.faq.categories.index` route, which this guide doesn't build:
+
+```php
+<?php
+
+return [
     [
-        'key' => 'rma.return-requests',
-        'name' => 'Return Requests',  // Use 'rma::app.admin.menu.return-requests' for translations
-        'route' => 'admin.rma.return-requests.index',
+        'key' => 'faq',
+        'name' => 'faq::app.admin.menu.faq',
+        'route' => 'admin.faq.index',
+        'sort' => 11,
+        'icon' => 'icon-information',
+    ], [
+        'key' => 'faq.questions',
+        'name' => 'faq::app.admin.menu.questions',
+        'route' => 'admin.faq.index',
         'sort' => 1,
         'icon' => '',
-    ],
-
-    // Sub-menu: RMA Settings
-    [
-        'key' => 'rma.settings',
-        'name' => 'Settings',  // Use 'rma::app.admin.menu.settings' for translations
-        'route' => 'admin.rma.return-requests.index',  // Same route for demo
+    ], [
+        'key' => 'faq.categories',
+        'name' => 'faq::app.admin.menu.categories',
+        'route' => 'admin.faq.categories.index',
         'sort' => 2,
-        'icon' => '',
-    ],
-
-    // Sub-menu: Reports (if needed)
-    [
-        'key' => 'rma.reports',
-        'name' => 'Reports',  // Use 'rma::app.admin.menu.reports' for translations
-        'route' => 'admin.rma.return-requests.index',  // Same route for demo
-        'sort' => 3,
         'icon' => '',
     ],
 ];
 ```
 
-::: info Route Configuration Note
-For demonstration purposes, all menu items above use the same route (`admin.rma.return-requests.index`). In a real implementation, you would create separate routes for each menu item:
+Each nested key needs its parent entry, and an ACL key of the same name. Core nests three levels in places, such as `sales.rma.requests`.
 
-- `admin.rma.settings.index` for the settings page
-- `admin.rma.reports.index` for the reports page
+## Other Menus
 
-Make sure to create appropriate routes, controllers, and views for each menu item as per your package requirements.
-:::
+- **The customer account menu** on the storefront is built the same way, from the `menu.customer` key that the Shop package fills from `packages/Webkul/Shop/src/Config/menu.php`, with entries under `account` (`account.orders`, `account.address`). A package that adds a page there merges an entry into `menu.customer` and protects the page's route with the `customer` middleware. No ACL applies to that menu.
+- **The admin command palette**, opened with Ctrl+K or ⌘K, indexes the admin menu and the configuration tree, so **FAQ** is searchable as soon as its entry exists. To add actions and search aliases of your own, see [Command Palette](../advanced/command-palette.md).
 
-::: info How Hierarchical Keys Work
-**Parent Menu**: `'key' => 'rma'` creates the main menu item
+## Things to Watch
 
-**Child Menu**: `'key' => 'rma.return-requests'` creates a sub-item under the RMA menu
+- **A menu key with no ACL key of the same name is invisible to custom roles**, while the default administrator still sees it.
+- **Reusing a core key doesn't replace the core entry predictably.** All entries are merged into one list and indexed by `key`, so which of two entries with the same key survives depends on provider order. Use keys of your own.
+- **Every route named in the menu must exist.** The sidebar calls `route()` for every entry, so an unknown route name breaks every admin page.
+- **A cached configuration hides the entry.** Run `php artisan optimize:clear` after changing the file.
 
-**Grandchild Menu**: `'key' => 'rma.settings.general'` would create a third-level item
+## Next Step
 
-The hierarchy is automatically built based on the dot notation in the key names.
-:::
+The sidebar shows **FAQ** to the default administrator. Next, define the permissions that decide who else may see and use it.
 
-::: tip Command palette
-On Bagisto 2.5 the admin also has a command palette (Ctrl + K) that indexes the admin menu and the configuration tree automatically, so a registered menu item is searchable at once. A package can add searchable actions and aliases by merging into `command_palette`; see [Command Palette](../advanced/command-palette.md).
-:::
-
-::: tip Menu Best Practices
-**Keep It Simple**: Start with a single menu item and expand as your package grows
-
-**Use Translations**: Always use translation keys for menu names to support internationalization
-
-**Logical Ordering**: Use the sort property to position your menu logically among existing items
-
-**Consistent Icons**: Choose icons that match the visual style of existing Bagisto admin menus
-
-**Clear Naming**: Use descriptive names that clearly indicate the menu's purpose
-:::
-
-## Your Next Step
-
-Excellent! You've now successfully created an admin menu for your RMA package. Your package now has a complete navigation structure.
-
-At this point in your package development journey, you have mastered the core backend components. However, to ensure proper security and access control for your admin menu, you'll need to implement permission-based access.
-
-**Continue to:** **[Access Control List (ACL)](./access-control-list.md)** - Set up access control lists to manage who can view and interact with your admin menu
-
-With menu navigation and proper access control in place, you'll have a secure, professional admin interface that integrates seamlessly with Bagisto's permission system.
+**Continue to:** [Access Control List](./access-control-list.md)

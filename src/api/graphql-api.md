@@ -1,110 +1,138 @@
 # GraphQL API
 
-Bagisto's GraphQL API delivers a modern, flexible approach to e-commerce data access. Built on Laravel Lighthouse, it provides efficient querying capabilities perfect for headless commerce, mobile apps, and modern frontend frameworks.
+The GraphQL API of `bagisto/bagisto-api` has two endpoints with separate schemas: the Shop schema at `POST /api/graphql` and the Admin schema at `POST /api/admin/graphql`. Both are built from the same API Platform resources, providers and processors as the [REST API](./rest-api.md), so the data and the business rules are the same. Every query and mutation, with its arguments and result fields, is in the reference at [api-docs.bagisto.com](https://api-docs.bagisto.com/api/graphql-api/introduction).
 
-## 🚀 Quick Start
+## Prerequisites
 
-### Live Demo
+Install the package as described in [Installation](./installation.md), and use the key the installer saved as `STOREFRONT_PLAYGROUND_KEY` in `.env`, or one you issued. GraphQL uses the same credentials as REST.
 
-Experience the power of GraphQL with our interactive demo:
-
-🌐 [**GraphQL API Demo**](https://demo.bagisto.com/mobikul-common/graphiql) - Test queries and explore the schema in real-time
-
-::: tip Interactive Playground
-The demo includes GraphiQL playground where you can write queries, explore documentation, and see real-time results.
-:::
-
-## 📦 Installation
-
-### Step 1: Install the Package
-
-Install the GraphQL API package via Composer, choosing the release that matches your Bagisto version (the package README lists the pairs):
+## Your First Query
 
 ```bash
-composer require bagisto/graphql-api
+curl -X POST "https://your-domain.com/api/graphql" \
+  -H "Content-Type: application/json" \
+  -H "X-STOREFRONT-KEY: pk_storefront_xxxxxxxxxxxxx" \
+  -d '{"query": "query { products(first: 2) { edges { node { _id sku name formattedPrice } } } }"}'
 ```
 
-### Step 2: Configure Middleware
+The response nests each product under `edges` and `node`:
 
-Update your `bootstrap/app.php` file to ensure proper session handling. Bagisto 2.4 and 2.5 both use the Laravel 11+ application bootstrap, so the snippet is the same on either:
-
-```php
-use Illuminate\Session\Middleware\StartSession;
-use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
-
-return Application::configure(basePath: dirname(__DIR__))
-   ->withMiddleware(function (Middleware $middleware) {
-      // ... rest of middleware setup
-
-      /**
-       * Remove session and cookie middleware from the 'web' middleware group.
-       */
-      $middleware->removeFromGroup('web', [StartSession::class, AddQueuedCookiesToResponse::class]);
-
-      /**
-       * Adding session and cookie middleware globally to apply across non-web routes (e.g. GraphQL)
-       */
-      $middleware->append([StartSession::class, AddQueuedCookiesToResponse::class]);
-   })
-   // ... rest of configuration
+```json
+{
+  "data": {
+    "products": {
+      "edges": [
+        {
+          "node": {
+            "_id": 1,
+            "sku": "COASTALBREEZEMENSHOODIE",
+            "name": "Coastal Breeze Men's Blue Zipper Hoodie",
+            "formattedPrice": "$100.00"
+          }
+        }
+      ]
+    }
+  }
+}
 ```
 
-::: warning Important Configuration
-Moving the session middleware from the `web` group to the global stack is what lets the `/graphql` endpoint, which is not a web route, keep a guest cart between requests. Logged-in customers and admins authenticate with a JWT bearer token instead.
-:::
+## Queries for a Customer
 
-### Step 3: Environment Configuration
+Sign the customer in with the `createCustomerLogin` mutation and select the `token`:
 
-Add the following JWT settings to your `.env` file:
-
-```properties
-# JWT Configuration for GraphQL API
-JWT_TTL=525600
-JWT_SHOW_BLACKLIST_EXCEPTION=true
-
-# API Key for mobile/frontend authentication
-MOBIKUL_API_KEY=your-secure-api-key-here
+```graphql
+mutation {
+  createCustomerLogin(
+    input: {
+      email: "customer@example.com"
+      password: "password123"
+    }
+  ) {
+    customerLogin {
+      token
+      success
+      message
+    }
+  }
+}
 ```
 
-`JWT_TTL` is the token lifetime in minutes (the value above is one year). `MOBIKUL_API_KEY` is a shared secret the package checks on requests from the Mobikul mobile apps; generate a strong random value, keep it out of version control, and rotate it if it leaks.
+Send the token as `Authorization: Bearer <token>`, together with `X-STOREFRONT-KEY`, on operations that act for a customer. A guest uses a cart token the same way, and `createCartToken` returns one:
 
-### Step 4: Install and Publish Assets
+```graphql
+mutation {
+  createCartToken(input: {}) {
+    cartToken {
+      cartToken
+    }
+  }
+}
+```
 
-Run the installation command to set up configurations:
+## Queries to the Admin Schema
+
+The Admin endpoint takes an Integration token and no storefront key. `readAdminProfile` is a quick check that a token works:
 
 ```bash
-php artisan bagisto-graphql:install
+curl -X POST "https://your-domain.com/api/admin/graphql" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <id>|<token>" \
+  -d '{"query": "query { readAdminProfile { name email roleName } }"}'
 ```
 
-This command will:
-- Publish GraphQL schema files
-- Set up authentication routes
-- Configure GraphiQL playground
+## Paging and Rate Limits
 
-## 🔧 Testing Your Setup
+Lists are cursor connections. Select items through `edges { node { ... } }`, page with `first` and `after`, and read `pageInfo { hasNextPage endCursor }`. Unlike REST's `per_page`, `first` isn't capped on `products`, so ask for the page size your screen renders.
 
-### GraphiQL Playground
+Shop responses carry `X-RateLimit-Limit`, `X-RateLimit-Remaining` and `X-RateLimit-Reset` for the key's hourly window, as on REST; here `X-RateLimit-Limit` is the key's own limit.
 
-Access the interactive GraphQL playground:
+## Errors
 
-```text
-http://your-domain.com/graphiql
+A failed operation usually returns HTTP `200` with a `null` field and a message in `errors`, and a response can succeed in part, so check `errors` even when `data` is present.
+
+A Shop operation sent without the storefront key returns no data, and the response names the problem:
+
+```json
+{
+  "message": "X-STOREFRONT-KEY header is required for this operation",
+  "error": "missing_key",
+  "header_name": "X-STOREFRONT-KEY",
+  "key_type": "shop",
+  "errors": [
+    {
+      "message": "X-STOREFRONT-KEY header is required for this operation",
+      "extensions": {
+        "code": "UNAUTHENTICATED"
+      }
+    }
+  ]
+}
 ```
 
-### Direct API Endpoint
+## How the Schema Behaves
 
-For programmatic access or tools like Postman:
+- **Nodes have two identifiers.** `id` is an IRI string, such as `/api/admin/admin_profiles/4`, and `_id` is the number. Store `_id`, and pass `id` to operations that ask for it.
+- **Action mutations return result fields.** Adding to the cart, applying a coupon or placing an order returns fields such as `success`, `message` or `orderId` rather than a node. Select the fields the mutation's reference page lists.
+- **Inputs are camelCase** and go inside `input: { ... }`.
+- **Files can't be uploaded.** Binary uploads go through the REST endpoints.
+- **The store context headers apply here too.** `X-LOCALE`, `X-CURRENCY` and `X-CHANNEL` work on the Shop schema, including the middleware check for Composer installs; see [Store Context Headers](./rest-api.md#store-context-headers).
 
-```text
-http://your-domain.com/graphql
+## Exploring the Schema
+
+GraphiQL runs at `/api/graphiql` for the Shop schema and at `/api/admin/graphiql` for the Admin schema. Introspection queries run without the storefront key, so the Docs panel and autocomplete work before you enter one; executing an operation needs it.
+
+To keep the schemas as files, for code generation or review, export them as SDL:
+
+```bash
+php artisan bagisto-api-platform:export-schema --transport=graphql --path=storage/api-schema
 ```
 
-## 🔗 Next Steps
+## Things to Watch
 
-Ready to build with GraphQL? Here are your next steps:
+- **The two schemas are separate.** Admin fields such as `adminCatalogProducts` don't exist on `/api/graphql`, and Shop fields such as `products` don't exist on `/api/admin/graphql`.
+- **Query size is limited.** `config/api-platform.php` sets `graphql.max_query_complexity` to `400` and `graphql.max_query_depth` to `20`.
+- **This isn't the older `bagisto/graphql-api` package.** That package, for Bagisto 2.3, used Lighthouse, JWT tokens and a `/graphql` endpoint, and its setup moved the session middleware in `bootstrap/app.php`. None of that applies to `bagisto/bagisto-api`, and its operation names are different.
 
-- 🎮 [**Try the Live Demo**](https://demo.bagisto.com/mobikul-common/graphiql)
+## Next Step
 
-::: tip Need Traditional REST?
-If you prefer traditional REST endpoints, check out our [REST API](./rest-api) documentation.
-:::
+Look up the operation you need in the [GraphQL reference](https://api-docs.bagisto.com/api/graphql-api/introduction), which also covers the [GraphiQL playground](https://api-docs.bagisto.com/api/graphql-api/playground), [cursor pagination](https://api-docs.bagisto.com/api/graphql-api/pagination) and [identifiers](https://api-docs.bagisto.com/api/graphql-api/identifiers) in more depth. For AI agents that act in the shopper's browser rather than through the API, see [WebMCP](../ai/webmcp.md).

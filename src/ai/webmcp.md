@@ -1,117 +1,187 @@
 # WebMCP
 
-[WebMCP](https://webmachinelearning.github.io/webmcp/) is a browser proposal that lets a
-web page declare **tools** an in-browser AI agent may call, through a
-`navigator.modelContext` API. Bagisto's storefront declares its main shopping actions as
-WebMCP tools, so a browser agent can search the catalog, open a product, manage the wishlist
-and reach the cart or checkout on a shopper's behalf without scraping the page.
+[WebMCP](https://webmachinelearning.github.io/webmcp/) is a browser proposal that lets a web page declare **tools** an AI agent running in the browser may call. Bagisto's storefront declares shopping actions as WebMCP tools, so a browser agent can open a product, add it to the wishlist, or open the wishlist, the cart or the checkout for the shopper without reading the page's markup. It is part of the Shop package, needs no configuration, and does nothing in a browser without `navigator.modelContext.provideContext()`.
 
-The feature is part of the `Shop` package on Bagisto 2.4 and 2.5. It needs no configuration
-and is inert in a browser without the API. It is the agentic side of Bagisto's AI: the
-generative side, content produced by a model, is [Generative AI (Magic AI)](./magic-ai.md).
+| Piece | Where |
+|---|---|
+| Tool forms and the bridge script | `packages/Webkul/Shop/src/Resources/views/components/layouts/webmcp.blade.php` |
+| Where the layout includes it | `<x-shop::layouts.webmcp />` in `components/layouts/index.blade.php`, after `<div id="app">` closes |
+| Routes | `packages/Webkul/Shop/src/Routes/webmcp-routes.php` |
+| Controller | `Webkul\Shop\Http\Controllers\WebMcpController` |
+| Tool descriptions | `shop::app.components.layouts.webmcp.*` in the Shop package's language files |
 
-## What is declared
+## The Declared Tools
 
-The storefront layout includes `<x-shop::layouts.webmcp />`, a hidden block of ordinary HTML
-forms, each carrying a `toolname`, a `tooldescription` and, on its inputs, a
-`toolparamdescription`. Two more forms in the visible page are tagged the same way. Together
-they expose seven tools:
+A tool is an ordinary HTML form with a `toolname` and a `tooldescription`. Its named inputs are the tool's parameters, each described by a `toolparamdescription`. The component's hidden block declares five tools, and two forms elsewhere in the layout carry the same attributes:
 
-| Tool | Parameters | What happens |
+| Tool | Parameters | Declared in | What happens |
+|---|---|---|---|
+| `view_product` | `query` | Hidden block | `GET webmcp/product` opens the matching product's page, or the search results for `query` |
+| `add_to_wishlist` | `query` | Hidden block | `GET webmcp/wishlist/add` adds the matching product to the signed-in customer's wishlist and opens it; a guest is sent to the sign-in page |
+| `view_wishlist` | none | Hidden block | Opens the wishlist |
+| `view_cart` | none | Hidden block | Opens the cart |
+| `proceed_to_checkout` | none | Hidden block | Opens the one-page checkout |
+| `search_products` | `query` | Desktop header search form | Opens the search results |
+| `subscribe_to_newsletter` | `email` | Footer newsletter form, present when newsletter subscription is on | Submits the subscription |
+
+The header search and footer newsletter forms are rendered by Vue after the bridge runs, so in practice a browser agent is offered the five tools of the hidden block; see [Things to Watch](#things-to-watch).
+
+## The Routes
+
+| Method and URI | Name | Action |
 |---|---|---|
-| `search_products` | `query` | Submits the header search form to the search page |
-| `view_product` | `query` | `GET /webmcp/product`: resolves a product by URL key or name and redirects to its page, or to the search results when nothing matches |
-| `add_to_wishlist` | `query` | `GET /webmcp/wishlist/add`: resolves the product and adds it to the logged-in customer's wishlist; a guest is redirected to the login page |
-| `view_wishlist` | — | Opens the wishlist |
-| `view_cart` | — | Opens the cart |
-| `proceed_to_checkout` | — | Opens the one-page checkout |
-| `subscribe_to_newsletter` | `email` | Submits the footer newsletter form |
+| `GET webmcp/product` | `shop.webmcp.product` | `WebMcpController@product` |
+| `GET webmcp/wishlist/add` | `shop.webmcp.wishlist.add` | `WebMcpController@addToWishlist` |
 
-The two `/webmcp/*` routes are in `packages/Webkul/Shop/src/Routes/webmcp-routes.php` and are
-loaded ahead of the slug catch-all so they are never mistaken for a product URL. Product
-resolution in `WebMcpController` tries the exact URL key, then a slugged version of the query,
-then the first visible product a catalog search returns for it.
+`Routes/web.php` loads `webmcp-routes.php` before the storefront routes, so the slug catch-all never treats `webmcp/product` as a product or category URL.
 
-Every tool ends in a normal page load, so the agent sees the same page the shopper would,
-with the same session, flash messages and login requirements. There is no separate API, no
-token and no way for an agent to bypass the checkout.
+Both actions find the product for `query` in `resolveProduct()`:
 
-## How the bridge works
+1. The product whose URL key is `query` or, only when no product has that URL key, the one whose URL key is `Str::slug(query)`. It is kept only if it is available in the current channel.
+2. Otherwise, the first active, individually visible product that a catalog search for `query` returns in the current channel.
 
-The script pushed by the component runs once the DOM is ready:
+When `addToWishlist()` finds no product, it flashes a warning and opens the search results. When it finds one that isn't in the wishlist yet, it creates the item between the `customer.wishlist.create.before` and `customer.wishlist.create.after` events.
 
-1. It checks for `navigator.modelContext.provideContext`; if the browser has no WebMCP
-   support the script returns and the hidden forms stay unused.
-2. It collects every `form[toolname]` on the page, builds a JSON schema from the form's named
-   inputs (each a `string`, described by `toolparamdescription` or the input's `aria-label`),
-   and creates a tool whose `execute` callback fills those inputs from the agent's arguments
-   and calls `form.submit()`.
-3. It hands the list to `navigator.modelContext.provideContext({ tools })`.
+## How the Bridge Works
 
-Because the tools are derived from markup, they respect the current theme: a theme that
-renders its own header search form keeps the `search_products` tool only if it keeps the
-`toolname` attributes.
+The script in the component runs once, when the DOM is ready:
 
-## Adding a tool from a theme or package
+1. It stops at once unless `navigator.modelContext.provideContext` is a function.
+2. For every `form[toolname]` in the document it builds a tool. The name comes from `toolname` and the description from `tooldescription`. The input schema has one `string` property per named `input`, `textarea` or `select`, described by its `toolparamdescription`, then its `aria-label`, then its name. Fields with the `required` attribute are listed as required.
+3. Each tool's `execute(args)` writes the arguments into the matching fields, calls `form.submit()`, and returns the text `Executed "<name>".`
+4. It passes the tools to `navigator.modelContext.provideContext({ tools })`.
 
-Any form in the page becomes a tool when it carries the attributes. The `toolautosubmit`
-attribute is a marker the bridge ignores today; add it anyway so the markup stays consistent
-with the core forms.
+The `toolautosubmit` attribute on the core forms isn't read by the script.
+
+## What Stays Under the Shopper's Control
+
+Every tool submits a form in the shopper's own browser session, with no token or separate API, and ends on an ordinary storefront page with the same sign-in requirements, flash messages and validation a click would get. No tool places an order, pays or changes the cart: `proceed_to_checkout` only opens the checkout page, where the shopper completes the order.
+
+## Adding a Tool from a Package
+
+Declare the form in a Blade view of your package and inject it with the `bagisto.shop.layout.webmcp.after` render event, so the core component stays untouched. The example adds a tool that opens the compare page.
+
+**File:** `packages/Webkul/AgentTools/src/Resources/views/shop/webmcp-tools.blade.php`
 
 ```blade
-<form
-    action="{{ route('shop.compare.index') }}"
-    method="GET"
-    toolname="view_compare_list"
-    tooldescription="{{ trans('mytheme::app.webmcp.view-compare') }}"
-    toolautosubmit
->
-    <button type="submit" class="hidden" aria-hidden="true"></button>
-</form>
+<div class="hidden">
+    <form
+        action="{{ route('shop.compare.index') }}"
+        method="GET"
+        toolname="view_compare_list"
+        tooldescription="{{ trans('agent_tools::app.webmcp.view-compare-list') }}"
+    >
+        <button
+            type="submit"
+            class="hidden"
+            aria-hidden="true"
+        ></button>
+    </form>
+</div>
 ```
 
-A tool that needs input declares it as a named field with a description:
+**File:** `packages/Webkul/AgentTools/src/Resources/lang/en/app.php`
+
+```php
+<?php
+
+return [
+    'webmcp' => [
+        'view-compare-list' => 'Open the compare page to review the products the customer is comparing.',
+    ],
+];
+```
+
+**File:** `packages/Webkul/AgentTools/src/Providers/AgentToolsServiceProvider.php`
+
+```php
+<?php
+
+namespace Webkul\AgentTools\Providers;
+
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\ServiceProvider;
+use Webkul\Theme\ViewRenderEventManager;
+
+class AgentToolsServiceProvider extends ServiceProvider
+{
+    /**
+     * Bootstrap services.
+     */
+    public function boot(): void
+    {
+        $this->loadViewsFrom(__DIR__.'/../Resources/views', 'agent_tools');
+
+        $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'agent_tools');
+
+        Event::listen('bagisto.shop.layout.webmcp.after', static function (ViewRenderEventManager $viewRenderEventManager) {
+            $viewRenderEventManager->addTemplate('agent_tools::shop.webmcp-tools');
+        });
+    }
+}
+```
+
+Register the provider and autoload the namespace as for any package; see [Getting Started](../package-development/getting-started.md). Add the translation key for every locale your store runs.
+
+A tool that takes input declares a named field. Add `required` when the agent must supply it:
 
 ```blade
 <input
     type="text"
     name="query"
-    toolparamdescription="{{ trans('mytheme::app.webmcp.view-compare-query') }}"
+    toolparamdescription="{{ trans('agent_tools::app.webmcp.query') }}"
+    required
 >
 ```
 
-Mark a field `required` and the bridge lists it under the schema's `required` array. Place
-such forms inside the hidden `<div class="hidden">` block of the component, or anywhere else in
-the layout, and use the `bagisto.shop.layout.webmcp.before` and `.after` render events to
-inject them from a package without overriding the component:
+## Changing or Removing the Core Tools
 
-```php
-Event::listen('bagisto.shop.layout.webmcp.after', function ($viewRenderEventManager) {
-    $viewRenderEventManager->addTemplate('mypackage::shop.webmcp-tools');
-});
-```
+- **The wording**: override the `shop::app.components.layouts.webmcp.*` keys in `lang/vendor/shop/<locale>/app.php`; see [Publishing Translations](../package-development/localization.md#publishing-translations-optional). Bagisto's `.gitignore` excludes `/lang/vendor`, so remove that line or force-add the file, or the override never reaches your repository.
+- **The set of tools**: override the component in your theme at `<views_path>/layouts/webmcp.blade.php`, keeping the script if you still want tools registered; see [Creating a Store Theme](../theme-development/creating-store-theme.md#blade-components).
 
-To remove or rename the core tools, override `components/layouts/webmcp.blade.php` in your
-theme (see [Creating Store Theme](../theme-development/creating-store-theme.md#how-views-are-resolved)).
+Editing `packages/Webkul/Shop` directly works, but the change is lost on the next update.
 
-## Testing it
+## Test It
 
-Browsers are only beginning to ship the API, so the quickest check is to call the bridge's
-result yourself in the console of any browser:
+In a browser without `navigator.modelContext`, define a stand-in before the page's scripts run and read what the bridge registers. With Playwright:
 
 ```js
-navigator.modelContext = { provideContext: (ctx) => console.table(ctx.tools.map(t => t.name)) };
-document.dispatchEvent(new Event('DOMContentLoaded'));
+const { chromium } = require('playwright');
+
+(async () => {
+    const browser = await chromium.launch();
+    const page = await browser.newPage();
+
+    await page.addInitScript(() => {
+        Object.defineProperty(navigator, 'modelContext', {
+            value: { provideContext: (context) => { window.webMcpTools = context.tools; } },
+        });
+    });
+
+    await page.goto('https://your-domain.com/');
+
+    console.log(await page.evaluate(() => window.webMcpTools.map((tool) => tool.name)));
+
+    await page.evaluate(() => window.webMcpTools.find((tool) => tool.name === 'view_cart').execute({}));
+
+    await page.waitForURL(/\/checkout\/cart/);
+
+    await browser.close();
+})();
 ```
 
-The table lists the seven tool names. Calling a tool's `execute({ query: 'arctic' })` submits
-the corresponding form, which is the same behaviour an agent triggers.
+The log lists the tools an agent is offered on that page. Calling `execute()` performs the same form submission an agent triggers, here opening the cart.
 
-## Relation to other agent features
+## Things to Watch
 
-- **Generative AI** ([Magic AI](./magic-ai.md)) is server-side and produces content for the
-  merchant and the shopper; WebMCP is client-side and lets an agent act. They do not depend
-  on each other.
-- The REST and GraphQL APIs ([Bagisto APIs](../api/introduction.md)) are the right surface for
-  an agent that runs outside a browser; WebMCP is for agents that live in the shopper's
-  browser session.
+- **Only forms that exist when the DOM is ready become tools.** The bridge runs once, on `DOMContentLoaded`, before the storefront's Vue app mounts. A `form[toolname]` inside a Vue template, or one rendered by `<x-shop::form>`, doesn't exist yet and isn't registered. Put tool forms in plain Blade outside `<div id="app">`, as the render event above does.
+- **Wrap injected forms in `<div class="hidden">`.** The `bagisto.shop.layout.webmcp.before` and `.after` events render outside the component's hidden block.
+- **Every parameter is a string.** The generated schema has no numbers, enums or nested objects.
+- **Keep changes behind POST.** Use GET forms for tools that navigate. A tool that changes data should submit a POST form with `@csrf`, like the page's own forms. Core's `add_to_wishlist` is a GET route that changes the wishlist; don't copy that for your own tools.
+- **The browser API is still changing.** The form attributes follow the proposal's declarative explainer, but the bridge calls `navigator.modelContext.provideContext()`. Neither the draft linked at the top of this page nor its explainers define that call; they use `document.modelContext.registerTool()`. Check what the browser you target exposes before relying on the tools.
+
+## Related Pages
+
+- [REST and GraphQL APIs](../api/introduction.md): the surface for an agent that runs outside the shopper's browser.
+- [View Render Events](../advanced/view-render-events.md): the mechanism that injects your tool forms.
+- [Generative AI (Magic AI)](./magic-ai.md): content generated on the server, independent of WebMCP.

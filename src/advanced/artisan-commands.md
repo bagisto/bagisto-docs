@@ -1,284 +1,144 @@
-# Artisan Commands Reference
+# Artisan Commands
 
-Bagisto provides custom Artisan commands for installation, indexing, maintenance, and data management. These are in addition to Laravel's built-in commands. Every signature below is copied from the command class it names.
+Bagisto's packages add their own Artisan commands to Laravel's, registered from each package's service provider when the application runs in the console, and schedule the periodic ones in the same provider. This page lists every command Bagisto adds, then the options and behaviour worth knowing; `php artisan list` shows everything installed.
 
-## Installation
+## Command Reference
+
+| Command | What it does | Class |
+|---|---|---|
+| [`bagisto:install`](#bagisto-install) | Installs Bagisto: environment, database, admin user and seed data. **Wipes the database** | `Webkul\Installer\Console\Commands\Installer` |
+| [`bagisto:fake`](#bagisto-fake) | Generates fake customers, categories or products for development | `Webkul\Faker\Commands\Console\Faker`, from `bagisto/laravel-datafaker` |
+| `bagisto:version` | Prints the installed Bagisto version | `Webkul\Core\Console\Commands\BagistoVersion` |
+| [`bagisto:translations:check`](#bagisto-translations-check) | Checks every package's translation files against the `en` locale | `Webkul\Core\Console\Commands\TranslationsChecker` |
+| [`indexer:index`](#indexer-index) | Rebuilds the price, inventory, flat and search indexes | `Webkul\Product\Console\Commands\Indexer` |
+| `product:price-rule:index` | Rebuilds the catalog rule index tables, `catalog_rule_products` and `catalog_rule_product_prices`. Saving or deleting a rule already reindexes its products through queued jobs; this is the nightly refresh | `Webkul\CatalogRule\Console\Commands\PriceRuleIndex` |
+| [`exchange-rate:update`](#exchange-rate-update) | Fetches exchange rates from the configured service and updates the stored rates | `Webkul\Core\Console\Commands\ExchangeRateUpdate` |
+| `campaign:process` | Processes campaigns and queues their emails for the subscribed customers | `Webkul\Marketing\Console\Commands\EmailsCommand` |
+| `invoice:cron` | Queues a reminder email for each `overdue` invoice whose next reminder is due, while it's under the configured reminder limit, if one is set | `Webkul\Core\Console\Commands\InvoiceOverdueCron` |
+| `omnibus:snapshot-prices` | Captures Omnibus price snapshots for every active product across the configured channels and currencies | `Webkul\Omnibus\Console\Commands\SnapshotPrices` |
+| [`omnibus:purge-old-snapshots`](#omnibus-purge-old-snapshots) | Deletes Omnibus snapshots older than the retention window | `Webkul\Omnibus\Console\Commands\PurgeOldSnapshots` |
+| [`down`, `up`](#down-and-up) | Laravel's maintenance commands, extended to switch maintenance on every channel | `Webkul\Core\Console\Commands\DownCommand`, `UpCommand` |
+
+## Options and Behaviour
 
 ### `bagisto:install`
-
-Interactive installation wizard that handles environment configuration, database setup, admin user creation, and initial data seeding.
 
 ```bash
 php artisan bagisto:install
 ```
 
-**Options:**
-
-| Flag | Description |
+| Option | Description |
 |---|---|
-| `-n`, `--no-interaction` | Run an unattended install: ask no questions, use the existing `.env`, create the default admin user, and skip sample products. |
-| `--demo-samples` | Seed demo/sample product data. Useful together with `--no-interaction`. |
+| `-n`, `--no-interaction` | Laravel's global option. Runs an unattended install that asks no questions, uses the existing `.env`, creates the default admin user and skips sample products |
+| `--demo-samples` | Seeds the demo products. Combine it with `--no-interaction` for an unattended install with sample data |
 
-::: warning Fresh installs only
+::: danger Fresh Installs Only
 The command wipes the database (`db:wipe` followed by `migrate:fresh`) before seeding. Never run it on an existing store; an upgrade runs `php artisan migrate`.
 :::
 
-::: info Bagisto 2.4
-2.4 additionally accepts the deprecated `--skip-env-check`, `--skip-admin-creation`, `--skip-cloud-promotion` and `--skip-github-star` options, each of which prints a deprecation warning and is covered by `--no-interaction`. They have been removed in Bagisto 2.5.
-:::
-
-**Unattended install (no questions, no sample products):**
-
 ```bash
+# Unattended, no sample products
 php artisan bagisto:install --no-interaction
-```
 
-This relies on the existing `.env`, so make sure it is configured before running. It creates the default admin user:
-
-- **Email:** `admin@example.com`
-- **Password:** `admin123`
-
-**Unattended install with demo/sample products:**
-
-```bash
+# Unattended, with demo products
 php artisan bagisto:install --no-interaction --demo-samples
 ```
 
-In interactive mode the database step offers MySQL, MariaDB and PostgreSQL and fills in the matching default port (PostgreSQL is available on Bagisto 2.5 only).
+An unattended install relies on the existing `.env`, so configure it first. It creates the admin `admin@example.com` with the password `admin123`. In interactive mode the database step offers `mysql`, `mariadb` and `pgsql`. Bagisto 2.4's `--skip-env-check`, `--skip-admin-creation`, `--skip-cloud-promotion` and `--skip-github-star` options no longer exist; a deployment script that passes them has to use `--no-interaction` instead.
 
-**Source:** `Webkul\Installer\Console\Commands\Installer`
+### `bagisto:fake`
 
-## System Information
+It asks what to create (customers, categories, or products of every type or only simple, virtual, downloadable or configurable ones) and how many. The command comes from `bagisto/laravel-datafaker`, a development dependency of the root `composer.json`, so it's absent from an install made with `composer install --no-dev`. Queued batch jobs create the records, so run a queue worker unless `QUEUE_CONNECTION` is `sync`.
 
-### `bagisto:version`
+### `bagisto:translations:check`
 
-Displays the current installed version of Bagisto.
+| Option | Description |
+|---|---|
+| `--locale=` | Check only one locale against `en` |
+| `--package=` | Check only one package, such as `Admin` |
+| `--details` | Show key-by-key differences |
 
 ```bash
-php artisan bagisto:version
+php artisan bagisto:translations:check --locale=fr --details
 ```
-
-**Source:** `Webkul\Core\Console\Commands\BagistoVersion`
-
-## Product Indexing
 
 ### `indexer:index`
 
-Reindexes product data for the inventory, price, flat and search indices.
-
-```bash
-# Reindex everything
-php artisan indexer:index
-
-# Reindex only specific types
-php artisan indexer:index --type=price --type=inventory
-
-# Full reindex mode (drops and rebuilds)
-php artisan indexer:index --mode=full
-```
-
-**Options:**
-
-| Flag | Values | Description |
+| Option | Values | Description |
 |---|---|---|
-| `--type` | `inventory`, `price`, `flat`, `search` | Select which indexer(s) to run (repeatable). Default: all four |
-| `--mode` | `full`, `selective` | Full reindex vs. incremental (default `selective`) |
-
-The `search` indexer runs only when an external search engine is enabled in **Configure → Search Engines**, and only in `full` mode. An unknown type prints a warning rather than failing.
-
-::: info Bagisto 2.4
-On 2.4 the search indexer is selected with `--type=elastic`, and it runs only when the search engine setting is `elastic`.
-:::
-
-**Source:** `Webkul\Product\Console\Commands\Indexer`
-
-::: tip When to Reindex
-Run this after bulk product imports, price changes, or if product listings appear out of sync. The price indexer is also scheduled daily; see [Scheduled Commands](#scheduled-commands).
-:::
-
-### `product:price-rule:index`
-
-Reindexes catalog rule pricing (discount rules applied to products at the catalog level).
+| `--type` | `inventory`, `price`, `flat`, `search` | The indexers to run; repeat the option for several. Default: all four |
+| `--mode` | `selective`, `full` | Default `selective`. Only the first value is used |
 
 ```bash
-php artisan product:price-rule:index
+# Rebuild every index after a bulk data fix
+php artisan indexer:index --mode=full
+
+# Rebuild one index
+php artisan indexer:index --type=price --mode=full
 ```
 
-**Source:** `Webkul\CatalogRule\Console\Commands\PriceRuleIndex`
-
-## Currency & Exchange Rates
+With no options the command rebuilds `product_flat` and refreshes date-dependent prices, and nothing else: the inventory and search indexers do nothing in selective mode. It has no catalog rule indexer, so run `php artisan product:price-rule:index` first when catalog rule prices may have changed. [What Each Mode Does](./understanding-indexers.md#what-each-mode-does) has the full breakdown.
 
 ### `exchange-rate:update`
 
-Fetches and updates currency exchange rates from the configured external provider.
-
-```bash
-php artisan exchange-rate:update
-```
-
-The provider, its API key and the schedule are set under **Configure → General → Exchange Rates**; the schedule is applied by the Laravel scheduler when enabled there.
-
-**Source:** `Webkul\Core\Console\Commands\ExchangeRateUpdate`
-
-## Marketing
-
-### `campaign:process`
-
-Processes campaigns and sends emails to the subscribed customers.
-
-```bash
-php artisan campaign:process
-```
-
-**Source:** `Webkul\Marketing\Console\Commands\EmailsCommand`
-
-## Invoicing
-
-### `invoice:cron`
-
-Sends overdue invoice reminders for unpaid invoices past their due date, within the configured reminders limit.
-
-```bash
-php artisan invoice:cron
-```
-
-**Source:** `Webkul\Core\Console\Commands\InvoiceOverdueCron`
-
-## Omnibus Price Snapshots
-
-Both commands belong to the `Webkul\Omnibus` package, which ships with Bagisto 2.5 only.
-
-### `omnibus:snapshot-prices`
-
-Captures a price snapshot for every active product on every channel where Omnibus is enabled, in every currency of that channel. Only changed prices are stored. Exits with a warning when no channel has Omnibus enabled.
-
-```bash
-php artisan omnibus:snapshot-prices
-```
+The service is read from the `general.exchange_rates.settings.default_service` configuration value, falling back to `config('services.exchange_api.default')`, and each service's class is set under `services.exchange_api.<service>.class`. A failure is printed rather than thrown, and the command still exits successfully, so a cron monitor won't flag it.
 
 ### `omnibus:purge-old-snapshots`
 
-Deletes snapshots older than the retention window (`omnibus.snapshots.retention_days`, 35 days by default), or every snapshot with `--all`.
-
-```bash
-php artisan omnibus:purge-old-snapshots
-php artisan omnibus:purge-old-snapshots --all --force
-```
-
-| Flag | Description |
+| Option | Description |
 |---|---|
 | `--all` | Delete every snapshot regardless of age |
 | `--force` | Skip the confirmation prompt when using `--all` |
 
-**Source:** `Webkul\Omnibus\Console\Commands\SnapshotPrices`, `PurgeOldSnapshots`
+The retention window is `omnibus.snapshots.retention_days`, 35 days by default.
 
-## Maintenance Mode
+### `down` and `up`
 
-Bagisto overrides Laravel's default `up` and `down` commands to also manage channel-level maintenance state.
+`down` also sets `is_maintenance_on` on every channel, and `up` clears it. Bagisto binds them over Laravel's commands in `CoreServiceProvider::registerOverrides()`, so Laravel's own options, such as `--secret`, still work.
 
-### `down`
-
-Puts the application in maintenance mode and marks all channels as under maintenance.
-
-```bash
-php artisan down
-```
-
-### `up`
-
-Brings the application out of maintenance mode and deactivates maintenance on all channels.
-
-```bash
-php artisan up
-```
-
-**Source:** `Webkul\Core\Console\Commands\DownCommand`, `Webkul\Core\Console\Commands\UpCommand`
-
-::: info Channel-Aware Maintenance
-Unlike standard Laravel, Bagisto's maintenance mode updates the `is_maintenance_on` flag on all channel records in the database, allowing the storefront to show maintenance pages per-channel.
-:::
-
-## Translation Validation
-
-### `bagisto:translations:check`
-
-Validates translation files across all packages for consistency against the English (`en`) canonical locale.
-
-```bash
-# Check all packages and locales
-php artisan bagisto:translations:check
-
-# Check a specific locale
-php artisan bagisto:translations:check --locale=fr
-
-# Check a specific package
-php artisan bagisto:translations:check --package=Admin
-
-# Show detailed key-by-key differences
-php artisan bagisto:translations:check --details
-```
-
-**Options:**
-
-| Flag | Description |
-|---|---|
-| `--locale=` | Check only a specific locale code |
-| `--package=` | Check only a specific package name |
-| `--details` | Show detailed key-level differences |
-
-**Source:** `Webkul\Core\Console\Commands\TranslationsChecker`
+While the application is down, Bagisto's `PreventRequestsDuringMaintenance` middleware still serves the admin URL, the IP addresses in the current channel's `allowed_ips`, and any channel whose `is_maintenance_on` flag is off. Saving a channel in the admin puts the whole application down or up to match that channel's flag.
 
 ## Scheduled Commands
 
-Packages register their schedules in their service providers; `bootstrap/app.php` and `routes/console.php` hold nothing but Laravel's `inspire` example. With the scheduler cron entry in place, these run on their own:
+`omnibus:snapshot-prices`, `omnibus:purge-old-snapshots`, `campaign:process`, `product:price-rule:index`, `indexer:index --type=price`, `invoice:cron` and `exchange-rate:update` run on Laravel's scheduler once its cron entry is in place. [Scheduled Tasks](./queue-jobs-scheduling.md#scheduled-tasks) lists each schedule and the provider that registers it; `php artisan schedule:list` shows them on your install.
 
-| Command | Frequency | Registered in |
-|---|---|---|
-| `invoice:cron` | Daily at 03:00 | `Webkul\Core\Providers\CoreServiceProvider` |
-| `exchange-rate:update` | Daily, weekly (Monday) or monthly (1st) at the configured time, only when **Scheduled Import** is enabled in Exchange Rates configuration | `CoreServiceProvider` |
-| `product:price-rule:index` | Daily at 00:01 | `Webkul\CatalogRule\Providers\CatalogRuleServiceProvider` |
-| `indexer:index --type=price` | Daily at 00:01 | `Webkul\Product\Providers\ProductServiceProvider` |
-| `campaign:process` | Daily | `Webkul\Marketing\Providers\MarketingServiceProvider` |
-| `omnibus:snapshot-prices` | Every fifteen minutes | `Webkul\Omnibus\Providers\OmnibusServiceProvider` (Bagisto 2.5) |
-| `omnibus:purge-old-snapshots` | Daily | `OmnibusServiceProvider` (Bagisto 2.5) |
-
-```bash
-* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
-```
-
-## Commands provided by dependencies
-
-These are not Bagisto's own but are part of the everyday workflow:
+## Commands Provided by Dependencies
 
 | Command | From | Used for |
 |---|---|---|
-| `responsecache:clear {--url=}` | `spatie/laravel-responsecache` | Flush the [full page cache](../performance/configure-fpc.md); also what the admin's Clear All and Flush buttons run |
+| `responsecache:clear {--url=}` | `spatie/laravel-responsecache` | Flush the [full page cache](../performance/configure-fpc.md#clear-the-cache); the admin's cache management actions run it too. `Webkul\FPC\Hasher\DefaultHasher` keys each page by channel, locale and currency, so `--url` forgets only the variant for the context the command resolves |
+| `purify:clear` | `stevebauman/purify` | Flush the HTML Purifier cache behind `clean_content()` |
+| `concord:modules`, `concord:models` | `konekt/concord` | List the registered Concord modules and models, a quick check that a package's `ModuleServiceProvider` is loaded |
 | `octane:install`, `octane:start` | `laravel/octane` | [Laravel Octane](../performance/configure-laravel-octane.md) |
-| `package:make` and `package:make-*` | `bagisto/bagisto-package-generator` (optional dev dependency) | Scaffolding a package; not present in a stock install |
+| `package:make`, `package:make-*` | `bagisto/bagisto-package-generator`, an optional development dependency that a stock install doesn't have | [Package Generator](../tools/package-generator.md#command-reference) |
 
-## Common Laravel Commands Used with Bagisto
-
-These are standard Laravel commands frequently needed during Bagisto development:
+## Laravel Commands You'll Use Often
 
 ```bash
 # Clear all caches
 php artisan optimize:clear
 
-# Create storage symlink (required for product images)
+# Create the storage symlink (required for product images on the local disk)
 php artisan storage:link
 
 # Run migrations
 php artisan migrate
 
-# Seed the database
+# Seed a freshly migrated, empty database with Bagisto's base data (including admin@example.com)
 php artisan db:seed
 
-# Fresh install (drops all tables, migrates, seeds)
+# Drop all tables, migrate and seed
 php artisan migrate:fresh --seed
 
-# Generate application key
+# Generate the application key
 php artisan key:generate
 
-# Start development server
+# Start the development server
 php artisan serve
 ```
+
+## Related Pages
+
+- [Queues, Jobs and Scheduling](./queue-jobs-scheduling.md#scheduled-tasks): running the queue workers and the scheduler these commands rely on.
+- [Understanding Indexers](./understanding-indexers.md): what each indexer writes and what refreshes it automatically.
+- [Installation](../getting-started/installation.md): installing Bagisto with `bagisto:install`.

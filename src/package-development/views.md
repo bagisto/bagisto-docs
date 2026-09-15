@@ -1,261 +1,357 @@
 # Views
 
-Views in Laravel provide a clean separation between application logic and presentation layer, using the powerful Blade templating engine to create dynamic, maintainable interfaces. In Bagisto, views are organized to support both admin panel functionality and customer-facing storefront operations while maintaining consistency with Bagisto's design patterns.
+On this page you create the admin listing header, the create and edit forms, and the storefront FAQ page. A package registers its Blade views under a namespace, so `view('faq::admin.index')` renders `src/Resources/views/admin/index.blade.php`. The pages wrap themselves in the core layouts, `<x-admin::layouts>` and `<x-shop::layouts>`, and reuse the components the Admin and Shop packages register globally.
 
-For our RMA package, we'll create views that display return request listings and forms, integrating seamlessly with Bagisto's existing admin interface and storefront design.
+<a id="registering-views-with-service-provider"></a>
 
-::: info Learning Objective
-This section demonstrates how to create organized, reusable Blade templates that integrate with Bagisto's admin interface and follow established patterns for data presentation, starting with listing pages and progressing to form creation.
-:::
+## Register the Views
 
-For detailed information on Laravel views and Blade templating, visit the [Laravel Documentation on Views](https://laravel.com/docs/views).
+Add `loadViewsFrom()` to the provider's `boot()` method. Its second argument is the namespace:
 
-## Bagisto View Architecture
+**File:** `packages/Webkul/Faq/src/Providers/FaqServiceProvider.php`
 
-Bagisto follows a structured approach to view organization that separates administrative interfaces from customer-facing pages:
-
-### Admin Views
-- **Purpose**: Administrative interfaces for managing package features
-- **Integration**: Extends Bagisto's admin layout and components
-- **Features**: Data tables, forms, modals, CRUD operations
-- **Styling**: Uses Bagisto's admin CSS framework and Vue components
-
-### Shop Views  
-- **Purpose**: Customer-facing interfaces for package functionality
-- **Integration**: Uses storefront theme and layout components
-- **Features**: Customer interactions, responsive design, theme compatibility
-- **Styling**: Inherits from active storefront theme
-
-## Creating View Structure
-
-Let's create the view structure for our RMA package, starting with the essential directory organization and then building the listing functionality.
-
-### Directory Structure
-
-Create the following directory structure in your package:
-
-```bash
-mkdir -p packages/Webkul/RMA/src/Resources/views/admin/return-requests
-mkdir -p packages/Webkul/RMA/src/Resources/views/shop/return-requests
-```
-
-```text
-packages
-└── Webkul
-    └── RMA
-        └── src
-            ├── ...
-            └── Resources
-                └── views
-                    ├── admin
-                    │   └── return-requests
-                    │       ├── index.blade.php
-                    │       └── create.blade.php
-                    └── shop
-                        └── return-requests
-                            ├── index.blade.php
-                            └── create.blade.php
-```
-
-::: info View Organization Strategy
-**Admin Views**: Organized under `admin/return-requests/` for clear feature separation
-
-**Shop Views**: Located under `shop/return-requests/` for customer-facing functionality
-
-**Naming Convention**: Uses descriptive folder names (`return-requests`) instead of generic terms for better organization
-
-**Scalability**: Structure supports adding more views (edit, show, etc.) as the package grows
-:::
-
-## Registering Views with Service Provider
-
-Before creating view templates, we need to register our views with the service provider so Laravel can find them.
-
-Update your `packages/Webkul/RMA/src/Providers/RMAServiceProvider.php`:
-
-```php{30-31}
+```php{25}
 <?php
 
-namespace Webkul\RMA\Providers;
+namespace Webkul\Faq\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class RMAServiceProvider extends ServiceProvider
+class FaqServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
-     *
-     * @return void
      */
-    public function register()
-    {
-        //
-    }
+    public function register(): void {}
 
     /**
      * Bootstrap services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
 
         $this->loadRoutesFrom(__DIR__.'/../Routes/admin-routes.php');
+
         $this->loadRoutesFrom(__DIR__.'/../Routes/shop-routes.php');
 
-        $this->loadViewsFrom(__DIR__.'/../Resources/views', 'rma');
+        $this->loadViewsFrom(__DIR__.'/../Resources/views', 'faq');
     }
 }
 ```
 
-::: tip View Namespace
-The `loadViewsFrom()` method registers views with the `rma` namespace, allowing you to reference them as `rma::admin.return-requests.index` instead of using full file paths.
-:::
+## The Components You Can Use
 
-### Blade components, render events and themes
+The Admin package registers the components in `packages/Webkul/Admin/src/Resources/views/components` under `x-admin::`, and the Shop package registers its own under `x-shop::`. The ones an admin page uses most:
 
-Three more things a package's views usually need:
+| Component | For |
+|---|---|
+| `<x-admin::layouts>` | The admin page shell with the sidebar, the header and flash messages; `<x-slot:title>` sets the browser title |
+| `<x-admin::form>` | A form with the CSRF field and client-side validation; `method="PUT"` adds the method field |
+| `<x-admin::form.control-group>` with `.label`, `.control` and `.error` | One labelled field. `.control` takes a `type` of `text`, `email`, `password`, `number`, `price`, `textarea`, `date`, `datetime`, `time`, `select`, `multiselect`, `checkbox`, `radio`, `switch`, `color`, `file`, `image`, `hidden` or `custom` |
+| `<x-admin::datagrid>`, `<x-admin::datagrid.export>` | A listing and its export button; see [DataGrid](./datagrid.md) |
+| `<x-admin::modal>`, `<x-admin::drawer>`, `<x-admin::accordion>`, `<x-admin::tabs>` | Containers |
 
-- **Your own `<x-rma::…>` components.** `loadViewsFrom()` registers views, not components. Register the components directory too, as the Admin and Shop packages do:
+`components/example.blade.php` in the Admin package shows them in use.
 
-  ```php
-  Blade::anonymousComponentPath(__DIR__.'/../Resources/views/components', 'rma');
-  ```
+## The Admin Pages
 
-- **Extension points for others.** Core views are full of `{!! view_render_event('bagisto.admin.…') !!}` calls, which is how a third-party package injects markup into a page it does not own. Emit them in your own views, before and after each block someone might want to extend. See [View Render Events](../advanced/view-render-events.md).
+<a id="creating-admin-listing-view"></a>
+<a id="admin-index-view"></a>
 
-- **Storefront views can be overridden per theme.** A shop view your package renders is looked up in the active theme's `views_path` before your package, exactly like the Shop package's own views, so a store can restyle it without touching your code. Storefront pages also expect a breadcrumb trail registered in `routes/breadcrumbs.php`; the `<x-shop::breadcrumbs>` component fails for a route with none. See [Creating Store Theme](../theme-development/creating-store-theme.md#how-views-are-resolved).
+### The Listing Page
 
-If your package ships CSS or JavaScript, register a Vite build for it in `config/bagisto-vite.php` so `bagisto_asset('css/app.css', 'rma')` resolves; the [Vite-Powered Theme Assets](../theme-development/vite-powered-theme-assets.md) page walks through the build.
-
-## Creating Admin Listing View
-
-Let's start with the most important view - the admin listing page that displays all return requests. This view will integrate with Bagisto's admin interface and display data from our repository.
-
-### Admin Index View
-
-Create `packages/Webkul/RMA/src/Resources/views/admin/return-requests/index.blade.php`:
+**File:** `packages/Webkul/Faq/src/Resources/views/admin/index.blade.php`
 
 ```blade
 <x-admin::layouts>
     <x-slot:title>
-        RMA Listing Title
-    </x-slot:title>
+        @lang('faq::app.admin.index.title')
+    </x-slot>
 
-    RMA Listing Content
+    <div class="flex items-center justify-between gap-4 max-sm:flex-wrap">
+        <p class="text-xl font-bold text-gray-800 dark:text-white">
+            @lang('faq::app.admin.index.title')
+        </p>
+
+        <div class="flex items-center gap-x-2.5">
+            @if (bouncer()->hasPermission('faq.create'))
+                <a
+                    href="{{ route('admin.faq.create') }}"
+                    class="primary-button"
+                >
+                    @lang('faq::app.admin.index.create-btn')
+                </a>
+            @endif
+        </div>
+    </div>
+
+    {!! view_render_event('bagisto.admin.faq.list.before') !!}
+
+    {!! view_render_event('bagisto.admin.faq.list.after') !!}
 </x-admin::layouts>
 ```
 
-::: info Admin View Explanation
-**Key Components:**
+For now the page shows its title and a create button, which `bouncer()->hasPermission()` hides from roles without the `faq.create` permission that [Access Control List](./access-control-list.md) defines. [DataGrid](./datagrid.md) later puts the listing between the two render events, which let other packages add markup to the page; see [View Render Events](../advanced/view-render-events.md). Put a `before` and an `after` event around each block another package may want to extend, named after the view, as these pages do.
 
-- **Bagisto Layout**: Uses `<x-admin::layouts>` for consistent admin interface
-- **Basic Structure**: Simple title and content placeholders to demonstrate layout integration
-- **Component Integration**: Shows how to use Bagisto's slot-based layout system
-- **Scalable Foundation**: Structure supports adding DataGrid, forms, and other components later
+### The Form Fields
 
-**Note on Localization**: You'll notice we haven't used any `@lang()` or `trans()` methods in these views. We're keeping the views simple at this stage and will cover comprehensive localization techniques in the **[Localization](./localization.md)** section.
-:::
+The create and edit pages show the same fields, so the fields live in one partial:
 
-## Updating Controllers to Use Views
+**File:** `packages/Webkul/Faq/src/Resources/views/admin/form-fields.blade.php`
 
-Now let's update our controllers to render these views instead of returning simple strings.
+```blade
+<div class="box-shadow mt-3.5 rounded-sm bg-white p-4 dark:bg-gray-900">
+    <p class="mb-4 text-base font-semibold text-gray-800 dark:text-white">
+        @lang('faq::app.admin.form.general')
+    </p>
 
-### Update Admin Controller
+    <x-admin::form.control-group>
+        <x-admin::form.control-group.label class="required">
+            @lang('faq::app.admin.form.question')
+        </x-admin::form.control-group.label>
 
-Update `packages/Webkul/RMA/src/Http/Controllers/Admin/ReturnRequestController.php`:
+        <x-admin::form.control-group.control
+            type="text"
+            name="question"
+            rules="required|max:255"
+            value="{{ old('question', $faq?->question) }}"
+            :label="trans('faq::app.admin.form.question')"
+        />
 
-```php{22-24}
-<?php
+        <x-admin::form.control-group.error control-name="question" />
+    </x-admin::form.control-group>
 
-namespace Webkul\RMA\Http\Controllers\Admin;
+    <x-admin::form.control-group>
+        <x-admin::form.control-group.label class="required">
+            @lang('faq::app.admin.form.answer')
+        </x-admin::form.control-group.label>
 
-use Webkul\RMA\Http\Controllers\Controller;
-use Webkul\RMA\Repositories\ReturnRequestRepository;
+        <x-admin::form.control-group.control
+            type="textarea"
+            name="answer"
+            rules="required"
+            value="{{ old('answer', $faq?->answer) }}"
+            :label="trans('faq::app.admin.form.answer')"
+        />
 
-class ReturnRequestController extends Controller
-{
-    /**
-     * Create a new controller instance.
-     */
-    public function __construct(
-        protected ReturnRequestRepository $returnRequestRepository
-    ) {}
+        <x-admin::form.control-group.error control-name="answer" />
+    </x-admin::form.control-group>
 
-    /**
-     * Display a listing of return requests.
-     */
-    public function index()
-    {
-        // For now, we'll render the view without data
-        // In a later section, we'll add DataGrid functionality for data loading
-        return view('rma::admin.return-requests.index');
-    }
-}
+    <x-admin::form.control-group>
+        <x-admin::form.control-group.label class="required">
+            @lang('faq::app.admin.form.channel')
+        </x-admin::form.control-group.label>
+
+        <x-admin::form.control-group.control
+            type="select"
+            name="channel_id"
+            rules="required"
+            value="{{ old('channel_id', $faq?->channel_id ?? core()->getDefaultChannel()->id) }}"
+            :label="trans('faq::app.admin.form.channel')"
+        >
+            @foreach (core()->getAllChannels() as $channel)
+                <option value="{{ $channel->id }}">
+                    {{ $channel->name }}
+                </option>
+            @endforeach
+        </x-admin::form.control-group.control>
+
+        <x-admin::form.control-group.error control-name="channel_id" />
+    </x-admin::form.control-group>
+
+    <x-admin::form.control-group>
+        <x-admin::form.control-group.label class="required">
+            @lang('faq::app.admin.form.sort-order')
+        </x-admin::form.control-group.label>
+
+        <x-admin::form.control-group.control
+            type="number"
+            name="sort_order"
+            rules="required|min_value:0"
+            value="{{ old('sort_order', $faq?->sort_order ?? 0) }}"
+            :label="trans('faq::app.admin.form.sort-order')"
+        />
+
+        <x-admin::form.control-group.error control-name="sort_order" />
+    </x-admin::form.control-group>
+
+    <x-admin::form.control-group>
+        <x-admin::form.control-group.label>
+            @lang('faq::app.admin.form.status')
+        </x-admin::form.control-group.label>
+
+        <x-admin::form.control-group.control
+            type="switch"
+            name="status"
+            value="1"
+            :label="trans('faq::app.admin.form.status')"
+            :checked="(bool) old('status', $faq?->status ?? true)"
+        />
+    </x-admin::form.control-group>
+</div>
 ```
 
-::: tip Controller Update
-We've updated the controller to render the Blade view instead of returning a string. This demonstrates the basic integration between routes, controllers, and views in the Bagisto architecture.
-:::
+- **`rules`** validates in the browser with VeeValidate's rule names, such as `min_value` for numbers; `FaqRequest` validates again on the server.
+- **`old()`** refills a field after a failed validation and falls back to the saved value. On the create page the partial receives `null`, so `$faq?->question` reads nothing.
+- **The switch** sends `status=1` when on and nothing when off, which is why `FaqRequest` merges a boolean before validating.
 
-## Creating Shop Views
+### The Create Page
 
-For the shop section, you can create views following the same pattern as the admin views. Since we're focusing on understanding the admin panel architecture in this section, we'll concentrate on the admin implementation.
+**File:** `packages/Webkul/Faq/src/Resources/views/admin/create.blade.php`
 
-### Shop View Structure
+```blade
+<x-admin::layouts>
+    <x-slot:title>
+        @lang('faq::app.admin.create.title')
+    </x-slot>
 
-The shop views would follow a similar structure:
+    {!! view_render_event('bagisto.admin.faq.create.before') !!}
 
-```bash
-# Shop view creation (for reference)
-# packages/Webkul/RMA/src/Resources/views/shop/return-requests/index.blade.php
+    <x-admin::form :action="route('admin.faq.store')">
+        <div class="flex items-center justify-between gap-4 max-sm:flex-wrap">
+            <p class="text-xl font-bold text-gray-800 dark:text-white">
+                @lang('faq::app.admin.create.title')
+            </p>
+
+            <div class="flex items-center gap-x-2.5">
+                <a
+                    href="{{ route('admin.faq.index') }}"
+                    class="transparent-button hover:bg-gray-200 dark:text-white dark:hover:bg-gray-800"
+                >
+                    @lang('faq::app.admin.form.back-btn')
+                </a>
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    @lang('faq::app.admin.form.save-btn')
+                </button>
+            </div>
+        </div>
+
+        @include('faq::admin.form-fields', ['faq' => null])
+    </x-admin::form>
+
+    {!! view_render_event('bagisto.admin.faq.create.after') !!}
+</x-admin::layouts>
 ```
+
+### The Edit Page
+
+**File:** `packages/Webkul/Faq/src/Resources/views/admin/edit.blade.php`
+
+```blade
+<x-admin::layouts>
+    <x-slot:title>
+        @lang('faq::app.admin.edit.title')
+    </x-slot>
+
+    {!! view_render_event('bagisto.admin.faq.edit.before', ['faq' => $faq]) !!}
+
+    <x-admin::form
+        :action="route('admin.faq.update', $faq->id)"
+        method="PUT"
+    >
+        <div class="flex items-center justify-between gap-4 max-sm:flex-wrap">
+            <p class="text-xl font-bold text-gray-800 dark:text-white">
+                @lang('faq::app.admin.edit.title')
+            </p>
+
+            <div class="flex items-center gap-x-2.5">
+                <a
+                    href="{{ route('admin.faq.index') }}"
+                    class="transparent-button hover:bg-gray-200 dark:text-white dark:hover:bg-gray-800"
+                >
+                    @lang('faq::app.admin.form.back-btn')
+                </a>
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    @lang('faq::app.admin.form.save-btn')
+                </button>
+            </div>
+        </div>
+
+        @include('faq::admin.form-fields', ['faq' => $faq])
+    </x-admin::form>
+
+    {!! view_render_event('bagisto.admin.faq.edit.after', ['faq' => $faq]) !!}
+</x-admin::layouts>
+```
+
+<a id="creating-shop-views"></a>
+
+## The Storefront Page
+
+**File:** `packages/Webkul/Faq/src/Resources/views/shop/index.blade.php`
 
 ```blade
 <x-shop::layouts>
     <x-slot:title>
-        RMA Shop Listing Title
-    </x-slot:title>
+        {{ $title }}
+    </x-slot>
 
-    RMA Shop Listing Content
+    {!! view_render_event('bagisto.shop.faq.index.before') !!}
+
+    <div class="container mt-8 px-15 max-lg:px-8">
+        <h1 class="text-3xl font-medium max-sm:text-xl">
+            {{ $title }}
+        </h1>
+
+        @forelse ($faqs as $faq)
+            <details class="mt-6 border-b border-zinc-200 pb-5">
+                <summary class="cursor-pointer text-lg font-medium">
+                    {{ $faq->question }}
+                </summary>
+
+                <p class="mt-3 text-zinc-500">
+                    {!! nl2br(e($faq->answer)) !!}
+                </p>
+            </details>
+        @empty
+            <p class="mt-6 text-zinc-500">
+                @lang('faq::app.shop.index.empty')
+            </p>
+        @endforelse
+    </div>
+
+    {!! view_render_event('bagisto.shop.faq.index.after') !!}
 </x-shop::layouts>
 ```
 
-::: tip Shop Implementation
-The shop views follow the same principles as admin views but use `<x-shop::layouts>` for storefront integration. For now, we're focusing on the admin panel to understand the core concepts before expanding to customer-facing functionality.
-:::
+The answer keeps its line breaks through `{!! nl2br(e($faq->answer)) !!}`, which escapes the text with `e()` before adding `<br>` tags. Never print stored text through `{!! !!}` without escaping it first.
 
-## Testing Your Views
+<a id="testing-your-views"></a>
 
-Test your views are working correctly:
+## Test It
+
+Clear the cached views and configuration first:
 
 ```bash
-# Clear cache to ensure views are loaded
 php artisan optimize:clear
-
-# Test the admin route in your browser
-# Admin: http://your-app.com/admin/rma/return-requests
 ```
 
-You should now see:
-- **Admin Route**: Basic admin interface with Bagisto layout displaying "RMA Listing Title" and "RMA Listing Content"
+1. Open `/admin/faq/create`, fill in the form and save. You return to `/admin/faq` with a success message.
+2. Open `/faq` on the storefront. The current channel's active questions are listed in their sort order.
 
-::: info Testing Tips
-- Check views load without errors
-- Verify styling matches Bagisto's admin interface
-- Test that layout components render correctly
-- Ensure views display the basic title and content placeholders
-:::
+Until [Localization](./localization.md) registers the language file, every label and message shows its key, `faq::app.admin.create.title` for example.
 
-## Your Next Step
+<a id="blade-components-render-events-and-themes"></a>
 
-With your basic admin views complete, you now have a foundation presentation layer for your RMA package. These simple views demonstrate how to integrate with Bagisto's admin layout system.
+## Things to Watch
 
-The views currently show basic content placeholders, which is perfect for this stage of learning. In subsequent sections, you'll expand these views with more advanced features and multi-language support.
+- **A theme can replace your views.** While a theme is active, Bagisto's view finder looks in the theme's `views_path` before your package, for every namespace, so a store overrides `faq::shop.index` with `resources/themes/<theme>/views/shop/index.blade.php`. See [How Views Are Resolved](../theme-development/creating-store-theme.md#how-views-are-resolved).
+- **A Tailwind class used only in your views has no effect.** The admin and storefront stylesheets are compiled from the Admin and Shop packages' own files, so use classes the core views already use, as the samples on this page do. For styles or scripts of your own, register a named Vite build in `config/bagisto-vite.php` and load it with `@bagistoVite([...], 'faq')`; see [Loading Assets Outside the Stock Layout](../theme-development/vite-powered-theme-assets.md#loading-assets-outside-the-stock-layout).
+- **`loadViewsFrom()` doesn't register `<x-…>` components.** To ship components of your own, also call `Blade::anonymousComponentPath(__DIR__.'/../Resources/views/components', 'faq')` in `boot()`, with `Illuminate\Support\Facades\Blade` imported, as the Admin and Shop packages do; `components/answer.blade.php` then renders as `<x-faq::answer>`.
+- **`:` passes a PHP value, `::` passes a Vue expression.** `:label="trans('…')"` evaluates PHP; `::value="faq.question"` reaches the browser as `:value` for Vue, and works only on `<x-…>` component tags.
+- **Every string goes through a key.** Hard-coded text can't be translated and fails Bagisto's translation checks.
 
-**Continue to:** **[Localization](./localization.md)** - Add multi-language support to your RMA package views and content
+## Next Step
 
-::: tip Learning Approach
-Starting with basic admin layouts helps you understand Bagisto's component system before adding complexity. This foundation will make it easier to implement advanced features like localization, datagrids, and forms in later sections.
-:::
+The pages render, but every label is a key. Next, give the keys their text.
+
+**Continue to:** [Localization](./localization.md)

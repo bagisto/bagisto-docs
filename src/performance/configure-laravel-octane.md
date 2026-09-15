@@ -1,193 +1,104 @@
 # Configure Laravel Octane
 
-[Laravel Octane](https://laravel.com/docs/octane) is a performance-boosting package designed to enhance the speed, efficiency, and scalability of Laravel applications, including Bagisto.
+[Laravel Octane](https://laravel.com/docs/octane) boots the application once per worker and keeps it in memory, serving requests through FrankenPHP, RoadRunner or Swoole. `laravel/octane` is already a dependency in Bagisto's `composer.json`, so the `octane:*` commands are available. This page installs and runs a server, and covers what changes for Bagisto code in a long-running worker.
 
-::: info What You'll Learn
-- Install Laravel Octane in your Bagisto application
-- Configure Octane for optimal performance
-- Run and manage the Octane server
-:::
+## When You Need It
 
-## Benefits for Bagisto
+Use Octane when booting the application is a noticeable part of each response and you can run your store's packages under a long-running worker. Bagisto ships no `config/octane.php` and registers no Octane listeners of its own, and its CI runs the test suites without Octane, so test your store and packages under a worker before relying on it.
 
-- **Performance**: Drives remarkable improvements in page load times, ensuring a seamless and responsive shopping experience
-- **Scalability**: Provides the scalability required to accommodate the growth of e-commerce businesses
-- **Foundation**: Forms the foundation for optimizing Bagisto's performance and meeting the demands of modern e-commerce
-
-## Prerequisites
-
-Before installing Laravel Octane, ensure your system meets the basic requirements. The specific requirements may vary depending on which application server you choose (Swoole, FrankenPHP, or RoadRunner).
-
-::: warning Requirements
-- The PHP version your Bagisto release requires (8.4 on Bagisto 2.5, 8.3 or 8.4 on Bagisto 2.4)
-- Existing Bagisto installation
-:::
-
-### Server-Specific Requirements
-
-Choose one of the following server options:
-
-#### For Swoole Server
-
-- Swoole PHP extension must be installed on your system
-
-Verify Swoole is installed:
+## Step 1: Install a Server
 
 ```bash
-php --ri swoole
-```
-
-#### For FrankenPHP Server  
-
-- No additional PHP extensions required
-- FrankenPHP binary will be automatically downloaded during installation
-- Supports automatic HTTPS, HTTP/2, and HTTP/3 out of the box
-
-Verify FrankenPHP (after installation):
-
-```bash
-./frankenphp version
-```
-
-#### For RoadRunner Server
-
-- No additional PHP extensions required
-- RoadRunner binary will be automatically downloaded during installation
-- Built with Go for high performance and scalability
-- Supports HTTP, gRPC, and background job processing
-
-Verify RoadRunner (after installation):
-
-```bash
-./rr version
-```
-
-## Installation
-
-Laravel Octane installation for Bagisto involves installing the Octane package via Composer and then configuring it to use Swoole, FrankenPHP, or RoadRunner as the application server. All three options will enhance your Bagisto application's performance significantly.
-
-### Install Laravel Octane
-
-`laravel/octane` is already in Bagisto's `composer.json`, so only the server needs installing. The `octane:install` command writes `config/octane.php`, which Bagisto does not ship:
-
-```bash
-# Navigate to your Bagisto project
-cd /path/to/your/bagisto
-
-# Install Octane (will prompt for server selection)
-php artisan octane:install
-```
-
-Bagisto's theme registry and channel resolution are written to be safe under a long-lived worker (the `Themes` class guards its request lookups, and the admin test case clears the resolved theme between requests for the same reason), but any package you add must avoid keeping request state in static properties or singletons.
-
-### Choose Your Server
-
-::: tip Server Selection
-After running `php artisan octane:install`, the terminal will prompt you to select a server from these options:
-- **Swoole** - High-performance async PHP server with advanced features like concurrent tasks
-- **FrankenPHP** - Modern PHP server with native HTTP/2, HTTP/3, and automatic HTTPS
-- **RoadRunner** - Go-based application server with excellent performance and plugin ecosystem
-
-All three servers are excellent choices for Bagisto. This guide covers all options.
-:::
-
-### Direct Installation Options
-
-If you prefer to skip the interactive prompt:
-
-```bash
-# Install with Swoole
-php artisan octane:install --server=swoole
-
-# Install with FrankenPHP  
 php artisan octane:install --server=frankenphp
-
-# Install with RoadRunner
-php artisan octane:install --server=roadrunner
 ```
 
-### RoadRunner Additional Setup
+`--server` takes `frankenphp`, `roadrunner` or `swoole`; without it the command asks, with FrankenPHP as the default. The command writes `config/octane.php`, which your application then owns, and sets `OCTANE_SERVER` in `.env`.
 
-For RoadRunner, you may also need to install additional packages:
+| Server | What to expect |
+|---|---|
+| FrankenPHP | `octane:install` offers to download the `frankenphp` binary into the project root |
+| RoadRunner | `octane:install` asks to require `spiral/roadrunner-http` and `spiral/roadrunner-cli`, then fetches the `rr` binary into the project root |
+| Swoole | Needs the Swoole PHP extension; check with `php --ri swoole` |
+
+<a id="repository-cache-tokens"></a>
+
+## Step 2: Refresh Repository Cache Tokens on Each Request
+
+A worker keeps the repository cache tokens it first read, because `Webkul\Core\Helpers\CacheGeneration` holds them in a static property that nothing clears outside the test suite. When another worker writes through one of the six cached repositories, for example by saving configuration, this worker keeps returning what was cached under the old token until it restarts. See [Cache Strategy](../advanced/cache-strategy.md#repository-cache).
+
+Clear the tokens at the start of every request with an Octane listener:
+
+**File:** `app/Listeners/Octane/FlushRepositoryCacheTokens.php`
+
+```php
+<?php
+
+namespace App\Listeners\Octane;
+
+use Laravel\Octane\Events\RequestReceived;
+use Webkul\Core\Helpers\CacheGeneration;
+
+class FlushRepositoryCacheTokens
+{
+    /**
+     * Forget the repository cache tokens an earlier request on this worker read.
+     */
+    public function handle(RequestReceived $event): void
+    {
+        CacheGeneration::flush();
+    }
+}
+```
+
+Add it to the `RequestReceived` listeners in `config/octane.php`, after Octane's own, and import the class at the top of the file:
+
+**File:** `config/octane.php`
+
+```php
+'listeners' => [
+    // ...
+
+    RequestReceived::class => [
+        ...Octane::prepareApplicationForNextOperation(),
+        ...Octane::prepareApplicationForNextRequest(),
+        FlushRepositoryCacheTokens::class,
+    ],
+
+    // ...
+],
+```
+
+The next read of each cached repository then fetches its current token from the cache store, as a PHP-FPM request does.
+
+## Step 3: Run the Server
 
 ```bash
-# Install RoadRunner CLI and HTTP packages (optional)
-composer require spiral/roadrunner-http spiral/roadrunner-cli
+php artisan octane:start --server=frankenphp --host=127.0.0.1 --port=8000 --workers=4 --max-requests=500
 ```
 
-## Environment Configuration
+| Option | Purpose |
+|---|---|
+| `--workers` | Worker processes that handle requests |
+| `--max-requests` | Requests a worker handles before it is replaced, which limits memory growth |
+| `--watch` | Reloads workers when files change; for development only |
+| `--https` | Serves HTTPS, HTTP/2 and HTTP/3 with automatic certificates (FrankenPHP only) |
 
-After completing the installation, the appropriate server configuration will be automatically added to your `.env` file based on your selection.
+In production, keep `octane:start` running under a process manager such as Supervisor or systemd, as the Octane documentation describes. After a deployment or a configuration change, run `php artisan octane:reload`; `octane:stop` stops the server.
 
-### For Swoole Server
+## Test It
 
-```properties
-OCTANE_SERVER=swoole
-```
+1. Run `php artisan octane:status` to confirm the server is running.
+2. Open the admin's About page through the Octane server. It reports the Octane server only for a request that Octane actually served.
 
-### For FrankenPHP Server
+## Things to Watch
 
-```properties
-OCTANE_SERVER=frankenphp
-```
+- **Settings applied at boot.** A worker keeps the configuration it booted with, and two sets of admin settings are applied then: the **File Management** disk and credentials (`Webkul\Core\Filesystem\StorageConfigurator`, from `CoreServiceProvider::boot()`) and the **Search Engines** connection (`Webkul\Product\Services\Search\SearchEngineConfigurator`, from `ProductServiceProvider::boot()`). After saving either section, run `php artisan octane:reload` on every server.
+- **Request state is reset for core, not for your code.** Before each request Octane gives the worker a fresh copy of the application and clears the facade instances it resolved (`Laravel\Octane\CurrentApplication::set()`). `Webkul\Core\Core` isn't bound in the container, and `core()` and `cart()` return the instances their facades cache, so they work out the channel, locale, currency and cart again, and `Webkul\Theme\Themes` initializes its theme from the request when it has none.
+- **A static property** that holds the customer, the channel, the cart or any other request data carries it into the next request.
+- **A container singleton resolved while the application boots** is shared by every request the worker handles, so don't read the request, the session or `core()`'s current channel in its constructor.
 
-### For RoadRunner Server
+## Related Pages
 
-```properties
-OCTANE_SERVER=roadrunner
-```
-
-## Running Octane
-
-### Basic Usage
-
-Start Octane server (uses configured server from .env):
-
-```bash
-php artisan octane:start
-```
-
-## Common Issues
-
-While Laravel Octane with Swoole, FrankenPHP, and RoadRunner is generally stable, you might encounter some common issues during setup or operation. Here are the most frequent problems and their solutions to help you troubleshoot your Bagisto Octane installation.
-
-### General Troubleshooting
-
-| Problem | Solution |
-|---------|----------|
-| **Port already in use** | Change the port or stop conflicting services |
-| **Memory leaks** | Reduce the max request by specifying in the octane command |
-| **Slow startup** | Ensure database connections are properly configured |
-| **Worker crashes** | Check PHP error logs and reduce worker count if needed |
-| **Swoole extension not found** | Install via `pecl install swoole` or use package manager |
-| **FrankenPHP binary not found** | Re-run `php artisan octane:install --server=frankenphp` |
-| **RoadRunner binary not found** | Re-run `php artisan octane:install --server=roadrunner` |
-
-::: tip Quick Start Guide
-1. **Laravel Octane is already installed** with Bagisto's dependencies.
-
-2. **Choose and setup your server:**
-   ```bash
-   # For Swoole
-   php artisan octane:install --server=swoole
-   
-   # For FrankenPHP
-   php artisan octane:install --server=frankenphp
-   
-   # For RoadRunner
-   php artisan octane:install --server=roadrunner
-   ```
-
-3. **Configure your `.env` file:**
-   - For Swoole: `OCTANE_SERVER=swoole`
-   - For FrankenPHP: `OCTANE_SERVER=frankenphp`
-   - For RoadRunner: `OCTANE_SERVER=roadrunner`
-
-4. **Start the server:**
-   ```bash
-   php artisan octane:start
-   ```
-
-5. **Access your application:**
-   - Visit `http://localhost:8000`
-:::
+- [Cache Strategy](../advanced/cache-strategy.md#repository-cache): how the repository cache and its tokens work.
+- [Queues, Jobs and Scheduling](../advanced/queue-jobs-scheduling.md#running-workers-in-production): the same state concerns in queue workers.
+- [Configure Load Balancing](./configure-load-balancing.md): what several Octane servers must share.

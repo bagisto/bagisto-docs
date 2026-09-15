@@ -1,31 +1,10 @@
 # Theme Sections
 
-A **section** is one block of the storefront that a merchant edits from
-**Appearance → Themes → Customize**: a product carousel, an image slider, the
-footer links, and so on. Bagisto ships six section types. A theme can reorder
-them, hide some, replace one with its own version, or add entirely new types,
-all from `config/themes.php`, without touching the `Theme` or `Admin` packages.
+A **section** is one block of the storefront that a merchant places and edits in the Appearance section editor, such as a product carousel or the footer links. A theme can reorder Bagisto's six section types, hide some, replace one or add its own, all from `config/themes.php`, with the classes in the `Webkul\CustomTheme` package from [Creating a Custom Theme Package](./creating-custom-theme-package.md). The merchant's side is in the User Guide under [Themes & Sections](https://docs.bagisto.com/appearance/themes) and [Section Types](https://docs.bagisto.com/appearance/section-types).
 
-This page covers the developer side: what a section type is, how a theme
-declares the types it offers, and what a custom type has to provide so the
-editor and the storefront both understand it. The merchant's view of the same
-feature is in the user guide under Appearance.
+## What a Section Type Is
 
-::: info Availability
-Per-theme section types (`customize.sections`) ship in both Bagisto 2.4 and the
-Bagisto 2.5, and the section type classes on this page work on
-both. One helper differs: `bagisto_theme_storage()`, used in the rendering
-example, exists only on Bagisto 2.5; on 2.4 resolve stored
-image paths with `Storage::url($path)` instead.
-:::
-
-## What a section type is
-
-A section type is a PHP class extending `Webkul\Theme\Sections\SectionType`. It
-tells the Appearance editor which fields to draw, how to clean and reshape the
-values, and a few flags about placement. It does **not** render anything on the
-storefront; rendering is done by Blade views, which the theme also owns (see
-[Rendering a custom type](#rendering-a-custom-type-on-the-storefront)).
+A section type is a PHP class extending `Webkul\Theme\Sections\SectionType`. It tells the Appearance editor which fields to draw, how to clean and reshape the values, and where the section may be placed. It does **not** render anything on the storefront; the theme's Blade views do (see [Rendering a custom type](#rendering-a-custom-type-on-the-storefront)).
 
 **File:** `packages/Webkul/Theme/src/Sections/SectionType.php`
 
@@ -36,19 +15,15 @@ storefront; rendering is done by Blade views, which the theme also owns (see
 | `protected string $icon` | Icon class drawn on the type's tile. Default `icon-cms`. |
 | `protected bool $singleton` | A channel may hold only one section of this type. Once one exists the tile is no longer offered. |
 | `protected bool $pinned` | The section is fixed to the bottom of the list rather than dragged into place. |
-| `protected bool $layout` | The layout draws the section on every page rather than only the home page. Publishing a change to such a section flushes the whole page cache. |
+| `protected bool $layout` | The layout draws the section on every page rather than only the home page. Publishing a change to such a section flushes the whole page cache ([What Invalidates the Cache](../advanced/cache-strategy.md#what-invalidates-the-cache)). |
 | `getFields(): array` | The fields the editor draws, described with the `SectionSchema` kinds below. Default `[]`. |
-| `sanitize(array $options): array` | Clean the values before they are stored or rendered. |
+| `sanitize(array $options): array` | Clean the values before they are stored or previewed. |
 | `prepareForEditor(array $options): array` | Reshape stored options the way the editor's fields read them. |
 | `prepareForStorage(array $options): array` | Reshape what the editor posts the way the storefront reads it. |
 
-The class also offers protected helpers for building option lists:
-`categoryOptions()`, `limitOptions()`, `yesNo()`, `label()` (translates an
-`admin::app.appearance.sections.edit.*` key), and `sanitizeHtml()` /
-`sanitizeCss()`, which strip `script`, `iframe` and `form` elements and anything
-that could break out of a style block.
+Protected helpers build option lists and clean values: `categoryOptions()`, `limitOptions()`, `yesNo()`, `label()` (translates an `admin::app.appearance.sections.edit.*` key), and `sanitizeHtml()` / `sanitizeCss()`, which strip `script`, `iframe` and `form` elements and anything that could break out of a style block.
 
-### The core types
+### The Core Types
 
 | Code | Class | Notable flags |
 |---|---|---|
@@ -59,14 +34,11 @@ that could break out of a style block.
 | `static_content` | `Webkul\Theme\Sections\StaticContent` | two `code` fields, `html` and `css`, sanitized on save |
 | `services_content` | `Webkul\Theme\Sections\ServicesContent` | layout; repeater of icon, title, description |
 
-Their codes are also the cases of `Webkul\Theme\Enums\SectionTypeEnum`, which is
-the form the config file uses to refer to them.
+Their codes are also the cases of `Webkul\Theme\Enums\SectionTypeEnum`, which the configuration file uses to refer to them.
 
-## Declaring the types a theme offers
+## Declaring the Types a Theme Offers
 
-Everything a theme customizes lives under its `customize` key in
-`config/themes.php`. The `sections` list names the types the editor offers for
-this theme, **in the order the Add Section tiles show them**:
+The `sections` list under a theme's `customize` key names the types the editor offers for that theme, **in the order the Add Section tiles show them**. The stock `default` theme lists every core type:
 
 **File:** `config/themes.php`
 
@@ -97,43 +69,29 @@ return [
 ];
 ```
 
-Each entry is one of:
+Each entry is a `SectionTypeEnum` case, for a core type, or a class extending `Webkul\Theme\Sections\SectionType`, for a theme's own type. `Webkul\Theme\SectionSchema::types()` applies these rules:
 
-- a `SectionTypeEnum` case, for a core type;
-- a class name that extends `Webkul\Theme\Sections\SectionType`, for a theme's
-  own type.
+| Case | Result |
+|---|---|
+| Key left out, or no `customize` key | Every core type, in enum order |
+| Empty array | No section types; the editor shows nothing to add |
+| Two entries with the same code | The first wins, so your own class that reuses a core code replaces that core type |
+| An entry that isn't a `SectionType` subclass | Reported as `Webkul\Theme\Exceptions\InvalidSectionType` and dropped; the editor still loads |
 
-The rules, as implemented in `Webkul\Theme\SectionSchema::types()`:
+On Bagisto 2.4 the six types are fixed in `Webkul\Theme\SectionSchema`, and a theme can't add, remove or reorder them.
 
-- **Leave the key out** to offer every core type in enum order. This is what a
-  theme gets when it has no `customize` key at all.
-- **An empty array** offers no section types; the editor shows nothing to add.
-- **Order is preserved.** The tiles follow the array.
-- **Duplicate codes are resolved first-wins.** Declaring your own class that
-  reuses a core code replaces that core type for this theme.
-- **An invalid entry is skipped, not fatal.** Anything that is not a
-  `SectionType` subclass is reported through `report()` as
-  `Webkul\Theme\Exceptions\InvalidSectionType` and dropped, so one bad entry
-  cannot take the editor down.
+## Writing a Custom Section Type
 
-::: warning Sections belong to a theme and a channel
-Stored sections are keyed by theme code. Removing a type from a theme's list
-does not delete sections already created with it; they can no longer be
-added. Renaming a code orphans the existing rows.
-:::
-
-## Writing a custom section type
-
-### Step 1: extend the base class
+### Step 1: Extend the Base Class
 
 The smallest possible type is a code alone:
 
-**File:** `packages/Webkul/Fashion/src/Sections/Lookbook.php`
+**File:** `packages/Webkul/CustomTheme/src/Sections/Lookbook.php`
 
 ```php
 <?php
 
-namespace Webkul\Fashion\Sections;
+namespace Webkul\CustomTheme\Sections;
 
 use Webkul\Theme\Sections\SectionType;
 
@@ -151,16 +109,11 @@ class Lookbook extends SectionType
 }
 ```
 
-With no `getFields()` the editor shows the section with the message "This
-section has no settings to edit in this theme", which is fine for a block whose
-markup is fixed in the theme's views.
+With no `getFields()` the editor shows the section with the message "This section has no settings to edit in this theme.", which suits a block whose markup is fixed in the theme's views.
 
-### Step 2: describe the fields
+### Step 2: Describe the Fields
 
-`getFields()` returns a list of field descriptors. Each has a `key` (the option
-name it is stored under), a `type` (one of the `SectionSchema` constants) and a
-`label`. The editor is generic: it draws whatever schema it receives, so a
-custom type needs **no Blade or Vue of its own in the admin**.
+`getFields()` returns field descriptors, each with a `key` (the option name it's stored under), a `type` (a `SectionSchema` constant) and a `label`. The editor draws whatever schema it receives, so a custom type needs **no Blade or Vue of its own in the admin**.
 
 | `SectionSchema` constant | Editor control | Extra keys |
 |---|---|---|
@@ -174,12 +127,12 @@ custom type needs **no Blade or Vue of its own in the admin**.
 
 A slider-style type with an image, a heading and a link per slide:
 
-**File:** `packages/Webkul/Fashion/src/Sections/HeroBanner.php`
+**File:** `packages/Webkul/CustomTheme/src/Sections/HeroBanner.php`
 
 ```php
 <?php
 
-namespace Webkul\Fashion\Sections;
+namespace Webkul\CustomTheme\Sections;
 
 use Webkul\Theme\Sections\SectionType;
 use Webkul\Theme\SectionSchema;
@@ -194,7 +147,7 @@ class HeroBanner extends SectionType
     /**
      * Translation key of the name the editor shows.
      */
-    protected ?string $title = 'fashion::app.sections.hero-banner';
+    protected ?string $title = 'custom-theme::app.sections.hero-banner';
 
     /**
      * Icon class drawn on the type's tile in the editor.
@@ -210,11 +163,11 @@ class HeroBanner extends SectionType
             [
                 'key' => 'slides',
                 'type' => SectionSchema::REPEATER,
-                'label' => trans('fashion::app.sections.slides'),
-                'add_label' => trans('fashion::app.sections.add-slide'),
+                'label' => trans('custom-theme::app.sections.slides'),
+                'add_label' => trans('custom-theme::app.sections.add-slide'),
                 'fields' => [
-                    ['key' => 'image', 'type' => SectionSchema::IMAGE, 'label' => trans('fashion::app.sections.image')],
-                    ['key' => 'heading', 'type' => SectionSchema::TEXT, 'label' => trans('fashion::app.sections.heading')],
+                    ['key' => 'image', 'type' => SectionSchema::IMAGE, 'label' => trans('custom-theme::app.sections.image')],
+                    ['key' => 'heading', 'type' => SectionSchema::TEXT, 'label' => trans('custom-theme::app.sections.heading')],
                     ['key' => 'link', 'type' => SectionSchema::TEXT, 'label' => $this->label('link')],
                 ],
             ],
@@ -223,22 +176,18 @@ class HeroBanner extends SectionType
 }
 ```
 
-`$this->label('link')` reuses a core editor string; your own labels come from
-your package's language files as usual.
+`$this->label('link')` reuses a core editor string; the `custom-theme::` labels come from the package's language files ([Add translations](./creating-custom-theme-package.md#step-3-add-translations)). Pick an `$icon` the admin already uses, such as `icon-image`, `icon-product`, `icon-folder` or `icon-cms`: the admin stylesheet only emits icon classes it finds in the Admin package and `packages/Webkul/Theme/src/Sections`.
 
-### Step 3: extend a core type instead, when that is closer
+### Step 3: Extend a Core Type Instead, When That Is Closer
 
-Because the core types are ordinary classes, a theme can subclass one and change
-only what differs. `ProductCarousel` exposes its filter list through a
-`filterKeys()` method precisely so a theme can add a key its own product API
-understands:
+A theme can subclass a core type and change only what differs. `ProductCarousel` exposes its filter list through `filterKeys()` so a theme can add a key its own product API understands:
 
-**File:** `packages/Webkul/Fashion/src/Sections/DealsCarousel.php`
+**File:** `packages/Webkul/CustomTheme/src/Sections/DealsCarousel.php`
 
 ```php
 <?php
 
-namespace Webkul\Fashion\Sections;
+namespace Webkul\CustomTheme\Sections;
 
 use Webkul\Theme\Sections\ProductCarousel;
 
@@ -252,7 +201,7 @@ class DealsCarousel extends ProductCarousel
     /**
      * Translation key of the name the editor shows.
      */
-    protected ?string $title = 'fashion::app.sections.deals-carousel';
+    protected ?string $title = 'custom-theme::app.sections.deals-carousel';
 
     /**
      * Icon class drawn on the type's tile in the editor.
@@ -266,62 +215,86 @@ class DealsCarousel extends ProductCarousel
     {
         return [
             ...parent::filterKeys(),
-            ['value' => 'on_sale', 'label' => trans('fashion::app.sections.on-sale'), 'options' => $this->yesNo()],
+            ['value' => 'on_sale', 'label' => trans('custom-theme::app.sections.on-sale'), 'options' => $this->yesNo()],
         ];
     }
 }
 ```
 
-Keeping the **same** code as a core type (`product_carousel`) instead of a new
-one replaces the core type for this theme, and existing sections of that type
-pick up the new schema. `FooterLinks` similarly exposes `protected ?int
-$maxColumns` for a theme whose footer has room for fewer columns.
+Keeping the **same** code as the core type (`product_carousel`) replaces it for this theme, and existing sections of that type pick up the new schema. `FooterLinks` similarly exposes `protected ?int $maxColumns` for a footer with room for fewer columns.
 
-### Step 4: register the type on the theme
+### Step 4: Register the Type on the Theme
+
+List the classes under the theme's `customize.sections`, in the order the tiles should show them:
+
+**File:** `config/themes.php`
 
 ```php
-'customize' => [
-    'sections' => [
-        \Webkul\Fashion\Sections\HeroBanner::class,
-        SectionTypeEnum::PRODUCT_CAROUSEL,
-        \Webkul\Fashion\Sections\DealsCarousel::class,
-        SectionTypeEnum::FOOTER_LINKS,
-        \Webkul\Fashion\Sections\Lookbook::class,
+<?php
+
+use Webkul\CustomTheme\Sections\DealsCarousel;
+use Webkul\CustomTheme\Sections\HeroBanner;
+use Webkul\CustomTheme\Sections\Lookbook;
+use Webkul\Theme\Enums\SectionTypeEnum;
+
+return [
+    'shop' => [
+        // ...
+
+        'custom-theme' => [
+            // ...
+
+            'customize' => [
+                'sections' => [
+                    HeroBanner::class,
+                    SectionTypeEnum::PRODUCT_CAROUSEL,
+                    DealsCarousel::class,
+                    SectionTypeEnum::FOOTER_LINKS,
+                    Lookbook::class,
+                ],
+            ],
+        ],
     ],
-],
+];
 ```
 
-Clear the configuration cache and open the editor for a channel running the
-theme. The Add Section tiles now follow this list.
+Run `php artisan optimize:clear` and open the section editor for a channel running the theme: the Add Section tiles follow this list. Types left out can't be added, so this theme's merchant can no longer add a services strip. To keep every core type after your own, end the list with `...SectionTypeEnum::cases()`; since the first declaration of a code wins, the enum cases only fill in the types not listed yet.
 
-### Step 5: clean and reshape values when needed
+### Step 5: Clean and Reshape Values When Needed
 
-Three hooks run between the editor and the database:
+Three hooks run between the editor and the database. **`sanitize()`** cleans anything that ends up in the page unescaped. `SectionRepository::sanitizeOptions()` calls it through the section's type when a draft is saved, when a draft is published and when the preview renders a draft. `StaticContent` shows the pattern:
 
-- **`sanitize()`** runs on save and on render. Use it for anything that ends up
-  in the page unescaped. `StaticContent` shows the pattern:
+**File:** `packages/Webkul/Theme/src/Sections/StaticContent.php`
 
-  ```php
-  public function sanitize(array $options): array
-  {
-      if (array_key_exists('html', $options)) {
-          $options['html'] = $this->sanitizeHtml($options['html']);
-      }
+```php
+/**
+ * Clean the markup and styles, which are written into the page rather than escaped.
+ */
+public function sanitize(array $options): array
+{
+    if (array_key_exists('html', $options)) {
+        $options['html'] = $this->sanitizeHtml($options['html']);
+    }
 
-      return $options;
-  }
-  ```
+    if (array_key_exists('css', $options)) {
+        $options['css'] = $this->sanitizeCss($options['css']);
+    }
 
-- **`prepareForEditor()`** and **`prepareForStorage()`** translate between the
-  shape the editor's fields expect and the shape stored. `FooterLinks` uses
-  them to present stored `column_1`, `column_2`, … keys as one `columns`
-  repeater.
+    return $options;
+}
+```
 
-## Rendering a custom type on the storefront
+Guard each key with `array_key_exists()` as it does, so a save never invents a field that wasn't posted. **`prepareForEditor()`** and **`prepareForStorage()`** translate between the shape the editor's fields expect and the shape stored; `FooterLinks` uses them to present stored `column_1`, `column_2`, … keys as one `columns` repeater.
 
-The type class decides what the editor shows; **the theme's views decide what
-the shopper sees**. The stock storefront draws home-page sections through a
-`@switch` on the section's type:
+### Test It
+
+1. Open **Appearance** for a channel running `custom-theme` and choose **Add Section**. The tiles show Hero Banner, Product Carousel, Deals Carousel, Footer Links and Lookbook, in that order (Footer Links only while the channel has none, since it's a singleton).
+2. Add a Hero Banner with one slide and publish it. With the home view from [Rendering a custom type](#rendering-a-custom-type-on-the-storefront) in place, the storefront home page shows the slide.
+3. Add a Lookbook. Its tile is gone afterwards, because the type is a singleton.
+
+## Rendering a Custom Type on the Storefront
+
+The type class decides what the editor shows; **the theme's views decide what the shopper sees**. `HomeController::index()` passes the channel's published sections for its theme, from `SectionRepository::getRenderable()`, to the home page, which draws them through a `@switch` on the section's type:
 
 **File:** `packages/Webkul/Shop/src/Resources/views/home/index.blade.php`
 
@@ -329,28 +302,38 @@ the shopper sees**. The stock storefront draws home-page sections through a
 @foreach ($sections as $section)
     @php ($data = $section->options) @endphp
 
+    @php ($marks = ($preview ?? false) && ! $section->getTypeInstance()?->rendersInLayout())
+
+    @if ($marks)
+        <div
+            data-section-id="{{ $section->id }}"
+            data-section-name="{{ $section->name }}"
+        >
+    @endif
+
     @switch ($section->type)
         @case (\Webkul\Theme\Enums\SectionTypeEnum::IMAGE_CAROUSEL->value)
-            <x-shop::carousel :options="$data" aria-label="{{ trans('shop::app.home.index.image-carousel') }}" />
-
-            @break
-        @case (\Webkul\Theme\Enums\SectionTypeEnum::PRODUCT_CAROUSEL->value)
-            <x-shop::products.carousel
-                :title="$data['title'] ?? ''"
-                :src="route('shop.api.products.index', $data['filters'] ?? [])"
-                :navigation-link="route('shop.search.index', $data['filters'] ?? [])"
-                aria-label="{{ trans('shop::app.home.index.product-carousel') }}"
+            <x-shop::carousel
+                :options="$data"
+                aria-label="{{ trans('shop::app.home.index.image-carousel') }}"
             />
 
             @break
+
+        {{-- ... --}}
     @endswitch
+
+    @if ($marks)
+        </div>
+    @endif
 @endforeach
+
+@if ($preview ?? false)
+    @include('shop::home.preview-bridge')
+@endif
 ```
 
-A section whose type is not in that switch renders nothing. So a theme that adds
-a type must also override `home/index.blade.php` (see
-[view resolution](./creating-store-theme.md#how-views-are-resolved)) and add a
-case for its code:
+A section whose type isn't in that switch renders nothing, so a theme that adds a type also overrides `home/index.blade.php`. Replace `packages/Webkul/CustomTheme/src/Resources/views/home/index.blade.php`, the static page from the earlier pages, with a copy of the Shop file ([How Views Are Resolved](./creating-store-theme.md#how-views-are-resolved)), and add a case for the new code:
 
 ```blade
 @case ('hero_banner')
@@ -368,65 +351,138 @@ case for its code:
     @break
 ```
 
-Two things to keep in mind when writing that view:
+- **Keep the preview working.** The editor's live preview renders the same view with `$preview` set; the `$marks` wrapper's `data-section-id` lets the `preview-bridge` script scroll to and highlight a section. Keep the wrapper and the `@include('shop::home.preview-bridge')`.
+- **Image fields store bare disk paths**, without a host, so they survive a domain change and work on a remote disk. Resolve them with `bagisto_theme_storage()->url($path)` for the original, or `bagisto_theme_storage()->imageUrls($path)`, which returns `['url' => ..., 'srcset' => ['large' => ..., 'medium' => ..., 'small' => ...]]` through the image cache, or `null` for an empty path.
+- **Layout-drawn types read themselves.** The footer and the services strip aren't part of the home-page loop; `components/layouts/footer/index.blade.php` and `components/layouts/services.blade.php` load their section with `SectionRepository::findOneOfType()` and `findAllOfType()`. A custom type with `$layout = true` needs the same in the layout component that draws it, overridden under the theme's `views_path`, and must tolerate a section whose options are still empty.
 
-- **Image fields store bare disk paths.** Resolve them with
-  `bagisto_theme_storage()->url($path)` for the original or
-  `bagisto_theme_storage()->imageUrls($path)`, which returns `['url' => ...,
-  'srcset' => ['large' => ..., 'medium' => ..., 'small' => ...]]`, the three
-  sizes served through the image cache (the `small_image_url` naming belongs to
-  the product helper `image_urls()`, not to this one). The paths are stored without a host, so they survive a domain
-  change and work on a remote disk.
-- **Layout-drawn types read themselves.** The footer and the services strip are
-  not part of the home-page loop; they load their own section through
-  `SectionRepository::findOneOfType()` and `findAllOfType()` in
-  `components/layouts/footer/index.blade.php` and
-  `components/layouts/services.blade.php`. A custom type with `$layout = true`
-  needs the same treatment in the layout view that draws it.
+## Starting Sections for a Theme
 
-::: tip Keep the preview working
-The editor's live preview loads the storefront with `$preview` set and wraps
-each home-page section in a `div` carrying `data-section-id`, which the
-`preview-bridge` script uses to scroll and highlight. If you replace
-`home/index.blade.php`, keep the `$marks` wrapper and the
-`@include('shop::home.preview-bridge')` at the bottom, or the editor will no
-longer be able to focus a section in the preview.
-:::
+Activating a theme copies no sections, so a channel switched to your theme starts with no footer links and no services strip. A theme package that should look complete on first use creates starting sections from a listener on `appearance.theme.activate.after`, fired by `ThemeController::activateOn()` when a theme is activated from the gallery, and `core.channel.create.after`, fired by `ChannelController::store()` when a channel is created with the theme set. Both pass the channel:
 
-## How the pieces connect
+**File:** `packages/Webkul/CustomTheme/src/Listeners/StartingSections.php`
+
+```php
+<?php
+
+namespace Webkul\CustomTheme\Listeners;
+
+use Illuminate\Support\Facades\Event;
+use Webkul\Core\Contracts\Channel;
+use Webkul\Theme\Enums\SectionTypeEnum;
+use Webkul\Theme\Repositories\SectionRepository;
+
+class StartingSections
+{
+    /**
+     * The theme code the starting sections are created for.
+     */
+    public const THEME_CODE = 'custom-theme';
+
+    /**
+     * Create a new listener instance.
+     */
+    public function __construct(protected SectionRepository $sectionRepository) {}
+
+    /**
+     * Give a channel the theme's starting sections the first time it runs the theme.
+     */
+    public function handle(Channel $channel): void
+    {
+        if (
+            $channel->theme !== self::THEME_CODE
+            || $this->hasSections($channel->id)
+        ) {
+            return;
+        }
+
+        Event::dispatch('section.create.before');
+
+        $section = $this->sectionRepository->create([
+            'type' => SectionTypeEnum::SERVICES_CONTENT->value,
+            'name' => trans('custom-theme::app.sections.services'),
+            'sort_order' => 1,
+            'status' => 1,
+            'channel_id' => $channel->id,
+            'theme_code' => self::THEME_CODE,
+            ...$this->translations($channel),
+        ]);
+
+        Event::dispatch('section.create.after', $section);
+    }
+
+    /**
+     * Whether the channel already holds sections for the theme.
+     */
+    protected function hasSections(int $channelId): bool
+    {
+        return $this->sectionRepository->findWhere([
+            'channel_id' => $channelId,
+            'theme_code' => self::THEME_CODE,
+        ])->isNotEmpty();
+    }
+
+    /**
+     * The section's options in every locale the channel serves, keyed by locale code.
+     */
+    protected function translations(Channel $channel): array
+    {
+        return $channel->locales
+            ->mapWithKeys(fn ($locale) => [
+                $locale->code => [
+                    'options' => [
+                        'services' => [
+                            [
+                                'service_icon' => 'icon-truck',
+                                'title' => trans('custom-theme::app.sections.free-shipping', [], $locale->code),
+                                'description' => trans('custom-theme::app.sections.free-shipping-info', [], $locale->code),
+                            ],
+                        ],
+                    ],
+                ],
+            ])
+            ->all();
+    }
+}
+```
+
+Register the listener in the service provider's `boot()` method, importing `Illuminate\Support\Facades\Event` and `Webkul\CustomTheme\Listeners\StartingSections`:
+
+```php
+Event::listen(['appearance.theme.activate.after', 'core.channel.create.after'], StartingSections::class);
+```
+
+- **Check for existing sections first**, so switching a channel back to the theme doesn't add a second services strip.
+- **The sections are live.** With `status` set to `1` they show without being published.
+- **Options are stored per locale.** `SectionRepository::create()` takes a translation keyed by each locale code, so write one for every locale the channel serves.
+- **Fire the section events**, as `SectionController::store()` does, so the full page cache clears the pages the section appears on.
+- **Add a footer the same way.** A `footer_links` section stores its columns as `column_1`, `column_2` and so on, the shape `FooterLinks::prepareForStorage()` writes.
+
+## How the Pieces Connect
 
 | Concern | Where |
 |---|---|
 | Resolving a theme's list | `Webkul\Theme\SectionSchema::types()`, `type()`, `for()` |
 | Section model | `Webkul\Theme\Models\Section`, `getTypeInstance()` |
-| Admin editor | `Webkul\Admin\Http\Controllers\Appearance\SectionController`, views under `admin::appearance.sections` and `admin::components.appearance.sections` |
+| Admin editor | `Webkul\Admin\Http\Controllers\Appearance\SectionController`, the view `admin::appearance.sections.index` and the components under `admin::components.appearance.sections` |
 | Routes | `admin.appearance.sections.*` in `packages/Webkul/Admin/src/Routes/appearance-routes.php` |
 | ACL | `appearance.sections`, `appearance.sections.create`, `.edit`, `.delete` |
-| Drafts and publishing | `Webkul\Theme\Repositories\SectionRepository::publishDrafts()`, `discardDrafts()`, `getDraftedForPreview()` |
-| Storefront preview | `shop.appearance.preview` route, gated by the `appearance.sections` permission |
+| Drafts and publishing | `Webkul\Theme\Repositories\SectionRepository`: `saveDraft()`, `publishDraft()`, `discardDraft()`, `publishDrafts()`, `discardDrafts()`, `getDraftedForPreview()` |
+| Storefront preview | `shop.appearance.preview` route (`GET appearance-preview`), gated by the `appearance.sections` permission |
 | Page cache | `Webkul\FPC\Listeners\Section` flushes the home page, or everything when the type `rendersInLayout()` |
 
-Events fired by the editor, all with the section as payload, are
-`section.create.before/after`, `section.update.before/after`,
-`section.delete.before/after`, `section.draft.save.before/after`,
-`section.draft.discard.before/after`, `section.media.upload.before/after` and
-`section.reorder.before/after`.
+The editor fires `section.create`, `section.update`, `section.delete`, `section.draft.save`, `section.draft.discard`, `section.media.upload` and `section.reorder` in `before` and `after` pairs; publishing fires `section.update.before` and `.after` for each published section, which is what clears the page cache. What each event passes is listed under [Appearance](../advanced/event-listeners.md#appearance) in Event Listeners.
 
-## Common mistakes
+## Things to Watch
 
-- **Declaring the type but not rendering it.** The tile appears and the section
-  saves, but the storefront stays blank because the home view has no case for
-  the code.
-- **Reusing a core code by accident.** Two types with the same code collapse to
-  the first declared; if yours comes second it silently never appears.
-- **Emitting user markup without `sanitize()`.** Anything written with `{!! !!}`
-  must go through `sanitizeHtml()` or an equivalent.
-- **Building the option list every request.** `categoryOptions()` queries all
-  categories; that is acceptable for the editor, which loads the schema once,
-  but do not call it from a storefront view.
+- **Declare and render.** A declared type whose code has no case in the home view saves fine but shows nothing on the storefront.
+- **Codes are unique per theme.** Two types with the same code collapse to the first declared; if yours comes second it never appears.
+- **Sections belong to a theme and a channel.** Stored sections are keyed by theme code. Removing a type from the list doesn't delete its sections, and renaming a code orphans them.
+- **Sanitize user markup.** Anything written with `{!! !!}` must go through `sanitize()` and `sanitizeHtml()` or an equivalent.
+- **Use an icon the admin ships**, or the tile shows none.
+- **Keep `categoryOptions()` in the editor.** It queries all categories; don't call it from a storefront view.
 
-## Related
+## Next Step
 
-- [Creating Store Theme](./creating-store-theme.md) — the `customize` key and view resolution.
-- [Image Cache Templates](./image-cache-templates.md) — the other half of the `customize` key.
-- [Full Page Cache](../performance/configure-fpc.md) — why layout sections flush everything.
+Next, register the image sizes your theme's views need.
+
+**Continue to:** [Image Cache](./image-cache-templates.md)

@@ -1,246 +1,191 @@
 # Common Pitfalls
 
-This page documents frequent issues encountered by developers working with Bagisto, along with solutions derived from the actual codebase.
+The problems Bagisto developers run into again and again, each as the symptom, its cause in the code, and the fix. To investigate something that isn't listed here, start with [Debugging Tips](./debugging.md).
 
-## Installation & Setup
+## Installation and Setup
 
-### PHP Version Mismatch
+### PHP Version and Extensions
 
-Bagisto 2.5 requires **PHP 8.4** (`"php": "^8.4"` in `composer.json`); Bagisto 2.4 accepts **8.3 or 8.4** (`">=8.3 <8.5"`). A lower version fails at `composer install` with a platform error, which is easy to mistake for a broken install when a second PHP binary is on the `PATH`.
+- **Symptom:** `composer install` fails with a platform error, or every request stops with a PHP version error.
+- **Cause:** Bagisto 2.5 requires PHP 8.4 (`"php": "^8.4"` in `composer.json`; the locked dependencies need 8.4.1 or later), while 2.4 accepts 8.3 or 8.4. A second, older PHP binary often comes first on the `PATH`. `composer.json` also requires the `calendar`, `curl`, `intl`, `mbstring`, `openssl`, `pdo`, `pdo_mysql` and `tokenizer` extensions, and a PostgreSQL store needs `pdo_pgsql`.
+- **Fix:** Check the PHP that Composer runs with `php -v` and `composer check-platform-reqs`, which lists anything missing.
 
-```bash
-# Verify your PHP version
-php -v
-```
+### Storage Link and `APP_URL`
 
-The web installer still checks against 8.3.0, so a host on 8.3 passes the installer's requirement screen and then fails on Bagisto 2.5's Composer constraint.
+- **Symptom:** Channel logos, category images or theme section images under `/storage` are broken; or, often after the store moves to another domain, only channel logos and category images point at the wrong host.
+- **Cause:** Every file served from `/storage` needs the `public/storage` link to `storage/app/public`. Channel logos and category images are also built with `Storage::url()`, which takes its host from `APP_URL` (the `public` disk's `url` in `config/filesystems.php`), so it must match the URL you browse, port included. Theme section images and resized images under `/cache/…` use the request's own host.
+- **Fix:** Run `php artisan storage:link` and correct `APP_URL`; `php artisan about` shows the URL and whether the link exists.
 
-### Missing PHP Extensions
+### Running `bagisto:install` on an Existing Store
 
-The following extensions are required (from `composer.json`):
+- **Symptom:** Every order, customer and product is gone.
+- **Cause:** `php artisan bagisto:install` sets up a new store: it generates a new `APP_KEY` and runs `db:wipe` and `migrate:fresh` before seeding.
+- **Fix:** Upgrade with `php artisan migrate`, never `bagisto:install`. See [Upgrade Guide](../getting-started/upgrade-guide.md).
 
-- `ext-calendar`
-- `ext-curl`
-- `ext-intl`
-- `ext-mbstring`
-- `ext-openssl`
-- `ext-pdo`
-- `ext-pdo_mysql`
-- `ext-tokenizer`
+### `migrate:fresh` Without Seeding
 
-```bash
-# Check installed extensions
-php -m | grep -E "calendar|curl|intl|mbstring|openssl|pdo|tokenizer"
-```
-
-### Storage Link Not Created
-
-Product images and uploads won't display without the storage symlink:
-
-```bash
-php artisan storage:link
-```
-
-This creates `public/storage` → `storage/app/public`. If images still don't load, verify `APP_URL` in `.env` matches your actual domain/port.
-
-### APP_URL Mismatch
-
-A mismatch between `APP_URL` and your actual URL causes broken assets, images, and redirects. This is especially common when switching between local development and production.
-
-```properties
-# Must match exactly, including port
-APP_URL=http://localhost:8000
-```
+- **Symptom:** The storefront and the admin stop working after `php artisan migrate:fresh`.
+- **Cause:** The tables are empty: no channel, locale, currency, customer group or admin, which the storefront and the admin read on every request.
+- **Fix:** Run `php artisan db:seed`; the application's `DatabaseSeeder` runs the installer's seeders.
 
 ## Database
 
-### Database Versions
+### Code That Only Ever Ran on MySQL
 
-Bagisto runs on MySQL 8.0, MariaDB 10.11 and, on Bagisto 2.5, PostgreSQL 16; these are the versions CI tests. The `utf8mb4_unicode_ci` collation is recommended on MySQL and MariaDB for full Unicode support.
+- **Symptom:** A package that works on MySQL fails on PostgreSQL with type, grouping or syntax errors, or searches that no longer match.
+- **Cause:** Bagisto runs on MySQL 8.0, MariaDB 10.11 and PostgreSQL 16 (2.4 has no PostgreSQL support). PostgreSQL has a case-sensitive `LIKE`, truncates `CAST(… AS CHAR)` to one character, rejects ungrouped selected columns and empty strings in typed columns, and returns booleans as `true` and `false`.
+- **Fix:** Route database-specific SQL through `db_grammar()` and cast boolean columns; see [Database Compatibility](./database-compatibility.md).
 
-### PostgreSQL-only Failures
+### Migration Order
 
-Code that only ever ran on MySQL fails on PostgreSQL in predictable ways: case-sensitive `LIKE`, `CAST(… AS CHAR)` truncating to one character, `GROUP BY` rejecting a query that selects ungrouped columns, empty strings written to typed columns, and booleans coming back as `true`/`false` rather than `1`/`0`. Route raw SQL through `db_grammar()` and cast boolean columns; the full list is on [Database compatibility](./database-compatibility.md).
+- **Symptom:** A migration in your package fails to add a foreign key to a core table.
+- **Cause:** Laravel sorts the migrations of every package into one list by file name, whichever service provider loaded them.
+- **Fix:** Give the migration a timestamp later than the core migration that creates the table.
 
-### Migration Order Matters
+### Switching File Storage
 
-When running `php artisan migrate:fresh --seed`, Bagisto's package migrations run in the order they're discovered by Concord. If you add a custom package with foreign key dependencies on core tables, ensure your migrations have timestamps that come after the core migrations.
-
-### Database Session Driver
-
-Bagisto defaults to `SESSION_DRIVER=database`, and on Bagisto 2.5 to `CACHE_STORE=database` as well. If you run `php artisan migrate:fresh` but forget `--seed`, the tables exist but the application may behave unexpectedly without seed data.
-
-### Running `bagisto:install` on an existing store
-
-`bagisto:install` is the fresh-install command: it runs `db:wipe` and `migrate:fresh` before seeding. An upgrade runs `php artisan migrate` only.
-
-### Files Vanish After Switching Storage
-
-Choosing Amazon S3 or Cloudflare R2 under **Configure → File Management** changes where new uploads go; files already on the local disk are not copied, and the storefront looks for them on the new disk. Copy `storage/app/public` to the bucket first. See [File Storage](./file-storage.md).
+- **Symptom:** After choosing Amazon S3 or Cloudflare R2 in the admin's File Management configuration, existing product and category images are missing.
+- **Cause:** New uploads go to the new disk, and the storefront looks for existing files there too, but nothing copies them.
+- **Fix:** Copy `storage/app/public` to the bucket before switching; see [File Storage](./file-storage.md).
 
 ## Package Development
 
-### Service Provider Registration
+### Editing Core Packages
 
-Every Bagisto package needs a service provider registered in the root `composer.json` autoload section. Forgetting this step means your package won't be discovered:
+- **Symptom:** Your change disappears or conflicts on the next Bagisto update.
+- **Cause:** It was made inside `packages/Webkul/<Package>` or `vendor/`.
+- **Fix:** Put it in your own package: override the view from a theme, listen to the event, merge configuration from your service provider, or replace the model through Concord. See [Event Listeners](./event-listeners.md) and [Models](../package-development/models.md).
 
-```json
-"autoload": {
-    "psr-4": {
-        "Webkul\\YourPackage\\": "packages/Webkul/YourPackage/src"
-    }
-}
-```
+### Registering a Package
 
-After adding, run:
+- **Symptom:** The package's classes aren't found, or its routes, views, translations, migrations or models never load.
+- **Cause:** One of its three registrations is missing: the namespace in `autoload` in the root `composer.json` (classes), the service provider in `bootstrap/providers.php` (routes, views, translations, migrations), or, for a package with models, the `ModuleServiceProvider` in `config/concord.php` (models).
+- **Fix:** Add the missing one, and run `composer dump-autoload` after editing `composer.json`. See [Package Development](../package-development/getting-started.md) and [Models](../package-development/models.md#the-manifest-file).
 
-```bash
-composer dump-autoload
-```
+### Admin Routes Need an ACL Entry
 
-### Concord Module Registration
+- **Symptom:** A restricted admin role gets `401` on your route, while the default administrator can open it.
+- **Cause:** The `admin` middleware, `Webkul\User\Http\Middleware\Bouncer`, refuses any admin route that isn't mapped in an `acl.php` and isn't in its short list of routes every admin may use. It applies to every role whose permission type isn't **All**, so testing as the default administrator hides the problem.
+- **Fix:** Add an ACL entry for every admin route, and use the same key with `bouncer()->hasPermission()` in controllers and views; see [Access Control List](../package-development/access-control-list.md).
 
-A package with models needs a `ModuleServiceProvider` (extending `Konekt\Concord\BaseModuleServiceProvider` or `Webkul\Core\Providers\CoreModuleServiceProvider`) listed in `config/concord.php`, and a `src/Resources/manifest.php` file, or its proxies resolve to `null`. See [Models](../package-development/models.md).
+### Saving a Product Outside the Admin Controller
 
-### Admin Routes Without ACL Entries
+- **Symptom:** A product written from your own code keeps its old price, stock or page on the storefront.
+- **Cause:** The admin's `ProductController` dispatches `catalog.product.update.before` and `catalog.product.update.after` around its save, and the listeners on the `after` event refresh the flat row, queue the indexing, reindex catalog rule prices, record the Omnibus price and clear the page and catalog API caches. Eloquent, the query builder and even `ProductRepository::update()` skip all of that.
+- **Fix:** Fire the same pair around your write:
 
-The `admin` middleware refuses any admin route that no `acl.php` maps, with a `401`, for every role except one whose permissions are set to **All**. Testing as the super admin hides it. Add an ACL entry for every admin route; see [Access Control List](../package-development/access-control-list.md).
+  ```php
+  Event::dispatch('catalog.product.update.before', $id);
 
-### Bypassing the Repository Pattern
+  $product = $this->productRepository->update($data, $id);
 
-Bagisto's repository cache automatically invalidates when you use repositories for CRUD. If you bypass the repository and write raw Eloquent queries, cached data can become stale. Always prefer repository methods:
+  Event::dispatch('catalog.product.update.after', $product);
+  ```
 
-```php
-// ✅ Correct — uses repository, triggers cache invalidation
-$this->productRepository->update($data, $id);
+  `php artisan event:list --event=catalog.product.update.after` lists the listeners.
 
-// ❌ Avoid — bypasses cache invalidation
-Product::where('id', $id)->update($data);
-```
+## Front End and Assets
 
-## Frontend & Assets
+### Assets Not Rebuilt
 
-### Vite Build Required
-
-After changing CSS or JavaScript in a package, you must rebuild assets:
-
-```bash
-# Development (with hot reload)
-npm run dev
-
-# Production build
-npm run build
-```
-
-Each package with frontend assets (Admin, Shop, Installer) has its own `vite.config.js`, and each build is run from that package's directory. The root `vite.config.js` handles the main application assets.
+- **Symptom:** A CSS, JavaScript or Vue change doesn't show in the browser.
+- **Cause:** Admin, Shop and Installer each have their own `vite.config.js` and npm scripts; the Admin and Shop builds are written to `public/themes/admin/default/build` and `public/themes/shop/default/build`.
+- **Fix:** Run `npm run build` from that package's directory, such as `packages/Webkul/Shop`, or `npm run dev` to serve the assets from Vite's development server while you work.
 
 ### Missing Tailwind Classes
 
-Tailwind only emits classes it finds while scanning source files. On Bagisto 2.5 (Tailwind 4) the scan root is the `source("../../../")` argument at the top of each package's `app.css`, which covers the package's `src/` directory, so a class used only in a file outside the package (a theme in `resources/themes`, another package) is not generated; a class built at runtime needs a `@source inline(...)` entry. On Bagisto 2.4 (Tailwind 3) the equivalent is the `content` array in `tailwind.config.js` and the `safelist`. Icon classes are declared in `app.css` too, so an icon name that is not in the `@theme` block renders blank.
+- **Symptom:** A Tailwind class, or an icon, renders with no style.
+- **Cause:** Tailwind generates only the classes it finds in the files it scans. The `source("../../../")` argument at the top of the Admin and Shop `app.css` covers that package's `src/` directory, so a class used only in a theme under `resources/themes` or another package isn't generated, and neither is a class name built at runtime. Icon classes are declared in `app.css` too.
+- **Fix:** Add an `@source` line for the extra path, or an `@source inline(...)` entry for runtime class names, then rebuild. On 2.4 (Tailwind 3) use the `content` array and `safelist` in the package's `tailwind.config.js`.
 
-## Caching Issues
+## Caching
 
 ### Stale Configuration After `.env` Changes
 
-After modifying `.env`, always clear the config cache:
+- **Symptom:** An edit to `.env` or `config/` has no effect.
+- **Cause:** `php artisan config:cache` has been run, and the cached configuration wins over `.env` until it's cleared.
+- **Fix:** Run `php artisan optimize:clear`.
 
-```bash
-php artisan config:clear
-# Or clear everything
-php artisan optimize:clear
-```
+### Full Page Cache Serving Old Pages
 
-If you've run `php artisan config:cache`, the cached config takes precedence over `.env` values until cleared.
+- **Symptom:** A guest sees an old storefront page that a signed-in customer doesn't.
+- **Cause:** The change fired no event the full page cache listens for, such as an import or a direct database write. Signed-in customers are never served cached pages (`packages/Webkul/FPC/src/CacheProfiles/FullPageCacheProfile.php`), so the problem only reproduces as a guest.
+- **Fix:** Run `php artisan responsecache:clear`. `--url` forgets only one channel, locale and currency variant; see [Configure Full Page Cache](../performance/configure-fpc.md#clear-the-cache).
 
-### Response Cache Serving Old Pages
+## Queues
 
-If storefront pages show stale content after product/category changes, the FPC event listeners may not be covering your change. The cache is switched on under **Configure → Cache Management → Full Page Cache** (there is no `RESPONSE_CACHE_ENABLED` variable); flush it from the same page or from the console:
+### The Sync Queue in Production
 
-```bash
-php artisan responsecache:clear
-```
+- **Symptom:** Product saves are slow, and mail and indexing hold up the admin's requests.
+- **Cause:** `.env.example` sets `QUEUE_CONNECTION=sync`, which runs every job inside the request, so a product save runs its inventory, price and search indexing before the page returns.
+- **Fix:** Set `QUEUE_CONNECTION` to `database` or `redis` and run a worker on both queues core uses, `php artisan queue:work --queue=default,broadcastable`. See [Queues, Jobs and Scheduling](./queue-jobs-scheduling.md#running-workers-in-production).
 
-Signed-in customers are never served cached pages, so a stale page reproduces only as a guest.
+## Mail
 
-## Queue & Jobs
+### SMTP Settings from the Admin Are Ignored
 
-### Sync Queue in Production
+- **Symptom:** Mail doesn't use the SMTP host and credentials saved in the admin's email configuration.
+- **Cause:** Those settings (`emails.configure.smtp.*`) are read only by the `bagisto-dynamic-smtp` mailer that `Webkul\Core\Providers\DynamicMailServiceProvider` registers, which falls back to `config('mail.mailers.smtp')` for any empty setting. `MAIL_MAILER` in `.env` naming another mailer bypasses it, and the admin's configuration screen shows a notice saying so.
+- **Fix:** Set `MAIL_MAILER=bagisto-dynamic-smtp`, as `.env.example` does.
 
-The default `QUEUE_CONNECTION=sync` processes all jobs synchronously during the HTTP request. This works for development but causes timeouts in production when saving products with Elasticsearch indexing or processing large imports.
+## Admin and Debugging
 
-Switch to `redis` or `database` driver for production and run a queue worker:
+### Changing the Admin URL
 
-```properties
-QUEUE_CONNECTION=redis
-```
+- **Symptom:** The admin still answers on the old prefix, or returns `404` on the new one.
+- **Cause:** `APP_ADMIN_URL` sets the prefix of every admin route (`config('app.admin_url')`, `admin` by default), and the configuration and routes are cached.
+- **Fix:** Run `php artisan optimize:clear` after changing it. The storefront maintenance page never applies under that prefix.
 
-```bash
-php artisan queue:work
-```
+### Setting `APP_DEBUG_ALLOWED_IPS`
 
-## Mail Configuration
+- **Symptom:** Every request and artisan command stops with a class-not-found error for the old Debugbar facade.
+- **Cause:** Any value in `APP_DEBUG_ALLOWED_IPS` makes `AppServiceProvider` call a facade that the installed debug bar no longer ships.
+- **Fix:** Leave it empty and control the debug bar with `APP_DEBUG` and `DEBUGBAR_ENABLED`; see [Debugging Tips](./debugging.md#when-it-appears).
 
-### Dynamic SMTP
+## Search
 
-Bagisto uses a custom `bagisto-dynamic-smtp` mail driver that reads SMTP settings from the database (admin panel configuration) rather than `.env` only. If email settings in the admin panel differ from `.env`, the admin panel values take precedence.
+### Search Index Out of Date
 
-This is handled by `Webkul\Core\Providers\DynamicSmtpServiceProvider`.
+- **Symptom:** Elasticsearch results, price sorting or filters don't match the catalog after attribute, category or customer group changes, or after the nightly price reindex.
+- **Cause:** A document holds the product as it was last indexed. Attribute, category and customer group changes and the scheduled price reindexes don't rewrite it; see [Search Engines](./search-engines.md#things-to-watch).
+- **Fix:** Run `php artisan indexer:index --type=search --mode=full` (`--type=elastic` on 2.4); it does nothing unless an external search engine is enabled. For connection problems, see [Configure Elasticsearch](../performance/configure-elasticsearch.md#troubleshooting).
 
-## Admin Panel
+## Channels and Locales
 
-### Custom Admin URL
+### Settings Are per Channel and Locale
 
-The admin panel URL is configured via `APP_ADMIN_URL` in `.env`:
+- **Symptom:** A setting saved in the admin reads as its default in code, or on another channel.
+- **Cause:** Many settings are saved per channel, per locale, or both, and `core()->getConfigData()` reads the current channel and locale, falling back to the field's default when nothing is saved there.
+- **Fix:** Save the setting for the channel and locale that reads it, or pass the channel and locale codes to `core()->getConfigData()`.
 
-```properties
-APP_ADMIN_URL=admin
-```
+### Maintenance Mode Is One Switch Plus a Flag per Channel
 
-Changing this value requires clearing the route cache:
+- **Symptom:** A channel's maintenance page doesn't appear, or saving one channel brings every channel back up.
+- **Cause:** The storefront shows its maintenance page only when Laravel's maintenance mode is on **and** the current channel's `is_maintenance_on` is set (`Webkul\Core\Http\Middleware\PreventRequestsDuringMaintenance`); the admin URL and the channel's allowed IPs always get through. `php artisan down` sets the flag on every channel and turns maintenance mode on; `php artisan up` clears both. Saving a channel turns maintenance mode on or off to match that channel alone, so saving one with maintenance off brings back every channel.
+- **Fix:** After changing maintenance on one channel, check the others and confirm the state with `php artisan about`. On more than one web server, share the state with `APP_MAINTENANCE_DRIVER=cache`; see [Configure Load Balancing](../performance/configure-load-balancing.md).
 
-```bash
-php artisan route:clear
-```
+## Tests
 
-### ACL Not Working
+### Tests See Your Store's Data
 
-If a custom admin menu item doesn't respect ACL, verify that:
+- **Symptom:** A test that counts rows or reads the first row of a listing fails, or a test fails with "table not found".
+- **Cause:** The Pest suite runs against the database in `.env`, inside a transaction per test, and a normal run never migrates.
+- **Fix:** Assert on the records the test created, and run `php artisan migrate` first when your package adds a table; see [Testing with Pest](./testing-with-pest.md#the-test-database).
 
-1. Your `Config/acl.php` file defines the permission key
-2. Your route or controller checks the permission with the correct key
-3. The admin role has the permission enabled
+### Stale Parallel Test Databases
 
-## Elasticsearch
+- **Symptom:** `vendor/bin/pest --parallel` fails after a seeder or an existing migration changed, although the code is right.
+- **Cause:** The `_test_N` databases are kept between runs and only migrated forward.
+- **Fix:** Run `vendor/bin/pest --parallel --recreate-databases`.
 
-### Connection Refused
+### The Translations Check Fails for a New Package
 
-If product search fails with Elasticsearch errors, verify:
+- **Symptom:** `php artisan bagisto:translations:check` reports missing locale folders for your package, or never checks it.
+- **Cause:** It expects every supported locale folder in each package directly under `packages/Webkul`, and ignores packages anywhere else.
+- **Fix:** Add every locale folder; see [Coding Standards](./coding-standards.md#translations).
 
-1. Elasticsearch is running and accessible
-2. The host and credentials under **Configure → Search Engines → Elasticsearch** (or `ELASTICSEARCH_*` in `.env`, which those settings fall back to) are correct; the **Test Connection** button on that page reports `unreachable`, `unauthorized`, `incompatible` or `misconfigured`
-3. The server is an Elasticsearch 8.x cluster, which is what the `elasticsearch/elasticsearch` client targets
+## Related Pages
 
-```bash
-# Test Elasticsearch connection
-curl http://localhost:9200
-```
-
-### Index Out of Sync
-
-After bulk changes, rebuild the search index:
-
-```bash
-php artisan indexer:index --type=search --mode=full
-```
-
-On Bagisto 2.4 the type is `elastic`. Remember that a store whose **Enable External Search Engine** switch is off searches the database whatever the mode settings say.
-
-## Multi-Channel / Multi-Locale
-
-### Channel-Specific Configuration
-
-Many configuration values in Bagisto are channel-specific and locale-specific. When reading config with `core()->getConfigData()`, the current channel and locale context matters. A setting that works on one channel may return `null` on another if not configured.
-
-### Maintenance Mode is Per-Channel
-
-Bagisto's `php artisan down` command sets maintenance mode on all channels. If you only want to take down one channel, manage the `is_maintenance_on` flag directly on the channel record rather than using the artisan command.
+- [Debugging Tips](./debugging.md): the tools for a problem that isn't listed here.
+- [Database Compatibility](./database-compatibility.md): writing SQL that runs on MySQL, MariaDB and PostgreSQL.
+- [Configure Full Page Cache](../performance/configure-fpc.md): the page cache's store, checks and clearing.

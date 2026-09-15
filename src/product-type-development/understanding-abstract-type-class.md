@@ -1,298 +1,143 @@
-# Understanding AbstractType Class
+# Understanding the AbstractType Class
 
-The `AbstractType` class is the foundation that all product types in Bagisto extend. Before building advanced subscription features, it's essential to understand the key methods available and how they control product behavior.
+Every product type extends `Webkul\Product\Type\AbstractType`, in `packages/Webkul/Product/src/Type/AbstractType.php`. It decides whether a product can be sold, whether it ships, what the admin edit page shows and which rows go into the cart. This page lists the properties and methods custom types change, with core's own types as examples.
 
-::: info What You'll Learn
-- Core AbstractType methods and their purposes
-- How product availability and cart behavior is controlled
-- Which methods to override for custom product types
-- Real examples using the subscription product we built
-:::
+## What the Base Class Provides
 
-## AbstractType Overview
+`Product::getTypeInstance()` resolves your class from the container, calls `setProduct()` with the product and caches the instance on the model, so inside every method `$this->product` is the product being handled.
 
-Every product type in Bagisto extends the `AbstractType` class which provides the core functionality:
+Most flags are plain properties that a matching method returns, so a type that only changes a flag sets the property instead of overriding the method:
 
-```php
-<?php
+| Property | Default | Returned by | What it changes |
+|---|---|---|---|
+| `$isStockable` | `true` | `isStockable()` | Whether the item is shipped: the cart model's `$cart->haveStockableItems()` decides whether checkout asks for shipping, `$cart->hasOnlyStockableItems()` whether cash on delivery is offered |
+| `$showQuantityBox` | `false` | `showQuantityBox()` | The quantity box on the product page; `Virtual` sets it to `true` |
+| `$haveSufficientQuantity` | `true` | `haveSufficientQuantity()` | Whether a quantity can be sold |
+| `$isComposite` | `false` | `isComposite()` | Composite types keep their stock on child products; the admin edit page hides their inventory group |
+| `$hasVariants` | `false` | `hasVariants()` | When the admin creates a product of a variant type, it asks for the configurable attributes first |
+| `$canBeAddedToCartWithoutOptions` | `true` | `canBeAddedToCartWithoutOptions()` | Reported by the admin's `ProductResource` as `is_options_required` |
+| `$canBeCopied` | `true` | `canBeCopied()` | `copy()` throws for a type that can't be copied |
+| `$skipAttributes` | `[]` | `getEditableAttributes()` | Attribute codes left off the admin edit page and out of its validation; `manage_stock` in the list also makes `isInventoryManageable()` return `false` |
+| `$additionalViews` | `[]` | `getAdditionalViews()` | Blade views the admin edit page includes |
 
-namespace Webkul\Product\Type;
+`$isChildrenCalculated` and `$canBeMovedFromWishlistToCart` complete the set. Every type must also provide two things itself:
 
-abstract class AbstractType
-{
-    protected $product;
-    protected $isComposite = false;
-    protected $isStockable = true;
-    protected $showQuantityBox = false;
-    protected $haveSufficientQuantity = true;
-    protected $canBeMovedFromWishlistToCart = true;
-    protected $canBeAddedToCartWithoutOptions = true;
-    protected $canBeCopied = true;
-    protected $hasVariants = false;
-    protected $isChildrenCalculated = false;
-    protected $skipAttributes = [];
-    protected $additionalViews = [];
+- **`getPriceIndexer()`**: not declared on the base class, but the price index job (`Webkul\Product\Helpers\Indexers\Price::getTypeIndexer()`) and `getFinalPrice()` call it. Return `app(\Webkul\Product\Helpers\Indexers\Price\Simple::class)` unless your pricing needs its own indexer.
+- **A constructor that calls `parent::__construct()`**, if you add dependencies, since the base constructor takes eight repositories that the container injects.
 
-    // Key methods you can override:
-    public function isSaleable()
-    public function isStockable()
-    public function showQuantityBox()
-    public function haveSufficientQuantity(int $qty): bool
-    public function totalQuantity()
-    public function prepareForCart($data)
-    // ... and more
-}
-```
-
-Most of the boolean methods return the matching property, so a type that only needs to flip a flag can set the property instead of overriding the method. Apart from `haveSufficientQuantity(int $qty): bool`, none of these methods declares a return type in the base class; the `: bool`, `: int`, `: array` and `: string` annotations on the examples below are additions an override may make (PHP allows narrowing) but are not what the core declares. Two members every type must provide itself:
-
-- **`getPriceIndexer()`**: not declared on the base class but called by `getFinalPrice()` and the price indexer; return `app(\Webkul\Product\Helpers\Indexers\Price\Simple::class)` unless your pricing needs its own indexer.
-- **A constructor that calls `parent::__construct()`** if you add dependencies, since the base constructor takes eight repositories that the container injects.
+Only `haveSufficientQuantity()`, `isInventoryManageable()`, `canBeCopied()`, `handleQuantity()`, `validateCartItem()` and `isCartItemInactive()` declare a return type. An override of any other method may add one, but it must still allow every value callers expect.
 
 ## Key Methods to Understand
 
-The AbstractType class provides several important methods that control different aspects of product behavior. Let's explore the most commonly overridden methods and understand when and how to use them in your custom product types.
+These are the methods custom types override most, with the place core calls each one:
 
-### Product Availability Control
+| Method | Called from |
+|---|---|
+| `isSaleable()` | The storefront's product resources (`is_saleable`), which enable or disable **Add To Cart** |
+| `isStockable()` | The cart model's `$cart->haveStockableItems()` and `$cart->hasOnlyStockableItems()`, `OrderItem::isStockable()` and `FlatRate`'s per-unit pricing |
+| `haveSufficientQuantity(int $qty): bool` | `isSaleable()` with a quantity of one, and `prepareForCart()` with the requested quantity |
+| `showQuantityBox()` | The product page |
+| `totalQuantity()` | `Product::totalQuantity()`, and the stock checks of `Simple` and `Virtual` |
+| `getTypeValidationRules()` | `Admin\Http\Requests\ProductForm` when the product is saved |
+| `update(array $data, $id, $attributes = [])` | `ProductRepository::update()` when the product is saved |
+| `getProductPrices()` | `getPriceHtml()`, the storefront `ProductResource` (`prices`), and the configurable and bundle option helpers |
+| `getPriceHtml()` | The product page, and the storefront product and product card resources (`price_html`) |
+| `prepareForCart($data)` | `Cart::addProduct()` |
+| `getAdditionalOptions($data)` | `prepareForCart()`, to build the cart item's `additional` |
+| `compareOptions($options1, $options2)` | `Cart::getItemByProduct()`, to find an existing cart line |
 
-These methods determine if and how customers can purchase your product:
+## Product Availability Control
 
-#### `isSaleable(): bool`
+### `isSaleable()`
 
-Controls whether the product appears as purchasable:
+The base returns `false` when the product is disabled or `haveSufficientQuantity(1)` is false, and `true` otherwise. Call the parent first and add your own condition; a type that must never be sold at a price of zero, for example:
 
 ```php
-// Core method signature in AbstractType
-public function isSaleable(): bool
+/**
+ * Return true if this product type is saleable.
+ *
+ * @return bool
+ */
+public function isSaleable()
 {
-    // Checks product status and inventory availability
-    // Returns true if product can be purchased
-}
-```
-
-**For subscription products, you might override this to:**
-
-```php
-public function isSaleable(): bool
-{
-    // Check basic conditions first
     if (! parent::isSaleable()) {
         return false;
     }
-    
-    // Check subscription-specific availability
-    // Add your custom subscription-specific availability logic here
+
+    return (float) $this->product->price > 0;
 }
 ```
 
-#### `haveSufficientQuantity(int $qty): bool`
+`Downloadable` replaces the check instead of extending it: it sells an enabled product only once the product has downloadable links.
 
-Checks if enough quantity is available for purchase:
+### `haveSufficientQuantity(int $qty): bool`
+
+The base returns the `$haveSufficientQuantity` property, `true`, so a type ignores stock until it overrides this. `Virtual` checks the inventory only when the product manages stock:
+
+**File:** `packages/Webkul/Product/src/Type/Virtual.php`
 
 ```php
-// Core method signature in AbstractType
+/**
+ * Have sufficient quantity.
+ */
 public function haveSufficientQuantity(int $qty): bool
 {
-    // Validates if requested quantity is available
-    // Returns true if sufficient quantity exists
+    if (! $this->product->manage_stock) {
+        return true;
+    }
+
+    return $qty <= $this->totalQuantity();
 }
 ```
 
-**For subscriptions:**
+When it returns `false`, `prepareForCart()` throws `InsufficientProductInventoryException` and `isSaleable()` returns `false`.
+
+## Inventory and Stock Control
+
+### `isStockable()`
+
+"Stockable" means the item is shipped, not that its stock is counted; `isInventoryManageable()` answers the second question. A type that is never shipped sets the property:
 
 ```php
-public function haveSufficientQuantity(int $qty): bool
-{
-    // Add your custom subscription-specific availability logic here
-    // For now, returning true to allow all quantities (you'll customize this based on your subscription slots logic)
-    return true;
-}
+/**
+ * Subscriptions are not shipped.
+ *
+ * @var bool
+ */
+protected $isStockable = false;
 ```
 
-### Inventory and Stock Control
+A cart holding only such items skips the shipping step, cash on delivery isn't offered for it, and its order items are never shipped. `Virtual` and `Downloadable` set the same property.
 
-These methods control how your product type handles inventory tracking and stock management:
+### `totalQuantity()`
 
-#### `isStockable(): bool`
+The base reads the quantity from the product's inventory index row for the current channel, which the inventory indexer maintains, and returns `0` when there is none. Override it only when your type counts availability somewhere other than product inventories.
 
-Determines if the product uses inventory tracking:
+## Pricing and Display Methods
 
-```php
-// Core method signature in AbstractType
-public function isStockable(): bool
-{
-    // Returns whether product requires inventory management
-    // Default is true for most product types
-}
-```
+### `getProductPrices()` and `getPriceHtml()`
 
-**For subscription products:**
+`getProductPrices()` returns a `regular` price (the product's `price`) and a `final` price (`getMinimalPrice()`), each as a converted `price` and a `formatted_price`. `getPriceHtml()` renders `shop::products.prices.index` with the `product` and those `prices`; override it to render a view of your own that receives the same data, for example to print "per month" after the price.
 
-```php
-public function isStockable(): bool
-{
-    return false; // Subscriptions don't use traditional inventory
-}
-```
+::: warning Displayed Price and Charged Price
+Both methods only display a price. The cart charges `getFinalPrice()`, which reads the [price index](../advanced/understanding-indexers.md) that `getPriceIndexer()` builds, and `getMinimalPrice()` reads the same index. A different price, such as a subscription discount, belongs in a price indexer of your own: extend `Webkul\Product\Helpers\Indexers\Price\AbstractType`, override its `getMinimalPrice($qty = null)`, and return your indexer from `getPriceIndexer()`. Overriding `getProductPrices()` alone shows one price and charges another.
+:::
 
-#### `totalQuantity(): int`
+## Validation Methods
 
-Returns total available quantity:
+### `getTypeValidationRules()`
+
+Returns extra rules for the admin's product form. `Admin\Http\Requests\ProductForm` merges them into its rules when the product is saved, and a rule keyed by an attribute code replaces the `required` or `nullable` rule the form would otherwise build for that attribute. The base returns an empty array. `Downloadable` validates its links:
+
+**File:** `packages/Webkul/Product/src/Type/Downloadable.php`
 
 ```php
-// Core method signature in AbstractType
-public function totalQuantity(): int
-{
-    // Returns total available quantity for the product
-    // Usually gets data from inventory or product attributes
-}
-```
-
-**For subscriptions:**
-
-```php
-public function totalQuantity(): int
-{
-    // Add your custom subscription-specific availability logic here
-    // For example, you might have a custom attribute like `subscription_slots`
-    return $this->product->subscription_slots ?? 0;
-}
-```
-
-### User Interface Control
-
-These methods control how your product appears and behaves on the frontend, affecting the user experience and purchase flow.
-
-#### `showQuantityBox(): bool`
-
-Controls whether quantity input appears on product page:
-
-```php
-// Core method signature in AbstractType
-public function showQuantityBox(): bool
-{
-    // Returns whether to display quantity input box
-    // Default varies by product type
-}
-```
-
-**For subscriptions:**
-
-```php
-public function showQuantityBox(): bool
-{
-    // Return true to show quantity input, or false if you want fixed quantity purchases
-    return true;
-}
-```
-
-### Pricing and Display Methods
-
-These methods handle product pricing calculations and display formatting, which are essential for any product type that needs custom pricing logic:
-
-#### `getProductPrices(): array`
-
-Returns structured pricing data for the product:
-
-```php
-// Core method signature in AbstractType
-public function getProductPrices(): array
-{
-    // Returns structured pricing data with regular and final prices
-    // Includes both raw prices and formatted currency strings
-}
-```
-
-**For subscription products with custom pricing:**
-
-```php
-public function getProductPrices(): array
-{
-    $basePrice = $this->product->price;
-
-    // Apply subscription discount if applicable
-    $subscriptionDiscount = $this->product->subscription_discount ?? 0;
-    $finalPrice = $basePrice - ($basePrice * $subscriptionDiscount / 100);
-
-    return [
-        'regular' => [
-            'price' => core()->convertPrice($basePrice),
-            'formatted_price' => core()->currency($basePrice),
-        ],
-        'final' => [
-            'price' => core()->convertPrice($finalPrice),
-            'formatted_price' => core()->currency($finalPrice),
-        ],
-    ];
-}
-```
-
-#### `getPriceHtml(): string`
-
-Generates the complete price HTML for frontend display:
-
-```php
-// Core method signature in AbstractType
-public function getPriceHtml(): string
-{
-    // Generates complete price HTML for frontend display
-    // Uses pricing view templates with product and pricing data
-}
-```
-
-**For subscription products with custom pricing display:**
-
-```php
-public function getPriceHtml(): string
-{
-    // You can customize the pricing view for subscriptions
-    return view('subscription::products.prices.subscription', [
-        'product' => $this->product,
-        'prices' => $this->getProductPrices(),
-        'subscription_info' => [
-            'frequency' => $this->product->subscription_frequency,
-            'discount' => $this->product->subscription_discount,
-        ],
-    ])->render();
-}
-```
-
-### Validation Methods
-
-These methods handle form validation for product-specific data during product creation and updates:
-
-#### `getTypeValidationRules(): array`
-
-Returns validation rules for product type specific fields:
-
-```php
-// Core method signature in AbstractType
-public function getTypeValidationRules(): array
-{
-    // Returns array of validation rules for product type specific fields
-    // Used during product creation and update processes
-}
-```
-
-**For subscription products with custom validation:**
-
-```php
-public function getTypeValidationRules(): array
-{
-    return [
-        'subscription_frequency' => 'required|in:weekly,monthly,quarterly,yearly',
-        'subscription_discount' => 'nullable|numeric|min:0|max:100',
-        'subscription_duration' => 'nullable|integer|min:1',
-        'subscription_trial_period' => 'nullable|integer|min:0',
-        'subscription_slots' => 'required|integer|min:1',
-    ];
-}
-```
-
-**For downloadable products (real Bagisto example):**
-
-```php
-public function getTypeValidationRules(): array
+/**
+ * Returns validation rules.
+ *
+ * @return array
+ */
+public function getTypeValidationRules()
 {
     return [
         'downloadable_links.*.type' => 'required',
@@ -305,20 +150,11 @@ public function getTypeValidationRules(): array
 }
 ```
 
-### Admin Interface Customization
+## Admin Interface Customization
 
-These properties and methods control how your product type appears in the admin interface, particularly in the product edit page:
+### `$additionalViews` Property
 
-#### `$additionalViews` Property
-
-Specifies additional blade views to include in the product edit page:
-
-```php
-// Core property in AbstractType
-protected $additionalViews = [];
-```
-
-**For subscription products with custom admin fields:**
+Lists extra Blade views to include in the product edit page:
 
 ```php
 /**
@@ -328,157 +164,165 @@ protected $additionalViews = [];
  */
 protected $additionalViews = [
     'subscription::admin.catalog.products.edit.subscription-settings',
-    'subscription::admin.catalog.products.edit.subscription-pricing',
 ];
 ```
 
 The admin edit page includes two things for a type, in this order:
 
+**File:** `packages/Webkul/Admin/src/Resources/views/catalog/products/edit.blade.php`
+
 ```blade
+<!-- Product Type View Blade File -->
 @includeIf('admin::catalog.products.edit.types.' . $product->type)
 
+<!-- Related, Cross Sells, Up Sells View Blade File -->
+@include('admin::catalog.products.edit.links')
+
+<!-- Include Product Type Additional Blade Files If Any -->
 @foreach ($product->getTypeInstance()->getAdditionalViews() as $view)
     @includeIf($view)
 @endforeach
 ```
 
-The first is a **conventional per-type partial** in the `admin` namespace: core's own types live at `Admin/src/Resources/views/catalog/products/edit/types/{simple,configurable,grouped,bundle,downloadable,...}.blade.php`, so a package can supply `admin::catalog.products.edit.types.subscription` by publishing it into the admin theme's view path or by [registering the view](../package-development/views.md). `$additionalViews` is the second route and takes any namespace, which makes it the easier one for a package. Both use `@includeIf`, so a missing view is skipped silently rather than raising an error; if your fields do not appear, check the view name first.
+The first is a per-type partial in the `admin` namespace, where core's types keep theirs (see [Creating a Store Theme](../theme-development/creating-store-theme.md#how-views-are-resolved) for overriding it from the admin theme). `$additionalViews` takes any namespace, so a package can ship the views itself with `loadViewsFrom()`. Both use `@includeIf`, so a missing view is skipped silently; if your fields don't appear, check the view name first. Both kinds of view see the edit page's `$product`.
 
-#### `$skipAttributes` Property
+Fields added this way are saved only if something saves them. `AbstractType::update()` saves the attribute values of the product's attribute family, its channels, categories, related products, inventories, images, videos and customer group prices, and ignores any other input. For anything else, override `update()`, call the parent, and save your data through a repository, as `Downloadable` does for its links:
 
-Specifies which attributes to skip for this product type:
-
-```php
-// Core property in AbstractType
-protected $skipAttributes = [];
-```
-
-**For subscription products that don't need certain attributes:**
+**File:** `packages/Webkul/Product/src/Type/Downloadable.php`
 
 ```php
 /**
- * Skip attribute for subscription product type.
+ * Update.
+ *
+ * @param  int  $id
+ * @param  array  $attributes
+ * @return Product
+ */
+public function update(array $data, $id, $attributes = [])
+{
+    $product = parent::update($data, $id, $attributes);
+
+    if (! empty($attributes)) {
+        return $product;
+    }
+
+    $this->productDownloadableLinkRepository->saveLinks($data, $product);
+
+    $this->productDownloadableSampleRepository->saveSamples($data, $product);
+
+    return $product;
+}
+```
+
+### `$skipAttributes` Property
+
+Lists the attribute codes this type doesn't use. `Virtual` leaves out the physical ones:
+
+**File:** `packages/Webkul/Product/src/Type/Virtual.php`
+
+```php
+/**
+ * Skip attribute for virtual product type.
  *
  * @var array
  */
 protected $skipAttributes = [
-    'weight',
-    'dimensions',
-    'color',
-    'size',
-];
-```
-
-**For digital products example:**
-
-```php
-protected $skipAttributes = [
-    'weight',
-    'height',
+    'length',
     'width',
+    'height',
+    'weight',
     'depth',
+    'allow_rma',
+    'rma_rule_id',
 ];
 ```
 
-::: tip Custom Admin Sections
-Use `additionalViews` to add:
-- Custom product configuration forms
-- Specialized pricing options
-- Product type specific settings
-- Integration configurations
-- Advanced validation options
+A code the attribute family doesn't have is ignored. `Downloadable` also lists `manage_stock` and `guest_checkout`; `manage_stock` in the list makes `isInventoryManageable()` return `false`.
 
-Use `skipAttributes` to:
-- Hide irrelevant attributes for specific product types
-- Simplify the admin interface
-- Prevent unnecessary data entry
-- Focus on product type specific fields
+The storefront has no equivalent hook: `shop::products.view` includes the option partials of core's types from a fixed list, so a custom type adds its controls by overriding that view in a theme or through the page's [View Render Events](../advanced/view-render-events.md#product-page-events), as [Building Your Subscription Product Type](./building-your-subscription-product-type.md#step-3-add-the-frequency-field-to-the-product-page) does.
 
-These views are automatically included in the product edit page and have access to the `$product` variable.
-:::
+## Cart Integration
 
-Fields added this way are saved like any other product data: `AbstractType::update()` receives the whole request, and `getTypeValidationRules()` is where their validation belongs. For the storefront there is no equivalent hook; `shop::products.view` includes the option partials of the core types from a fixed list, so a custom type adds its controls by overriding that view in a theme or through the page's `view_render_event` hooks.
+### `prepareForCart($data)`
 
-### Cart Integration
+The most important method: it turns an add-to-cart request into the rows `Cart::addProduct()` saves as cart items.
 
-#### `prepareForCart($data)`
-
-The most important method - processes product data before adding to cart:
+**File:** `packages/Webkul/Product/src/Type/AbstractType.php`
 
 ```php
-// Core method signature in AbstractType
+/**
+ * Add product. Returns error message if can't prepare product.
+ *
+ * @param  array  $data
+ * @return array
+ *
+ * @throws InsufficientProductInventoryException
+ */
 public function prepareForCart($data)
 {
-    // Processes product data for cart addition
-    // Returns an array of cart item data on success,
-    // or a string error message on failure (the cart treats a
-    // string return value as an error and aborts the add-to-cart).
-    // Handles pricing, validation, and product-specific logic
-}
-```
+    $data['quantity'] = $this->handleQuantity((int) $data['quantity']);
 
-**For subscription products:**
+    $data = $this->getQtyRequest($data);
 
-```php
-public function prepareForCart($data)
-{
-    if (empty($data['subscription_frequency'])) {
-        return trans('subscription::app.checkout.cart.missing-frequency');
+    if (! $this->haveSufficientQuantity($data['quantity'])) {
+        throw new InsufficientProductInventoryException(trans('product::app.checkout.cart.inventory-warning'));
     }
 
-    $products = parent::prepareForCart($data);
+    $price = $this->getFinalPrice();
 
-    if (is_string($products)) {
-        return $products;
-    }
-
-    $products[0]['additional']['subscription_frequency'] = $data['subscription_frequency'];
-    $products[0]['additional']['subscription_start_date'] = $data['start_date'] ?? now()->addDay()->format('Y-m-d');
+    $products = [
+        [
+            'product_id' => $this->product->id,
+            'sku' => $this->product->sku,
+            'quantity' => $data['quantity'],
+            'name' => $this->product->name,
+            'price' => $convertedPrice = core()->convertPrice($price),
+            'price_incl_tax' => $convertedPrice,
+            'base_price' => $price,
+            'base_price_incl_tax' => $price,
+            'total' => $convertedPrice * $data['quantity'],
+            'total_incl_tax' => $convertedPrice * $data['quantity'],
+            'base_total' => $price * $data['quantity'],
+            'base_total_incl_tax' => $price * $data['quantity'],
+            'weight' => (float) ($this->product->weight ?? 0),
+            'total_weight' => (float) ($this->product->weight ?? 0) * $data['quantity'],
+            'base_total_weight' => (float) ($this->product->weight ?? 0) * $data['quantity'],
+            'type' => $this->product->type,
+            'additional' => $this->getAdditionalOptions($data),
+        ],
+    ];
 
     return $products;
 }
 ```
 
-Leave the signature untyped, as the base class declares it: the method returns an **array** of cart-item rows on success and a **string** error message on failure (core's `Simple` type returns one when required customizable options are missing, and the cart aborts the add with that message), so a `: array` return type would throw the moment an error is reported. Check the parent's result before indexing it for the same reason. `AbstractType::prepareForCart()` itself never returns a string; it throws `InsufficientProductInventoryException` when the quantity is not available.
+`getQtyRequest()` adds the quantity already in the cart when `Cart::getItemByProduct()` finds a matching line, which is why the stock check sees the combined quantity.
 
+An override returns an **array** of cart-item rows on success or a **string** error message, which `Cart::addProduct()` turns into an exception carrying that message; core's `Simple` returns one when required customizable options are missing. Keep the signature untyped, as the base declares it: a `: array` return type throws the moment an error is reported. The subscription type's override, which refuses a request without a frequency, is in [Building Your Subscription Product Type](./building-your-subscription-product-type.md#step-1-enhance-the-subscription-class). If your type extends `Simple` and changes the rows the parent returns, check them with `is_string()` first.
 
+### `getAdditionalOptions($data)` and `compareOptions($options1, $options2)`
+
+`getAdditionalOptions()` decides what is stored in the cart item's `additional` column, which is copied to the order item; the base returns the request data unchanged. An `attributes` list of `attribute_name` and `option_label` pairs in it is printed with the item in the storefront cart and on the admin order page.
+
+`compareOptions()` decides whether a new request belongs to an existing cart line. The base compares only the product id and the parent id, so a type whose options should give separate lines overrides it. The subscription type overrides both.
 
 ## Exploring More Methods
 
-The methods covered above are the most commonly overridden ones, but the AbstractType class contains many more methods that you can customize based on your specific requirements. We recommend exploring the full AbstractType class to discover additional methods that might be useful for your custom product type implementation.
+A few other methods are worth knowing before you override them:
 
-::: tip Pro Tip
-Check out the complete AbstractType class in `packages/Webkul/Product/src/Type/AbstractType.php` to see all available methods and understand their purposes. This will help you identify which methods to override for your specific use case.
-:::
+| Method | Role |
+|---|---|
+| `create(array $data)` | Creates the product row and assigns it to the default channel |
+| `copy()` | Duplicates the product for the admin's copy action, unless `canBeCopied()` is false |
+| `validateCartItem(CartItem $item): CartItemValidationResult` | Re-prices a cart item from `getFinalPrice()`, and marks it inactive when its product was disabled or removed from the cart's channel. `Cart::validateItems()` calls it for every item, and `collectTotals()` runs that first |
+| `isCartItemInactive(\Webkul\Checkout\Contracts\CartItem $item): bool` | The inactive check itself; it also checks the children of `bundle` and `configurable` items by type name |
+| `getOrderedItem($item)` | The item whose product data an order line shows; the base returns the item itself |
+| `getBaseImage($item)` | The image shown for a cart or order item |
+| `priceRuleCanBeApplied()` | Whether catalog price rules apply to the type |
+| `isInventoryManageable(): bool` | Whether stock is counted; `false` when `manage_stock` is in `$skipAttributes` |
 
-## What's Next?
+## Next Step
 
-Now that you understand the key `AbstractType` methods, let's put them into practice:
+Next, put these methods to work: a frequency field, separate cart lines per frequency and a checkout without shipping.
 
-**📖 [Building Your Subscription Product Type →](./building-your-subscription-product-type.md)**  
-See how to implement these methods in a complete, functional subscription product type with real business logic.
-
-::: tip Key Takeaways
-
-**Essential Methods:**
-- `isSaleable()` - Controls product availability
-- `isStockable()` - Determines inventory behavior  
-- `showQuantityBox()` - Controls UI elements
-- `getProductPrices()` - Handles pricing calculations
-- `getPriceHtml()` - Generates price display
-- `getTypeValidationRules()` - Defines validation rules
-- `prepareForCart()` - Handles cart integration
-
-**Essential Properties:**
-- `$additionalViews` - Custom admin interface sections
-- `$skipAttributes` - Skip irrelevant attributes for product type
-
-**Override Patterns:**
-- Call parent methods first when possible
-- Add your custom logic on top
-- Handle errors gracefully
-- Test thoroughly in different scenarios
-
-:::
-
-Understanding these AbstractType methods is crucial before implementing advanced features. The next section will show you how to use these methods to build sophisticated subscription functionality.
+**Continue to:** [Building Your Subscription Product Type](./building-your-subscription-product-type.md)

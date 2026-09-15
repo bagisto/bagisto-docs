@@ -1,275 +1,296 @@
 # Controllers
 
-Controllers in Laravel act as the bridge between your routes and business logic, handling HTTP requests and coordinating with repositories to return appropriate responses. In Bagisto, controllers follow a structured approach that separates admin panel functionality from storefront operations while integrating seamlessly with the repository pattern.
+On this page you replace the route closures with controllers: a form request that validates the FAQ form, an admin controller that creates, edits and deletes questions, and a storefront controller that lists them. A package's controllers live in `src/Http/Controllers`, split into `Admin` and `Shop` folders like core's.
 
-For our RMA package, we'll create controllers that handle the admin interface for managing return requests, using the repository we built earlier to interact with our data.
+<a id="base-controller"></a>
 
-::: info Learning Objective
-This section demonstrates how to create organized, maintainable controllers that use dependency injection with repositories and follow Bagisto's architectural patterns for both admin and shop functionality.
-:::
+## The Base Controllers
 
-For detailed information on Laravel controllers, visit the [Laravel Documentation on Controllers](https://laravel.com/docs/controllers).
+| Base class | For | Provides |
+|---|---|---|
+| `Webkul\Admin\Http\Controllers\Controller` | Admin controllers | Laravel's `AuthorizesRequests`, `DispatchesJobs` and `ValidatesRequests` traits, and `redirectToLogin()` |
+| `Webkul\Shop\Http\Controllers\Controller` | Storefront controllers | `DispatchesJobs` and `ValidatesRequests` |
 
-## Bagisto Controller Architecture
+A package's admin and storefront controllers extend these two, so the package needs no base controller of its own.
 
-Bagisto follows a structured approach to controller organization:
+## Validate with a Form Request
 
-### Admin Controllers
-- **Purpose**: Handle administrative functionality for your package
-- **Location**: `Http/Controllers/Admin/` directory
-- **Features**: Full CRUD operations, data management, repository integration
-- **Access**: Protected by admin middleware
-
-### Shop Controllers  
-- **Purpose**: Handle customer-facing functionality
-- **Location**: `Http/Controllers/Shop/` directory
-- **Features**: Customer interactions, limited operations, public interfaces
-- **Access**: Protected by shop middleware
-
-## Creating Controller Structure
-
-Let's create the controller structure for our RMA package, starting with the basic setup and then implementing the index functionality.
-
-### Directory Structure
-
-Create the following directory structure in your package:
-
-```bash
-mkdir -p packages/Webkul/RMA/src/Http/Controllers/Admin
-mkdir -p packages/Webkul/RMA/src/Http/Controllers/Shop
-```
-
-```text
-packages
-└── Webkul
-    └── RMA
-        └── src
-            ├── ...
-            └── Http
-                └── Controllers
-                    ├── Controller.php
-                    ├── Admin
-                    │   └── ReturnRequestController.php
-                    └── Shop
-                        └── ReturnRequestController.php
-```
-
-### Base Controller
-
-Create `packages/Webkul/RMA/src/Http/Controllers/Controller.php`:
+**File:** `packages/Webkul/Faq/src/Http/Requests/FaqRequest.php`
 
 ```php
 <?php
 
-namespace Webkul\RMA\Http\Controllers;
+namespace Webkul\Faq\Http\Requests;
 
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Http\FormRequest;
 
-class Controller extends BaseController
-{
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-}
-```
-
-::: info Base Controller Explanation
-**Purpose**: Provides common functionality for all controllers in your package
-
-**Traits Used:**
-- **AuthorizesRequests**: Enables authorization policies and gates
-- **DispatchesJobs**: Allows dispatching queued jobs
-- **ValidatesRequests**: Provides request validation capabilities
-
-**Inheritance**: Extends Laravel's base controller while maintaining package isolation
-
-**Alternative**: Admin controllers may instead extend `Webkul\Admin\Http\Controllers\Controller`, which carries the same three traits plus a `redirectToLogin()` helper. Every core admin controller does; the later pages of this tutorial use it too.
-:::
-
-::: tip Events around writes
-Core controllers dispatch a `before` and `after` event around every create, update and delete, for example `Event::dispatch('sales.rma.request.create.before')` and `Event::dispatch('sales.rma.request.create.after', $rma)`. Do the same in your package so other packages can react without editing your code; the [Event Listeners](../advanced/event-listeners.md) page lists the naming convention.
-:::
-
-## Creating Controllers
-
-Now let's create the actual controllers that will handle our RMA functionality, starting with the essential index method.
-
-### Admin Controller
-
-Create `packages/Webkul/RMA/src/Http/Controllers/Admin/ReturnRequestController.php`:
-
-```php
-<?php
-
-namespace Webkul\RMA\Http\Controllers\Admin;
-
-use Webkul\RMA\Http\Controllers\Controller;
-use Webkul\RMA\Repositories\ReturnRequestRepository;
-
-class ReturnRequestController extends Controller
+class FaqRequest extends FormRequest
 {
     /**
-     * Create a new controller instance.
+     * Determine if the user is authorized to make this request.
      */
-    public function __construct(
-        protected ReturnRequestRepository $returnRequestRepository
-    ) {}
-
-    /**
-     * Display a listing of return requests.
-     */
-    public function index()
+    public function authorize(): bool
     {
-        // For now, return a simple response
-        // We'll enhance this with views in the Views section
-        return 'Admin RMA Return Requests List - Using Controller!';
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     */
+    public function rules(): array
+    {
+        return [
+            'channel_id' => ['required', 'integer', 'exists:channels,id'],
+            'question' => ['required', 'string', 'max:255'],
+            'answer' => ['required', 'string'],
+            'sort_order' => ['required', 'integer', 'min:0'],
+            'status' => ['boolean'],
+        ];
+    }
+
+    /**
+     * Treat an unchecked status switch as inactive.
+     */
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'status' => $this->boolean('status'),
+        ]);
     }
 }
 ```
 
-::: info Admin Controller Explanation
-**Key Components:**
+- **`authorize()` returns `true`** because the route's `admin` middleware has already checked the admin's permission against the ACL. A form request whose `authorize()` returns `false` refuses every request with a `403`.
+- **`prepareForValidation()`** turns the status switch into a boolean before the rules run. An unchecked switch sends nothing, and without this step the question would take the column's default and stay published.
 
-- **Dependency Injection**: Repository injected via constructor using PHP 8 property promotion
-- **Namespace**: Organized under `Admin` for clear separation
-- **Base Class**: Extends our package's base controller
-- **Index Method**: Simple implementation that will be enhanced with views later
+<a id="creating-controllers"></a>
+<a id="admin-controller"></a>
 
-**Repository Integration**: The controller uses the repository we created earlier for data access
-:::
+## The Admin Controller
 
-### Shop Controller
-
-Create `packages/Webkul/RMA/src/Http/Controllers/Shop/ReturnRequestController.php`:
+**File:** `packages/Webkul/Faq/src/Http/Controllers/Admin/FaqController.php`
 
 ```php
 <?php
 
-namespace Webkul\RMA\Http\Controllers\Shop;
+namespace Webkul\Faq\Http\Controllers\Admin;
 
-use Webkul\RMA\Http\Controllers\Controller;
-use Webkul\RMA\Repositories\ReturnRequestRepository;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Event;
+use Illuminate\View\View;
+use Webkul\Admin\Http\Controllers\Controller;
+use Webkul\Faq\Http\Requests\FaqRequest;
+use Webkul\Faq\Repositories\FaqRepository;
 
-class ReturnRequestController extends Controller
+class FaqController extends Controller
 {
     /**
      * Create a new controller instance.
      */
-    public function __construct(
-        protected ReturnRequestRepository $returnRequestRepository
-    ) {}
+    public function __construct(protected FaqRepository $faqRepository) {}
 
     /**
-     * Display a listing of customer return requests.
+     * Show the FAQ listing page.
      */
-    public function index()
+    public function index(): View
     {
-        // For now, return a simple response
-        // We'll enhance this with views in the Views section
-        return 'Shop RMA Return Requests List - Using Controller!';
+        return view('faq::admin.index');
+    }
+
+    /**
+     * Show the form for creating a question.
+     */
+    public function create(): View
+    {
+        return view('faq::admin.create');
+    }
+
+    /**
+     * Store a new question.
+     */
+    public function store(FaqRequest $request): RedirectResponse
+    {
+        Event::dispatch('faq.create.before');
+
+        $faq = $this->faqRepository->create($request->validated());
+
+        Event::dispatch('faq.create.after', $faq);
+
+        session()->flash('success', trans('faq::app.admin.create-success'));
+
+        return redirect()->route('admin.faq.index');
+    }
+
+    /**
+     * Show the form for editing a question.
+     */
+    public function edit(int $id): View
+    {
+        $faq = $this->faqRepository->findOrFail($id);
+
+        return view('faq::admin.edit', compact('faq'));
+    }
+
+    /**
+     * Update a question.
+     */
+    public function update(FaqRequest $request, int $id): RedirectResponse
+    {
+        Event::dispatch('faq.update.before', $id);
+
+        $faq = $this->faqRepository->update($request->validated(), $id);
+
+        Event::dispatch('faq.update.after', $faq);
+
+        session()->flash('success', trans('faq::app.admin.update-success'));
+
+        return redirect()->route('admin.faq.index');
+    }
+
+    /**
+     * Delete a question.
+     */
+    public function destroy(int $id): JsonResponse
+    {
+        $this->faqRepository->findOrFail($id);
+
+        Event::dispatch('faq.delete.before', $id);
+
+        $this->faqRepository->delete($id);
+
+        Event::dispatch('faq.delete.after', $id);
+
+        return new JsonResponse([
+            'message' => trans('faq::app.admin.delete-success'),
+        ]);
     }
 }
 ```
 
-::: info Shop Controller Explanation
-**Key Components:**
+| Action | Returns | Why |
+|---|---|---|
+| `index()`, `create()`, `edit()` | A view | [Views](./views.md) creates the templates |
+| `store()`, `update()` | A redirect, with a `success` message flashed to the session | The admin layout shows `success`, `warning`, `error` and `info` messages it finds in the session |
+| `destroy()` | JSON with a `message` | The DataGrid's delete action calls it with AJAX and shows `message` |
 
-- **Customer Focus**: Designed for customer-facing functionality
-- **Limited Scope**: Typically fewer operations than admin controllers
-- **Same Structure**: Follows the same dependency injection pattern as admin controller
+A failed validation redirects back with the errors, which `<x-admin::form>` shows beside each field, and a missing id ends in a `404` from `findOrFail()` or the repository's `update()`. The strings passed to `trans()` come from the language file that [Localization](./localization.md) creates.
 
-**Future Enhancement**: Will be expanded with customer-specific functionality in later sections
-:::
+### Events Around Every Write
 
-## Updating Routes to Use Controllers
+Each write is wrapped in a `before` and an `after` event, as core controllers do. The `before` event receives the id, or nothing on create, and the `after` event receives the model, or the id once the row is gone. The FAQ has a single entity, so its names leave the entity out, as core's `customer.create.after` does. Other packages listen to these names without touching your controller: [Firing Events from Your Package](../advanced/event-listeners.md#firing-events-from-your-package) covers the convention, and [Events, Commands and Tests](./events-commands-and-tests.md) adds a listener.
 
-Now that we have our controllers, let's update the route files we created earlier to use these controllers instead of callback functions.
+<a id="shop-controller"></a>
 
-### Update Admin Routes
+## The Storefront Controller
 
-Update `packages/Webkul/RMA/src/Routes/admin-routes.php`:
+**File:** `packages/Webkul/Faq/src/Http/Controllers/Shop/FaqController.php`
 
-```php{17-18}
+```php
+<?php
+
+namespace Webkul\Faq\Http\Controllers\Shop;
+
+use Illuminate\View\View;
+use Webkul\Faq\Repositories\FaqRepository;
+use Webkul\Shop\Http\Controllers\Controller;
+
+class FaqController extends Controller
+{
+    /**
+     * Create a new controller instance.
+     */
+    public function __construct(protected FaqRepository $faqRepository) {}
+
+    /**
+     * Show the active questions of the current channel.
+     */
+    public function index(): View
+    {
+        return view('faq::shop.index', [
+            'faqs' => $this->faqRepository->getActiveForChannel(core()->getCurrentChannel()->id),
+            'title' => trans('faq::app.shop.index.title'),
+        ]);
+    }
+}
+```
+
+`core()->getCurrentChannel()` is the channel serving the request, so each storefront shows only its own questions.
+
+<a id="updating-routes-to-use-controllers"></a>
+
+## Point the Routes at the Controllers
+
+Replace the closures from [Routes](./routes.md). The admin file gains the create, edit and delete routes:
+
+**File:** `packages/Webkul/Faq/src/Routes/admin-routes.php`
+
+```php
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Webkul\RMA\Http\Controllers\Admin\ReturnRequestController;
+use Webkul\Core\Http\Middleware\NoCacheMiddleware;
+use Webkul\Faq\Http\Controllers\Admin\FaqController;
 
 Route::group([
-    'middleware' => ['web', 'admin'],
+    'middleware' => ['web', 'admin', NoCacheMiddleware::class],
     'prefix' => config('app.admin_url'),
 ], function () {
-    /**
-     * Return request routes.
-     */
-    Route::prefix('rma/return-requests')->group(function () {
-        /**
-         * List return requests.
-         */
-        Route::get('', [ReturnRequestController::class, 'index'])
-            ->name('admin.rma.return-requests.index');
+    Route::controller(FaqController::class)->prefix('faq')->group(function () {
+        Route::get('', 'index')->name('admin.faq.index');
+
+        Route::get('create', 'create')->name('admin.faq.create');
+
+        Route::post('create', 'store')->name('admin.faq.store');
+
+        Route::get('edit/{id}', 'edit')->name('admin.faq.edit');
+
+        Route::put('edit/{id}', 'update')->name('admin.faq.update');
+
+        Route::delete('edit/{id}', 'destroy')->name('admin.faq.delete');
     });
 });
 ```
 
-### Update Shop Routes
+**File:** `packages/Webkul/Faq/src/Routes/shop-routes.php`
 
-Update `packages/Webkul/RMA/src/Routes/shop-routes.php`:
-
-```php{16-17}
+```php
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Webkul\RMA\Http\Controllers\Shop\ReturnRequestController;
+use Webkul\Core\Http\Middleware\PreventRequestsDuringMaintenance;
+use Webkul\Faq\Http\Controllers\Shop\FaqController;
 
 Route::group([
-    'middleware' => ['web', 'shop'],
+    'middleware' => ['web', 'shop', PreventRequestsDuringMaintenance::class],
 ], function () {
-    /**
-     * Customer return request routes.
-     */
-    Route::prefix('rma/return-requests')->group(function () {
-        /**
-         * List customer return requests.
-         */
-        Route::get('', [ReturnRequestController::class, 'index'])
-            ->name('shop.rma.return-requests.index');
-    });
+    Route::get('faq', [FaqController::class, 'index'])->name('shop.faq.index');
 });
 ```
 
-::: tip Route Update Benefits
-**Before**: Routes used callback functions that returned simple strings
+The edit, update and delete routes share the path `edit/{id}` and differ by HTTP method, as core's CMS routes do. Like core, the controller takes the id and resolves it through the repository rather than using route model binding.
 
-**After**: Routes now use proper controllers with dependency injection and repository access
+<a id="testing-your-controllers"></a>
 
-This change enables us to add complex business logic, data retrieval, and view rendering as we continue developing the package.
-:::
+## Test It
 
-## Testing Your Controllers
+1. List the routes. Seven are listed, six admin and one storefront, each with its controller action:
 
-Verify your controllers are working correctly:
+   ```bash
+   php artisan route:list --name=faq
+   ```
 
-```bash
-# Test the routes in your browser
-# Admin: http://your-app.com/admin/rma/return-requests
-# Shop: http://your-app.com/rma/return-requests
-```
+2. Open `/admin/faq`. Until [Views](./views.md) creates the templates, it fails with an error about the missing `faq` view namespace.
 
-You should now see:
-- **Admin Route**: "Admin RMA Return Requests List - Using Controller!"
-- **Shop Route**: "Shop RMA Return Requests List - Using Controller!"
+## Things to Watch
 
-::: info Testing Tips
-**Verification Commands:**
-- Check routes are updated: `php artisan route:list | grep rma`
-- Test dependency injection: Controllers should load without errors
-- Verify repository access: No "class not found" errors indicate successful injection
-:::
+- **Keep validation in the form request.** Older core controllers call `$this->validate()` inline; a form request keeps the rules in one class a reviewer can read, and mass actions validate too.
+- **Scope storefront data to its owner.** The FAQ is public, but a storefront controller that shows customer data filters by `auth()->guard('customer')->id()` in the repository, never by an id from the request alone.
+- **Fire both events of a pair.** A listener that needs the row before it changes, such as a cache that must forget a page before the row is deleted, can only use the `before` event.
+- **Change a core controller by binding a subclass.** Laravel resolves a route's controller from the container, so binding `Webkul\Shop\Http\Controllers\SearchController` to your subclass in your provider's `register()` changes every route that names it, without editing core.
 
-## Your Next Step
+## Next Step
 
-With your controllers created and routes updated, you now have a working controller layer that integrates with your repository. The next logical step is to create views that will replace the simple string responses with proper HTML interfaces.
+The controllers render views that don't exist yet. Next, create them.
 
-**Continue to:** **[Views](./views.md)** - Create admin panel interfaces for your RMA package
+**Continue to:** [Views](./views.md)

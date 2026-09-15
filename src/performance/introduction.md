@@ -1,92 +1,34 @@
 # Introduction
 
-Bagisto is engineered for **speed**, **scalability**, and **efficiency**, delivering exceptional e-commerce performance even under heavy traffic loads. This comprehensive guide covers advanced performance optimization techniques, intelligent caching strategies, and scalability solutions to maximize your store's potential.
+This section sets Bagisto up for production: its caches, search, and what changes on more than one server or a long-running PHP server. The pages under **Digging Deeper** explain how each mechanism works. The guides here configure it, each in the same order: when you need it, the setup steps, how to test it, and what to watch.
 
-::: info Performance Impact
-Modern e-commerce requires [Core Web Vitals](https://web.dev/vitals/) optimization. Bagisto prioritizes excellent [LCP](https://web.dev/lcp/) (Largest Contentful Paint) and [CLS](https://web.dev/cls/) (Cumulative Layout Shift) scores for superior user experience.
-:::
+## What Bagisto Does Out of the Box
 
-## Performance Architecture
+| Layer | Shipped default | Guide |
+|---|---|---|
+| Full page cache | On, for guest storefront pages, stored in the `file` cache store | [Configure Full Page Cache](./configure-fpc.md) |
+| Application and repository cache | The `database` store; six core repositories cache their reads | [Cache Strategy](../advanced/cache-strategy.md) |
+| Catalog API cache | Guest product and category API responses, for an hour | [Cache Strategy](../advanced/cache-strategy.md#catalog-api-cache) |
+| Product search | The database | [Configure Elasticsearch](./configure-elasticsearch.md) |
+| Queue | `sync` in `.env.example`: jobs run inside the request | [Queues, Jobs and Scheduling](../advanced/queue-jobs-scheduling.md) |
+| Media | The local `public` disk | [File Storage](../advanced/file-storage.md) |
+| Resized images | Resized on every request, sent with a 30-day `Cache-Control` header | [Cache Strategy](../advanced/cache-strategy.md#image-cache) |
 
-### Multi-Layer Caching Strategy
-Bagisto implements a sophisticated caching ecosystem designed for maximum performance:
+## Tuning Checklist
 
-| **Cache Layer** | **Purpose** |
-|---|---|
-| **Full Page Cache (FPC)** | Complete storefront pages, on by default, invalidated by catalog events |
-| **Repository cache** | Query results cached by the repositories, invalidated on write |
-| **Reverse proxy cache** | Varnish, or the web server's own page cache, in front of PHP |
-| **Image cache** | Resized images served with long-lived HTTP cache headers |
-| **Asset Bundling** | Vite builds with hashed file names for permanent browser caching |
+1. **Move the queue off `sync`** so mail, index updates and imports leave the request.
+2. **Put the caches and sessions on Redis** when the database is under load, and give the [full page cache a store of its own](./configure-fpc.md#choose-where-pages-are-stored).
+3. **[Use Elasticsearch](./configure-elasticsearch.md)** when database search is too slow for the catalog, and give each environment its own index prefix.
+4. **[Serve media from Amazon S3 or Cloudflare R2](../advanced/file-storage.md)**, and put a CDN or reverse proxy in front of `/cache/` so resized images aren't generated for every visitor.
 
-### High-Performance Runtime
-- **Laravel Octane Integration**: Supercharged application performance with Swoole/RoadRunner
-- **Asynchronous Processing**: Non-blocking operations for critical user interactions
-- **Memory-Resident Applications**: Persistent application state for lightning-fast responses
+Workers, the scheduler and framework caches are part of every deployment; see [Deployment](../getting-started/deployment.md#production-checklist).
 
-### Enterprise Search & Indexing
-- **Elasticsearch Integration**: Advanced full-text search with sub-second response times
-- **Smart Product Indexing**: Optimized catalog browsing and filtering
-- **Real-time Search Suggestions**: Enhanced customer discovery experience
+## Pages in This Section
 
-## Performance Optimization Guides
+- **[Configure Elasticsearch](./configure-elasticsearch.md)**: connecting a cluster, building the product index, and troubleshooting the connection.
+- **[Configure Full Page Cache](./configure-fpc.md)**: the switch and lifetime, a store of its own, checking for cache hits, and clearing.
+- **[Configure Varnish](./configure-varnish.md)**: the separate `bagisto/bagisto-varnish` package, which replaces the built-in page cache; read its warning about signed-in pages first.
+- **[Configure Laravel Octane](./configure-laravel-octane.md)**: running Bagisto on FrankenPHP, RoadRunner or Swoole, and the state that outlives a request.
+- **[Configure Load Balancing](./configure-load-balancing.md)**: what several web servers must share, deploying to them, and an example on AWS.
 
-### Core Performance Components
-
-::: tip Quick Start
-The full page cache is on by default and needs nothing but a Redis store on a multi-server deployment. Start with [Elasticsearch](./configure-elasticsearch) once the catalog is large enough for database search to lag, then progress through each optimization layer for maximum impact. Store media on [S3 or R2](../advanced/file-storage.md) before scaling to more than one web server.
-:::
-
-#### **[Configure Elasticsearch](./configure-elasticsearch)**
-Advanced search engine for lightning-fast product discovery
-- **Production-ready setup** with real-world examples
-- **Index optimization** strategies for large catalogs
-- **Performance tuning** and monitoring techniques
-
-#### **[Configure Full Page Cache (FPC)](./configure-fpc)**
-Complete page rendering cache for maximum speed
-- **Zero-configuration setup** for instant performance gains
-- **Smart cache invalidation** maintaining data freshness
-- **Admin panel integration** with visual cache management
-
-#### **[Configure Varnish](./configure-varnish)**
-Enterprise-grade reverse proxy caching, provided by the separate `bagisto/bagisto-varnish` package
-- **Custom VCL configuration** for Bagisto-specific caching
-- **ESI and AJAX fragments** for the parts of a page that must stay live
-
-#### **Server-level page caches**
-Nginx FastCGI cache, LiteSpeed's LSCache and Apache's `mod_cache` are covered, with working configuration, on the [Deployment](../getting-started/deployment.md) page.
-
-### Advanced Performance Solutions
-
-#### **[Configure Laravel Octane](./configure-laravel-octane)**
-High-performance application runtime with persistent memory
-- **Swoole integration** for production environments
-- **Development workflow** optimization
-- **Performance monitoring** and debugging tools
-
-#### **[Configure Load Balancing](./configure-load-balancing)**
-High-availability deployment for enterprise traffic
-- **AWS Application Load Balancer** configuration
-- **Multi-instance deployment** strategies  
-- **Database replication** and failover setup
-
-## Quick Wins
-
-### Immediate Performance Improvements
-1. **Move the queue off `sync`** - product saves, imports and mail stop blocking requests
-2. **Put the caches on Redis** - `CACHE_STORE`, `SESSION_DRIVER` and `RESPONSE_CACHE_DRIVER`
-3. **Configure Elasticsearch** - Enhanced search performance for larger catalogs
-4. **Set up Laravel Octane** - Persistent workers for the application
-
-### Progressive Enhancement
-1. **Configure Load Balancing** - High-availability and traffic distribution
-2. **Deploy Varnish or a server-level page cache** - HTTP acceleration in front of PHP
-3. **Serve media from object storage** - S3 or R2 behind a CDN
-4. **Optimize Database Queries** - Advanced indexing and query tuning
-
-::: warning Production Deployment
-Always test performance optimizations in staging environments before production deployment. Monitor key metrics during rollout to ensure optimal results.
-:::
-
-By implementing these performance optimizations systematically, you'll transform your Bagisto store into a **high-performance e-commerce powerhouse** capable of handling enterprise-level traffic while delivering exceptional user experiences.
+Test each change on a staging copy of the store with production-like data before rolling it out. Don't use a web server page cache such as Nginx's FastCGI cache; [Configure Full Page Cache](./configure-fpc.md#things-to-watch) explains why.

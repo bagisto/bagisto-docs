@@ -1,206 +1,191 @@
 # Validation
 
-Form validation is a crucial aspect of theme development, ensuring data integrity and providing a smooth user experience. This guide covers both server-side (Laravel) and client-side (Vue.js) validation techniques used in Bagisto themes, building on the concepts from previous theme development sections.
+Bagisto validates a form twice: in the browser with VeeValidate, so the shopper sees an error as they type, and on the server with a Laravel form request, which decides what is accepted. A theme restyles and extends the first; the second stays in the controller that receives the form.
 
-## Understanding Validation in Themes
+## Client-Side Validation
 
-Validation in Bagisto themes works on two levels:
+### Where It Is Configured
 
-- **Client-side validation** using VeeValidate for Vue.js components
-- **Server-side validation** using Laravel's validation system
+VeeValidate 4 is installed as a Vue plugin by each package's `app.js`, from `packages/Webkul/Shop/src/Resources/assets/js/plugins/vee-validate.js` and `packages/Webkul/Admin/src/Resources/assets/js/plugins/vee-validate.js`. The plugin:
 
-This dual approach ensures data integrity while providing immediate feedback to users, creating a seamless experience that aligns with your theme's design.
+- registers the `VForm`, `VField` and `VErrorMessage` components;
+- registers every rule from `@vee-validate/rules`, such as `required`, `email`, `min`, `max`, `numeric`, `confirmed` and `regex`, trimming string values before a rule runs;
+- adds Bagisto's own rules: `phone`, `address`, `postcode` and `decimal` in both packages, and `comma_separated_integer`, `regex_pattern`, `date_format` and `required_if` in the admin;
+- loads messages for 22 locales and picks one from the page's `lang` attribute;
+- validates on blur, input and change;
+- assigns `defineRule` to `window`, so a view can add a rule without rebuilding the bundle.
 
-::: tip Theme Integration
-Validation styling and error messages should match your theme's design language. Custom validation can be integrated into your theme components as covered in [Blade Components](/theme-development/blade-components).
-:::
+### Validating a Field
 
-## Client-Side Validation with Vue.js
+Forms are built from the `form.control-group` components, which wrap VeeValidate's field. The `rules` attribute takes VeeValidate's pipe syntax, `label` names the field in the message, and the error component's `control-name` must match the field's `name`. The contact page's phone field:
 
-Bagisto uses VeeValidate v4 for client-side validation, providing immediate feedback to users and improving the overall user experience in your theme.
+**File:** `packages/Webkul/Shop/src/Resources/views/home/contact-us.blade.php`
 
-### VeeValidate Configuration in Themes
-
-Bagisto comes pre-configured with VeeValidate through dedicated plugins. The configuration is located in:
-
-**Admin Package:**
-`packages/Webkul/Admin/src/Resources/assets/js/plugins/vee-validate.js`
-
-**Shop Package:**
-`packages/Webkul/Shop/src/Resources/assets/js/plugins/vee-validate.js`
-
-```js
-...
-
-export default {
-    install: (app) => {
-        /**
-         * Global components registration
-         */
-        app.component("VForm", Form);
-        app.component("VField", Field);
-        app.component("VErrorMessage", ErrorMessage);
-
-        ...
-
-        /**
-         * Registration of all global validators
-         */
-        Object.entries(all).forEach(([name, rule]) => defineRule(name, rule));
-
-        ...
-    },
-};
-```
-
-::: tip Multi-Language Support
-Bagisto's VeeValidate plugin includes comprehensive multi-language support with over 20 locales including Arabic, Bengali, Chinese, French, German, Hindi, Japanese, Russian, and many more. The validation messages automatically adapt to your store's configured language.
-:::
-
-::: info Plugin Structure
-The VeeValidate configuration is implemented as a Vue plugin that registers global components (`VForm`, `VField`, `VErrorMessage`), defines custom validation rules, and configures localization. This plugin is automatically loaded in both admin and shop packages.
-:::
-
-### Custom Validation Rules for Themes
-
-Define custom validation rules specific to your theme needs:
-
-```js
-defineRule("strong_password", (value) => {
-    if (!value) return true; // Optional field
-    
-    const hasUpperCase = /[A-Z]/.test(value);
-    const hasLowerCase = /[a-z]/.test(value);
-    const hasNumbers = /\d/.test(value);
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(value);
-    const isLongEnough = value.length >= 8;
-    
-    // Return true if all conditions are met
-    return hasUpperCase && hasLowerCase && hasNumbers && hasSpecialChar && isLongEnough;
-});
-```
-
-**Usage in your theme forms:**
-
-```blade{9}
-<x-shop::form.control-group class="mb-4">
-    <x-shop::form.control-group.label class="required">
-        Password
+```blade
+<x-shop::form.control-group>
+    <x-shop::form.control-group.label>
+        @lang('shop::app.home.contact.phone-number')
     </x-shop::form.control-group.label>
-    
+
     <x-shop::form.control-group.control
-        type="password"
-        name="password"
-        rules="required|strong_password"
-        label="Password"
-        placeholder="Enter a strong password"
+        type="text"
+        class="px-6 py-5 max-md:py-3 max-sm:py-3.5"
+        name="contact"
+        rules="phone"
+        :value="old('contact')"
+        :label="trans('shop::app.home.contact.phone-number')"
+        :placeholder="trans('shop::app.home.contact.phone-number')"
+        :aria-label="trans('shop::app.home.contact.phone-number')"
     />
-    
-    <x-shop::form.control-group.error control-name="password" />
+
+    <x-shop::form.control-group.error control-name="contact" />
 </x-shop::form.control-group>
 ```
 
-::: tip Custom Rule Best Practices
-- **Return `true` for empty values** if the field is optional
-- **Use descriptive rule names** that clearly indicate their purpose
-- **Combine with built-in rules** using pipe syntax (e.g., `"required|strong_password"`)
-- **Add helpful user guidance** near the form field to explain requirements
-:::
+The control component renders a different input for each `type`:
 
-::: info Adding Custom Error Messages
-To add custom error messages for your rules, include them in the VeeValidate plugin configuration:
+| Package | Types |
+|---|---|
+| Shop | `hidden`, `text`, `email`, `number`, `password`, `file`, `color`, `textarea`, `date`, `datetime`, `select`, `multiselect`, `checkbox`, `radio`, `switch`, `image`, `custom` |
+| Admin | `hidden`, `text`, `email`, `password`, `number`, `price`, `file`, `color`, `textarea`, `date`, `datetime`, `time`, `select`, `multiselect`, `checkbox`, `radio`, `switch`, `image`, `custom` |
 
-```js
-generateMessage: localize({
-    en: {
-        messages: {
-            strong_password: "Password must be at least 8 characters with uppercase, lowercase, number, and special character"
-        }
-    }
-})
-```
-:::
+The `form` component that wraps the fields is described in [Blade Components](./blade-components.md#form).
 
-## Server-Side Validation with Laravel
+### Adding a Rule
 
-Laravel provides robust validation capabilities that integrate seamlessly with your Bagisto theme development. When building custom forms or extending existing functionality, server-side validation ensures data integrity and security.
+Register a rule from a module script pushed onto the `scripts` stack of the view that renders the form, such as your theme's copy of it. The app bundle has assigned `window.defineRule` before the script runs, and the rule exists before the Vue app mounts, as in the booking view `packages/Webkul/Shop/src/Resources/views/products/view/types/booking/rental.blade.php`.
 
-### Basic Request Validation
+```blade
+@pushOnce('scripts')
+    <script type="module">
+        defineRule('strong_password', (value) => {
+            if (! value) {
+                return true;
+            }
 
-The most common approach is using the `validate` method on HTTP requests. This method works well for simple forms in your theme:
+            if (
+                value.length >= 8
+                && /[A-Z]/.test(value)
+                && /[a-z]/.test(value)
+                && /\d/.test(value)
+            ) {
+                return true;
+            }
 
-```php{11-16}
-<?php
-
-namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
-
-class ContactController extends Controller
-{
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'subject' => 'required|string|max:255',
-            'message' => 'required|string|max:1000',
-        ]);
-
-        // Process the validated data
-        // This could be saving to database, sending email, etc.
-
-        return redirect()->back()->with('success', 'Message sent successfully!');
-    }
-}
+            return @json(trans('custom-theme::app.validation.strong-password'));
+        });
+    </script>
+@endPushOnce
 ```
 
-### Advanced Validation with Custom Messages
+- Return `true` for an empty value, and let `required` decide whether the field may be empty.
+- Return a string to show it as the error message. `@json()` writes the translation as an escaped JavaScript string, so quotes in it can't break the script. The key comes from your package's language files; see [Add translations](./creating-custom-theme-package.md#step-3-add-translations).
 
-For more complex validation scenarios, you can use the `validate` method with custom messages. This approach gives you more control over the validation process and is useful for custom validation messages that match your theme's brand voice.
+Then use the rule like any other:
 
-Here's an example of how to use validation with custom messages:
+```blade
+<x-shop::form.control-group.control
+    type="password"
+    name="password"
+    rules="required|strong_password"
+    :label="trans('custom-theme::app.validation.password')"
+/>
+```
+
+A theme with its own build ([Vite-Powered Theme Assets](./vite-powered-theme-assets.md)) can instead add the rule, with a message for each locale under `generateMessage`, to its copy of `js/plugins/vee-validate.js`.
+
+## Server-Side Validation
+
+The controller that receives a form validates it with a form request. The contact form's request uses a core rule class that matches the browser's `phone` rule:
+
+**File:** `packages/Webkul/Shop/src/Http/Requests/ContactRequest.php`
 
 ```php
 <?php
 
-namespace App\Http\Controllers;
+namespace Webkul\Shop\Http\Requests;
 
-use Illuminate\Http\Request;
+use Illuminate\Foundation\Http\FormRequest;
+use Webkul\Core\Rules\PhoneNumber;
+use Webkul\Customer\Facades\Captcha;
 
-class PostController extends Controller
+class ContactRequest extends FormRequest
 {
+    // ...
+
     /**
-     * Store a new blog post.
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
      */
-    public function store(Request $request)
+    public function rules()
     {
-        $rules = [
-            'name' => 'required',
-            'email' => 'required|email',
-            'message' => 'required|max:250',
-        ];
-
-        $customMessages = [
-            'required' => 'The :attribute field is required.',
-        ];
-
-        $this->validate($request, $rules, $customMessages);
-
-        // Process the validated data
-        return redirect()->back()->with('success', 'Post created successfully!');
+        return Captcha::getValidations([
+            'name' => 'string|required',
+            'email' => 'string|required',
+            'contact' => new PhoneNumber,
+            'message' => 'required',
+        ]);
     }
+
+    // ...
 }
 ```
 
-**Key Points:**
-- **Defining Rules**: The `$rules` array contains the validation rules for each field
-- **Custom Messages**: The `$customMessages` array allows you to define custom validation messages  
-- **Using validate()**: The `$this->validate()` method validates the request and automatically redirects back with errors if validation fails
-- **Handling Success**: If validation passes, you can process the validated data and return a response
+`HomeController::sendContactUsMail(ContactRequest $contactRequest)` type-hints it, so an invalid request is sent back before the method body runs. Validate your own package's forms the same way, with a form request in its `src/Http/Requests` directory. Laravel resolves a type-hinted form request from the container, so a theme package changes a core form's server rules by binding a subclass of its request, such as `ContactRequest`, in its provider's `register()`.
 
-This method provides a clean way to handle validation with custom messages while maintaining Laravel's automatic error handling.
+`packages/Webkul/Core/src/Rules` holds the rule classes Bagisto uses on the server:
 
-::: tip Advanced Laravel Validation
-As this is Laravel, you can explore more advanced validation techniques including Form Request validation, custom validation rules, and conditional validation. For comprehensive coverage of Laravel validation features, refer to the [Laravel Validation Documentation](https://laravel.com/docs/validation).
-:::
+| Class | Matching browser rule |
+|---|---|
+| `Webkul\Core\Rules\PhoneNumber` | `phone` |
+| `Webkul\Core\Rules\Address` | `address` |
+| `Webkul\Core\Rules\PostCode` | `postcode` |
+| `Webkul\Core\Rules\Decimal` | `decimal` |
+| `Webkul\Core\Rules\CommaSeparatedInteger` | `comma_separated_integer`, admin only |
+| `Webkul\Core\Rules\Regex` | `regex_pattern`, admin only |
+| `Webkul\Core\Rules\Code`, `Slug`, `StateBelongsToCountry` | None |
+
+### Showing Server Errors in the Form
+
+**A standard form.** `<x-shop::form>` without the `as` attribute posts normally. When validation fails, Laravel redirects back with the errors, and the form component hands `$errors->getMessages()` to VeeValidate as `initial-errors`, so each `form.control-group.error` shows the server's message under its field. Pass `:value="old('...')"` so the input keeps what was typed.
+
+**An Ajax form.** For a failed JSON request, Laravel answers with status 422 and an `errors` object. VeeValidate's `handleSubmit` hands your submit method a `setErrors` action; pass the errors to it:
+
+**File:** `packages/Webkul/Shop/src/Resources/views/customers/account/rma/create.blade.php`
+
+```js
+async rmaSubmit(params, { resetForm, setErrors }) {
+    let formData = new FormData(this.$refs.rmaSubmit);
+
+    this.rmaFormSubmit = false;
+
+    try {
+        const response = await this.$axios.post("{{ route('shop.customers.account.rma.store') }}", formData);
+
+        this.$emitter.emit('add-flash', { type: 'success', message: response.data.messages });
+
+        setTimeout(() => {
+            window.location.href = response.data.redirect;
+        }, 1000);
+    } catch (error) {
+        this.rmaFormSubmit = true;
+
+        if (error.response.status == 422) {
+            setErrors(error.response.data.errors);
+        }
+    }
+},
+```
+
+## Things to Watch
+
+- **The browser isn't a boundary.** Anyone can post to the route directly, so every rule in a `rules` attribute needs a counterpart in the form request.
+- **Names must match exactly**, array suffixes included: `control-name="images[]"` for `name="images[]"`.
+- **A rule name is global.** `defineRule()` with an existing name replaces that rule on every form on the page, core rules included.
+
+## Next Step
+
+Next, apply the same theming mechanism to the admin.
+
+**Continue to:** [Creating an Admin Theme](./creating-admin-theme.md)

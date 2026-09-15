@@ -1,73 +1,47 @@
-# Queue, Jobs & Scheduling
+# Queues, Jobs and Scheduling
 
-Bagisto uses Laravel's queue system for background processing of indexing, data imports, search operations and mail. The shipped `.env.example` sets `QUEUE_CONNECTION=sync`, so every job runs inside the request that dispatched it until you switch to an asynchronous driver and run a worker.
+Bagisto sends mail, keeps product indices current, runs imports and records search terms through Laravel's queue, and registers its recurring commands with Laravel's scheduler. This page lists the jobs and scheduled tasks core ships, how to run workers and the scheduler in production, and how a package adds its own.
 
-## Queue Configuration
+## Queue Connection
 
-The queue driver is set in `.env`:
-
-```properties
-QUEUE_CONNECTION=sync
-```
-
-For production, switch to an async driver:
+`.env.example` sets `QUEUE_CONNECTION=sync`, so every job runs inside the request that dispatches it until you choose an asynchronous connection and run a worker. `config/queue.php` falls back to `database` when the variable is missing, so a server without it queues jobs and needs a worker.
 
 ```properties
-# Using Redis (recommended)
 QUEUE_CONNECTION=redis
-REDIS_HOST=127.0.0.1
-REDIS_PORT=6379
-
-# Or using the database driver
-QUEUE_CONNECTION=database
 ```
 
-`config/queue.php` defaults to `database` when the variable is absent, so a deployment that omits `QUEUE_CONNECTION` needs a running worker.
+`database` works as well; the `jobs`, `job_batches` and `failed_jobs` tables come from the root migrations. Both connections hand a job to another worker after `retry_after` seconds (90, from `DB_QUEUE_RETRY_AFTER` or `REDIS_QUEUE_RETRY_AFTER`), so keep a worker's `--timeout` below it; the import jobs size their own timeout to fit. Data Transfer's **Process in Queue** option refuses to start an import while the default connection is `sync`.
 
-::: tip When to Use Async Queues
-If you have more than a few hundred products, or use Elasticsearch, switching to an async queue driver significantly improves admin panel responsiveness during product saves, imports, and catalog rule updates. Data Transfer's **Process in Queue** option refuses to start on the `sync` driver and needs a worker on whichever real driver you pick.
-:::
+## Jobs Core Dispatches
 
-::: warning Mail is queued too
-Every mailable in the Shop and Admin packages implements `ShouldQueue`. With a real queue driver, order and account emails wait for the worker, and they render outside a storefront request, which matters for [theme email overrides](../theme-development/email-template.md).
-:::
+### Product Indexing
 
-## Built-in Jobs
+| Job | Purpose |
+|---|---|
+| `Webkul\Product\Jobs\UpdateCreateInventoryIndex` | Reindexes inventory for the given product ids |
+| `Webkul\Product\Jobs\UpdateCreatePriceIndex` | Reindexes prices for the given product ids |
+| `Webkul\Product\Jobs\Search\IndexProducts` | Sends the products to the search indexer, a no-op when no external engine is enabled |
+| `Webkul\Product\Jobs\Search\DeleteProducts` | Removes the products from the search index |
 
-### Product Indexing Jobs
+`Webkul\Product\Listeners\Product` refreshes the flat table inline, then dispatches `IndexProducts` after a product is created. After an update it chains the inventory, price and search jobs with `Bus::chain()`, so they run in that order. Before a delete it dispatches `DeleteProducts`, and `IndexProducts` for related products that survive. See [Search Engines](./search-engines.md#indexing).
 
-These jobs update product indices when products are created, updated, or deleted:
+On Bagisto 2.4 the search jobs are `Webkul\Product\Jobs\ElasticSearch\UpdateCreateIndex` and `DeleteIndex`, and each checks the search engine setting itself.
 
-| Job Class | Package | Purpose |
-|---|---|---|
-| `UpdateCreateInventoryIndex` | `Webkul\Product` | Reindexes inventory levels for given product IDs |
-| `UpdateCreatePriceIndex` | `Webkul\Product` | Reindexes price data for given product IDs |
-| `Search\IndexProducts` | `Webkul\Product` | Sends products to the configured search indexer; a no-op indexer is used when no external engine is enabled |
-| `Search\DeleteProducts` | `Webkul\Product` | Removes products from the search index |
+### Catalog Rules
 
-The product listener chains the inventory, price and search jobs with `Bus::chain()` after every update, so they run in that order.
+| Job | Purpose |
+|---|---|
+| `Webkul\CatalogRule\Jobs\UpdateCreateCatalogRuleIndex` | Reindexes a catalog rule and reprices its products in batches |
+| `Webkul\CatalogRule\Jobs\DeleteCatalogRuleIndex` | Reprices products after a catalog rule is deleted |
+| `Webkul\CatalogRule\Jobs\UpdateCreateProductIndex` | Reindexes one product against every catalog rule |
 
-::: info Bagisto 2.4
-The two search jobs are `ElasticSearch\UpdateCreateIndex` and `ElasticSearch\DeleteIndex` on 2.4, and each checks the search engine setting itself before doing anything.
-:::
+The two rule jobs dispatch `promotions.catalog_rule.reindex.before` and `.after` with the affected product ids, which the full page cache and the catalog API cache listen for.
 
-### Catalog Rule Jobs
+### Data Transfer
 
-These jobs recalculate product pricing when catalog rules change:
+The import pipeline is built from job batches and chains in `Webkul\DataTransfer\Jobs\Import`:
 
-| Job Class | Package | Purpose |
-|---|---|---|
-| `UpdateCreateCatalogRuleIndex` | `Webkul\CatalogRule` | Reindexes a catalog rule and reprices associated products in batches |
-| `DeleteCatalogRuleIndex` | `Webkul\CatalogRule` | Reprices products after a catalog rule is deleted |
-| `UpdateCreateProductIndex` | `Webkul\CatalogRule` | Reindexes a single product against all catalog rules |
-
-Both rule jobs dispatch `promotions.catalog_rule.reindex.before` and `.after` with the affected product ids, which the full page cache listens to.
-
-### Data Transfer Jobs
-
-The import pipeline is built from Laravel job batches and chains, all in `Webkul\DataTransfer\Jobs\Import`:
-
-| Job Class | Purpose |
+| Job | Purpose |
 |---|---|
 | `ValidateChunk` | Validates one window of rows and writes a fragment; the batch's completion step merges the fragments and builds the import batches |
 | `DownloadImages` | Fetches one wave of remote images named in the file, before any row is written |
@@ -76,120 +50,184 @@ The import pipeline is built from Laravel job batches and chains, all in `Webkul
 | `IndexBatch` | Indexes one batch |
 | `Linking`, `Indexing`, `Completed` | Chain markers that move the import from one state to the next and finish it |
 
-`ImportBatch`, `LinkBatch` and `IndexBatch` are bounded by the queue connection's `retry_after` so a second worker cannot pick up a batch that is still running, and retry on database deadlocks. See [Understanding Data Transfer](./understanding-data-transfer.md).
+`ImportBatch`, `LinkBatch` and `IndexBatch` bound their timeout by the connection's `retry_after`, so a second worker can't pick up a batch that's still running, and retry on database deadlocks. See [Understanding Data Transfer](./understanding-data-transfer.md).
+
+### Mail
+
+The base `Mailable` classes in `Webkul\Admin\Mail`, `Webkul\Shop\Mail` and `Webkul\Marketing\Mail` implement `ShouldQueue`, and so does `Webkul\Shop\Mail\Customer\EUWithdrawal\GuestWithdrawalLink`. Order, customer and marketing emails built on them wait for a worker, and they render outside a storefront request, which matters for [email template overrides](../theme-development/email-template.md). The admin and customer `ResetPasswordNotification` classes extend Laravel's `ResetPassword` notification and are sent immediately.
 
 ### Other Jobs
 
-| Job Class | Package | Purpose |
-|---|---|---|
-| `UpdateCreateSearchTerm` | `Webkul\Marketing` | Records storefront search terms with usage counts |
-| `ProcessSitemap` | `Webkul\Sitemap` | Generates the XML sitemap for a sitemap record; does nothing when sitemaps are disabled in configuration or the record has no channels |
-| `Events\CreateOrderNotification`, `Events\UpdateOrderNotification` | `Webkul\Notification` | Not jobs but broadcast events for the admin bell, queued on the `broadcastable` queue when a broadcast driver is configured |
+| Class | Purpose |
+|---|---|
+| `Webkul\Marketing\Jobs\UpdateCreateSearchTerm` | Records a storefront search term with its result count, per channel and locale. The storefront product API dispatches it when the request has a search term and no filters besides `mode`, `sort` and `limit` |
+| `Webkul\Sitemap\Jobs\ProcessSitemap` | Generates the XML files of a sitemap when the admin creates or updates it; does nothing when sitemaps are disabled in configuration or the sitemap has no channels |
+| `Webkul\Notification\Events\CreateOrderNotification`, `UpdateOrderNotification` | Broadcast events for the admin's notification bell. Their `broadcastQueue()` returns `broadcastable`, so Laravel queues them on that queue of the default connection |
 
-## Running the Queue Worker
+## Running Workers in Production
 
-For async queue drivers, run a worker process:
+Run workers on the `default` and `broadcastable` queues. A worker that listens on `default` only leaves the notification broadcasts waiting in the queue:
 
 ```bash
-# Start a queue worker
-php artisan queue:work
-
-# Process jobs from a specific queue
-php artisan queue:work --queue=default
-
-# Limit memory and timeout
-php artisan queue:work --memory=256 --timeout=120
-
-# Run once and exit (useful for cron-based processing)
-php artisan queue:work --once
+php artisan queue:work --queue=default,broadcastable --tries=3 --max-time=3600
 ```
 
-::: warning Production Workers
-In production, use a process manager like Supervisor to keep queue workers running. See the [Laravel Queue documentation](https://laravel.com/docs/queues#supervisor-configuration) for Supervisor configuration. The production Docker images run PHP-FPM, the web server and the database under Supervisor but **no queue worker**; add a `[program:queue]` entry to their `supervisord.conf`, or run a worker container alongside.
-:::
+Keep workers running with a process manager. A Supervisor program, with paths and user adjusted to your server:
+
+```ini
+[program:bagisto-worker]
+process_name=%(program_name)s_%(process_num)02d
+command=php /var/www/bagisto/artisan queue:work --queue=default,broadcastable --tries=3 --max-time=3600
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+user=www-data
+numprocs=2
+redirect_stderr=true
+stdout_logfile=/var/www/bagisto/storage/logs/worker.log
+stopwaitsecs=3600
+```
+
+- **Restart workers after every deployment** with `php artisan queue:restart`. A worker keeps the code it booted with; it finishes its current job, exits, and Supervisor starts it again.
+- **Restart workers after changing configuration too.** Before each job the worker clears the facade instances it resolved, so `core()` and `system_config()` start again for every job. Two things persist until the worker restarts: the configuration applied at boot, including the **File Management** disk and the **Search Engines** connection, and the repository cache's generation tokens, so the six cached repositories can keep returning old values (see [Cache Strategy](./cache-strategy.md#invalidation)). `--max-time` bounds how long a worker lives.
+- **The production Docker images run no worker.** Their `supervisord.conf` starts the web server, PHP and the database only, so add a program like the one above or run a worker container beside them.
+- **Failed jobs** are stored in `failed_jobs`; list them with `php artisan queue:failed` and retry with `php artisan queue:retry`.
+
+### Refreshing Repository Cache Tokens Between Jobs
+
+A worker can pick up the current repository cache tokens before every job, without a restart, through a listener on Laravel's `JobProcessing` event:
+
+**File:** `packages/Webkul/SupplierFeed/src/Listeners/FlushRepositoryCacheTokens.php`
+
+```php
+<?php
+
+namespace Webkul\SupplierFeed\Listeners;
+
+use Illuminate\Queue\Events\JobProcessing;
+use Webkul\Core\Helpers\CacheGeneration;
+
+class FlushRepositoryCacheTokens
+{
+    /**
+     * Forget the repository cache tokens an earlier job on this worker read.
+     */
+    public function handle(JobProcessing $event): void
+    {
+        CacheGeneration::flush();
+    }
+}
+```
+
+Map `JobProcessing::class` (`Illuminate\Queue\Events\JobProcessing`) to `FlushRepositoryCacheTokens::class` in the `$listen` array of the package's `EventServiceProvider`, and register that provider from the package's main provider with `$this->app->register(EventServiceProvider::class)`; [Event Listeners](./event-listeners.md#register-a-listener) shows the full provider. The next cached read in each job then fetches the current token from the cache store. Settings applied at boot still need a restart.
 
 ## Scheduled Tasks
 
-Bagisto's scheduled commands are registered by the packages that own them, through `callAfterResolving(Schedule::class, …)` in their service providers. Add the Laravel scheduler entry to your crontab and they run on their own:
+Packages register their commands with `callAfterResolving(Schedule::class, …)` in their service providers. Add Laravel's scheduler to the crontab of **one** server:
 
 ```bash
 * * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
 ```
 
-| Command | Frequency | Purpose |
-|---|---|---|
-| `invoice:cron` | Daily at 03:00 | Send overdue invoice reminders |
-| `exchange-rate:update` | Daily, weekly or monthly at the configured time, when scheduled import is enabled | Update currency exchange rates |
-| `product:price-rule:index` | Daily at 00:01 | Reindex catalog rule pricing |
-| `indexer:index --type=price` | Daily at 00:01 | Rebuild the price index so date-bound special prices take effect |
-| `campaign:process` | Daily | Send marketing campaign emails |
-| `omnibus:snapshot-prices` | Every fifteen minutes | Record price snapshots (Bagisto 2.5) |
-| `omnibus:purge-old-snapshots` | Daily | Drop snapshots past the retention window (Bagisto 2.5) |
+In a container without cron, run `php artisan schedule:work` as a long-running process instead. Bagisto's tasks don't use `onOneServer()`, so a scheduler on every server runs every task once per server.
 
-`packages/Webkul/Core/tests/Unit/ScheduleTest.php` asserts these registrations, so a change to the schedule is a change to that test.
+These are the tasks core registers; `php artisan schedule:list` shows them on your store:
 
-## Dispatching Jobs in Your Package
+| Command | Schedule | Registered in | Notes |
+|---|---|---|---|
+| `invoice:cron` | Daily at 03:00 | `Webkul\Core\Providers\CoreServiceProvider` | Sends overdue invoice reminders |
+| `exchange-rate:update` | Daily, weekly on Monday or monthly on the 1st, at the configured time (00:00 when empty) | `CoreServiceProvider` | Only when `general.exchange_rates.schedule.enabled` is on (**Scheduled Import**) |
+| `indexer:index --type=price` | Daily at 00:01 | `Webkul\Product\Providers\ProductServiceProvider` | Rebuilds prices so date-bound special prices take effect |
+| `product:price-rule:index` | Daily at 00:01 | `Webkul\CatalogRule\Providers\CatalogRuleServiceProvider` | Reindexes catalog rule prices |
+| `campaign:process` | Daily at 00:00 | `Webkul\Marketing\Providers\MarketingServiceProvider` | Sends marketing campaign emails |
+| `omnibus:snapshot-prices` | Every fifteen minutes | `Webkul\Omnibus\Providers\OmnibusServiceProvider` | Always scheduled; records snapshots only for channels with `catalog.products.omnibus.is_enabled` on |
+| `omnibus:purge-old-snapshots` | Daily at 00:00 | `OmnibusServiceProvider` | Drops snapshots past the retention window |
+| `inspire` | Hourly | `routes/console.php` | Laravel's sample command |
 
-To dispatch a job from your custom package, follow the standard Laravel pattern:
+The exchange rate settings are read when the scheduler builds its task list, so a change applies from the next `schedule:run`. The other Bagisto tasks have no setting: their schedules are fixed in the providers listed above.
 
-```php
-use Webkul\Product\Jobs\UpdateCreatePriceIndex;
+## Adding Jobs and Scheduled Commands in a Package
 
-// Dispatch to the queue
-UpdateCreatePriceIndex::dispatch($productIds);
+Put a job in your package's `src/Jobs` directory. This one reindexes products that a supplier feed changed, in the same order core uses:
 
-// Dispatch synchronously (bypasses queue)
-UpdateCreatePriceIndex::dispatchSync($productIds);
-```
-
-When creating custom jobs, place them in your package's `Jobs/` directory:
-
-```text
-packages/Webkul/YourPackage/src/Jobs/
-└── YourCustomJob.php
-```
+**File:** `packages/Webkul/SupplierFeed/src/Jobs/ReindexProducts.php`
 
 ```php
 <?php
 
-namespace Webkul\YourPackage\Jobs;
+namespace Webkul\SupplierFeed\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Bus;
+use Webkul\Product\Jobs\Search\IndexProducts;
+use Webkul\Product\Jobs\UpdateCreateInventoryIndex;
+use Webkul\Product\Jobs\UpdateCreatePriceIndex;
 
-class YourCustomJob implements ShouldQueue
+class ReindexProducts implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * Create a new job instance.
+     * The number of times the job may be attempted.
      */
-    public function __construct(
-        protected array $data
-    ) {}
+    public int $tries = 3;
 
     /**
-     * Execute the job.
+     * Create a new job instance.
+     */
+    public function __construct(protected array $productIds) {}
+
+    /**
+     * Chain the inventory, price and search reindex for the products.
      */
     public function handle(): void
     {
-        // Your background processing logic
+        Bus::chain([
+            new UpdateCreateInventoryIndex($this->productIds),
+            new UpdateCreatePriceIndex($this->productIds),
+            new IndexProducts($this->productIds),
+        ])->dispatch();
     }
 }
 ```
 
-To schedule a command from a package, register it the way core does:
+Dispatch it with `ReindexProducts::dispatch($productIds)`. `dispatchSync()` runs it immediately in the current process, whatever the connection. Write jobs so that running one twice does no harm, because a queue retries.
+
+Register a scheduled command from the package's service provider, the way core does:
+
+**File:** `packages/Webkul/SupplierFeed/src/Providers/SupplierFeedServiceProvider.php`
 
 ```php
-use Illuminate\Console\Scheduling\Schedule;
+<?php
 
-public function boot(): void
+namespace Webkul\SupplierFeed\Providers;
+
+use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Support\ServiceProvider;
+
+class SupplierFeedServiceProvider extends ServiceProvider
 {
-    $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
-        $schedule->command('your-package:sync')->hourly();
-    });
+    /**
+     * Bootstrap services.
+     */
+    public function boot(): void
+    {
+        $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
+            $schedule->command('supplier-feed:sync')->hourly()->onOneServer();
+        });
+    }
 }
 ```
+
+`supplier-feed:sync` stands for a command your package registers. `onOneServer()` keeps the task to one server when several run the scheduler, and needs a shared cache store such as `database` or `redis`.
+
+## Related Pages
+
+- [Cache Strategy](./cache-strategy.md): the caches these jobs keep current.
+- [Understanding Data Transfer](./understanding-data-transfer.md): the import pipeline the Data Transfer jobs run.
+- [Configure Load Balancing](../performance/configure-load-balancing.md#queue-and-scheduler): workers and the scheduler on several servers.

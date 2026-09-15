@@ -1,364 +1,171 @@
 # Localization
 
-Localization in Laravel enables your application to support multiple languages and regional settings, making your package accessible to a global audience. In Bagisto, localization is deeply integrated into the system, supporting both frontend customer interfaces and backend administrative panels with consistent translation patterns.
+The views and controllers already use `faq::` keys, and Laravel prints each key as it is until the package registers its language files. On this page you supply the text. Bagisto keeps strings in PHP language files, one folder per locale, and each package registers its files under a namespace of its own.
 
-For our RMA package, we'll implement comprehensive localization that covers admin panel labels, customer-facing messages, email notifications, and validation messages, demonstrating how to create a truly international e-commerce extension.
+<a id="creating-translation-files"></a>
 
-::: info Learning Objective
-This section demonstrates how to create organized, maintainable translation files for your Bagisto package, register them properly with the service provider, and use them effectively in views, controllers, and other components.
-:::
+## Create the English File
 
-For detailed information on Laravel localization features, visit the [Laravel Documentation on Localization](https://laravel.com/docs/localization).
+English is the reference locale that Bagisto's translation checker compares every other locale with. Like the core packages, this package keeps one `app.php` per locale, grouped by area:
 
-## Bagisto Localization Architecture
-
-Bagisto's localization system extends Laravel's built-in functionality with additional features for e-commerce applications:
-
-### Translation Organization
-- **Admin Translations**: Interface elements, form labels, buttons, and messages for administrative users
-- **Shop Translations**: Customer-facing content, product information, checkout messages, and notifications
-- **Email Translations**: Transactional emails, notifications, and communication templates
-- **Validation Translations**: Custom validation messages specific to your package functionality
-
-### Namespace Support
-- **Package Namespacing**: Each package maintains its own translation namespace for isolation
-- **Fallback System**: Graceful fallback to default language when translations are missing
-- **Override Capability**: Ability to override core translations without modifying core files
-
-### Multi-Language Features
-- **RTL Support**: Right-to-left language support for Arabic, Hebrew, and other RTL languages
-- **Currency Localization**: Automatic currency formatting based on locale settings
-- **Date/Time Formatting**: Locale-aware date and time display throughout the interface
-
-## Understanding Laravel Localization Basics
-
-Before diving into Bagisto-specific implementation, let's understand the foundational concepts that power Laravel's localization system.
-
-### Publish Laravel Language Files (Optional)
-
-Laravel's default installation doesn't include the `lang` directory in your project root. If you need to customize Laravel's own error messages and validation text, you can publish them:
-
-```bash
-php artisan lang:publish
-```
-
-This creates a `lang` directory in your project root with Laravel's default English translations, which you can then modify or use as templates for other languages.
-
-::: tip When to Use This
-You typically only need to publish Laravel's language files if you want to customize framework-level messages like validation errors, authentication messages, or HTTP status messages.
-:::
-
-### Configure Application Locale
-
-Set your default and fallback locales in `config/app.php`. These settings affect how Laravel resolves translations throughout your application:
-
-```php
-/*
-|--------------------------------------------------------------------------
-| Application Locale Configuration
-|--------------------------------------------------------------------------
-|
-| The application locale determines the default locale that will be used
-| by the translation service provider. You are free to set this value
-| to any of the locales which will be supported by the application.
-|
-*/
-
-'locale' => env('APP_LOCALE', 'en'),
-
-'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
-```
-
-::: info Locale Configuration Explanation
-**Application Locale**: The primary language your application will use by default.
-
-**Fallback Locale**: When a translation key is missing in the current locale, Laravel will attempt to find it in the fallback locale before displaying the key itself.
-
-**Environment Override**: Using `env('APP_LOCALE', 'en')` allows you to set different default locales for different environments (staging, production, etc.).
-:::
-
-::: warning The storefront does not read `config/app.php`
-`APP_LOCALE` is the starting point only. On the storefront, `Webkul\Shop\Http\Middleware\Locale` sets the locale for each request from the `locale` query parameter, then the session, then the channel's default locale, and only the locales assigned to the channel are accepted. In the admin, configuration and catalog screens resolve the locale through `core()->getRequestedLocaleCode()`. Direction (`ltr`/`rtl`) comes from the locale record, and the admin and shop layouts write it into the `<html dir>` attribute, which is what makes the 22 bundled locales, including Arabic, Persian and Hebrew, render right-to-left.
-:::
-
-## Creating Package Localization Structure
-
-Now let's create a comprehensive localization structure for our RMA package that covers all the different types of content we'll need to translate.
-
-### Directory Structure
-
-Create a simple language directory structure for our basic translations:
-
-```bash
-mkdir -p packages/Webkul/RMA/src/Resources/lang/en
-```
-
-```text
-packages
-└── Webkul
-    └── RMA
-        └── src
-            ├── ...
-            └── Resources
-                └── lang
-                    └── en
-                        └── app.php
-```
-
-::: info Simple Translation Structure
-**app.php**: Contains the basic translations we need for our simple admin view
-
-**Starting Simple**: We're beginning with just English and one file to match our basic view implementation
-
-**Expandable**: This structure can easily be expanded with more languages and specialized files as your package grows
-:::
-
-### Creating Translation Files
-
-Let's create a simple translation file that matches our basic view implementation.
-
-#### Basic Translation File
-
-Create `packages/Webkul/RMA/src/Resources/lang/en/app.php` with just the translations we need for our basic view:
+**File:** `packages/Webkul/Faq/src/Resources/lang/en/app.php`
 
 ```php
 <?php
 
 return [
     'admin' => [
-        'return-requests' => [
-            'title' => 'RMA Listing Title',
-            'content' => 'RMA Listing Content',
+        'index' => [
+            'title' => 'FAQ',
+            'create-btn' => 'Create FAQ',
+        ],
+
+        'create' => [
+            'title' => 'Create FAQ',
+        ],
+
+        'edit' => [
+            'title' => 'Edit FAQ',
+        ],
+
+        'form' => [
+            'general' => 'General',
+            'question' => 'Question',
+            'answer' => 'Answer',
+            'channel' => 'Channel',
+            'sort-order' => 'Sort Order',
+            'status' => 'Status',
+            'back-btn' => 'Back',
+            'save-btn' => 'Save FAQ',
+        ],
+
+        'create-success' => 'FAQ created successfully.',
+        'update-success' => 'FAQ updated successfully.',
+        'delete-success' => 'FAQ deleted successfully.',
+    ],
+
+    'shop' => [
+        'index' => [
+            'title' => 'Frequently Asked Questions',
+            'empty' => 'No questions have been published yet.',
         ],
     ],
 ];
 ```
 
-::: tip Simple Start
-We're keeping the translations minimal to match our basic view implementation. This demonstrates the core concept without overwhelming complexity. As you add more features to your views, you can expand these translation files accordingly.
-:::
+The folder is the locale, the file name is the group and the nested keys follow, so `admin`, `index`, `title` in `lang/en/app.php` is `faq::app.admin.index.title`. Keys are lowercase and hyphenated, as in core's files. The later pages add groups to this file for the DataGrid, the menu, the ACL and the configuration fields.
 
-## Registering Translations with Service Provider
+<a id="registering-translations-with-service-provider"></a>
 
-Register your package translations in the service provider so they're available throughout the application. This step is crucial for Laravel to recognize and load your translation files.
+## Register the Translations
 
-Update `packages/Webkul/RMA/src/Providers/RMAServiceProvider.php`:
+Add `loadTranslationsFrom()` to the provider's `boot()` method:
 
-```php{32-33}
+**File:** `packages/Webkul/Faq/src/Providers/FaqServiceProvider.php`
+
+```php{27}
 <?php
 
-namespace Webkul\RMA\Providers;
+namespace Webkul\Faq\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class RMAServiceProvider extends ServiceProvider
+class FaqServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
-     *
-     * @return void
      */
-    public function register()
-    {
-        //
-    }
+    public function register(): void {}
 
     /**
      * Bootstrap services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
 
         $this->loadRoutesFrom(__DIR__.'/../Routes/admin-routes.php');
+
         $this->loadRoutesFrom(__DIR__.'/../Routes/shop-routes.php');
 
-        $this->loadViewsFrom(__DIR__.'/../Resources/views', 'rma');
+        $this->loadViewsFrom(__DIR__.'/../Resources/views', 'faq');
 
-        $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'rma');
+        $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'faq');
     }
 }
 ```
 
-::: tip Translation Namespace
-The `loadTranslationsFrom()` method registers translations with the `rma` namespace. The file name is the group, so a key in `lang/en/app.php` is referenced as `rma::app.admin.return-requests.title`. Core packages keep one `app.php` per locale, with `admin`, `shop` and other top-level sections inside it.
-:::
+The namespace given to `loadTranslationsFrom()` is the part of a key before `::`. Reusing the view namespace keeps `faq::` meaning one package everywhere.
 
-### Publishing Translations (Optional)
+<a id="using-translations-in-your-package"></a>
+<a id="translation-helper-functions"></a>
 
-If you want to allow users to customize your package's translations, you can make them publishable:
+## Use a String
 
-```php
-// Add to the boot() method in RMAServiceProvider
-$this->publishes([
-    __DIR__.'/../Resources/lang' => lang_path('vendor/rma'),
-], 'rma-translations');
-```
+| Where | How |
+|---|---|
+| Blade text | `@lang('faq::app.admin.index.title')` |
+| A Blade component attribute | `:label="trans('faq::app.admin.form.question')"` |
+| PHP | `trans('faq::app.admin.create-success')`, or `__()` |
+| `admin-menu.php`, `acl.php`, `system.php` | The key as a plain string, `'name' => 'faq::app.admin.menu.faq'`; Bagisto translates it when it builds the menu, the permission tree or the configuration page |
 
-Laravel loads namespace overrides from `lang/vendor/{namespace}/{locale}/{group}.php` under the application's language path, which in Bagisto is the root `lang/` directory. Files published under `resources/lang` are never read.
+## Add the Other Locales
 
-Users can then publish and customize your translations:
+Bagisto ships 22 locales: `ar`, `bn`, `ca`, `de`, `en`, `es`, `fa`, `fr`, `he`, `hi_IN`, `id`, `it`, `ja`, `nl`, `pl`, `pt_BR`, `ro`, `ru`, `sin`, `tr`, `uk` and `zh_CN`. For each one, copy `en/app.php` into a folder of that name and translate the values, keeping every key on the same line as in English.
 
-```bash
-php artisan vendor:publish --tag=rma-translations
-```
+A key missing from the current locale falls back to `config('app.fallback_locale')`, which is `en` unless `APP_FALLBACK_LOCALE` changes it. A key missing from every locale is printed as the key.
 
-::: info Publishing Benefits
-**Customization**: Users can modify translations without editing your package files
+### Checking Every Locale
 
-**Override System**: Published translations take precedence over package translations
-
-**Maintenance**: Users can update your package without losing their translation customizations
-
-**Localization**: Teams can add new languages without modifying the original package
-:::
-
-## Using Translations in Your Package
-
-Now that we've set up our translation structure, let's see how to use these translations in different parts of your RMA package.
-
-### In Blade Templates
-
-Update your views to use translations instead of hardcoded text. Let's update the admin index view we created earlier to use our simple translations:
-
-**Update:** `packages/Webkul/RMA/src/Resources/views/admin/return-requests/index.blade.php`
-
-```blade{3,6}
-<x-admin::layouts>
-    <x-slot:title>
-        @lang('rma::app.admin.return-requests.title')
-    </x-slot:title>
-
-    @lang('rma::app.admin.return-requests.content')
-</x-admin::layouts>
-```
-
-::: tip Matching Our Basic View
-This translation implementation perfectly matches our simple view from the Views section, demonstrating how to replace hardcoded strings with translation keys without adding unnecessary complexity.
-:::
-
-### In Controllers
-
-Use translations in controller methods for basic responses:
-
-```php{16-20}
-<?php
-
-namespace Webkul\RMA\Http\Controllers\Admin;
-
-use Webkul\RMA\Http\Controllers\Controller;
-use Webkul\RMA\Repositories\ReturnRequestRepository;
-
-class ReturnRequestController extends Controller
-{
-    public function __construct(
-        protected ReturnRequestRepository $returnRequestRepository
-    ) {}
-
-    public function index()
-    {
-        // Test accessing a translation
-        $title = trans('rma::app.admin.return-requests.title');
-
-        // This is just for demonstration
-        dd($title);
-
-        return view('rma::admin.return-requests.index');
-    }
-}
-```
-
-::: tip Simple Controller Integration
-For now, our controller only renders the view. As we add more functionality like create, edit, and delete operations, we'll expand the translation usage for success messages and validation feedback.
-:::
-
-### Translation Helper Functions
-
-Laravel provides several helper functions for accessing translations:
-
-```php
-// Using trans() function
-$title = trans('rma::app.admin.return-requests.title');
-
-// Using __() helper (shorter syntax)
-$content = __('rma::app.admin.return-requests.content');
-
-// Using @lang directive in Blade templates (already shown above)
-@lang('rma::app.admin.return-requests.title')
-```
-
-::: tip Translation Best Practices
-**Consistent Naming**: Use descriptive, hierarchical keys that reflect your content structure
-
-**Avoid Hardcoding**: Replace hardcoded strings with translation keys for better maintainability
-
-**Fallback Values**: Laravel automatically falls back to the key name if translation is missing
-
-**Simple Start**: Begin with basic translations and expand as your package features grow
-:::
-
-## Testing Your Translations
-
-Verify your translations are working correctly:
+`bagisto:translations:check` compares every locale with `en`. It reads the root `lang` folder and each package directly under `packages/Webkul`; `--package` takes a package folder name, in any letter case:
 
 ```bash
-# Clear cache to ensure translations are loaded
+php artisan bagisto:translations:check --package=Faq
+
+php artisan bagisto:translations:check --package=Faq --locale=fr --details
+```
+
+It reports keys missing from a locale, and fails on a missing locale folder or a file that doesn't match English line for line, so a package that ships only `en` fails with 21 missing folders. [Coding Standards](../advanced/coding-standards.md#translations) lists every rule.
+
+## Test It
+
+Clear the cached configuration first:
+
+```bash
 php artisan optimize:clear
-
-# Test different language settings
-php artisan tinker
 ```
 
-Now test translation functionality in the tinker console:
+1. Reload `/admin/faq/create` and `/faq`. The keys are replaced by their text.
+2. Once every locale folder exists, run `php artisan bagisto:translations:check --package=Faq`. It ends with `All translations are synchronized with EN!`
+
+## Publishing Translations (Optional)
+
+Laravel merges overrides from the application's `lang/vendor/<namespace>/<locale>/<group>.php` over the package's file, so a store changes one FAQ string by creating `lang/vendor/faq/en/app.php` with only the keys it replaces. Core strings are overridden the same way, under `lang/vendor/admin` and `lang/vendor/shop`. Bagisto's `.gitignore` lists `/lang/vendor`, so remove that line or use `git add -f` when the overrides belong in the store's repository.
+
+To give stores a copy to start from, offer the files for publishing in `boot()`:
 
 ```php
-// Test in tinker
-App::setLocale('en');
-echo __('rma::app.admin.return-requests.title'); // Should output: "RMA Listing Title"
-
-// Test fallback behavior
-App::setLocale('fr');
-echo __('rma::app.admin.return-requests.title'); // Should fallback to English since French not defined
+$this->publishes([
+    __DIR__.'/../Resources/lang' => lang_path('vendor/faq'),
+], 'faq-translations');
 ```
-
-::: info Testing Tips
-**Route Testing**: Visit your admin routes to see translations in action
-
-**Language Switching**: Test fallback behavior when translations are missing
-
-**Cache Clearing**: Always clear cache after adding new translation files
-:::
-
-### Checking every locale
-
-Once you add a second locale, keep it in step with English using the checker Bagisto ships. It treats `en` as canonical, scans every package under `packages/Webkul` (and the root `lang/` directory) and reports keys that are missing from, or extra in, any other locale (an empty string counts as present, so it does not catch untranslated blanks):
 
 ```bash
-# Every package, every locale
-php artisan bagisto:translations:check
-
-# One locale, one package, with the offending keys listed
-php artisan bagisto:translations:check --locale=fr --package=RMA --details
+php artisan vendor:publish --tag=faq-translations
 ```
 
-The same command runs in Bagisto's CI, so a core contribution that adds an English key without its 21 translations fails there.
+<a id="configure-application-locale"></a>
 
-## Your Next Step
+## Things to Watch
 
-With comprehensive localization implemented, your RMA package now supports multiple languages and provides a professional, international user experience. The translation system you've built provides a solid foundation for expanding to additional languages and regions.
+- **Every user-facing string needs a key**, including flash messages, DataGrid labels and configuration titles.
+- **Add a key to every locale in the same change**, on the same line as in English, and run the checker before you commit.
+- **Never edit a core package's language files** for wording of your own; the next update overwrites them. Override core strings under `lang/vendor` instead.
+- **The storefront chooses the locale per request, not from `config('app.locale')`.** `Webkul\Shop\Http\Middleware\Locale`, part of the `shop` middleware group, takes the `locale` query parameter, then the locale kept in the session, then the channel's default locale, and accepts only locales assigned to the channel.
+- **Right-to-left locales need direction-aware spacing.** The admin and storefront layouts write the locale's direction into `<html dir>`, so Arabic, Persian and Hebrew render right to left; use Tailwind's `ltr:` and `rtl:` variants for spacing that depends on it, as core views do.
 
-You've successfully created:
-- **Organized translation files** for different interface sections
-- **Service provider registration** for automatic translation loading  
-- **Practical examples** of translation usage in views and controllers
-- **Testing strategies** for verifying translation functionality
+## Next Step
 
-The localization system is now ready to support your package's growth and international expansion.
+The pages show text, but `/admin/faq` lists nothing yet. Next, add the listing.
 
-**Continue to:** **[DataGrid](./datagrid.md)** - Learn how to create data tables with sorting, filtering, and pagination for your admin interface
-
-::: tip Internationalization Strategy
-As your package grows, consider creating translation files for major e-commerce markets (Spanish, French, German, Arabic) and implementing locale-specific features like RTL support and currency formatting.
-:::
+**Continue to:** [DataGrid](./datagrid.md)

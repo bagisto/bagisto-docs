@@ -1,75 +1,30 @@
-# Creating Custom Theme Package
+# Creating a Custom Theme Package
 
-Learn how to convert your basic custom theme into a professional package structure. This guide shows you how to move the store theme we created earlier into a standalone package for better organization and distribution.
+This page moves the `custom-theme` folder from [Creating a Store Theme](./creating-store-theme.md) into the `Webkul\CustomTheme` package. A package can be versioned and installed on other stores, and it's where the theme's Vite build, section types and image templates live on later pages.
 
-::: info What You'll Learn
-- Converting basic themes to package structure
-- Understanding Bagisto's package development approach
-- Creating service providers for theme packages
-- Publishing theme views and assets from packages
-- Best practices for theme package organization
-:::
-
-## Prerequisites
-
-Before starting this guide, make sure you have completed the [Creating Store Theme](./creating-store-theme.md) tutorial. We'll be converting that basic theme into a package structure.
-
-::: tip Package Benefits
-- **Better Organization**: Keep your theme separate from core files
-- **Easy Distribution**: Share your theme as a reusable package
-- **Version Control**: Manage theme updates independently
-- **Professional Structure**: Follow Laravel package conventions
-:::
-
-## Understanding Package Structure
-
-Bagisto follows Laravel's package development conventions. A theme package contains all theme-related files in a self-contained structure that can be distributed and maintained.
-
-### Package vs Basic Theme Comparison
-
-| Basic Theme (Resources) | Package Theme |
-|------------------------|---------------|
-| `resources/themes/custom-theme/` | `packages/Webkul/CustomTheme/` |
-| Direct file editing | Service provider publishing |
-| Limited reusability | Easy distribution |
-| Mixed with core files | Self-contained structure |
-
-## Creating Your Theme Package
-
-Let's convert our basic custom theme into a professional package structure.
-
-### Step 1: Create Package Directory Structure
-
-Create the package directory structure in your Bagisto project:
-
-```bash
-# Create package directory structure
-mkdir -p packages/Webkul/CustomTheme/src/Providers
-mkdir -p packages/Webkul/CustomTheme/src/Resources/views
-```
-
-Your package structure should look like this:
+## What You'll Build
 
 ```text
-packages/
-└── Webkul/
-    └── CustomTheme/
-        └── src/
-            ├── Providers/
-            │   └── CustomThemeServiceProvider.php
-            └── Resources/
-                └── views/
-                    └── home/
-                        └── index.blade.php
+packages/Webkul/CustomTheme/
+└── src/
+    ├── Providers/
+    │   └── CustomThemeServiceProvider.php
+    └── Resources/
+        ├── lang/
+        │   └── en/
+        │       └── app.php
+        └── views/
+            └── home/
+                └── index.blade.php
 ```
 
-::: warning Directory Structure
-The package structure should follow Laravel package conventions with proper PSR-4 namespace organization for maintainability.
-:::
+The package keeps using the `custom-theme` entry in `config/themes.php` from [Step 1](./creating-store-theme.md#step-1-register-the-theme) of the previous page. Add that entry now if you skipped it.
 
-### Step 2: Create the Service Provider
+## Step 1: Create the Service Provider
 
-Create the service provider at `packages/Webkul/CustomTheme/src/Providers/CustomThemeServiceProvider.php`:
+The provider publishes the package views into the theme's `views_path`.
+
+**File:** `packages/Webkul/CustomTheme/src/Providers/CustomThemeServiceProvider.php`
 
 ```php
 <?php
@@ -80,14 +35,6 @@ use Illuminate\Support\ServiceProvider;
 
 class CustomThemeServiceProvider extends ServiceProvider
 {
-    /**
-     * Register services.
-     */
-    public function register(): void
-    {
-        //
-    }
-
     /**
      * Bootstrap services.
      */
@@ -100,91 +47,104 @@ class CustomThemeServiceProvider extends ServiceProvider
 }
 ```
 
-### Step 3: Move Your Theme Files
+`publishes()` copies the views when you run `vendor:publish`. [Skipping the Publish Step](#skipping-the-publish-step) reads them straight from the package instead.
 
-Move your existing theme files from the basic theme location to your package:
+## Step 2: Move the Views into the Package
 
-::: warning No Existing Theme Files?
-If you jumped directly to this section and don't have existing theme files from the [Creating Store Theme](./creating-store-theme.md) tutorial, you'll need to either:
+Copy the theme folder's `views` directory into the package:
 
-1. **Go back and complete the basic theme tutorial first** (recommended for understanding)
-2. **Create the files directly in your package** using the examples below
-
-This guide assumes you have basic theme files to move from the previous tutorial.
-:::
-
-**Copy your theme template:**
-
-Take the home page template you created in the basic theme tutorial and move it to:
-`packages/Webkul/CustomTheme/src/Resources/views/home/index.blade.php`
-
-::: tip Moving Existing Files
-If you have an existing basic theme, copy the entire `views` directory from `resources/themes/custom-theme/views/` to `packages/Webkul/CustomTheme/src/Resources/views/` to move all your existing customizations.
-:::
-
-**Example template content:**
-
-If you want to add some changes or don't have existing theme files, you can replace the content with the example below:
-
-```blade
-<x-shop::layouts>
-    <x-slot:title>
-        Custom Theme Home
-    </x-slot>
-
-    <div class="container mx-auto mt-8 px-4 py-16">
-        <div class="text-center">
-            <h1 class="text-4xl font-bold text-gray-800 mb-6">
-                🎨 Custom Theme Package
-            </h1>
-            
-            <p class="text-lg text-gray-600 mb-8">
-                This theme is now powered by a professional package structure!
-            </p>
-            
-            <div class="bg-blue-50 p-6 rounded-lg border border-blue-200 max-w-md mx-auto">
-                <h3 class="text-xl font-semibold text-blue-800 mb-2">
-                    📦 Package Benefits
-                </h3>
-
-                <p class="text-blue-600">
-                    Better organization, easy distribution, and professional development workflow.
-                </p>
-            </div>
-        </div>
-    </div>
-</x-shop::layouts>
+```bash
+cp -r resources/themes/custom-theme/views/. packages/Webkul/CustomTheme/src/Resources/views/
 ```
 
-### Step 4: Configure Package Autoloading
+The home page is now at `packages/Webkul/CustomTheme/src/Resources/views/home/index.blade.php`; if you skipped the previous page, create it from [Step 2](./creating-store-theme.md#step-2-override-the-home-page) there. Package views follow the same rule as the theme folder: the path under `Resources/views` must match the Shop view's path.
 
-Update your root `composer.json` file to include the package namespace and regenerate the autoloader:
+<a id="adding-translations"></a>
 
-```json{5}
+## Step 3: Add Translations
+
+Later pages give the package strings of its own, such as section names and validation messages, in the `custom-theme::` namespace.
+
+**File:** `packages/Webkul/CustomTheme/src/Resources/lang/en/app.php`
+
+```php
+<?php
+
+return [
+    'sections' => [
+        'hero-banner' => 'Hero Banner',
+        'slides' => 'Slides',
+        'add-slide' => 'Add Slide',
+        'image' => 'Image',
+        'heading' => 'Heading',
+        'deals-carousel' => 'Deals Carousel',
+        'on-sale' => 'On Sale',
+        'services' => 'Services',
+        'free-shipping' => 'Free Shipping',
+        'free-shipping-info' => 'Free shipping on all orders',
+    ],
+
+    'validation' => [
+        'password' => 'Password',
+        'strong-password' => 'Use at least 8 characters with an uppercase letter, a lowercase letter and a digit.',
+    ],
+];
+```
+
+Load the directory at the end of the provider's `boot()` method:
+
+**File:** `packages/Webkul/CustomTheme/src/Providers/CustomThemeServiceProvider.php`
+
+```php
+<?php
+
+namespace Webkul\CustomTheme\Providers;
+
+use Illuminate\Support\ServiceProvider;
+
+class CustomThemeServiceProvider extends ServiceProvider
+{
+    /**
+     * Bootstrap services.
+     */
+    public function boot(): void
+    {
+        $this->publishes([
+            __DIR__.'/../Resources/views' => resource_path('themes/custom-theme/views'),
+        ], 'custom-theme-views');
+
+        $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'custom-theme');
+    }
+}
+```
+
+`trans('custom-theme::app.sections.hero-banner')` now reads the file. Add the same keys for every locale the store serves; see [Localization](../package-development/localization.md).
+
+## Step 4: Autoload and Register the Package
+
+Add the namespace to the `psr-4` map of the root `composer.json`, beside the `Webkul\\` entries already there:
+
+**File:** `composer.json`
+
+```json
 "autoload": {
-    ...
     "psr-4": {
-        // Other PSR-4 namespaces
         "Webkul\\CustomTheme\\": "packages/Webkul/CustomTheme/src"
     }
 }
 ```
 
-After updating the `composer.json` file, run the following command to register your package:
+Regenerate the autoloader, or Laravel can't load the provider:
 
 ```bash
 composer dump-autoload
 ```
 
-::: warning Important Step
-This command regenerates the autoloader files to include your new package namespace. Without this step, Laravel won't be able to find your package classes.
-:::
+Then register the provider:
 
-### Step 5: Register the Service Provider
+**File:** `bootstrap/providers.php`
 
-Add your service provider to `bootstrap/providers.php`:
-
-```php{8}
+```php{4,11}
 <?php
 
 use App\Providers\AppServiceProvider;
@@ -193,209 +153,72 @@ use Webkul\CustomTheme\Providers\CustomThemeServiceProvider;
 return [
     AppServiceProvider::class,
 
-    // Other service providers...
+    // ...
 
     CustomThemeServiceProvider::class,
 ];
 ```
 
-### Step 6: Update Theme Configuration
+[Package Development](../package-development/getting-started.md) covers package registration in depth.
 
-Ensure your `config/themes.php` file has the correct configuration for your package theme:
+## Step 5: Publish the Views
 
-::: info Optional Step
-If you completed the [Creating Store Theme](./creating-store-theme.md) tutorial, you should already have this configuration. However, if you jumped directly to this section or want to verify your setup, make sure your theme configuration matches the example below.
-:::
-
-```php{18-29}
-<?php
-
-return [
-    'shop-default' => 'custom-theme',
-
-    'shop' => [
-        'default' => [
-            'name' => 'Default',
-            'assets_path' => 'public/themes/shop/default',
-            'views_path' => 'resources/themes/default/views',
-
-            'vite' => [
-                'hot_file' => 'shop-default-vite.hot',
-                'build_directory' => 'themes/shop/default/build',
-                'package_assets_directory' => 'src/Resources/assets',
-            ],
-        ],
-
-        'custom-theme' => [
-            'name' => 'Custom Theme Package',
-            'assets_path' => 'public/themes/shop/custom-theme',
-            'views_path' => 'resources/themes/custom-theme/views',
-
-            'vite' => [
-                'hot_file' => 'shop-default-vite.hot',
-                'build_directory' => 'themes/shop/default/build',
-                'package_assets_directory' => 'src/Resources/assets',
-            ],
-        ],
-    ],
-];
-```
-
-### Step 7: Publish Theme Views
-
-Publish your package views to the application:
-
-```bash
-php artisan vendor:publish --provider="Webkul\CustomTheme\Providers\CustomThemeServiceProvider"
-```
-
-If you need to overwrite existing files, use the `--force` flag:
+Publish the package views into `resources/themes/custom-theme/views`, and clear the cache:
 
 ```bash
 php artisan vendor:publish --provider="Webkul\CustomTheme\Providers\CustomThemeServiceProvider" --force
-```
 
-::: tip When to Use --force
-Use the `--force` flag when you're updating existing theme files or when the destination directory already contains published files from a previous run.
-:::
-
-### Step 8: Clear Cache and Test
-
-Clear the application cache and test your package theme:
-
-```bash
 php artisan optimize:clear
 ```
 
-Visit your store's homepage to see your package theme in action!
+`--force` overwrites the published copies, so run it again after every change to a package view, and never edit the published copies.
 
-::: tip Verification Steps
-1. **Check Admin Panel**: Go to Settings → Channels and verify "Custom Theme Package" appears in the theme dropdown
-2. **Verify File Structure**: Confirm your views are published to `resources/themes/custom-theme/views/`
-3. **Test Homepage**: Visit your store frontend to see the updated theme
-:::
+## Test It
 
-## Skipping the publish step
+1. `php artisan vendor:publish --provider="Webkul\CustomTheme\Providers\CustomThemeServiceProvider" --force` copies `packages/Webkul/CustomTheme/src/Resources/views` to `resources/themes/custom-theme/views`. "No publishable resources" means the provider isn't autoloaded or registered (Step 4).
+2. `php artisan tinker --execute="echo trans('custom-theme::app.sections.hero-banner');"` prints `Hero Banner`.
+3. The home page of a channel running `custom-theme` shows your template.
+4. Change the package's home view, publish again with `--force`, and reload: the change shows.
 
-Publishing copies files into `resources/themes`, which means two copies of every view. The view finder offers a second route that needs no copying: when a theme other than `default` is active, any view namespace registered under the **theme code** is searched before the Shop package.
+## Skipping the Publish Step
 
-Register your package views under the theme code and drop the `publishes()` call:
+Publishing leaves two copies of every view. Instead, register the package views under the **theme code** in the provider's `boot()` method, in place of the `publishes()` call; when a theme other than `default` is active, that namespace is searched before the Shop package:
 
 ```php
-public function boot(): void
-{
-    $this->loadViewsFrom(__DIR__.'/../Resources/views', 'custom-theme');
-}
+$this->loadViewsFrom(__DIR__.'/../Resources/views', 'custom-theme');
 ```
 
-With `custom-theme` active, `shop::home.index` now resolves to `packages/Webkul/CustomTheme/src/Resources/views/home/index.blade.php` directly. If you prefer a different namespace name, register it under that name and add `'views_namespace' => 'that-name'` to the theme's block in `config/themes.php`.
+With `custom-theme` active, `shop::home.index` resolves to the package file directly. To use another namespace name, register it under that name and add `'views_namespace' => 'that-name'` to the theme's entry.
 
-Keep `views_path` pointing at a directory anyway. It is still searched first, which gives a store running your theme a place to override individual files of the package without forking it. The full order is described in [How views are resolved](./creating-store-theme.md#how-views-are-resolved).
+- **Delete the published copies**, such as `resources/themes/custom-theme/views/home/index.blade.php`, but keep the directory. `views_path` is searched first, so a stale copy keeps answering, and it stays the place where a store can override one file of your package.
+- **Components still need `views_path`.** The theme namespace isn't searched for Blade components, so an override of `<x-shop::layouts>` or any other component must be published there (keep a `publishes()` call for those files).
+- **Not for the `default` theme.** The shortcut is skipped when the active theme code is `default`.
 
-::: warning Not for the default theme
-This shortcut is skipped when the active theme code is `default`, so a package cannot use it to restyle the stock theme. Give your theme its own code.
-:::
+The full order is in [How Views Are Resolved](./creating-store-theme.md#how-views-are-resolved).
 
-## Package Development Workflow
+<a id="option-2-symlink-the-views"></a>
 
-Now that your theme package is set up, here's how to work with it effectively during development:
+## Symlinking the Views
 
-### Adding New Views
+Republishing after every change is slow while you develop. Point the theme's `views_path` at the package views instead. Move any edits out of the published directory first, then run from the project root:
 
-To add new views to your package:
-
-1. **Create the view file** in your package:
-   ```text
-   packages/Webkul/CustomTheme/src/Resources/views/catalog/products/index.blade.php
-   ```
-
-::: warning Directory Structure
-The directory structure should follow the same paths as the corresponding views in the default Bagisto theme. For example, if you want to customize a product page, maintain the same folder hierarchy: `catalog/products/index.blade.php`.
-:::
-
-2. **Republish the package views**:
-   ```bash
-   php artisan vendor:publish --provider="Webkul\CustomTheme\Providers\CustomThemeServiceProvider" --force
-   ```
-
-### Updating Existing Views
-
-When you modify views in your package:
-
-1. **Edit the package file** (not the published file)
-2. **Republish to apply changes**:
-   ```bash
-   php artisan vendor:publish --provider="Webkul\CustomTheme\Providers\CustomThemeServiceProvider" --force
-   ```
-
-::: warning Development Workflow
-Always edit files in your package directory (`packages/Webkul/CustomTheme/src/Resources/views/`), not in the published location (`resources/themes/custom-theme/views/`). The published files will be overwritten when you republish.
-:::
-
-## Alternative Development Workflows
-
-Publishing your package views repeatedly during development can be tedious. Here are two efficient alternatives to streamline your development process:
-
-### Option 1: Develop in Resources First
-
-This approach lets you develop your theme directly in the published location, then move everything to your package at once.
-
-**Development Process:**
-1. Develop all your changes directly in `resources/themes/custom-theme/views/`
-2. Test and iterate on your customizations without republishing
-3. Once satisfied, copy all files to your package: `packages/Webkul/CustomTheme/src/Resources/views/`
-4. Republish once to ensure everything works from the package
-
-**Benefits:**
-- No constant republishing during development
-- Faster iteration and testing
-- Simple file management
-
-### Option 2: Symlink Approach (Advanced)
-
-Create symbolic links to enable real-time development without any republishing.
-
-**Setup Commands:**
 ```bash
-# Remove the published views directory
 rm -rf resources/themes/custom-theme/views
 
-# Create symlink from package to resources (use absolute path)
 ln -s $(pwd)/packages/Webkul/CustomTheme/src/Resources/views resources/themes/custom-theme/views
 ```
 
-**Benefits:**
-- Real-time changes without republishing
-- Direct development in package files
-- Automatic synchronization
+Alternatively, iterate in `resources/themes/custom-theme/views` and copy the finished files into the package.
 
-::: warning Symlink Requirements
-- Requires file system permissions to create symbolic links
-- Works best on Unix-like systems (Linux, macOS)
-- May require additional setup on Windows systems
-- Ensure you're running commands from your Bagisto project root
-:::
+## Things to Watch
 
-**Choose the workflow that best fits your development style and system requirements.**
+- **`views_path` always wins.** Published copies are searched before the package's own views, however those reach the finder.
+- **Edit the package, not the published copy.** `vendor:publish --force` replaces the published files.
+- **The theme gallery shows only the theme's `name`.** The screenshot, author, version and description come from the core file `packages/Webkul/Theme/src/Resources/catalog.php`, read by the protected `Webkul\Theme\ThemeCatalog::catalogEntries()`. To show yours, bind a subclass of `ThemeCatalog` whose `catalogEntries()` adds an entry under your theme code, with a remote `screenshot` URL, since any other path is read from the admin build.
+- **Symbolic links need extra setup on Windows.**
 
-## Testing Your Package Theme
+## Next Step
 
-To ensure your package theme works correctly:
+The package still reuses the default theme's build. Next, give it its own Tailwind CSS 4 and Vite build.
 
-1. **Check view publishing**: Verify files are published to `resources/themes/custom-theme/`
-2. **Test theme activation**: Ensure the theme appears in admin theme selector
-3. **Verify functionality**: Navigate through different store pages
-4. **Test republishing**: Make changes and republish to confirm workflow
-
-## What's Next?
-
-Congratulations! You've successfully converted your basic theme into a professional package structure. Here are your next steps:
-
- **⚡ [Vite-Powered Theme Assets →](./vite-powered-theme-assets.md)**  
-Learn to set up modern asset compilation and optimization for your theme package.
-
-**📄 [Understanding Layouts →](./understanding-layouts.md)**  
-Master custom layouts and advanced view organization in your theme packages.
-
-**🧩 [Blade Components →](./blade-components.md)**  
-Learn to use Bagisto's pre-built components within your theme package structure.
+**Continue to:** [Vite-Powered Theme Assets](./vite-powered-theme-assets.md)

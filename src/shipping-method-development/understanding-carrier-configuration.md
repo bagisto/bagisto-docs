@@ -1,18 +1,10 @@
 # Understanding Carrier Configuration
 
-The carrier configuration is the foundation of your shipping method - it defines the basic properties, behavior, and integration points with Bagisto's shipping system. Understanding this configuration deeply will help you build flexible and maintainable shipping solutions.
+A carrier has two configuration files: `Config/carriers.php` registers it in `config('carriers')` with its defaults, and `Config/system.php` gives it settings under **Configure → Sales → Shipping Methods**. This page covers the keys of both, how a setting is resolved, and how to configure carriers with several services or an external rate API.
 
-::: info What You'll Learn
-This comprehensive guide covers:
-- Complete carrier configuration properties and their purposes
-- How configuration affects admin interface and frontend behavior
-- Advanced configuration patterns for complex shipping methods
-- Best practices for maintainable and extensible configurations
-:::
+## The Configuration File
 
-## Carrier Configuration Structure
-
-The carrier configuration file defines all the essential properties of your shipping method. Let's examine each component in detail:
+This is the file you created in [Creating Your First Shipping Method](./create-your-first-shipping-method.md#step-2-add-the-carrier-configuration):
 
 **File:** `packages/Webkul/CustomExpressShipping/src/Config/carriers.php`
 
@@ -32,261 +24,98 @@ return [
 ];
 ```
 
-## Core Configuration Properties
+| Key | Required | Description |
+|---|---|---|
+| `class` | Yes | The fully qualified carrier class, matched case-sensitively. The only key core reads from this file when it collects rates |
+| `code` | No | The carrier code. Identity comes from the class's `$code`, so keep it, this key and the array key identical: lowercase with underscores, and unique across carriers |
+| `title` | No | Default display name, used until an admin saves one |
+| `description` | No | Default description. The carrier copies it into the rate's `method_description`, which the shipping step prints after the method title |
+| `active` | No | Default enabled state, used until an admin saves one. Both core carriers ship `true` |
+| `default_rate` | No | Default base rate, as a string or float. Core's flat rate ships `'10'` |
+| `type` | No | Pricing model: `per_order` or `per_unit`. Core's flat rate ships `per_unit`; the free carrier has no `type` |
 
-### Essential Properties
+Everything except `class` is a **default**: `$this->getConfigData('title')` reads the admin-saved value first and falls back to this file (see [Configuration Value Resolution](#configuration-value-resolution)).
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `class` | string | ✅ | Full namespace path to your carrier class. The only key core reads from this file when collecting rates |
-| `code` | string | ❌ | Unique identifier for your shipping method. Identity actually comes from the class's `$code` property; keep the two identical |
-| `title` | string | ❌ | Default display name, used until an admin saves one |
-| `description` | string | ❌ | Default description |
-| `active` | boolean | ❌ | Default enabled state, used until an admin saves one. Both core carriers ship `true` |
+## Custom Keys
 
-### Pricing Properties
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `default_rate` | string/float | Base shipping cost before calculations (core's flat rate ships `'10'`) |
-| `type` | string | Pricing model: `per_order` or `per_unit` (core's flat rate ships `per_unit`; the free carrier has no `type`) |
-
-Everything except `class` is a **default value**: `$this->getConfigData('title')` reads the admin-saved value first and falls back to this file (see [Value Resolution](#5-value-resolution-fallback-chain)). Any other key you add is likewise readable through `getConfigData()` as a default, but can never be overridden from the admin unless a matching field exists in `system.php`.
-
-::: details Property Details and Best Practices
-
-**Code Property:**
-- Must be unique across all shipping methods
-- Use lowercase with underscores (e.g., `custom_express_shipping`)
-- Should match your package name for consistency
-- Used internally for identification and configuration keys
-
-**Title Property:**
-- Customer-facing display name during checkout
-- Keep it clear and descriptive (e.g., "Express Delivery (1-2 Days)")
-- Can be overridden in admin configuration
-- Should indicate delivery speed or special features
-
-**Description Property:**
-- Optional but recommended for clarity
-- Briefly explains the shipping service benefits
-- Shown in admin interface and potentially frontend
-- Good for highlighting features like tracking, insurance, etc.
-
-**Class Property:**
-- Must point to your actual carrier class
-- Include full namespace path
-- Bagisto uses this to instantiate your shipping logic
-- Case-sensitive and must match exactly
-:::
-
-## Advanced Configuration Options
-
-For more sophisticated shipping methods, you can extend the configuration:
+A carrier can carry any other keys it needs, and reads them through `getConfigData()` like the core ones:
 
 ```php
 <?php
 
 return [
     'custom_express_shipping' => [
-        // core properties
         'code' => 'custom_express_shipping',
-        'title' => 'Express Delivery (1-2 Days)',
-        'description' => 'Premium express shipping with tracking and insurance',
-        'active' => true,
+        // ...
         'class' => 'Webkul\CustomExpressShipping\Carriers\CustomExpressShipping',
-
-        // pricing configuration
-        'default_rate' => '19.99',
-        'type' => 'per_order',
         'free_shipping_threshold' => '100.00',
-
-        // service features
         'supports' => [
             'tracking' => true,
             'insurance' => true,
-            'signature_required' => false,
-            'weekend_delivery' => true,
         ],
-
-        // availability rules
-        'availability' => [
-            'weight_limit' => 50.0, // kg
-
-            'size_limit' => [
-                'length' => 100, // cm
-                'width' => 80,  // cm
-                'height' => 60,  // cm
-            ],
-
-            'restricted_postcodes' => ['12345', '67890'],
-            'business_days_only' => false,
-        ],
-
-        // api configuration (if using external service)
-        'api_config' => [
+        'api' => [
             'endpoint' => env('EXPRESS_SHIPPING_API_URL'),
-            'api_key' => env('EXPRESS_SHIPPING_API_KEY'),
             'timeout' => 30,
-            'fallback_rate' => '25.00',
         ],
     ],
 ];
 ```
 
-::: details Advanced Configuration Benefits
-**Structured Approach:**
-- All shipping logic parameters in one place
-- Easy to modify without touching code
-- Environment-specific configurations
-- Clear separation of concerns
+| Key | Read with | Editable in the admin |
+|---|---|---|
+| A flat key that matches a field `name` in `system.php` | `getConfigData('free_shipping_threshold')` | Yes; this file supplies the default |
+| A flat key with no matching field | `getConfigData('free_shipping_threshold')` | No |
+| A nested key | `getConfigData('supports.tracking')`, `getConfigData('api.timeout')` | No; it is only ever read from this file |
 
-**Maintainability:**
-- Changes don't require code updates
-- Easy to add new features
-- Configuration validation possibilities
-- Better testing and deployment
-:::
+Put what a merchant must change (rates, thresholds, credentials as `password` fields) in `system.php`, and keep what only a developer changes (service codes, endpoints, timeouts) here.
 
-## Understanding Configuration Flow
+## System Configuration
 
-### 1. Registration Phase
-When Bagisto starts, your service provider merges the carrier configuration:
+The section's `key` must be `sales.carriers.{code}`: that places it on the Shipping Methods page and is the path `getConfigData()` reads. The file is in [Step 4](./create-your-first-shipping-method.md#step-4-add-the-system-configuration), and every item key, field key and field type is on [System Configuration](../package-development/system-configuration.md). What a carrier section needs, as core's own sections in `packages/Webkul/Admin/src/Config/system.php` show:
 
-```php
-// in your service provider...
-$this->mergeConfigFrom(
-    dirname(__DIR__).'/Config/carriers.php',
-    'carriers'
-);
-```
+- **Keep a boolean `active` field.** `ConfigurationController::store()` reads `active` from every carrier section when the Shipping Methods page is saved, and refuses to save when none is switched on.
+- **`sort` orders the sections.** Core's Free Shipping is `1` and Flat Rate is `2`, so `3` lists yours after them.
+- **Defaults go in `carriers.php`.** A field's `default` is consulted only when neither the database nor `carriers.php` has a value.
+- **`depends => 'active:1'`** hides the other fields while the method is off, and the admin neither renders nor validates a hidden field, so the page saves in that state. Core's carrier sections keep the toggle last and put `depends` only on the title and rate; either layout works.
+- **`required_if:active,1` is enforced only in the browser.** On the server the rule looks for a top-level `active` input, as in core's carrier sections; write `required_if:sales.carriers.custom_express_shipping.active,1` if the server must enforce it too.
+- **`channel_based`** gives each channel its own rate and title; **`locale_based`** on `title` and `description` lets them be translated.
 
-### 2. Discovery Phase  
-Bagisto discovers your shipping method through the merged configuration:
+## How Bagisto Uses the Configuration
+
+- **It is merged, never replaced.** Your provider's `register()` merges the file into `carriers`, and `mergeConfigFrom()` keeps a key that is already set, so reusing the code `flatrate` or `free` leaves core's class in place. To change a core carrier, extend its class and point the entry at your subclass from your provider's `boot()`, as in `config(['carriers.flatrate.class' => FlatRate::class])` with your `FlatRate` imported; [Overriding a Core Type](../product-type-development/understanding-product-type-configuration.md#overriding-a-core-type) explains why `boot()`.
+- **Every entry is asked for rates.** `Webkul\Shipping\Shipping::collectRates()` calls every carrier in `config('carriers')`, and `Webkul\CartRule\Repositories\CartRuleRepository::getShippingMethods()` offers every entry as a cart-rule condition. `Shipping::getShippingMethods()` lists the available ones, though no core screen calls it.
+- **A carrier is created with `new`,** in `Shipping::collectRates()` and `Shipping::getShippingMethods()`, so it can't take constructor dependencies. Resolve repositories or services inside `calculate()` with `app()`. Payment methods differ: they are resolved with `app($class)`.
+
+**File:** `packages/Webkul/Shipping/src/Shipping.php`
 
 ```php
-// internally processes...
-Config::get('carriers')
+foreach (Config::get('carriers') as $shippingMethod) {
+    $object = new $shippingMethod['class'];
+
+    if ($rates = $object->calculate()) {
+        // ...
+    }
+}
 ```
 
-### 3. Instantiation Phase
-When needed, Bagisto creates your carrier instance with a bare `new`, in `Webkul\Shipping\Shipping::collectRates()` and `getShippingMethods()`:
+<a id="value-resolution-fallback-chain"></a>
 
-```php
-use Webkul\CustomExpressShipping\Carriers\CustomExpressShipping;
+## Configuration Value Resolution
 
-// bagisto uses the 'class' property...
-$carrier = new CustomExpressShipping;
-```
-
-Because the container is not involved, a carrier cannot take constructor dependencies. Resolve repositories or services inside `calculate()` with `app()` instead. (Payment methods differ: they are resolved with `app($class)`.)
-
-### 4. Configuration Access
-Your carrier class can access configuration values:
-
-```php
-// in your carrier class...
-$this->getConfigData('default_rate');      // Returns '19.99'
-$this->getConfigData('title');             // Returns 'Express Delivery (1-2 Days)'
-$this->getConfigData('supports.tracking'); // Returns true
-```
-
-A nested key such as `supports.tracking` works only through the package-config fallback; the admin stores flat codes, so a nested value is never admin-editable.
-
-### 5. Value Resolution (Fallback Chain)
-
-When `getConfigData()` is called, Bagisto resolves the value using a specific fallback chain:
-
-```text
-core()->getConfigData('sales.carriers.custom_express_shipping.default_rate')
-│
-├── 1. Core Config (Database)
-│     Checks the `core_config` table for admin-saved values.
-│     Found? → Returns the saved value.
-│
-└── 2. Fallback (No database entry)
-      │
-      ├── Package Config (carriers.php)
-      │     Checks Config::get('carriers.custom_express_shipping.default_rate')
-      │     Found? → Returns the package default.
-      │
-      └── System Default (system.php 'default' key)
-            Returns the 'default' value defined in the field configuration,
-            or null if not defined.
-```
-
-This means your `carriers.php` config file acts as the primary fallback for all fields. Values defined there are returned when no admin-saved value exists in the database.
-
-::: tip Ensure Fallback Values
-Always define essential properties like `active`, `title`, `default_rate`, and `type` in your `carriers.php` config file. This ensures your shipping method works correctly even before any admin configuration is saved.
-:::
-
-## Configuration Best Practices
-
-### 1. Naming Conventions
-
-```php
-// ✅ good naming
-'premium_express_delivery' => [
-    'code' => 'premium_express_delivery',
-    'title' => 'Premium Express (Next Day)',
-    'class' => 'Vendor\Package\Carriers\PremiumExpressDelivery',
-]
-
-// ❌ avoid
-'PED' => [
-    'code' => 'ped',
-    'title' => 'PED',
-    'class' => 'Vendor\Package\Carriers\PED',
-]
-```
-
-### 2. Descriptive Titles and Descriptions
-
-```php
-// ✅ clear and informative
-'title' => 'Express Delivery (1-2 Business Days)',
-'description' => 'Fast shipping with tracking and insurance included',
-
-// ❌ vague
-'title' => 'Fast Shipping',
-'description' => 'Quick delivery',
-```
-
-### 3. Sensible Defaults
-
-```php
-// ✅ explicit defaults
-'active' => false,       // Start disabled until an admin configures it
-'default_rate' => '0.00',      // Require an explicit rate
-'type' => 'per_order', // Most common pricing model
-
-// ❌ risky defaults
-'default_rate' => '999.99', // Extremely high fallback
-```
-
-Core's own carriers ship `'active' => true` so that a fresh install has shipping out of the box; a third-party method is better off disabled until the store owner has entered a rate.
-
-### 4. Environment-Aware Configuration
-
-```php
-'api_config' => [
-    'endpoint' => env('SHIPPING_API_URL', 'https://api.example.com'),
-    'api_key' => env('SHIPPING_API_KEY'),
-    'debug_mode' => env('SHIPPING_DEBUG', false),
-    'timeout' => env('SHIPPING_TIMEOUT', 30),
-],
-```
+`getConfigData($field)` reads `core()->getConfigData('sales.carriers.{code}.{field}')`: a value saved for the requested channel (and locale, for a `locale_based` field) wins, then `config('carriers.{code}.{field}')` from this file, then the field's `default`. There is no fallback between channels or locales, so before anything is saved `getConfigData('default_rate')` returns `'19.99'` from the file above. [System Configuration](../package-development/system-configuration.md#configuration-value-resolution) covers the lookup for every key.
 
 ## Common Configuration Patterns
 
-Understanding common configuration patterns helps you design shipping methods that are both flexible and maintainable. Here are the most frequently used approaches with detailed explanations and implementation guidance.
+### Multi-Service Carrier
 
-### Pattern 1: Multi-Service Carrier
-
-When one carrier company offers several speeds, you have two ways to model it. The simplest is **one class returning several rates**: `calculate()` may return an array of `CartShippingRate` objects, one per service, each with its own `method` and `method_title`, and the checkout groups them under the shared `carrier_title`:
+When one carrier offers several speeds, the simplest model is **one class returning several rates**. `calculate()` returns an array of `CartShippingRate` objects, one per service, each with its own `method` and `method_title`, and the checkout groups them under the shared `carrier_title`:
 
 ```php
+/**
+ * Calculate one rate per service level.
+ *
+ * @return array|false
+ */
 public function calculate()
 {
     if (! $this->isAvailable()) {
@@ -318,18 +147,19 @@ protected function rate(string $method, string $title, float $basePrice): CartSh
 }
 ```
 
-`AbstractShipping` has no `rate()` helper of its own; the one above lives in your carrier.
+`rate()` is your own helper, in a carrier that imports `Webkul\Checkout\Models\CartShippingRate`; `express::` stands for your package's translation namespace. Each `method` string must be unique across every carrier, because `Shipping::isMethodCodeExists()` matches the customer's choice against all collected rates.
 
-The alternative below, one class per service level, is the shape to choose when each service needs its own admin settings, because each becomes a separate section under **Shipping Methods**.
+The alternative is **one class per service**, each with its own entry:
 
 ```php
+<?php
+
 return [
     'express_standard' => [
         'code' => 'express_standard',
         'title' => 'Express Standard (2-3 Days)',
         'rate' => '9.99',
         'class' => 'Vendor\Express\Carriers\ExpressStandard',
-        'features' => ['tracking'],
         'days' => '2-3',
     ],
 
@@ -338,272 +168,50 @@ return [
         'title' => 'Express Priority (1-2 Days)',
         'rate' => '19.99',
         'class' => 'Vendor\Express\Carriers\ExpressPriority',
-        'features' => ['tracking', 'insurance', 'weekend'],
         'days' => '1-2',
         'max_weight' => 30.0,
     ],
-
-    'express_overnight' => [
-        'code' => 'express_overnight',
-        'title' => 'Express Overnight',
-        'rate' => '39.99',
-        'class' => 'Vendor\Express\Carriers\ExpressOvernight',
-        'features' => ['tracking', 'insurance', 'signature'],
-        'days' => '1',
-        'max_weight' => 20.0,
-        'business_only' => true,
-    ],
 ];
 ```
 
-::: details Multi-Service Benefits & Implementation Tips
+- **One class, several rates:** one admin section, one enable toggle, one title and one cart-rule condition for every service; the services are fixed in code.
+- **One class per service:** each service has its own section, toggle, rate fields and cart-rule condition. Choose it when each service needs its own settings, and share the rate-building code in a base class.
 
-**Benefits:**
-- Customers can choose speed vs. cost
-- Clear service differentiation
-- Shared backend infrastructure
-- Consistent carrier branding
+### Region, Option and API-Based Carriers
 
-**Implementation Tips:**
-- Use shared base class for common functionality
-- Differentiate services through configuration, not code
-- Implement service-specific validation rules
-- Consider cutoff times for same-day processing
+These follow the same rules: structural data can live here as custom keys, anything the merchant must change needs a `system.php` field, and the decision is made in `calculate()` or `isAvailable()` from the cart.
 
-**Common Use Cases:**
-- FedEx: Ground, 2-Day, Overnight
-- UPS: Ground, 3-Day, Next Day
-- Custom carrier with multiple speed tiers
-:::
-
-### Pattern 2: Feature-Based Configuration
-
-This pattern structures configuration around specific features and services, making it easy to enable/disable capabilities and calculate feature-based pricing.
-
-```php
-'premium_shipping' => [
-    'code' => 'premium_shipping',
-    'title' => 'Premium White Glove Service',
-    'class' => 'Vendor\Premium\Carriers\PremiumShipping',
-    'base_rate' => '49.99',
-    
-    'features' => [
-        'white_glove' => [
-            'fee' => '25.00',
-            'min_value' => 500.00,
-        ],
-
-        'assembly' => [
-            'fee' => '75.00',
-            'types' => ['furniture', 'equipment'],
-        ],
-
-        'appointment' => [
-            'fee' => '15.00',
-            'slots' => ['morning', 'afternoon', 'evening'],
-        ],
-
-        'packaging' => [
-            'fee' => '12.00',
-            'includes' => ['bubble_wrap', 'corner_protection'],
-        ],
-    ],
-    
-    'discounts' => [
-        'bundle_all' => 0.25,
-        'volume_min' => 1000.00,
-        'volume_discount' => 0.10,
-    ],
-    
-    'availability' => [
-        'areas' => ['metro', 'suburban'],
-        'hours' => 'weekdays 8-18, saturday 9-15',
-    ],
-];
-```
-
-::: details Feature-Based Benefits & Implementation Tips
-
-**Benefits:**
-- Modular feature enabling/disabling
-- Clear pricing transparency
-- Easy feature expansion
-- Customer choice flexibility
-
-**Implementation Tips:**
-- Validate feature combinations for compatibility
-- Calculate total price by summing enabled features
-- Implement feature-specific availability checks
-- Provide clear feature descriptions for customers
-
-**Common Use Cases:**
-- Furniture delivery with assembly options
-- Appliance delivery with installation
-- Art/antique shipping with special handling
-- Business equipment delivery with setup
-:::
-
-### Pattern 3: Region-Specific Configuration
-
-This pattern optimizes shipping for different geographic regions, each with unique pricing, delivery times, and service capabilities.
-
-```php
-'international_express' => [
-    'code' => 'international_express',
-    'title' => 'International Express Shipping',
-    'class' => 'Vendor\International\Carriers\InternationalExpress',
-    
-    'regions' => [
-        'north_america' => [
-            'countries' => ['US', 'CA', 'MX'],
-            'rate' => '29.99',
-            'days' => '3-5',
-            'features' => ['tracking', 'customs_clearance', 'saturday'],
-            'max_weight' => 70.0,
-            'prohibited' => ['batteries', 'liquids'],
-        ],
-
-        'europe' => [
-            'countries' => ['GB', 'DE', 'FR', 'IT', 'ES'],
-            'rate' => '39.99', 
-            'days' => '5-7',
-            'features' => ['tracking', 'customs_clearance'],
-            'max_weight' => 50.0,
-            'prohibited' => ['food', 'plants', 'medicines'],
-            'brexit_docs' => true,
-        ],
-
-        'asia_pacific' => [
-            'countries' => ['JP', 'AU', 'SG', 'HK'],
-            'rate' => '49.99',
-            'days' => '7-10',
-            'max_weight' => 30.0,
-            'prohibited' => ['electronics', 'food'],
-            'local_agent' => true,
-        ],
-    ],
-    
-    'currency' => 'USD',
-    'fallback_rate' => '75.00',
-];
-```
-
-::: details Region-Specific Benefits & Implementation Tips
-
-**Benefits:**
-- Accurate regional pricing and delivery estimates
-- Compliance with local regulations
-- Optimized service levels per region
-- Cultural and legal consideration handling
-
-**Implementation Tips:**
-- Validate destination countries against region definitions
-- Implement currency conversion for international pricing
-- Handle customs documentation automatically
-- Provide clear restriction information to customers
-- Monitor political and security situations for risk assessment
-
-**Common Use Cases:**
-- Global e-commerce platforms
-- B2B international shipping
-- Cross-border marketplace integration
-- Compliance-heavy industries (medical, electronics)
-:::
-
-### Pattern 4: API-Integrated Configuration
-
-For carriers that integrate with external shipping APIs, this pattern manages API credentials, endpoints, and fallback scenarios.
+- **By region:** read the destination from `Cart::getCart()->shipping_address` (`country`, `state` and `postcode`, the only address fields the cart page's shipping estimator provides), and return `false` for a destination you don't serve, or override `isAvailable()` as shown in [Understanding the Carrier Class](./understanding-carrier-class.md#availability-beyond-the-toggle).
+- **By service option:** the shipping step only lets the customer choose a rate, so offer each combination (with or without insurance, say) as a rate of its own.
+- **From an API:** rates are collected on every save of the address step, again when the method is saved, and by the cart page's shipping estimator. `collectRates()` doesn't catch exceptions, so a failing request fails the checkout request. Cache the courier's answer, set a timeout, and return `false` or a fallback rate when the API doesn't answer.
 
 ```php
 'fedex_integration' => [
     'code' => 'fedex_integration',
     'title' => 'FedEx Express',
     'class' => 'Vendor\FedEx\Carriers\FedExIntegration',
-    
-    'api' => [
-        'environment' => env('FEDEX_ENV', 'sandbox'),
-
-        'endpoints' => [
-            'production' => 'https://apis.fedex.com/rate/v1/rates/quotes',
-            'sandbox' => 'https://apis-sandbox.fedex.com/rate/v1/rates/quotes',
-        ],
-
-        'credentials' => [
-            'api_key' => env('FEDEX_API_KEY'),
-            'secret' => env('FEDEX_SECRET_KEY'),
-            'account' => env('FEDEX_ACCOUNT'),
-        ],
-
-        'timeout' => 30,
-        'retries' => 3,
-    ],
-    
     'services' => [
         'FEDEX_GROUND' => 'FedEx Ground',
         'FEDEX_2_DAY' => 'FedEx 2Day',
-        'STANDARD_OVERNIGHT' => 'FedEx Standard Overnight',
         'PRIORITY_OVERNIGHT' => 'FedEx Priority Overnight',
     ],
-    
-    'cache' => [
-        'enabled' => true,
-        'ttl' => 300, // 5 minutes
-        'prefix' => 'fedex_rates_',
-    ],
-    
-    'fallback' => [
-        'enabled' => true,
-
-        'rates' => [
-            'ground' => '8.99',
-            'express' => '24.99',
-            'overnight' => '45.99',
-        ],
-
-        'message' => 'Estimated shipping cost',
-    ],
-    
-    'features' => [
-        'real_time_rates' => true,
-        'live_tracking' => true,
-        'insurance' => true,
-        'signature' => true,
-    ],
-];
+    'timeout' => 30,
+    'fallback_rate' => '24.99',
+],
 ```
 
-::: details API-Integrated Benefits & Implementation Tips
+The service list and timeout are developer settings; the account number and API secret belong in `password` fields in `system.php`, so each channel can hold its own.
 
-**Benefits:**
-- Real-time accurate rates
-- Live tracking integration
-- Automatic service updates
-- Professional carrier integration
+## Things to Watch
 
-**Implementation Tips:**
-- Always implement fallback rates for API failures
-- Cache responses to reduce API calls and improve performance
-- Handle authentication token renewal automatically
-- Implement rate limiting to respect API quotas
-- Log API interactions for debugging and monitoring
+- **Define the defaults a carrier needs** (`active`, `title`, `default_rate`, `type`) here, so it works before an admin saves anything.
+- **Ship the method disabled** (`'active' => false`) when it can't quote until the store owner enters a rate or credentials, and never ship a placeholder rate a customer could be charged.
+- **Use descriptive codes.** The code is what an admin sees among cart-rule conditions and what is stored in `cart_shipping_rates.carrier`, so avoid abbreviations such as `ped`.
+- **Call `env()` only in this file.** It is cached with the application configuration; called from the carrier class, it returns `null` once the configuration is cached.
+- **Write titles and descriptions for the customer.** They are what the shipping step shows, so say what the customer gets, such as "Express Delivery (1-2 Business Days)".
 
-**Common Use Cases:**
-- Major carrier integrations (FedEx, UPS, DHL)
-- Real-time rate shopping
-- Enterprise shipping solutions
-- High-volume shipping operations
-:::
+## Next Step
 
-Each pattern serves different business needs and can be combined or adapted based on your specific requirements. Choose the pattern that best matches your shipping method's complexity and feature requirements.
+Next, see what the carrier class inherits and how `calculate()` builds a rate.
 
-## What's Next?
-
-Now that you understand carrier configuration, let's explore how to build the business logic:
-
-**📖 [Understanding Carrier Class →](./understanding-carrier-class.md)**
-Learn how to implement the business logic and rate calculation methods for your shipping method.
-
-**📖 [Understanding System Configuration →](./understanding-system-configuration.md)**
-Learn how to create admin interfaces for your shipping method settings.
-
-Your carrier configuration is now robust and ready for complex shipping scenarios.
+**Continue to:** [Understanding the Carrier Class](./understanding-carrier-class.md)

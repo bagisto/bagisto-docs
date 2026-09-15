@@ -35,14 +35,14 @@ export default defineConfig({
             ],
           },
           {
-            text: 'For your store',
+            text: 'For Your Store',
             items: [
               { text: 'Generative AI (Magic AI)', link: '/ai/magic-ai' },
               { text: 'WebMCP', link: '/ai/webmcp' },
             ],
           },
           {
-            text: 'For developers & AI agents',
+            text: 'For Developers & AI Agents',
             items: [
               { text: 'Agent Skills', link: '/ai/agent-skills' },
               { text: 'llms.txt', link: '/ai/llms-txt' },
@@ -58,7 +58,7 @@ export default defineConfig({
 
     editLink: {
       pattern: 'https://github.com/bagisto/bagisto-docs/edit/master/src/:path',
-      text: 'Help us improve this page on Github.'
+      text: 'Help us improve this page on GitHub.'
     },
 
     lastUpdated: {
@@ -76,10 +76,10 @@ export default defineConfig({
           { text: 'Why Choose Bagisto?', link: '/getting-started/why-choose-bagisto' },
           { text: 'Before You Start', link: '/getting-started/before-you-start' },
           { text: 'Installation', link: '/getting-started/installation' },
-          { text: 'Upgrade Guide', link: '/getting-started/upgrade-guide' },
-          { text: 'Contribution Guide', link: '/getting-started/contribution-guide' },
+          { text: 'Deployment', link: '/getting-started/deployment' },
           { text: 'Best Security Practices', link: '/getting-started/best-security-practice' },
-          { text: 'Deployment', link: '/getting-started/deployment' }
+          { text: 'Upgrade Guide', link: '/getting-started/upgrade-guide' },
+          { text: 'Contribution Guide', link: '/getting-started/contribution-guide' }
         ]
       },
       {
@@ -97,9 +97,9 @@ export default defineConfig({
         text: 'Architecture Concepts',
         collapsed: false,
         items: [
-          { text: 'Overview', link: '/architecture/overview' },
-          { text: 'Backend', link: '/architecture/backend' },
-          { text: 'Frontend', link: '/architecture/frontend' },
+          { text: 'Architecture Overview', link: '/architecture/overview' },
+          { text: 'Backend Architecture', link: '/architecture/backend' },
+          { text: 'Frontend Architecture', link: '/architecture/frontend' },
         ]
       },
       {
@@ -117,7 +117,8 @@ export default defineConfig({
           { text: 'DataGrid', link: '/package-development/datagrid' },
           { text: 'Menu', link: '/package-development/menu' },
           { text: 'Access Control List', link: '/package-development/access-control-list' },
-          { text: 'System Configuration', link: '/package-development/system-configuration' }
+          { text: 'System Configuration', link: '/package-development/system-configuration' },
+          { text: 'Events, Commands and Tests', link: '/package-development/events-commands-and-tests' }
         ]
       },
       {
@@ -127,8 +128,7 @@ export default defineConfig({
           { text: 'Getting Started', link: '/shipping-method-development/getting-started' },
           { text: 'Creating Your First Shipping Method', link: '/shipping-method-development/create-your-first-shipping-method' },
           { text: 'Understanding Carrier Configuration', link: '/shipping-method-development/understanding-carrier-configuration' },
-          { text: 'Understanding Carrier Class', link: '/shipping-method-development/understanding-carrier-class' },
-          { text: 'Understanding System Configuration', link: '/shipping-method-development/understanding-system-configuration' },
+          { text: 'Understanding the Carrier Class', link: '/shipping-method-development/understanding-carrier-class' },
         ]
       },
       {
@@ -138,7 +138,7 @@ export default defineConfig({
           { text: 'Getting Started', link: '/payment-method-development/getting-started' },
           { text: 'Creating Your First Payment Method', link: '/payment-method-development/create-your-first-payment-method' },
           { text: 'Understanding Payment Configuration', link: '/payment-method-development/understanding-payment-configuration' },
-          { text: 'Understanding Payment Class', link: '/payment-method-development/understanding-payment-class' }
+          { text: 'Understanding the Payment Class', link: '/payment-method-development/understanding-payment-class' }
         ]
       },
       {
@@ -148,7 +148,7 @@ export default defineConfig({
           { text: 'Getting Started', link: '/product-type-development/getting-started' },
           { text: 'Creating Your First Product Type', link: '/product-type-development/create-your-first-product-type' },
           { text: 'Understanding Product Type Configuration', link: '/product-type-development/understanding-product-type-configuration' },
-          { text: 'Understanding Abstract Type Class', link: '/product-type-development/understanding-abstract-type-class' },
+          { text: 'Understanding the AbstractType Class', link: '/product-type-development/understanding-abstract-type-class' },
           { text: 'Building Your Subscription Product Type', link: '/product-type-development/building-your-subscription-product-type' },
         ]
       },
@@ -157,17 +157,24 @@ export default defineConfig({
         collapsed: false,
         items: [
           { text: 'Getting Started', link: '/theme-development/getting-started' },
-          { text: 'Creating Store Theme', link: '/theme-development/creating-store-theme' },
-          { text: 'Theme Sections', link: '/theme-development/theme-sections' },
-          { text: 'Theme Image Templates', link: '/theme-development/image-cache-templates' },
-          { text: 'Creating Admin Theme', link: '/theme-development/creating-admin-theme' },
-          { text: 'Creating Custom Theme Package', link: '/theme-development/creating-custom-theme-package' },
+          { text: 'Creating a Store Theme', link: '/theme-development/creating-store-theme' },
+          { text: 'Creating a Custom Theme Package', link: '/theme-development/creating-custom-theme-package' },
           { text: 'Vite-Powered Theme Assets', link: '/theme-development/vite-powered-theme-assets' },
           { text: 'Understanding Layouts', link: '/theme-development/understanding-layouts' },
           { text: 'Blade Components', link: '/theme-development/blade-components' },
-          { text: 'Blade Tracer', link: '/theme-development/blade-tracer' },
+          { text: 'Theme Sections', link: '/theme-development/theme-sections' },
+          { text: 'Image Cache', link: '/theme-development/image-cache-templates' },
           { text: 'Email Template', link: '/theme-development/email-template' },
-          { text: 'Validation', link: '/theme-development/validation' }
+          { text: 'Validation', link: '/theme-development/validation' },
+          { text: 'Creating an Admin Theme', link: '/theme-development/creating-admin-theme' }
+        ]
+      },
+      {
+        text: 'Tools',
+        collapsed: false,
+        items: [
+          { text: 'Package Generator', link: '/tools/package-generator' },
+          { text: 'Blade Tracer', link: '/tools/blade-tracer' }
         ]
       },
       {
@@ -187,21 +194,30 @@ export default defineConfig({
         collapsed: false,
         items: [
           { text: 'Introduction', link: '/advanced/introduction' },
-          { text: 'Understanding Core Class', link: '/advanced/understanding-core-class' },
-          { text: 'Understanding Indexers', link: '/advanced/understanding-indexers' },
-          { text: 'Understanding Data Transfer', link: '/advanced/understanding-data-transfer' },
-          { text: 'Database Compatibility', link: '/advanced/database-compatibility' },
-          { text: 'Search Engines', link: '/advanced/search-engines' },
-          { text: 'File Storage', link: '/advanced/file-storage' },
+          { text: 'Understanding the Core Class', link: '/advanced/understanding-core-class' },
           { text: 'Event Listeners', link: '/advanced/event-listeners' },
           { text: 'View Render Events', link: '/advanced/view-render-events' },
           { text: 'Command Palette', link: '/advanced/command-palette' },
           { text: 'Artisan Commands', link: '/advanced/artisan-commands' },
-          { text: 'Queue, Jobs & Scheduling', link: '/advanced/queue-jobs-scheduling' },
+          { text: 'Queues, Jobs and Scheduling', link: '/advanced/queue-jobs-scheduling' },
           { text: 'Cache Strategy', link: '/advanced/cache-strategy' },
-          { text: 'Testing Workflow', link: '/advanced/testing' },
+          { text: 'Understanding Indexers', link: '/advanced/understanding-indexers' },
+          { text: 'Search Engines', link: '/advanced/search-engines' },
+          { text: 'Understanding Data Transfer', link: '/advanced/understanding-data-transfer' },
+          { text: 'File Storage', link: '/advanced/file-storage' },
+          { text: 'Database Compatibility', link: '/advanced/database-compatibility' },
+          {
+            text: 'Testing',
+            collapsed: false,
+            items: [
+              { text: 'Testing Overview', link: '/advanced/testing' },
+              { text: 'Testing with Pest', link: '/advanced/testing-with-pest' },
+              { text: 'Testing with Playwright', link: '/advanced/testing-with-playwright' },
+            ]
+          },
+          { text: 'Coding Standards', link: '/advanced/coding-standards' },
           { text: 'Debugging Tips', link: '/advanced/debugging' },
-          { text: 'Common Pitfalls', link: '/advanced/common-pitfalls' }
+          { text: 'Common Pitfalls', link: '/advanced/common-pitfalls' },
         ]
       },
       {
@@ -209,7 +225,8 @@ export default defineConfig({
         collapsed: false,
         items: [
           { text: 'Introduction', link: '/api/introduction' },
-          { text: 'Rest API', link: '/api/rest-api' },
+          { text: 'Installation', link: '/api/installation' },
+          { text: 'REST API', link: '/api/rest-api' },
           { text: 'GraphQL API', link: '/api/graphql-api' }
         ]
       }

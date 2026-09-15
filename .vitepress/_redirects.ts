@@ -1,4 +1,8 @@
 export const redirects = {
+    '/theme-development/blade-tracer': '/tools/blade-tracer',
+    '/theme-development/blade-tracer.html': '/tools/blade-tracer',
+    '/shipping-method-development/understanding-system-configuration': '/shipping-method-development/understanding-carrier-configuration#system-configuration',
+    '/shipping-method-development/understanding-system-configuration.html': '/shipping-method-development/understanding-carrier-configuration#system-configuration',
     /**
      * Moved pages
      *
@@ -22,8 +26,8 @@ export const redirects = {
     // Introduction
     '/2.3/introduction/requirements.html': '/getting-started/before-you-start.html#system-requirements',
     '/2.3/introduction/installation.html': '/getting-started/installation',
-    '/2.3/introduction/docker.html': '/getting-started/installation.html#🐳-docker-installation',
-    '/2.3/introduction/sail.html': '/getting-started/installation.html#⛵-laravel-sail-installation',
+    '/2.3/introduction/docker.html': '/getting-started/installation.html#run-with-docker',
+    '/2.3/introduction/sail.html': '/getting-started/installation.html#laravel-sail',
     '/2.3/introduction/llms.html': '/ai/llms-txt',
 
     // Architecture Concepts
@@ -31,8 +35,8 @@ export const redirects = {
     '/2.3/architecture/packages.html': '/architecture/backend',
     '/2.3/architecture/frontend.html': '/architecture/frontend',
     '/2.3/architecture/theme.html': '/architecture/frontend',
-    '/2.3/architecture/repository-pattern.html': '/architecture/backend.html#repository-pattern-in-bagisto',
-    '/2.3/architecture/modular-design.html': '/architecture/backend.html#modular-design-in-bagisto',
+    '/2.3/architecture/repository-pattern.html': '/architecture/backend.html#repositories',
+    '/2.3/architecture/modular-design.html': '/architecture/backend.html#packages',
 
     // Package Development
     '/2.3/packages': '/package-development/getting-started',
@@ -59,7 +63,7 @@ export const redirects = {
     '/2.3/advanced/create-product-type.html': '/product-type-development/create-your-first-product-type',
     '/2.3/advanced/events.html': '/advanced/event-listeners',
     '/2.3/advanced/helpers.html': '/advanced/understanding-core-class',
-    '/2.3/advanced/override-core-model.html': '/package-development/models.html#overriding-core-models-optional',
+    '/2.3/advanced/override-core-model.html': '/package-development/models.html#extending-a-core-model',
     '/2.3/advanced/render-event.html': '/advanced/view-render-events',
     '/2.3/advanced/change-email-template.md.html': '/theme-development/email-template',
     '/2.3/advanced/indexing-products-to-elasticsearch.md.html': '/performance/configure-elasticsearch',
@@ -95,15 +99,15 @@ export const redirects = {
     // Introduction
     '/2.2/introduction/requirements.html': '/getting-started/before-you-start.html#system-requirements',
     '/2.2/introduction/installation.html': '/getting-started/installation',
-    '/2.2/introduction/docker.html': '/getting-started/installation.html#🐳-docker-installation',
+    '/2.2/introduction/docker.html': '/getting-started/installation.html#run-with-docker',
 
     // Architecture Concepts
     '/2.2/architecture/packages': '/architecture/backend',
     '/2.2/architecture/packages.html': '/architecture/backend',
     '/2.2/architecture/frontend.html': '/architecture/frontend',
     '/2.2/architecture/theme.html': '/architecture/frontend',
-    '/2.2/architecture/repository-pattern.html': '/architecture/backend.html#repository-pattern-in-bagisto',
-    '/2.2/architecture/modular-design.html': '/architecture/backend.html#modular-design-in-bagisto',
+    '/2.2/architecture/repository-pattern.html': '/architecture/backend.html#repositories',
+    '/2.2/architecture/modular-design.html': '/architecture/backend.html#packages',
 
     // Package Development
     '/2.2/packages': '/package-development/getting-started',
@@ -130,7 +134,7 @@ export const redirects = {
     '/2.2/advanced/create-product-type.html': '/product-type-development/create-your-first-product-type',
     '/2.2/advanced/events.html': '/advanced/event-listeners',
     '/2.2/advanced/helpers.html': '/advanced/understanding-core-class',
-    '/2.2/advanced/override-core-model.html': '/package-development/models.html#overriding-core-models-optional',
+    '/2.2/advanced/override-core-model.html': '/package-development/models.html#extending-a-core-model',
     '/2.2/advanced/render-event.html': '/advanced/view-render-events',
     '/2.2/advanced/change-email-template.md.html': '/theme-development/email-template',
     '/2.2/advanced/indexing-products-to-elasticsearch.md.html': '/performance/configure-elasticsearch',
@@ -165,15 +169,15 @@ export const redirects = {
     // Introduction
     '/2.1/introduction/requirements.html': '/getting-started/before-you-start.html#system-requirements',
     '/2.1/introduction/installation.html': '/getting-started/installation',
-    '/2.1/introduction/docker.html': '/getting-started/installation.html#🐳-docker-installation',
+    '/2.1/introduction/docker.html': '/getting-started/installation.html#run-with-docker',
 
     // Architecture Concepts
     '/2.1/architecture/packages': '/architecture/backend',
     '/2.1/architecture/packages.html': '/architecture/backend',
     '/2.1/architecture/frontend.html': '/architecture/frontend',
     '/2.1/architecture/theme.html': '/architecture/frontend',
-    '/2.1/architecture/repository-pattern.html': '/architecture/backend.html#repository-pattern-in-bagisto',
-    '/2.1/architecture/modular-design.html': '/architecture/backend.html#modular-design-in-bagisto',
+    '/2.1/architecture/repository-pattern.html': '/architecture/backend.html#repositories',
+    '/2.1/architecture/modular-design.html': '/architecture/backend.html#packages',
 
     // Package Development
     '/2.1/packages': '/package-development/getting-started',
@@ -200,7 +204,7 @@ export const redirects = {
     '/2.1/advanced/create-product-type.html': '/product-type-development/create-your-first-product-type',
     '/2.1/advanced/events.html': '/advanced/event-listeners',
     '/2.1/advanced/helpers.html': '/advanced/understanding-core-class',
-    '/2.1/advanced/override-core-model.html': '/package-development/models.html#overriding-core-models-optional',
+    '/2.1/advanced/override-core-model.html': '/package-development/models.html#extending-a-core-model',
     '/2.1/advanced/render-event.html': '/advanced/view-render-events',
     '/2.1/advanced/change-email-template.md.html': '/theme-development/email-template',
     '/2.1/advanced/indexing-products-to-elasticsearch.md.html': '/performance/configure-elasticsearch',
@@ -234,15 +238,15 @@ export const redirects = {
     // Introduction
     '/2.0/introduction/requirements.html': '/getting-started/before-you-start.html#system-requirements',
     '/2.0/introduction/installation.html': '/getting-started/installation',
-    '/2.0/introduction/docker.html': '/getting-started/installation.html#🐳-docker-installation',
+    '/2.0/introduction/docker.html': '/getting-started/installation.html#run-with-docker',
 
     // Architecture Concepts
     '/2.0/architecture/packages': '/architecture/backend',
     '/2.0/architecture/packages.html': '/architecture/backend',
     '/2.0/architecture/frontend.html': '/architecture/frontend',
     '/2.0/architecture/theme.html': '/architecture/frontend',
-    '/2.0/architecture/repository-pattern.html': '/architecture/backend.html#repository-pattern-in-bagisto',
-    '/2.0/architecture/modular-design.html': '/architecture/backend.html#modular-design-in-bagisto',
+    '/2.0/architecture/repository-pattern.html': '/architecture/backend.html#repositories',
+    '/2.0/architecture/modular-design.html': '/architecture/backend.html#packages',
 
     // Package Development
     '/2.0/packages': '/package-development/getting-started',
@@ -269,7 +273,7 @@ export const redirects = {
     '/2.0/advanced/create-product-type.html': '/product-type-development/create-your-first-product-type',
     '/2.0/advanced/events.html': '/advanced/event-listeners',
     '/2.0/advanced/helpers.html': '/advanced/understanding-core-class',
-    '/2.0/advanced/override-core-model.html': '/package-development/models.html#overriding-core-models-optional',
+    '/2.0/advanced/override-core-model.html': '/package-development/models.html#extending-a-core-model',
     '/2.0/advanced/render-event.html': '/advanced/view-render-events',
     '/2.0/advanced/change-email-template.md.html': '/theme-development/email-template',
     '/2.0/advanced/indexing-products-to-elasticsearch.md.html': '/performance/configure-elasticsearch',
@@ -303,7 +307,7 @@ export const redirects = {
     // Introduction
     '/2.x/introduction/requirements.html': '/getting-started/before-you-start.html#system-requirements',
     '/2.x/introduction/installation.html': '/getting-started/installation',
-    '/2.x/introduction/docker.html': '/getting-started/installation.html#🐳-docker-installation',
+    '/2.x/introduction/docker.html': '/getting-started/installation.html#run-with-docker',
 
     // Architecture Concepts
     '/2.x/architecture/packages': '/architecture/backend',
@@ -311,8 +315,8 @@ export const redirects = {
     '/2.x/architecture/frontend.html': '/architecture/frontend',
     '/2.x/architecture/theme.html': '/architecture/frontend',
     '/2.x/architecture/performance.html': '/performance/introduction',
-    '/2.x/architecture/repository-pattern.html': '/architecture/backend.html#repository-pattern-in-bagisto',
-    '/2.x/architecture/modular-design.html': '/architecture/backend.html#modular-design-in-bagisto',
+    '/2.x/architecture/repository-pattern.html': '/architecture/backend.html#repositories',
+    '/2.x/architecture/modular-design.html': '/architecture/backend.html#packages',
 
     // Package Development
     '/2.x/packages': '/package-development/getting-started',
@@ -339,7 +343,7 @@ export const redirects = {
     '/2.x/advanced/create-product-type.html': '/product-type-development/create-your-first-product-type',
     '/2.x/advanced/events.html': '/advanced/event-listeners',
     '/2.x/advanced/helpers.html': '/advanced/understanding-core-class',
-    '/2.x/advanced/override-core-model.html': '/package-development/models.html#overriding-core-models-optional',
+    '/2.x/advanced/override-core-model.html': '/package-development/models.html#extending-a-core-model',
     '/2.x/advanced/render-event.html': '/advanced/view-render-events',
     '/2.x/advanced/change-email-template.md.html': '/theme-development/email-template',
     '/2.x/advanced/indexing-products-to-elasticsearch.md.html': '/performance/configure-elasticsearch',
@@ -367,7 +371,7 @@ export const redirects = {
     // Introduction
     '/1.5.x/introduction/requirements.html': '/getting-started/before-you-start.html#system-requirements',
     '/1.5.x/introduction/installation.html': '/getting-started/installation',
-    '/1.5.x/introduction/docker.html': '/getting-started/installation.html#🐳-docker-installation',
+    '/1.5.x/introduction/docker.html': '/getting-started/installation.html#run-with-docker',
 
     // Architecture Concepts
     '/1.5.x/architecture/packages': '/architecture/backend',
@@ -375,8 +379,8 @@ export const redirects = {
     '/1.5.x/architecture/frontend.html': '/architecture/frontend',
     '/1.5.x/architecture/theme.html': '/architecture/frontend',
     '/1.5.x/architecture/performance.html': '/performance/introduction',
-    '/1.5.x/architecture/repository-pattern.html': '/architecture/backend.html#repository-pattern-in-bagisto',
-    '/1.5.x/architecture/modular-design.html': '/architecture/backend.html#modular-design-in-bagisto',
+    '/1.5.x/architecture/repository-pattern.html': '/architecture/backend.html#repositories',
+    '/1.5.x/architecture/modular-design.html': '/architecture/backend.html#packages',
 
     // Package Development
     '/1.5.x/packages': '/package-development/getting-started',
@@ -403,7 +407,7 @@ export const redirects = {
     '/1.5.x/advanced/create-product-type.html': '/product-type-development/create-your-first-product-type',
     '/1.5.x/advanced/events.html': '/advanced/event-listeners',
     '/1.5.x/advanced/helpers.html': '/advanced/understanding-core-class',
-    '/1.5.x/advanced/override-core-model.html': '/package-development/models.html#overriding-core-models-optional',
+    '/1.5.x/advanced/override-core-model.html': '/package-development/models.html#extending-a-core-model',
     '/1.5.x/advanced/render-event.html': '/advanced/view-render-events',
     '/1.5.x/advanced/change-email-template.md.html': '/theme-development/email-template',
     '/1.5.x/advanced/indexing-products-to-elasticsearch.md.html': '/performance/configure-elasticsearch',
@@ -426,7 +430,7 @@ export const redirects = {
     '/1.x/introduction/requirements.html': '/getting-started/before-you-start.html#system-requirements',
     '/1.x/introduction/installation.html': '/getting-started/installation',
     '/1.x/introduction/upgrade-to-latest-bagisto.html': '/getting-started/upgrade-guide',
-    '/1.x/introduction/docker.html': '/getting-started/installation.html#🐳-docker-installation',
+    '/1.x/introduction/docker.html': '/getting-started/installation.html#run-with-docker',
 
     // Package Development
     '/1.x/packages': '/package-development/getting-started',
@@ -445,7 +449,7 @@ export const redirects = {
     '/1.x/advanced/datagrid.html': '/package-development/datagrid',
     '/1.x/advanced/events.html': '/advanced/event-listeners',
     '/1.x/advanced/helpers.html': '/advanced/understanding-core-class',
-    '/1.x/advanced/override-core-model.html': '/package-development/models.html#overriding-core-models-optional',
+    '/1.x/advanced/override-core-model.html': '/package-development/models.html#extending-a-core-model',
     '/1.x/advanced/render-event.html': '/advanced/view-render-events',
     '/1.x/advanced/indexing-products-to-elasticsearch.md.html': '/performance/configure-elasticsearch',
     '/1.x/advanced/security-practice.html': '/getting-started/best-security-practice',

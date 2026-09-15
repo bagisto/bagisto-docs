@@ -1,226 +1,110 @@
 # Configure Load Balancing
 
-This guide provides a step-by-step approach to deploying Bagisto on AWS with an Application Load Balancer (ALB) for improved scalability and high availability. By setting up a dedicated database server, integrating Amazon S3 for media storage, and configuring an AMI-based auto-scaling setup, you can ensure that Bagisto can handle increased traffic efficiently.
+Bagisto runs on several web servers behind a load balancer when every server shares the state a request can touch: the database, sessions, caches, maintenance mode, queued jobs, files and the search cluster. This page sets up each of those, then deploys, checks the result and outlines the same setup on AWS.
 
-::: info What You'll Build
-- Dedicated MySQL server for better performance
-- Bagisto on multiple EC2 instances behind a Load Balancer
-- Amazon S3 for storage instead of local file storage
-- AMI to scale new instances
-- Application Load Balancer (ALB) for traffic distribution
-- SSL and domain configuration for secure access
-:::
+## When You Need It
 
-This setup ensures a scalable, fault-tolerant, and high-performance Bagisto application.
+Use it when one web server is no longer enough, or when the store must keep running if a server fails. This is what the servers must share, with the shipped default and what to use instead:
 
-## Bagisto with ALB Setup on AWS
+| Concern | Shipped default | On more than one server |
+|---|---|---|
+| Database | `DB_HOST` in `.env` | One database server or managed database that every web server connects to |
+| Sessions | `SESSION_DRIVER=database` | `database` or `redis`, never `file` |
+| Application and repository cache | `CACHE_STORE=database` | `database` or `redis`, never `file` |
+| Full page cache | `RESPONSE_CACHE_DRIVER=file` | A shared Redis store of its own |
+| Maintenance mode | `APP_MAINTENANCE_DRIVER=file` | `cache`, with `APP_MAINTENANCE_STORE` set to a shared store |
+| Queue | `QUEUE_CONNECTION=sync` | `database` or `redis`, with workers |
+| Scheduler | None | `schedule:run` on exactly one server |
+| Media on the default disk | The `public` disk, `storage/app/public` | Amazon S3 or Cloudflare R2, or a shared volume |
+| Files on the local disks | `storage/app/private` and `storage/app/public` | A shared volume |
+| Search | The database | One Elasticsearch cluster |
 
-### Dedicated Database Server Setup
+## Step 1: Share Sessions and Caches
 
-#### Launch EC2 Instance for MySQL Database
+Point every server at the same database, and keep sessions and the application cache in the shared database or Redis. Any server can then handle any request, so sticky sessions on the load balancer are optional.
 
-- Launch an EC2 instance for MySQL database
-- Assign an Elastic IP to the EC2 instance
+The application cache holds the repository cache's reads and generation tokens, the catalog API responses and their version, the search engine's last connection verdict and the `queue:restart` signal. With a `file` store, a configuration saved on one server bumps the repository cache token on that server only, and the others keep serving the old values until their cached reads expire.
 
-#### Install and Configure MySQL Server
+The full page cache defaults to a `file` store too, and its listeners run on the server that handled the change. Give it a shared store of its own; see [Configure Full Page Cache](./configure-fpc.md#choose-where-pages-are-stored).
 
-SSH into the EC2 instance and update the system:
+## Step 2: Share Maintenance Mode
 
-```bash
-sudo apt-get update
+Laravel's maintenance mode is a file on each server by default, so `php artisan down`, `php artisan up` and saving a channel reach only the server that ran them. Saving a channel in the admin switches maintenance mode on or off for the whole application from that channel's maintenance setting (`Webkul\Admin\Http\Controllers\Settings\ChannelController`). Store it in a cache instead:
+
+```properties
+APP_MAINTENANCE_DRIVER=cache
+APP_MAINTENANCE_STORE=database
 ```
 
-Install MySQL server:
+The flag is kept under `illuminate:foundation:down` in that store, or in the default cache store when `APP_MAINTENANCE_STORE` is empty. `php artisan cache:clear`, `optimize:clear` and **Clear All Cache** flush the default cache store, so they lift maintenance mode when it's kept in the same store. Point `APP_MAINTENANCE_STORE` at a different shared store, such as `database` when `CACHE_STORE=redis`.
 
-```bash
-sudo apt-get install mysql-server
-```
+The admin stays reachable in maintenance mode: `Webkul\Core\Http\Middleware\PreventRequestsDuringMaintenance` lets requests under the admin URL through.
 
-Secure the MySQL installation and create the database:
+<a id="queue-and-scheduler"></a>
 
-```sql
-sudo mysql -u root -p
-CREATE DATABASE bagistodb;
-CREATE USER 'bagistouser'@'localhost' IDENTIFIED BY '<your-db-password>';
-GRANT ALL ON bagistodb.* TO 'bagistouser'@'localhost' WITH GRANT OPTION;
-SET GLOBAL log_bin_trust_function_creators = 1;
-FLUSH PRIVILEGES;
-EXIT;
-```
+## Step 3: Run the Queue and the Scheduler
 
-#### Update MySQL Bind Address
+Workers pull jobs from the shared queue, so they can run on any server, or on servers of their own. Run them with `--queue=default,broadcastable`, as described in [Queues, Jobs and Scheduling](../advanced/queue-jobs-scheduling.md#running-workers-in-production).
 
-Modify the bind address from `127.0.0.1` to `0.0.0.0` in `/etc/mysql/mysql.conf.d/mysqld.cnf`.
+Run the scheduler's cron entry on one server only. Bagisto registers its tasks without `onOneServer()`, so a cron entry on every server runs `invoice:cron`, `campaign:process` and the other tasks once per server.
 
-#### Restart MySQL Server
+<a id="files"></a>
 
-Restart the MySQL service:
+## Step 4: Share Files
 
-```bash
-sudo systemctl restart mysql
-```
+Product, category and theme media go to the default disk. Switch it to Amazon S3 or Cloudflare R2 before adding servers; see [File Storage](../advanced/file-storage.md). Files already uploaded aren't moved for you.
 
-#### Open MySQL Port (3306) in Security Group
+Some files stay on a local disk whatever the default is, so share those directories between servers:
 
-Modify the security group for this EC2 instance to allow inbound traffic on port 3306.
+- **`storage/app/private`**: import files, validation fragments, downloaded import images, import error reports and downloadable product link files. Import jobs read their files by path on the server whose worker runs them.
+- **`storage/app/public`**: generated sitemaps, which `Webkul\Sitemap\Jobs\ProcessSitemap` writes to the `public` disk. `SitemapController` lists the files on its own server and links them under `/storage/`, so share the directory and run `php artisan storage:link` on every server, even when media are on S3 or R2.
 
-#### Verify Database Connectivity
+## Step 5: Set Up the Servers Behind the Load Balancer
 
-Test connectivity using:
+- **HTTPS.** `bootstrap/app.php` calls `$middleware->trustProxies(at: '*')`, so Bagisto trusts the `X-Forwarded-*` headers from any address and builds `https://` URLs when the load balancer terminates TLS. Because any address is trusted, let only the load balancer reach the web servers.
+- **`APP_URL` and `APP_KEY`.** Set `APP_URL` to the public HTTPS address, and use the same `APP_KEY` on every server, or sessions and encrypted values from one server can't be read on another.
+- **Health checks.** `bootstrap/app.php` registers Laravel's health route at `/up`. It carries no route middleware, answers `200` whenever the application boots, even in maintenance mode, and doesn't check the database, cache or queue. Point the load balancer's health check at it rather than at the home page, which the full page cache may answer.
 
-```bash
-telnet <EC2-ip> 3306
-```
+## Step 6: Deploy to Every Server
 
-### S3 Bucket Configuration for Bagisto
+1. Put the store into maintenance mode once with `php artisan down`.
+2. Put the same code, `vendor` directory and built theme assets on every server.
+3. Run `php artisan migrate --force` once, from one server.
+4. Run `php artisan optimize` on every server, since the configuration, route, event and view caches are files.
+5. Run `php artisan queue:restart` once. The restart signal is stored in the shared cache, so every worker picks it up.
+6. On [Octane](./configure-laravel-octane.md), run `php artisan octane:reload` on every server.
+7. Bring the store back once with `php artisan up`.
 
-#### Create S3 Bucket
+## Test It
 
-Follow the documentation [S3 Bucket and Policy Setup for Bagisto](https://bagisto.com/en/s3-bucket-and-policy-setup-for-bagisto-amazon-s3-extension) to create an S3 bucket.
+1. Run `php artisan about` on each server, and confirm the session, cache and queue drivers are the shared ones and that `public/storage` is linked.
+2. Request `/up` on each server; it answers `200`.
+3. Save a product in the admin, then request its page as a guest through the load balancer several times. Every response shows the change, whichever server answers.
 
-#### Configure IAM Role for S3 Access
+## Example on AWS
 
-Create an IAM role with the required permissions to allow Bagisto to interact with S3. Use the Access Key ID, Secret Key, Bucket Name, Region, and Bucket URL.
+The same layout with AWS services:
 
-### Bagisto Server Setup
+1. **Database.** Create an Amazon RDS instance running MySQL 8.0, MariaDB 10.11 or PostgreSQL 16, in private subnets, with a security group that admits the web servers only. Set `DB_HOST` to its endpoint.
+2. **Redis.** Create an Amazon ElastiCache cluster with a Redis-compatible engine for sessions, the caches and the queue.
+3. **Media.** Create an S3 bucket and credentials that can read and write it. Enter them in the Amazon S3 settings of the **File Management** configuration section, fill in the bucket's public or CDN URL, and choose Amazon S3 as the default driver in its **General** settings.
+4. **Shared directories.** Create an Amazon EFS file system and mount it on every web server for `storage/app/private` and `storage/app/public`.
+5. **Web servers.** Install Bagisto on one EC2 instance, create a launch template from it, and run it in an Auto Scaling group across at least two Availability Zones.
+6. **Target group.** Create a target group for the instances on the web server's port, with `/up` as the health check path.
+7. **Load balancer.** Create an internet-facing Application Load Balancer with an HTTPS listener on port 443 that uses a certificate from AWS Certificate Manager and forwards to the target group, and an HTTP listener on port 80 that redirects to HTTPS.
+8. **DNS.** Point the store's domain at the load balancer's DNS name.
+9. **Background work.** Run the scheduler's cron entry on one instance, and queue workers on the web servers or on instances of their own.
 
-#### Launch EC2 Instance for Bagisto Application
+## Things to Watch
 
-Launch a new EC2 instance for the Bagisto application.
+- **One cron entry.** A second server running the scheduler duplicates every scheduled task.
+- **Per-server state.** Any `file` store for sessions, the application cache, the page cache or maintenance mode serves stale or missing data from the other servers.
+- **Local directories.** An import started on one server fails on a worker that can't see its file, and a sitemap is only listed by the server that wrote it, unless `storage/app` is shared.
+- **Cache Management actions** such as **Rebuild All Cache** write the framework cache files of the server that handled the click only.
 
-#### Install MySQL Client
+## Related Pages
 
-SSH into the EC2 instance and install the MySQL client:
-
-```bash
-sudo apt-get install mysql-client-8.0
-```
-
-#### Install Bagisto
-
-Follow the steps from the [Bagisto setup guide on AWS](https://cloudkul.com/blog/how-to-setup-bagisto-on-aws/) but skip step 7 (Install MySQL Server) as it is already done in the dedicated DB server.
-
-Use the latest [composer commands](https://getcomposer.org/download/).
-
-#### Configure Bagisto Database Connection
-
-Use the following database details:
-
-::: code-group
-
-```properties [Database Configuration]
-DB_HOST=<public IP of dedicated DB server>
-DB_DATABASE=bagistodb
-DB_USERNAME=bagistouser
-DB_PASSWORD=<your-db-password>
-```
-
-```php [Manual Configuration]
-// If configuring manually
-Host: <public IP of dedicated DB server>
-User: bagistouser
-Dbname: bagistodb
-Password: <your-db-password>
-```
-
-:::
-
-#### Install S3 Integration Module
-
-Install and configure the S3 module for Bagisto using the IAM credentials.
-
-#### Access Bagisto Admin Panel
-
-Visit the admin panel at: `http://<this-ec2-public-ip>/admin` to complete configurations.
-
-### Create AMI for Bagisto Application
-
-#### Create AMI from Bagisto EC2 Instance
-
-Go to **Instances > Actions > Image and templates > Create Image**.
-
-![Create Image](/images/configure-load-balancing/create-image-ec2.png)
-
-Enter the image name and click **Create Image**.
-
-#### Wait for AMI to Be Available
-
-Monitor the status of the AMI in the AMI section.
-
-#### Launch Instances from AMI
-
-Once the AMI is available, go to AMIs and launch as many instances as required in the target group.
-
-### Configure Target Group
-
-#### Create Target Group
-
-Go to Target Groups and click Create Target Group. Choose Instances as the target type and give it a name.
-
-![Target Group](/images/configure-load-balancing/target-group.png)
-
-#### Register Instances in the Target Group
-
-Choose the instances to be added to the target group:
-
-![Create Target Group](/images/configure-load-balancing/create-target-group.png)
-
-#### Configure Load Balancing Algorithm
-
-After creating the target group, go to Attributes and choose the desired load-balancing algorithm (default: round-robin). Enable stickiness.
-
-### Create and Configure Application Load Balancer (ALB)
-
-#### Create ALB
-
-Go to **Load Balancers** and click **Create Load Balancer**.
-
-Choose **Application Load Balancer** and provide the following configurations:
-
-- **Internet-facing**
-- Select all **Availability Zones**
-- Choose the target group created earlier and configure the listener on **port 80 (HTTP)**
-
-![Create Load Balancer](/images/configure-load-balancing/create-load-balancer.png)
-
-![Create Load Balancer](/images/configure-load-balancing/load-balancer-port.png)
-
-![Create Load Balancer](/images/configure-load-balancing/load-balancer-port-80.png)
-
-#### Adjust Security Groups
-
-Modify the security groups to allow necessary traffic (e.g., HTTP/HTTPS).
-
-#### Verify Load Balancer Configuration
-
-- Copy the **DNS name** of the load balancer and verify it
-- Configure the **domain name** (CNAME) to point to this load balancer DNS for production use
-
-#### Set Up SSL on Load Balancer
-
-Configure the ALB listener to use HTTPS (port 443), ensuring that an SSL certificate is installed.
-
-![Load Balancer Result](/images/configure-load-balancing/load-balancer-result.png)
-
-### Verify and Test the Entire Setup
-
-#### Test Load Balancer
-
-Confirm that the load balancer is distributing traffic across the registered instances.
-
-#### Verify Domain Configuration
-
-Ensure the domain is resolving correctly to the load balancer.
-
-#### Test Bagisto Functionality
-
-Access the Bagisto application and verify that:
-- S3 integration is working
-- Application can connect to the MySQL database
-- All features are functional
-
-::: tip Success
-**Bagisto with ALB Setup on AWS is Successfully Configured!**
-
-The Bagisto application is now running behind an Application Load Balancer (ALB) with a dedicated MySQL database and S3 integration for storage. The load balancer is efficiently distributing traffic across multiple instances, ensuring high availability and scalability.
-:::
+- [Configure Full Page Cache](./configure-fpc.md): a shared store for the page cache.
+- [Queues, Jobs and Scheduling](../advanced/queue-jobs-scheduling.md): workers and the scheduler.
+- [File Storage](../advanced/file-storage.md): moving media to Amazon S3 or Cloudflare R2.
+- [Configure Laravel Octane](./configure-laravel-octane.md): long-running workers on each server.

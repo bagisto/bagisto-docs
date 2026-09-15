@@ -1,398 +1,252 @@
 # Understanding Layouts
 
-Learn how Bagisto's layout system works and how to effectively use layouts in your custom themes. This guide explains both admin and shop layouts, building upon the theme development concepts from our previous tutorials.
-
-::: info What You'll Learn
-- How Bagisto's layout components work
-- Using admin layouts for backend interfaces
-- Working with shop layouts for storefront themes
-- Layout customization and best practices
-- Connecting layouts with your custom theme package
-:::
-
-## Introduction
-
-Layouts in Bagisto are fundamental building blocks that provide consistent structure across your application. They act as templates that wrap your content, ensuring unified design and user experience throughout your theme.
-
-**Key Benefits:**
-- **Consistency**: Unified design across all pages
-- **Maintainability**: Changes in one place affect the entire application
-- **Developer Experience**: Pre-built components with sensible defaults
-- **Flexibility**: Customizable props and slots for different use cases
-
-::: tip Connecting to Theme Development
-If you're building a custom theme package (covered in our [Custom Theme Package](./creating-custom-theme-package.md) guide), understanding layouts is crucial for creating professional themes that integrate seamlessly with Bagisto's architecture.
-:::
-
-::: info Laravel Blade Foundation
-Bagisto layouts are built on Laravel's Blade templating system. For comprehensive details about Blade components and layouts, visit the [Laravel documentation](https://laravel.com/docs/blade).
-:::
-
-## Admin Layout
-
-The `<x-admin::layouts>` component provides the foundation for all admin panel pages, including navigation, header, sidebar, and content areas.
-
-### Basic Admin Layout Usage
-
-When building admin interfaces for your packages, use the admin layout to maintain consistency with Bagisto's admin panel design:
-
-```blade
-<x-admin::layouts>
-    <!-- Page title (appears in browser tab and page header) -->
-    <x-slot:title>
-        @lang('blog::app.admin.index.page-title')
-    </x-slot:title>
-
-    {{-- Page Header --}}
-    <div class="flex gap-4 justify-between max-sm:flex-wrap">
-        <p class="py-[11px] text-xl text-gray-800 dark:text-white font-bold">
-            @lang('blog::app.admin.index.page-title')
-        </p>
-
-        <div class="flex gap-x-2.5 items-center">
-            {{-- Action buttons (Add, Export, etc.) --}}
-            <button class="primary-button">
-                @lang('blog::app.admin.index.create-btn')
-            </button>
-        </div>
-    </div>
-
-    {{-- Main Content --}}
-    <div class="mt-8">
-        <!-- Your admin content goes here -->
-    </div>
-</x-admin::layouts>
-```
-
-### Admin Layout Features
-
-The admin layout automatically provides:
-- **Navigation**: Admin sidebar with menu items
-- **Header**: Top navigation with user menu and notifications
-- **Responsive Design**: Mobile-friendly layout that adapts to screen size
-- **Dark Mode**: Built-in dark mode support
-- **Breadcrumbs**: Automatic breadcrumb generation based on routes
-
-::: tip Admin Layout Best Practices
-- Always use the title slot for SEO and user experience
-- Follow Bagisto's admin design patterns for consistency
-- Use the provided CSS classes for styling (e.g., `primary-button`)
-- Keep the layout structure clean and semantic
-:::
-
-### Example: Custom Package Admin Page
-
-Here's how you might use the admin layout in your custom theme package:
-
-```blade
-{{-- File: packages/Webkul/CustomTheme/src/Resources/views/admin/index.blade.php --}}
-<x-admin::layouts>
-    <x-slot:title>
-        Custom Theme Settings
-    </x-slot:title>
-
-    <div class="flex gap-4 justify-between max-sm:flex-wrap">
-        <h1 class="py-[11px] text-xl text-gray-800 dark:text-white font-bold">
-            Custom Theme Configuration
-        </h1>
-
-        <div class="flex gap-x-2.5 items-center">
-            <button class="secondary-button">
-                Reset to Defaults
-            </button>
-            
-            <button class="primary-button">
-                Save Settings
-            </button>
-        </div>
-    </div>
-
-    {{-- Settings Form --}}
-    <div class="mt-8 bg-white dark:bg-gray-900 rounded-lg shadow p-6">
-        <!-- Your theme settings form -->
-    </div>
-</x-admin::layouts>
-```
+Every storefront page is wrapped in the `<x-shop::layouts>` component and every admin page in `<x-admin::layouts>`. The layout draws the page chrome, loads the active theme's Vite build, and holds the element the Vue app mounts on. This page covers using both layouts, overriding the storefront layout in a theme, and adding a standalone layout.
 
 ## Shop Layout
 
-The `<x-shop::layouts>` component is the foundation for all storefront pages, providing header, navigation, footer, and content structure that customers see.
+**File:** `packages/Webkul/Shop/src/Resources/views/components/layouts/index.blade.php`
 
-### Basic Shop Layout Usage
-
-When building storefront pages for your custom theme, the shop layout provides everything needed for a complete customer experience:
+Wrap a storefront page's content in the storefront layout:
 
 ```blade
 <x-shop::layouts>
-    <!-- Page title (SEO and browser tab) -->
     <x-slot:title>
         @lang('blog::app.shop.blogs.page-title')
-    </x-slot:title>
+    </x-slot>
 
-    {{-- Page Content --}}
-    <div class="container mx-auto px-4 py-8">
-        <div class="flex justify-between items-center mb-8">
-            <h1 class="text-[26px] font-medium">
-                @lang('blog::app.shop.blogs.page-title')
-            </h1>
-        </div>
-
-        {{-- Your page content --}}
-        <div class="grid gap-6">
-            <!-- Blog posts, products, or other content -->
-        </div>
+    <div class="container px-15 max-lg:px-8">
+        <h1 class="text-2xl font-medium">
+            @lang('blog::app.shop.blogs.page-title')
+        </h1>
     </div>
 </x-shop::layouts>
 ```
 
-### Shop Layout Configuration
+The `title` slot fills the page's `<title>`. Push meta tags from the page with `@push('meta')`. `blog::` stands for your own package's translation namespace, such as `custom-theme::` ([Add translations](./creating-custom-theme-package.md#step-3-add-translations)).
 
-The shop layout accepts several props to customize which sections are included:
+| Prop | Default | What it controls |
+|------|---------|------------------|
+| `has-header` | `true` | `<x-shop::layouts.header>`: logo, navigation, search and cart |
+| `has-feature` | `true` | `<x-shop::layouts.services>`: the service promises strip, drawn from the channel's `services_content` section |
+| `has-footer` | `true` | `<x-shop::layouts.footer>`: the footer, with the columns of the channel's `footer_links` section |
+
+The customer sign-in, sign-up, forgot-password and reset-password pages turn all three off with `:has-header="false"`, `:has-feature="false"` and `:has-footer="false"`.
+
+### What the Layout Provides
+
+- `lang` and `dir` from the current locale, and the `base-url` and `currency` meta tags the storefront's JavaScript reads.
+- The channel's favicon, or the theme's `images/favicon.ico`.
+- `@bagistoVite(['src/Resources/assets/css/app.css', 'src/Resources/assets/js/app.js'])`, which loads the **active theme's** build; see [Vite-Powered Theme Assets](./vite-powered-theme-assets.md).
+- The Poppins and DM Serif Display fonts, from Google Fonts.
+- The `meta`, `styles` and `scripts` stacks, and the custom CSS and JavaScript stored under `general.content.custom_scripts` in the store configuration.
+- `<div id="app">` holding `<x-shop::flash-group>`, `<x-shop::modal.confirm>`, the header, the cookie consent banner when GDPR cookie consent is enabled, the page content in `<main id="main">`, the services strip and the footer.
+- The hidden [WebMCP](../ai/webmcp.md) tool declarations, `<x-shop::layouts.webmcp>`.
+- The script that mounts the Vue app on `#app` once the DOM is ready, after `@stack('scripts')` has registered every component.
+- Render events around each region: `bagisto.shop.layout.head.before` and `.after`, `body.before` and `.after`, `content.before` and `.after`, and `vue-app-mount.before` and `.after`. See [View Render Events](../advanced/view-render-events.md).
+
+### Customer Account Pages
+
+`<x-shop::layouts.account>` wraps the customer account pages. It renders the storefront layout with `has-feature` turned off, adds the account breadcrumb, and lays the account navigation and the page content out side by side (`packages/Webkul/Shop/src/Resources/views/components/layouts/account/index.blade.php`).
+
+## Admin Layout
+
+**File:** `packages/Webkul/Admin/src/Resources/views/components/layouts/index.blade.php`
+
+Admin pages of your packages use the admin layout, with the admin's own button classes such as `primary-button` and `secondary-button`:
 
 ```blade
-<x-shop::layouts
-    :has-header="false"
-    :has-feature="false"  
-    :has-footer="false"
->
-    <!-- Content when header/footer are disabled -->
-</x-shop::layouts>
-```
-
-### Layout Props Reference
-
-| Prop Name | Description | Default Value | Use Case |
-|-----------|-------------|---------------|-----------|
-| **`has-header`** | Include site header with navigation and search | `true` | Disable for popup pages or custom headers |
-| **`has-feature`** | Show featured content section | `true` | Disable for minimal pages |
-| **`has-footer`** | Include site footer with links and info | `true` | Disable for checkout or modal pages |
-
-::: tip Shop Layout in Custom Themes
-If you're building a custom theme package (from our [Custom Theme Package](./creating-custom-theme-package.md) tutorial), the shop layout automatically loads your theme's compiled assets when configured properly. This works seamlessly with the asset compilation setup from our [Vite-Powered Theme Assets](./vite-powered-theme-assets.md) guide.
-:::
-
-### Example: Custom Theme Home Page
-
-Here's how you might use the shop layout in your custom theme package:
-
-```blade
-{{-- File: packages/Webkul/CustomTheme/src/Resources/views/home/index.blade.php --}}
-<x-shop::layouts>
+<x-admin::layouts>
     <x-slot:title>
-        Custom Theme Home
-    </x-slot:title>
+        @lang('blog::app.admin.index.page-title')
+    </x-slot>
 
-    {{-- Hero Section --}}
-    <div class="hero-section bg-gradient-to-r from-blue-600 to-purple-600 text-white py-20">
-        <div class="container mx-auto px-4 text-center">
-            <h1 class="text-5xl font-bold mb-6">
-                Welcome to Our Store
-            </h1>
-            
-            <p class="text-xl mb-8 opacity-90">
-                Professional theme with modern design
-            </p>
-            
-            <a href="{{ route('shop.search.index') }}" 
-               class="bg-white text-blue-600 font-bold py-3 px-8 rounded-lg hover:bg-gray-100 transition duration-300">
-                Start Shopping
-            </a>
-        </div>
-    </div>
+    <div class="flex items-center justify-between gap-4 max-sm:flex-wrap">
+        <p class="text-xl font-bold text-gray-800 dark:text-white">
+            @lang('blog::app.admin.index.page-title')
+        </p>
 
-    {{-- Featured Products --}}
-    <div class="container mx-auto px-4 py-16">
-        <h2 class="text-3xl font-bold text-center mb-12">
-            Featured Products
-        </h2>
-        
-        <!-- Product grid -->
+        <button
+            type="button"
+            class="primary-button"
+        >
+            @lang('blog::app.admin.index.create-btn')
+        </button>
     </div>
-</x-shop::layouts>
+</x-admin::layouts>
 ```
 
-### Shop Layout Features
+The admin layout takes no props. It provides:
 
-The shop layout automatically provides:
-- **Header**: Logo, navigation menu, search, and cart
-- **Mobile Navigation**: Responsive mobile menu
-- **SEO**: Proper meta tags and structured data
-- **Asset Loading**: Automatic inclusion of theme CSS/JS
-- **Responsive Design**: Mobile-first responsive layout
-- **Flash messages and agent tools**: the `flash-group` toaster and the hidden [WebMCP](../ai/webmcp.md) tool declarations are part of the layout, so a page that uses it gets both
+- The `dark` class on `<html>` from the `dark_mode` cookie, so Tailwind `dark:` variants apply.
+- The header, the sidebar (collapsed when the `sidebar_collapsed` cookie is set), `<x-admin::flash-group>`, `<x-admin::modal.confirm>` and the command palette.
+- `@bagistoVite` for the admin theme's build, the `meta`, `styles` and `scripts` stacks, and the Vue app mounted on `#app`.
+- Render events: `bagisto.admin.layout.head.before` and `.after`, `body.before` and `.after`, `content.before` and `.after`, and `vue-app-mount.before` and `.after`.
 
-::: warning Asset Loading Behavior
-The shop layout automatically loads your active theme's compiled assets. This means:
-- ✅ **Custom themes**: Your CSS/JS will be loaded automatically
-- ✅ **Asset compilation**: Works with Vite dev server and production builds
-- ⚠️ **Custom layouts**: If you create your own layout, you'll need to manually include `@bagistoVite` directive
+`<x-admin::layouts.anonymous>` is the layout for pages shown before sign-in, with no header or sidebar; `packages/Webkul/Admin/src/Resources/views/users/sessions/create.blade.php` uses it.
 
-For details on asset loading, see our [Vite-Powered Theme Assets](./vite-powered-theme-assets.md) guide.
-:::
+## Overriding the Storefront Layout in a Theme
 
-### Creating Minimal Pages
+A theme restyles the chrome of every page by overriding the layout component rather than creating a new layout, because every Shop view already calls `<x-shop::layouts>`. Copy the component into the theme package:
 
-For pages that need minimal structure (like popups or standalone pages), disable unnecessary sections:
+```bash
+mkdir -p packages/Webkul/CustomTheme/src/Resources/views/layouts
 
-```blade
-<x-shop::layouts
-    :has-header="false"
-    :has-footer="false"
->
-    <x-slot:title>
-        Minimal Page
-    </x-slot:title>
-
-    {{-- Standalone content without header/footer --}}
-    <div class="min-h-screen flex items-center justify-center">
-        <div class="max-w-md w-full">
-            <!-- Popup or standalone content -->
-        </div>
-    </div>
-</x-shop::layouts>
+cp packages/Webkul/Shop/src/Resources/views/components/layouts/index.blade.php packages/Webkul/CustomTheme/src/Resources/views/layouts/index.blade.php
 ```
 
-## Custom Layouts and Best Practices
+Then republish the package views, or [symlink them](./creating-custom-theme-package.md#symlinking-the-views). Component overrides are only read from `views_path` (see [Creating a Store Theme](./creating-store-theme.md#blade-components)), so this file must reach `resources/themes/custom-theme/views/layouts/index.blade.php` even if you [skipped the publish step](./creating-custom-theme-package.md#skipping-the-publish-step) for views. A theme without a package puts the copy at that path directly.
 
-### When to Create Custom Layouts
+To restyle only the header or the footer, copy `components/layouts/header/index.blade.php` to `layouts/header/index.blade.php`, or `components/layouts/footer/index.blade.php` to `layouts/footer/index.blade.php`, in the same package directory instead.
 
-While Bagisto's built-in layouts cover most use cases, you might need custom layouts for:
+Edit the copy, and keep what the rest of the storefront relies on:
 
-- **Unique Design Requirements**: When your theme needs a completely different structure
-- **Specialized Pages**: Landing pages, maintenance pages, or custom applications
-- **Third-party Integrations**: External widgets or embedded applications
-- **Performance Optimization**: Minimal layouts for specific high-performance pages
+- The `hasHeader`, `hasFeature` and `hasFooter` props with their defaults, which the customer sign-in pages set.
+- `@bagistoVite`, the `meta`, `styles` and `scripts` stacks, and the render events, which packages hook into.
+- `<div id="app">` around the content, and the script that calls `app.mount("#app")` after `@stack('scripts')`. Without them no Vue component on the page renders.
+- `<x-shop::flash-group>` and `<x-shop::modal.confirm>`, which components open through the event emitter.
 
-### Creating Custom Layouts
+A copied layout no longer receives Bagisto's changes to the original. Compare it with the package file after each update.
 
-If you need complete control over the layout structure, you can create your own master layout:
+## A Standalone Layout Component
+
+For a page that must not use the storefront chrome at all, such as a campaign landing page, give the theme package a layout component of its own. Register the package's `components` directory as an anonymous component path in its service provider:
+
+**File:** `packages/Webkul/CustomTheme/src/Providers/CustomThemeServiceProvider.php`
+
+```php
+<?php
+
+namespace Webkul\CustomTheme\Providers;
+
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\ServiceProvider;
+
+class CustomThemeServiceProvider extends ServiceProvider
+{
+    /**
+     * Bootstrap services.
+     */
+    public function boot(): void
+    {
+        $this->publishes([
+            __DIR__.'/../Resources/views' => resource_path('themes/custom-theme/views'),
+        ], 'custom-theme-views');
+
+        $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'custom-theme');
+
+        Blade::anonymousComponentPath(__DIR__.'/../Resources/views/components', 'custom-theme');
+    }
+}
+```
+
+Then create the layout. Nothing else on the page loads the theme's build and fonts or mounts Vue, so the layout does all three:
+
+**File:** `packages/Webkul/CustomTheme/src/Resources/views/components/layouts/landing.blade.php`
 
 ```blade
-{{-- File: packages/Webkul/CustomTheme/src/Resources/views/layouts/master.blade.php --}}
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $title ?? config('app.name') }}</title>
-    
-    {{-- Load theme assets manually --}}
-    @bagistoVite([
-        'src/Resources/assets/css/app.css',
-        'src/Resources/assets/js/app.js'
-    ])
-    
-    {{-- Additional meta tags --}}
-    @stack('meta')
-    
-    {{-- Additional styles --}}
-    @stack('styles')
-</head>
-<body class="{{ $bodyClass ?? '' }}">
-    {{-- Custom header --}}
-    @if($hasHeader ?? true)
-        @include('custom-theme::layouts.header')
-    @endif
-    
-    {{-- Main content --}}
-    <main class="main-content">
-        {{ $slot }}
-    </main>
-    
-    {{-- Custom footer --}}
-    @if($hasFooter ?? true)
-        @include('custom-theme::layouts.footer')
-    @endif
-    
-    {{-- Additional scripts --}}
-    @stack('scripts')
-</body>
+
+<html
+    lang="{{ app()->getLocale() }}"
+    dir="{{ core()->getCurrentLocale()->direction }}"
+>
+    <head>
+        <title>{{ $title ?? '' }}</title>
+
+        <meta charset="UTF-8">
+
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1"
+        >
+
+        <meta
+            name="base-url"
+            content="{{ url()->to('/') }}"
+        >
+
+        <meta
+            name="currency"
+            content="{{ core()->getCurrentCurrency()->toJson() }}"
+        >
+
+        @stack('meta')
+
+        @bagistoVite(['src/Resources/assets/css/app.css', 'src/Resources/assets/js/app.js'])
+
+        <link
+            rel="preconnect"
+            href="https://fonts.googleapis.com"
+            crossorigin
+        />
+
+        <link
+            rel="preconnect"
+            href="https://fonts.gstatic.com"
+            crossorigin
+        />
+
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=DM+Serif+Display&display=swap"
+        />
+
+        @stack('styles')
+    </head>
+
+    <body>
+        <div id="app">
+            <x-shop::flash-group />
+
+            <x-shop::modal.confirm />
+
+            <main id="main">
+                {{ $slot }}
+            </main>
+        </div>
+
+        @stack('scripts')
+
+        <script>
+            function mountApp() {
+                app.mount("#app");
+            }
+
+            if (document.readyState === "loading") {
+                document.addEventListener("DOMContentLoaded", mountApp);
+            } else {
+                mountApp();
+            }
+        </script>
+    </body>
 </html>
 ```
 
-Then use your custom layout:
+Use it from a view rendered by a route that runs the `web` and `shop` middleware, as the Shop package's own routes do (`packages/Webkul/Shop/src/Providers/ShopServiceProvider.php`), so the active theme and channel are resolved. Your package's storefront routes are set up in [Routes](../package-development/routes.md#create-the-storefront-routes).
 
 ```blade
-<x-custom-theme::layouts.master 
-    :title="'Custom Page'"
-    :has-header="true"
-    :has-footer="false"
-    body-class="custom-page"
->
-    <!-- Your page content -->
-</x-custom-theme::layouts.master>
+<x-custom-theme::layouts.landing>
+    <x-slot:title>
+        Summer Sale
+    </x-slot>
+
+    <section class="container px-15 max-lg:px-8">
+        <h1 class="font-dmserif text-3xl">
+            Summer Sale
+        </h1>
+    </section>
+</x-custom-theme::layouts.landing>
 ```
 
-### Layout Development Tips
+`x-custom-theme::layouts.landing` resolves to `components/layouts/landing.blade.php` in the package: the `components` directory is the registered path, not part of the component name.
 
-**1. Asset Management**
-- Use `@bagistoVite` for loading compiled assets in custom layouts
-- Leverage `@stack` directives for flexible script/style injection
-- Consider performance implications of loading assets
+## Things to Watch
 
-**2. Responsive Design**
-- Test layouts across different screen sizes
-- Use Bagisto's responsive utilities and breakpoints
-- Ensure mobile navigation works properly
+- **The script order matters.** Components register themselves with `app.component()` from the `scripts` stack, so `@stack('scripts')` must come before the call to `app.mount()`.
+- **A standalone layout skips the storefront's extension points.** Packages that inject markup through the storefront layout's render events, and the configured custom CSS and JavaScript, don't reach a page that uses your own layout.
 
-**3. SEO Considerations**
-- Always include proper `<title>` tags
-- Add meta descriptions and Open Graph tags
-- Implement structured data where appropriate
+## Next Step
 
-**4. Internationalization**
-- Use Laravel's `@lang` directive for translatable content
-- Support RTL languages if needed
-- Consider cultural design differences
+Next, build pages from Bagisto's ready-made components.
 
-::: tip Layout Performance
-- **Shop Layout**: Automatically optimized for SEO and performance
-- **Admin Layout**: Includes admin-specific optimizations and features
-- **Custom Layouts**: Require manual optimization but offer complete control
-:::
-
-## Integration with Theme Development
-
-### Connecting with Previous Tutorials
-
-This layout system integrates seamlessly with our previous guides:
-
-**🎨 [Custom Theme Package](./creating-custom-theme-package.md)**
-- Layouts work automatically with your theme package structure
-- Service provider handles layout registration and publishing
-
-**⚡ [Vite-Powered Theme Assets](./vite-powered-theme-assets.md)**  
-- Shop layout automatically loads your compiled theme assets
-- Custom layouts require manual asset inclusion with `@bagistoVite`
-
-### Next Steps in Theme Development
-
-Now that you understand layouts, you can:
-
-1. **Create Complex Views**: Build sophisticated pages using layout slots and props
-2. **Customize Components**: Override specific layout components for your theme
-3. **Optimize Performance**: Choose the right layout for each page's requirements
-4. **Build Reusable Patterns**: Create your own layout components for consistency
-
-::: warning Translation Requirements
-Notice that the examples use translation strings (e.g., `@lang('blog::app.admin.index.page-title')`). You'll need to:
-
-1. **Create language files** in your package: `src/Resources/lang/en/app.php`
-2. **Register translations** in your service provider
-3. **Publish language files** for customization
-
-See our package development guides for details on handling translations.
-:::
-
-## What's Next?
-
-Understanding layouts is crucial for effective theme development. Here are your next steps:
-
-**🧩 [Blade Components →](./blade-components.md)**  
-Learn to use Bagisto's pre-built components that work seamlessly with your layouts.
-
-**🛠️ [Package Development →](../package-development/getting-started)**  
-Explore advanced package development techniques for creating custom functionality.
-
-**📚 [Back to Getting Started →](./getting-started.md)**  
-Review the complete theme development journey and explore other paths.
+**Continue to:** [Blade Components](./blade-components.md)

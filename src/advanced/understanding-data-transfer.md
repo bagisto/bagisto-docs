@@ -1,106 +1,203 @@
 # Understanding Data Transfer
 
-Bagisto's data transfer system enables seamless bulk data import operations directly from the admin panel under the **Settings Menu**. This powerful feature allows efficient management of large datasets through custom import functionality.
+`packages/Webkul/DataTransfer` imports records in bulk from CSV, XLS, XLSX and XML files: products, customers and tax rates in core, and any entity a package registers an importer for. Every import runs through the same pipeline, which validates, writes, links and indexes the rows in batches. There is no exporter framework: exporting is the CSV, XLS and XLSX export built into every DataGrid.
 
-::: info What is Data Transfer?
-Data transfer in Bagisto provides a structured way to import bulk data (products, customers, tax rates, etc.) using various file formats. It includes validation, batch processing, and error handling for reliable data imports.
-:::
+## How an Import Runs
 
-## Implementation Guide
-
-This step-by-step guide demonstrates how to create a custom importer for your Bagisto package. For this example, we'll build an **Admin Import** functionality to showcase the implementation process.
-
-::: info Example Scenario
-We'll create an admin user importer for a custom package called `AdminImport`. Admin imports are ideal for demonstration because they involve a single table structure, making the concept easier to understand before implementing more complex import logic.
-:::
-
-### Create Importer File
-
-Start by creating an `AdminImporter.php` file under the `Importers` directory of your package:
-
-```text
-└── packages
-    └── Webkul
-        └── AdminImport
-            ├── ...
-            └── src
-                └── ...
-                └── Importers
-                    └── AdminImporter.php
-```
-
-::: tip Directory Structure
-Core keeps its importers under `Helpers/Importers/<Entity>/Importer.php` (`Webkul\DataTransfer\Helpers\Importers\Product\Importer` and so on). Any directory works as long as the class name in `importers.php` matches; this tutorial uses a flat `Importers` directory for brevity.
-:::
-
-## How an import runs
-
-Before writing an importer it helps to know what the framework does around it. An import record moves through a fixed set of states, defined as constants on `Webkul\DataTransfer\Helpers\Import`:
+An import record moves through the states defined as constants on `Webkul\DataTransfer\Helpers\Import`:
 
 `pending` → `validating` → `validated` → (`downloading`) → `processing` → `processed` → (`linking` → `linked`) → (`indexing` → `indexed`) → `completed`
 
-| Phase | What happens | Your importer's part |
+| Stage | What happens | The importer's part |
 |---|---|---|
-| Validate | The file is read in chunks and every row goes through `validateRow()`. Invalid rows are recorded with `skipRow()` and can be downloaded as an error report. Rows that pass are grouped into batches of `AbstractImporter::BATCH_SIZE` (100) | `validateRow()` |
-| Images (products only) | When the import's image source is `url`, every image link in the file is fetched once before any row is written | none; provided by `DownloadsImages` |
-| Create / Delete | Each batch is handed to `importBatch()`. The import's `action` is `append` or `delete` | `importBatch()` |
-| Link | Runs when `isLinkingRequired()` is true: relationships between imported rows are resolved | `linkData()` and `$linkingRequired` |
-| Index | Runs when `isIndexingRequired()` is true: price, inventory and search indexes are rebuilt for the batch | `indexData()` and `$indexingRequired` |
+| Validate | The header row is checked against the importer's columns, then every row goes through `validateRow()`. Rows that pass are cleaned by `prepareRowForDb()` and stored in `import_batches`, `AbstractImporter::BATCH_SIZE` (100) rows per batch | `$validColumnNames`, `$permanentAttributes`, `validateRow()` |
+| Download images | Only when the importer has a `downloadImagesBatch()` method, the action isn't a delete and the images are given as URLs | none |
+| Import | Each batch is passed to `importBatch()` | `importBatch()` |
+| Link | Only when `isLinkingRequired()` is true: each batch is passed to `linkBatch()` | `$linkingRequired`, `linkBatch()` |
+| Index | Only when `isIndexingRequired()` is true: each batch is passed to `indexBatch()` | `$indexingRequired`, `indexBatch()` |
 
-Each phase is a queued job under `Webkul\DataTransfer\Jobs\Import` (`ValidateChunk`, `DownloadImages`, `ImportBatch`, `LinkBatch`, `IndexBatch`, plus the `Linking`, `Indexing` and `Completed` markers), chained with `Bus::chain()` and `Bus::batch()`. With **Process in Queue** on, validation and image download are spread across workers; with it off, the admin page drives the same phases in short requests. Either way the import runs to completion on its own once saved. The events fired are `data_transfer.imports.validate.before/after`, `data_transfer.imports.batch.import.before/after`, `data_transfer.imports.batch.linking.before/after`, `data_transfer.imports.batch.indexing.before/after`, and `data_transfer.imports.started`, `.linking`, `.indexing` and `.completed`.
+`isLinkingRequired()` and `isIndexingRequired()` return `false` for a delete, whatever the properties say.
 
-There is no exporter framework in the package: exporting is the CSV, XLS and XLSX export built into every DataGrid.
+**Where the stages run.** With the import's **Process in Queue** setting (`process_in_queue`) on, `AbstractImporter::importData()` dispatches one `Bus::chain()` of the jobs in `Webkul\DataTransfer\Jobs\Import`: a `Bus::batch()` of `ImportBatch` jobs, then `Linking` and a batch of `LinkBatch` jobs, then `Indexing` and a batch of `IndexBatch` jobs, then `Completed`. Every batch allows failures, so one failing batch doesn't stop the others, and the admin refuses to start a queued import while the queue connection is `sync`. With the setting off, the admin page drives the same stages itself, one batch per request.
 
-### Implement Importer Logic
+**Validation** runs over the whole file in one pass unless the importer sets `$chunkedValidationSupported`; then the file is validated in windows of `$validationChunkSize` rows, across requests or `ValidateChunk` queue jobs. Uploaded files, validation state and error reports are kept on the `private` disk. Each stage fires events, from `data_transfer.imports.validate.before` to `data_transfer.imports.completed`, listed on [Event Listeners](./event-listeners.md#data-transfer).
 
-Create the importer class by extending `AbstractImporter` and implementing the required validation and processing methods:
+### File Formats
+
+`Import::getSource()` picks a source class from the file's extension, and every source extends `AbstractSource`, so an importer never opens the file itself and one importer serves all four formats:
+
+| Format | Extension | Source class |
+|---|---|---|
+| CSV | `.csv` | `Webkul\DataTransfer\Helpers\Sources\CSV` |
+| Excel | `.xlsx` | `Webkul\DataTransfer\Helpers\Sources\XLSX` |
+| Excel 97-2003 | `.xls` | `Webkul\DataTransfer\Helpers\Sources\XLS` |
+| XML | `.xml` | `Webkul\DataTransfer\Helpers\Sources\XML` |
+
+### Product Images
+
+The product importer takes images from one of three sources, stored on the import as `Import::IMAGE_SOURCE_URL`, `IMAGE_SOURCE_UPLOAD` or `IMAGE_SOURCE_DIRECTORY`: links in the `images` column, downloaded in their own stage before any row is written; a ZIP archive uploaded with the import; or a directory on the server. A custom importer that carries images can use the same `Webkul\DataTransfer\Helpers\Importers\Concerns\DownloadsImages` trait, since having `downloadImagesBatch()` is what switches the image stage on.
+
+## Writing an Importer
+
+The rest of this page builds `Webkul\RedirectImport`, a package that imports URL rewrites: the redirects in the `url_rewrites` table that the storefront follows when a request path matches, which a store moving to Bagisto usually has by the thousand. `Webkul\DataTransfer\Helpers\Importers\TaxRate\Importer` is the closest core model for a single-table importer.
+
+Its files:
+
+```text
+packages/Webkul/RedirectImport
+└── src
+    ├── Config
+    │   └── importers.php
+    ├── Helpers
+    │   └── Importers
+    │       └── UrlRewrite
+    │           └── Importer.php
+    ├── Providers
+    │   └── RedirectImportServiceProvider.php
+    └── Resources
+        ├── lang
+        │   └── en
+        │       └── app.php
+        └── samples
+            ├── csv
+            │   └── url-rewrites.csv
+            ├── xls
+            │   └── url-rewrites.xls
+            ├── xlsx
+            │   └── url-rewrites.xlsx
+            └── xml
+                └── url-rewrites.xml
+```
+
+## Step 1: Write the Importer Class
+
+An importer extends `Webkul\DataTransfer\Helpers\Importers\AbstractImporter` and implements `validateRow()` and `importBatch()`. Core keeps each one under `Helpers/Importers/<Entity>/Importer.php`.
+
+**File:** `packages/Webkul/RedirectImport/src/Helpers/Importers/UrlRewrite/Importer.php`
 
 ```php
 <?php
 
-namespace Webkul\AdminImport\Importers;
+namespace Webkul\RedirectImport\Helpers\Importers\UrlRewrite;
 
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Validator;
 use Webkul\DataTransfer\Contracts\ImportBatch as ImportBatchContract;
 use Webkul\DataTransfer\Helpers\Import;
 use Webkul\DataTransfer\Helpers\Importers\AbstractImporter;
+use Webkul\DataTransfer\Repositories\ImportBatchRepository;
+use Webkul\Marketing\Repositories\URLRewriteRepository;
 
-class AdminImporter extends AbstractImporter
+class Importer extends AbstractImporter
 {
     /**
-     * Permanent entity columns.
+     * Error code for a rewrite that appears more than once in the file.
+     */
+    const ERROR_DUPLICATE_REWRITE = 'duplicate_rewrite';
+
+    /**
+     * Columns the file may contain.
+     */
+    protected array $validColumnNames = [
+        'entity_type',
+        'request_path',
+        'target_path',
+        'redirect_type',
+        'locale',
+    ];
+
+    /**
+     * Columns every file must contain.
      *
      * @var string[]
      */
-    protected $permanentAttributes = ['email'];
+    protected $permanentAttributes = ['entity_type', 'request_path', 'locale'];
 
     /**
-     * Valid column names.
+     * Translation keys of this importer's error messages.
      */
-    protected array $validColumnNames = ['name', 'email', 'password', 'status', 'role_id'];
+    protected array $messages = [
+        self::ERROR_DUPLICATE_REWRITE => 'redirect_import::app.importers.url-rewrites.errors.duplicate-rewrite',
+    ];
 
     /**
-     * Validate data row.
+     * Keys of the rows validated so far.
+     */
+    protected array $rowKeys = [];
+
+    /**
+     * Create a new importer instance.
+     */
+    public function __construct(
+        protected ImportBatchRepository $importBatchRepository,
+        protected URLRewriteRepository $urlRewriteRepository
+    ) {
+        parent::__construct($importBatchRepository);
+    }
+
+    /**
+     * Validate one row of the file.
      */
     public function validateRow(array $rowData, int $rowNumber): bool
     {
-        // Your validation logic here.
+        if (isset($this->validatedRows[$rowNumber])) {
+            return ! $this->errorHelper->isRowInvalid($rowNumber);
+        }
+
+        $this->validatedRows[$rowNumber] = true;
+
+        $rules = [
+            'entity_type' => 'required|in:category,product,cms_page',
+            'request_path' => 'required|string',
+            'locale' => 'required|exists:locales,code',
+        ];
+
+        if ($this->import->action != Import::ACTION_DELETE) {
+            $rules['target_path'] = 'required|string';
+
+            $rules['redirect_type'] = 'required|in:301,302';
+        }
+
+        $validator = Validator::make($rowData, $rules);
+
+        if ($validator->fails()) {
+            $failedAttributes = $validator->failed();
+
+            foreach ($validator->errors()->getMessages() as $attributeCode => $message) {
+                $errorCode = array_key_first($failedAttributes[$attributeCode] ?? []);
+
+                $this->skipRow($rowNumber, $errorCode, $attributeCode, current($message));
+            }
+
+            return false;
+        }
+
+        $rowKey = $this->rowKey($rowData);
+
+        if (in_array($rowKey, $this->rowKeys)) {
+            $this->skipRow($rowNumber, self::ERROR_DUPLICATE_REWRITE, 'request_path');
+
+            return false;
+        }
+
+        $this->rowKeys[] = $rowKey;
 
         return true;
     }
 
     /**
-     * Import data rows.
+     * Write one batch of validated rows.
      */
     public function importBatch(ImportBatchContract $batch): bool
     {
         Event::dispatch('data_transfer.imports.batch.import.before', $batch);
 
-        // Your import logic here.
+        if ($batch->import->action == Import::ACTION_DELETE) {
+            $this->deleteRewrites($batch->data);
+        } else {
+            $this->saveRewrites($batch->data);
+        }
 
-        /**
-         * Update import batch summary.
-         */
         $batch = $this->importBatchRepository->update([
             'state' => Import::STATE_PROCESSED,
 
@@ -115,89 +212,145 @@ class AdminImporter extends AbstractImporter
 
         return true;
     }
+
+    /**
+     * Register this importer's error messages alongside the generic ones.
+     */
+    protected function initErrorMessages(): void
+    {
+        foreach ($this->messages as $errorCode => $message) {
+            $this->errorHelper->addErrorMessage($errorCode, trans($message));
+        }
+
+        parent::initErrorMessages();
+    }
+
+    /**
+     * Update the rewrites that already exist and insert the rest.
+     */
+    protected function saveRewrites(array $rows): void
+    {
+        $existingRewrites = $this->existingRewrites($rows);
+
+        $newRewrites = [];
+
+        foreach ($rows as $row) {
+            $rewrite = $existingRewrites[$this->rowKey($row)] ?? null;
+
+            if ($rewrite) {
+                $this->urlRewriteRepository->update([
+                    'target_path' => $row['target_path'],
+                    'redirect_type' => $row['redirect_type'],
+                ], $rewrite->id);
+
+                $this->updatedItemsCount++;
+
+                continue;
+            }
+
+            $newRewrites[] = array_merge($row, [
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
+        if (! empty($newRewrites)) {
+            $this->urlRewriteRepository->insert($newRewrites);
+
+            $this->createdItemsCount += count($newRewrites);
+        }
+    }
+
+    /**
+     * Delete the rewrites the rows name.
+     */
+    protected function deleteRewrites(array $rows): void
+    {
+        $rewriteIds = collect($this->existingRewrites($rows))->pluck('id')->all();
+
+        if (! empty($rewriteIds)) {
+            $this->urlRewriteRepository->deleteWhere([['id', 'IN', $rewriteIds]]);
+        }
+
+        $this->deletedItemsCount += count($rewriteIds);
+    }
+
+    /**
+     * The stored rewrites matching the rows, keyed the same way as the rows.
+     */
+    protected function existingRewrites(array $rows): array
+    {
+        return $this->urlRewriteRepository
+            ->findWhereIn('request_path', array_column($rows, 'request_path'))
+            ->keyBy(fn ($rewrite) => $this->rowKey($rewrite->toArray()))
+            ->all();
+    }
+
+    /**
+     * The key a rewrite is matched on: its entity type, locale and request path.
+     */
+    protected function rowKey(array $row): string
+    {
+        return implode('|', [$row['entity_type'], $row['locale'], $row['request_path']]);
+    }
 }
 ```
 
-#### Key Implementation Details
+| Member | What matters |
+|---|---|
+| `$validColumnNames` | Every column the file may contain. A header outside it, or one that doesn't match `^[a-z][a-z0-9_]*$`, fails validation before any row is read |
+| `$permanentAttributes` | The columns every file must contain, for append and delete alike. `AbstractImporter::validateColumns()` reads it, so declare it even when it's empty |
+| `validateRow()` | Can see the same row more than once, so it remembers the rows it has checked. It reports each failure with `skipRow()` instead of throwing, applies fewer rules for a delete, and uses the rules the admin applies to a URL rewrite created by hand |
+| `skipRow($rowNumber, $errorCode, $columnName = null, $errorMessage = null)` | Records the error and leaves the row out of the batches. A code without a message uses the template registered in `initErrorMessages()`, where `%s` becomes the column name |
+| `importBatch()` | Receives one stored batch: `$batch->data` holds the validated rows, and `$batch->import->action` is `Import::ACTION_APPEND` or `Import::ACTION_DELETE`. It writes in bulk through `URLRewriteRepository`, keeps the created, updated and deleted counters the admin's summary shows, marks the batch processed and fires the batch events |
 
-The `AdminImporter` class contains several important components that work together to handle the data import process. Understanding these properties and methods will help you customize the importer for your specific requirements.
+## Step 2: Register the Importer
 
-##### Essential Properties
+Add the importer to the `importers` registry, which the admin's import form lists. The array key is the import `type` stored on every import record, so don't change it once imports exist.
 
-**`$permanentAttributes`** - Fields that cannot be modified during updates
-- In this example, `email` is permanent to maintain admin identity
-- These fields are used for identifying existing records
-
-**`$validColumnNames`** - Allowed CSV column headers
-- Defines which columns are acceptable in the import file
-- Helps validate file structure before processing
-
-##### Core Methods
-
-**`validateRow()`** - Validates each CSV row
-- Implement your business logic validation here
-- Check required fields, data formats, and business rules
-- Return `true` for valid rows, `false` for invalid
-
-**`importBatch()`** - Processes the validated data
-- Contains the actual import logic
-- Create or update database records
-- Handle Laravel events for hooks
-- Update batch summary with results
-
-::: tip Implementation Strategy
-Start with basic validation and import logic, then gradually add more sophisticated features like password hashing, role validation, and duplicate detection as needed.
-:::
-
-### Register Custom Importer
-
-After implementing the importer logic, you need to register it with Bagisto's data transfer system to make it available in the admin panel.
-
-#### Create Importer Configuration
-
-Create a configuration file to define your custom importer settings:
-
-**File:** `packages/Webkul/AdminImport/src/Config/importers.php`
+**File:** `packages/Webkul/RedirectImport/src/Config/importers.php`
 
 ```php
 <?php
 
 return [
-    'admins' => [
-        'title' => 'Admin Users', // add translation key if needed
-        'importer' => 'Webkul\AdminImport\Importers\AdminImporter',
+    'url_rewrites' => [
+        'title' => 'redirect_import::app.importers.url-rewrites.title',
+        'importer' => 'Webkul\RedirectImport\Helpers\Importers\UrlRewrite\Importer',
 
         'sample_paths' => [
-            'csv' => 'data-transfer/samples/csv/admins.csv',
-            'xls' => 'data-transfer/samples/xls/admins.xls',
-            'xlsx' => 'data-transfer/samples/xlsx/admins.xlsx',
-            'xml' => 'data-transfer/samples/xml/admins.xml',
+            'csv' => 'redirect-import/samples/csv/url-rewrites.csv',
+            'xls' => 'redirect-import/samples/xls/url-rewrites.xls',
+            'xlsx' => 'redirect-import/samples/xlsx/url-rewrites.xlsx',
+            'xml' => 'redirect-import/samples/xml/url-rewrites.xml',
         ],
     ],
 ];
 ```
 
-::: tip Configuration Options
-- **title**: Translation key shown in the admin panel dropdown (core uses `data_transfer::app.importers.products.title`); a plain string also renders
-- **importer**: Full class name of your importer
-- **sample_paths**: Optional sample file paths for different formats, resolved on the `public` disk
-- **sample_images_zip_path**: Optional, products only in core; a sample archive matching the sample sheet
-:::
+| Key | Purpose |
+|---|---|
+| `title` | Translation key shown in the import type list; a plain string also renders |
+| `importer` | The importer's class name, resolved from the container |
+| `sample_paths` | One sample file per format, served with `Storage::download()` from the default filesystem disk |
+| `sample_images_zip_path` | Optional, used by the product importer: a ZIP of the images its sample sheet names |
 
-#### Register Configuration in Service Provider
+`mergeConfigFrom()` keeps core's `products`, `customers` and `tax_rates` entries, so to change a core importer, extend its class and point the entry at your subclass from your provider's `boot()`, as in `config(['importers.products.importer' => ProductImporter::class])` with your subclass imported; [Overriding a Core Type](../product-type-development/understanding-product-type-configuration.md#overriding-a-core-type) explains why `boot()`.
 
-Update your service provider to merge the importer configuration:
+## Step 3: Load It from a Service Provider
 
-**File:** `packages/Webkul/AdminImport/src/Providers/AdminImportServiceProvider.php`
+The provider merges the registry file into `importers`, loads the translations and makes the sample files publishable.
+
+**File:** `packages/Webkul/RedirectImport/src/Providers/RedirectImportServiceProvider.php`
 
 ```php
 <?php
 
-namespace Webkul\AdminImport\Providers;
+namespace Webkul\RedirectImport\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class AdminImportServiceProvider extends ServiceProvider
+class RedirectImportServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -210,246 +363,108 @@ class AdminImportServiceProvider extends ServiceProvider
     /**
      * Bootstrap services.
      */
-    public function boot(): void {}
+    public function boot(): void
+    {
+        $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'redirect_import');
+
+        $this->publishes([
+            dirname(__DIR__).'/Resources/samples' => storage_path('app/public/redirect-import/samples'),
+        ], 'redirect-import-samples');
+    }
 }
 ```
 
-#### Verify Registration
-
-After completing the registration steps:
-
-1. **Clear Config Cache**: Run `php artisan config:clear` to refresh configuration
-2. **Check Admin Panel**: Navigate to **Settings → Data Transfer → Import**
-3. **Verify Dropdown**: Your "Admin Users" option should appear in the importer dropdown
-
-::: info Admin Panel Location
-The custom importer will be available at: **Admin Panel → Settings → Data Transfer → Import → Select Type → Admin Users**
-:::
-
-#### Implementing Row Validation
-
-Now that you have the basic importer structure, you need to add actual validation and import logic. Without these implementations, the import process will run successfully but won't validate data or insert records into the database.
-
-Let's start by implementing the `validateRow()` method. This method uses Laravel's validation system and Bagisto's built-in error handling to ensure data integrity.
-
-##### Understanding the Validation Process
-
-The validation process follows these key principles:
-
-- **Laravel Validator**: Uses standard Laravel validation rules for consistency
-- **Error Tracking**: Failed rows are tracked using the `skipRow()` method
-- **Error Export**: Invalid rows are exported to a separate CSV file with error messages
-- **Row Status**: The method returns whether the row passed validation
-
-::: tip Validation Best Practices
-Always call the `skipRow()` method when validation fails. This ensures proper error tracking and allows users to download a report of failed imports with specific error messages.
-:::
-
-##### Validation Implementation
-
-Add `use Illuminate\Support\Facades\Validator;` to the imports at the top of the class, then:
+**File:** `packages/Webkul/RedirectImport/src/Resources/lang/en/app.php`
 
 ```php
-/**
- * Validates row.
- */
-public function validateRow(array $rowData, int $rowNumber): bool
-{
-    $validator = Validator::make($rowData, [
-        'name' => 'required',
-        'email' => 'required|email',
-        'password' => 'required',
-        'status' => 'required',
-        'role_id' => 'required',
-    ]);
+<?php
 
-    if ($validator->fails()) {
-        $failedAttributes = $validator->failed();
+return [
+    'importers' => [
+        'url-rewrites' => [
+            'title' => 'URL Rewrites',
 
-        foreach ($validator->errors()->getMessages() as $attributeCode => $message) {
-            $errorCode = array_key_first($failedAttributes[$attributeCode] ?? []);
-
-            $this->skipRow($rowNumber, $errorCode, $attributeCode, current($message));
-        }
-    }
-
-    return ! $this->errorHelper->isRowInvalid($rowNumber);
-}
-```
-
-##### Validation Flow Explained
-
-1. **Create Validator**: Laravel validator checks each field against defined rules
-2. **Handle Failures**: When validation fails, extract error details
-3. **Track Errors**: Use `skipRow()` to record failed rows with specific error messages
-4. **Return Status**: Return boolean indicating whether the row is valid
-
-::: info Error Handling
-`skipRow($rowNumber, $errorCode, $columnName = null, $errorMessage = null)` records the failure against the row; the `$errorCode` should be one of the `AbstractImporter::ERROR_CODE_*` constants (`ERROR_CODE_INVALID_ATTRIBUTE`, `ERROR_CODE_COLUMN_NOT_FOUND`, `ERROR_CODE_SYSTEM_EXCEPTION`, and so on) so the error report groups them. What happens next depends on the import's validation strategy: `skip-errors` proceeds without the bad rows, up to the allowed error count, while `stop-on-errors` halts after validation. For detailed implementation patterns, refer to other Bagisto importers or examine the abstract class methods.
-:::
-
-#### Implementing Batch Import
-
-After successful validation, you can proceed with the actual data import process. The `importBatch()` method handles the core logic for inserting, updating, or deleting records in the database.
-
-You have flexibility in choosing your data persistence approach - whether using repositories, Eloquent models, or direct database operations. Select the method that best fits your application's architecture and requirements.
-
-##### Import Process Overview
-
-The batch import process follows these key steps:
-
-- **Event Dispatch**: Triggers before/after events for extensibility
-- **Action Handling**: Supports create, update, and delete operations
-- **Data Processing**: Iterates through validated batch data
-- **Database Operations**: Performs bulk inserts/updates for efficiency
-- **Summary Tracking**: Maintains counts for reporting
-
-::: tip Database Operations
-The example below demonstrates direct database insertion for simplicity. In production, consider using repositories or Eloquent models for better maintainability and to leverage Laravel features like observers and events.
-:::
-
-##### Batch Import Implementation
-
-Add `use Illuminate\Support\Facades\DB;` to the imports, then:
-
-```php
-/**
- * Import data rows.
- */
-public function importBatch(ImportBatchContract $batch): bool
-{
-    Event::dispatch('data_transfer.imports.batch.import.before', $batch);
-
-    if ($batch->import->action == Import::ACTION_DELETE) {
-        // Deletion logic can be implemented here if needed.
-    } else {
-        foreach ($batch->data as $rowData) {
-            // You can check for existing admin by email and prepare update data if needed.
-            $adminData['insert'][$rowData['email']] = array_merge($rowData, [
-                'created_at' => $rowData['created_at'] ?? now(),
-                'updated_at' => $rowData['updated_at'] ?? now(),
-            ]);
-        }
-
-        if (! empty($adminData['update'])) {
-            $this->updatedItemsCount += count($adminData['update']);
-
-            // Update logic can be implemented here if needed.
-        }
-
-        if (! empty($adminData['insert'])) {
-            $this->createdItemsCount += count($adminData['insert']);
-
-            DB::table('admins')->insert(array_values($adminData['insert']));
-        }
-    }
-
-    /**
-     * Update import batch summary.
-     */
-    $batch = $this->importBatchRepository->update([
-        'state' => Import::STATE_PROCESSED,
-
-        'summary' => [
-            'created' => $this->getCreatedItemsCount(),
-            'updated' => $this->getUpdatedItemsCount(),
-            'deleted' => $this->getDeletedItemsCount(),
+            'errors' => [
+                'duplicate-rewrite' => 'This URL rewrite appears more than once in the file.',
+            ],
         ],
-    ], $batch->id);
-
-    Event::dispatch('data_transfer.imports.batch.import.after', $batch);
-
-    return true;
-}
+    ],
+];
 ```
 
-##### Implementation Flow Explained
+Register the provider in `bootstrap/providers.php` and the namespace in `composer.json`, as in [Package Development](../package-development/getting-started.md#register-the-provider), then run `php artisan optimize:clear`. Add the translation file to every locale the admin uses, or the type and its errors show raw keys.
 
-1. **Pre-Import Event**: Dispatches event for any pre-processing hooks
-2. **Action Check**: Determines whether to perform create, update, or delete operations
-3. **Data Iteration**: Processes each validated row from the batch
-4. **Record Preparation**: Organizes data for bulk operations and adds timestamps
-5. **Database Operations**: Executes bulk inserts/updates for performance
-6. **Count Tracking**: Updates internal counters for summary reporting
-7. **State Update**: Marks batch as processed with operation summary
-8. **Post-Import Event**: Dispatches event for any post-processing hooks
+## Step 4: Ship the Sample Files
 
-::: info Performance Considerations
-- **Bulk Operations**: Use bulk inserts/updates instead of individual operations
-- **Memory Management**: Process large batches in chunks if memory is limited
-- **Transaction Handling**: Consider wrapping operations in database transactions
-- **Event Optimization**: Be mindful of event listeners that might slow down processing
-:::
+The admin offers a sample download in all four formats, so the package ships one file per format and publishes them to the default disk.
 
-#### Complete Directory Structure
-
-Your final package structure should look like this:
+**File:** `packages/Webkul/RedirectImport/src/Resources/samples/csv/url-rewrites.csv`
 
 ```text
-└── packages
-    └── Webkul
-        └── AdminImport
-            ├── src
-            │   ├── Config
-            │   │   └── importers.php
-            │   ├── Importers
-            │   │   └── AdminImporter.php
-            │   └── Providers
-            │       └── AdminImportServiceProvider.php
-            └── composer.json
+entity_type,request_path,target_path,redirect_type,locale
+product,old-blue-shirt,blue-shirt,301,en
+category,summer-sale-2025,summer-sale,302,en
 ```
 
-### Supported File Formats
+The XML source reads every element that has attributes as a row, and takes the column names from the first one:
 
-Bagisto's data transfer system supports multiple file formats for flexible import operations:
+**File:** `packages/Webkul/RedirectImport/src/Resources/samples/xml/url-rewrites.xml`
 
-| **Format** | **Extension** | **Use Case** | **Features** |
-|---|---|---|---|
-| **CSV** | `.csv` | Large datasets | Lightweight, fast processing |
-| **Excel** | `.xlsx` | Formatted data | Rich formatting, multiple sheets |
-| **Excel Legacy** | `.xls` | Legacy systems | Backward compatibility |
-| **XML** | `.xml` | Structured data | Hierarchical data, validation |
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<url_rewrites>
+    <url_rewrite
+        entity_type="product"
+        request_path="old-blue-shirt"
+        target_path="blue-shirt"
+        redirect_type="301"
+        locale="en"
+    />
+    <url_rewrite
+        entity_type="category"
+        request_path="summer-sale-2025"
+        target_path="summer-sale"
+        redirect_type="302"
+        locale="en"
+    />
+</url_rewrites>
+```
 
-The sources are `Webkul\DataTransfer\Helpers\Sources\{CSV,XLS,XLSX,XML}`, chosen by extension in `Import::getSource()`; the upload form accepts exactly those four extensions. Uploaded files, chunk state, downloaded images and error reports live on the local `private` disk, whatever the store's default disk is.
+Save the CSV from a spreadsheet application as `url-rewrites.xls` and `url-rewrites.xlsx`, then publish all four:
 
-::: info File Size Recommendations
-- **CSV**: Best for files > 10MB or > 50,000 records
-- **Excel**: Ideal for files < 5MB with complex formatting
-- **XML**: Perfect for structured data with relationships
-:::
+```bash
+php artisan vendor:publish --tag=redirect-import-samples
+```
 
-### Product images
+That copies them to `storage/app/public/redirect-import/samples`, the root of the default `public` disk. When File Management points the default disk at Amazon S3 or Cloudflare R2, upload the files to the same paths on that disk instead. Write `request_path` and `target_path` without a leading slash, because the storefront compares the request path with its slashes trimmed.
 
-The product importer can take images from three sources, chosen per import and stored as `Import::IMAGE_SOURCE_URL`, `IMAGE_SOURCE_UPLOAD` or `IMAGE_SOURCE_DIRECTORY`: `https://` links in the `images` column (fetched in the Images phase, with a same-host and private-address guard), a ZIP archive uploaded with the import, or a directory under `storage/app/import`. The choice is validated against the file, so a mismatch is reported instead of silently importing every product without images. A custom importer that carries images can reuse `Webkul\DataTransfer\Helpers\Importers\Concerns\DownloadsImages`.
+## Test It
 
-## Conclusion
+1. Run `php artisan config:show importers`. The output lists `url_rewrites` beside core's `products`, `customers` and `tax_rates`.
+2. In the admin, open **Settings → Data Transfer → Imports** and create an import. **URL Rewrites** is in the type list, and **Download Sample** downloads the file for each format.
+3. Upload the sample CSV with the **Append** action, save, then validate and import it. The summary shows 2 records created.
+4. Request `/old-blue-shirt` on the storefront, for example with `curl -I`. The response is a `301` redirect to `/blue-shirt`.
+5. Import the same file again: the summary shows 2 records updated. Then import a file with the **Delete** action that holds only the identifying columns; it shows 1 record deleted:
 
-You have successfully learned how to implement custom data transfer functionality in Bagisto. This comprehensive guide covered the complete process from creating importer classes to registering them with the admin panel.
+   ```text
+   entity_type,request_path,locale
+   product,old-blue-shirt,en
+   ```
 
-### Key Takeaways
+6. Import a file that repeats a row. Validation reports "This URL rewrite appears more than once in the file." for the repeat.
 
-- **Custom Importers**: Extend `AbstractImporter` to create specialized import functionality
-- **Validation System**: Leverage Laravel's validation with proper error tracking and reporting
-- **Batch Processing**: Implement efficient bulk operations for large dataset imports
-- **Event Integration**: Use Laravel events for extensible import workflows
-- **Admin Integration**: Register importers through configuration for seamless admin panel access
+## Things to Watch
 
-### Next Steps
+- **Validation must not write.** `validateRow()` runs over the whole file before anything is imported, and with the `stop-on-errors` strategy validation may be all that runs.
+- **`exists:locales,code` runs a query per row.** For a large file, load the locale codes once in `prepareForValidation()`, the hook core's importers load their lookups in, and validate with `Rule::in()` instead.
+- **A queued import needs a worker.** With **Process in Queue** on, nothing after validation happens until a queue worker picks up the jobs. Failed batches are in `failed_jobs`; the import's error report covers only row validation.
+- **Bulk writes skip the admin's events.** `insert()` fires no events, and the importer doesn't fire the `marketing.search_seo.url_rewrites.*` events the admin controller does, so their listeners don't run for imported rows. Dispatch them yourself if a listener depends on them.
+- **Leave chunked validation off for this importer.** With `$chunkedValidationSupported` on, the admin page carries what `validateRow()` accumulates between windows only through `captureValidationState()` and `restoreValidationState()`, and a queued import validates the windows in parallel, each from an empty state, cross-checking them only through `fileUniqueColumns()`, one column per entry, as `TaxRate\Importer` declares for `identifier`. This importer's uniqueness spans three columns, which `fileUniqueColumns()` can't express.
+- **Deletes aren't checked against the database here.** Core's importers also reject a delete row whose record doesn't exist, loading the existing identifiers once in `prepareForValidation()`; add that when operators need the error report to list rows that matched nothing.
 
-With your custom importer implementation complete, consider these enhancements:
+## Related Pages
 
-- **Sample Files**: Create sample CSV/Excel files for user guidance
-- **Advanced Validation**: Implement business-specific validation rules
-- **Error Recovery**: Add mechanisms for handling and retrying failed imports
-- **Audit Logging**: Track import activities for compliance and debugging
-
-::: tip Best Practices
-- Always test with various file sizes and formats
-- Implement proper error handling and user feedback
-- Consider memory optimization for large imports
-- Document your custom fields and validation rules
-- Provide clear sample files for end users
-:::
-
-For more advanced data transfer scenarios, explore the existing Bagisto importers in the core package for additional implementation patterns and optimization techniques.
-
+- [Queues, Jobs and Scheduling](./queue-jobs-scheduling.md#data-transfer): the workers a queued import runs on.
+- [Event Listeners](./event-listeners.md#data-transfer): the events each import stage fires.
+- [Understanding Indexers](./understanding-indexers.md): what the product importer's indexing stage refreshes.
+- [File Storage](./file-storage.md): the default disk the sample files are served from.

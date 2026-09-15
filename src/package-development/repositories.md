@@ -1,334 +1,145 @@
 # Repositories
 
-In Bagisto, the Repository pattern is a crucial architectural component that abstracts database operations and promotes cleaner, more maintainable code. Unlike traditional development where application logic is often embedded directly in controllers, Bagisto uses repositories to decouple models from controllers and provide readable names for complex queries.
+On this page you add `FaqRepository`, the one place the package reads and writes FAQ data. Controllers, listeners, commands and seeders call repository methods instead of querying models or tables; the single exception is a DataGrid's `prepareQueryBuilder()`. Every repository extends `Webkul\Core\Eloquent\Repository`, which builds on the [Prettus L5 Repository](https://github.com/andersao/l5-repository) package.
 
-Repositories provide a consistent interface for data operations while keeping business logic separate from data persistence concerns. This separation enhances code readability, reusability, and adherence to the separation of concerns principle.
+<a id="creating-repositories"></a>
+<a id="custom-query-methods"></a>
 
-::: info Why Repositories in Bagisto?
-Bagisto's repository pattern, powered by the [Prettus L5 Repository](https://github.com/andersao/l5-repository) package, provides advanced features like criteria-based filtering, caching, and automatic query optimization that enhance the standard Laravel Eloquent experience.
-:::
+## Create the Repository
 
-For our RMA package, we'll create a `ReturnRequestRepository` that works with the `ReturnRequest` model we created earlier.
-
-## Creating Repositories
-
-When creating repositories in Bagisto, you have two approaches: using the package generator for convenience, or manually creating the repository for more control.
-
-### Using Bagisto Package Generator
-
-The fastest way to create a repository is using Bagisto's package generator:
-
-```bash
-php artisan package:make-repository ReturnRequestRepository Webkul/RMA
-```
-
-**Command Parameters:**
-- `ReturnRequestRepository`: The name of the repository class
-- `Webkul/RMA`: The package where the repository will be created
-
-This will create a repository file at `packages/Webkul/RMA/src/Repositories/ReturnRequestRepository.php`:
+**File:** `packages/Webkul/Faq/src/Repositories/FaqRepository.php`
 
 ```php
 <?php
 
-namespace Webkul\RMA\Repositories;
+namespace Webkul\Faq\Repositories;
 
+use Illuminate\Database\Eloquent\Collection;
 use Webkul\Core\Eloquent\Repository;
 
-class ReturnRequestRepository extends Repository
+class FaqRepository extends Repository
 {
     /**
-     * Specify the Model contract class name.
+     * Specify the model contract class name.
      */
     public function model(): string
     {
-        return 'Webkul\RMA\Contracts\ReturnRequest';
+        return 'Webkul\Faq\Contracts\Faq';
+    }
+
+    /**
+     * Get the active questions of a channel, in their sort order.
+     */
+    public function getActiveForChannel(int $channelId): Collection
+    {
+        return $this->model
+            ->where('channel_id', $channelId)
+            ->where('status', true)
+            ->orderBy('sort_order')
+            ->get();
     }
 }
 ```
 
-::: tip Package Generator Benefits
-The generator automatically creates the proper file structure, namespaces, and extends the correct base repository class following Bagisto conventions.
-:::
+`model()` returns the **contract**, not the model class. The repository resolves it from the container, where Concord has bound it to the registered model, so a package that overrides the model changes what the repository returns without touching this file.
 
-### Manual Repository Creation
+`getActiveForChannel()` is the query the storefront page needs. Name custom methods after what they return, so the controller that calls one stays free of query code.
 
-If you prefer understanding each component or need more control, you can create the repository manually:
+<a id="available-repository-methods"></a>
+<a id="basic-crud-operations"></a>
+<a id="advanced-query-methods"></a>
+<a id="what-the-base-repository-adds"></a>
 
-#### Step 1: Create Repository Directory
+## The Methods You Get
 
-Create a `Repositories` folder within your package:
-
-```bash
-mkdir -p packages/Webkul/RMA/src/Repositories
-```
-
-#### Step 2: Create Repository File
-
-Create `packages/Webkul/RMA/src/Repositories/ReturnRequestRepository.php`:
-
-```text
-packages
-└── Webkul
-    └── RMA
-        └── src
-            ├── ...
-            └── Repositories
-                └── ReturnRequestRepository.php
-```
-
-#### Step 3: Implement Repository Class
-
-```php
-<?php
-
-namespace Webkul\RMA\Repositories;
-
-use Webkul\Core\Eloquent\Repository;
-
-class ReturnRequestRepository extends Repository
-{
-    /**
-     * Specify the Model contract class name.
-     */
-    public function model(): string
-    {
-        return 'Webkul\RMA\Contracts\ReturnRequest';
-    }
-}
-```
-
-::: info Understanding the Repository Structure
-**Key Components:**
-
-- **Namespace**: Follows PSR-4 autoloading standards
-- **Base Class**: Extends `Webkul\Core\Eloquent\Repository` which provides all repository methods
-- **Model Contract**: References the model contract (not the model directly) for better flexibility
-- **Return Type**: The `model()` method must return the full class path of your model contract
-:::
-
-## Available Repository Methods
-
-Bagisto repositories leverage the [Prettus L5 Repository](https://github.com/andersao/l5-repository) package, providing a rich set of methods for database operations. Here are the most commonly used methods:
-
-### Basic CRUD Operations
-
-#### Create New Records
-
-```php
-// Create a single return request
-$returnRequest = $this->returnRequestRepository->create([
-    'customer_id' => 1,
-    'order_id' => 123,
-    'product_sku' => 'SAMPLE-001',
-    'product_name' => 'Test Product',
-    'product_quantity' => 1,
-    'reason' => 'Defective item',
-    'status' => 'pending',
-]);
-```
-
-#### Retrieve Records
-
-```php
-// Get all return requests
-$allReturns = $this->returnRequestRepository->all();
-
-// Find by ID
-$returnRequest = $this->returnRequestRepository->find($id);
-
-// Find by ID or throw exception
-$returnRequest = $this->returnRequestRepository->findOrFail($id);
-
-// Get first record matching conditions
-$firstPending = $this->returnRequestRepository->findWhere([
-    'status' => 'pending',
-])->first();
-```
-
-#### Update Records
-
-```php
-// Update by ID
-$returnRequest = $this->returnRequestRepository->update([
-    'status' => 'approved',
-    'admin_notes' => 'Approved for return',
-], $id);
-```
-
-#### Delete Records
-
-```php
-// Delete by ID
-$this->returnRequestRepository->delete($id);
-```
-
-### Advanced Query Methods
-
-#### Conditional Queries
-
-```php
-// Find records matching specific conditions
-$pendingReturns = $this->returnRequestRepository->findWhere([
-    'status' => 'pending',
-    'customer_id' => 456,
-]);
-
-// Find records where field value is in array
-$specificReturns = $this->returnRequestRepository->findWhereIn('id', [1, 2, 3, 4, 5]);
-
-// Find records where field value is between two values
-$recentReturns = $this->returnRequestRepository->findWhereBetween('created_at', [
-    '2024-01-01',
-    '2024-12-31',
-]);
-```
-
-#### Pagination
-
-```php
-// Paginate results (15 per page by default)
-$paginatedReturns = $this->returnRequestRepository->paginate(15);
-
-// With custom pagination
-$returns = $this->returnRequestRepository->paginate($perPage = 20, $columns = ['*'], $method = 'paginate');
-```
-
-#### Relationships and Eager Loading
-
-```php
-// Eager load relationships (assuming you have defined them in your model)
-$returnWithRelations = $this->returnRequestRepository
-    ->with(['customer', 'order'])
-    ->find($id);
-
-// Multiple relationships
-$returns = $this->returnRequestRepository
-    ->with(['customer', 'order', 'product'])
-    ->paginate(15);
-```
-
-### Custom Query Methods
-
-You can add custom methods to your repository for complex business logic:
-
-```php{16-49}
-<?php
-
-namespace Webkul\RMA\Repositories;
-
-use Webkul\Core\Eloquent\Repository;
-
-class ReturnRequestRepository extends Repository
-{
-    /**
-     * Specify the Model contract class name.
-     */
-    public function model(): string
-    {
-        return 'Webkul\RMA\Contracts\ReturnRequest';
-    }
-
-    /**
-     * Get pending return requests for a specific customer.
-     */
-    public function getPendingForCustomer(int $customerId)
-    {
-        return $this->findWhere([
-            'customer_id' => $customerId,
-            'status' => 'pending',
-        ]);
-    }
-
-    /**
-     * Get return requests statistics.
-     */
-    public function getStats(): array
-    {
-        return [
-            'total' => $this->count(),
-            'pending' => $this->findWhere(['status' => 'pending'])->count(),
-            'approved' => $this->findWhere(['status' => 'approved'])->count(),
-            'rejected' => $this->findWhere(['status' => 'rejected'])->count(),
-        ];
-    }
-
-    /**
-     * Get recent return requests.
-     */
-    public function getRecent(int $limit = 10)
-    {
-        return $this->orderBy('created_at', 'desc')->limit($limit);
-    }
-}
-```
-
-`limit()` already executes the query and returns the results, so there is no `get()` after it.
-
-## What the base repository adds
-
-`Webkul\Core\Eloquent\Repository` extends Prettus with a few methods core relies on, and with caching:
-
-| Method | Purpose |
+| Method | Returns |
 |---|---|
-| `findOneByField($field, $value)` | First record where `$field = $value`, or `null` |
-| `findOneWhere(array $where)` | First record matching several conditions, or `null` |
-| `count(array $where = [])` | Count, optionally constrained |
-| `sum($column)`, `avg($column)` | Aggregates over the current criteria |
-| `getModel()` | The underlying model instance |
-| `resetModel()` | Drop the query state built up by `with()`, `orderBy()` and friends |
+| `create(array $attributes)` | The new model |
+| `update(array $attributes, $id)` | The updated model; a missing id throws `ModelNotFoundException` |
+| `delete($id)` | `true`; call `findOrFail()` first, because a missing id fails with an error rather than a not-found exception |
+| `find($id)`, `findOrFail($id)` | The model, or `null`, or a not-found exception |
+| `findOneByField($field, $value)`, `findOneWhere(array $where)` | The first match, or `null` |
+| `findByField($field, $value)`, `findWhere(array $where)`, `findWhereIn($field, array $values)` | A collection |
+| `all()`, `paginate($limit)` | A collection, or a paginator of 15 per page by default (`config/repository.php`) |
+| `count(array $where = [])`, `sum($column)`, `avg($column)` | An aggregate |
+| `with($relations)`, `orderBy($column, $direction)` | The repository, so the next read applies them |
+| `getModel()` | The model instance |
 
-The repository implements Prettus' `CacheableInterface`, but caching is **opt-in**: `config/repository.php` ships with `'enabled' => false`, and only the repositories listed under `cache.repositories` there are cached at all. For those, `all()`, `paginate()` and the finders are cached under a key that carries a generation token that every `create()`, `update()` and `delete()` through the repository bumps; `find()` and `findOrFail()` are redefined in `Webkul\Core\Eloquent\Repository` and always hit the database. A repository in your own package caches nothing unless you add it to that list. The same file sets the default page size of 15.
+`find()`, `findOrFail()`, `findOneByField()`, `findOneWhere()`, `count()`, `sum()`, `avg()` and `getModel()` come from `Webkul\Core\Eloquent\Repository`; the rest are Prettus's.
 
-Raw SQL inside a repository must go through `db_grammar()` so it runs on PostgreSQL as well as MySQL:
-
-```php
-$this->model->select(DB::raw(db_grammar()->concat('first_name', "' '", 'last_name').' as full_name'));
-```
-
-See [Database compatibility](../advanced/database-compatibility.md) for the full list of grammar methods.
-
-## Testing Your Repository
-
-Verify your repository works correctly:
-
-```bash
-php artisan tinker
-```
-
-```php
-// Test repository through service container
-$repository = app('Webkul\RMA\Repositories\ReturnRequestRepository');
-
-// Create a test record
-$return = $repository->create([
-    'customer_id' => 1,
-    'order_id' => 1,
-    'product_sku' => 'TEST-001',
-    'product_name' => 'Test Product',
-    'product_quantity' => 1,
-    'reason' => 'Testing repository',
-    'status' => 'pending',
-]);
-
-// Test retrieval
-$retrieved = $repository->find($return->id);
-echo $retrieved->product_name; // Should output: Test Product
-
-// Test update
-$updated = $repository->update(['status' => 'approved'], $return->id);
-echo $updated->status; // Should output: approved
-```
-
-::: info Testing Tips
-**Quick Verification Commands:**
-- Check if repository resolves: `php artisan tinker` then `app('Webkul\RMA\Repositories\ReturnRequestRepository')`
-- Test basic operations: Create, read, update, delete operations
-- Verify relationships work if you've defined them in your model
+::: info Caching Is Opt-In
+`config/repository.php` ships with caching disabled and enables it only for the repositories listed under `cache.repositories`, so your repository caches nothing unless you add it. See [Caching Your Own Repository](../advanced/cache-strategy.md#caching-your-own-repository).
 :::
 
-## Your Next Step
+## Seed Sample Questions
 
-With your repository complete, you now have a clean data access layer for your RMA package. The next logical step is to define routes that will connect HTTP requests to your repository operations.
+A seeder is optional, but it gives the DataGrid and the storefront page rows to show before you build the forms. Resolve the repository in `run()`:
 
-**Continue to:** **[Routes](./routes.md)** - Configure routing for your RMA package
+**File:** `packages/Webkul/Faq/src/Database/Seeders/FaqSeeder.php`
+
+```php
+<?php
+
+namespace Webkul\Faq\Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use Webkul\Faq\Repositories\FaqRepository;
+
+class FaqSeeder extends Seeder
+{
+    /**
+     * Seed sample questions for the default channel.
+     */
+    public function run(FaqRepository $faqRepository): void
+    {
+        $faqs = [
+            [
+                'question' => 'How long does delivery take?',
+                'answer' => 'Most orders arrive within three to five working days.',
+            ],
+            [
+                'question' => 'Can I return an item?',
+                'answer' => 'Yes. Contact us within 30 days of delivery to arrange a return.',
+            ],
+        ];
+
+        foreach ($faqs as $index => $faq) {
+            $faqRepository->create([
+                ...$faq,
+                'channel_id' => core()->getDefaultChannel()->id,
+                'sort_order' => $index + 1,
+                'status' => true,
+            ]);
+        }
+    }
+}
+```
+
+Nothing runs a package seeder automatically. Run it by its full class name:
+
+```bash
+php artisan db:seed --class="Webkul\Faq\Database\Seeders\FaqSeeder"
+```
+
+<a id="testing-your-repository"></a>
+
+## Test It
+
+1. Print the active questions of the default channel. The command prints the two seeded questions:
+
+   ```bash
+   php artisan tinker --execute="dump(app(Webkul\Faq\Repositories\FaqRepository::class)->getActiveForChannel(core()->getDefaultChannel()->id)->pluck('question'));"
+   ```
+
+## Things to Watch
+
+- **Add a method rather than querying elsewhere.** When a controller needs data the repository can't return, the fix is a new repository method, not `DB::table()` or `Faq::where()` in the controller.
+- **Raw SQL goes through `db_grammar()`** so it runs on PostgreSQL as well as MySQL, for example `DB::raw(db_grammar()->concat('first_name', "' '", 'last_name'))`. See [Database Compatibility](../advanced/database-compatibility.md).
+- **`with()` and `orderBy()` hold state until the next read.** Call them immediately before the read they belong to; the repository resets them afterwards.
+- **Change a core repository by binding a subclass** in your provider's `register()`. Controllers, listeners, jobs and other repositories resolve repositories from the container, so they all receive yours. Caching is switched on by class name, so a subclass of a cached core repository reads uncached until you [list it](../advanced/cache-strategy.md#caching-your-own-repository) as well.
+
+## Next Step
+
+The data layer is complete. Next, give the admin and the storefront URLs to reach it.
+
+**Continue to:** [Routes](./routes.md)

@@ -1,62 +1,46 @@
-# Digging Deeper
+# Introduction
 
-Welcome to the "Digging Deeper" section of Bagisto documentation! This advanced section covers the machinery under the packages, themes and payment or shipping methods you have already built: the core helpers, the indexers, the event system, the console, the queue, the caches and the test suite.
+This section covers the machinery under the packages, themes, payment methods, shipping methods and product types you build. Each page is a reference for one topic, so start with the one your task needs. The pages assume you can create and register a package, as in [Package Development](../package-development/getting-started.md), and know Laravel's service providers, events and queues.
 
-::: info Prerequisites
-This section assumes you have:
-- Completed the [Package Development](../package-development/getting-started) guides
-- Understanding of [Theme Development](../theme-development/getting-started) concepts  
-- Solid knowledge of Laravel concepts (events, queues, service providers)
-- Experience with PHP and object-oriented programming
-:::
+## Pages in This Section
 
-## What's in this section
+**Foundations**
 
-### The core and its data
+- **[Understanding the Core Class](./understanding-core-class.md)**: the `core()` helper for the current channel, locale and currency, price formatting and saved configuration, and the other global helpers.
 
-- **[Understanding Core Class](./understanding-core-class.md)**: the `core()` helper, channels, locales, currencies, configuration, price formatting and the other global helpers.
-- **[Understanding Indexers](./understanding-indexers.md)**: how price, inventory, flat and search indexes are built and refreshed, and when to run them.
+**Extension Points**
+
+- **[Event Listeners](./event-listeners.md)**: every event core dispatches, what a listener receives, and how a package registers listeners.
+- **[View Render Events](./view-render-events.md)**: adding markup to storefront and admin pages without overriding their views.
+- **[Command Palette](./command-palette.md)**: adding actions, aliases, record searches and providers to the admin's Ctrl + K palette.
+
+**Commands and Background Work**
+
+- **[Artisan Commands](./artisan-commands.md)**: Bagisto's own commands, their options, and the ones the scheduler runs.
+- **[Queues, Jobs and Scheduling](./queue-jobs-scheduling.md)**: what runs on the queue and the scheduler, and how to run workers.
+
+**Caching, Indexing and Search**
+
+- **[Cache Strategy](./cache-strategy.md)**: the caches Bagisto keeps and what clears them.
+- **[Understanding Indexers](./understanding-indexers.md)**: the price, inventory, flat, catalog rule and search indexes, what refreshes them, and `indexer:index`.
+- **[Search Engines](./search-engines.md)**: the search manager, the database and Elasticsearch engines, and the contracts behind them.
+
+**Data**
+
 - **[Understanding Data Transfer](./understanding-data-transfer.md)**: the queued import pipeline and how to write an importer for your own entity.
+- **[File Storage](./file-storage.md)**: the default disk, Amazon S3 and Cloudflare R2, and what switching between them does and doesn't move.
 - **[Database Compatibility](./database-compatibility.md)**: writing queries that run on MySQL, MariaDB and PostgreSQL with `db_grammar()`.
-- **[Search Engines](./search-engines.md)**: the database and Elasticsearch engines, the contracts behind them, and how a package adds one.
-- **[File Storage](./file-storage.md)**: the public disk, S3 and Cloudflare R2, and what switching between them does and does not move.
 
-### Hooking into the core
+**Quality**
 
-- **[Event Listeners](./event-listeners.md)**: the events the core dispatches and how to listen to them.
-- **[View Render Events](./view-render-events.md)**: injecting markup into existing pages without overriding views.
-- **[Command Palette](./command-palette.md)**: registering pages, actions and record searches in the admin's Ctrl+K palette.
+- **[Testing Overview](./testing.md)**: which tool to use, where tests live and what CI runs.
+- **[Testing with Pest](./testing-with-pest.md)**: the Pest suites, the test database and test benches.
+- **[Testing with Playwright](./testing-with-playwright.md)**: the Playwright end-to-end projects and writing a spec.
+- **[Coding Standards](./coding-standards.md)**: Pint, the conventions a review checks, and the translations check.
 
-### Operating the application
+**Troubleshooting**
 
-- **[Artisan Commands](./artisan-commands.md)**: every `bagisto:*`, `indexer:*` and scheduled command.
-- **[Queue, Jobs & Scheduling](./queue-jobs-scheduling.md)**: what runs on the queue and the scheduler, and how to run workers.
-- **[Cache Strategy](./cache-strategy.md)**: the caches Bagisto keeps, what invalidates them, and the environment keys that move them to Redis.
-- **[Testing Workflow](./testing.md)**: the Pest suites, shared datasets and test benches, and the Playwright projects.
-- **[Debugging Tips](./debugging.md)** and **[Common Pitfalls](./common-pitfalls.md)**: the problems that come up most and how to get out of them.
+- **[Debugging Tips](./debugging.md)**: the debug bar, logs, routes, events, queries, queues and caches.
+- **[Common Pitfalls](./common-pitfalls.md)**: the problems that come up most and how to get out of them.
 
-## Why These Techniques Matter
-
-Unlike basic package development, these techniques let you:
-
-- **Maintain Upgradability**: extend functionality through events, contracts and configuration rather than by editing core files
-- **Build Production-Ready Solutions**: run the queue, the scheduler and the caches the way the core expects
-- **Ship on any database and any storage**: keep a package portable across the engines and disks Bagisto supports
-- **Handle Complex Business Logic**: solve sophisticated e-commerce requirements
-
-## Learning Path
-
-We recommend following this progression:
-
-1. **Start with the core class**: most helpers you will call from anywhere are on it
-2. **Then events**: understanding Bagisto's event system is foundational for the rest
-3. **Then the operational pages**: commands, queue and cache explain what happens after a request ends
-4. **Then the specialised topics**: indexers, search, storage and the command palette as your package needs them
-5. **Finish with testing**: a package without a test suite is one CI run away from breaking
-
-::: tip Integration with Previous Learning
-These advanced techniques build upon concepts from:
-- [Package Development](../package-development/getting-started) - Service providers, routing, and views
-- [Theme Development](../theme-development/getting-started) - Blade templates and asset management
-- [Performance Optimization](../performance/introduction) - Efficient coding practices
-:::
+Tuning a store for production, such as the full page cache, Elasticsearch, Varnish and Octane, is covered in [Performance](../performance/introduction.md).

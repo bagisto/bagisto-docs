@@ -1,72 +1,8 @@
-# Understanding Carrier Class Implementation
+# Understanding the Carrier Class
 
-The carrier class contains your shipping method's business logic. It has one main job: implement the `calculate()` method to determine shipping rates.
+A carrier class extends `Webkul\Shipping\Carriers\AbstractShipping` and has one job: `calculate()` returns the rate for the current cart. You built one in [Creating Your First Shipping Method](./create-your-first-shipping-method.md#step-3-create-the-carrier-class), at `packages/Webkul/CustomExpressShipping/src/Carriers/CustomExpressShipping.php`. This page covers what the base class gives it, when `calculate()` runs, and common pricing patterns.
 
-::: info What You'll Learn
-This guide covers:
-- Simple carrier class structure
-- What `AbstractShipping` gives you
-- The `calculate()` method implementation
-- Basic pricing patterns
-:::
-
-## Basic Carrier Class Structure
-
-Every shipping method extends `Webkul\Shipping\Carriers\AbstractShipping` and implements one abstract method:
-
-**File:** `packages/Webkul/CustomExpressShipping/src/Carriers/CustomExpressShipping.php`
-
-```php
-<?php
-
-namespace Webkul\CustomExpressShipping\Carriers;
-
-use Webkul\Checkout\Models\CartShippingRate;
-use Webkul\Shipping\Carriers\AbstractShipping;
-
-class CustomExpressShipping extends AbstractShipping
-{
-    /**
-     * Shipping method carrier code.
-     *
-     * @var string
-     */
-    protected $code = 'custom_express_shipping';
-
-    /**
-     * Shipping method code.
-     *
-     * @var string
-     */
-    protected $method = 'custom_express_shipping_custom_express_shipping';
-
-    /**
-     * Calculate the rate for the current cart.
-     *
-     * @return CartShippingRate|false
-     */
-    public function calculate()
-    {
-        if (! $this->isAvailable()) {
-            return false;
-        }
-
-        $rate = new CartShippingRate;
-
-        $rate->carrier = $this->getCode();
-        $rate->carrier_title = $this->getConfigData('title');
-        $rate->method = $this->getMethod();
-        $rate->method_title = $this->getConfigData('title');
-        $rate->method_description = $this->getConfigData('description');
-        $rate->price = core()->convertPrice($this->getConfigData('default_rate'));
-        $rate->base_price = $this->getConfigData('default_rate');
-
-        return $rate;
-    }
-}
-```
-
-## What `AbstractShipping` provides
+## What the Base Class Provides
 
 **File:** `packages/Webkul/Shipping/src/Carriers/AbstractShipping.php`
 
@@ -75,7 +11,7 @@ class CustomExpressShipping extends AbstractShipping
 | `protected $code` | The carrier code. `getCode()` throws `CarrierCodeException` when it is empty, so every carrier must set it |
 | `protected $method` | The method code the checkout posts back. `getMethod()` falls back to `{code}_{code}` when unset; core's carriers set it explicitly (`flatrate_flatrate`, `free_free`) |
 | `calculate()` | Abstract. Returns a `CartShippingRate`, an array of them, or `false` |
-| `isAvailable()` | Returns the `active` setting. Called by `calculate()` in core carriers, and **also called on its own** by `Shipping::getShippingMethods()`, so put availability logic here rather than only inside `calculate()`. Cart-rule conditions list every configured carrier regardless of it |
+| `isAvailable()` | Returns the `active` setting. Put availability logic here and call it first in `calculate()`, as core's carriers do; `Shipping::getShippingMethods()` also uses it, though no core screen calls that method. Cart-rule conditions list every configured carrier regardless of it |
 | `getTitle()`, `getDescription()` | The `title` and `description` settings |
 | `getConfigData($field)` | `core()->getConfigData('sales.carriers.{code}.{field}')` |
 
@@ -89,11 +25,13 @@ $cart = Cart::getCart();
 
 ## Understanding the `calculate()` Method
 
-`calculate()` is called by `Webkul\Shipping\Shipping::collectRates()` for every carrier in `config('carriers')` whenever the checkout needs rates, which happens only for a cart that contains stockable items. It returns:
+`calculate()` is called by `Webkul\Shipping\Shipping::collectRates()` for every carrier in `config('carriers')` whenever rates are needed: by the checkout, only for a cart that contains stockable items, and by the cart page's shipping estimator. It returns:
 
 - a `CartShippingRate` for one option,
 - an **array** of `CartShippingRate` for several options from one carrier (they are grouped under the same `carrier_title` at checkout),
-- `false` when the method does not apply.
+- `false` when the method doesn't apply.
+
+The checkout collects rates each time the customer saves the address step, and `Cart::saveShippingMethod()` collects them once more through `Shipping::isMethodCodeExists()` to validate the choice. The estimator (`Shop\Http\Controllers\API\CartController::estimateShippingMethods()`) collects them from an unsaved address that holds only `country`, `state` and `postcode`, so don't rely on the street, the city or the address id. Keep `calculate()` cheap to repeat and free of side effects. Nothing on that path catches an exception, so one thrown here fails the checkout request.
 
 Fill in every column the storefront reads:
 
@@ -108,13 +46,13 @@ Fill in every column the storefront reads:
 
 `Shipping::saveAllShippingRates()` copies `price` and `base_price` into `price_incl_tax` and `base_price_incl_tax` (the cart applies shipping tax afterwards) and persists rates only once the cart has a shipping address.
 
-::: warning Do not set `price` equal to `base_price`
+::: warning Don't Set `price` Equal to `base_price`
 On a store selling in more than one currency, the two differ. Compute the base-currency amount and convert it; setting both to the same number shows the wrong price the moment a shopper switches currency.
 :::
 
 ## Simple Pricing Examples
 
-Each example is a complete `calculate()` using the helper below to build the rate object:
+Each example is a complete `calculate()` using the helper below to build the rate object. The examples that read the cart assume `use Webkul\Checkout\Facades\Cart;` at the top of the class:
 
 ```php
 /**
@@ -138,9 +76,14 @@ protected function rate(float $basePrice): CartShippingRate
 
 ### Fixed Rate Shipping
 
-Simple flat rate shipping - same price for every order:
+Simple flat rate shipping, the same price for every order:
 
 ```php
+/**
+ * Charge the configured rate once per order.
+ *
+ * @return CartShippingRate|false
+ */
 public function calculate()
 {
     if (! $this->isAvailable()) {
@@ -156,6 +99,11 @@ public function calculate()
 Weight lives on the cart items (`total_weight` and `base_total_weight`), not on the cart, so sum it:
 
 ```php
+/**
+ * Charge a base fee plus a price per unit of weight that ships.
+ *
+ * @return CartShippingRate|false
+ */
 public function calculate()
 {
     if (! $this->isAvailable()) {
@@ -173,6 +121,11 @@ public function calculate()
 ### Free Shipping Above a Threshold
 
 ```php
+/**
+ * Ship for free once the subtotal reaches the threshold.
+ *
+ * @return CartShippingRate|false
+ */
 public function calculate()
 {
     if (! $this->isAvailable()) {
@@ -189,9 +142,14 @@ Compare against `base_sub_total`, which is in the base currency like the thresho
 
 ### Availability Beyond the Toggle
 
-To hide the method for some carts (a country, a weight limit), override `isAvailable()` so every caller agrees:
+To hide the method for some carts (a country, a weight limit), override `isAvailable()`. Every `calculate()` above starts with the `isAvailable()` check, so it then returns `false` for those carts:
 
 ```php
+/**
+ * Offer the method only for shipping addresses in the United States.
+ *
+ * @return bool
+ */
 public function isAvailable()
 {
     $cart = Cart::getCart();
@@ -201,11 +159,9 @@ public function isAvailable()
 }
 ```
 
-## What's Next?
+## Related Pages
 
-Now that you understand the carrier class, let's explore system configuration:
-
-**📖 [Understanding System Configuration →](./understanding-system-configuration.md)**
-Learn how to create admin interfaces for configuring your shipping method.
-
-Your carrier class is now ready to handle shipping calculations. The next section shows you how to create admin configuration interfaces.
+- [System Configuration](../package-development/system-configuration.md): every field type, item key and validation rule.
+- [Testing with Pest](../advanced/testing-with-pest.md#writing-tests-for-a-package): core's `packages/Webkul/Shipping/tests/Unit/CarriersTest.php` saves carrier settings with `setConfig()` and calls `(new FlatRate)->calculate()`; the same pattern tests your carrier.
+- [Event Listeners](../advanced/event-listeners.md): `Cart::collectTotals()` dispatches `checkout.cart.collect.totals.before` and `.after` around every totals calculation, shipping included.
+- [Payment Method Development](../payment-method-development/getting-started.md): the checkout step that follows shipping.

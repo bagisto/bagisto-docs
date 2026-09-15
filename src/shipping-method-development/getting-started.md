@@ -1,126 +1,41 @@
 # Getting Started
 
-Creating custom shipping methods in Bagisto allows you to tailor delivery options to meet your specific business needs. Whether you need special handling for fragile items, express delivery options, or region-specific shipping rules, custom shipping methods provide the flexibility your e-commerce store requires.
-
-For our tutorial, we'll create a **Custom Express Shipping** method that demonstrates all the essential concepts you need to build any type of shipping solution.
-
-::: info Learning Objectives
-By the end of this guide, you'll be able to:
-- Understand Bagisto's shipping architecture and components
-- Create custom shipping methods using both generator and manual approaches
-- Configure admin interfaces for shipping method settings
-- Implement rate calculation logic
-:::
-
-## Understanding Bagisto Shipping Architecture
-
-Bagisto's shipping system is built around a flexible carrier-based architecture that separates configuration from business logic:
-
-### Core Components
-
-| Component | Purpose | Location |
-|-----------|---------|----------|
-| **Carriers Configuration** | Defines shipping method properties and metadata | `Config/carriers.php` |
-| **Carrier Classes** | Contains business logic for rate calculation | `Carriers/ClassName.php` |
-| **System Configuration** | Admin interface forms for method settings | `Config/system.php` |
-| **Service Provider** | Registers shipping method with Bagisto core | `Providers/ServiceProvider.php` |
-| **Shipping facade** | Core's collector: `Shipping::collectRates()` instantiates every configured carrier, calls `calculate()`, saves the rates on the cart and groups them for checkout | `Webkul\Shipping\Shipping`, `shipping()` helper |
-
-Two facts about the collector shape everything else:
-
-- **Rates are collected only for carts with stockable items.** The checkout skips `Shipping::collectRates()` for a cart of virtual or downloadable products, so a carrier is never asked about such a cart.
-- **A carrier is instantiated with `new`, not resolved from the container.** Constructor dependency injection in a carrier class fails; resolve what you need with `app()` inside `calculate()`.
-
-The chosen method must round-trip: the checkout posts the rate's `method` string back, and `Cart::saveShippingMethod()` accepts it only if `Shipping::isMethodCodeExists()` finds a collected rate with that method. Registering a carrier in `config('carriers')` also makes it selectable as a cart-rule condition.
-
-### Key Features
-
-- **Flexible Rate Calculation**: Support for per-unit, per-order, weight-based, or custom pricing models
-- **Configuration Management**: Admin-friendly settings interface with validation
-- **Multi-channel Support**: Different rates and settings per sales channel
-- **Localization Ready**: Full translation support for international stores
-- **Extensible Architecture**: Easy integration with third-party APIs and services
-
-## Development Workflow
-
-The typical workflow for creating a custom shipping method follows these steps:
-
-### 1. Create Your Shipping Method
-Choose between package generator (quick) or manual setup (educational) to create a complete working shipping method.
-
-**📖 [Create Your First Shipping Method →](./create-your-first-shipping-method.md)**
-
-This section shows you how to build a complete working shipping method, then the remaining sections help you understand how to customize each component.
-
-### 2. Understand Carrier Configuration
-Learn how carrier configuration works and how to customize shipping method properties.
-
-**📖 Next:** [Understanding Carrier Configuration](./understanding-carrier-configuration.md)
-
-### 3. Understand Business Logic
-Explore how the carrier class handles rate calculation and shipping method behavior.
-
-**📖 Next:** [Understanding Carrier Class](./understanding-carrier-class.md)
-
-### 4. Understand Admin Interface
-Learn how system configuration creates admin forms for managing shipping method settings.
-
-**📖 Next:** [Understanding System Configuration](./understanding-system-configuration.md)
-
-You'll have a complete working shipping method after step 1, and steps 2-4 help you understand how to customize and extend it.
-
-## Prerequisites
-
-Before you begin, ensure you have:
-
-- **Bagisto Installation**: A working Bagisto development environment
-- **PHP Knowledge**: Familiarity with PHP 8.4 (8.3 on Bagisto 2.4) and Laravel concepts
-- **Package Development**: Basic understanding of [Package Development](../package-development/getting-started.md)
-- **Development Tools**: Composer, Git, and a code editor
-
-::: tip Quick Start Path
-**New to Bagisto?** Start with the [package generator approach](./create-your-first-shipping-method.md#method-1-using-bagisto-package-generator-quick-setup) for your first shipping method.
-
-**Want to understand everything?** Follow the [manual setup approach](./create-your-first-shipping-method.md#method-2-manual-setup-complete-understanding) for complete control and learning.
-:::
+A shipping method in Bagisto is a carrier: a class that quotes a rate for the cart, added from a package through merged configuration. This section builds one carrier, then explains each of its parts, without editing a core package.
 
 ## What You'll Build
 
-Throughout this guide, you'll create a **Custom Express Shipping** method that includes:
+**`Webkul\CustomExpressShipping`**, a package that adds the carrier `custom_express_shipping`:
 
-### Core Features
-- ✅ **Dual Pricing Models**: Support for both per-order and per-item pricing
-- ✅ **Admin Configuration**: Complete settings interface in Bagisto admin
-- ✅ **Rate Calculation**: Dynamic pricing based on cart contents
-- ✅ **Multi-channel Support**: Different settings per sales channel
+- an **Express Delivery (1-2 Days)** option on the checkout's shipping step
+- a rate charged once per order, or once per item that ships
+- a **Custom Express Shipping** section in the admin's shipping method configuration, with its status, title, description, rate and pricing type per channel
 
-## Architecture Overview
+## How It Works
 
-```text
-Custom Express Shipping Package
-├── src/
-│   ├── Carriers/
-│   │   └── CustomExpressShipping.php    # Rate calculation logic
-│   ├── Config/
-│   │   ├── carriers.php                 # Shipping method definition
-│   │   └── system.php                   # Admin interface configuration
-│   └── Providers/
-│       └── ServiceProvider.php          # Package registration
-├── composer.json                        # Package metadata
-└── README.md                            # Documentation
-```
+Paths are relative to `packages/Webkul/CustomExpressShipping/src`.
 
-::: info Development Time Estimate
-- **Basic Implementation**: 1-2 hours (using generator)
-- **Custom Logic**: 2-4 hours (manual setup + customization)
-- **Advanced Features**: 4-8 hours (API integration, complex rules)
-- **Testing & Polish**: 1-2 hours (admin testing, frontend validation)
-:::
+| Part | File | Plugs into |
+|---|---|---|
+| Carrier configuration | `Config/carriers.php` | Merged into `config('carriers')`; its `class` key names the carrier class |
+| Carrier class | `Carriers/CustomExpressShipping.php` | Extends `Webkul\Shipping\Carriers\AbstractShipping`; `calculate()` returns the rate |
+| System configuration | `Config/system.php` | Merged into `config('core')` as the section `sales.carriers.custom_express_shipping`, which the carrier's `getConfigData()` reads |
+| Service provider | `Providers/CustomExpressShippingServiceProvider.php` | Merges both files; listed in `bootstrap/providers.php` |
 
-## Ready to Start?
+At checkout, `Webkul\Shipping\Shipping::collectRates()` creates every carrier in `config('carriers')`, calls its `calculate()` and groups the rates for the shipping step. The checkout does this only for a cart with stockable items, and saves the customer's choice only if a collected rate carries the same `method` code.
 
-Choose your learning path and begin building your custom shipping method:
+## Prerequisites
 
-**🚀 [Create Your First Shipping Method →](./create-your-first-shipping-method.md)**
+- Bagisto 2.5, installed and running: see [Installation](../getting-started/installation.md).
+- How a package is autoloaded and its provider registered: see [Package Development](../package-development/getting-started.md).
 
-This section covers both package generator and manual approaches, helping you understand the foundations while building a working shipping method.
+## The Path
+
+1. [Creating Your First Shipping Method](./create-your-first-shipping-method.md): build the package by hand and see its rate at checkout. To scaffold it instead, see [Package Generator](../tools/package-generator.md#payment-and-shipping-method-packages).
+2. [Understanding Carrier Configuration](./understanding-carrier-configuration.md): the `carriers.php` keys, the admin section in `system.php`, and carriers with several services.
+3. [Understanding the Carrier Class](./understanding-carrier-class.md): what `AbstractShipping` provides, when `calculate()` runs, and common pricing patterns.
+
+## Next Step
+
+Start by building the package.
+
+**Continue to:** [Creating Your First Shipping Method](./create-your-first-shipping-method.md)

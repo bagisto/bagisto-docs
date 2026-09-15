@@ -1,98 +1,63 @@
 # AI in Bagisto
 
-Bagisto has **generative AI built into the platform**. Branded Magic AI, it writes,
-translates and draws for the merchant and the shopper on the AI provider of your choice, with
-nothing extra to install. Alongside it sit **agentic AI** hooks that let an AI agent act on
-the storefront, and tooling that makes the coding agents *you* build with fluent in Bagisto.
-Together they are Bagisto's path to **agentic commerce**, where an AI assistant can help run
-a store and an AI agent can shop it on someone's behalf. This page is the home for all of it.
+Bagisto has AI in two places in the platform: Generative AI (Magic AI) in core produces content, and WebMCP in the Shop package declares storefront actions as tools for an AI agent in the shopper's browser. For the developers who extend Bagisto, agent skills give coding agents its conventions, and llms.txt gives AI tools this documentation as plain text.
 
-<div class="ai-cards__group-title">For your store</div>
+## Generative, Agentic, and the Difference
+
+The terms are used deliberately, because they describe different things:
+
+| Term | Meaning here | Where Bagisto has it |
+|---|---|---|
+| **Generative AI** | A model produces content: text, translations, keywords, images | [Generative AI (Magic AI)](./magic-ai.md), in core: text in the admin editor, product images in the admin, image-search keywords, review translation, the checkout success message |
+| **Agentic AI** | An AI agent performs actions through tools, not only text | [WebMCP](./webmcp.md): storefront tools a browser agent calls; [Agent Skills](./agent-skills.md): the conventions a coding agent follows while it changes your code |
+| **Agentic commerce** | Commerce where AI helps produce a store's content and agents act on the storefront for a shopper | The direction the two add up to. Bagisto has no agent of its own that runs a store or shops by itself |
+
+## What Stays with People
+
+- **In the admin**, Generative AI (Magic AI) returns text to a dialog in the editor and images to a dialog in the image uploader. Nothing reaches the product or page until the admin applies the result and saves the form.
+- **On the storefront**, a review translation, a checkout success message or the keywords for an image search are shown to the shopper as they come back from the provider, and none of them is saved.
+- **A WebMCP tool** fills a storefront form and submits it in the shopper's session, and the result is an ordinary page. No tool places an order or pays: `proceed_to_checkout` opens the checkout page, and `add_to_wishlist` sends a guest to the sign-in page.
+
+## Pages in This Section
+
+<div class="ai-cards__group-title">For Your Store</div>
 
 <div class="ai-cards">
   <a class="ai-card" href="/ai/magic-ai.html">
-    <div class="ai-card__title">✨ Generative AI (Magic AI)</div>
+    <div class="ai-card__title">Generative AI (Magic AI)</div>
     <div class="ai-card__desc">
-      Built-in generative AI for the store: product content &amp; images, image search,
-      review translation and personalised checkout messages, on the AI provider of your choice.
+      Text and image generation in the admin, plus image search, review translation and a
+      personalized checkout message on the storefront, on one of eight AI providers.
     </div>
   </a>
 
   <a class="ai-card" href="/ai/webmcp.html">
-    <div class="ai-card__title">🤖 WebMCP</div>
+    <div class="ai-card__title">WebMCP</div>
     <div class="ai-card__desc">
-      Agentic AI on the storefront: tools declared for browser agents, so an agent can search,
-      open a product, manage the wishlist and reach checkout on a shopper's behalf.
+      Storefront actions declared as tools for browser agents: open a product, add it to the
+      wishlist, open the cart or the checkout, always in the shopper's own session.
     </div>
   </a>
 </div>
 
-<div class="ai-cards__group-title">For developers &amp; AI agents</div>
+<div class="ai-cards__group-title">For Developers &amp; AI Agents</div>
 
 <div class="ai-cards">
   <a class="ai-card" href="/ai/agent-skills.html">
-    <div class="ai-card__title">🧩 Agent Skills</div>
+    <div class="ai-card__title">Agent Skills</div>
     <div class="ai-card__desc">
-      Pre-built skills that teach AI coding agents (Claude Code, Cursor, Windsurf) Bagisto's
-      conventions so they generate correct packages, payment methods and themes.
+      Skills that teach coding agents how Bagisto packages, themes, payment and shipping
+      methods, tests and the API package are built.
     </div>
   </a>
 
   <a class="ai-card" href="/ai/llms-txt.html">
-    <div class="ai-card__title">📄 llms.txt</div>
+    <div class="ai-card__title">llms.txt</div>
     <div class="ai-card__desc">
-      Context files that help LLMs and AI tools understand Bagisto's architecture for more
-      accurate, framework-aware suggestions.
+      This documentation as two plain-text files, an index and the full text, for AI tools
+      and assistants.
     </div>
   </a>
 </div>
 
-## Three kinds of AI, and what each one does
-
-The terms are used deliberately, because they describe different things:
-
-| Term | Meaning here | Where Bagisto has it today |
-|---|---|---|
-| **Generative AI** | A model produces content: text, translations, keywords, images | [Magic AI](/ai/magic-ai), in the core: product and page copy, product images, review translation, the keywords behind image search, the checkout message |
-| **Agentic AI** | An AI agent performs actions through tools rather than only producing text | [WebMCP](/ai/webmcp): seven storefront actions exposed to browser agents; [Agent Skills](/ai/agent-skills): coding agents that build Bagisto packages and themes |
-| **Agentic commerce** | Commerce in which AI assists the merchant and can act for the shopper | The combination of the two above, in the core, with no separate product to install |
-
-What Bagisto does **not** claim: Magic AI does not run your store on its own, and WebMCP does
-not complete a purchase without the shopper. Every generated text is applied by an admin, and
-every WebMCP tool ends in an ordinary storefront page where the person is still in charge.
-
-## Generative AI (Magic AI) — built into your store
-
-[Generative AI](/ai/magic-ai) is a first-class Bagisto feature, shipped as the Magic AI
-package. Add an API key for any supported provider and you can:
-
-- ✍️ **Generate content** — product descriptions, page copy, and more from the admin editor.
-- 🖼️ **Generate images** — create product imagery from a text prompt.
-- 🔍 **Image search** — let shoppers search your catalog by uploading a photo.
-- 🌐 **Translate reviews** — show customer reviews in the shopper's language.
-- 🎉 **Checkout messages** — personalised order confirmation messages.
-
-It works with **OpenAI, Anthropic, Gemini, Groq, xAI, DeepSeek, Mistral, and Ollama**.
-Admin features let you choose which providers are offered; storefront features are
-configured per channel with a model each. Generated text and images are suggestions until an
-admin applies them.
-
-## WebMCP — agentic AI on the storefront
-
-[WebMCP](/ai/webmcp) is the browser-side counterpart. The storefront layout declares its
-search, product, wishlist, cart, checkout and newsletter actions as tools, and registers them
-with `navigator.modelContext.provideContext()` when the browser supports it. In every other
-browser the markup is inert. It is available on Bagisto 2.4 and 2.5 alike.
-
-## AI for developers
-
-Bagisto also helps the AI tools *you* code with:
-
-- **[Agent Skills](/ai/agent-skills)** — install `bagisto/agent-skills` so your AI agent
-  generates Bagisto-correct packages, payment methods, themes, and tests.
-- **[llms.txt](/ai/llms-txt)** — point Copilot, Cursor, ChatGPT, or Claude at Bagisto's
-  context files for architecture-aware answers.
-
-::: tip Where to start
-Building a store? Start with **[Generative AI (Magic AI)](/ai/magic-ai)**. Letting agents shop it? Read **[WebMCP](/ai/webmcp)**. Writing code? Install **[Agent Skills](/ai/agent-skills)**.
-:::
+For the REST and GraphQL reference, [Build with AI](https://api-docs.bagisto.com/api/build-with-ai/) describes its own `llms.txt` and an optional MCP server that searches it.

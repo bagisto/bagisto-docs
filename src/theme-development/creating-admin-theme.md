@@ -1,92 +1,26 @@
-# Creating Admin Theme
+# Creating an Admin Theme
 
-Learn how to create custom admin themes for your Bagisto administration panel. This guide covers the basic approach using Bagisto's resources directory to customize the backend interface.
+An admin theme overrides the Blade views of the `Admin` package the same way a storefront theme overrides the `Shop` package. This page registers the `custom-admin-theme` theme folder and overrides the dashboard.
 
-::: info What You'll Learn
-- Understanding Bagisto's admin theme configuration system
-- Creating admin themes using the resources directory approach
-- Customizing the admin panel interface and dashboard
-- Best practices for admin theme development
-:::
-
-## Understanding Admin Theme Configuration
-
-Bagisto's admin theme system is managed through the same `config/themes.php` file as store themes. The admin section defines themes specifically for the backend administration interface.
-
-### Key Configuration Properties
-
-| Property | Description |
-|----------|-------------|
-| `admin-default` | Specifies which theme is currently active for the admin panel. Unlike storefront themes, the admin theme is not chosen per channel |
-| `name` | Display name of the theme |
-| `views_path` | Directory, relative to the project root, containing this theme's Blade overrides of `packages/Webkul/Admin/src/Resources/views` |
-| `assets_path` | Directory for the theme's built assets. Declared for every theme, but asset URLs are generated from the `vite` block |
-| `parent` | Optional code of another admin theme whose `views_path` is searched after this theme's own |
-| `views_namespace` | Optional. The view namespace a theme package registered its views under, if it differs from the theme code |
-| `vite` | The hot file, build directory and package assets directory the admin layout uses to load this theme's compiled CSS and JavaScript |
-
-Admin themes have no `customize` key; sections and image templates are storefront concepts. Views resolve exactly as described in [How views are resolved](./creating-store-theme.md#how-views-are-resolved), with `admin::` in place of `shop::` and the admin theme in place of the channel theme.
-
-### Default Admin Theme Configuration
-
-Let's examine the default admin theme configuration structure:
-
-**Step 1: Locate the configuration file**
-
-Navigate to your Bagisto project root and find the themes configuration:
+## What You'll Build
 
 ```text
-bagisto-project/
-├── app/
-├── bootstrap/
-├── config/
-│   ├── app.php
-│   ├── themes.php  ← Theme configuration file
-│   └── ...
-├── database/
-└── ...
+config/themes.php                         # the custom-admin-theme entry
+resources/
+└── admin-themes/
+    └── custom-admin-theme/
+        └── views/
+            └── dashboard/
+                └── index.blade.php       # replaces admin::dashboard.index
 ```
 
-**Step 2: Understanding the admin configuration structure**
+## Step 1: Register the Admin Theme
 
-Open `config/themes.php` and look for the admin section:
+Admin themes are entries under `admin` in `config/themes.php`, with the same keys as [storefront themes](./creating-store-theme.md#theme-configuration-keys) except `customize`: sections and image templates are storefront concepts.
 
-```php
-<?php
+**File:** `config/themes.php`
 
-return [
-    'admin-default' => 'default',
-
-    'admin' => [
-        'default' => [
-            'name' => 'Default',
-            'assets_path' => 'public/themes/admin/default',
-            'views_path' => 'resources/admin-themes/default/views',
-
-            'vite' => [
-                'hot_file' => 'admin-default-vite.hot',
-                'build_directory' => 'themes/admin/default/build',
-                'package_assets_directory' => 'src/Resources/assets',
-            ],
-        ],
-    ],
-];
-```
-
-**Configuration breakdown:**
-- `admin-default`: Points to the active admin theme (`'default'` in this case)
-- `admin`: Contains all available admin theme definitions
-- Each theme has its own configuration block with paths and settings
-
-## Creating Your Custom Admin Theme
-
-Now let's create a custom admin theme step by step:
-
-### Step 1: Add Admin Theme Configuration
-
-Add your new admin theme to the `config/themes.php` file:
-
-```php{18-29}
+```php{19-29}
 <?php
 
 return [
@@ -120,154 +54,78 @@ return [
 ];
 ```
 
-::: tip Vite Configuration Note
-The Vite configuration currently uses the default theme settings. We'll cover custom Vite setup in the [Vite-Powered Theme Assets](./vite-powered-theme-assets.md) guide.
-:::
+The `vite` block reuses the default admin build; [Building an Admin Theme](./vite-powered-theme-assets.md#building-an-admin-theme) gives the theme its own.
 
-### Step 2: Create Admin Theme Directory Structure
+## Step 2: Override the Dashboard
 
-Create the necessary directories for your admin theme in the `resources` folder:
+The file replaces `packages/Webkul/Admin/src/Resources/views/dashboard/index.blade.php`, because its path under `views_path` is the same.
 
-```bash
-# Create admin theme directory structure
-mkdir -p resources/admin-themes/custom-admin-theme/views/dashboard
-```
-
-Your directory structure should look like this:
-
-```text
-resources/
-└── admin-themes/
-    └── custom-admin-theme/
-        └── views/
-            └── dashboard/
-                └── index.blade.php
-```
-
-::: warning Directory Structure
-The directory structure should follow the same conventions as the `admin` package to ensure compatibility and maintainability.
-:::
-
-### Step 3: Create Your First Admin Template
-
-Create a dashboard template at `resources/admin-themes/custom-admin-theme/views/dashboard/index.blade.php`:
+**File:** `resources/admin-themes/custom-admin-theme/views/dashboard/index.blade.php`
 
 ```blade
 <x-admin::layouts>
     <x-slot:title>
-        Custom Admin Dashboard
+        @lang('admin::app.dashboard.index.title')
     </x-slot>
 
-    <div class="container mx-auto px-4 py-8">
-        <div class="bg-white rounded-lg shadow-sm p-8">
-            <h1 class="text-3xl font-bold text-gray-800 mb-6">
-                🎛️ Custom Admin Dashboard
-            </h1>
-            
-            <p class="text-lg text-gray-600 mb-8">
-                Welcome to your customized Bagisto admin panel!
-            </p>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                    <h3 class="text-xl font-semibold text-blue-800 mb-2">
-                        📊 Analytics
-                    </h3>
+    <div class="flex items-center justify-between gap-4 max-sm:flex-wrap">
+        <p class="text-xl font-bold text-gray-800 dark:text-white">
+            Custom Admin Dashboard
+        </p>
+    </div>
 
-                    <p class="text-blue-600">
-                        Enhanced dashboard analytics and reporting
-                    </p>
-                </div>
-                
-                <div class="bg-green-50 p-4 rounded-lg border border-green-200">
-                    <h3 class="text-xl font-semibold text-green-800 mb-2">
-                        🛍️ Orders
-                    </h3>
-
-                    <p class="text-green-600">
-                        Streamlined order management interface
-                    </p>
-                </div>
-                
-                <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
-                    <h3 class="text-xl font-semibold text-purple-800 mb-2">
-                        👥 Customers
-                    </h3>
-                    
-                    <p class="text-purple-600">
-                        Enhanced customer management tools
-                    </p>
-                </div>
-            </div>
-        </div>
+    <div class="box-shadow mt-8 rounded-sm bg-white p-4 dark:bg-gray-900">
+        <p class="text-gray-600 dark:text-gray-300">
+            Welcome to your customized Bagisto admin panel!
+        </p>
     </div>
 </x-admin::layouts>
 ```
 
-::: tip Layout Usage
-We're using the default `<x-admin::layouts>` component since we haven't created a custom admin layout yet. Custom layouts will be covered in the [Layouts and Views](./understanding-layouts.md) guide.
-:::
+The page keeps the stock `<x-admin::layouts>` component, which draws the header and sidebar, and uses only classes the admin stylesheet already contains.
 
-::: warning Styling Limitations & Development Approach
-When using the default admin layout, you're inheriting the existing CSS compilation optimized for the default admin theme. Tailwind only emits classes it finds while scanning the Admin package, so a class used only in your theme's Blade files will not exist in the stylesheet.
+## Step 3: Activate the Admin Theme
 
-**This basic approach is intentional** - we're focusing on core admin theme concepts first before diving into complex development tooling. In real-world admin theme development, you would typically set up your own complete development environment including:
+The admin theme isn't chosen per channel: `admin-default` is the theme the whole admin uses. Set it to your theme's code:
 
-- **Custom CSS framework configuration** with your own admin design tokens
-- **Vue.js or React** for interactive admin components  
-- **Custom build processes** with Vite or Webpack for admin assets
-- **SCSS/PostCSS** preprocessing for admin styling
-- **Asset optimization** and bundling for admin interfaces
-
-We'll gradually progress through these advanced concepts in the upcoming guides. For now, stick to the existing CSS classes or use custom CSS to avoid compilation issues. The [Vite-Powered Theme Assets](./vite-powered-theme-assets.md) guide will show you how to set up a complete modern admin development workflow.
-:::
-
-### Step 4: Clear Application Cache
-
-Clear Bagisto's cache to recognize your new admin theme:
-
-```bash
-php artisan optimize:clear
-```
-
-### Step 5: Activate Your Admin Theme
-
-Update the `admin-default` value in your `config/themes.php` file:
+**File:** `config/themes.php`
 
 ```php{4}
 <?php
 
 return [
-    'admin-default' => 'custom-admin-theme', // Changed from 'default'
+    'admin-default' => 'custom-admin-theme',
 
     'admin' => [
-        // ...existing themes
+        // ...
     ],
 ];
 ```
 
-### Step 6: View Your Custom Admin Theme
+Then clear the cached configuration:
 
-Log in to your Bagisto admin panel and navigate to the dashboard. You should see your new custom admin theme design instead of the default admin interface.
+```bash
+php artisan optimize:clear
+```
 
-## Testing Your Admin Theme
+On an admin URL, `Webkul\Theme\ThemeViewFinder` activates `admin-default` before it looks up a view, and views resolve as described in [How Views Are Resolved](./creating-store-theme.md#how-views-are-resolved), with `admin::` in place of `shop::`.
 
-To ensure your admin theme works correctly:
+## Test It
 
-1. **Check different admin pages**: Navigate through various admin sections to ensure consistent styling
-2. **Test responsiveness**: View your admin theme on different screen sizes
-3. **Verify functionality**: Ensure all admin features work correctly with your theme
-4. **Browser testing**: Test across different browsers for compatibility
+1. Sign in to the admin. The dashboard shows your template.
+2. Open another admin page. It still uses the stock view.
+3. Set `admin-default` back to `'default'` and clear the cache. The stock dashboard returns.
 
-## What's Next?
+## Things to Watch
 
-Congratulations! You've successfully created your first custom admin theme. Here are your next steps:
+- **A static dashboard drops the widgets.** The stock dashboard draws the sales, customer and stock widgets. To keep them, copy the package file into your theme and edit the copy.
+- **Until the theme has its own build, use existing classes.** Tailwind only emits classes it finds in the Admin package, so a class used only in your theme's files isn't in the stylesheet.
+- **Layout components override the same way.** Restyle the header or sidebar with `<views_path>/layouts/index.blade.php`, `layouts/header/index.blade.php` or `layouts/sidebar/index.blade.php`; see [Admin Layout](./understanding-layouts.md#admin-layout).
+- **Keep the permission checks.** Admin views hide actions with `bouncer()->hasPermission()`; a copy that drops a check shows the action to roles that can't use it, so test with a custom role as well as a super admin.
 
-**📦 [Custom Theme Package →](./creating-custom-theme-package.md)**  
-Advance to creating professional theme packages for distribution and better organization.
+## Related Pages
 
-**⚡ [Vite-Powered Theme Assets →](./vite-powered-theme-assets.md)**  
-Master modern asset compilation and optimization for your themes.
-
-**📄 [Understanding Layouts →](./understanding-layouts.md)**  
-Learn about Bagisto's layout system and how to customize it effectively.
+- [Creating a Custom Theme Package](./creating-custom-theme-package.md): package the admin theme, publishing to `resources/admin-themes/<code>/views`.
+- [Vite-Powered Theme Assets](./vite-powered-theme-assets.md#building-an-admin-theme): give the admin theme its own build.
+- [Understanding Layouts](./understanding-layouts.md#admin-layout): what the admin layout provides.
+- [Package Development](../package-development/getting-started.md): build your own admin screens.

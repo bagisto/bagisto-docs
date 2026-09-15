@@ -1,103 +1,50 @@
 # Getting Started
 
-Welcome to Bagisto theme development! This comprehensive guide will take you through the complete journey of creating custom themes, from basic customizations to professional theme packages.
+A Bagisto theme replaces the Blade views and the compiled CSS and JavaScript that the `Shop` package renders for the storefront, or that the `Admin` package renders for the admin. It never edits those packages: Bagisto looks at the theme's files **before** the package's own. This section takes you from a first theme folder to a theme package with its own build.
 
-::: info What You'll Learn
-- Understanding Bagisto's theme system and configuration
-- Creating basic themes using the resources directory
-- Building professional theme packages
-- Asset management and bundling with Vite
-- Best practices for theme development and distribution
-:::
+## What You'll Build
+
+- A storefront theme with the code `custom-theme`, registered in `config/themes.php`, that overrides the home page.
+- The same theme as the `Webkul\CustomTheme` package, so it can be versioned and installed on other stores.
+- Its own Tailwind CSS 4 and Vite build.
+- Section types and image templates of its own, themed emails and validation rules.
+- An admin theme, using the same mechanism.
+
+## How It Works
+
+| Piece | Where | What it does |
+|---|---|---|
+| Theme registry | `config/themes.php` | Lists storefront themes under `shop` and admin themes under `admin`, each with its `views_path`, its `vite` build and, for storefront themes, a `customize` block |
+| Active theme | The channel's `theme` column; `admin-default` for the admin | `Webkul\Shop\Http\Middleware\Theme` activates the channel's theme on every storefront request, falling back to `shop-default` |
+| View finder | `packages/Webkul/Theme/src/ThemeViewFinder.php` | Looks for a view in the active theme's `views_path` before the package that owns it |
+| Theme manager and helpers | `packages/Webkul/Theme/src/Themes.php` (`themes()`), `packages/Webkul/Theme/src/Http/helpers.php` | Hold the active theme and load its build through `@bagistoVite` and `bagisto_asset()` |
+| Package views | `packages/Webkul/Shop/src/Resources/views`, `packages/Webkul/Admin/src/Resources/views` | The defaults a theme overrides. Never edit them: the change is lost on the next update |
+
+A **theme folder** (`resources/themes/custom-theme/views`) needs no PHP. A **theme package** (`packages/Webkul/CustomTheme`) ships the same views plus the theme's build, section types and image templates. Choosing which theme a channel runs is a merchant task; see [Activate a theme](https://docs.bagisto.com/appearance/themes#activate-a-theme) in the User Guide.
 
 ## Prerequisites
 
-To get the most out of this guide, you should have:
+- A Bagisto 2.5 [Installation](../getting-started/installation.md) where you can run `php artisan` and edit `config/themes.php`.
+- Composer, from the theme package page on, and Node.js with npm, from the Vite page on.
+- Working knowledge of Blade and Laravel service providers. Vue 3 is used inline in Blade components; you don't compile `.vue` files.
 
-### Essential Knowledge
-- **HTML/CSS**: For styling and layout
-- **Blade Templating**: Laravel's templating engine used by Bagisto
-- **Basic PHP**: Understanding of PHP syntax and Laravel concepts
+## The Path
 
-### Helpful Knowledge
-- **Laravel Package Development**: For creating distributable themes
-- **Tailwind CSS**: Bagisto's utility-first CSS framework
-- **JavaScript**: For interactive frontend features
-- **Vite/Webpack**: For asset bundling and optimization
+1. [Creating a Store Theme](./creating-store-theme.md): register a theme, override a view, and learn how views are resolved.
+2. [Creating a Custom Theme Package](./creating-custom-theme-package.md): move the theme into a package.
+3. [Vite-Powered Theme Assets](./vite-powered-theme-assets.md): give the package its own Tailwind CSS 4 and Vite build.
+4. [Understanding Layouts](./understanding-layouts.md): use and override the storefront and admin layouts.
+5. [Blade Components](./blade-components.md): the ready-made components pages are built from.
+6. [Theme Sections](./theme-sections.md): the section types the merchant can place on the home page.
+7. [Image Cache](./image-cache-templates.md): the image sizes the storefront serves, and theme overrides.
+8. [Email Template](./email-template.md): branded order and account emails.
+9. [Validation](./validation.md): browser and server validation for the forms a theme renders.
+10. [Creating an Admin Theme](./creating-admin-theme.md): the same mechanism for the admin.
 
-### Development Environment
-- Working Bagisto installation
-- Code editor (VS Code, PHPStorm, etc.)
-- Node.js (for asset compilation)
-- Composer (for package management)
+Along the way, the [Blade Tracer](../tools/blade-tracer.md) tool shows which Blade file renders any part of a page.
 
-## Your Theme Development Path
+## Next Step
 
-### Step 1: Start with Basic Themes
-Begin your journey by learning the fundamentals:
+Start by registering a theme and overriding one view.
 
-**🏪 [Creating Store Theme →](./creating-store-theme.md)**  
-Learn to create custom shop themes using the resources directory approach.
-
-**💼 [Creating Admin Theme →](./creating-admin-theme.md)**  
-Customize the admin interface with your own admin theme.
-
-### Step 2: Build Professional Packages
-Once you're comfortable with basics, advance to professional development:
-
-**📦 [Custom Theme Package →](./creating-custom-theme-package.md)**  
-Learn to create proper Laravel packages for your themes with service providers and distribution support.
-
-### Step 3: Master Asset Management
-Complete your theme development skills:
-
-**⚡ [Vite-Powered Theme Assets →](./vite-powered-theme-assets.md)**  
-Master Vite configuration for optimized asset compilation and modern development workflows.
-
-### Step 4: Advanced Techniques
-Deepen your understanding with advanced topics:
-
-**📄 [Understanding Layouts →](./understanding-layouts.md)**  
-Master Bagisto's layout system and component architecture.
-
-**🧩 [Blade Components →](./blade-components.md)**  
-Learn to use and customize Bagisto's pre-built components.
-
-### Step 5: Extend What the Merchant Can Customize
-A theme is not only Blade and CSS. From `config/themes.php` it also declares what the Appearance editor offers and which image sizes the storefront can request:
-
-**🧱 [Theme Sections →](./theme-sections.md)**  
-Choose, reorder, replace or add the section types a merchant can place on the home page.
-
-**🖼️ [Image Cache Templates →](./image-cache-templates.md)**  
-Register your own image sizes and attach them to product, category and swatch image URLs.
-
-## Development Tips
-
-::: tip Best Practices
-- **Start Simple**: Begin with the resources directory approach before moving to packages
-- **Use Version Control**: Always track your theme changes with Git
-- **Test Thoroughly**: Check your themes across different devices and browsers
-- **Follow Conventions**: Use Bagisto's naming conventions and file structure
-:::
-
-::: warning Common Pitfalls
-- **Don't Skip Basics**: Understanding the resources approach helps with package development
-- **Avoid Hardcoding**: Use Bagisto's configuration and helper functions
-- **Theme Conflicts**: Be careful when overriding core templates; a file only overrides when its path mirrors the package view exactly
-- **Asset Caching**: Clear caches during development to see changes
-- **Never edit `packages/Webkul/Shop`**: Everything a theme needs is reachable through `config/themes.php` and your own `views_path`; edits to the package are lost on update
-:::
-
-## What's Next?
-
-Now that you understand Bagisto's theme development approach, start your journey:
-
-**🏪 [Creating Store Theme →](./creating-store-theme.md)**  
-Learn to create your first custom store theme using the resources directory.
-
-**👩‍💼 [Creating Admin Theme →](./creating-admin-theme.md)**  
-Discover how to customize the admin panel interface with custom themes.
-
-**📦 [Custom Theme Package →](./creating-custom-theme-package.md)**  
-Advance to creating professional theme packages for distribution and better organization.
+**Continue to:** [Creating a Store Theme](./creating-store-theme.md)

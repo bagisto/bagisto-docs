@@ -1,671 +1,647 @@
 # Event Listeners
 
-Event Listeners in Bagisto provide a powerful way to extend and customize the platform's functionality without modifying core code. Bagisto uses Laravel's event system with string-based event dispatching, making it simple to hook into various points in the application lifecycle.
+Bagisto announces what happens in the store with **string events**: dot-delimited names such as `catalog.product.update.after`, fired with Laravel's `Event::dispatch()`, mostly in `before` and `after` pairs around a create, update, delete or save. A package reacts to them from its own event service provider, so it never edits a core controller or repository. This page shows how to register a listener, then lists [every event core dispatches](#available-events) with what a listener receives; events fired from Blade views are on [View Render Events](./view-render-events.md).
 
-This advanced guide covers how to implement comprehensive event-driven architecture in your Bagisto applications, including listening to core events, creating custom events, and building reactive systems.
+**On this page**
 
-## What You'll Learn
+- **Registering:** [Register a Listener](#register-a-listener), [Firing Events from Your Package](#firing-events-from-your-package)
+- **Event groups:** [Catalog](#catalog), [Customers](#customers), [GDPR Requests](#gdpr-requests), [Cart and Checkout](#cart-and-checkout), [Sales](#sales), [Returns (RMA)](#returns-rma), [Promotions](#promotions), [Marketing and SEO](#marketing-and-seo), [CMS](#cms), [Settings](#settings), [Appearance](#appearance), [DataGrid Saved Filters](#datagrid-saved-filters), [Data Transfer](#data-transfer), [Booking Products](#booking-products), [Installer](#installer)
 
-- [Understanding Bagisto's Event System](#understanding-bagisto-s-event-system)
-- [Dispatching Custom Events](#dispatching-events)  
-- [Creating Event Listeners](#creating-event-listeners)
-- [Advanced Event Patterns](#advanced-event-patterns)
-- [Best Practices](#best-practices)
-- [Available Events Reference](#available-bagisto-events)
+## Register a Listener
 
-## Understanding Bagisto's Event System
-
-Bagisto dispatches events throughout its operations using string identifiers. This approach allows for:
-
-- **Loose Coupling**: Components can communicate without direct dependencies
-- **Extensibility**: Third-party packages can hook into core functionality
-- **Maintainability**: Changes can be made without affecting existing code
-- **Scalability**: Event-driven architecture supports complex business logic
-
-## Dispatching Events
-
-Events are dispatched using `Event::dispatch()` with string identifiers:
-
-```php{13,19}
-<?php
-
-namespace Webkul\RMA\Http\Controllers;
-
-use Illuminate\Support\Facades\Event;
-use Webkul\Admin\Http\Controllers\Controller;
-
-class RMAController extends Controller
-{
-    public function processReturnRequest()
-    {
-        // Dispatch before event
-        Event::dispatch('rma.return.request.before', request()->all());
-
-        // Perform main operation - create return request
-        $returnRequest = $this->createReturnRequest();
-
-        // Dispatch after event with result
-        Event::dispatch('rma.return.request.created', $returnRequest);
-
-        return response()->json(['status' => 'success', 'data' => $returnRequest]);
-    }
-}
-```
-
-### Event Naming Convention
-
-Follow Bagisto's hierarchical naming convention for consistency:
-
-| Event Type | Pattern | Example | Use Case |
-|------------|---------|---------|-----------|
-| **Core Events** | `{module}.{entity}.{action}.{timing}` | `catalog.product.create.after` | Built-in Bagisto operations |
-| **Package Events** | `{package}.{feature}.{action}.{timing}` | `rma.return.request.created` | Custom package functionality |
-| **Integration Events** | `{system}.{integration}.{action}.{status}` | `payment.paypal.transaction.failed` | Third-party integrations |
-
-**Event Naming Best Practices:**
+Core fires a pair of events around each write, as `CategoryController::store()` in `packages/Webkul/Admin/src/Http/Controllers/Catalog/CategoryController.php` does:
 
 ```php
-// ✅ Good - Clear and descriptive
-Event::dispatch('rma.return.request.created', $returnRequest);
-Event::dispatch('rma.return.item.approved', $returnItem);
-Event::dispatch('rma.refund.processed', $refund);
+Event::dispatch('catalog.category.create.before');
 
-// ❌ Avoid - Vague or inconsistent
-Event::dispatch('rma.something.happened', $data);
-Event::dispatch('return_created', $return);
+$category = $this->categoryRepository->create($data);
+
+Event::dispatch('catalog.category.create.after', $category);
 ```
 
-## Creating Event Listeners
+A package maps event names to listener methods in an event service provider of its own, in the same shape as `Webkul\Admin\Providers\EventServiceProvider`. This example sends every new order to an external ERP:
 
-To create an event listener in Bagisto, you need to define a listener class with a method that will handle the event. This method receives the event data as its argument. You can then register this listener to respond to specific events, allowing you to execute custom logic whenever those events are fired.
+**File:** `packages/Webkul/ErpSync/src/Providers/EventServiceProvider.php`
 
-Let's say you are having a package like **RMA (Return Merchandise Authorization)** or some other name - let's use RMA for this practical example. This RMA package would listen to order events to manage returns effectively.
-
-::: tip Package Development Reference
-If you want to build a package, check out our [Package Development Guide](/package-development/getting-started) where we have shown how to build an RMA package step by step. This guide covers the basics of creating packages, service providers, and directory structure before implementing event listeners. Bagisto core ships its own `Webkul\RMA` package, whose real events (`sales.rma.request.create.before`, `customer.rma.request.create.after`, and the `sales.rma.reason.*`, `sales.rma.rules.*`, `sales.rma.rma-status.*` and `sales.rma.custom-field.*` families) are in the reference table below; the `rma.return.*` names in the examples on this page are invented for the walkthrough.
-:::
-
-### Basic Event Listener
-
-In an RMA package, you would have an event listener to handle order events:
-
-```php{9-16,18-24}
+```php
 <?php
 
-namespace Webkul\RMA\Listeners;
-
-use Illuminate\Support\Facades\Log;
-
-class RMAOrderListener
-{
-    public function handleOrderCreated($order): void
-    {
-        // Create RMA eligibility record for the order
-        Log::info('Order created - checking RMA eligibility', ['order_id' => $order->id]);
-
-        // Check if order items are eligible for returns
-        $this->createRMAEligibilityForOrder($order);
-    }
-
-    public function handleOrderStatusUpdate($order): void
-    {
-        // Update RMA status based on order status changes
-        if ($order->status === 'delivered') {
-            $this->activateReturnWindow($order);
-        }
-    }
-
-    private function createRMAEligibilityForOrder($order): void
-    {
-        // Implementation logic for RMA eligibility
-    }
-
-    private function activateReturnWindow($order): void
-    {
-        // Start 30-day return window
-    }
-}
-```
-
-::: details Method Explanations
-- **`handleOrderCreated()`**: Creates RMA eligibility records when new orders are placed
-- **`handleOrderStatusUpdate()`**: Manages RMA status changes based on order status
-- **`createRMAEligibilityForOrder()`**: Business logic for determining return eligibility
-- **`activateReturnWindow()`**: Starts the countdown for return requests
-:::
-
-### Event Service Provider
-
-In your RMA package, you would register the listeners in the `EventServiceProvider`:
-
-```php{15-24}
-<?php
-
-namespace Webkul\RMA\Providers;
+namespace Webkul\ErpSync\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Webkul\RMA\Listeners\RMAOrderListener;
+use Webkul\ErpSync\Listeners\Order;
 
 class EventServiceProvider extends ServiceProvider
 {
     /**
      * The event handler mappings for the application.
      *
-     * @var array<string, array<int, array<int, string>>>
+     * @var array
      */
     protected $listen = [
-        // Listen to core Bagisto order events
         'checkout.order.save.after' => [
-            [RMAOrderListener::class, 'handleOrderCreated'],
-        ],
-
-        'sales.order.update-status.after' => [
-            [RMAOrderListener::class, 'handleOrderStatusUpdate'],
+            [Order::class, 'afterCreated'],
         ],
     ];
 }
 ```
 
-::: info Modern Event Registration
-The `[ClassName::class, 'method']` syntax is the modern Laravel approach for registering event listeners. This provides better IDE support and refactoring capabilities compared to string-based registration. Core also uses the older `'Webkul\Payment\Listeners\GenerateInvoice@handle'` string form and `Event::listen()` calls inside `EventServiceProvider::boot()`; all three work.
-:::
-
-::: tip RMA Package Registration
-Your package may not have an `EventServiceProvider` initially. If so, register it from the package's main service provider. Core packages do this in `boot()`:
+**File:** `packages/Webkul/ErpSync/src/Listeners/Order.php`
 
 ```php
-// In Webkul\RMA\Providers\RMAServiceProvider
-public function boot(): void
+<?php
+
+namespace Webkul\ErpSync\Listeners;
+
+use Webkul\ErpSync\Jobs\SendOrder;
+use Webkul\Sales\Contracts\Order as OrderContract;
+
+class Order
 {
-    $this->app->register(EventServiceProvider::class);
+    /**
+     * Queue a newly placed order for the ERP.
+     */
+    public function afterCreated(OrderContract $order): void
+    {
+        SendOrder::dispatch($order->id)->afterCommit();
+    }
 }
 ```
 
-This ensures all your RMA event listeners are properly loaded when the package is installed.
-:::
+The listener only queues a job, once the order's database transaction has committed, so a slow or failing ERP never holds up checkout. The package's main service provider merges the job's configuration in `register()` and registers the event service provider from `boot()`, as `AdminServiceProvider` and `ProductServiceProvider` do:
 
-## Advanced Event Patterns
+**File:** `packages/Webkul/ErpSync/src/Providers/ErpSyncServiceProvider.php`
 
-Advanced event patterns in Bagisto allow you to build more flexible and modular systems. You can chain events, trigger custom events from listeners, and even use queued listeners for asynchronous processing. This enables you to decouple business logic, improve maintainability, and handle complex workflows such as notifications, analytics, or integrations with external services.
-
-### Multiple Listeners for Single Event
-
-You can register multiple listeners for the same event to separate concerns:
-
-```php{4-6}
-protected $listen = [
-    'checkout.order.save.after' => [
-        [RMAOrderListener::class, 'handleOrderCreated'],
-        [NotificationListener::class, 'sendOrderConfirmation'],
-        [InventoryListener::class, 'updateStockLevels'],
-        [AnalyticsListener::class, 'trackOrderMetrics'],
-    ],
-];
-```
-
-### Event Priority and Ordering
-
-Listeners execute in the order they're registered. Place critical listeners first:
-
-```php{3-6}
-protected $listen = [
-    'sales.order.update-status.after' => [
-        // Critical: Update RMA status first
-        [RMAStatusListener::class, 'updateReturnEligibility'],
-        // Secondary: Send notifications
-        [NotificationListener::class, 'notifyCustomer'],
-    ],
-];
-```
-
-## Practical Example: Complete RMA Integration
-
-Here's a complete example showing how to integrate RMA functionality using event listeners:
-
-::: code-group
-
-```php [RMAOrderListener.php]
+```php
 <?php
 
-namespace Webkul\RMA\Listeners;
+namespace Webkul\ErpSync\Providers;
 
-use Illuminate\Support\Facades\Log;
-use Webkul\RMA\Services\RMAService;
+use Illuminate\Support\ServiceProvider;
 
-class RMAOrderListener
+class ErpSyncServiceProvider extends ServiceProvider
 {
-    public function __construct(
-        private RMAService $rmaService
-    ) {}
-
-    public function handleOrderCreated($order): void
+    /**
+     * Register services.
+     */
+    public function register(): void
     {
-        try {
-            $this->rmaService->createEligibilityRecords($order);
+        $this->mergeConfigFrom(dirname(__DIR__).'/Config/erp-sync.php', 'erp_sync');
+    }
 
-            Log::info('RMA eligibility created for order', [
-                'order_id' => $order->id,
-                'customer_id' => $order->customer_id,
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Failed to create RMA eligibility', [
-                'order_id' => $order->id,
-                'error' => $e->getMessage(),
-            ]);
+    /**
+     * Bootstrap services.
+     */
+    public function boot(): void
+    {
+        $this->app->register(EventServiceProvider::class);
+    }
+}
+```
+
+Register `ErpSyncServiceProvider` in `bootstrap/providers.php` and the package namespace in `composer.json`, as in [Package Development](../package-development/getting-started.md#register-the-provider), then confirm the listener is attached:
+
+```bash
+php artisan event:list --event=checkout.order.save.after
+```
+
+The command lists every listener on the event, core's included. For a listener built step by step in a package, see [Events, Commands and Tests](../package-development/events-commands-and-tests.md#listen-to-events). Before you ship a listener, read [Things to Watch](#things-to-watch): an exception in a checkout listener rolls the order back, and a listener that returns `false` stops core's listeners after it.
+
+::: details The `SendOrder` Job and Its Configuration
+`SendOrder` is an ordinary queued job that loads the order through its repository and posts it, to the endpoint and token in `Config/erp-sync.php`, which `register()` above merges under `erp_sync`.
+
+**File:** `packages/Webkul/ErpSync/src/Config/erp-sync.php`
+
+```php
+<?php
+
+return [
+    'endpoint' => env('ERP_SYNC_ENDPOINT'),
+
+    'token' => env('ERP_SYNC_TOKEN'),
+];
+```
+
+**File:** `packages/Webkul/ErpSync/src/Jobs/SendOrder.php`
+
+```php
+<?php
+
+namespace Webkul\ErpSync\Jobs;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Http;
+use Webkul\Sales\Repositories\OrderRepository;
+
+class SendOrder implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    /**
+     * The number of times the job may be attempted.
+     */
+    public int $tries = 3;
+
+    /**
+     * Create a new job instance.
+     */
+    public function __construct(protected int $orderId) {}
+
+    /**
+     * Send the order to the ERP.
+     */
+    public function handle(OrderRepository $orderRepository): void
+    {
+        $order = $orderRepository->find($this->orderId);
+
+        if (! $order) {
+            return;
         }
-    }
 
-    public function handleOrderDelivered($order): void
-    {
-        $this->rmaService->activateReturnWindow($order);
-
-        // Dispatch custom RMA event
-        event('rma.return.window.activated', $order);
+        Http::withToken(config('erp_sync.token'))
+            ->post(config('erp_sync.endpoint'), [
+                'increment_id' => $order->increment_id,
+                'grand_total' => $order->base_grand_total,
+                'items' => $order->items->map(fn ($item) => [
+                    'sku' => $item->sku,
+                    'qty' => $item->qty_ordered,
+                ])->all(),
+            ])
+            ->throw();
     }
 }
 ```
-
-```php [EventServiceProvider.php]
-<?php
-
-namespace Webkul\RMA\Providers;
-
-use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Webkul\RMA\Listeners\RMAOrderListener;
-
-class EventServiceProvider extends ServiceProvider
-{
-    protected $listen = [
-        // Core Bagisto events
-        'checkout.order.save.after' => [
-            [RMAOrderListener::class, 'handleOrderCreated'],
-        ],
-
-        'sales.order.update-status.after' => [
-            [RMAOrderListener::class, 'handleOrderDelivered'],
-        ],
-
-        // Custom RMA events
-        'rma.return.window.activated' => [
-            [RMANotificationListener::class, 'sendReturnEligibilityEmail'],
-        ],
-    ];
-}
-```
-
 :::
 
-## Best Practices
+### What a Listener Receives
 
-By following best practices, you can ensure your event-driven code is robust, easy to extend, and integrates smoothly with both core and custom features.
+Names follow `<domain>.<entity>.<action>.<before|after>`. By convention a `before` event carries the record's id, or nothing when the record doesn't exist yet, and an `after` event carries the resulting model, except a delete, whose `after` event carries the id. Some names break the pattern (`customer.after.login`, `data_transfer.imports.started`, `sales.invoice.send_duplicate_email`), so take the exact name and payload from the [tables](#available-events).
 
-### Performance Considerations
+Laravel passes the payload to a listener as arguments. A payload that isn't an array is wrapped in one, and an array payload is spread into one argument per value, with its keys dropped:
 
-Keep these performance guidelines in mind when implementing event listeners:
+| Dispatch | Listener signature |
+|---|---|
+| `Event::dispatch('cms.page.create.before')` | `beforeCreate()`, called with no arguments |
+| `Event::dispatch('catalog.category.create.after', $category)` | `afterCreate($category)` |
+| `Event::dispatch('checkout.order.save.before', [$data])` | `beforeCreate(array $data)` |
+| `Event::dispatch('sales.invoice.send_duplicate_email', ['invoice' => $invoice, 'duplicate_invoice_email' => $email])` | `afterCreated($invoice, $duplicateInvoiceEmail = null)` |
 
-- **Keep listeners lightweight**: Avoid heavy computations in event listeners
-- **Use queues for heavy operations**: Dispatch time-consuming tasks to background queues
-- **Handle exceptions gracefully**: Wrap listener logic in try-catch blocks
-- **Log important events**: Use structured logging for debugging and monitoring
+An event dispatched without a payload calls its listeners with no arguments, so a required parameter throws `ArgumentCountError`; give it a default (`$id = null`) when one method handles both a `create.before` and an `update.before`. That's also why `OrderRepository` wraps `$data` in a second array for `checkout.order.save.before`. A few core events pass an unwrapped array (`sales.invoice.save.before`, `sales.refund.save.before`, `sales.shipment.save.before`, the RMA request `create.before` events, `checkout.order.orderitem.save.before`, `section.reorder.before` and `section.media.upload.after`), so their listeners receive the array's values as separate arguments.
 
-### Event Naming Guidelines
+### Other Ways to Register
 
-Follow these naming conventions for consistent and maintainable event-driven architecture:
+- **`Event::listen()` in `boot()`**, with a closure or a `[Listener::class, 'method']` pair, as `Webkul\SocialShare\Providers\EventServiceProvider` does.
+- **A class name without a method**, which calls the listener's `handle()`, as `Webkul\Core\Providers\EventServiceProvider` maps the repository events to `Webkul\Core\Listeners\CleanCacheRepository`.
+- **From `register()`** instead of `boot()`, as `OmnibusServiceProvider` registers its event service provider; both work.
 
-- Use consistent hierarchical patterns (`module.entity.action.timing`)
-- Fire both `before` and `after` events for major operations
-- Include descriptive action names (`created`, `updated`, `deleted`)
+## Firing Events from Your Package
 
-### Data Handling Best Practices
+Give your package's own writes the same hooks, so other packages can extend yours the way yours extends core. Fire both halves, name them `<package>.<entity>.<action>.<before|after>`, and pass what core passes: nothing before a create, the id before an update or delete, the model after a create or update, and the id after a delete. Wrap an array payload so a listener receives it whole:
 
-Ensure robust data management in your event listeners:
+```php
+Event::dispatch('blog.post.create.before');
 
-- Validate event data before processing
-- Pass relevant context in event payloads
-- Avoid circular event dependencies
+$post = $this->postRepository->create($data);
 
-### Error Handling Strategies
-
-Implement comprehensive error handling to maintain system stability:
-
-- Implement proper exception handling in listeners
-- Log errors with sufficient context for debugging
-- Consider fallback mechanisms for critical operations
-
-**Example Error Handling:**
-
-```php{5-14}
-public function handleOrderCreated($order): void
-{
-    try {
-        $this->createRMAEligibilityForOrder($order);
-    } catch (Exception $e) {
-        Log::error('Failed to create RMA eligibility', [
-            'order_id' => $order->id,
-            'error' => $e->getMessage(),
-            'trace' => $e->getTraceAsString(),
-        ]);
-
-        // Don't break the order creation process
-        // Consider alternative handling or notification
-    }
-}
+Event::dispatch('blog.post.create.after', $post);
 ```
 
-## Available Bagisto Events
+A string name needs no event class for another package to import.
 
-The following table lists the core events available in Bagisto that you can listen to. The set of event names is the same in Bagisto 2.4 and 2.5. Where an event is dispatched from more than one place (a single delete and a mass delete, for example) the argument shown is the one passed by the single-record controller action.
+## Available Events
 
-Two families are not listed individually: every DataGrid dispatches `datagrid.{grid_name}.{stage}` events as it is built (see [DataGrid](../package-development/datagrid.md#extending-a-datagrid-you-do-not-own)), and every `view_render_event()` call in a Blade view dispatches an event of the same name (see [View Render Events](./view-render-events.md)).
+Every string event the core packages dispatch, grouped by area, with what a listener receives. Two families aren't listed individually: every DataGrid dispatches `datagrid.{grid_name}.{stage}` events as it is built (see [DataGrid](../package-development/datagrid.md#extending-a-datagrid-you-do-not-own)), and every `view_render_event()` call in a Blade view dispatches an event of the same name (see [View Render Events](./view-render-events.md)). Bagisto 2.4 dispatches the same events except `catalog.product.price.reindex.before` and `.after` and `promotions.catalog_rule.reindex.before` and `.after`, which are new in Bagisto 2.5.
 
-| Events Name                                          | Functionality                                                     | Arguments                 |
-| ---------------------------------------------------- | ----------------------------------------------------------------- | ------------------------- |
-| `catalog.attribute.create.before`                    | This event will be fired before attribute gets created.           | -                         |
-| `catalog.attribute.create.after`                     | This event will be fired after attribute gets created.            | `attribute`               |
-| `catalog.attribute.update.before`                    | This event will be fired before attribute gets updated.           | `$id`                     |
-| `catalog.attribute.update.after`                     | This event will be fired after attribute gets updated.            | `$attribute`              |
-| `catalog.attribute.delete.before`                    | This event will be fired before attribute gets deleted.           | `$id`                     |
-| `catalog.attribute.delete.after`                     | This event will be fired after attribute gets deleted.            | `$id`                     |
-| `catalog.attribute_family.create.before`             | This event will be fired before attribute family gets created.    | -                         |
-| `catalog.attribute_family.create.after`              | This event will be fired after attribute family gets created.     | `attribute_family`        |
-| `catalog.attribute_family.update.before`             | This event will be fired before updating attribute family.        | `$id`                     |
-| `catalog.attribute_family.update.after`              | This event will be fired after updating attribute family.         | `$attributeFamily`        |
-| `catalog.attribute_family.delete.before`             | This event will be fired before deleting attribute family.        | `$id`                     |
-| `catalog.attribute_family.delete.after`              | This event will be fired after deleting attribute family.         | `$id`                     |
-| `catalog.category.create.before`                     | This event will be fired before creating category.                | -                         |
-| `catalog.category.create.after`                      | This event will be fired after creating category.                 | `$category`               |
-| `catalog.category.update.before`                     | This event will be fired before updating category.                | `$id`                     |
-| `catalog.category.update.after`                      | This event will be fired after updating category.                 | `$category`               |
-| `catalog.category.delete.before`                     | This event will be fired before deleting category.                | `$id`                     |
-| `catalog.category.delete.after`                      | This event will be fired after deleting category.                 | `$id`                     |
-| `catalog.categories.mass-update.before`              | This event will be fired before bulk category update.             | `$categoryId`             |
-| `catalog.categories.mass-update.after`               | This event will be fired after bulk category update.              | `$category`               |
-| `catalog.product.create.before`                      | This event will be fired before product gets created.             | -                         |
-| `catalog.product.create.after`                       | This event will be fired after product gets created.              | `$product`                |
-| `catalog.product.update.before`                      | This event will be fired before product gets updated.             | `$id`                     |
-| `catalog.product.update.after`                       | This event will be fired after product gets updated.              | `$product`                |
-| `catalog.product.delete.before`                      | This event will be fired before product gets deleted.             | `$id`                     |
-| `catalog.product.delete.after`                       | This event will be fired after product gets deleted.              | `$id`                     |
-| `catalog.product.price.reindex.before`             | This event will be fired before the price index is rebuilt.       | -                         |
-| `catalog.product.price.reindex.after`              | This event will be fired after the price index is rebuilt.        | `[$productIds]` or -      |
-| `products.datagrid.sync`                             | This event will be fired to synicing datagrid product.            | `true`                    |
-| `cms.page.create.before`                             | This event will be fired before cms page gets created.            | -                         |
-| `cms.page.create.after`                              | This event will be fired after cms page gets created.             | `$page`                   |
-| `cms.page.update.before`                             | This event will be fired before cms page gets updated.            | `$id`                     |
-| `cms.page.update.after`                              | This event will be fired after cms page gets updated.             | `$page`                   |
-| `cms.page.delete.before`                             | This event will be fired before cms page gets deleted.            | `$id`                     |
-| `cms.page.delete.after`                              | This event will be fired after cms page gets deleted.             | `$id`                     |
-| `customer.addresses.create.before`                   | This event will be fired before customer address gets created.    | -                         |
-| `customer.addresses.create.after`                    | This event will be fired after customer address gets created.     | `$address`                |
-| `customer.addresses.update.before`                   | This event will be fired before customer address gets updated.    | `$id`                     |
-| `customer.addresses.update.after`                    | This event will be fired after customer address gets updated.     | `$address`                |
-| `customer.addresses.delete.before`                   | This event will be fired before customer address gets deleted.    | `$id`                     |
-| `customer.addresses.delete.after`                    | This event will be fired after customer address gets deleted.     | `$id`                     |
-| `customer.registration.before`                       | This event will be fired before customer gets created.            | -                         |
-| `customer.registration.after`                        | This event will be fired after customer gets created.             | `$customer`               |
-| `customer.update.before`                             | This event will be fired before customer gets updated.            | `$id`                     |
-| `customer.update.after`                              | This event will be fired after customer gets updated.             | `$customer`               |
-| `customer.password.update.after`                     | This event will be fired after customer password gets updated.    | `$customer`               |
-| `customer.note.create.before`                        | This event will be fired before customer note gets created.       | `$id`                     |
-| `customer.note.create.after`                         | This event will be fired after customer note gets created.        | `$customerNote`           |
-| `customer.subscription.before`                       | This event will be fired before customer gets subscription.       | -                         |
-| `customer.subscription.after`                        | This event will be fired after customer gets subscription.        | `$subscription`           |
-| `customer.after.login`                               | This event will be fired after customer login.                    | `auth()->guard()->user()` |
-| `customer.delete.before`                             | This event will be fired before customer gets deleted.            | `$customer`               |
-| `customer.delete.after`                              | This event will be fired after customer gets deleted.             | `$customer`               |
-| `customer.customer_group.create.before`              | This event will be fired before customer group gets created.      | -                         |
-| `customer.customer_group.create.after`               | This event will be fired after customer group gets created.       | `$customerGroup`          |
-| `customer.customer_group.update.before`              | This event will be fired before customer group gets updated.      | `$id`                     |
-| `customer.customer_group.update.after`               | This event will be fired after customer group gets updated.       | `$customerGroup`          |
-| `customer.customer_group.delete.before`              | This event will be fired before customer group gets deleted.      | `$id`                     |
-| `customer.customer_group.delete.after`               | This event will be fired after customer group gets deleted.       | `$id`                     |
-| `customer.review.create.before`                      | This event will be fired before customer review gets created.     | `$id`                     |
-| `customer.review.create.after`                       | This event will be fired after customer review gets created.      | `$review`                 |
-| `customer.review.update.before`                      | This event will be fired before customer review gets updated.     | `$id`                     |
-| `customer.review.update.after`                       | This event will be fired after customer review gets updated.      | `$review`                 |
-| `customer.review.delete.before`                      | This event will be fired before customer review gets deleted.     | `$id`                     |
-| `customer.review.delete.after`                       | This event will be fired after customer review gets deleted.      | `$id`                     |
-| `customer.compare.create.before`                     | This event will be fired before product added to compare.         | -                         |
-| `customer.compare.create.after`                      | This event will be fired after product added to compare.          | `$compareProduct`         |
-| `customer.compare.delete.before`                     | This event will be fired before product removed from compare.     | `$productId`              |
-| `customer.compare.delete.after`                      | This event will be fired after product removed from compare.      | `$productId`              |
-| `customer.compare.delete-all.before`                 | This event will be fired before all compare items removed.        | -                         |
-| `customer.compare.delete-all.after`                  | This event will be fired after all compare items removed.         | -                         |
-| `customer.wishlist.create.before`                    | This event will be fired before product added to wishlist.        | `$productId`              |
-| `customer.wishlist.create.after`                     | This event will be fired after product added to wishlist.         | `$wishlist`               |
-| `customer.wishlist.update.before`                  | This event will be fired before a wishlist item is updated from the cart. | `$productId`              |
-| `customer.wishlist.update.after`                   | This event will be fired after a wishlist item is updated from the cart. | `$wishlistItem`           |
-| `customer.wishlist.delete.before`                    | This event will be fired before wishlist item removed.            | `$id`                     |
-| `customer.wishlist.delete.after`                     | This event will be fired after wishlist item removed.             | `$id`                     |
-| `customer.wishlist.delete-all.before`                | This event will be fired before all wishlist items removed.       | -                         |
-| `customer.wishlist.delete-all.after`                 | This event will be fired after all wishlist items removed.        | -                         |
-| `customer.wishlist.move-to-cart.before`              | This event will be fired before wishlist item moved to cart.      | `$id`                     |
-| `customer.wishlist.move-to-cart.after`               | This event will be fired after wishlist item moved to cart.       | `$id`                     |
-| `customer.create.before`                             | This event will be fired before customer gets created (admin).    | -                         |
-| `customer.create.after`                              | This event will be fired after customer gets created (admin).     | `$customer`               |
-| `customer.after.logout`                              | This event will be fired after customer logout.                   | `$id`                     |
-| `customer.rma.request.create.before`                 | This event will be fired before customer creates RMA request.     | `$data`                   |
-| `customer.rma.request.create.after`                  | This event will be fired after customer creates RMA request.      | `$rma`                    |
-| `customer.rma.request.update.before`                 | This event will be fired before customer RMA request updated.     | `$id`                     |
-| `customer.rma.request.update.after`                  | This event will be fired after customer RMA request updated.      | `$rma`                    |
-| `customer.account.gdpr-request.create.before`        | This event will be fired before gdpr request created.             | -                         |
-| `customer.account.gdpr-request.create.after`       | This event will be fired after a customer submits a GDPR request. | `$gdprRequest`            |
-| `customer.gdpr-request.create.after`                 | This event will be fired after gdpr request created.              | `$gdprRequest`            |
-| `customer.account.gdpr-request.update.before`        | This event will be fired before gdpr request updated.             | -                         |
-| `customer.account.gdpr-request.update.after`         | This event will be fired after gdpr request updated.              | `$gdprRequest`            | 
-| `customer.gdpr-request.update.after`                 | This event will be fired after gdpr request updated.              | `$gdprRequest`            | 
-| `customer.gdpr-request.update.before`                | This event will be fired after gdpr request updated.              | -                         | 
-| `marketing.search_seo.sitemap.create.before`         | This event will be fired before sitemaps gets created.            | -                         |
-| `marketing.search_seo.sitemap.create.after`          | This event will be fired after sitemaps gets created.             | `$sitemap`                |
-| `marketing.search_seo.sitemap.update.before`         | This event will be fired before sitemaps gets updated.            | `$id`                     |
-| `marketing.search_seo.sitemap.update.after`          | This event will be fired after sitemaps gets updated.             | `$sitemap`                |
-| `marketing.search_seo.sitemap.delete.before`         | This event will be fired before sitemaps gets deleted.            | `$id`                     |
-| `marketing.search_seo.sitemap.delete.after`          | This event will be fired after sitemaps gets deleted.             | `$id`                     |
-| `marketing.search_seo.search_synonyms.create.before` | This event will be fired before search synonyms created           | -                         |
-| `marketing.search_seo.search_synonyms.create.after`  | This event will be fired after search synonyms created            | `$searchSynonym`          |
-| `marketing.search_seo.search_synonyms.update.before` | This event will be fired before synonyms gets updated.            | `$id`                     |
-| `marketing.search_seo.search_synonyms.update.after`  | This event will be fired after synonyms gets updated.             | `$searchSynonym`          |
-| `marketing.search_seo.search_synonyms.delete.before` | This event will be fired before synonyms gets deleted.            | `$id`                     |
-| `marketing.search_seo.search_synonyms.delete.after`  | This event will be fired before synonyms gets deleted.            | `$id`                     |
-| `marketing.search_seo.search_terms.create.before`    | This event will be fired before search search terms created       | -                         |
-| `marketing.search_seo.search_terms.create.after`     | This event will be fired after search search terms created        | `$searchTerm`             |
-| `marketing.search_seo.search_terms.update.before`    | This event will be fired before search search terms updated       | `$id`                     |
-| `marketing.search_seo.search_terms.update.after`     | This event will be fired after search search terms updated        | `$searchTerm`             |
-| `marketing.search_seo.search_terms.delete.before`    | This event will be fired before search search terms gets deleted  | `$id`                     |
-| `marketing.search_seo.search_terms.delete.after`     | This event will be fired after search search terms gets deleted   | `$id`                     |
-| `marketing.search_seo.url_rewrites.create.before`    | This event will be fired before search url rewrites gets created  | -                         |
-| `marketing.search_seo.url_rewrites.create.after`     | This event will be fired after search url rewrites gets created   | `$urlRewrite`             |
-| `marketing.search_seo.url_rewrites.update.before`    | This event will be fired before search url rewrites gets updated  | `$id`                     |
-| `marketing.search_seo.url_rewrites.update.after`     | This event will be fired after search url rewrites gets updated   | `$urlRewrite`             |
-| `marketing.search_seo.url_rewrites.delete.before`    | This event will be fired before search url rewrites gets deleted  | `$id`                     |
-| `marketing.search_seo.url_rewrites.delete.after`     | This event will be fired after search url rewrites gets deleted   | `$id`                     |
-| `marketing.campaigns.create.before`                  | This event will be fired before campaigns gets created.           | -                         |
-| `marketing.campaigns.create.after`                   | This event will be fired after campaigns gets created.            | `$campaign`               |
-| `marketing.campaigns.update.before`                  | This event will be fired before campaigns gets updated.           | `$id`                     |
-| `marketing.campaigns.update.after`                   | This event will be fired after campaigns gets updated.            | `$campaign`               |
-| `marketing.campaigns.delete.before`                  | This event will be fired before campaigns gets deleted.           | `$id`                     |
-| `marketing.campaigns.delete.after`                   | This event will be fired after campaigns gets deleted.            | `$id`                     |
-| `marketing.events.create.before`                     | This event will be fired before marketing event gets created.     | -                         |
-| `marketing.events.create.after`                      | This event will be fired after marketing event gets created.      | `$event`                  |
-| `marketing.events.update.before`                     | This event will be fired before marketing event gets updated.     | `$id`                     |
-| `marketing.events.update.after`                      | This event will be fired after marketing event gets updated.      | `$event`                  |
-| `marketing.events.delete.before`                     | This event will be fired before marketing event gets deleted.     | `$id`                     |
-| `marketing.events.delete.after`                      | This event will be fired after marketing event gets deleted.      | `$id`                     |
-| `marketing.templates.create.before`                  | This event will be fired before templates gets created.           | -                         |
-| `marketing.templates.create.after`                   | This event will be fired after templates gets created.            | ` $template`              |
-| `marketing.templates.update.before`                  | This event will be fired before templates gets updated.           | `$id`                     |
-| `marketing.templates.update.after`                   | This event will be fired after templates gets updated.            | `$template`               |
-| `marketing.templates.delete.before`                  | This event will be fired before templates gets deleted.           | `$id`                     |
-| `marketing.templates.delete.after`                   | This event will be fired after templates gets deleted.            | `$id`                     |
-| `promotions.cart_rule.create.before`                 | This event will be fired before cart rule gets created.           | -                         |
-| `promotions.cart_rule.create.after`                  | This event will be fired after cart rule gets created.            | `$cartRule`               |
-| `promotions.cart_rule.update.before`                 | This event will be fired before cart rule gets updated.           | `$id`                     |
-| `promotions.cart_rule.update.after`                  | This event will be fired after cart rule gets updated.            | `$cartRule`               |
-| `promotions.cart_rule.delete.before`                 | This event will be fired before cart rule gets deleted.           | `$id`                     |
-| `promotions.cart_rule.delete.after`                  | This event will be fired after cart rule gets deleted.            | `$id`                     |
-| `promotions.catalog_rule.create.before`              | This event will be fired before catalog rule gets created.        | -                         |
-| `promotions.catalog_rule.create.after`               | This event will be fired after catalog rule gets created.         | `$catalogRule`            |
-| `promotions.catalog_rule.update.before`              | This event will be fired before catalog rule gets updated.        | `$id`                     |
-| `promotions.catalog_rule.update.after`               | This event will be fired after catalog rule gets updated.         | `$catalogRule`            |
-| `promotions.catalog_rule.delete.before`              | This event will be fired before catalog rule gets deleted.        | `$id`                     |
-| `promotions.catalog_rule.delete.after`               | This event will be fired after catalog rule gets deleted.         | `$id`                     |
-| `promotions.catalog_rule.reindex.before`           | This event will be fired before catalog rule prices are reindexed. | `[$productIds]`           |
-| `promotions.catalog_rule.reindex.after`            | This event will be fired after catalog rule prices are reindexed. | `[$productIds]`           |
-| `cart_rules.coupons.delete.before`                   | This event will be fired before cart rule coupon deleted.         | `$coupon`                 |
-| `cart_rules.coupons.delete.after`                    | This event will be fired after cart rule coupon deleted.          | `$coupon`                 |
-| `sales.order.comment.create.before`                  | This event will be fired before order comment gets created.       | -                         |
-| `sales.order.comment.create.after`                   | This event will be fired after order comment gets created.        | `$comment`                |
-| `core.channel.create.before`                         | This event will be fired before channel gets created.             | -                         |
-| `core.channel.create.after`                          | This event will be fired after channel gets created.              | `$channel`                |
-| `core.channel.update.before`                         | This event will be fired before channel gets updated.             | `$id`                     |
-| `core.channel.update.after`                          | This event will be fired after channel gets updated.              | `$channel`                |
-| `core.channel.delete.before`                         | This event will be fired before channel gets deleted.             | `$id`                     |
-| `core.channel.delete.after`                          | This event will be fired after channel gets deleted.              | `$id`                     |
-| `core.exchange_rate.create.before`                   | This event will be fired before exchange rate gets created.       | -                         |
-| `core.exchange_rate.create.after`                    | This event will be fired after exchange rate gets created.        | `$exchangeRate`           |
-| `core.exchange_rate.update.before`                   | This event will be fired before exchange rate gets updated.       | `request()->id`           |
-| `core.exchange_rate.update.after`                    | This event will be fired after exchange rate gets updated.        | `$exchangeRate`           |
-| `core.exchange_rate.delete.before`                   | This event will be fired before exchange rate gets deleted.       | `$id`                     |
-| `core.exchange_rate.delete.after`                    | This event will be fired after exchange rate gets deleted.        | `$id`                     |
-| `inventory.inventory_source.create.before`           | This event will be fired before inventory source gets created.    | -                         |
-| `inventory.inventory_source.create.after`            | This event will be fired after inventory source gets created.     | `$inventorySource`        |
-| `inventory.inventory_source.update.before`           | This event will be fired before inventory source gets updated.    | `$id`                     |
-| `inventory.inventory_source.update.after`            | This event will be fired after inventory source gets updated.     | `$inventorySource`        |
-| `inventory.inventory_source.delete.before`           | This event will be fired before inventory source gets deleted.    | `$id`                     |
-| `inventory.inventory_source.delete.after`            | This event will be fired after inventory source gets deleted.     | `$id`                     |
-| `user.role.create.before`                            | This event will be fired before role gets created.                | -                         |
-| `user.role.create.after`                             | This event will be fired after role gets created.                 | `$role`                   |
-| `user.role.update.before`                            | This event will be fired before role gets updated.                | `$id`                     |
-| `user.role.update.after`                             | This event will be fired after role gets updated.                 | `$role`                   |
-| `user.role.delete.before`                            | This event will be fired before role gets deleted.                | `$id`                     |
-| `user.role.delete.after`                             | This event will be fired after role gets deleted.                 | `$id`                     |
-| `section.create.before`                              | This event will be fired before a section gets created.           | -                         |
-| `section.create.after`                               | This event will be fired after a section gets created.            | `$section`                |
-| `section.update.before`                              | This event will be fired before a section gets updated.           | `$id`                     |
-| `section.update.after`                               | This event will be fired after a section gets updated.            | `$section`                |
-| `appearance.theme.activate.before`                 | This event will be fired before a theme is activated on a channel. | `$channelId`              |
-| `appearance.theme.activate.after`                  | This event will be fired after a theme is activated on a channel. | `$channel`                |
-| `section.delete.before`                              | This event will be fired before a section gets deleted.           | `$id`                     |
-| `section.delete.after`                               | This event will be fired after a section gets deleted.            | `$id`                     |
-| `section.draft.save.before`                          | This event will be fired before a section draft gets saved.       | `$id`                     |
-| `section.draft.save.after`                           | This event will be fired after a section draft gets saved.        | `$section`                |
-| `section.draft.discard.before`                       | This event will be fired before a section draft gets discarded.   | `$id`                     |
-| `section.draft.discard.after`                        | This event will be fired after a section draft gets discarded.    | `$section`                |
-| `section.reorder.before`                             | This event will be fired before sections get reordered.           | `$sectionIds`             |
-| `section.reorder.after`                              | This event will be fired after sections get reordered.            | `$sections`               |
-| `section.media.upload.before`                        | This event will be fired before section media gets uploaded.      | `$id`                     |
-| `section.media.upload.after`                         | This event will be fired after section media gets uploaded.       | `$media`                  |
-| `user.admin.create.before`                           | This event will be fired before admin gets created.               | -                         |
-| `user.admin.create.after`                            | This event will be fired after admin gets created.                | `$admin`                  |
-| `user.admin.update.before`                           | This event will be fired before admin gets updated.               | `$id`                     |
-| `user.admin.update.after`                            | This event will be fired after admin gets updated.                | `$admin`                  |
-| `admin.password.update.after`                        | This event will be fired after admin password gets updated.       | `$admin`                  |
-| `user.admin.delete.before`                           | This event will be fired before admin gets deleted.               | `$id`                     |
-| `user.admin.delete.after`                            | This event will be fired after admin gets deleted.                | `$id`                     |
-| `tax.category.create.before`                         | This event will be fired before tax category gets created.        | -                         |
-| `tax.category.create.after`                          | This event will be fired after tax category gets created.         | `$taxCategory`            |
-| `tax.category.update.before`                         | This event will be fired before tax category gets updated.        | `$id`                     |
-| `tax.category.update.after`                          | This event will be fired after tax category gets updated.         | `$taxCategory`            |
-| `tax.category.delete.before`                         | This event will be fired before tax category gets deleted.        | `$id`                     |
-| `tax.category.delete.after`                          | This event will be fired after tax category gets deleted.         | `$id`                     |
-| `tax.rate.create.before`                             | This event will be fired before tax rate gets created.            | -                         |
-| `tax.rate.create.after`                              | This event will be fired after tax rate gets created.             | `$taxRate`                |
-| `tax.rate.update.before`                             | This event will be fired before tax rate gets updated.            | `$id`                     |
-| `tax.rate.update.after`                              | This event will be fired after tax rate gets updated.             | `$taxRate`                |
-| `tax.rate.delete.before`                             | This event will be fired before tax rate gets deleted.            | `$id`                     |
-| `tax.rate.delete.after`                              | This event will be fired after tax rate gets deleted.             | `$id`                     |
-| `checkout.cart.delete.before`                        | This event will be fired before cart item gets deleted.           | `$itemId`                 |
-| `checkout.cart.delete.after`                         | This event will be fired after cart item gets deleted.            | `$itemId`                 |
-| `checkout.cart.add.before`                           | This event will be fired before cart item gets created.           | `$product->id`            |
-| `checkout.cart.add.after`                            | This event will be fired after cart item gets created.            | `$this->cart`             |
-| `checkout.cart.update.before`                        | This event will be fired before cart item gets updated.           | `$item`                   |
-| `checkout.cart.update.after`                         | This event will be fired after cart item gets updated.            | `$item`                   |
-| `checkout.cart.collect.totals.before`                | This event will be fired before collecting cart totals.           | `$this->cart`             |
-| `checkout.cart.collect.totals.after`                 | This event will be fired after collecting cart totals.            | `$this->cart`             |
-| `checkout.cart.calculate.items.tax.before`           | This event will be fired before calculating cart items tax.       | `$this->cart`             |
-| `checkout.cart.calculate.items.tax.after`            | This event will be fired after calculating cart items tax.        | `$this->cart`             |
-| `checkout.cart.calculate.shipping.tax.before`        | This event will be fired before calculating shipping tax.         | `$cart`                   |
-| `checkout.cart.calculate.shipping.tax.after`         | This event will be fired after calculating shipping tax.          | `$cart`                   |
-| `core.configuration.save.before`                     | This event will be fired before core configuration gets saved.    | -                         |
-| `core.configuration.save.after`                      | This event will be fired after core configuration gets saved.     | -                         |
-| `core.currency.create.before`                        | This event will be fired before currency gets created.            | -                         |
-| `core.currency.create.after`                         | This event will be fired after currency gets created.             | `$currency`               |
-| `core.currency.update.before`                        | This event will be fired before currency gets updated.            | `$id`                     |
-| `core.currency.update.after`                         | This event will be fired after currency gets updated.             | `$currency`               |
-| `core.currency.delete.before`                        | This event will be fired before currency gets deleted.            | `$id`                     |
-| `core.currency.delete.after`                         | This event will be fired after currency gets deleted.             | `$id`                     |
-| `core.locale.create.before`                          | This event will be fired before locale gets created.              | -                         |
-| `core.locale.create.after`                           | This event will be fired after locale gets created.               | `$locale`                 |
-| `core.locale.update.before`                          | This event will be fired before locale gets updated.              | `$id`                     |
-| `core.locale.update.after`                           | This event will be fired after locale gets updated.               | `$locale`                 |
-| `core.locale.delete.before`                          | This event will be fired before locale gets deleted.              | `$id`                     |
-| `core.locale.delete.after`                           | This event will be fired after locale gets deleted.               | `$id`                     |
-| `sales.invoice.save.before`                          | This event will be fired before invoice gets saved.               | `$data`                   |
-| `sales.invoice.save.after`                           | This event will be fired after invoice gets saved.                | `$invoice`                |
-| `checkout.order.save.before`                         | This event will be fired before order gets saved.                 | `[$data]`                 |
-| `checkout.order.save.after`                          | This event will be fired after order gets saved.                  | `$order`                  |
-| `checkout.order.orderitem.save.before`               | This event will be fired before order item gets saved.            | `$item`                   |
-| `checkout.order.orderitem.save.after`                | This event will be fired after order item gets saved.             | `$orderItem`              |
-| `sales.order.cancel.before`                          | This event will be fired before order gets canceled.              | `$order`                  |
-| `sales.order.cancel.after`                           | This event will be fired after order gets canceled.               | `$order`                  |
-| `sales.order.update-status.before`                   | This event will be fired before order status gets updated.        | `$order`                  |
-| `sales.order.update-status.after`                    | This event will be fired after order status gets updated.         | `$order`                  |
-| `sales.refund.save.before`                           | This event will be fired before order refund gets saved.          | `$data`                   |
-| `sales.refund.save.after`                            | This event will be fired after order refund gets saved.           | `$refund`                 |
-| `sales.shipment.save.before`                         | This event will be fired before shipment gets saved.              | `$data`                   |
-| `sales.shipment.save.after`                          | This event will be fired after shipment gets saved.               | `$shipment`               |
-| `sales.invoice.send_duplicate_email`                 | This event will be fired when duplicate invoice email is sent.    | `['invoice' => $invoice, 'duplicate_invoice_email' => $email]` |
-| `sales.rma.rma-status.create.before`                | This event will be fired before RMA status gets created.          | -                         |
-| `sales.rma.rma-status.create.after`                 | This event will be fired after RMA status gets created.           | `$rmaStatus`              |
-| `sales.rma.rma-status.update.before`                | This event will be fired before RMA status gets updated.          | `$id`                     |
-| `sales.rma.rma-status.update.after`                 | This event will be fired after RMA status gets updated.           | `$rmaStatus`              |
-| `sales.rma.rma-status.delete.before`                | This event will be fired before RMA status gets deleted.          | `$id`                     |
-| `sales.rma.rma-status.delete.after`                 | This event will be fired after RMA status gets deleted.           | `$id`                     |
-| `sales.rma.reason.create.before`                    | This event will be fired before RMA reason gets created.          | -                         |
-| `sales.rma.reason.create.after`                     | This event will be fired after RMA reason gets created.           | `$rmaReason`              |
-| `sales.rma.reason.update.before`                    | This event will be fired before RMA reason gets updated.          | `$id`                     |
-| `sales.rma.reason.update.after`                     | This event will be fired after RMA reason gets updated.           | `$rmaReason`              |
-| `sales.rma.reason.delete.before`                    | This event will be fired before RMA reason gets deleted.          | `$id`                     |
-| `sales.rma.reason.delete.after`                     | This event will be fired after RMA reason gets deleted.           | `$id`                     |
-| `sales.rma.request.create.before`                   | This event will be fired before RMA request gets created (admin). | `$data`                   |
-| `sales.rma.request.create.after`                    | This event will be fired after RMA request gets created (admin).  | `$rma`                    |
-| `sales.rma.rules.create.before`                     | This event will be fired before RMA rule gets created.            | -                         |
-| `sales.rma.rules.create.after`                      | This event will be fired after RMA rule gets created.             | `$rmaRule`                |
-| `sales.rma.rules.update.before`                     | This event will be fired before RMA rule gets updated.            | `$id`                     |
-| `sales.rma.rules.update.after`                      | This event will be fired after RMA rule gets updated.             | `$rmaRule`                |
-| `sales.rma.rules.delete.before`                     | This event will be fired before RMA rule gets deleted.            | `$id`                     |
-| `sales.rma.rules.delete.after`                      | This event will be fired after RMA rule gets deleted.             | `$id`                     |
-| `sales.rma.custom-field.create.before`              | This event will be fired before RMA custom field gets created.    | -                         |
-| `sales.rma.custom-field.create.after`               | This event will be fired after RMA custom field gets created.     | `$rmaCustomField`         |
-| `sales.rma.custom-field.update.before`              | This event will be fired before RMA custom field gets updated.    | `$id`                     |
-| `sales.rma.custom-field.update.after`               | This event will be fired after RMA custom field gets updated.     | `$rmaCustomField`         |
-| `sales.rma.custom-field.delete.before`              | This event will be fired before RMA custom field gets deleted.    | `$id`                     |
-| `sales.rma.custom-field.delete.after`               | This event will be fired after RMA custom field gets deleted.     | `$id`                     |
-| `datagrid.saved_filter.create.before`                | This event will be fired before saved filter gets created.        | -                         |
-| `datagrid.saved_filter.create.after`                 | This event will be fired after saved filter gets created.         | `$savedFilter`            |
-| `datagrid.saved_filter.update.before`                | This event will be fired before saved filter gets updated.        | `$id`                     |
-| `datagrid.saved_filter.update.after`                 | This event will be fired after saved filter gets updated.         | `$updatedFilter`          |
-| `datagrid.saved_filter.delete.before`                | This event will be fired before saved filter gets deleted.        | `$id`                     |
-| `datagrid.saved_filter.delete.after`                 | This event will be fired after saved filter gets deleted.         | `$id`                     |
-| `data_transfer.imports.create.before`                | This event will be fired before import gets created.              | -                         |
-| `data_transfer.imports.create.after`                 | This event will be fired after import gets created.               | `$import`                 |
-| `data_transfer.imports.update.before`                | This event will be fired before import gets updated.              | -                         |
-| `data_transfer.imports.update.after`                 | This event will be fired after import gets updated.               | `$import`                 |
-| `data_transfer.imports.validate.before`              | This event will be fired before import validation starts.         | `$import`                 |
-| `data_transfer.imports.validate.after`               | This event will be fired after import validation completes.       | `$import`                 |
-| `data_transfer.imports.started`                      | This event will be fired when import process starts.              | `$import`                 |
-| `data_transfer.imports.linking`                      | This event will be fired when import linking phase starts.        | `$import`                 |
-| `data_transfer.imports.indexing`                      | This event will be fired when import indexing phase starts.       | `$import`                 |
-| `data_transfer.imports.completed`                    | This event will be fired when import process completes.           | `$import`                 |
-| `data_transfer.imports.batch.import.before`          | This event will be fired before batch import processing.          | `$batch`                  |
-| `data_transfer.imports.batch.import.after`           | This event will be fired after batch import processing.           | `$batch`                  |
-| `data_transfer.imports.batch.linking.before`         | This event will be fired before batch linking processing.         | `$batch`                  |
-| `data_transfer.imports.batch.linking.after`          | This event will be fired after batch linking processing.          | `$batch`                  |
-| `data_transfer.imports.batch.indexing.before`        | This event will be fired before batch indexing processing.        | `$batch`                  |
-| `data_transfer.imports.batch.indexing.after`         | This event will be fired after batch indexing processing.         | `$batch`                  |
-| `booking_product.booking.save.before`                | This event will be fired before booking gets saved.               | `$item`                   |
-| `booking_product.booking.save.after`                 | This event will be fired after booking gets saved.                | `$booking`                |
-| `booking_product.booking.event-ticket.save.before`   | This event will be fired before event ticket gets saved.          | `['data' => $data, 'bookingProduct' => $bookingProduct]` |
-| `booking_product.booking.event-ticket.save.after`    | This event will be fired after event ticket gets saved.           | `['tickets' => $savedTickets]` |
-| `bagisto.installed`                                  | This event will be fired after Bagisto installation completes.    | -                         |
-| `checkout.load.index`                                | This event will be fired on checkout page load.                   | -                         |
+### Catalog
+
+Dispatched by the admin catalog controllers in `packages/Webkul/Admin/src/Http/Controllers/Catalog` and by the price indexer. `catalog.product.update.after` is also fired by `InvoiceItemRepository` and `ShipmentItemRepository` after they change a product's stock.
+
+| Event | Fired | Listener receives |
+|---|---|---|
+| `catalog.attribute.create.after` | After an attribute is created | the attribute |
+| `catalog.attribute.create.before` | Before an attribute is created | nothing |
+| `catalog.attribute.delete.after` | After an attribute is deleted | the id |
+| `catalog.attribute.delete.before` | Before an attribute is deleted | the id |
+| `catalog.attribute.update.after` | After an attribute is updated | the attribute |
+| `catalog.attribute.update.before` | Before an attribute is updated | the id |
+| `catalog.attribute_family.create.after` | After an attribute family is created | the attribute family |
+| `catalog.attribute_family.create.before` | Before an attribute family is created | nothing |
+| `catalog.attribute_family.delete.after` | After an attribute family is deleted | the id |
+| `catalog.attribute_family.delete.before` | Before an attribute family is deleted | the id |
+| `catalog.attribute_family.update.after` | After an attribute family is updated | the attribute family |
+| `catalog.attribute_family.update.before` | Before an attribute family is updated | the id |
+| `catalog.categories.mass-update.after` | After each category in a mass update is changed | the category |
+| `catalog.categories.mass-update.before` | Before each category in a mass update is changed | the category id |
+| `catalog.category.create.after` | After a category is created | the category |
+| `catalog.category.create.before` | Before a category is created | nothing |
+| `catalog.category.delete.after` | After a category is deleted | the id |
+| `catalog.category.delete.before` | Before a category is deleted | the id |
+| `catalog.category.update.after` | After a category is updated | the category |
+| `catalog.category.update.before` | Before a category is updated | the id |
+| `catalog.product.create.after` | After a product is created | the product |
+| `catalog.product.create.before` | Before a product is created | nothing |
+| `catalog.product.delete.after` | After a product is deleted | the id |
+| `catalog.product.delete.before` | Before a product is deleted | the id |
+| `catalog.product.price.reindex.after` | After the price indexer runs from `indexer:index` | the reindexed product ids array; nothing after a full reindex |
+| `catalog.product.price.reindex.before` | Before the price indexer runs from `indexer:index` | nothing |
+| `catalog.product.update.after` | After a product is updated | the product |
+| `catalog.product.update.before` | Before a product is updated | the id |
+| `products.datagrid.sync` | After a product mass action, to refresh the product grid | `true` |
+
+### Customers
+
+Dispatched by the admin customer controllers, the storefront account, address, wishlist, compare, review and subscription controllers, the WebMCP controller, `Webkul\Checkout\Cart` when a cart item moves to the wishlist, and the social login controller for `customer.after.login`.
+
+| Event | Fired | Listener receives |
+|---|---|---|
+| `customer.addresses.create.after` | After a customer address is created | the address |
+| `customer.addresses.create.before` | Before a customer address is created | nothing |
+| `customer.addresses.delete.after` | After a customer address is deleted | the id |
+| `customer.addresses.delete.before` | Before a customer address is deleted | the id |
+| `customer.addresses.update.after` | After a customer address is updated | the address |
+| `customer.addresses.update.before` | Before a customer address is updated | the id; nothing from the storefront API |
+| `customer.after.login` | After a customer signs in | the customer |
+| `customer.after.logout` | After a customer signs out | the customer id |
+| `customer.compare.create.after` | After a product is added to the compare list | the compare item |
+| `customer.compare.create.before` | Before a product is added to the compare list | nothing |
+| `customer.compare.delete-all.after` | After the compare list is cleared | nothing |
+| `customer.compare.delete-all.before` | Before the compare list is cleared | nothing |
+| `customer.compare.delete.after` | After a product is removed from the compare list | the product id |
+| `customer.compare.delete.before` | Before a product is removed from the compare list | the product id |
+| `customer.create.after` | After an admin creates a customer or a customer registers on the storefront | the customer |
+| `customer.create.before` | Before an admin creates a customer | nothing |
+| `customer.customer_group.create.after` | After a customer group is created | the customer group |
+| `customer.customer_group.create.before` | Before a customer group is created | nothing |
+| `customer.customer_group.delete.after` | After a customer group is deleted | the id |
+| `customer.customer_group.delete.before` | Before a customer group is deleted | the id |
+| `customer.customer_group.update.after` | After a customer group is updated | the customer group |
+| `customer.customer_group.update.before` | Before a customer group is updated | the id |
+| `customer.delete.after` | After a customer is deleted | the customer |
+| `customer.delete.before` | Before a customer is deleted | the customer |
+| `customer.note.create.after` | After a customer note is created | the customer note |
+| `customer.note.create.before` | Before a customer note is created | the customer id |
+| `customer.password.update.after` | After a customer changes or resets their password | the customer |
+| `customer.registration.after` | After a customer registers, or an admin creates one | the customer |
+| `customer.registration.before` | Before a customer registers, or an admin creates one | nothing |
+| `customer.review.create.after` | After a product review is created | the review |
+| `customer.review.create.before` | Before a product review is created | the product id |
+| `customer.review.delete.after` | After a product review is deleted | the id |
+| `customer.review.delete.before` | Before a product review is deleted | the id |
+| `customer.review.update.after` | After a product review is updated | the review |
+| `customer.review.update.before` | Before a product review is updated | the id |
+| `customer.subscription.after` | After a newsletter subscription is saved | the subscription |
+| `customer.subscription.before` | Before a newsletter subscription is saved | nothing |
+| `customer.update.after` | After a customer is updated | the customer |
+| `customer.update.before` | Before a customer is updated | the id; nothing from the storefront account page |
+| `customer.wishlist.create.after` | After a product is added to the wishlist | the wishlist |
+| `customer.wishlist.create.before` | Before a product is added to the wishlist | the product id |
+| `customer.wishlist.delete-all.after` | After the wishlist is cleared | nothing |
+| `customer.wishlist.delete-all.before` | Before the wishlist is cleared | nothing |
+| `customer.wishlist.delete.after` | After a wishlist item is removed | the wishlist item id |
+| `customer.wishlist.delete.before` | Before a wishlist item is removed | the wishlist item id |
+| `customer.wishlist.move-to-cart.after` | After a wishlist item is moved to the cart | the wishlist item id |
+| `customer.wishlist.move-to-cart.before` | Before a wishlist item is moved to the cart | the wishlist item id |
+| `customer.wishlist.update.after` | After a cart item moved to the wishlist updates an existing wishlist item | the wishlist item |
+| `customer.wishlist.update.before` | Before a cart item moved to the wishlist updates an existing wishlist item | the product id |
+
+### GDPR Requests
+
+Dispatched by the storefront and admin `GDPRController`.
+
+| Event | Fired | Listener receives |
+|---|---|---|
+| `customer.account.gdpr-request.create.after` | After a customer submits a GDPR request | the GDPR request |
+| `customer.account.gdpr-request.create.before` | Before a customer submits a GDPR request | nothing |
+| `customer.account.gdpr-request.update.after` | After a GDPR request is revoked by the customer or updated by an admin | the GDPR request |
+| `customer.account.gdpr-request.update.before` | Before a customer revokes a GDPR request | nothing |
+| `customer.gdpr-request.create.after` | After a customer submits a GDPR request (fired right after the one above) | the GDPR request |
+| `customer.gdpr-request.update.after` | After a customer revokes a GDPR request | the GDPR request |
+| `customer.gdpr-request.update.before` | Before an admin updates a GDPR request | nothing |
+
+### Cart and Checkout
+
+Dispatched by `Webkul\Checkout\Cart`, `Webkul\Sales\Repositories\OrderRepository` and the storefront `OnepageController`.
+
+| Event | Fired | Listener receives |
+|---|---|---|
+| `checkout.cart.add.after` | After a product is added to the cart | the cart |
+| `checkout.cart.add.before` | Before a product is added to the cart | the product id |
+| `checkout.cart.calculate.items.tax.after` | After tax is calculated on the cart items | the cart |
+| `checkout.cart.calculate.items.tax.before` | Before tax is calculated on the cart items | the cart |
+| `checkout.cart.calculate.shipping.tax.after` | After tax is calculated on shipping | the cart |
+| `checkout.cart.calculate.shipping.tax.before` | Before tax is calculated on shipping | the cart |
+| `checkout.cart.collect.totals.after` | After the cart totals are collected | the cart |
+| `checkout.cart.collect.totals.before` | Before the cart totals are collected | the cart |
+| `checkout.cart.delete.after` | After a cart item is removed | the cart item id |
+| `checkout.cart.delete.before` | Before a cart item is removed | the cart item id |
+| `checkout.cart.update.after` | After a cart item quantity is updated | the cart item |
+| `checkout.cart.update.before` | Before a cart item quantity is updated | the cart item |
+| `checkout.load.index` | When the one-page checkout page loads | nothing |
+| `checkout.order.orderitem.save.after` | After an order item is saved | the order item |
+| `checkout.order.orderitem.save.before` | Before an order item is saved | the item data array, one argument per value |
+| `checkout.order.save.after` | After an order and its items are created, before the transaction commits | the order |
+| `checkout.order.save.before` | Before an order is created, inside the order transaction | the order data array |
+
+### Sales
+
+The `save`, `cancel` and `update-status` events are dispatched by the Sales repositories, so they fire wherever an order, invoice, shipment or refund goes through them. The comment and duplicate email events come from the admin controllers, and the RMA `RequestController` also fires `sales.order.cancel.after`.
+
+| Event | Fired | Listener receives |
+|---|---|---|
+| `sales.invoice.save.after` | After an invoice is saved | the invoice |
+| `sales.invoice.save.before` | Before an invoice is saved | the request data array, one argument per value |
+| `sales.invoice.send_duplicate_email` | When an admin sends an invoice email again | the invoice, then the email address |
+| `sales.order.cancel.after` | After an order is canceled | the order |
+| `sales.order.cancel.before` | Before an order is canceled | the order |
+| `sales.order.comment.create.after` | After an admin adds an order comment | the order comment |
+| `sales.order.comment.create.before` | Before an admin adds an order comment | nothing |
+| `sales.order.update-status.after` | After an order status is recalculated | the order |
+| `sales.order.update-status.before` | Before an order status is recalculated | the order |
+| `sales.refund.save.after` | After a refund is saved | the refund |
+| `sales.refund.save.before` | Before a refund is saved | the request data array, one argument per value |
+| `sales.shipment.save.after` | After a shipment is saved | the shipment |
+| `sales.shipment.save.before` | Before a shipment is saved | the request data array, one argument per value |
+
+### Returns (RMA)
+
+Dispatched by the admin controllers in `packages/Webkul/Admin/src/Http/Controllers/Sales/RMA` and the storefront `RMAController`.
+
+| Event | Fired | Listener receives |
+|---|---|---|
+| `customer.rma.request.create.after` | After a customer creates a return request | the return request |
+| `customer.rma.request.create.before` | Before a customer creates a return request | the request data array, one argument per value |
+| `customer.rma.request.update.after` | After a customer updates a return request | the return request |
+| `customer.rma.request.update.before` | Before a customer updates a return request (reopen, cancel or close) | the id |
+| `sales.rma.custom-field.create.after` | After an RMA custom field is created | the RMA custom field |
+| `sales.rma.custom-field.create.before` | Before an RMA custom field is created | nothing |
+| `sales.rma.custom-field.delete.after` | After an RMA custom field is deleted | the id |
+| `sales.rma.custom-field.delete.before` | Before an RMA custom field is deleted | the id |
+| `sales.rma.custom-field.update.after` | After an RMA custom field is updated | the RMA custom field |
+| `sales.rma.custom-field.update.before` | Before an RMA custom field is updated | the id |
+| `sales.rma.reason.create.after` | After an RMA reason is created | the RMA reason |
+| `sales.rma.reason.create.before` | Before an RMA reason is created | nothing |
+| `sales.rma.reason.delete.after` | After an RMA reason is deleted | the id |
+| `sales.rma.reason.delete.before` | Before an RMA reason is deleted | the id |
+| `sales.rma.reason.update.after` | After an RMA reason is updated | the RMA reason |
+| `sales.rma.reason.update.before` | Before an RMA reason is updated | the id |
+| `sales.rma.request.create.after` | After an admin creates a return request | the return request |
+| `sales.rma.request.create.before` | Before an admin creates a return request | the request data array, one argument per value |
+| `sales.rma.rma-status.create.after` | After an RMA status is created | the RMA status |
+| `sales.rma.rma-status.create.before` | Before an RMA status is created | nothing |
+| `sales.rma.rma-status.delete.after` | After an RMA status is deleted | the id |
+| `sales.rma.rma-status.delete.before` | Before an RMA status is deleted | the id |
+| `sales.rma.rma-status.update.after` | After an RMA status is updated | the RMA status |
+| `sales.rma.rma-status.update.before` | Before an RMA status is updated | the id |
+| `sales.rma.rules.create.after` | After an RMA rule is created | the RMA rule |
+| `sales.rma.rules.create.before` | Before an RMA rule is created | nothing |
+| `sales.rma.rules.delete.after` | After an RMA rule is deleted | the id |
+| `sales.rma.rules.delete.before` | Before an RMA rule is deleted | the id |
+| `sales.rma.rules.update.after` | After an RMA rule is updated | the RMA rule |
+| `sales.rma.rules.update.before` | Before an RMA rule is updated | the id |
+
+### Promotions
+
+Dispatched by the admin promotion controllers; the `reindex` pair by the `UpdateCreateCatalogRuleIndex` and `DeleteCatalogRuleIndex` jobs.
+
+| Event | Fired | Listener receives |
+|---|---|---|
+| `cart_rules.coupons.delete.after` | After a cart rule coupon is deleted | the coupon |
+| `cart_rules.coupons.delete.before` | Before a cart rule coupon is deleted | the coupon |
+| `promotions.cart_rule.create.after` | After a cart rule is created | the cart rule |
+| `promotions.cart_rule.create.before` | Before a cart rule is created | nothing |
+| `promotions.cart_rule.delete.after` | After a cart rule is deleted | the id |
+| `promotions.cart_rule.delete.before` | Before a cart rule is deleted | the id |
+| `promotions.cart_rule.update.after` | After a cart rule is updated | the cart rule |
+| `promotions.cart_rule.update.before` | Before a cart rule is updated | the id |
+| `promotions.catalog_rule.create.after` | After a catalog rule is created | the catalog rule |
+| `promotions.catalog_rule.create.before` | Before a catalog rule is created | nothing |
+| `promotions.catalog_rule.delete.after` | After a catalog rule is deleted | the id |
+| `promotions.catalog_rule.delete.before` | Before a catalog rule is deleted | the id |
+| `promotions.catalog_rule.reindex.after` | After prices are reindexed for a saved or deleted catalog rule | the product ids array |
+| `promotions.catalog_rule.reindex.before` | Before prices are reindexed for a saved or deleted catalog rule | the product ids array |
+| `promotions.catalog_rule.update.after` | After a catalog rule is updated | the catalog rule |
+| `promotions.catalog_rule.update.before` | Before a catalog rule is updated | the id |
+
+### Marketing and SEO
+
+Dispatched by the admin marketing controllers. The URL rewrite `create` and `delete` events are also fired by `Webkul\Marketing\Listeners\Category`, `Product` and `Page`, which maintain the rewrites of categories, products and CMS pages.
+
+| Event | Fired | Listener receives |
+|---|---|---|
+| `marketing.campaigns.create.after` | After a campaign is created | the campaign |
+| `marketing.campaigns.create.before` | Before a campaign is created | nothing |
+| `marketing.campaigns.delete.after` | After a campaign is deleted | the id |
+| `marketing.campaigns.delete.before` | Before a campaign is deleted | the id |
+| `marketing.campaigns.update.after` | After a campaign is updated | the campaign |
+| `marketing.campaigns.update.before` | Before a campaign is updated | the id |
+| `marketing.events.create.after` | After a marketing event is created | the marketing event |
+| `marketing.events.create.before` | Before a marketing event is created | nothing |
+| `marketing.events.delete.after` | After a marketing event is deleted | the id |
+| `marketing.events.delete.before` | Before a marketing event is deleted | the id |
+| `marketing.events.update.after` | After a marketing event is updated | the marketing event |
+| `marketing.events.update.before` | Before a marketing event is updated | the id |
+| `marketing.search_seo.search_synonyms.create.after` | After a search synonym is created | the search synonym |
+| `marketing.search_seo.search_synonyms.create.before` | Before a search synonym is created | nothing |
+| `marketing.search_seo.search_synonyms.delete.after` | After a search synonym is deleted | the id |
+| `marketing.search_seo.search_synonyms.delete.before` | Before a search synonym is deleted | the id |
+| `marketing.search_seo.search_synonyms.update.after` | After a search synonym is updated | the search synonym |
+| `marketing.search_seo.search_synonyms.update.before` | Before a search synonym is updated | the id |
+| `marketing.search_seo.search_terms.create.after` | After a search term is created | the search term |
+| `marketing.search_seo.search_terms.create.before` | Before a search term is created | nothing |
+| `marketing.search_seo.search_terms.delete.after` | After a search term is deleted | the id |
+| `marketing.search_seo.search_terms.delete.before` | Before a search term is deleted | the id |
+| `marketing.search_seo.search_terms.update.after` | After a search term is updated | the search term |
+| `marketing.search_seo.search_terms.update.before` | Before a search term is updated | the id |
+| `marketing.search_seo.sitemap.create.after` | After a sitemap is created | the sitemap |
+| `marketing.search_seo.sitemap.create.before` | Before a sitemap is created | nothing |
+| `marketing.search_seo.sitemap.delete.after` | After a sitemap is deleted | the id |
+| `marketing.search_seo.sitemap.delete.before` | Before a sitemap is deleted | the id |
+| `marketing.search_seo.sitemap.update.after` | After a sitemap is updated | the sitemap |
+| `marketing.search_seo.sitemap.update.before` | Before a sitemap is updated | the id |
+| `marketing.search_seo.url_rewrites.create.after` | After a URL rewrite is created | the URL rewrite |
+| `marketing.search_seo.url_rewrites.create.before` | Before a URL rewrite is created | nothing |
+| `marketing.search_seo.url_rewrites.delete.after` | After a URL rewrite is deleted | the id |
+| `marketing.search_seo.url_rewrites.delete.before` | Before a URL rewrite is deleted | the id |
+| `marketing.search_seo.url_rewrites.update.after` | After a URL rewrite is updated | the URL rewrite |
+| `marketing.search_seo.url_rewrites.update.before` | Before a URL rewrite is updated | the id |
+| `marketing.templates.create.after` | After an email template is created | the email template |
+| `marketing.templates.create.before` | Before an email template is created | nothing |
+| `marketing.templates.delete.after` | After an email template is deleted | the id |
+| `marketing.templates.delete.before` | Before an email template is deleted | the id |
+| `marketing.templates.update.after` | After an email template is updated | the email template |
+| `marketing.templates.update.before` | Before an email template is updated | the id |
+
+### CMS
+
+Dispatched by the admin `PageController`.
+
+| Event | Fired | Listener receives |
+|---|---|---|
+| `cms.page.create.after` | After a CMS page is created | the CMS page |
+| `cms.page.create.before` | Before a CMS page is created | nothing |
+| `cms.page.delete.after` | After a CMS page is deleted | the id |
+| `cms.page.delete.before` | Before a CMS page is deleted | the id |
+| `cms.page.update.after` | After a CMS page is updated | the CMS page |
+| `cms.page.update.before` | Before a CMS page is updated | the id |
+
+### Settings
+
+Dispatched by the admin settings controllers. `core.currency.delete.*` and `core.locale.delete.*` come from `CurrencyRepository` and `LocaleRepository`, `core.configuration.save.*` from `CoreConfigRepository`, and activating a theme also fires `core.channel.update.before` and `.after` from `ThemeController`.
+
+| Event | Fired | Listener receives |
+|---|---|---|
+| `admin.password.update.after` | After an admin password is changed | the admin |
+| `core.channel.create.after` | After a channel is created | the channel |
+| `core.channel.create.before` | Before a channel is created | nothing |
+| `core.channel.delete.after` | After a channel is deleted | the id |
+| `core.channel.delete.before` | Before a channel is deleted | the id |
+| `core.channel.update.after` | After a channel is updated | the channel |
+| `core.channel.update.before` | Before a channel is updated | the id |
+| `core.configuration.save.after` | After configuration values are saved | nothing |
+| `core.configuration.save.before` | Before configuration values are saved | nothing |
+| `core.currency.create.after` | After a currency is created | the currency |
+| `core.currency.create.before` | Before a currency is created | nothing |
+| `core.currency.delete.after` | After a currency is deleted | the id |
+| `core.currency.delete.before` | Before a currency is deleted | the id |
+| `core.currency.update.after` | After a currency is updated | the currency |
+| `core.currency.update.before` | Before a currency is updated | the id |
+| `core.exchange_rate.create.after` | After an exchange rate is created | the exchange rate |
+| `core.exchange_rate.create.before` | Before an exchange rate is created | nothing |
+| `core.exchange_rate.delete.after` | After an exchange rate is deleted | the id |
+| `core.exchange_rate.delete.before` | Before an exchange rate is deleted | the id |
+| `core.exchange_rate.update.after` | After an exchange rate is updated | the exchange rate |
+| `core.exchange_rate.update.before` | Before an exchange rate is updated | the id |
+| `core.locale.create.after` | After a locale is created | the locale |
+| `core.locale.create.before` | Before a locale is created | nothing |
+| `core.locale.delete.after` | After a locale is deleted | the id |
+| `core.locale.delete.before` | Before a locale is deleted | the id |
+| `core.locale.update.after` | After a locale is updated | the locale |
+| `core.locale.update.before` | Before a locale is updated | the id |
+| `inventory.inventory_source.create.after` | After an inventory source is created | the inventory source |
+| `inventory.inventory_source.create.before` | Before an inventory source is created | nothing |
+| `inventory.inventory_source.delete.after` | After an inventory source is deleted | the id |
+| `inventory.inventory_source.delete.before` | Before an inventory source is deleted | the id |
+| `inventory.inventory_source.update.after` | After an inventory source is updated | the inventory source |
+| `inventory.inventory_source.update.before` | Before an inventory source is updated | the id |
+| `tax.category.create.after` | After a tax category is created | the tax category |
+| `tax.category.create.before` | Before a tax category is created | nothing |
+| `tax.category.delete.after` | After a tax category is deleted | the id |
+| `tax.category.delete.before` | Before a tax category is deleted | the id |
+| `tax.category.update.after` | After a tax category is updated | the tax category |
+| `tax.category.update.before` | Before a tax category is updated | the id |
+| `tax.rate.create.after` | After a tax rate is created | the tax rate |
+| `tax.rate.create.before` | Before a tax rate is created | nothing |
+| `tax.rate.delete.after` | After a tax rate is deleted | the id |
+| `tax.rate.delete.before` | Before a tax rate is deleted | the id |
+| `tax.rate.update.after` | After a tax rate is updated | the tax rate |
+| `tax.rate.update.before` | Before a tax rate is updated | the id |
+| `user.admin.create.after` | After an admin user is created | the admin |
+| `user.admin.create.before` | Before an admin user is created | nothing |
+| `user.admin.delete.after` | After an admin user is deleted | the id |
+| `user.admin.delete.before` | Before an admin user is deleted | the id |
+| `user.admin.update.after` | After an admin user is updated | the admin |
+| `user.admin.update.before` | Before an admin user is updated | the id |
+| `user.role.create.after` | After a role is created | the role |
+| `user.role.create.before` | Before a role is created | nothing |
+| `user.role.delete.after` | After a role is deleted | the id |
+| `user.role.delete.before` | Before a role is deleted | the id |
+| `user.role.update.after` | After a role is updated | the role |
+| `user.role.update.before` | Before a role is updated | the id |
+
+### Appearance
+
+Dispatched by the admin `SectionController` and `ThemeController`.
+
+| Event | Fired | Listener receives |
+|---|---|---|
+| `appearance.theme.activate.after` | After a theme is activated on a channel | the channel |
+| `appearance.theme.activate.before` | Before a theme is activated on a channel | the channel id |
+| `section.create.after` | After a theme section is created | the section |
+| `section.create.before` | Before a theme section is created | nothing |
+| `section.delete.after` | After a theme section is deleted | the id |
+| `section.delete.before` | Before a theme section is deleted | the id |
+| `section.draft.discard.after` | After a section draft is discarded | the section |
+| `section.draft.discard.before` | Before a section draft is discarded | the id |
+| `section.draft.save.after` | After a section draft is saved | the section |
+| `section.draft.save.before` | Before a section draft is saved | the id |
+| `section.media.upload.after` | After media is uploaded to a section | the stored path, then the media type (`image` or `video`) |
+| `section.media.upload.before` | Before media is uploaded to a section | the section id |
+| `section.reorder.after` | After sections are reordered | the sections |
+| `section.reorder.before` | Before sections are reordered | each section id as a separate argument |
+| `section.update.after` | After a theme section is updated | the section |
+| `section.update.before` | Before a theme section is updated | the id |
+
+### DataGrid Saved Filters
+
+Dispatched by the admin `SavedFilterController`.
+
+| Event | Fired | Listener receives |
+|---|---|---|
+| `datagrid.saved_filter.create.after` | After a saved filter is created | the saved filter |
+| `datagrid.saved_filter.create.before` | Before a saved filter is created | nothing |
+| `datagrid.saved_filter.delete.after` | After a saved filter is deleted | the id |
+| `datagrid.saved_filter.delete.before` | Before a saved filter is deleted | the id |
+| `datagrid.saved_filter.update.after` | After a saved filter is updated | the saved filter |
+| `datagrid.saved_filter.update.before` | Before a saved filter is updated | the id |
+
+### Data Transfer
+
+`create` and `update` come from the admin `ImportController`, `validate` from `AbstractImporter`, and `started`, `linking`, `indexing` and `completed` from `Webkul\DataTransfer\Helpers\Import`. The batch events are dispatched by each importer's own `importBatch()`, `linkBatch()` and `indexBatch()`, so a custom importer fires them only if it dispatches them itself.
+
+| Event | Fired | Listener receives |
+|---|---|---|
+| `data_transfer.imports.batch.import.after` | After an importer writes a batch | the import batch |
+| `data_transfer.imports.batch.import.before` | Before an importer writes a batch | the import batch |
+| `data_transfer.imports.batch.indexing.after` | After the product importer indexes a batch | the import batch |
+| `data_transfer.imports.batch.indexing.before` | Before the product importer indexes a batch | the import batch |
+| `data_transfer.imports.batch.linking.after` | After the product importer links a batch | the import batch |
+| `data_transfer.imports.batch.linking.before` | Before the product importer links a batch | the import batch |
+| `data_transfer.imports.completed` | When an import completes | the import |
+| `data_transfer.imports.create.after` | After an import is created | the import |
+| `data_transfer.imports.create.before` | Before an import is created | nothing |
+| `data_transfer.imports.indexing` | When an import enters the indexing stage | the import |
+| `data_transfer.imports.linking` | When an import enters the linking stage | the import |
+| `data_transfer.imports.started` | When an import starts processing | the import |
+| `data_transfer.imports.update.after` | After an import is updated | the import |
+| `data_transfer.imports.update.before` | Before an import is updated | nothing |
+| `data_transfer.imports.validate.after` | After an import file is validated | the import |
+| `data_transfer.imports.validate.before` | Before an import file is validated | the import |
+
+### Booking Products
+
+Dispatched by `BookingRepository` and `BookingProductEventTicketRepository`.
+
+| Event | Fired | Listener receives |
+|---|---|---|
+| `booking_product.booking.event-ticket.save.after` | After event tickets are saved on a booking product | the saved tickets |
+| `booking_product.booking.event-ticket.save.before` | Before event tickets are saved on a booking product | the ticket data, then the booking product |
+| `booking_product.booking.save.after` | After a booking is saved | the booking |
+| `booking_product.booking.save.before` | Before a booking is saved | the order item |
+
+### Installer
+
+Dispatched by the `bagisto:install` command and the web installer's `CanInstall` middleware.
+
+| Event | Fired | Listener receives |
+|---|---|---|
+| `bagisto.installed` | After installation completes, from the installer command or web installer | nothing |
+
+## Things to Watch
+
+- **An exception in a listener fails the action.** `checkout.order.save.before` and `checkout.order.save.after` run inside the order's database transaction in `OrderRepository::createOrderIfNotThenRetry()`: an exception rolls the order back, and the repository tries again up to `sales.order_settings.order_creation.max_retry_attempts` times. Core's email listeners catch their own exceptions and `report()` them. A listener that returns `false` also stops the listeners after it, core's included, so return nothing from a listener method.
+- **Change a core listener by binding a subclass.** A listener mapped by class name is resolved from the container each time its event fires, so binding `Webkul\Shop\Listeners\Order` to your subclass in your provider's `register()` changes the customer's order email that its `afterCreated()` sends. `Event::forget()` is no substitute: it removes every listener of the event, other packages' included.
+- **Queue slow work, after commit.** A job dispatched inside a transaction can be picked up before the transaction commits and find no record. `->afterCommit()` holds it back; with `QUEUE_CONNECTION=sync` the job still runs inside the request, once the transaction has committed.
+- **The dispatch site decides whether an event fires, and with what.** The catalog, customer, marketing and settings events are dispatched by the Admin and Shop controllers, so a record written through a repository elsewhere, by an importer, an API package or your own code, fires none of them; the sales events are the main exception, dispatched by the Sales repositories. Each table says where its events come from. The payload differs between sites too: `customer.update.before` carries the customer id from the admin but nothing from the storefront account page, so accept an optional argument where a table lists more than one shape.
+- **A misspelled event name fails silently.** Copy the name from the table and check it with `php artisan event:list`.
+- **Repositories also fire class events.** Every Bagisto repository extends Prettus's `BaseRepository`, whose `create()`, `update()`, `updateOrCreate()`, `delete()` and `deleteWhere()` fire `Prettus\Repository\Events\RepositoryEntityCreated`, `RepositoryEntityUpdated` and `RepositoryEntityDeleted`, unless a repository overrides the method without calling the parent (`ProductRepository::create()` hands the create to the product type). They don't fire for `insert()`, `upsert()` or query builder updates.
+
+## Related Pages
+
+- [Events, Commands and Tests](../package-development/events-commands-and-tests.md#listen-to-events): a listener built step by step in the FAQ package.
+- [View Render Events](./view-render-events.md): adding markup at the events Blade views fire.
+- [Queues, Jobs and Scheduling](./queue-jobs-scheduling.md): running the jobs a listener queues.
+- [Debugging Tips](./debugging.md#events): inspecting which listeners run.

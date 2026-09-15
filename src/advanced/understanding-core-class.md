@@ -1,580 +1,137 @@
-# Understanding Core Class
+# Understanding the Core Class
 
-Bagisto provides a comprehensive helper system built around the Core class to streamline development and provide easy access to essential functionality. These helpers eliminate the need for repetitive code patterns and offer a consistent API for common operations across channels, currencies, locales, and configuration management.
-
-## Introduction
-
-The Core class (`Webkul\Core\Core`) serves as Bagisto's central utility hub, providing a unified interface for accessing system-wide functionality. It acts as a facade that abstracts complex operations into simple, memorable method calls.
-
-### Architecture Overview
-
-The Core class is designed around Bagisto's multi-tenant architecture, where:
-
-- **Channels** represent different storefronts or websites
-- **Locales** handle internationalization and language settings  
-- **Currencies** manage multi-currency operations
-- **Configuration** provides centralized settings management
-
-### Accessing the Core Class
-
-Bagisto provides a global `core()` helper function that returns the Core class instance:
-
-```php
-// Direct access to Core class methods
-$version = core()->version();
-$currentChannel = core()->getCurrentChannel();
-$allCurrencies = core()->getAllCurrencies();
-```
-
-::: tip Global Helper Function
-The `core()` function is globally available throughout your Bagisto application, making it accessible in controllers, views, service providers, and custom classes without any imports.
-:::
-
-### Core Class Benefits
-
-- **Consistency**: Standardized API across all Bagisto operations
-- **Simplicity**: Complex operations reduced to single method calls
-- **Context Awareness**: Automatically handles current channel/locale context
-- **Performance**: Optimized caching and lazy loading for frequently accessed data
-
-### Internal Architecture
-
-The Core class maintains several protected properties for caching and performance:
-
-```php
-protected $currentChannel;    // Cached current channel
-
-protected $defaultChannel;    // Cached default channel
-
-protected $currentCurrency;   // Cached current currency
-
-protected $baseCurrency;      // Cached base currency
-
-protected $currentLocale;     // Cached current locale
-
-protected $guestCustomerGroup; // Cached guest customer group
-
-protected $exchangeRates = []; // Cached exchange rates
-
-protected $taxCategoriesById = []; // Cached tax categories
-
-protected $singletonInstances = []; // Cached singleton instances
-```
-
-::: tip Caching Strategy
-The Core class implements intelligent caching to minimize database queries. Once a channel, currency, or locale is loaded, it's stored in memory for the request lifecycle.
-:::
-
-## Core Helper Methods
-
-The following sections detail the various helper methods available through the Core class, organized by functionality area.
-
-### System Information
-
-#### Get the version number of Bagisto
-
-To get the version number of your Bagisto application, you can use the `core()->version()` method:
-
-```php
-$version = core()->version();
-// Returns the value of Core::BAGISTO_VERSION, e.g. "2.4.10" or "2.5.0-beta2"
-```
-
-### Channel Management
-
-Channels in Bagisto represent different storefronts or websites, enabling multi-channel retailing from a single installation.
-
-#### Get all channels
-
-The `core()->getAllChannels()` method retrieves all available channels in the application, useful for channel selection interfaces and multi-channel operations:
-
-```php
-$channels = core()->getAllChannels();
-// Returns: Collection of channel models
-```
-
-#### Get current channel model
-
-The `core()->getCurrentChannel()` method retrieves the current channel being accessed:
-
-```php
-$currentChannel = core()->getCurrentChannel();
-// Returns: Current channel model with all properties
-
-$channel = core()->getCurrentChannel('shop.example.com');
-// The hostname is honoured only on the first resolution; once the channel
-// middleware has resolved the request's channel, the argument is ignored
-```
-
-#### Set the current channel
-
-Dynamically change the active channel, or the default channel:
-
-```php
-core()->setCurrentChannel($channel);
-core()->setDefaultChannel($channel);
-```
-
-#### Get current channel code
-
-Retrieve just the code of the currently active channel:
+`Webkul\Core\Core`, in `packages/Webkul/Core/src/Core.php`, holds the store-wide lookups most Bagisto code needs: the current channel, locale and currency, price conversion and formatting, the saved configuration, countries and states, and a few utilities. You reach it through the global `core()` helper, which returns the instance behind the `Webkul\Core\Facades\Core` facade, so every call in one request or one queued job talks to the same object, and that object [remembers what it looks up](#things-to-watch).
 
 ```php
 $channelCode = core()->getCurrentChannelCode();
-// Returns: "default", "mobile", etc.
+
+$total = core()->formatPrice($amount, 'EUR');
+
+$maxAttempts = core()->getConfigData('sales.order_settings.order_creation.max_retry_attempts');
 ```
 
-#### Get default channel model
-
-Access the default channel configuration:
-
-```php
-$defaultChannel = core()->getDefaultChannel();
-```
-
-#### Get default channel code
-
-Retrieve the default channel code from configuration:
-
-```php
-$defaultCode = core()->getDefaultChannelCode();
-```
-
-#### Get default locale code from default channel
-
-Get the locale code for the default language in the default channel:
-
-```php
-$defaultLocaleCode = core()->getDefaultLocaleCodeFromDefaultChannel();
-```
-
-#### Get channel from request
-
-Retrieve the channel based on the current HTTP request:
-
-```php
-$requestedChannel = core()->getRequestedChannel();
-```
-
-#### Get channel code from request
-
-Get just the channel code from the current request:
-
-```php
-$requestedCode = core()->getRequestedChannelCode();
-
-// Return null instead of falling back to the current channel
-$requestedCode = core()->getRequestedChannelCode(fallback: false);
-```
-
-#### Get channel name
-
-Retrieve the display name of the current channel:
-
-```php
-$channelName = core()->getChannelName($channel);
-// Note: Requires passing a channel object as parameter
-```
-
-::: info Parameter Required
-Unlike other channel methods, `getChannelName()` requires a channel object as a parameter. It handles translation fallbacks automatically.
-:::  
-
-### Locale Management
-
-Locales handle internationalization, language settings, and regional preferences.
-
-#### Get all locales
-
-Retrieve all available locales in the system:
-
-```php
-$locales = core()->getAllLocales();
-// Returns: Collection of locale models
-```
-
-#### Get current locale
-
-Get the currently active locale:
-
-```php
-$currentLocale = core()->getCurrentLocale();
-```
-
-#### Get locale from request
-
-Retrieve the locale from the current request:
-
-```php
-$requestedLocale = core()->getRequestedLocale();
-```
-
-#### Get locale code from request
-
-Get the locale code with optional fallback:
-
-```php
-$localeCode = core()->getRequestedLocaleCode($localeKey = 'locale', $fallback = true);
-```
-
-Parameters:
-- `$localeKey`: The key to look for in the request (default: 'locale')
-- `$fallback`: Whether to provide a fallback locale if not found (default: true)
-
-#### Get locale code in requested channel
-
-Ensure the locale code is valid for the requested channel:
-
-```php
-$validLocaleCode = core()->getRequestedLocaleCodeInRequestedChannel();
-```
-
-If not found, this method sets the channel's default locale code.
-
-#### Get every requested locale code
-
-The configuration locale switcher may post `all`; this expands it to every locale code, or returns the single requested one:
-
-```php
-$localeCodes = core()->getRequestedLocaleCodes();
-```
-
-### Currency Management
-
-Bagisto's currency helpers facilitate multi-currency operations and conversions.
-
-#### Get all currencies
-
-Retrieve all available currencies:
-
-```php
-$currencies = core()->getAllCurrencies();
-```
-
-#### Get base currency model
-
-Get the application's base currency:
-
-```php
-$baseCurrency = core()->getBaseCurrency();
-```
-
-#### Get base currency code
-
-Retrieve the base currency code:
-
-```php
-$baseCurrencyCode = core()->getBaseCurrencyCode();
-```
-
-#### Get channel's base currency
-
-Get the base currency model for the current channel:
-
-```php
-$channelBaseCurrency = core()->getChannelBaseCurrency();
-```
-
-#### Get channel's base currency code
-
-Retrieve the base currency code for the current channel:
-
-```php
-$channelBaseCurrencyCode = core()->getChannelBaseCurrencyCode();
-```
-
-#### Set current currency
-
-Change the active currency:
-
-```php
-core()->setCurrentCurrency($currencyCode);
-```
-
-#### Get current currency model
-
-Retrieve the current channel's currency:
-
-```php
-$currentCurrency = core()->getCurrentCurrency();
-```
-
-#### Get current currency code
-
-Get the current channel's currency code:
-
-```php
-$currentCurrencyCode = core()->getCurrentCurrencyCode();
-```
-
-#### Get exchange rates
-
-Retrieve exchange rate information by target currency ID:
-
-```php
-$exchangeRate = core()->getExchangeRate($targetCurrencyId);
-// Returns: ExchangeRate model or null
-```
-
-::: warning Parameter Type
-This method expects a currency ID (integer), not a currency code. Use the currency model's ID property.
-:::
-
-#### Convert price
-
-Convert an amount to a target currency:
-
-```php
-$amount = 100;
-$targetCurrencyCode = 'EUR';
-$convertedAmount = core()->convertPrice($amount, $targetCurrencyCode);
-```
-
-#### Convert to base price
-
-Convert an amount from a specific currency to the base currency:
-
-```php
-$amount = 200;
-$targetCurrencyCode = 'EUR';
-$baseAmount = core()->convertToBasePrice($amount, $targetCurrencyCode);
-```
-
-#### Format and convert price with currency
-
-The `currency()` method formats and converts a price with automatic currency conversion:
-
-```php
-$formattedPrice = core()->currency($amount);
-// Converts to current currency and formats with symbol
-```
-
-#### Format price with currency
-
-Format and display a price with currency symbol:
-
-```php
-$price = 100;
-$currencyCode = 'USD'; // Optional, uses current currency if not provided
-$formattedPrice = core()->formatPrice($price, $currencyCode);
-```
-
-#### Format base price
-
-Format a price with the base currency symbol:
-
-```php
-$formattedBasePrice = core()->formatBasePrice($price);
-```
-
-### Date and Time Helpers
-
-#### Check if date is in interval
-
-Verify if the current channel date falls within a specified range:
-
-```php
-$isInRange = core()->isChannelDateInInterval($dateFrom = null, $dateTo = null);
-```
-
-#### Get channel timestamp
-
-Get a timestamp adjusted for the channel's timezone:
-
-```php
-$timestamp = core()->channelTimeStamp($channel);
-```
-
-#### Check if SQL date is empty
-
-Validate whether a SQL date field is empty:
-
-```php
-$isEmpty = core()->is_empty_date($date);
-```
-
-#### Format date using current channel
-
-Format a date according to channel timezone and locale:
-
-```php
-$formattedDate = core()->formatDate($date = null, $format = 'd-m-Y H:i:s');
-```
-
-### Configuration Management
-
-#### Retrieve configuration data
-
-Get specific configuration values with channel and locale context:
-
-```php
-$configValue = core()->getConfigData($field, $currentChannelCode = null, $currentLocaleCode = null);
-// Delegates to system_config()->getConfigData()
-
-$enabled = core()->getConfigData('catalog.products.omnibus.is_enabled', 'default');
-// Read the value stored for the "default" channel regardless of the current one
-```
-
-The channel and locale default to the current ones. A value that has never been saved falls back to the package config merged under the same key (payment methods, carriers) and then to the field's `default` in `system.php`; see [Configuration Value Resolution](../package-development/system-configuration.md#configuration-value-resolution).
-
-#### Get configuration field
-
-Access a specific configuration field structure:
-
-```php
-$fieldStructure = core()->getConfigField($fieldName);
-// Returns: Configuration field definition array
-```
-
-::: tip System Config Integration
-The Core class delegates configuration operations to the system configuration manager, providing a unified interface for accessing settings.
-:::
-
-### Geographic Data Helpers
-
-#### Get all countries
-
-Retrieve all available countries:
-
-```php
-$countries = core()->countries();
-```
-
-#### Get country name by code
-
-Get country name using ISO 3166-1 alpha-2 code:
-
-```php
-$countryName = core()->country_name($code);
-```
-
-#### Get country states
-
-Retrieve all states/provinces for a country:
-
-```php
-$states = core()->states($countryCode);
-```
-
-#### Get grouped states by countries
-
-Get all states organized by country:
-
-```php
-$groupedStates = core()->groupedStatesByCountries();
-```
-
-#### Find state by country code
-
-Get specific state information:
-
-```php
-$state = core()->findStateByCountryCode($countryCode = null, $stateCode = null);
-```
-
-#### Check field requirements
-
-Verify if address fields are required:
-
-```php
-$isCountryRequired = core()->isCountryRequired();
-$isStateRequired = core()->isStateRequired();
-$isPostCodeRequired = core()->isPostCodeRequired();
-```
-
-### Customer Management
-
-#### Get guest customer group
-
-Retrieve the guest customer group configuration:
-
-```php
-$guestGroup = core()->getGuestCustomerGroup();
-```
-
-### Utility Methods
-
-#### Get maximum upload size
-
-Retrieve the maximum file upload size from PHP configuration:
-
-```php
-$maxSize = core()->getMaxUploadSize();
-// Returns: Value from ini_get('upload_max_filesize')
-```
-
-#### Week range calculation
-
-Calculate week start or end dates:
-
-```php
-$weekStart = core()->xWeekRange($date, 0); // Week start (Sunday)
-$weekEnd = core()->xWeekRange($date, 1);   // Week end (Saturday)
-```
-
-Parameters:
-- `$date`: Date string to calculate from
-- `$day`: 0 for week start, 1 for week end
-
-#### Convert empty strings to null
-
-Clean up array data by converting empty strings to null:
-
-```php
-$cleanedArray = core()->convertEmptyStringsToNull($array);
-```
-
-#### Create singleton instance
-
-Get singleton instances through the service container:
-
-```php
-$instance = core()->getSingletonInstance($className);
-```
-
-#### Tax-related helpers
-
-Generate tax rate identifiers for view elements (a static method):
-
-```php
-$taxIdentifier = Core::taxRateAsIdentifier($taxRate);
-// Returns: Tax rate with dots replaced by underscores
-```
-
-Get tax category by ID with caching:
-
-```php
-$taxCategory = core()->getTaxCategoryById($id);
-```
-
-#### Email configuration helpers
-
-Retrieve email sender details:
-
-```php
-$shopEmailDetails = core()->getSenderEmailDetails();
-$adminEmailDetails = core()->getAdminEmailDetails();
-$contactEmailDetails = core()->getContactEmailDetails();
-```
-
-Each method returns an array with 'name' and 'email' keys, with automatic fallbacks to configuration defaults.
-
-### Performance and Advanced Features
-
-#### Get speculation rules
-
-Retrieve browser speculation rules for performance optimization:
-
-```php
-$speculationRules = core()->getSpeculationRules();
-// Returns: Array of prerender and prefetch rules based on configuration
-```
-
-This method generates speculation rules for browser performance optimization, including prerender and prefetch configurations.
-
-## Other global helpers
-
-`core()` is one of a family of helper functions, each defined in a package's `src/Http/helpers.php` and each returning a facade root or container binding. They are available everywhere without imports.
+## How the Current Context Is Resolved
+
+Each of these values is resolved once, then the remembered model is returned:
+
+| Value | Resolved from | Fallback |
+|---|---|---|
+| Current channel | The channel whose `hostname` matches the request host, with or without `http://` or `https://` | The first channel |
+| Default channel | The channel whose code is `config('app.channel')` | The first channel |
+| Current locale | The locale whose code is `app()->getLocale()` | The locale for `config('app.fallback_locale')` |
+| Base currency | The currency whose code is `config('app.currency')` | The first currency |
+| Current currency | The currency last passed to `setCurrentCurrency()` | The current channel's base currency |
+
+The "requested" methods read the admin's channel and locale switchers instead, the `channel` and `locale` query parameters; they're in the tables below.
+
+## Method Reference
+
+Signatures are as declared in `Core.php` and its `Webkul\Core\Concerns\CurrencyFormatter` trait.
+
+### Channels
+
+| Method | Returns |
+|---|---|
+| `getAllChannels()` | Every channel |
+| `getCurrentChannel(?string $hostname = null)` | The current channel. `$hostname` replaces the request host, but only on the first call |
+| `setCurrentChannel(Channel $channel): void` | Makes `$channel` the current channel |
+| `getCurrentChannelCode(): ?string` | The current channel's code |
+| `getDefaultChannel(): ?Channel` | The default channel |
+| `setDefaultChannel(Channel $channel): void` | Makes `$channel` the default channel |
+| `getDefaultChannelCode(): ?string` | The default channel's code |
+| `getDefaultLocaleCodeFromDefaultChannel(): string` | The default locale code of the default channel |
+| `getRequestedChannel()` | The channel named by the `channel` query parameter, `null` when no channel has that code, or the current channel when the parameter is absent |
+| `getRequestedChannelCode($fallback = true)` | The `channel` request input; with `$fallback`, the current and then the default channel code when it is empty |
+| `getChannelName($channel): string` | The channel's name, falling back to its translation in the app locale and then the fallback locale |
+
+### Locales
+
+| Method | Returns |
+|---|---|
+| `getAllLocales()` | Every locale, sorted by name |
+| `getCurrentLocale()` | The current locale |
+| `getRequestedLocale()` | The locale named by the `locale` query parameter, `null` when no locale has that code, or the current locale when the parameter is absent |
+| `getRequestedLocaleCode($localeKey = 'locale', $fallback = true)` | The `$localeKey` request input; with `$fallback`, `app()->getLocale()` when it is empty |
+| `getRequestedLocaleCodes($localeKey = 'locale'): array` | Every locale code when the input is `all`, otherwise a one-item array of the requested code |
+| `getRequestedLocaleCodeInRequestedChannel()` | The requested locale code when the requested channel has that locale, otherwise the channel's default locale code |
+
+### Currencies and Prices
+
+| Method | Returns |
+|---|---|
+| `getAllCurrencies()` | Every currency |
+| `getBaseCurrency()` | The base currency |
+| `getBaseCurrencyCode()` | The base currency code |
+| `getChannelBaseCurrency()` | The current channel's base currency |
+| `getChannelBaseCurrencyCode()` | The current channel's base currency code |
+| `setCurrentCurrency($currencyCode)` | Sets the current currency; an unknown code selects the channel's base currency |
+| `getCurrentCurrency()` | The current currency |
+| `getCurrentCurrencyCode()` | The current currency code |
+| `getExchangeRate($targetCurrencyId)` | The exchange rate row for a currency **id**, or `null` |
+| `convertPrice($amount, $targetCurrencyCode = null)` | `$amount` multiplied by the target currency's rate (the current currency when no code is given); unchanged when there is no rate |
+| `convertToBasePrice($amount, $targetCurrencyCode = null)` | `$amount` divided by the target currency's rate; unchanged when there is no rate |
+| `currency($amount = 0)` | `$amount` converted to the current currency and formatted |
+| `formatPrice(?float $price, ?string $currencyCode = null): string` | `$price` formatted in the given or current currency, **without** converting it |
+| `formatBasePrice(?float $price): string` | `$price` formatted in the base currency |
+| `formatCurrency(?float $price, Currency $currency): string` | `$price` formatted for the app locale: with the currency's position, decimals and separators when its `currency_position` is set, otherwise in the locale's own format with the currency's symbol |
+| `useDefaultCurrencyFormatter(?float $price, Currency $currency): string` | The locale's currency format, using the currency's own symbol when it differs from the locale's |
+| `useCustomCurrencyFormatter(?float $price, Currency $currency): string` | The number with the currency's decimals and separators, and its symbol, or its code when it has none, placed by `currency_position` |
+| `currencySymbol($currency): string` | The locale's symbol for a currency code or `Currency` model |
+
+### Dates
+
+| Method | Returns |
+|---|---|
+| `isChannelDateInInterval($dateFrom = null, $dateTo = null)` | Whether today, in the current channel's timezone, is between the two dates inclusive; an empty date leaves that side open |
+| `channelTimeStamp($channel)` | The current Unix timestamp; the channel's timezone doesn't change it |
+| `is_empty_date($date)` | Whether a SQL date such as `0000-00-00 00:00:00` is empty |
+| `formatDate($date = null, $format = 'd-m-Y H:i:s')` | The date (now when `null`) in the current channel's timezone, formatted with Carbon's `translatedFormat()` |
+| `xWeekRange($date, $day)` | As `Y-m-d`, the Sunday on or before `$date` when `$day` is `0`, otherwise the Saturday on or after it |
+
+### Configuration
+
+| Method | Returns |
+|---|---|
+| `getConfigData(string $field, ?string $currentChannelCode = null, ?string $currentLocaleCode = null): mixed` | The saved configuration value. The codes default to `getRequestedChannelCode()` and `getRequestedLocaleCode()`: the request's `channel` and `locale` input, then the current channel and the app locale. Delegates to `system_config()->getConfigData()` |
+| `getConfigField($fieldName)` | The field definition from the `core` configuration tree |
+
+A value that has never been saved falls back to `config()` at the same key without its first segment (`sales.payment_methods.<code>.<field>` reads `config('payment_methods.<code>.<field>')`), then to the field's `default` in `system.php`; see [System Configuration](../package-development/system-configuration.md#configuration-value-resolution).
+
+### Countries and Addresses
+
+| Method | Returns |
+|---|---|
+| `countries()` | Every row of the `countries` table |
+| `country_name($code)` | The country name for an ISO 3166-1 alpha-2 code, or an empty string |
+| `states($countryCode)` | The states of a country |
+| `groupedStatesByCountries()` | Every state, grouped in an array keyed by country code |
+| `findStateByCountryCode($countryCode = null, $stateCode = null)` | The matching state, or `false` |
+| `isCountryRequired()`, `isStateRequired()`, `isPostCodeRequired()` | Whether the address field is required, from `customer.address.requirements.*` |
+
+### Customers, Taxes and Email
+
+| Method | Returns |
+|---|---|
+| `getGuestCustomerGroup()` | The customer group with the code `guest` |
+| `getTaxCategoryById($id)` | The tax category, or `null` for an empty id |
+| `Core::taxRateAsIdentifier(float $taxRate): string` | Static. The rate with dots replaced by underscores, for use in element ids |
+| `getSenderEmailDetails()` | `['name' => …, 'email' => …]` from `emails.configure.email_settings.sender_*`, falling back to `config('mail.from')` |
+| `getAdminEmailDetails()` | The same shape from `admin_name` and `admin_email`, falling back to `config('mail.admin')` and then `config('mail.from')` |
+| `getContactEmailDetails()` | The same shape from `contact_name` and `contact_email`, falling back to `config('mail.contact')` and then `config('mail.from')` |
+
+### Utilities
+
+| Method | Returns |
+|---|---|
+| `version()` | The value of `Core::BAGISTO_VERSION` |
+| `getMaxUploadSize()` | PHP's `upload_max_filesize` setting |
+| `convertEmptyStringsToNull($array)` | The array with empty strings and the string `'null'` replaced by `null` |
+| `getSingletonInstance($className)` | One instance of `$className` per `Core` instance, resolved from the container |
+| `getSpeculationRules()` | The browser speculation rules (`prerender` and `prefetch`) built from `general.content.speculation_rules.*` |
+
+## Other Global Helpers
+
+Each of these is defined in its package's `src/Http/helpers.php` and available everywhere without an import.
 
 | Helper | Package | Returns |
 |---|---|---|
@@ -582,44 +139,40 @@ This method generates speculation rules for browser performance optimization, in
 | `menu()` | Core | `Webkul\Core\Menu`; `menu()->getItems(Menu::ADMIN)` |
 | `acl()` | Core | `Webkul\Core\Acl` |
 | `system_config()` | Core | `Webkul\Core\SystemConfig` |
-| `db_grammar()` | Core | `Webkul\Core\Contracts\DatabaseGrammar` for the current database; Bagisto 2.5 only. See [Database compatibility](./database-compatibility.md) |
+| `db_grammar()` | Core | `Webkul\Core\Contracts\DatabaseGrammar` for the current database. See [Database Compatibility](./database-compatibility.md) |
 | `clean_path(string $path)` | Core | The path with empty segments removed |
 | `clean_content(string $content)` | Core | HTML purified and stripped of Blade directives |
-| `array_permutation(array $input)` | Core | Every combination of an array of arrays |
-| `themes()` | Theme | `Webkul\Theme\Themes`; `themes()->current()`, `themes()->set($code)` |
+| `array_permutation($input)` | Core | Every combination of an array of arrays |
+| `themes()` | Theme | `Webkul\Theme\Themes`; `themes()->current()`, `themes()->set($themeName)` |
 | `bagisto_asset(string $path, ?string $namespace = null)` | Theme | The Vite URL of a theme asset |
-| `bagisto_theme_storage()` | Theme | `Webkul\Theme\ThemeStorage` for section media URLs; Bagisto 2.5 only |
+| `bagisto_theme_storage()` | Theme | `Webkul\Theme\ThemeStorage` for section media URLs |
 | `view_render_event(string $eventName, mixed $params = null)` | Theme | Rendered listener output. See [View Render Events](./view-render-events.md) |
 | `product_image()` | Product | `Webkul\Product\ProductImage` |
 | `product_video()` | Product | `Webkul\Product\ProductVideo` |
 | `product_toolbar()` | Product | `Webkul\Product\Helpers\Toolbar` (sort orders and page limits) |
-| `image_manager()` | ImageCache | `Illuminate\Image\ImageManager` (`Intervention\Image\ImageManager` on 2.4) |
-| `image_urls(string $path, ?string $key = null)` | ImageCache | The `*_image_url` set for a stored path. See [Image Cache Templates](../theme-development/image-cache-templates.md) |
-| `datagrid(string $class)` | DataGrid | A resolved DataGrid instance |
+| `image_manager()` | ImageCache | `Illuminate\Image\ImageManager` |
+| `image_urls(string $path, ?string $key = null)` | ImageCache | The `*_image_url` set for a stored path. See [Image Cache](../theme-development/image-cache-templates.md) |
+| `datagrid(string $datagridClass)` | DataGrid | A resolved DataGrid instance |
 | `cart()` | Checkout | `Webkul\Checkout\Cart` |
 | `payment()` | Payment | `Webkul\Payment\Payment` |
 | `shipping()` | Shipping | `Webkul\Shipping\Shipping` |
 | `magic_ai()` | MagicAI | `Webkul\MagicAI\MagicAI` |
-| `bouncer()` | User | `Webkul\User\Bouncer`; `hasPermission()`, `allow()` |
+| `bouncer()` | User | `Webkul\User\Bouncer`; `hasPermission()`, and the static `allow()` |
 | `two_factor_authentication()` | User | `Webkul\User\TwoFactorAuthentication` |
 
-There is no `theme()`, `visitor()` or `money_format()` helper.
+`db_grammar()`, `bagisto_theme_storage()` and `image_urls()` were added in Bagisto 2.5, and on Bagisto 2.4 `image_manager()` returns `Intervention\Image\ImageManager`. There is no `theme()`, `visitor()` or `money_format()` helper.
 
-## Best Practices
+## Things to Watch
 
-When using Bagisto's Core helpers, consider these recommendations:
+- **`core()` remembers for one request or one job, then starts fresh.** The current and default channel, the current and base currency, the current locale, the guest customer group, exchange rates and tax categories are looked up once and kept on the instance. `Webkul\Core\Core` has no container binding: the instance is the one the facade caches, and `php artisan queue:work` clears that cache before every job, as Laravel Octane does for every request. Code that works through several channels in one job must call `setCurrentChannel()`, and `setCurrentCurrency()`, which is remembered separately, for each one.
+- **A command or queued job has no browser request.** Laravel builds the console request from `APP_URL`, so `getCurrentChannel()` returns the channel whose hostname matches `APP_URL`, or the first channel.
+- **`formatPrice()` doesn't convert; `currency()` does.** `currency()` converts from the base currency before formatting, so an amount already in the order's currency is converted twice.
+- **`getConfigData()` isn't `config()`.** It reads the configuration saved from the admin, per channel and locale, from the database.
+- **`countries()` and `groupedStatesByCountries()` query the database on every call.** Call them once per request and reuse the result.
 
-::: tip Performance
-- Cache results of expensive operations like `getAllChannels()` when used repeatedly
-- Use specific methods rather than general ones when possible (e.g., `getCurrentChannelCode()` vs `getCurrentChannel()->code`)
-:::
+## Related Pages
 
-::: warning Context Awareness
-- Always consider the current channel/locale context when using helpers
-- Be aware that some methods may return different results based on the current request context
-:::
-
-::: info Error Handling
-- Many Core methods return null or empty collections when data is not found
-- Always validate return values, especially when working with optional parameters
-:::
+- [System Configuration](../package-development/system-configuration.md): declaring the fields `getConfigData()` reads.
+- [Understanding Indexers](./understanding-indexers.md): the price, inventory and flat indexes the storefront reads.
+- [Database Compatibility](./database-compatibility.md): the `db_grammar()` helper.
+- [View Render Events](./view-render-events.md): the `view_render_event()` helper.

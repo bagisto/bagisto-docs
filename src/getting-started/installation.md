@@ -1,673 +1,277 @@
 # Installation
 
-This guide will walk you through installing Bagisto using different methods. Choose the one that best fits your needs.
+This page installs Bagisto with Composer and gets it running on your machine. Check the [system requirements](./before-you-start.md#system-requirements) first, and create an empty database for the store. Git, the web installer and Docker are covered after the main path, under [Other Ways to Install](#other-ways-to-install) and [Run with Docker](#run-with-docker).
 
-## 🚀 Quick Installation (Recommended)
+<a id="🚀-quick-installation-recommended"></a>
 
-The fastest way to get Bagisto up and running:
+## Install with Composer
 
-### Prerequisites
+1. Create the project:
 
-Before starting, ensure you have:
-- PHP 8.4 (Bagisto 2.4 also runs on 8.3; PHP 8.5 and above are not supported yet)
-- Composer 2.5 or higher
-- MySQL 8.0, MariaDB 10.11 or, on Bagisto 2.5, PostgreSQL 16
-- Web server (Apache/Nginx/OpenLiteSpeed)
-
-::: tip System Requirements
-If you haven't checked the system requirements yet, please review the [Before You Start](/getting-started/before-you-start#system-requirements) guide.
-:::
-
-### Step 1: Create Project
-
-Open your terminal and run:
-
-```bash
-composer create-project bagisto/bagisto my-bagisto-store
-```
-
-### Step 2: Navigate to Directory
-
-```bash
-cd my-bagisto-store
-```
-
-### Step 3: Run Installation
-
-```bash
-php artisan bagisto:install
-```
-
-Follow the interactive prompts to configure your application, database, and admin account. The database step asks which engine you use (MySQL, MariaDB or PostgreSQL) and fills in the matching port. For an unattended install that reads an existing `.env`, use `--no-interaction`, and add `--demo-samples` to seed sample products; see [Artisan Commands](../advanced/artisan-commands.md#bagisto-install).
-
-::: warning Fresh installs only
-`bagisto:install` wipes the database before it seeds. Do not run it on a store that already has data; the [Upgrade Guide](./upgrade-guide.md) uses `php artisan migrate`.
-:::
-
-### Step 4: Start Development Server
-
-```bash
-php artisan serve
-```
-
-Your Bagisto store will be available at `http://localhost:8000`
-
-::: tip Web Server Configuration
-If you are using Apache or Nginx, make sure to map your domain's document root to the `public/` directory of your Bagisto project. This ensures your store runs smoothly and routes, assets, and images work as expected.
-:::
-
-::: warning Image Issues?
-If you notice broken images in your store, check your `.env` file and ensure the `APP_URL` value matches exactly with your site's document root URL (e.g., `http://localhost:8000` or your production domain). A mismatch can cause asset loading problems.
-:::
-
-::: warning Mixed Content (HTTPS/HTTP) Error?
-If your homepage or assets fail to load and you see browser warnings about "mixed content," this means some resources are being loaded over HTTP while your site is served over HTTPS. This can break your site in modern browsers. See the **Mixed Content (HTTPS/HTTP) Error** section in [Common Troubleshooting](#🛠%EF%B8%8F-common-troubleshooting) below for solutions.
-:::
-
-
-## 🖥️ GUI Installation
-
-If you prefer a web-based installer:
-
-::: warning Important
-Ensure Composer is installed and your web server is properly configured before proceeding.
-:::
-
-### Method 1: Using Composer
-
-```bash
-composer create-project bagisto/bagisto
-```
-
-Configure your web server's document root to the `public/` directory inside your Bagisto project (e.g., `/path/to/bagisto/public`), then visit:
-```text
-http://localhost/
-```
-
-### Method 2: Download Package
-
-1. [Download Bagisto](https://bagisto.com/en/download/) from the official website
-2. Extract the downloaded file
-3. Navigate to the project directory
-4. Run:
-  ```bash
-  composer install
-  ```
-5. Configure your web server’s document root to point to the `public/` directory inside your Bagisto project (e.g., `/path/to/bagisto/public`), then open your browser and visit:
-  ```
-  http://localhost/
-  ```
-
-## 🔧 Manual Installation
-
-For advanced users who want complete control over the installation process.
-
-::: warning Important
-Ensure Composer is installed and your web server is properly configured before proceeding.
-:::
-
-### Step 1: Get Bagisto
-
-You can get Bagisto in two ways:
-
-- **Method 1: Composer**  
-  Create a new project using Composer. See [GUI Installation - Method 1](#method-1-using-composer) for step-by-step instructions.
-
-- **Method 2: Download Package**  
-  Download the package from the [official website](https://bagisto.com/en/download/) or clone the [GitHub repository](https://github.com/bagisto/bagisto). Refer to [GUI Installation - Method 2](#method-2-download-package) for details.
-
-### Step 2: Configure Environment
-
-1. Copy environment file and generate key:
    ```bash
-   cp .env.example .env
-   php artisan key:generate
+   composer create-project bagisto/bagisto my-bagisto-store
    ```
 
-2. Edit your `.env` file with database credentials and application settings.
+   Composer installs the latest stable release, copies `.env.example` to `.env` and generates `APP_KEY`. To install a particular release line, add a version constraint, for example `composer create-project bagisto/bagisto my-bagisto-store "2.5.*"`.
 
-### Step 3: Setup Store
+2. Go to the project directory:
 
-::: tip Database Configuration
-This step assumes your database is already created and configured in the `.env` file. Make sure your database connection details are correct before proceeding.
+   ```bash
+   cd my-bagisto-store
+   ```
+
+3. Run the installer and answer its questions:
+
+   ```bash
+   php artisan bagisto:install
+   ```
+
+   When it asks for the application URL, enter `http://localhost:8000`, the address `php artisan serve` uses in step 4.
+
+4. Start the development server:
+
+   ```bash
+   php artisan serve
+   ```
+
+   Open the storefront at `http://localhost:8000` and the admin at `http://localhost:8000/admin`, with the admin account you created. [Run Bagisto Locally](#run-bagisto-locally) has the details.
+
+::: danger Fresh Installs Only
+`bagisto:install` runs `db:wipe` and `migrate:fresh`, which delete everything in the database. Never run it on a store that has data; upgrades use `php artisan migrate`, as the [Upgrade Guide](./upgrade-guide.md) describes.
 :::
 
+### What the Installer Asks
+
+- **Application:** name, URL, timezone, default locale and currency, and the locales and currencies your channels allow. The URL offered is `APP_URL` from `.env`, which is `http://localhost` in a new project.
+- **Database:** MySQL, MariaDB or PostgreSQL, host, port, database name, an optional table prefix of up to four letters, digits or underscores, username and password. The host and port offered come from `.env`, so the port stays `3306` unless you change it; enter `5432` for PostgreSQL.
+- **Admin account:** name, email, and a password of at least six characters.
+- **Sample products:** whether to add the demo catalog.
+
+::: details What the Installer Does with Your Answers
+The installer writes your answers to `.env`, generates the application key, wipes the database and runs every migration, seeds the channel, locales, currencies and other basic data, links the `storage/` directory, creates the admin account, adds and indexes the sample products if you asked for them, and clears the caches. It prints the admin URL and the credentials, and last asks whether to open the Bagisto Cloud hosting page in your browser.
+:::
+
+## Run Bagisto Locally
+
+| Page | Address |
+|---|---|
+| Storefront | `http://localhost:8000` |
+| Admin | `http://localhost:8000/admin`, which redirects to `/admin/login` |
+| Customer registration | `http://localhost:8000/customer/register` |
+
+- **`APP_URL`** in `.env` must equal the address you open, including the port; image URLs and links are built from it. The admin prefix comes from `APP_ADMIN_URL`.
+- **No npm step.** The admin, storefront and installer assets are already built and committed under `public/themes/`. To work on those assets, see [Build Commands](../architecture/frontend.md#build-commands).
+- **Queued work runs inline.** `.env.example` sets `QUEUE_CONNECTION=sync`, so mail and search indexing run inside the request. That's fine on your machine; a production store needs a queue worker, as [Deployment](./deployment.md) explains.
+- **Prefer `php artisan serve` to `php artisan dev`** until you have set up Octane; see [Things to Watch](#use-php-artisan-dev).
+
+## Other Ways to Install
+
+| Method | Use it when |
+|---|---|
+| [Install Without Prompts](#install-without-prompts) | You script the install, for example in CI |
+| [Install Step by Step](#install-step-by-step) | You want to run each installer step yourself |
+| [Install from Git](#install-from-git) | You want to track releases or contribute to Bagisto |
+| [Web installer](#use-the-web-installer) | You prefer to answer the setup questions in a browser |
+| [Docker](#run-with-docker) | You want a running store without installing PHP, or a containerized development setup |
+
+### Install Without Prompts
+
+With Laravel's global `--no-interaction` option, the installer asks nothing:
+
 ```bash
+php artisan bagisto:install --no-interaction --demo-samples
+```
+
+| Option | Effect |
+|---|---|
+| `-n`, `--no-interaction` | Uses the settings already in `.env`, creates the default admin account (`admin@example.com` / `admin123`) and skips sample products |
+| `--demo-samples` | Adds and indexes the sample products. In interactive mode, it adds them whatever you answer. |
+
+Set the `DB_*` values in `.env` first. [Artisan Commands](../advanced/artisan-commands.md#bagisto-install) has the full reference.
+
+::: warning Not with `APP_ENV=production`
+In production, `db:wipe` and `migrate:fresh` ask for confirmation, and `--no-interaction` answers no. The installer then carries on without creating any tables. Install before you set `APP_ENV=production`, or follow the [production checklist](./deployment.md#production-checklist) on a production server.
+:::
+
+### Install Step by Step
+
+Configure `.env`, then run:
+
+```bash
+php artisan key:generate
 php artisan migrate:fresh --seed
 php artisan storage:link
 php artisan optimize:clear
 ```
 
-The seeders create the default admin (`admin@example.com` / `admin123`), the default channel, locales, currencies and attribute families, but no sample products. To add the demo catalog afterwards:
+The seeders create the default channel, locales, currencies and attribute families, and the admin account `admin@example.com` / `admin123`, but no products. To add the sample catalog:
 
 ```bash
 php artisan db:seed --class="Webkul\Installer\Database\Seeders\ProductTableSeeder"
 php artisan indexer:index --mode=full
 ```
 
-### Step 4: Launch Store
+### Install from Git
+
+Clone the repository, check out the release you want, and install the dependencies:
 
 ```bash
-php artisan serve
+git clone https://github.com/bagisto/bagisto.git my-bagisto-store
+cd my-bagisto-store
+git tag --list
+git checkout <release-tag>
+composer install
+php artisan bagisto:install
 ```
 
-Visit `http://localhost:8000` to access your store.
+A clone has no `.env` file; `bagisto:install` copies `.env.example` and generates the key itself. You can also [download a release](https://bagisto.com/en/download/) from the Bagisto website and run `composer install` in it.
 
-## 🐳 Docker Installation
+### Use the Web Installer
 
-Perfect for containerized environments and easy deployment across different systems.
+Until Bagisto is installed, `Webkul\Installer\Http\Middleware\CanInstall` redirects every request to `/install`. Bagisto counts as installed once `storage/installed` exists, or once `.env` exists and the database's `admins` table has at least one row.
 
-### Prerequisites
+1. Get the code with [Composer](#install-with-composer) (steps 1 and 2), or with [Git](#install-from-git) followed by `cp .env.example .env` and `php artisan key:generate`. Don't run `bagisto:install`. The installer's pages need an application key before they can load.
+2. Serve the `public/` directory, with your web server or with `php artisan serve`.
+3. Open the site in a browser. The installer checks the PHP version and extensions, asks for the application and database settings, runs the migrations and seeders, optionally adds sample products, and creates the admin account.
 
-- [Docker](https://docs.docker.com/install/) installed on your system
-- [Docker Compose](https://docs.docker.com/compose/install/) (for Method 2)
+After installation, `/install` redirects to the storefront.
 
-### Method 1: Using Docker Hub (Recommended)
+<a id="🐳-docker-installation"></a>
 
-The quickest way to get Bagisto running with Docker. The production images are built from `docker/production/` in the Bagisto repository and bundle a web server and a database, one image per combination:
+## Run with Docker
 
-| Tag suffix | Web server | Database |
-|---|---|---|
-| `-nginx`, `-nginx-mysql` | Nginx + PHP-FPM | MySQL 8.0 |
-| `-nginx-mariadb` | Nginx + PHP-FPM | MariaDB 10.11 |
-| `-nginx-postgres` | Nginx + PHP-FPM | PostgreSQL 16 |
-| `-apache`, `-apache-mysql`, `-apache-mariadb`, `-apache-postgres` | Apache + mod_php | as named |
-| `-litespeed`, `-litespeed-mysql`, `-litespeed-mariadb`, `-litespeed-postgres` | OpenLiteSpeed | as named |
+### Production Image
 
-`webkul/bagisto:latest` is Nginx with MySQL; pin a release with the version, for example `webkul/bagisto:2.5.0-nginx-postgres`. The PostgreSQL images exist for Bagisto 2.5 onward.
-
-#### Step 1: Pull Bagisto Image
+The official images are built from `docker/production/` in the Bagisto repository. Each one bundles a web server, PHP 8.4, a database and an installed store with sample products:
 
 ```bash
-docker pull webkul/bagisto:latest
+docker run -d --name bagisto -p 80:80 webkul/bagisto:latest
 ```
 
-#### Step 2: Run Container
+Open `http://localhost`, and the admin at `http://localhost/admin/login` with `admin@example.com` / `admin123`. Change that password on any store other people can reach.
+
+| Web server | MySQL 8.0 | MariaDB 10.11 | PostgreSQL 16 |
+|---|---|---|---|
+| Nginx and PHP-FPM | `latest`, `latest-nginx`, `latest-nginx-mysql` | `latest-nginx-mariadb` | `latest-nginx-postgres` |
+| Apache and mod_php | `latest-apache`, `latest-apache-mysql` | `latest-apache-mariadb` | `latest-apache-postgres` |
+| OpenLiteSpeed and lsphp | `latest-litespeed`, `latest-litespeed-mysql` | `latest-litespeed-mariadb` | `latest-litespeed-postgres` |
+
+To pin a release, replace `latest` with its version, for example `webkul/bagisto:2.5.0-nginx-postgres`. To use another host port, set `APP_URL` to match:
 
 ```bash
-docker run -it -d -p 80:80 webkul/bagisto:latest
+docker run -d --name bagisto -p 8080:80 -e APP_URL=http://localhost:8080 webkul/bagisto:latest
 ```
 
-::: tip Port Configuration
-If port 80 is already in use, you can use a different port:
-```bash
-docker run -it -d -p 8082:80 -e APP_URL=http://localhost:8082 webkul/bagisto:latest
-```
-Then access at `http://localhost:8082`
+The container reads `APP_URL`, `APP_KEY`, `APP_TIMEZONE`, `APP_LOCALE`, `APP_CURRENCY`, `APP_ADMIN_URL` and the `DB_*` variables from the environment. Set `DB_HOST` to anything other than `127.0.0.1` or `localhost` to use your own database instead of the bundled one. Without volumes, the data is lost when the container is removed; [`docker/production/README.md`](https://github.com/bagisto/bagisto/blob/master/docker/production/README.md) lists the volumes to mount and every variable.
+
+### Docker Compose Workspace
+
+The [bagisto-docker](https://github.com/bagisto/bagisto-docker) repository is a development workspace with a choice of Nginx, OpenLiteSpeed or Apache runtimes, MySQL, phpMyAdmin and Mailpit. Its setup script installs Bagisto 2.4.7 and its runtimes run PHP 8.3, so it can't run Bagisto 2.5 yet. For a containerized Bagisto 2.5, use the [production image](#production-image) or [Laravel Sail](#laravel-sail).
+
+<a id="⛵-laravel-sail-installation"></a>
+
+### Laravel Sail
+
+Bagisto's `docker-compose.yml` is a [Laravel Sail](https://laravel.com/docs/sail) file with MySQL 8.0, Redis, Elasticsearch, Kibana and Mailpit. Sail itself isn't installed with Bagisto.
+
+1. Install Sail. On a machine without PHP, run Composer in a container from the project directory:
+
+   ```bash
+   docker run --rm \
+       -u "$(id -u):$(id -g)" \
+       -v "$(pwd):/var/www/html" \
+       -w /var/www/html \
+       laravelsail/php84-composer:latest \
+       composer require laravel/sail --dev --ignore-platform-reqs
+   ```
+
+   With PHP and Composer installed, run `composer require laravel/sail --dev` instead.
+
+2. In `docker-compose.yml`, point the `laravel.test` build at Sail's PHP 8.4 runtime. The file names `./vendor/laravel/sail/runtimes/8.3`, and Bagisto needs PHP 8.4:
+
+   ```yaml
+   services:
+       laravel.test:
+           build:
+               context: ./vendor/laravel/sail/runtimes/8.4
+   ```
+
+3. Point `.env` at the Sail services:
+
+   ```properties
+   DB_CONNECTION=mysql
+   DB_HOST=mysql
+   DB_PORT=3306
+   DB_DATABASE=bagisto
+   DB_USERNAME=sail
+   DB_PASSWORD=password
+
+   REDIS_HOST=redis
+
+   MAIL_HOST=mailpit
+   MAIL_PORT=1025
+   ```
+
+4. Build and start the containers, then install Bagisto:
+
+   ```bash
+   vendor/bin/sail build --no-cache
+   vendor/bin/sail up -d
+   vendor/bin/sail artisan bagisto:install
+   ```
+
+The store is at `http://localhost`, Mailpit at `http://localhost:8025` and Kibana at `http://localhost:5601`. Stop the containers with `vendor/bin/sail down`.
+
+::: warning Elasticsearch Version
+The Sail file runs Elasticsearch 7.17, while Bagisto's Elasticsearch client is version 8. Change the `elasticsearch` and `kibana` images to an 8.x release before you use Elasticsearch search; see [Configure Elasticsearch](../performance/configure-elasticsearch.md).
 :::
 
-The entrypoint reads `APP_URL`, `APP_KEY`, `APP_LOCALE`, `APP_CURRENCY`, `APP_TIMEZONE` and `APP_ADMIN_URL`, plus the `DB_*` variables. Setting `DB_HOST` to anything other than `127.0.0.1` or `localhost` skips the bundled database and waits for the external one. The default admin is `admin@example.com` / `admin123`.
+<a id="📱-mobile-app-installation"></a>
 
-#### Step 3: Access Your Store
+## Mobile App
 
-Open your browser and visit `http://localhost`
+Bagisto's open-source mobile app is a separate Flutter project. It talks to the store through the GraphQL API of the [bagisto-api](https://github.com/bagisto/bagisto-api) package, which you install in Bagisto first. The app's [README](https://github.com/bagisto/opensource-ecommerce-mobile-app) lists the Flutter, Dart, Android Studio and Xcode versions it needs, and where to set your store's endpoint.
 
-### Method 2: Using Docker Compose
+<a id="🛠️-common-troubleshooting"></a>
 
-For more control and customization:
+## Troubleshooting
 
-#### Step 1: Clone Repository
+- **Pages or assets return 404.** The web server's document root must be `public/`, not the project root.
+- **Images are broken.** `APP_URL` must match the address you open, including the scheme and port. Also check that `public/storage` exists; `php artisan storage:link` creates it as a link to `storage/app/public`, where uploads are stored.
+- **Changes to `.env` have no effect.** Clear the cached configuration with `php artisan optimize:clear`.
+- **Mixed content warnings behind HTTPS.** `bootstrap/app.php` already trusts every proxy (`$middleware->trustProxies(at: '*')`), so Laravel follows the `X-Forwarded-Proto` and `X-Forwarded-Host` headers your proxy or load balancer sends. Set `APP_URL` to the `https://` address, and make sure the proxy sends those headers.
 
-```bash
-git clone https://github.com/bagisto/bagisto-docker.git bagisto-docker
-cd bagisto-docker
-```
+  If the proxy can't send them, force HTTPS URLs in the `boot()` method of `app/Providers/AppServiceProvider.php`, and import `Illuminate\Support\Facades\URL` at the top of the file:
 
-#### Step 2: Pick a web server runtime
+  **File:** `app/Providers/AppServiceProvider.php`
 
-The repository ships **three interchangeable web server runtimes** — pick whichever you want to run. Each has its own compose file that builds the runtime image and brings up MySQL, phpMyAdmin and Mailpit:
-
-| Runtime | Web server | Compose file |
-|---------|------------|--------------|
-| `nginx-php`     | Nginx + PHP-FPM       | `docker-compose.nginx-php.yml` |
-| `litespeed-php` | OpenLiteSpeed + lsphp | `docker-compose.litespeed-php.yml` |
-| `apache-php`    | Apache + mod_php      | `docker-compose.apache-php.yml` |
-
-Adjust the `uid` (to your host UID) or the ports in the chosen file if needed:
-
-```yaml
-services:
-  nginx-php:
-    build:
-      args:
-        uid: 1000 # set to your host UID
-        user: $USER
-        container_project_path: /var/www/html/
-      context: ./runtimes/nginx-php
-      dockerfile: Dockerfile
-    image: nginx-php
-    ports:
-      - 80:80
-      - 5173:5173 # Vite dev server
-    volumes:
-      - ./workspace/:/var/www/html/
-
-  # ... plus mysql, phpmyadmin and mailpit services
-```
-
-#### Step 3: Launch Services
-
-Run the setup script to initialize and build everything:
-
-```bash
-sh setup.sh
-```
-
-This one-time script **asks which runtime you want** (`nginx-php`, `litespeed-php`, or `apache-php`), then builds that runtime's image, starts the services, installs Bagisto into the `workspace/` directory, and seeds demo data. Once completed, you can access Bagisto through your browser.
-
-#### Step 4: Access Services
-
-- **Store**: `http://localhost`
-- **Admin Panel**: `http://localhost/admin`
-- **PHPMyAdmin**: `http://localhost:3030`
-- **Mailpit**: `http://localhost:8025`
-
-::: tip Managing Services
-Use the compose file for your chosen runtime. To stop the services, run:
-```bash
-docker compose -f docker-compose.nginx-php.yml down
-```
-
-To start them again, use:
-```bash
-docker compose -f docker-compose.nginx-php.yml up -d
-```
-:::
-
-## ⛵ Laravel Sail Installation
-
-Laravel Sail provides a Docker-powered development environment with pre-configured services for Bagisto.
-
-### Prerequisites
-
-- [Docker](https://docs.docker.com/install/) installed on your system
-- [Docker Compose](https://docs.docker.com/compose/install/)
-
-### Step 1: Get Bagisto
-
-You can get Bagisto in two ways:
-
-- **Method 1: Composer**  
-  Create a new project using Composer. See [GUI Installation - Method 1](#method-1-using-composer) for step-by-step instructions.
-
-- **Method 2: Download Package**  
-  Download the package from the [official website](https://bagisto.com/en/download/) or clone the [GitHub repository](https://github.com/bagisto/bagisto). Refer to [GUI Installation - Method 2](#method-2-download-package) for details.
-
-### Step 2: Install Sail
-
-For a fresh project clone, install dependencies (use `php83-composer` for Bagisto 2.4):
-```bash
-docker run --rm \
-    -u "$(id -u):$(id -g)" \
-    -v "$(pwd):/var/www/html" \
-    -w /var/www/html \
-    laravelsail/php84-composer:latest \
-    composer require laravel/sail --dev --ignore-platform-reqs
-```
-
-Bagisto's `docker-compose.yml` is a Sail file; it is not used by the production images above.
-
-For existing projects:
-```bash
-composer require laravel/sail --dev
-```
-
-### Step 3: Configure Environment
-
-Update your `.env` file with Sail-specific configurations:
-
-```properties
-# Database Configuration
-DB_CONNECTION=mysql
-DB_HOST=mysql
-DB_PORT=3306
-DB_DATABASE=bagisto
-DB_USERNAME=sail
-DB_PASSWORD=password
-
-# Redis Configuration
-REDIS_HOST=redis
-REDIS_PASSWORD=null
-REDIS_PORT=6379
-
-# Mail Configuration
-MAIL_MAILER=smtp
-MAIL_HOST=mailpit
-MAIL_PORT=1025
-
-# Elasticsearch Configuration
-ELASTICSEARCH_HOST=http://elasticsearch:9200
-```
-
-### Step 4: Build and Start Services
-
-```bash
-# Build containers
-vendor/bin/sail build --no-cache
-
-# Start services in background
-vendor/bin/sail up -d
-```
-
-### Step 5: Install Bagisto
-
-```bash
-vendor/bin/sail artisan bagisto:install
-```
-
-### Step 6: Access Services
-
-- **Store**: `http://localhost`
-- **Admin Panel**: `http://localhost/admin`
-- **MailPit (Email Testing)**: `http://localhost:8025`
-- **Kibana (Elasticsearch UI)**: `http://localhost:5601`
-
-::: tip Available Services
-Sail includes Laravel, MySQL, Redis, Elasticsearch, Kibana, and MailPit for a complete development environment.
-:::
-
-::: tip Managing Sail
-To stop services: `vendor/bin/sail down`
-
-To restart: `vendor/bin/sail up -d`
-
-To view logs: `vendor/bin/sail logs`
-:::
-
-## 🌐 Accessing Your Store
-
-### Production Environment
-
-Access your store using your domain:
-```text
-https://yourdomain.com
-```
-
-::: tip Info
-If your Apache (or Nginx) document root is properly mapped to the `public/` directory of your Bagisto project, your store will be accessible at your domain.
-:::
-
-### Development Environment
-
-Use the built-in development server:
-```bash
-php artisan serve
-```
-Then visit: `http://localhost:8000`
-
-### Admin Panel
-
-Access the admin panel at:
-```text
-https://yourdomain.com/admin
-```
-
-**Default Credentials:**
-- Email: `admin@example.com`
-- Password: `admin123`
-
-::: tip Security
-Change the default admin credentials immediately after installation!
-:::
-
-### Customer Registration
-
-Customers can register at:
-```text
-https://yourdomain.com/customer/register
-```
-
-## 📱 Mobile App Installation
-
-Bagisto also provides a mobile application for your eCommerce store.
-
-### Prerequisites
-
-**Required Versions:**
-- Bagisto: v2.0.0 or higher
-- Android Studio: Flamingo 2022.2.1 or newer
-- Flutter: 3.10.1 or higher
-- Dart: 3.0.1 or higher
-- Xcode: 14.3 or newer (for iOS)
-- Swift: 5 or higher
-
-**Minimum Device Support:**
-- Android: API level 21+
-- iOS: 12.0+
-
-::: tip Before You Start
-Make sure you can run a simple "Hello World" Flutter app first to verify your development environment is properly configured.
-:::
-
-### Clone the repository
-
-- Open your terminal or command prompt
-- Navigate to the directory where you want to save the project
-- Use the git clone command followed by the repository URL
-
-```bash
-git clone https://github.com/bagisto/opensource-ecommerce-mobile-app.git
-```
-
-### Install dependencies
-
-- Navigate to the project's directory
-
-```bash
-cd <repository-name>
-```
-  
-- Run the following command to install the required packages
-
-```bash
-flutter pub get
-```
-
-### Generate Required files
-
-- Navigate to the project's directory
-
-```bash
-cd <repository-name>
-```
-
-- Run the following command to generate the required files
-
-```bash
-flutter pub run build_runner build --delete-conflicting-outputs 
-```
-
-### Connect a device or emulator
-
-* Physical Device
-
-  1. Enable USB debugging on your device
-  2. Connect it to your computer using a USB cable.
-
-* Emulator
-
-  1. Start an Android or iOS emulator using your preferred IDE or tools.
-
-### Run the Project
-
-- Use the following command to build and run the project
-
-```bash
-flutter run
-```
-### Minimum Versions
-
-- Android: 21
-- iOS: 12
-
-### Configurations Steps
-
-### For Setup
-
-Change the baseUrl  as per your store
-
-**Path:** lib/utils/server_configuration.dart
-
-```bash
-static const String baseUrl = ‘....’;
-```
-
-:::tip Note
-Add the value of the complete URL ending with the GraphQL API endpoint. E.g - https://example.com/graphql 
-:::
-
-### For Theme
-
-Change the Theme for your app
-
-**Path:** lib/utils/mobikul_theme.dart
-
-```bash
-static const Color primaryColor = Color(***********);  
-static const Color accentColor = Color(***********); 
-```
-
-### For Push Notification Service
-
-- Android 
-
-Replace "google-services.json".
-- iOS 
-
-Replace "GoogleService-Info.plist".
-
-:::tip Note
-Helpful Articles
-
-Android  → https://mobikul.com/knowledgebase/generating-google-service-file-enable-fcm-firebase-cloud-messaging-android-application/
-
-iOS → https://mobikul.com/knowledgebase/generating-new-googleservice-info-plist-file-fcm-based-project-ios-app/
-:::
-
-### For Application Title
-
-* Android
-
-  1. **Path:** android/app/src/main/AndroidManifest.xml
-  2. **Change app name:** android:label="***********"
-
-* iOS
-
-  1. Go to the general tab and identity change the display name to your app name
- 
-:::tip Note 
-For Homepage Header Title - Go to ‘assets/language/en.json’
-(Note: Here, “en” in en.json refers to the languages that would be supported within the application)
-:::
-
-### For Splash Screen
-
-* For adding Lottie as Splash Screen
-
-  1. **Path:** assets/lottie/splash_screen.json
-  2. After updating the Lottie file, update the ‘splashLottie’ in lib/utils/assets_constants.
-
-```bash
- static const String splashLottie = "assets/lottie/splash_screen.json";
-```
- 
-* For adding an Image as a Splash Screen
-
-  1. **Path:** assets/images/splash.png
-  2. After updating the Image file, update the ‘splashImage’ in lib/utils/assets_constants.
-
-```bash
-  static const String splashImage = "assets/images/splash.png";
-```
-### For App Icon
-
-* **Android:** Open the android folder in Android Studio and then right click app > new > Image Asset set Image.
-* **iOS:** Replace the icons over the path > ios/Runner/Assets.xcassets/AppIcon.appiconset
-
-## 🛠️ Common Troubleshooting
-
-If you encounter issues after installation, check the following:
-
-- **Web Server Document Root**: Ensure your Apache or Nginx document root is mapped to the `public/` directory of your Bagisto project. Incorrect mapping can cause routing, asset, or image issues.
-
-- **APP_URL for Images**: If images are broken, verify that the `APP_URL` in your `.env` file matches your site's actual URL (including port if needed). A mismatch can cause asset loading problems.
-
-- **Storage Link Issue**: If product images or uploads are not displaying, ensure you have run:
-
-  ```bash
-  php artisan storage:link
-  ```
-  This command creates a symbolic link from `public/storage` to `storage/app/public`. If you still face issues, check your server permissions and that the link exists.
-
-- **Mixed Content (HTTPS/HTTP) Error**: Mixed content errors occur when resources are loaded over HTTP while your site is served over HTTPS, causing browsers to block insecure requests and break the homepage or assets. To resolve this:
-
-  **Solution 1: Basic Checks:**
-  - Ensure `APP_URL` in your `.env` file starts with `https://` if your site uses SSL.
-  - Update any hardcoded URLs in your configuration, database, or theme files to use `https://`.
-  - Clear your application cache:
-    ```bash
-    php artisan optimize:clear
-    ```
-  - If using a CDN or proxy, make sure it is configured to serve assets over HTTPS.
-
-  **Solution 2: Setup Trusted Proxies (Laravel 11+)**
-
-  If your app is behind a load balancer, reverse proxy, or CDN (Cloudflare, AWS ELB, etc.), configure trusted proxies in `bootstrap/app.php`:
-  ```php{9,12-15}
-  <?php
-
-  ...
-
-  return Application::configure(basePath: dirname(__DIR__))
-      //
-      ->withMiddleware(function (Middleware $middleware) {
-          // Trust all proxies
-          $middleware->trustProxies(at: '*');
-          
-          // Or specify proxy IPs
-          $middleware->trustProxies(at: [
-              '192.168.1.1',
-              '10.0.0.0/8',
-          ]);
-      })
-      ->withExceptions(function (Exceptions $exceptions) {
-          //
-      })
-      ->create();
-  ```
-
-  **Solution 3: Force HTTPS Schema in Service Provider**
-
-  To force all URLs to use HTTPS, add this to the `boot()` method of your `AppServiceProvider`:
-
-  ```php{24}
-  <?php
-
-  namespace App\Providers;
-
-  use Illuminate\Support\ServiceProvider;
-  use Illuminate\Support\Facades\URL;
-
-  class AppServiceProvider extends ServiceProvider
+  ```php
+  /**
+   * Bootstrap any application services.
+   */
+  public function boot(): void
   {
-      /**
-       * Register any application services.
-       */
-      public function register(): void
-      {
-          //
-      }
+      ParallelTesting::setUpTestDatabase(function (string $database, int $token) {
+          Artisan::call('db:seed');
+      });
 
-      /**
-       * Bootstrap any application services.
-       */
-      public function boot(): void
-      {
-          if (config('app.env') === 'production') {
-              URL::forceScheme('https');
-          }
+      if ($this->app->isProduction()) {
+          URL::forceScheme('https');
       }
   }
   ```
 
-  This ensures all generated URLs use HTTPS in production.
+## Things to Watch
+
+<a id="use-php-artisan-dev"></a>
+
+- **`php artisan dev` needs setup first.** Laravel 13's `dev` command starts three processes, listed by `php artisan dev:list`:
+  - `server`: `php artisan octane:start --watch`, registered by `laravel/octane`, which Bagisto requires, in place of `php artisan serve`. It needs an Octane server installed and configured (RoadRunner, unless `OCTANE_SERVER` names another), and `--watch` needs Node.js and the `chokidar` package; see [Configure Laravel Octane](../performance/configure-laravel-octane.md).
+  - `queue`: `php artisan queue:listen --tries=1 --timeout=0`.
+  - `vite`: the root `npm run dev`, which runs the Laravel skeleton's `vite.config.js` and doesn't build the admin or storefront assets. For those, run `npm run dev` inside `packages/Webkul/Shop` or `packages/Webkul/Admin`.
+
+  `dev` starts the processes through `@laravel/multiplex` (`concurrently` on Windows) with your package manager (`npx` for npm), so Node.js must be installed.
+
+## Next Step
+
+[Architecture Overview](../architecture/overview.md) maps where everything lives in your new project. When the store is ready to go live, follow [Deployment](./deployment.md).

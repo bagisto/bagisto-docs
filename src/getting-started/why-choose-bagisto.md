@@ -1,31 +1,36 @@
 # Why Choose Bagisto?
 
-When it comes to building a modern and scalable eCommerce store, choosing the right platform can make all the difference. Here's why [Bagisto](https://bagisto.com/) stands out as the perfect choice for your business.
+[Bagisto](https://bagisto.com/) is an open-source e-commerce platform, released under the MIT licence and built as a Laravel application. You install the whole application, then extend it with your own Laravel packages and themes, the same way its own features are built.
 
-## ⚡ Modern Technology Stack
+## A Stack You Already Know
 
-Bagisto is built on the trusted [Laravel](https://laravel.com/) framework, styled with [Tailwind CSS](https://tailwindcss.com/), and powered by [Vue.js](https://vuejs.org/) for a seamless, responsive, and lightning-fast experience. This modern stack ensures your store is secure, scalable, and easy to maintain.
+- Laravel 13 on PHP 8.4, with Vue.js 3, Tailwind CSS 4 and Vite for the admin and the storefront.
+- MySQL 8.0, MariaDB 10.11 or PostgreSQL 16.
+- Every feature is one of the 42 packages under `packages/Webkul/`, so the code you extend has the same shape as the code you write. See [Architecture Overview](../architecture/overview.md).
 
-## 🎨 Unmatched Customization and Branding
+## Commerce Features in the Core
 
-Unlike many rigid eCommerce solutions, Bagisto gives you complete control over your store's look and feel. From themes and layouts to branding elements, everything can be customized to match your business identity. Plus, its integrated marketing tools make attracting and engaging customers much easier.
+- **Catalog:** simple, configurable, grouped, bundle, downloadable, virtual and booking products; attribute families; a category tree; catalog price rules.
+- **Selling:** multiple channels, locales and currencies; cart rules and coupons; orders, invoices, shipments and refunds; tax categories and rates.
+- **Payments and shipping:** cash on delivery, money transfer, PayPal, Stripe, Razorpay, PayU, PayGlocal and PhonePe; flat rate and free shipping, plus any carrier you add.
+- **Customers:** accounts, groups, wishlists, product comparison, reviews, social login, GDPR data requests, returns (RMA) and EU withdrawal requests.
+- **Search and SEO:** database or Elasticsearch search, search terms and synonyms, URL rewrites, meta fields, XML sitemaps and a `robots.txt` per channel.
+- **Operations:** a full page cache, data import, Amazon S3 and Cloudflare R2 storage, and production Docker images.
 
-## 🔍 Built-In SEO Advantage
+The admin and the storefront are translated into 22 locales.
 
-Bagisto comes with robust SEO features right out of the box, helping your store rank higher in search results and attract organic traffic without relying heavily on plugins or external tools.
+## Generative AI and AI Agent Tools
 
-## 💳 Flexible Payment and Shipping Integrations
+- [Generative AI (Magic AI)](../ai/magic-ai.md) writes product content, generates images, translates reviews, powers image search and writes personalized checkout messages. It works with OpenAI, Anthropic, Gemini, Groq, Mistral, DeepSeek, xAI or a self-hosted Ollama model.
+- [WebMCP](../ai/webmcp.md) declares storefront actions as tools that a browser AI agent can call for the shopper: open a product, add it to the wishlist, or open the wishlist, the cart or the checkout.
+- [Agent skills and llms.txt](../ai/introduction.md) teach AI coding agents Bagisto's conventions.
 
-Whether your customers prefer local payment gateways or international options, Bagisto has you covered. With support for multiple payment methods and seamless integration with major shipping providers, order fulfillment becomes smooth and efficient.
+## Built to Be Extended
 
-## 🤖 Generative AI and Agentic Commerce, Built In
+- Add features as packages, change the storefront with themes, and react to core behaviour through events, without editing core files.
+- REST and GraphQL APIs come from the separate `bagisto/bagisto-api` package; see [REST and GraphQL APIs](../api/introduction.md), and the endpoint reference at [api-docs.bagisto.com](https://api-docs.bagisto.com/).
+- [Bagisto Visual](https://visual.bagistoplus.com/) is a community-built visual theme editor for Bagisto.
 
-Bagisto ships with generative AI in the core rather than as an add-on. [Generative AI (Magic AI)](../ai/magic-ai.md) works in the admin and on the storefront: it writes product and page copy, generates product images, translates reviews, understands the photos shoppers search with, and personalises the order confirmation, on any of eight AI providers including self-hosted Ollama. On the storefront, [WebMCP](../ai/webmcp.md) declares the shop's actions as tools for browser AI agents, so an agent can search, open a product, manage a wishlist and reach checkout for the shopper. Developers get [agent skills and llms.txt](../ai/introduction.md) that teach their coding agents Bagisto's conventions. See [AI in Bagisto](../ai/introduction.md) for what each capability does and does not do.
+## Next Step
 
-## 🎯 Visual Builder for Effortless Store Customization
-
-Want to design your store without writing code? Check out [Bagisto Visual](https://visual.bagistoplus.com/), a powerful visual builder created by our dedicated community contributors. Build and customize your Bagisto store with an intuitive drag-and-drop interface, making professional eCommerce design accessible to everyone. Explore it on [GitHub](https://github.com/bagistoplus/visual) and see how easy store building can be.
-
-::: info The Bottom Line
-Choosing Bagisto means choosing flexibility, performance, and long-term growth. With its modern technology, deep customization options, strong SEO foundation, and comprehensive eCommerce tools, Bagisto is more than just a platform — it's the partner your business needs to succeed online.
-:::
+[Before You Start](./before-you-start.md) lists what you need on your machine.

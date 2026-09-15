@@ -1,116 +1,41 @@
 # Getting Started
 
-Creating custom payment methods in Bagisto allows you to integrate any payment gateway or processor with your store. Whether you need local payment methods, cryptocurrency payments, or specialized payment flows, custom payment methods provide the flexibility your business requires.
-
-For our tutorial, we'll create a **Custom Stripe Payment** method that demonstrates all the essential concepts you need to build any type of payment solution.
-
-::: info What You'll Learn
-By the end of this guide, you'll be able to:
-- Understand Bagisto's payment architecture
-- Create custom payment methods using generator or manual approaches
-- Configure admin interfaces for payment settings
-:::
-
-## Understanding Bagisto Payment Architecture
-
-Bagisto's payment system is built around a flexible method-based architecture that separates configuration from business logic:
-
-### Core Components
-
-| Component | Purpose | Location |
-|-----------|---------|----------|
-| **Payment Methods Configuration** | Defines payment method properties | `Config/payment-methods.php` |
-| **Payment Classes** | Contains payment processing logic | `Payment/ClassName.php` |
-| **System Configuration** | Admin interface forms | `Config/system.php` |
-| **Routes and controller** | The gateway redirect, return and webhook endpoints, for methods that leave the site | `Routes/web.php`, `Http/Controllers/` |
-| **Service Provider** | Registers payment method | `Providers/ServiceProvider.php` |
-| **Payment facade** | Core's collector: `Payment::getPaymentMethods()` resolves every configured class, keeps the available ones and sorts them; `Payment::getRedirectUrl($cart)` asks the chosen method where to send the customer | `Webkul\Payment\Payment`, `payment()` helper |
-
-### Key Features
-
-- **Flexible Payment Processing**: Support for redirects, APIs, webhooks, or custom flows
-- **Configuration Management**: Admin-friendly settings interface
-- **Multi-channel Support**: Different settings per sales channel
-- **Extensible Architecture**: Easy integration with third-party gateways
-
-### Reference implementations in core
-
-Every gateway Bagisto ships is a package built exactly this way, and the best documentation for a flow is the closest one: `Webkul\Payment` (`cashondelivery`, `moneytransfer`; no redirect), `Webkul\Paypal` (Standard: redirect and IPN webhook; Smart Button: client-side capture), `Webkul\Stripe`, `Webkul\Razorpay`, `Webkul\PayU`, `Webkul\PhonePe` and `Webkul\PayGlocal` (hosted checkout with a signed return token and a settlement webhook).
-
-## Development Workflow
-
-The typical workflow for creating a custom payment method follows these steps:
-
-### 1. Create Your Payment Method
-Choose between package generator (quick) or manual setup (educational) to create a complete working payment method.
-
-**📖 [Create Your First Payment Method →](./create-your-first-payment-method.md)**
-
-This section shows you how to build a complete working payment method, then the remaining sections help you understand how to customize each component.
-
-### 2. Understand Payment Configuration
-Learn how payment configuration works and how to customize payment method properties.
-
-**📖 Next:** [Understanding Payment Configuration](./understanding-payment-configuration.md)
-
-### 3. Understand Payment Logic
-Explore how the payment class handles processing and payment method behavior.
-
-**📖 Next:** [Understanding Payment Class](./understanding-payment-class.md)
-
-You'll have a complete working payment method after step 1, and steps 2-3 help you understand how to customize and extend it.
-
-## Prerequisites
-
-Before you begin, ensure you have:
-
-- **Bagisto Installation**: A working Bagisto development environment
-- **PHP Knowledge**: Familiarity with PHP 8.4 (8.3 on Bagisto 2.4) and Laravel concepts
-- **Package Development**: Basic understanding of Laravel service providers ([Package Development Guide](../package-development/getting-started.md))
-- **Development Tools**: Composer, Git, and a code editor
-
-::: tip Quick Start Path
-**New to Bagisto?** Start with the [package generator approach](./create-your-first-payment-method.md#method-1-using-bagisto-package-generator-quick-setup) for your first payment method.
-
-**Want to understand everything?** Follow the [manual setup approach](./create-your-first-payment-method.md#method-2-manual-setup-complete-understanding) for complete control and learning.
-:::
+A payment method in Bagisto is a class the checkout offers as a way to pay, added from a package through merged configuration. This section builds one method, then explains its configuration and its class, including the redirect flow a real gateway needs, without editing a core package.
 
 ## What You'll Build
 
-Throughout this guide, you'll create a **Custom Stripe Payment** method that includes:
+**`Webkul\CustomStripePayment`**, a package that adds the payment method `custom_stripe_payment`:
 
-### Core Features
-- ✅ **Basic Payment Processing**: Without redirect url
-- ✅ **Admin Configuration**: Complete settings interface in Bagisto admin
-- ✅ **Order Integration**: Seamless integration with Bagisto's order system
-- ✅ **Multi-channel Support**: Different value per sales channel
+- a **Credit Card (Stripe)** option, with a logo, on the checkout's payment step
+- an order placed as soon as the customer confirms, as with cash on delivery; the tutorial method doesn't charge a card
+- a **Custom Stripe Payment** section in the admin's payment method configuration, with its status, title, description, logo and sort order per channel
 
-## Architecture Overview
+## How It Works
 
-```text
-Custom Stripe Payment Package
-├── src/
-│   ├── Payment/
-│   │   └── CustomStripePayment.php     # Payment processing logic
-│   ├── Config/
-│   │   ├── payment-methods.php         # Payment method definition
-│   │   └── system.php                  # Admin interface configuration
-│   └── Providers/
-│       └── ServiceProvider.php         # Package registration
-├── composer.json                       # Package metadata
-└── README.md                           # Documentation
-```
+Paths are relative to `packages/Webkul/CustomStripePayment/src`.
 
-::: info Development Time Estimate
-- **Basic Implementation**: 2-3 hours (using generator)
-- **Custom Logic**: 4-6 hours (manual setup + payment integration)
-- **Testing & Polish**: 2-4 hours (admin testing, payment flow validation)
-:::
+| Part | File | Plugs into |
+|---|---|---|
+| Payment method configuration | `Config/payment-methods.php` | Merged into `config('payment_methods')`; its `class` key names the payment class |
+| Payment class | `Payment/CustomStripePayment.php` | Extends `Webkul\Payment\Payment\Payment`; `getRedirectUrl()` decides whether the customer leaves the site |
+| System configuration | `Config/system.php` | Merged into `config('core')` as the section `sales.payment_methods.custom_stripe_payment`, which the class's `getConfigData()` reads |
+| Service provider | `Providers/CustomStripePaymentServiceProvider.php` | Merges both files; listed in `bootstrap/providers.php` |
 
-## Ready to Start?
+The checkout lists every method whose `isAvailable()` returns true, sorted by its `sort` setting (`Webkul\Payment\Payment::getPaymentMethods()`), and checks the choice against that list again before placing the order. When the customer places it, a method whose `getRedirectUrl()` returns a URL sends them there and no order exists yet; a method that returns nothing has the order created at once. A gateway that redirects also needs routes and a controller for the return leg; [Understanding the Payment Class](./understanding-payment-class.md#the-redirect-flow) walks through core's.
 
-Choose your learning path and begin building your custom payment method:
+## Prerequisites
 
-**🚀 [Create Your First Payment Method →](./create-your-first-payment-method.md)**
+- Bagisto 2.5, installed and running: see [Installation](../getting-started/installation.md).
+- How a package is autoloaded and its provider registered: see [Package Development](../package-development/getting-started.md).
 
-This section covers both package generator and manual approaches, helping you understand the foundations while building a working payment method.
+## The Path
+
+1. [Creating Your First Payment Method](./create-your-first-payment-method.md): build the package by hand and place an order with it. To scaffold it instead, see [Package Generator](../tools/package-generator.md#payment-and-shipping-method-packages).
+2. [Understanding Payment Configuration](./understanding-payment-configuration.md): the `payment-methods.php` keys and the admin section.
+3. [Understanding the Payment Class](./understanding-payment-class.md): what the base class provides, availability, and the redirect, return and webhook flow.
+
+## Next Step
+
+Start by building the package.
+
+**Continue to:** [Creating Your First Payment Method](./create-your-first-payment-method.md)

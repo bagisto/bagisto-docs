@@ -1,553 +1,167 @@
-# Bagisto Backend Overview
+# Backend Architecture
 
-The Bagisto backend follows a modular, package-based architecture that promotes scalability, maintainability, and extensibility. Each functional area is organized into dedicated packages, allowing developers to work with specific components independently while maintaining seamless integration across the entire system.
+This page maps Bagisto's server side: how a request travels through the application, the building blocks every package uses, and what each of the 42 core packages holds. Each section links to the guide that explains its topic in full.
 
-Built on top of Laravel's robust foundation, Bagisto leverages the **Prettus L5 Repository** pattern to provide a clean abstraction layer between the application logic and data access operations. This repository pattern implementation ensures consistent data handling across all packages while maintaining code quality and testability standards.
+## How a Request Is Handled
 
-## Modular Design in Bagisto
+1. `public/index.php` boots the application from `bootstrap/app.php`. Laravel loads every service provider in `bootstrap/providers.php`, and Concord loads the modules listed in `config/concord.php`.
+2. The global middleware added in `bootstrap/app.php` runs: `Webkul\Core\Http\Middleware\SecureHeaders` sets the security headers, and `Webkul\Installer\Http\Middleware\CanInstall` sends every request to `/install` until Bagisto is installed.
+3. The route decides which middleware stack applies:
 
-Bagisto is built on a modular architecture that enhances flexibility, scalability, and maintainability. This design philosophy allows developers to manage and extend the application efficiently by organizing functionality into discrete, well-structured packages.
+   | Area | Routes | Middleware |
+   |---|---|---|
+   | Admin | `packages/Webkul/Admin/src/Routes/`, prefixed with `config('app.admin_url')` | `web` and Bagisto's maintenance check; every page except sign-in, password reset and two-factor verification also passes `admin` (the `Bouncer`: sign-in, account status, permissions, two-factor authentication) and `NoCacheMiddleware` |
+   | Storefront | `packages/Webkul/Shop/src/Routes/web.php` and `api.php` | `web`, the `shop` group (`Theme`, `Locale`, `Currency`) and the maintenance check; the home, category, product, CMS, search, compare and contact pages add `cache.response` for the full page cache |
+   | Payment gateways | `Routes/` in the Stripe, PayU, Razorpay, PhonePe and PayGlocal packages, and `Http/routes.php` in Paypal | Set by each gateway |
+   | Web installer | `packages/Webkul/Installer/src/Routes/web.php` | `web`, with the installer's own session and locale middleware |
 
-### Key Benefits of Modular Design
+4. The controller reads and writes data through repositories, which return Concord models. Writes are wrapped in `before` and `after` events. Controllers, repositories, DataGrids and listeners are resolved from the container, so a package can bind a subclass in place of a core one.
+5. The response is usually a Blade view. The Theme package resolves `shop::` and `admin::` views against the active theme before the package's own views ([how views are resolved](../theme-development/creating-store-theme.md#how-views-are-resolved)), and `view_render_event()` calls in the templates let other packages add markup.
+6. In the browser, the layout loads the Vite bundle and mounts the Vue app; see [Frontend Architecture](./frontend.md).
 
-- **Separation of Concerns**: Each module encapsulates specific functionality, creating clear boundaries between different application components
-- **Reusability**: Modules can be leveraged across multiple projects, reducing development time and effort duplication
-- **Maintainability**: Isolated modules simplify bug identification, debugging, and feature implementation without impacting unrelated components
-- **Scalability**: New modules can be added seamlessly without requiring major modifications to the existing codebase
+## Models, Contracts and Proxies
 
-### Module Structure in Bagisto
+Bagisto uses [Concord](https://github.com/artkonekt/concord) so that one package can replace another package's model without editing it. Every entity has three parts:
 
-Every Bagisto module follows a standardized structure that ensures consistency and simplifies management. A typical module includes:
+| Part | Example | Role |
+|---|---|---|
+| Contract | `Webkul\Category\Contracts\Category` | An empty interface that names the entity |
+| Model | `Webkul\Category\Models\Category` | The Eloquent model, which implements the contract |
+| Proxy | `Webkul\Category\Models\CategoryProxy` | Resolves to whichever model is registered for the contract |
 
-```text
-packages/Webkul/Module/
-├── src/
-│   ├── Config/
-│   │   ├── acl.php
-│   │   ├── admin-menu.php
-│   │   └── system.php
-│   ├── Contracts/
-│   │   └── Module.php
-│   ├── Database/
-│   │   ├── Migrations/
-│   │   ├── Seeders/
-│   │   └── Factories/
-│   ├── Http/
-│   │   ├── Controllers/
-│   │   │   ├── Admin/
-│   │   │   └── Shop/
-│   │   ├── Middleware/
-│   │   └── Requests/
-│   ├── Listeners/
-│   ├── Models/
-│   │   ├── Module.php
-│   │   └── ModuleProxy.php
-│   ├── Providers/
-│   │   ├── ModuleServiceProvider.php
-│   │   └── ModuleModuleServiceProvider.php
-│   ├── Repositories/
-│   │   └── ModuleRepository.php
-│   ├── Resources/
-│   │   ├── views/
-│   │   ├── lang/
-│   │   └── assets/
-│   └── Routes/
-│       ├── admin-routes.php
-│       └── shop-routes.php
-└── tests/
-    ├── Unit/
-    └── Feature/
+A package lists its models in the `$models` array of its `ModuleServiceProvider`, which in most core packages extends `Webkul\Core\Providers\CoreModuleServiceProvider`. Code that crosses packages refers to the contract or the proxy, never the concrete model: a repository's `model()` returns the contract, and a relation uses the proxy, as in `RMAStatusProxy::modelClass()`. See [Models](../package-development/models.md), including [Extending a Core Model](../package-development/models.md#extending-a-core-model).
+
+<a id="repository-pattern-in-bagisto"></a>
+
+## Repositories
+
+All database access goes through repositories. A repository extends `Webkul\Core\Eloquent\Repository`, which extends Prettus's `BaseRepository`, and its `model()` method returns the contract of the model it works with, such as `'Webkul\Attribute\Contracts\AttributeGroup'`.
+
+- On top of Prettus's methods, the base class adds `findOneByField()`, `findOneWhere()`, `findOrFail()`, `sum()`, `avg()` and `getModel()`.
+- It caches reads, controlled by `config/repository.php` and invalidated through a per-repository generation token; see [Repository Cache](../advanced/cache-strategy.md#repository-cache).
+- Controllers, listeners and jobs receive repositories through constructor injection. The one place allowed to build a query directly is a DataGrid's `prepareQueryBuilder()`.
+
+See [Repositories](../package-development/repositories.md).
+
+## Events and View Render Events
+
+Bagisto's events are dot-delimited strings, usually fired in `before` and `after` pairs around a write:
+
+**File:** `packages/Webkul/Admin/src/Http/Controllers/Catalog/ProductController.php`
+
+```php
+Event::dispatch('catalog.product.update.before', $id);
+
+$product = $this->productRepository->update($request->all(), $id);
+
+Event::dispatch('catalog.product.update.after', $product);
 ```
 
-**Key Components:**
+Each package maps listeners to event names in the `$listen` array of its own `EventServiceProvider`; see [Event Listeners](../advanced/event-listeners.md) for the events core fires.
+
+Core templates also call `view_render_event()` at named points, such as `bagisto.shop.layout.body.after`. A package adds markup there by listening for the event and adding a template to the `Webkul\Theme\ViewRenderEventManager`; see [View Render Events](../advanced/view-render-events.md).
+
+## Menus, Permissions and Configuration
+
+The admin menu, the permissions, the system configuration fields and several registries are PHP arrays that packages merge into shared configuration keys with `mergeConfigFrom()`, in their service provider's `register()` method:
+
+| Config key | Core entries | Used for |
+|---|---|---|
+| `menu.admin` | `Admin/src/Config/menu.php` | The admin sidebar, read through `menu()` (`Webkul\Core\Menu`), which hides items the admin has no permission for |
+| `menu.customer` | `Shop/src/Config/menu.php` | The customer account menu |
+| `acl` | `Admin/src/Config/acl.php` | Role permissions, read through `acl()` (`Webkul\Core\Acl`); the `Bouncer` maps each route name to a permission key |
+| `core` | `Admin/src/Config/system.php` | System configuration fields, read through `system_config()` (`Webkul\Core\SystemConfig`); saved values come from `core()->getConfigData($field, $channel, $locale)` |
+| `payment_methods` | `Config/payment-methods.php` in Payment and each gateway | Payment methods |
+| `carriers` | `Shipping/src/Config/carriers.php` | Shipping methods |
+| `product_types` | `Product/src/Config/product_types.php` | Product types |
+| `importers` | `DataTransfer/src/Config/importers.php` | Import types |
+
+In core, the Admin package defines the menu items, permissions and configuration fields for every package. Your package merges its own files into the same keys; see [Menu](../package-development/menu.md), [Access Control List](../package-development/access-control-list.md) and [System Configuration](../package-development/system-configuration.md). `mergeConfigFrom()` keeps an entry that is already set, so a package changes the class behind a core payment method, carrier, product type or importer from its provider's `boot()` instead; see [Overriding a Core Type](../product-type-development/understanding-product-type-configuration.md#overriding-a-core-type).
+
+## DataGrids
+
+Admin listings extend `Webkul\DataGrid\DataGrid` and implement `prepareQueryBuilder()` and `prepareColumns()`, and optionally `prepareActions()` and `prepareMassActions()`. The controller returns `datagrid(ProductDataGrid::class)->process()` for the listing's AJAX request, and `process()` applies the requested filters, sorting, pagination and export. See [DataGrid](../package-development/datagrid.md).
+
+## Helpers
+
+Packages define global helper functions in their `src/Http/helpers.php`:
+
+| Helper | Returns | Package |
+|---|---|---|
+| `core()` | `Webkul\Core\Core`: channels, locales, currencies and configuration values | Core |
+| `menu()`, `acl()`, `system_config()` | The menu, ACL and system configuration registries | Core |
+| `db_grammar()` | SQL fragments for the active database (MySQL, MariaDB or PostgreSQL) | Core |
+| `clean_content()` | HTML passed through HTMLPurifier, with Blade syntax removed | Core |
+| `bouncer()` | Permission checks for the signed-in admin | User |
+| `two_factor_authentication()` | `Webkul\User\TwoFactorAuthentication` | User |
+| `cart()` | The current cart (`Webkul\Checkout\Cart`) | Checkout |
+| `payment()`, `shipping()` | The payment and shipping method registries | Payment, Shipping |
+| `datagrid()` | An instance of the given DataGrid class | DataGrid |
+| `themes()` | The theme registry (`Webkul\Theme\Themes`) | Theme |
+| `bagisto_asset()` | The URL of a file a theme ships | Theme |
+| `bagisto_theme_storage()` | `Webkul\Theme\ThemeStorage`, for media a theme section stores | Theme |
+| `view_render_event()` | The rendered output of a view render event | Theme |
+| `image_manager()`, `image_urls()` | Laravel's image manager, and the resized URLs of an image | ImageCache |
+| `product_image()`, `product_video()`, `product_toolbar()` | Product media and listing toolbar helpers | Product |
+| `magic_ai()` | The Generative AI (Magic AI) service | MagicAI |
+
+[Understanding the Core Class](../advanced/understanding-core-class.md) documents `core()` method by method.
+
+<a id="modular-design-in-bagisto"></a>
+<a id="available-packages-in-bagisto"></a>
+
+## Packages
+
+Each package is autoloaded from `composer.json`, registers its service provider in `bootstrap/providers.php` and, when it has models, its `ModuleServiceProvider` in `config/concord.php`; [How a Package Is Wired In](./overview.md#how-a-package-is-wired-in) has the details, and [Inside a Package](./overview.md#inside-a-package) its directories. DebugBar, FPC, ImageCache, Installer, MagicAI, PhonePe and SocialShare have no module provider, and Admin, PayGlocal, Payment, Paypal, PayU, Razorpay, Rule, Shipping, Shop and Stripe have one with an empty `$models` list. `bootstrap/providers.php` also lists `Webkul\Core\Providers\EnvValidatorServiceProvider`, which stops the application when `DB_PREFIX` contains anything other than letters, digits and underscores.
+
+| Package | What it holds |
+|---|---|
+| Admin | The admin: routes, controllers, views, DataGrids, reporting, the command palette, and the menu, ACL and configuration fields |
+| Attribute | Attributes, attribute options, groups and families |
+| BookingProduct | The booking product type: default, appointment, event, rental and table slots, and bookings |
+| CartRule | Cart price rules, coupons and coupon usage |
+| CatalogRule | Catalog price rules and their per-product prices |
+| Category | The nested-set category tree and its translations |
+| Checkout | The cart: items, addresses, payment and shipping rates |
+| CMS | CMS pages and their translations |
+| Core | Channels, locales, currencies, exchange rates, countries and states, saved configuration and newsletter subscribers; the `core()` helpers, the menu, ACL and configuration registries, the database grammar, the dynamic SMTP mailer and the storage driver |
+| Customer | Customers, groups, addresses, notes, wishlists, compare items and the customer captcha |
+| DataGrid | The DataGrid base class, column types, saved filters and export |
+| DataTransfer | Imports: the importer registry, import batches and queued jobs |
+| DebugBar | DebugBar integration, with a collector that groups models, views and queries by package |
+| EUWithdrawal | EU right-of-withdrawal requests |
+| FPC | The full page cache on `spatie/laravel-responsecache`: cache profile, hasher, replacers and invalidation listeners |
+| GDPR | Customer data requests |
+| ImageCache | Resized images served at `cache/{template}/{path}`, and the template registry |
+| Installer | `bagisto:install`, the web installer and the seeders |
+| Inventory | Inventory sources |
+| MagicAI | Generative AI (Magic AI) through the Laravel AI SDK |
+| Marketing | Campaigns, email templates, events, search terms, search synonyms and URL rewrites |
+| Notification | Admin notifications for orders |
+| Omnibus | Price snapshots and the 30-day lowest price for the EU Omnibus directive |
+| PayGlocal | The PayGlocal payment gateway |
+| Payment | The base payment class, cash on delivery, money transfer and the `payment_methods` registry |
+| Paypal | PayPal Smart Button and PayPal Standard |
+| PayU | The PayU payment gateway |
+| PhonePe | The PhonePe payment gateway |
+| Product | Products, product types, attribute values, images, videos, reviews, customer group prices, customizable options, inventories, the flat table, and the price, inventory, flat and search indexers |
+| Razorpay | The Razorpay payment gateway |
+| RMA | Returns: requests, items, reasons, rules, statuses, custom fields and messages |
+| Rule | The condition engine that cart rules and catalog rules share |
+| Sales | Orders, invoices, shipments, refunds, transactions and purchased downloadable links |
+| Shipping | The base carrier class, flat rate and free shipping, and the `carriers` registry |
+| Shop | The storefront: routes, controllers, views, Blade components, the customer account, the storefront's JSON API and WebMCP |
+| Sitemap | XML sitemaps |
+| SocialLogin | Customer sign-in through social accounts |
+| SocialShare | Share links for products |
+| Stripe | The Stripe payment gateway |
+| Tax | Tax categories, tax rates and the mapping between them |
+| Theme | The theme registry and view finder, `@bagistoVite`, Appearance sections, theme storage and view render events |
+| User | Admins, roles, the `Bouncer` middleware and two-factor authentication |
 
-- **Config**: Module-specific configuration files for the admin menu, ACL permissions and system settings
-- **Contracts**: Interfaces for the package's models, which Concord binds to the concrete classes so another package can swap them
-- **Database**: Migrations for schema changes, seeders for sample data, and factories for testing data generation
-- **Http**: Controllers for admin and shop interfaces, middleware for request processing, and request validation classes
-- **Models**: Eloquent models defining data structures and relationships with proxy models for extensibility
-- **Providers**: The service provider registered in `bootstrap/providers.php`, and the module provider registered in `config/concord.php` for packages with models
-- **Repositories**: Repository pattern implementation providing abstraction layer for data access operations
-- **Resources**: Views for frontend presentation, language files for internationalization, and static assets
-- **Routes**: Separate routing files for admin and shop functionalities to maintain clear separation
-- **tests**: Pest tests, kept **outside `src/`** at the package root and registered as a suite in the root `phpunit.xml` (see [Testing Workflow](../advanced/testing.md))
+## Related Pages
 
-This modular approach enables developers to build robust, maintainable applications that are easy to extend and manage while following established architectural principles.
-
-## Repository Pattern in Bagisto
-
-Bagisto employs the **Repository Pattern** to further enhance the flexibility and maintainability of its codebase, adding an additional layer of abstraction on top of Laravel's Eloquent ORM to promote better code organization and consistency.
-
-### Benefits of the Repository Pattern
-
-- **Consistency**: Restricts the use of raw queries throughout the application, ensuring a standardized approach to database operations across all modules
-- **Maintainability**: Enhances code organization by centralizing data access logic, making it easier to manage and maintain complex database operations
-- **Flexibility**: Facilitates the implementation of changes without affecting the rest of the codebase, allowing for easier testing and modification
-- **Testability**: Enables better unit testing by providing mockable interfaces for data access operations
-
-### Implementation in Bagisto
-
-Bagisto utilizes the [Prettus Repository](https://github.com/prettus/l5-repository) package to facilitate the implementation of the **Repository Pattern**. This choice provides several benefits:
-
-- **Standardization**: Ensures a standardized approach to repository implementation across all packages
-- **Extensibility**: Makes it easier to extend and customize the application as needed without modifying core functionality
-- **Separation of Concerns**: Promotes a clear separation between business logic and data access logic
-- **Query Optimization**: Provides built-in features for caching, criteria-based filtering, and query optimization
-
-### Repository Structure
-
-Each repository in Bagisto follows a consistent structure with:
-
-- **Repository Contract**: Defines the interface that repositories must implement
-- **Repository Implementation**: Contains the actual data access logic and business rules
-- **Model Integration**: Works seamlessly with Eloquent models to provide clean data operations
-
-By adopting the **Repository Pattern** with the Prettus Repository package, Bagisto enhances the overall architecture of the application, making it more robust, testable, and easier to evolve over time.
-
-## Available Packages In Bagisto
-
-Bagisto comes with a comprehensive collection of packages that demonstrate the power of its modular architecture and repository pattern implementation. Each package follows the same standardized structure and design principles, allowing developers to understand, extend, and customize functionality across the entire platform.
-
-Laravel packages are the primary way of adding functionality. The following features are distributed into packages to enhance the application and allow developers to follow the standard way of developing custom functionality.
-
-Below is a detailed overview of the default packages available in Bagisto, each showcasing how the modular design and repository pattern work together to create a robust, scalable e-commerce solution. Bagisto 2.5 ships 42 packages under `packages/Webkul/`; Bagisto 2.4 ships the same set minus `Omnibus`.
-
-### Admin
-
-The Admin package in Bagisto is a core component that provides the administrative interface and functionality for managing various aspects of an online store. It offers a comprehensive dashboard and a set of tools for administrators to efficiently manage products, orders, customers, configurations, and other essential elements of the store. Here's a detailed overview of the Admin package in Bagisto:
-
-#### Key Features of the Admin Package
-
-- **Dashboard**
-  - Provides a summary of the store's performance with key metrics and analytics
-  - Displays widgets for quick insights into sales, orders, customers, and other important data
-
-- **Product Management**
-  - Allows administrators to add, edit, and delete products
-  - Supports the management of product attributes, categories, and inventories
-  - Facilitates the creation of configurable, downloadable, and bundled products
-
-- **Order Management**
-  - Enables the management of customer orders, including viewing, updating, and canceling orders
-  - Provides functionalities to manage order status, shipments, and invoices
-
-- **Customer Management**
-  - Allows administrators to manage customer accounts and their details
-  - Facilitates the management of customer groups and segmentation for targeted marketing
-
-- **Configuration and Settings**
-  - Provides a wide range of configuration options to customize the store's behavior
-  - Includes settings for payment methods, shipping methods, tax rates, and locales
-  - Allows customization of email templates and other communication settings
-
-- **CMS Management**
-  - Facilitates the management of static pages, blocks, and sliders to enhance the store's frontend
-  - Allows for the creation and management of content-rich pages without the need for coding
-
-- **Marketing and Promotions**
-  - Offers tools to create and manage promotions, discounts, and coupons
-  - Provides functionalities to set up cart price rules and catalog price rules
-
-- **Reports and Analytics**
-  - Provides detailed reports on sales, customer activities, and product performance
-  - Offers insights into store performance through various graphical representations and data export options
-
-### Attribute
-
-All the logic related to attributes is available in this package, which manages product attributes and attribute sets, allowing you to define and organize product information effectively.
-
-The Attribute package in Bagisto manages product attributes and attribute sets, enabling you to define and organize product information effectively. This package is crucial for customizing product data, enhancing search capabilities, and improving product filtering and categorization.
-
-#### Key Features of the Attribute Package
-
-- **Attribute Management**
-  - Create, edit, and delete product attributes
-  - Define various attribute types, such as text, textarea, select, multiselect, date, price, and boolean
-  - Set validation rules for attributes to ensure data consistency
-
-- **Attribute Options**
-  - Manage option values and their sorting order
-
-- **Attribute Family**
-  - Configure attribute families to group related attributes
-  - Allow products to inherit attributes from attribute families, ensuring consistent product data structure
-
-### BookingProduct
-
-The Booking Product Package in Bagisto extends the platform’s capabilities by allowing merchants to offer products and services that require scheduling and reservations. This package is designed to handle various booking scenarios, including appointments, rentals, events, and more. It provides a flexible and seamless booking experience for both merchants and customers.
-
-#### Key Features of the BookingProduct Package
-
-- **Multiple Booking Types**
-  - **Appointment Booking** – Ideal for doctors, salons, and consultancy services
-  - **Event Booking** – Suitable for ticket-based bookings like concerts and conferences
-  - **Rental Booking** – Used for vehicle rentals, equipment rentals, and room bookings
-  - **Table Booking** – Supports restaurant reservations and seating arrangements
-
-- **Date & Time Management**
-  - Define available booking dates and times
-  - Set time slots with custom intervals
-  - Manage booking duration and buffer times between slots
-
-- **Availability & Capacity Control**
-  - Set maximum bookings per slot
-  - Configure booking restrictions to prevent overbooking
-  - Allow or restrict same-day bookings
-
-- **Customer-Friendly Booking Experience**
-  - Interactive date and time picker for seamless selection
-  - Booking summary displayed before checkout
-  - Email notifications and reminders for customers and admin
-
-- **Admin Control & Order Management**
-  - Manage bookings from the admin panel
-  - Approve, cancel, or reschedule bookings
-  - Export booking data for reporting and analysis
-
-### CMS
-
-The CMS package in Bagisto empowers store administrators to manage content pages and blocks efficiently, facilitating the creation and maintenance of static content for your e-commerce store.
-
-- Allows creation, editing, and deletion of static pages such as About Us, Contact Us, FAQs, etc.
-- Supports custom URL slugs for pages to improve SEO and user-friendly navigation
-
-### CartRule
-
-The CartRule package in Bagisto provides all the necessary logic to define conditions and actions for cart-based promotions, enabling you to offer dynamic and targeted discounts to your customers. This package allows you to create flexible discount rules that can be applied to the shopping cart, enhancing your promotional capabilities and driving sales.
-
-#### Key Features of the CartRule Package
-
-- **Cart Rule Management**
-  - Create, edit, and delete cart rules
-  - Define conditions and actions for each cart rule
-  - Set start and end dates for the promotion period
-  - Enable or disable cart rules as needed
-
-- **Conditions**
-  - Define conditions based on cart attributes, such as subtotal, total items quantity, shipping method, and payment method
-  - Combine multiple conditions using logical operators (AND, OR) to create complex rules
-
-- **Coupons**
-  - Create and manage coupon codes associated with cart rules
-  - Set usage limits for each coupon (per customer, total usage)
-  - Generate unique coupon codes automatically
-
-- **Validation and Enforcement**
-  - Ensure that cart rules are validated and applied correctly based on defined conditions
-  - Enforce the rules during the checkout process to provide accurate discounts
-
-### CatalogRule
-
-The CatalogRule package in Bagisto provides the logic to define conditions and actions for catalog-based promotions, allowing you to offer dynamic pricing adjustments and discounts on individual products or categories. This package enables you to create flexible pricing rules that can be applied directly to products in the catalog, enhancing your promotional capabilities and optimizing pricing strategies.
-
-#### Key Features of the CatalogRule Package
-
-- **Catalog Rule Management**
-  - Create, edit, and delete catalog rules
-  - Define conditions and actions for each catalog rule
-  - Set start and end dates for the promotion period
-  - Enable or disable catalog rules as needed
-
-- **Conditions**
-  - Define conditions based on product attributes, such as category, SKU, price, and stock status
-  - Combine multiple conditions using logical operators (AND, OR) to create complex rules
-
-- **Validation and Enforcement**
-  - Ensure that catalog rules are validated and applied correctly based on defined conditions
-  - Enforce the rules during catalog rendering to provide accurate discounts
-
-### Category
-
-The Category package in Bagisto manages the database logic related to categories. It allows you to define, organize, and manage product categories effectively, facilitating the categorization and hierarchical structuring of products within your store.
-
-#### Key Features of the Category Package
-
-- **Category Management**
-  - Create, edit, and delete categories
-  - Define parent-child relationships to establish a hierarchical category structure
-  - Set category attributes such as name, description, and URL keys
-  - Enable or disable categories as needed
-
-- **SEO and URL Management**
-  - Define URL keys for categories to enhance SEO
-  - Set meta titles, descriptions, and keywords to improve search engine visibility
-
-- **Multi-Store and Multi-Language Support**
-  - Support for multiple store views and languages
-  - Define category attributes and settings specific to each store view 
-
-### Checkout
-
-The Checkout package in Bagisto manages the entire checkout process, encompassing cart management, order processing, payment integration, and shipping methods. It plays a crucial role in facilitating a smooth and efficient transaction experience for customers on your e-commerce platform.
-
-#### Key Components of the Checkout Package
-
-- **Cart Management**
-  - Handles the addition, removal, and updating of products in the shopping cart
-  - Applies discounts and promotions based on cart conditions
-
-- **Totals**
-  - Calculates the cart's totals, including taxes, discounts and shipping, which the Sales package copies onto the order it creates
-
-- **Payment Integration**
-  - Integrates with various payment providers to handle online transactions securely
-  - Supports multiple payment options such as credit cards, PayPal, and more
-
-- **Shipping Methods**
-  - Integrates with shipping carriers to calculate shipping rates and manage delivery options
-  - Applies conditions for free shipping, flat rates, or custom shipping charges
-
-### Core
-
-The Core package in Bagisto serves as the foundation for various functionalities and utilities essential for the operation of the entire e-commerce platform. It encapsulates critical components, settings, configurations, and common helper functions that are integral to the seamless functioning of other packages within Bagisto. Here’s a detailed description of the Core package:
-
-#### Key Features and Components of the Core Package
-
-- **Settings and Configurations**
-  - Manages platform-wide configurations such as site name, logo, currency settings, and default language
-  - Handles environment-specific settings for development, staging, and production environments
-
-- **Common Helper Functions**
-  - Includes a range of helper functions for tasks such as data manipulation, string operations, file handling, and date/time formatting
-  - Offers validation functions for input data, ensuring data integrity and adherence to predefined rules
-
-### Customer
-
-The Customer package in Bagisto is designed to handle all aspects related to customer management, authentication, and customer-centric functionalities essential for e-commerce operations. It provides a comprehensive suite of features to manage customer accounts, streamline registration processes, and enhance user engagement.
-
-#### Key Features and Components of the Customer Package
-
-- **Customer Account Management**
-  - Facilitates customer registration with email verification and password management. Supports social login integration for streamlined access
-  - Allows customers to update personal information, manage addresses, and view order history from their account dashboard
-
-- **Authentication and Authorization**
-  - Ensures secure login mechanisms with hashing and encryption techniques to protect customer credentials
-
-- **Integration with Sales and Marketing**
-  - Supports customer segmentation for targeted marketing campaigns and personalized promotions
-
-- **Analytics and Reporting**
-  - Provides analytics on customer behavior, preferences, and lifetime value to optimize marketing strategies and customer retention efforts
-  - Generates reports on customer registrations, login activities, and transaction histories for business analysis and decision-making
-
-
-### DataGrid
-
-The DataGrid package in Bagisto empowers administrators with a versatile solution for displaying and managing tabular data within the admin panel. It incorporates crucial components like models, repositories, and database interactions to streamline data handling and enhance user experience.
-
-#### Key Features of the DataGrid Package
-
-- **Dynamic Data Presentation**
-  - Allows administrators to configure columns, filters, sorting options, and pagination settings for displaying data tables
-
-- **Advanced Filtering and Sorting**
-  - Enables administrators to apply filters based on various criteria to refine data views
-  - Supports sorting functionalities to organize data based on specified attributes
-
-### DataTransfer
-
-This package contains all the logic related to data transfer. You can follow the given link for the more information about the [DataTransfer](https://bagisto.com/en/how-to-bulk-import-products-in-bagisto-2-1-0/).
-
-> **Note:** The referenced blog post may be from an older version of Bagisto, but the core design patterns and workflow remain largely identical across versions. We recommend reviewing the documentation alongside your current Bagisto installation to identify any minor API or structural differences that may have evolved.
-
-### DebugBar
-
-This package includes essential functionalities to monitor, analyze, and debug the application, ensuring optimal performance and quick resolution of issues.
-
-### EUWithdrawal
-
-Implements the EU right of withdrawal: customers can submit a withdrawal request for a recent order from their account, the admin reviews it, and the request and its status are kept for the statutory period. Rate limiters protect the public form.
-
-### FPC
-
-This package provides advanced caching mechanisms to store generated pages in memory, reducing server load and improving page load times for your customers. You can follow the given link for the more information about the [FPC](https://bagisto.com/en/optimizing-bagisto-e-commerce-a-deep-dive-into-full-page-cache-implementation/).
-
-> **Note:** The referenced blog post may be from an older version of Bagisto, but the core design patterns and workflow remain largely identical across versions. We recommend reviewing the documentation alongside your current Bagisto installation to identify any minor API or structural differences that may have evolved.
-
-#### Key Features of the FPC Package
-
-- Full Page Caching
-
-    - Caches entire pages and serves them to users without re-processing server-side logic.
-    - Reduces response time by serving pre-rendered pages directly from the cache.
-
-- Cache Invalidation
-    - Automatically invalidates and updates the cache when changes occur (e.g., product updates, inventory changes).
-    - Ensures customers always see the most up-to-date content without compromising performance.
-
-### GDPR
-
-The GDPR Package in Bagisto lets customers raise requests to update, modify, or delete their personal data stored on the platform. This feature empowers customers by giving them greater control over their information and ensures that businesses comply with data protection laws like the GDPR.
-
-#### Key Features of the GDPR Package
-
-- Customer-Initiated Data Modification Requests
-    - Customers can raise requests to modify or update their personal details (such as email, name, address, etc.) in their account settings.
-    - Customers can request to delete their personal data from the system. This is in accordance with the GDPR’s "Right to Erasure," which allows individuals to request the deletion of their data from systems that no longer need it.
-    - Customers can revoke consent for data processing, allowing businesses to stop collecting or using their data. The system keeps track of revocation timestamps (revoked_at), ensuring compliance with GDPR.
-    - While the customers can submit requests, the admin can review, approve, or reject them via the admin panel. The admin can also track the progress and history of these requests.
-
-### ImageCache
-
-Serves resized product, category and swatch images on demand from `/cache/{template}/{path}`. Templates are registered in a `TemplateRegistry` and a theme can add its own; see [Theme Image Templates](../theme-development/image-cache-templates.md).
-
-### Installer
-
-The Installer package in Bagisto simplifies the setup and installation process of your e-commerce platform, providing a streamlined experience for deploying Bagisto on various environments. This package includes essential functionalities to configure database connections, install dependencies, and initialize the application environment, ensuring a smooth and hassle-free installation process.
-
-### Inventory 
-
-The Inventory package in Bagisto offers comprehensive tools to manage and track product inventory efficiently within your e-commerce store. This package includes essential functionalities to monitor stock levels, track inventory movements, and ensure accurate stock availability for seamless order fulfillment. Here’s a detailed description of the Inventory package:
-
-#### Key Components of the Inventory Package
-
-- Stock Management
-    - Allows businesses to manage stock levels for each product.
-    - Supports updating stock quantities manually or via automated processes.
-
-- Multi-Warehouse Support
-    - Enables management of inventory across multiple warehouses through **inventory sources**, the package's only model.
-    - Allows assigning stock to specific sources for better control and distribution; the per-product quantities themselves live in the Product package.
-
-### MagicAI 
-
-The MagicAI package is Bagisto's generative AI layer: text and image generation, image search, review translation and checkout messages in the admin and the storefront, through the Laravel AI SDK and any of eight providers. It is documented on the [Generative AI (Magic AI)](../ai/magic-ai.md) page; the storefront's agent tools live in the Shop package and are documented under [WebMCP](../ai/webmcp.md).
-
-### Marketing 
-
-The Marketing package in Bagisto encompasses all functionalities related to marketing strategies and promotions within the e-commerce platform. It includes tools for defining and managing cart rules, catalog rules, promotions, discounts, and other marketing campaigns to enhance customer engagement and drive sales.
-
-### Notification
-
-The Notification package in Bagisto handles all functionalities related to notifications within the e-commerce platform. It provides mechanisms for sending automated alerts, updates, and messages to customers and administrators based on various events and triggers, enhancing communication and user engagement throughout the shopping experience.
-
-### Omnibus
-
-Present in Bagisto 2.5 only. Records a snapshot of a product's price whenever it changes (checked every fifteen minutes by a scheduled command) and, when enabled under **Configure → Catalog → Products → Omnibus**, shows the lowest price of the last 30 days next to a discounted price on the storefront, as the EU Omnibus directive requires. Two scheduled commands take the snapshots and purge the old ones; see [Artisan Commands](../advanced/artisan-commands.md).
-
-### Payment
-
-The Payment package in Bagisto integrates various payment gateways seamlessly into the e-commerce platform. It facilitates secure and reliable processing of customer orders by enabling merchants to configure and manage multiple payment methods. This package ensures smooth transaction flows, enhances checkout experiences, and supports a wide range of payment gateways to meet diverse business needs and customer preferences.
-
-### Paypal 
-
-The PayPal package in Bagisto handles all functionalities related to integrating the PayPal payment gateway into your e-commerce store. This integration allows merchants to offer PayPal as a payment option to their customers, enhancing convenience and trust during the checkout process. Key features of the PayPal package include:
-
--  Enables merchants to configure PayPal credentials and settings through the Bagisto admin panel.
-
-- Facilitates secure and seamless processing of payments using PayPal's APIs, ensuring transactions are reliable and efficient.
-
--  Integrates PayPal's transaction data with Bagisto's order management system, providing real-time updates and synchronization.
-
-- Enhances the checkout experience by offering customers the option to pay with PayPal, a widely recognized and trusted payment method.
-
-### PayGlocal, PayU, PhonePe, Razorpay and Stripe
-
-Each of these is a self-contained gateway package with the same shape as PayPal: a payment class, a `payment-methods.php` entry, admin settings under **Sales → Payment Methods**, and its own routes for the redirect and the return (success and cancel). PayGlocal and PhonePe add a server-to-server webhook; Stripe, PayU and Razorpay complete the order on the return leg. They are the reference implementations for [Payment Method Development](../payment-method-development/getting-started.md). PhonePe and PayGlocal check the cart currency before redirecting, and `bootstrap/app.php` excludes `stripe/*` from CSRF so Stripe's return can be a POST.
-
-### Product
-
-The Product package in Bagisto encapsulates comprehensive functionalities related to managing and presenting product information within your e-commerce store. Key aspects and features of the Product package include:
-
-- Stores and manages essential details about each product, including name, description, pricing, and inventory levels.
-
-- Facilitates the creation and management of product attributes and variants, allowing for flexible product configurations and options.
-
-- Supports categorization of products into hierarchical categories, enabling organized navigation and browsing.
-
-- Tracks and updates inventory levels in real-time, ensuring accurate stock availability displayed to customers.
-
-- Defines structured data models and repository patterns for efficient data handling and interaction.
-
-- Allows administrators to create new products, update existing ones, and manage product life cycle efficiently.
-
-### RMA
-
-Return merchandise authorization: customers request a return, refund or exchange for delivered items from their account; the admin defines reasons and statuses, converses with the customer on the request and resolves it. Because this package exists, name your own returns package something else (see [Package Development](../package-development/getting-started.md)).
-
-### Rule
-
-The shared engine behind cart rules and catalog rules: condition trees, attribute-based matching and the validators both packages extend.
-
-### Sales
-
-The Sales package in Bagisto provides functionalities related to managing and tracking sales within your e-commerce store. It includes features such as order management, invoicing, shipment tracking, and customer communication. With the Sales package, you can efficiently process and fulfill customer orders, ensuring a seamless shopping experience.
-
-- Facilitates the creation, modification, and tracking of customer orders from initiation to fulfillment.
-
-- Defines various order statuses (e.g., pending, processing, completed) to indicate the current stage of each order.
-
-- Generates invoices automatically upon order confirmation, detailing product prices, taxes, and discounts.
-
-- Integrates with various payment gateways to securely process customer payments, ensuring flexibility and convenience.
-
-- Manages refund requests and return processes, tracking the status and processing refunds accordingly.
-
-- Generates reports on sales performance, order trends, revenue analysis, and inventory insights to support decision-making.
-
-
-### Shipping
-
-The Shipping package in Bagisto provides functionalities to manage and handle shipping methods and rates for customer orders. It includes features such as configuring shipping carriers, defining shipping zones, calculating shipping rates based on various factors like weight, dimensions, and destination, and integrating with third-party shipping APIs for real-time shipping quotes. With the Shipping package, you can ensure smooth and efficient order fulfillment by offering reliable and cost-effective shipping options to your customers.
-
-### Shop
-
-The Shop package in Bagisto provides the frontend functionality for your e-commerce store. It includes features such as displaying products, managing the shopping cart, processing the checkout process, and integrating with various payment gateways for secure and convenient payment processing. With the Shop package, you can create a seamless and user-friendly shopping experience for your customers.
-
-- Product Display and Management
-    - Displays products in a structured and organized manner, allowing customers to browse and search for products based on categories, attributes, and filters.
-
-    - Provides detailed product pages with essential information such as product descriptions, specifications, pricing, and availability.
-
-    - Supports product variants (e.g., sizes, colors) and options, enabling customers to select their preferred options directly on the product page.
-
-- Localization and Multi-currency Support
-    - Supports multiple languages, allowing you to cater to diverse customer bases and enhance accessibility for international shoppers.
-
-    -  Displays product prices in different currencies, enabling customers to shop and complete transactions in their preferred currency.
-
-- Shopping Cart and Checkout Process
-    - Manages customer-selected products, quantities, and total prices, providing a seamless shopping cart experience with features like add to cart, update cart, and remove items.
-
-    - Guides customers through a secure and intuitive checkout process, collecting necessary information such as shipping address, payment method selection, and order review.
-
-### Sitemap
-
-This package manages all the logics related to sitemap. The Sitemap package in Bagisto empowers e-commerce businesses to enhance their SEO efforts by automating the generation and management of XML sitemaps. By leveraging its features, businesses can improve search engine visibility, drive organic traffic growth, and provide a seamless user experience for their customers.
-
-### SocialLogin
-
-The SocialLogin package in Bagisto empowers e-commerce businesses to enhance user engagement, streamline registration processes, and leverage social media platforms for improved customer acquisition and retention.
-
-### SocialShare
-
- This package lets customers share products, categories, and content across various social media platforms, enhancing visibility and engagement.
-
-### Tax
-
-This package enables businesses to configure and apply taxes accurately based on customer locations, product types, and regulatory requirements, ensuring compliance and seamless transaction processing.
-
-### Theme 
-
-The Theme package owns theme resolution and the **Appearance** editor. It reads `config/themes.php`, swaps the Blade view finder so a theme's `views_path` (and its parent's) wins over package views, serves each theme's Vite build, and stores the home page's sections and their content per channel and locale.
-
-#### Key features of the Theme package include
-
-- Theme resolution
-    - The `ThemeViewFinder` looks in the active theme, then its parent chain, then the package's own views; see [Creating Store Theme](../theme-development/creating-store-theme.md#how-views-are-resolved).
-    - Admin and storefront themes are configured separately and can be switched per channel.
-
-- Theme sections
-    - Six core section types (image carousel, product carousel, category carousel, static content, footer links and a services block) plus any custom types a theme registers; see [Theme Sections](../theme-development/theme-sections.md).
-    - Section settings are edited under **Appearance** with a live preview, and stored per channel and locale.
-
-- Assets and images
-    - Each theme declares its Vite build in `themes.php`; `@bagistoVite` loads it ([Vite-Powered Theme Assets](../theme-development/vite-powered-theme-assets.md)).
-    - A theme can register its own image cache templates ([Theme Image Templates](../theme-development/image-cache-templates.md)).
-
-### User
-
-This package empowers administrators to efficiently manage user registrations, profiles, roles, and permissions, ensuring secure and personalized customer interactions.
-
-Service provider enables features such as loading [routes](/package-development/routes), [migrations](/package-development/migrations), [languages](/package-development/localization) or publishing [views](/package-development/views), etc so **Bagisto** is developed considering these aspects.
+- [Architecture Overview](./overview.md): the project structure and the extension points.
+- [Frontend Architecture](./frontend.md): how Blade, Vue.js and Vite fit together.
+- [Package Development](../package-development/getting-started.md): build a package with these building blocks.
+- [Event Listeners](../advanced/event-listeners.md): the events core fires and how to listen for them.

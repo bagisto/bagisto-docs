@@ -1,10 +1,12 @@
 # Understanding Payment Configuration
 
-Now that you've created your payment method, let's understand how the configuration files work and what each property does.
+A payment method has two configuration files: `Config/payment-methods.php` registers it in `config('payment_methods')` with its defaults, and `Config/system.php` gives it settings under **Configure → Sales → Payment Methods**. This page covers the keys of both and how a setting is resolved.
 
-## Payment Method Configuration
+## The Configuration File
 
-In the previous section, we created `config/payment-methods.php`. Let's understand each property:
+This is the file you created in [Creating Your First Payment Method](./create-your-first-payment-method.md#step-2-add-the-payment-method-configuration):
+
+**File:** `packages/Webkul/CustomStripePayment/src/Config/payment-methods.php`
 
 ```php
 <?php
@@ -16,36 +18,31 @@ return [
         'description' => 'Secure credit card payments powered by Stripe',
         'class' => 'Webkul\CustomStripePayment\Payment\CustomStripePayment',
         'active' => true,
-        'generate_invoice' => false,
         'sort' => 1,
     ],
 ];
 ```
 
-### Configuration Properties Explained
-
-| Property | Type | Purpose | Description |
-|----------|------|---------|-------------|
-| **`class`** | String | Payment class namespace | Full path to your payment processing class; resolved with `app($class)`, so constructor injection works. The only key core reads from this file when collecting methods |
-| **`code`** | String | Unique identifier | Must match the array key and the class's `$code` property |
-| **`title`** | String | Default display name | Shown to customers during checkout (can be overridden in admin) |
-| **`description`** | String | Payment method description | Brief explanation of the payment method |
-| **`active`** | Boolean | Default status | Whether the payment method is enabled by default |
-| **`generate_invoice`** | Boolean | Automatic invoicing | Core's `GenerateInvoice` listener creates the invoice on `checkout.order.save.after` for the built-in methods when this is on, using the `invoice_status` and `order_status` settings. A custom method that wants the same behaviour registers its own listener |
-| **`sort`** | Integer | Display order | Lower numbers appear first in checkout; sorted numerically |
+| Key | Required | Description |
+|---|---|---|
+| `class` | Yes | The fully qualified payment class, resolved with `app($class)`, so constructor injection works. The only key the checkout reads from this file |
+| `code` | No | The method code. Identity comes from the class's `$code`, which forms the `system.php` key and is stored in `order_payments.method`; keep it, this key and the array key identical |
+| `title` | Yes | Default display name at checkout, used until an admin saves one. Also read directly from this file by the admin's transaction view and the storefront's RMA order grid, which show it as written |
+| `description` | No | Default description |
+| `active` | No | Default enabled state |
+| `sort` | No | Default position at checkout; lower numbers come first, compared numerically |
 
 Except for `class`, these are defaults: `$this->getConfigData('title')` reads the admin-saved value first (see [Configuration Value Resolution](#configuration-value-resolution)).
 
-::: tip Configuration Key Consistency
-The array key (`custom_stripe_payment`) must match the `code` property and be used consistently in:
-- Your payment class `$code` property
-- System configuration key path
-- Route names and identifiers
-:::
+Core's `cashondelivery` and `moneytransfer` entries also carry `'generate_invoice' => false`. Only those two use it: `Webkul\Payment\Listeners\GenerateInvoice` names both codes, so the key does nothing for another method; see [Understanding the Payment Class](./understanding-payment-class.md#automatic-invoices) for how gateways invoice.
 
-## System Configuration (Admin Settings)
+<a id="system-configuration-admin-settings"></a>
 
-We also created `system.php` for the admin interface. Let's understand what we built:
+## System Configuration
+
+The section's `key` must be `sales.payment_methods.{code}`. This is an excerpt of the file from [Step 4](./create-your-first-payment-method.md#step-4-add-the-system-configuration):
+
+**File:** `packages/Webkul/CustomStripePayment/src/Config/system.php`
 
 ```php
 <?php
@@ -64,23 +61,7 @@ return [
                 'channel_based' => true,
                 'locale_based' => false,
             ],
-            [
-                'name' => 'title',
-                'title' => 'Title',
-                'type' => 'text',
-                'depends' => 'active:1',
-                'validation' => 'required_if:active,1',
-                'channel_based' => true,
-                'locale_based' => true,
-            ],
-            [
-                'name' => 'description',
-                'title' => 'Description',
-                'type' => 'textarea',
-                'depends' => 'active:1',
-                'channel_based' => true,
-                'locale_based' => true,
-            ],
+            // ...
             [
                 'name' => 'image',
                 'title' => 'Logo',
@@ -104,89 +85,28 @@ return [
 ];
 ```
 
-### System Configuration Properties Explained
+What a payment section needs:
 
-The system configuration creates the admin interface that allows store administrators to manage payment method settings. Each property serves a specific purpose in creating a user-friendly admin experience.
+- **`info` is required** on the item; the configuration page breaks without it.
+- **Keep a boolean `active` field.** `ConfigurationController::store()` reads `active` from every payment method section when the Payment Methods page is saved, and refuses to save when none is on.
+- **`image` is the logo** the base class's `getImage()` returns; your class turns the stored path into a URL.
+- **`sort` is a `number`,** because the checkout sorts methods numerically.
+- **`depends => 'active:1'`** hides a field while the method is off, and a hidden field is neither rendered nor validated. `required_if:active,1` is checked only in the browser, because on the server it looks for a top-level `active` input; `required_if:sales.payment_methods.custom_stripe_payment.active,1` is enforced on both.
+- **Credentials are `password` fields with `'channel_based' => true`,** as in core's gateways, so the admin masks them and each channel holds its own keys.
 
-#### Section Properties
+Every item and field key, and every field type, is on [System Configuration](../package-development/system-configuration.md).
 
-These properties define the overall section that appears in the admin configuration panel:
+## Configuration Value Resolution
 
-| Property | Purpose | Description |
-|----------|---------|-------------|
-| **`key`** | Configuration path | `sales.payment_methods.{your_code}` - where settings are stored |
-| **`name`** | Admin section title | Displayed in the admin configuration panel |
-| **`info`** | Section description | Additional information shown to administrators |
-| **`sort`** | Section order | Order in which payment methods appear in admin |
+`getConfigData($field)` reads `core()->getConfigData('sales.payment_methods.{code}.{field}')`: a value saved for the requested channel (and locale, for a `locale_based` field) wins, then `config('payment_methods.{code}.{field}')` from `payment-methods.php`, then the field's `default`. There is no fallback between channels or locales, so define `active`, `title`, `description` and `sort` in `payment-methods.php`, and the method works before an admin saves anything. [System Configuration](../package-development/system-configuration.md#configuration-value-resolution) covers the lookup for every key.
 
-#### Field Properties
+## Things to Watch
 
-These properties define each individual form field that administrators can configure:
+- **Keep the code identical everywhere:** the array key, `code`, the class's `$code`, the `system.php` key, and your route names.
+- **Change a core method from `boot()`.** `mergeConfigFrom()` keeps core's entries, so extend the core class, keep its `$code`, and point the entry at your subclass from your provider's `boot()`, as in `config(['payment_methods.cashondelivery.class' => CashOnDelivery::class])` with your `CashOnDelivery` imported. [Overriding a Core Type](../product-type-development/understanding-product-type-configuration.md#overriding-a-core-type) explains why `boot()`.
 
-| Property | Purpose | Description |
-|----------|---------|-------------|
-| **`name`** | Field identifier | Used to store and retrieve configuration values |
-| **`title`** | Field label | Label displayed in the admin form |
-| **`type`** | Input type | `text`, `textarea`, `boolean`, `select`, `password`, `image`, `number`, etc. |
-| **`default`** | Last-resort default | Used only when neither the database nor `payment-methods.php` has a value; for a payment method put defaults in `payment-methods.php` instead |
-| **`depends`** | Conditional display | `active:1` hides the field while the method is off |
-| **`channel_based`** | Multi-store support | Different values per sales channel |
-| **`locale_based`** | Multi-language support | Translatable content per language |
-| **`validation`** | Field validation | Rules like `required_if:active,1`, `numeric`, `email` |
+## Next Step
 
-`info` is required on the section item; the page breaks without it. The complete list of item and field keys is on [System Configuration](../package-development/system-configuration.md).
+Next, see what the payment class inherits, how availability works, and how a gateway that redirects brings the customer back.
 
-### How Configuration is Used
-
-When you call `$this->getConfigData('title')` in your payment class, Bagisto looks up:
-
-```text
-core()->getConfigData('sales.payment_methods.custom_stripe_payment.title')
-```
-
-This retrieves the value from the admin configuration that administrators can modify.
-
-### Configuration Value Resolution
-
-Bagisto resolves configuration values using a specific fallback chain. Understanding this chain is important to ensure your payment method always has sensible values, even before an administrator saves any settings.
-
-```text
-core()->getConfigData('sales.payment_methods.custom_stripe_payment.title')
-│
-├── 1. Core Config (Database)
-│     Checks the `core_config` table for admin-saved values.
-│     Found? → Returns the saved value.
-│
-└── 2. Fallback (No database entry)
-      │
-      ├── Package Config (payment-methods.php)
-      │     Checks Config::get('payment_methods.custom_stripe_payment.title')
-      │     Found? → Returns the package default.
-      │
-      └── System Default (system.php 'default' key)
-            Returns the 'default' value defined in the field configuration,
-            or null if not defined.
-```
-
-**In practice**, this means your `payment-methods.php` config file serves as the primary fallback for all fields. When a value exists in both `payment-methods.php` and as a `default` in `system.php`, the `payment-methods.php` value takes priority.
-
-::: tip Ensure Fallback Values
-Always define essential properties like `active`, `title`, `description`, and `sort` in your `payment-methods.php` config file. This ensures your payment method works correctly even before any admin configuration is saved.
-:::
-
-### System Configuration Reference
-
-For detailed information about creating admin interface forms for your payment method, see:
-
-**📖 [Package Development - System Configuration →](../package-development/system-configuration.md)**
-Complete guide to creating admin configuration interfaces with all field types and options.
-
-## What's Next?
-
-Now that you understand payment configuration, let's explore the payment class:
-
-**📖 [Understanding Payment Class →](./understanding-payment-class.md)**
-Learn how to implement payment processing logic and handle transactions.
-
-**📖 [Back to Getting Started ←](./getting-started.md)**
-Review the complete payment method development workflow.
+**Continue to:** [Understanding the Payment Class](./understanding-payment-class.md)

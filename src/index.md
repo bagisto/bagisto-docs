@@ -4,12 +4,15 @@ layout: home
 
 hero:
   name: "Bagisto Developer Portal"
-  text: "Find detailed documentation and code examples."
-  tagline: "Build amazing e-commerce experiences with Bagisto"
+  text: "Guides and code samples for building on Bagisto."
+  tagline: "Extend Bagisto with packages, themes, payment and shipping methods, and product types."
   actions:
     - theme: brand
       text: Get Started →
       link: /getting-started/why-choose-bagisto
+    - theme: alt
+      text: Architecture
+      link: /architecture/overview
     - theme: alt
       text: View on GitHub
       link: https://github.com/bagisto/bagisto
@@ -18,40 +21,52 @@ hero:
     alt: Bagisto
 
 features:
-  - title: Package Development
-    details: Learn how to create a new package for Bagisto and extend its functionality with custom modules, repositories, and service providers.
-    icon: 📦
-    link: /package-development/getting-started
-  - title: Generative AI & Agentic Commerce
-    details: Built-in generative AI (Magic AI) for content, images and the storefront, agentic storefront tools with WebMCP, and skills that make AI coding agents fluent in Bagisto.
+  - title: Getting Started
+    details: Requirements, installation, deployment, security, upgrading and contributing.
+    icon: 🚀
+    link: /getting-started/why-choose-bagisto
+  - title: AI in Bagisto
+    details: Generative AI (Magic AI) for content and images, WebMCP tools that browser AI agents can call on the storefront, and skills for AI coding agents.
     icon: 🤖
     link: /ai/introduction
-  - title: Bagisto API (REST & GraphQL)
-    details: Fast, flexible REST and GraphQL APIs to power modern commerce experiences.
-    icon: 🔌
-    link: https://api-docs.bagisto.com/
-  - title: Bagisto Headless Commerce
-    details: An API-first headless commerce framework for building scalable storefronts on web and mobile.
-    icon: 🧩
-    link: https://headless-doc.bagisto.com/
+  - title: Package Development
+    details: Build a Laravel package with its own tables, models, repositories, routes, admin menu, permissions and system configuration.
+    icon: 📦
+    link: /package-development/getting-started
   - title: Shipping Method Development
-    details: Create custom shipping methods with rate calculation, admin configuration, and integration with checkout process.
+    details: Add a shipping carrier that calculates rates at checkout, with its own admin settings.
     icon: 🚚
     link: /shipping-method-development/getting-started
   - title: Payment Method Development
-    details: Build secure payment gateways and integrate with third-party payment processors for seamless transactions.
+    details: Add a payment gateway with its own settings and the redirect and callback flow at checkout.
     icon: 💳
     link: /payment-method-development/getting-started
   - title: Product Type Development
-    details: Develop custom product types with specialized pricing, inventory management, and cart integration features.
+    details: Create a product type with its own pricing, inventory and cart behaviour.
     icon: 🛍️
     link: /product-type-development/getting-started
   - title: Theme Development
-    details: Create beautiful, responsive themes for Bagisto with custom layouts, components, and styling frameworks.
+    details: Create storefront and admin themes with view overrides, Blade components, theme sections and Vite-built Tailwind CSS assets.
     icon: 🎨
     link: /theme-development/getting-started
+  - title: Tools
+    details: The Package Generator for scaffolding packages, and the Blade Tracer for finding the view behind any part of a page.
+    icon: 🧰
+    link: /tools/package-generator
   - title: Performance
-    details: Implement caching, indexing, and optimization techniques for high-performance e-commerce sites.
+    details: Configure the full page cache, Elasticsearch, Varnish, Laravel Octane and load balancing.
     icon: ⚡
     link: /performance/introduction
+  - title: Digging Deeper
+    details: Events, caching, queues, indexers, search, data transfer, testing with Pest and Playwright, and coding standards.
+    icon: 🔍
+    link: /advanced/introduction
+  - title: Bagisto API (REST & GraphQL)
+    details: REST and GraphQL APIs for storefronts, mobile apps and integrations, from the bagisto/bagisto-api package.
+    icon: 🔌
+    link: /api/introduction
+  - title: Bagisto Headless Commerce
+    details: Build headless storefronts for web and mobile on the Bagisto API.
+    icon: 🧩
+    link: https://headless-doc.bagisto.com/
 ---

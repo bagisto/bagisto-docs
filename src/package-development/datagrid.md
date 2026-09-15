@@ -1,1077 +1,546 @@
 # DataGrid
 
-DataGrid is one of the most powerful features in Bagisto for displaying and managing tabular data in admin interfaces. It provides built-in functionality for sorting, filtering, pagination, and mass actions, transforming your raw database records into professional, interactive data tables.
+On this page you build the FAQ listing at `/admin/faq`: search, filters, sorting, edit and delete buttons, bulk delete and status changes, and export. A DataGrid is one class extending `Webkul\DataGrid\DataGrid` that supplies a query and describes its columns and actions. The controller's `index()` returns the grid's data for an AJAX request, and `<x-admin::datagrid>` in the view loads it from that same URL.
 
-For our RMA package, we'll create a comprehensive DataGrid that displays return requests with full administrative functionality, demonstrating how to build efficient data management interfaces that scale with your business needs.
+<a id="creating-your-first-datagrid"></a>
+<a id="creating-the-datagrid-class"></a>
 
-::: info Learning Objective
-This section demonstrates how to create a fully functional DataGrid for your Bagisto package, including data presentation, filtering capabilities, and administrative actions - essential skills for building professional admin interfaces.
-:::
+## Create the DataGrid Class
 
-## Understanding Bagisto DataGrid Architecture
-
-Bagisto's DataGrid system is built on Laravel's query builder and provides a powerful abstraction layer for creating data tables:
-
-### Core Components
-- **Abstract DataGrid Class**: Base functionality that all custom DataGrids extend
-- **Query Builder Integration**: Seamless integration with Laravel's database layer  
-- **Column Management**: Flexible column definitions with type-specific handling
-- **Action System**: Built-in support for row actions and mass operations
-
-### Key Features
-- **Automatic Pagination**: Built-in pagination with customizable page sizes
-- **Advanced Filtering**: Column-specific filters with multiple data types
-- **Sorting Capabilities**: Multi-column sorting with intelligent defaults
-- **Export Functionality**: Built-in CSV/Excel export capabilities
-- **Mass Actions**: Bulk operations on selected records
-
-### DataGrid Properties
-
-Understanding the core properties helps you customize DataGrid behavior:
-
-| Property          | Functionality                                                                                   |
-| ----------------- | ----------------------------------------------------------------------------------------------- |
-| **`primaryColumn`**    | Specifies the primary identifier column for the data grid, typically set to `'id'` for unique identification of data entries. |
-| **`queryBuilder`**     | Manages the database query operations for fetching data based on configured criteria. |
-| **`columns`**          | Array defining the columns to be displayed in the data grid. |
-| **`sortColumn`**       | Optional. Specifies the default column used for sorting data in the grid.  |
-| **`sortOrder`**        | Specifies the default order ('asc' or 'desc') for sorting data in the grid. |
-| **`actions`**          | Array containing configurations for actions that can be performed on individual data grid entries. |
-| **`massActions`**      | Array defining actions that can be applied to multiple entries simultaneously in the data grid. |
-| **`paginator`**        | Stores an instance of `LengthAwarePaginator` for managing pagination of grid data. |
-| **`itemsPerPage`**     | Specifies the default number of items to display per page in the data grid (10). |
-| **`perPageOptions`**   | Array of options allowing users to select different numbers of items per page.  |
-| **`exportFileName`**   | Name of the file produced by an export. |
-| **`exportFileExtension`** | Format of the exported file, `csv` by default; requests may ask for `csv`, `xls` or `xlsx`. |
-
-Export is switched on per request, not per class: when the request carries an `export` parameter the grid streams the file through `Webkul\DataGrid\Exports\DataGridExport`. The button that sends that request is the `<x-admin::datagrid.export :src="...">` component, which the product listing includes beside its grid.
-
-DataGrids are resolved from the container by the `datagrid()` helper, so a grid may take repositories in its constructor exactly like a controller.
-
-## Creating Your First DataGrid
-
-Let's create a DataGrid for our RMA package that displays return requests in the admin panel. This will demonstrate the complete process from creation to implementation.
-
-### Directory Structure
-
-Create the DataGrid directory structure in your package:
-
-```bash
-mkdir -p packages/Webkul/RMA/src/DataGrids/Admin
-```
-
-```text
-packages
-└── Webkul
-    └── RMA
-        └── src
-            ├── ...
-            └── DataGrids
-                └── Admin
-                    └── ReturnRequestDataGrid.php
-```
-
-### Creating the DataGrid Class
-
-Create `packages/Webkul/RMA/src/DataGrids/Admin/ReturnRequestDataGrid.php`:
+**File:** `packages/Webkul/Faq/src/DataGrids/Admin/FaqDataGrid.php`
 
 ```php
 <?php
 
-namespace Webkul\RMA\DataGrids\Admin;
+namespace Webkul\Faq\DataGrids\Admin;
 
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 use Webkul\DataGrid\DataGrid;
 
-class ReturnRequestDataGrid extends DataGrid
+class FaqDataGrid extends DataGrid
 {
     /**
-     * Prepare query builder.
+     * Default sort column of the grid.
+     *
+     * @var string
      */
-    public function prepareQueryBuilder()
+    protected $sortColumn = 'sort_order';
+
+    /**
+     * Default sort order of the grid.
+     *
+     * @var string
+     */
+    protected $sortOrder = 'asc';
+
+    /**
+     * Prepare the query builder.
+     */
+    public function prepareQueryBuilder(): Builder
     {
-        $queryBuilder = DB::table('rma_requests')
-            ->select('id');
+        $queryBuilder = DB::table('faqs')
+            ->leftJoin('channels', 'faqs.channel_id', '=', 'channels.id')
+            ->select(
+                'faqs.id',
+                'faqs.question',
+                'faqs.sort_order',
+                'faqs.status',
+                'channels.code as channel',
+            );
+
+        $this->addFilter('id', 'faqs.id');
+        $this->addFilter('question', 'faqs.question');
+        $this->addFilter('channel', 'channels.code');
+        $this->addFilter('sort_order', 'faqs.sort_order');
+        $this->addFilter('status', 'faqs.status');
 
         return $queryBuilder;
     }
 
     /**
-     * Prepare columns.
+     * Prepare the columns.
      */
-    public function prepareColumns()
+    public function prepareColumns(): void
     {
         $this->addColumn([
             'index' => 'id',
-            'label' => trans('rma::app.admin.return-requests.datagrid.id'),
+            'label' => trans('faq::app.admin.index.datagrid.id'),
             'type' => 'integer',
-            'searchable' => false,
+            'filterable' => true,
             'sortable' => true,
-            'filterable' => false,
         ]);
+
+        $this->addColumn([
+            'index' => 'question',
+            'label' => trans('faq::app.admin.index.datagrid.question'),
+            'type' => 'string',
+            'searchable' => true,
+            'filterable' => true,
+            'sortable' => true,
+        ]);
+
+        $this->addColumn([
+            'index' => 'channel',
+            'label' => trans('faq::app.admin.index.datagrid.channel'),
+            'type' => 'string',
+            'filterable' => true,
+            'filterable_type' => 'dropdown',
+            'filterable_options' => collect(core()->getAllChannels())
+                ->map(fn ($channel) => ['label' => $channel->name, 'value' => $channel->code])
+                ->values()
+                ->toArray(),
+            'sortable' => true,
+        ]);
+
+        $this->addColumn([
+            'index' => 'sort_order',
+            'label' => trans('faq::app.admin.index.datagrid.sort-order'),
+            'type' => 'integer',
+            'filterable' => true,
+            'sortable' => true,
+        ]);
+
+        $this->addColumn([
+            'index' => 'status',
+            'label' => trans('faq::app.admin.index.datagrid.status'),
+            'type' => 'boolean',
+            'filterable' => true,
+            'filterable_options' => [
+                [
+                    'label' => trans('faq::app.admin.index.datagrid.active'),
+                    'value' => 1,
+                ],
+                [
+                    'label' => trans('faq::app.admin.index.datagrid.inactive'),
+                    'value' => 0,
+                ],
+            ],
+            'sortable' => true,
+            'closure' => function ($row) {
+                if ($row->status) {
+                    return '<span class="label-active">'.trans('faq::app.admin.index.datagrid.active').'</span>';
+                }
+
+                return '<span class="label-info">'.trans('faq::app.admin.index.datagrid.inactive').'</span>';
+            },
+        ]);
+    }
+
+    /**
+     * Prepare the row actions.
+     */
+    public function prepareActions(): void
+    {
+        if (bouncer()->hasPermission('faq.edit')) {
+            $this->addAction([
+                'index' => 'edit',
+                'icon' => 'icon-edit',
+                'title' => trans('faq::app.admin.index.datagrid.edit'),
+                'method' => 'GET',
+                'url' => fn ($row) => route('admin.faq.edit', $row->id),
+            ]);
+        }
+
+        if (bouncer()->hasPermission('faq.delete')) {
+            $this->addAction([
+                'index' => 'delete',
+                'icon' => 'icon-delete',
+                'title' => trans('faq::app.admin.index.datagrid.delete'),
+                'method' => 'DELETE',
+                'url' => fn ($row) => route('admin.faq.delete', $row->id),
+            ]);
+        }
+    }
+
+    /**
+     * Prepare the mass actions.
+     */
+    public function prepareMassActions(): void
+    {
+        if (bouncer()->hasPermission('faq.delete')) {
+            $this->addMassAction([
+                'icon' => 'icon-delete',
+                'title' => trans('faq::app.admin.index.datagrid.delete'),
+                'method' => 'POST',
+                'url' => route('admin.faq.mass_delete'),
+            ]);
+        }
+
+        if (bouncer()->hasPermission('faq.edit')) {
+            $this->addMassAction([
+                'title' => trans('faq::app.admin.index.datagrid.update-status'),
+                'method' => 'POST',
+                'url' => route('admin.faq.mass_update'),
+                'options' => [
+                    [
+                        'label' => trans('faq::app.admin.index.datagrid.active'),
+                        'value' => 1,
+                    ],
+                    [
+                        'label' => trans('faq::app.admin.index.datagrid.inactive'),
+                        'value' => 0,
+                    ],
+                ],
+            ]);
+        }
     }
 }
 ```
 
-::: info Simple DataGrid Explanation
-**Query Builder**: Selects only the `id` column from our `rma_requests` table - keeping it simple
+<a id="understanding-datagrid-methods"></a>
+<a id="preparequerybuilder"></a>
 
-**Single Column**: Just the ID column to demonstrate the basic DataGrid concept
+### The Query
 
-**No Actions**: We're focusing on data display first, actions can be added later
+`prepareQueryBuilder()` returns a query builder, never results: the grid adds the filters, sorting and paging to it, and export runs it again without paging. It is the one place in Bagisto where `DB::` is expected instead of a repository.
 
-**Basic Properties**: Only essential properties - searchable false, sortable true, filterable false
+`addFilter()` maps a column index to the SQL the grid filters and sorts on. The mapping is required for an alias (`channel` stands for `channels.code`) and for a column both joined tables have (`id`), and a missing one fails with an SQL error only when someone filters or sorts on that column. `$sortColumn` and `$sortOrder` set the order before the admin clicks a heading.
 
-**No Mass Actions**: Keeping it minimal to understand the core concept first
-:::
+<a id="column-configuration-options"></a>
+<a id="preparecolumns"></a>
 
-## Adding DataGrid Translations
+### The Columns
 
-Create the necessary translation keys for your DataGrid by updating `packages/Webkul/RMA/src/Resources/lang/en/app.php`:
+| Key | Default | Meaning |
+|---|---|---|
+| `index` | Required | The column's name in the select list |
+| `label` | Required | The heading, always through `trans()` |
+| `type` | Required | `string`, `integer`, `decimal`, `boolean`, `date`, `datetime` or `aggregate` |
+| `searchable` | `false` | Include the column in the toolbar's search |
+| `filterable` | `false` | Give the column a filter |
+| `filterable_type` | `null` | `dropdown`, `date_range` or `datetime_range` |
+| `filterable_options` | `[]` | `label` and `value` pairs for a dropdown, or a closure that returns them |
+| `allow_multiple_values` | `true` | Let a filter take several values; always off for `integer` and `decimal` |
+| `sortable` | `false` | Make the heading sort the grid |
+| `exportable` | `true` | Include the column in exports |
+| `visibility` | `true` | Show the column before the admin changes the column selection |
+| `closure` | `null` | A function that receives the row and returns what the cell shows |
 
-```php{8-11}
+A missing `index`, `label` or `type` throws `InvalidColumnException`, and an unknown `type` throws `InvalidColumnTypeException`. Each type shapes its filter:
+
+| Type | Filter |
+|---|---|
+| `string`, `aggregate` | Text, matched with `LIKE`, or `ILIKE` on PostgreSQL |
+| `integer`, `decimal` | A number, an operator and a number (`>= 10`, `< 5`) or a range (`10 - 20`) |
+| `boolean` | A dropdown only, with yes and no options when none are given |
+| `date`, `datetime` | `date_range` or `datetime_range` only, with presets from today to this year |
+
+A closure runs once per row after the query and changes only what the cell shows: sorting, filtering and export use the raw value. Before any closure runs, the grid strips HTML tags from every string value of the row.
+
+<a id="prepareactions-optional"></a>
+<a id="adding-actions"></a>
+
+### Row Actions
+
+Each `addAction()` adds a button to every row:
+
+| Key | Meaning |
+|---|---|
+| `title` | The tooltip, through `trans()`; required |
+| `method` | `GET` opens `url`. `POST`, `PUT`, `PATCH` and `DELETE` ask for confirmation, send the request with AJAX and show the `message` of the JSON response; required |
+| `url` | A closure that receives the row, as the query selected it, and returns the URL; required. Select every column the closure reads, as `faqs.id` is here |
+| `icon` | An admin icon class such as `icon-edit` or `icon-delete` |
+| `index` | A short name for the action |
+| `condition` | A closure that receives the row; the action is left off rows for which it returns `false` |
+
+<a id="preparemassactions-optional"></a>
+<a id="adding-mass-actions"></a>
+
+### Mass Actions
+
+Each `addMassAction()` adds an entry to the actions menu that appears once rows are ticked. The grid sends `method` to `url` with the selected ids as `indices`. A mass action with `options` shows them as a second choice and sends the chosen `value` as well.
+
+Every action and mass action is wrapped in `bouncer()->hasPermission()`, so a role that may not edit or delete never sees the button.
+
+<a id="integrating-datagrid-with-controller"></a>
+
+## Serve the Grid from the Controller
+
+Add the AJAX branch to `index()` and two methods for the mass actions, `massDestroy()` and `massUpdate()`. The methods elided in the middle are unchanged from [Controllers](./controllers.md):
+
+**File:** `packages/Webkul/Faq/src/Http/Controllers/Admin/FaqController.php`
+
+```php
 <?php
 
-return [
-    'admin' => [
-        'return-requests' => [
-            'title' => 'RMA Listing Title',
-            'content' => 'RMA Listing Content',
+namespace Webkul\Faq\Http\Controllers\Admin;
 
-            'datagrid' => [
-                'id' => 'ID',
-            ],
-        ],
-    ],
-];
-```
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Event;
+use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Webkul\Admin\Http\Controllers\Controller;
+use Webkul\Admin\Http\Requests\MassDestroyRequest;
+use Webkul\Admin\Http\Requests\MassUpdateRequest;
+use Webkul\Faq\DataGrids\Admin\FaqDataGrid;
+use Webkul\Faq\Http\Requests\FaqRequest;
+use Webkul\Faq\Repositories\FaqRepository;
 
-::: tip Organized Translation Structure
-The DataGrid translations are nested under `return-requests` since they're specific to the return requests DataGrid. This keeps translations organized and makes it clear which section they belong to.
-:::
-
-## Integrating DataGrid with Controller
-
-Update your admin controller to use the DataGrid:
-
-**Update:** `packages/Webkul/RMA/src/Http/Controllers/Admin/ReturnRequestController.php`
-
-```php{23-26}
-<?php
-
-namespace Webkul\RMA\Http\Controllers\Admin;
-
-use Webkul\RMA\DataGrids\Admin\ReturnRequestDataGrid;
-use Webkul\RMA\Http\Controllers\Controller;
-use Webkul\RMA\Repositories\ReturnRequestRepository;
-
-class ReturnRequestController extends Controller
+class FaqController extends Controller
 {
     /**
      * Create a new controller instance.
      */
-    public function __construct(
-        protected ReturnRequestRepository $returnRequestRepository
-    ) {}
+    public function __construct(protected FaqRepository $faqRepository) {}
 
     /**
-     * Display a listing of return requests.
+     * Show the FAQ listing page, or the grid's data for an AJAX request.
      */
-    public function index()
+    public function index(): View|JsonResponse|BinaryFileResponse
     {
         if (request()->ajax()) {
-            return datagrid(ReturnRequestDataGrid::class)->process();
+            return datagrid(FaqDataGrid::class)->process();
         }
 
-        return view('rma::admin.return-requests.index');
+        return view('faq::admin.index');
     }
-}
-```
 
-::: tip DataGrid Integration
-**AJAX Processing**: When the request is AJAX (DataGrid pagination, filtering, sorting), the `datagrid()` helper processes the request and returns JSON data
-
-**View Rendering**: For regular page loads, it renders the Blade view that contains the DataGrid component
-
-This pattern allows the same controller method to handle both initial page loads and subsequent DataGrid operations.
-:::
-
-## Creating DataGrid Views
-
-Create the admin view that will display your DataGrid. First, ensure the views directory structure exists:
-
-```bash
-mkdir -p packages/Webkul/RMA/src/Resources/views/admin/return-requests
-```
-
-**Create:** `packages/Webkul/RMA/src/Resources/views/admin/return-requests/index.blade.php`
-
-```blade{5-6}
-<x-admin::layouts>
-    <x-slot:title>
-        @lang('rma::app.admin.return-requests.title')
-    </x-slot:title>
-
-    <x-admin::datagrid :src="route('admin.rma.return-requests.index')" />
-</x-admin::layouts>
-```
-
-::: info Simple View Explanation
-**Layout Component**: Uses Bagisto's admin layout with consistent styling
-
-**Basic Header**: Just shows the page title without additional buttons
-
-**DataGrid Component**: The `<x-admin::datagrid>` component renders the DataGrid interface
-
-**Minimal Structure**: No permissions, no create buttons, no events - just the essential DataGrid display
-:::
-
-## Creating Sample Data
-
-Before we can see our DataGrid in action, let's create some simple return request records using Laravel Tinker:
-
-```bash
-php artisan tinker
-```
-
-```php
-// Create simple return requests - we only need basic data for our ID-only DataGrid
-DB::table('rma_requests')->insert([
-    [
-        'customer_id' => 1,
-        'order_id' => 1,
-        'product_sku' => 'LAPTOP-001',
-        'product_name' => 'Gaming Laptop',
-        'product_quantity' => 1,
-        'reason' => 'Defective screen',
-        'status' => 'pending',
-        'admin_notes' => null,
-        'created_at' => now(),
-        'updated_at' => now(),
-    ],
-    [
-        'customer_id' => 2,
-        'order_id' => 5,
-        'product_sku' => 'PHONE-002',
-        'product_name' => 'Smartphone Pro',
-        'product_quantity' => 1,
-        'reason' => 'Wrong color received',
-        'status' => 'approved',
-        'admin_notes' => null,
-        'created_at' => now()->subDays(2),
-        'updated_at' => now()->subDays(1),
-    ],
-    [
-        'customer_id' => 3,
-        'order_id' => 8,
-        'product_sku' => 'HEADPHONES-003',
-        'product_name' => 'Wireless Headphones',
-        'product_quantity' => 2,
-        'reason' => 'Not as described',
-        'status' => 'rejected',
-        'admin_notes' => null,
-        'created_at' => now()->subDays(5),
-        'updated_at' => now()->subDays(3),
-    ],
-]);
-
-// Verify the data was created
-DB::table('rma_requests')->count(); // Should return 3
-
-// Check the IDs were created correctly (this is what our DataGrid will show)
-DB::table('rma_requests')->select('id')->get();
-```
-
-::: tip Simple Data for Simple DataGrid
-**Complete Records**: We still need all the required fields for the database, but our DataGrid will only display the ID
-
-**Focus on IDs**: The main point is to see that our DataGrid can display the ID column from these records
-
-**Three Records**: Just enough to see that the DataGrid is working and displaying multiple rows
-
-**Next Steps**: Once this basic DataGrid works, you can add more columns and features gradually
-:::
-
-## Testing Your DataGrid
-
-Now you can test your basic DataGrid functionality:
-
-```bash
-# Clear cache and visit the admin route
-php artisan optimize:clear
-
-# Visit in browser: http://your-app.com/admin/rma/return-requests
-```
-
-**Expected DataGrid Features:**
-- **Data Display**: All sample record IDs shown in a simple table
-- **Column Sorting**: Click the "ID" column header to sort the records
-- **Basic Pagination**: Navigation controls if you have many records
-- **Clean Interface**: Simple, professional table showing just the essential data
-
-You should see a clean table with just one column showing the IDs: 1, 2, 3 (or whatever IDs were generated).
-
-::: info Simple DataGrid Testing Checklist
-**Core Functionality:**
-- ✅ Records display correctly in a table
-- ✅ ID column shows the correct values
-- ✅ Sorting works when clicking the ID column header
-- ✅ Page loads without errors
-- ✅ DataGrid displays with proper styling
-
-**What's NOT included (and that's okay!):**
-- ❌ Multiple columns - we're keeping it simple
-- ❌ Filtering options - not needed for basic concept
-- ❌ Search functionality - will add later
-- ❌ Actions buttons - focusing on data display first
-- ❌ Mass actions - advanced feature for later
-:::
-
-::: tip Success Indicators
-If you see a table with a single "ID" column showing your record IDs (1, 2, 3), congratulations! Your basic DataGrid is working perfectly. This foundation can now be expanded with additional columns and features as you become more comfortable with the DataGrid system.
-:::
-
-## Understanding DataGrid Methods
-
-Now that you've seen your basic DataGrid working, let's understand how the DataGrid methods work and how you can expand them:
-
-### prepareQueryBuilder()
-
-This method defines what data to retrieve from the database. In our simple example:
-
-```php
-public function prepareQueryBuilder()
-{
-    $queryBuilder = DB::table('rma_requests')
-        ->select('id'); // We only select ID for our simple DataGrid
-
-    return $queryBuilder;
-}
-```
-
-For more complex DataGrids, you might select multiple columns:
-
-```php
-public function prepareQueryBuilder()
-{
-    $queryBuilder = DB::table('rma_requests')
-        ->select(
-            'id',
-            'customer_id',
-            'product_sku',
-            'product_name',
-            'status',
-            'created_at'
-        );
-
-    return $queryBuilder;
-}
-```
-
-::: tip Query Builder Best Practices
-**Select Only What You Need**: Only select columns that will be displayed or used for filtering
-
-**Use Joins Wisely**: Add joins for related data but be mindful of performance
-
-**Apply Default Filters**: Add conditions like `->where('deleted_at', null)` if needed
-
-**Optimize for Large Datasets**: Consider indexing frequently filtered/sorted columns
-
-**Prefix table names in raw SQL**: `DB::getTablePrefix()` returns the configured `DB_PREFIX`; core grids prepend it to every table named inside `DB::raw()`
-
-**Write portable SQL**: Build `CONCAT`, `GROUP_CONCAT` and similar expressions with `db_grammar()` so the grid works on PostgreSQL as well as MySQL, and group by every selected non-aggregated column when you aggregate. See [Database compatibility](../advanced/database-compatibility.md)
-:::
-
-### prepareColumns()
-
-This method defines how each column should behave. Our simple example:
-
-```php
-public function prepareColumns()
-{
-    $this->addColumn([
-        'index' => 'id',
-        'label' => trans('rma::app.admin.return-requests.datagrid.id'),
-        'type' => 'integer',
-        'searchable' => false,
-        'sortable' => true,
-        'filterable' => false,
-    ]);
-}
-```
-
-#### Column Configuration Options
-
-| Key                     | Type | Description |
-| ----------------------- | ---- | ----------- |
-| **`index`**             | String | Database column name or alias. Required |
-| **`label`**             | String | Column header text (use translations). Required |
-| **`type`**              | String | Data type: `string`, `integer`, `decimal`, `boolean`, `date`, `datetime`, `aggregate`. Required |
-| **`searchable`**        | Boolean | Enable text search for this column |
-| **`sortable`**          | Boolean | Enable column sorting |
-| **`filterable`**        | Boolean | Enable column filtering |
-| **`filterable_type`**   | String | Filter type: `dropdown`, `date_range`, `datetime_range` |
-| **`filterable_options`** | Array or Closure | Options for dropdown filters; a closure is called when the grid is built |
-| **`allow_multiple_values`** | Boolean | Let the user pick several filter values at once (default `true`; forced off for numeric columns) |
-| **`exportable`**        | Boolean | Include the column in exports (default `true`) |
-| **`visibility`**        | Boolean | Show the column by default (default `true`) |
-| **`closure`**           | Function | Custom formatting function |
-
-`Column::validate()` throws `InvalidColumnException` when `index`, `label` or `type` is missing, and some types constrain the filter:
-
-| Column type | Filter behaviour |
-|---|---|
-| `integer`, `decimal` | Accept an operator or a range typed into the filter: `>= 10`, `< 5`, `= 3`, or `10 - 20`. Multiple values are not allowed |
-| `boolean` | Only `dropdown`; the true/false options are supplied for you |
-| `date` | Only `date_range`, with the preset options (`today`, `yesterday`, `this_week`, `this_month`, `last_month`, `last_three_months`, `last_six_months`, `this_year`) added automatically |
-| `datetime` | Only `datetime_range`, with the same presets |
-
-Text search on `string` and `aggregate` columns uses `ILIKE` on PostgreSQL and `LIKE` elsewhere, so it is case-insensitive on every supported database.
-
-::: warning Aliases need `addFilter()`
-Sorting and filtering are written against the column's `index`. When the index is an alias or an expression (a `CONCAT`, a joined column), tell the grid which SQL to use with `addFilter()` inside `prepareQueryBuilder()`:
-
-```php
-$this->addFilter('id', 'rma_requests.id');
-$this->addFilter('customer_name', DB::raw(db_grammar()->concat('customers.first_name', "' '", 'customers.last_name')));
-```
-
-Core does this on nearly every grid; without it a filter on an aliased column produces an SQL error.
-:::
-
-Every string column is run through `strip_tags()` before your closure sees it, so a closure that echoes a raw column value is safe. Escape anything else you interpolate.
-
-### prepareActions() (Optional)
-
-This method defines row-level actions (like edit, delete buttons). We didn't include this in our basic example:
-
-```php
-public function prepareActions()
-{
-    $this->addAction([
-        'index' => 'edit',
-        'icon' => 'icon-edit',
-        'title' => 'Edit',
-        'method' => 'GET',
-        'url' => function ($row) {
-            return route('admin.rma.return-requests.edit', $row->id);
-        },
-    ]);
-}
-```
-
-An action needs `title`, `method` and `url`; `index` and `icon` default to empty strings. An optional `condition` closure receives the row and hides the action when it returns `false`. Core also wraps each `addAction()` in a permission check so a role that may not edit never sees the button:
-
-```php
-if (bouncer()->hasPermission('rma.return-requests.edit')) {
-    $this->addAction([
-        // ...
-    ]);
-}
-```
-
-### prepareMassActions() (Optional)
-
-This method defines bulk operations. Also not included in our basic example:
-
-```php
-public function prepareMassActions()
-{
-    $this->addMassAction([
-        'icon' => 'icon-delete',
-        'title' => 'Delete Selected',
-        'method' => 'POST',
-        'url' => route('admin.rma.return-requests.mass-delete'),
-    ]);
-}
-```
-
-A mass action may also carry an `options` array, which renders a select beside the button and posts the chosen value; core uses it to update the status of many rows at once.
-
-### Extending a DataGrid you do not own
-
-Every grid dispatches events named after its class in snake case, so another package can add a column, filter or action to a core grid without editing it:
-
-```php
-Event::listen('datagrid.return_request_data_grid.columns.add.after', function ($datagrid) {
-    $datagrid->addColumn([
-        'index' => 'warehouse',
-        'label' => trans('rma::app.admin.return-requests.datagrid.warehouse'),
-        'type' => 'string',
-    ]);
-});
-```
-
-The events fired, in order, are `prepare.before`, `columns.prepare.before/after` (with `columns.add.before/after` per column), `actions.prepare.before/after`, `mass_actions.prepare.before/after`, `query_builder.prepare.before/after` and, after the request has been processed, `prepare.after`. The query builder is prepared last, so a listener that adds a column runs before the query exists. The listener receives the grid instance.
-
-Saved filters are available on every grid with no extra work: the toolbar posts them to `admin.datagrid.saved_filters.*`, backed by `Webkul\DataGrid\Models\SavedFilter`.
-
-## Expanding Your DataGrid
-
-Once your basic DataGrid is working, you can gradually add more features. Let's walk through each enhancement step-by-step:
-
-### Adding More Columns
-
-Let's add a product name column to make our DataGrid more useful. This requires updating three parts:
-
-#### Step 1: Update the Query Builder
-
-First, modify your `prepareQueryBuilder()` method to select the additional column:
-
-```php{4}
-public function prepareQueryBuilder()
-{
-    $queryBuilder = DB::table('rma_requests')
-        ->select('id', 'product_name'); // Add product_name to selection
-
-    return $queryBuilder;
-}
-```
-
-#### Step 2: Add the Column Definition
-
-Add the new column to your `prepareColumns()` method:
-
-```php{11-19}
-public function prepareColumns()
-{
-    $this->addColumn([
-        'index' => 'id',
-        'label' => trans('rma::app.admin.return-requests.datagrid.id'),
-        'type' => 'integer',
-        'searchable' => false,
-        'sortable' => true,
-        'filterable' => false,
-    ]);
-
-    $this->addColumn([
-        'index' => 'product_name',
-        'label' => trans('rma::app.admin.return-requests.datagrid.product-name'),
-        'type' => 'string',
-        'searchable' => true,
-        'sortable' => true,
-        'filterable' => false,
-    ]);
-}
-```
-
-#### Step 3: Add Translation Keys
-
-Update your translation file `packages/Webkul/RMA/src/Resources/lang/en/app.php`:
-
-```php{3}
-'datagrid' => [
-    'id' => 'ID',
-    'product-name' => 'Product Name',
-],
-```
-
-Now your DataGrid will display both ID and Product Name columns with search functionality enabled for the product name.
-
-### Adding Status Column with Dropdown Filter
-
-Let's add a status column that demonstrates filtering capabilities:
-
-#### Step 1: Update Query Builder
-
-```php{4}
-public function prepareQueryBuilder()
-{
-    $queryBuilder = DB::table('rma_requests')
-        ->select('id', 'product_name', 'status'); // Add status column
-
-    return $queryBuilder;
-}
-```
-
-#### Step 2: Add Status Column with Filter
-
-```php{4-27}
-public function prepareColumns()
-{
-    // ...existing columns...
-
-    $this->addColumn([
-        'index' => 'status',
-        'label' => trans('rma::app.admin.return-requests.datagrid.status'),
-        'type' => 'string',
-        'searchable' => false,
-        'sortable' => true,
-        'filterable' => true,
-        'filterable_type' => 'dropdown',
-        'filterable_options' => [
-            [
-                'label' => trans('rma::app.admin.return-requests.datagrid.pending'),
-                'value' => 'pending',
-            ],
-            [
-                'label' => trans('rma::app.admin.return-requests.datagrid.approved'),
-                'value' => 'approved',
-            ],
-            [
-                'label' => trans('rma::app.admin.return-requests.datagrid.rejected'),
-                'value' => 'rejected',
-            ],
-        ],
-    ]);
-}
-```
-
-#### Step 3: Add Status Translation
-
-```php{4-7}
-'datagrid' => [
-    'id' => 'ID',
-    'product-name' => 'Product Name',
-    'status' => 'Status',
-    'pending' => 'Pending',
-    'approved' => 'Approved',
-    'rejected' => 'Rejected',
-],
-```
-
-### Adding Custom Formatting with Closure
-
-Let's enhance the status column to display status values with styled badges using the `closure` feature:
-
-#### Step 1: Basic Badge Formatting
-
-First, let's add a simple closure that displays all status values with a consistent badge style:
-
-```php{4-30}
-public function prepareColumns()
-{
-    // ...existing columns...
-
-    $this->addColumn([
-        'index' => 'status',
-        'label' => trans('rma::app.admin.return-requests.datagrid.status'),
-        'type' => 'string',
-        'searchable' => false,
-        'sortable' => true,
-        'filterable' => true,
-        'filterable_type' => 'dropdown',
-        'filterable_options' => [
-            [
-                'label' => trans('rma::app.admin.return-requests.datagrid.pending'),
-                'value' => 'pending',
-            ],
-            [
-                'label' => trans('rma::app.admin.return-requests.datagrid.approved'),
-                'value' => 'approved',
-            ],
-            [
-                'label' => trans('rma::app.admin.return-requests.datagrid.rejected'),
-                'value' => 'rejected',
-            ],
-        ],
-        'closure' => function ($row) {
-            return "<span class='badge label-info'>".ucfirst($row->status).'</span>';
-        },
-    ]);
-}
-```
-
-This simple closure transforms plain text like "pending" into a styled badge that displays as "Pending" with consistent styling.
-
-#### Step 2: Understanding Basic Closure
-
-The `closure` parameter allows you to:
-
-- **Transform Data**: Convert raw database values into formatted display
-- **Add HTML**: Return HTML elements like badges, links, or formatted text
-- **Simple Logic**: Apply basic transformations like capitalization or formatting
-
-#### Step 3: Advanced Conditional Styling (Optional)
-
-Once you're comfortable with basic closures, you can enhance it with conditional styling:
-
-```php{2-22}
-'closure' => function ($row) {
-    $statusConfig = [
-        'pending' => [
-            'label' => trans('rma::app.admin.return-requests.datagrid.pending'),
-            'class' => 'label-pending'
-        ],
-        'approved' => [
-            'label' => trans('rma::app.admin.return-requests.datagrid.approved'),
-            'class' => 'label-active'
-        ],
-        'rejected' => [
-            'label' => trans('rma::app.admin.return-requests.datagrid.rejected'),
-            'class' => 'label-canceled'
-        ],
-    ];
-
-    $config = $statusConfig[$row->status] ?? [
-        'label' => ucfirst($row->status),
-        'class' => 'label-info'
-    ];
-
-    return "<span class='badge {$config['class']}'>{$config['label']}</span>";
-},
-```
-
-This advanced version provides different colors for each status type, making it easier to quickly identify status at a glance.
-
-- **Custom Formatting**: Transform raw data into formatted display
-- **HTML Output**: Return HTML elements like badges, links, or icons
-- **Conditional Logic**: Apply different styling based on data values
-- **Translation Integration**: Use translation keys for internationalization
-
-#### Step 4: Common Closure Use Cases
-
-Here are simple examples of other closure implementations you might use:
-
-**Basic Date Formatting:**
-```php
-'closure' => function ($row) {
-    return $row->created_at ? date('M d, Y', strtotime($row->created_at)) : '-';
-},
-```
-
-**Simple Price Formatting:**
-```php
-'closure' => function ($row) {
-    return '$' . number_format($row->price, 2);
-},
-```
-
-**Basic Boolean Display:**
-```php
-'closure' => function ($row) {
-    return $row->is_active ? 'Yes' : 'No';
-},
-```
-
-**Text Truncation:**
-```php
-'closure' => function ($row) {
-    return strlen($row->description) > 30 
-        ? substr($row->description, 0, 30).'...'
-        : $row->description;
-},
-```
-
-::: tip Closure Best Practices
-**Start Simple**: Begin with basic transformations like capitalization or formatting
-
-**Security**: Always escape user data when outputting HTML to prevent XSS attacks
-
-**Performance**: Keep closure logic simple since it runs for every row
-
-**Consistency**: Use consistent styling classes that match your admin theme
-
-**Progression**: Master basic closures before moving to complex conditional logic
-:::
-
-::: info Why Use Closures in DataGrid?
-**Better Display**: Transform plain database values into user-friendly formatted text
-
-**Visual Enhancement**: Add styling and formatting without changing underlying data
-
-**Flexibility**: Easy to modify display format without database changes
-
-**User Experience**: Make data more readable and professional-looking
-
-**Maintainability**: Keep formatting logic centralized in the DataGrid definition
-:::
-
-Now your status column will display neat badges instead of plain text, making it much easier for administrators to quickly scan the data.
-
-### Adding Actions
-
-When you're ready for user interactions, let's start by adding a simple view action to each row:
-
-#### Step 1: Add Basic View Route
-
-First, add a simple view route in your package's route file `packages/Webkul/RMA/src/Routes/admin-routes.php`:
-
-```php{9-10}
-Route::group([
-    'middleware' => ['web', 'admin'],
-    'prefix' => config('app.admin_url'),
-], function () {
-    Route::prefix('rma/return-requests')->group(function () {
-        // ...existing routes...
-
-        Route::get('{id}', [ReturnRequestController::class, 'show'])
-            ->name('admin.rma.return-requests.show');
-    });
-});
-```
-
-Every admin route must also have an entry in your `acl.php`, or the `admin` middleware refuses it for every role except a super admin. The [Access Control List](./access-control-list.md) page covers this.
-
-#### Step 2: Add Basic Controller Method
-
-Add the corresponding view method to your controller:
-
-```php{4-13}
-class ReturnRequestController extends Controller
-{
-    // ...existing methods...
+    // ...
 
     /**
-     * Show the specified return request.
+     * Delete the selected questions.
      */
-    public function show($id)
+    public function massDestroy(MassDestroyRequest $massDestroyRequest): JsonResponse
     {
-        $returnRequest = $this->returnRequestRepository->findOrFail($id);
+        $faqs = $this->faqRepository->findWhereIn('id', $massDestroyRequest->input('indices'));
 
-        return view('rma::admin.return-requests.show', compact('returnRequest'));
-    }
-}
-```
+        foreach ($faqs as $faq) {
+            Event::dispatch('faq.delete.before', $faq->id);
 
-#### Step 3: Create the View Template
+            $this->faqRepository->delete($faq->id);
 
-Create the view template for displaying individual return requests:
-
-**Create:** `packages/Webkul/RMA/src/Resources/views/admin/return-requests/show.blade.php`
-
-::: tip Quick Implementation
-Don't worry about understanding every part of this view template right now. Copy and paste the code below - it's a standard admin detail page that follows Bagisto's design patterns. Focus on understanding how the DataGrid action connects to this view.
-:::
-
-```blade
-<x-admin::layouts>
-    <x-slot:title>
-        @lang('rma::app.admin.return-requests.show.title')
-    </x-slot:title>
-
-    <div class="flex gap-4 justify-between items-center max-sm:flex-wrap">
-        <p class="text-xl text-gray-800 dark:text-white font-bold">
-            @lang('rma::app.admin.return-requests.show.title') #{{ $returnRequest->id }}
-        </p>
-    </div>
-
-    <div class="flex gap-2.5 mt-3.5 max-xl:flex-wrap">
-        <div class="flex flex-col gap-2 flex-1 max-xl:flex-auto">
-            <div class="p-4 bg-white dark:bg-gray-900 rounded box-shadow">
-                <p class="text-base text-gray-800 dark:text-white font-semibold mb-4">
-                    @lang('rma::app.admin.return-requests.show.general-info')
-                </p>
-
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <p class="text-gray-600 dark:text-gray-300 font-semibold">
-                            @lang('rma::app.admin.return-requests.show.product-name'):
-                        </p>
-                        <p class="text-gray-800 dark:text-white">
-                            {{ $returnRequest->product_name }}
-                        </p>
-                    </div>
-
-                    <div>
-                        <p class="text-gray-600 dark:text-gray-300 font-semibold">
-                            @lang('rma::app.admin.return-requests.show.status'):
-                        </p>
-                        <span class="badge label-info">
-                            {{ ucfirst($returnRequest->status) }}
-                        </span>
-                    </div>
-
-                    <div>
-                        <p class="text-gray-600 dark:text-gray-300 font-semibold">
-                            @lang('rma::app.admin.return-requests.show.reason'):
-                        </p>
-                        <p class="text-gray-800 dark:text-white">
-                            {{ $returnRequest->reason }}
-                        </p>
-                    </div>
-
-                    <div>
-                        <p class="text-gray-600 dark:text-gray-300 font-semibold">
-                            @lang('rma::app.admin.return-requests.show.created-at'):
-                        </p>
-                        <p class="text-gray-800 dark:text-white">
-                            {{ $returnRequest->created_at }}
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</x-admin::layouts>
-```
-
-#### Step 4: Add Simple Action to DataGrid
-
-Now add the `prepareActions()` method to your DataGrid with just the view action:
-
-```php
-public function prepareActions()
-{
-    $this->addAction([
-        'icon' => 'icon-view',
-        'title' => trans('rma::app.admin.return-requests.datagrid.view'),
-        'method' => 'GET',
-        'url' => function ($row) {
-            return route('admin.rma.return-requests.show', $row->id);
-        },
-    ]);
-}
-```
-
-#### Step 5: Add View Translations
-
-Update your translations to include the view page labels:
-
-```php{8,10-18}
-'datagrid' => [
-    'id' => 'ID',
-    'product-name' => 'Product Name',
-    'status' => 'Status',
-    'pending' => 'Pending',
-    'approved' => 'Approved',
-    'rejected' => 'Rejected',
-    'view' => 'View',
-],
-
-'show' => [
-    'title' => 'View Return Request',
-    'general-info' => 'General Information',
-    'product-name' => 'Product Name',
-    'status' => 'Status',
-    'reason' => 'Reason',
-    'created-at' => 'Created At',
-],
-```
-
-Now your DataGrid will have a simple "View" button on each row that takes administrators to a detail page for that return request.
-
-#### Step 6: Adding More Actions (Optional)
-
-Once you're comfortable with basic actions, you can add edit and delete actions:
-
-```php{11-28}
-public function prepareActions()
-{
-    $this->addAction([
-        'icon' => 'icon-view',
-        'title' => trans('rma::app.admin.return-requests.datagrid.view'),
-        'method' => 'GET',
-        'url' => function ($row) {
-            return route('admin.rma.return-requests.show', $row->id);
-        },
-    ]);
-
-    $this->addAction([
-        'icon' => 'icon-edit',
-        'title' => trans('rma::app.admin.return-requests.datagrid.edit'),
-        'method' => 'GET',
-        'url' => function ($row) {
-            return route('admin.rma.return-requests.edit', $row->id);
-        },
-    ]);
-
-    $this->addAction([
-        'icon' => 'icon-delete',
-        'title' => trans('rma::app.admin.return-requests.datagrid.delete'),
-        'method' => 'DELETE',
-        'url' => function ($row) {
-            return route('admin.rma.return-requests.delete', $row->id);
-        },
-    ]);
-}
-```
-
-::: warning Important Implementation Note
-Remember to add the corresponding routes and controller methods for edit and delete functionality when you're ready to implement them. Without these routes and methods, the action buttons will result in 404 errors when clicked.
-:::
-
-### Adding Mass Actions
-
-For bulk operations, add the `prepareMassActions()` method:
-
-#### Step 1: Add Mass Delete Route
-
-```php{9-10}
-Route::group([
-    'middleware' => ['web', 'admin'],
-    'prefix' => config('app.admin_url'),
-], function () {
-    Route::prefix('rma/return-requests')->group(function () {
-        // ...existing routes...
-
-        Route::post('mass-delete', [ReturnRequestController::class, 'massDestroy'])
-            ->name('admin.rma.return-requests.mass-delete');
-    });
-});
-```
-
-Register `mass-delete` before the `{id}` route, or the literal segment is captured as an id.
-
-#### Step 2: Add Mass Delete Controller Method
-
-Validate the selection with the form request the Admin package provides for exactly this payload, `Webkul\Admin\Http\Requests\MassDestroyRequest`, which requires `indices` to be an array of integers:
-
-```php{4-19}
-use Webkul\Admin\Http\Requests\MassDestroyRequest;
-
-class ReturnRequestController extends Controller
-{
-    // ...existing methods...
-
-    /**
-     * Mass delete return requests.
-     */
-    public function massDestroy(MassDestroyRequest $massDestroyRequest)
-    {
-        foreach ($massDestroyRequest->input('indices') as $index) {
-            $this->returnRequestRepository->delete($index);
+            Event::dispatch('faq.delete.after', $faq->id);
         }
 
-        return response()->json([
-            'message' => trans('rma::app.admin.return-requests.datagrid.mass-delete-success'),
+        return new JsonResponse([
+            'message' => trans('faq::app.admin.index.datagrid.mass-delete-success'),
+        ]);
+    }
+
+    /**
+     * Change the status of the selected questions.
+     */
+    public function massUpdate(MassUpdateRequest $massUpdateRequest): JsonResponse
+    {
+        $faqs = $this->faqRepository->findWhereIn('id', $massUpdateRequest->input('indices'));
+
+        foreach ($faqs as $faq) {
+            Event::dispatch('faq.update.before', $faq->id);
+
+            $faq = $this->faqRepository->update([
+                'status' => $massUpdateRequest->boolean('value'),
+            ], $faq->id);
+
+            Event::dispatch('faq.update.after', $faq);
+        }
+
+        return new JsonResponse([
+            'message' => trans('faq::app.admin.index.datagrid.mass-update-success'),
         ]);
     }
 }
 ```
 
-`MassUpdateRequest` is the equivalent for a mass action that carries a `value`.
+- **`datagrid()`** resolves the class from the container, so a grid can take repositories in its constructor, and throws `InvalidDataGridException` for a class that doesn't extend `Webkul\DataGrid\DataGrid`.
+- **`process()`** returns the grid as JSON, or the export file when the request asks for one, which is why `index()` declares three return types.
+- **`MassDestroyRequest` and `MassUpdateRequest`**, from the Admin package, validate `indices` as an array of integers; `MassUpdateRequest` also requires `value`.
+- **Both loops fire the single-row events**, so a listener sees a bulk delete like any other delete.
 
-#### Step 3: Add Mass Actions to DataGrid
+Add the two routes inside the `faq` group:
+
+**File:** `packages/Webkul/Faq/src/Routes/admin-routes.php`
+
+```php{24,26}
+<?php
+
+use Illuminate\Support\Facades\Route;
+use Webkul\Core\Http\Middleware\NoCacheMiddleware;
+use Webkul\Faq\Http\Controllers\Admin\FaqController;
+
+Route::group([
+    'middleware' => ['web', 'admin', NoCacheMiddleware::class],
+    'prefix' => config('app.admin_url'),
+], function () {
+    Route::controller(FaqController::class)->prefix('faq')->group(function () {
+        Route::get('', 'index')->name('admin.faq.index');
+
+        Route::get('create', 'create')->name('admin.faq.create');
+
+        Route::post('create', 'store')->name('admin.faq.store');
+
+        Route::get('edit/{id}', 'edit')->name('admin.faq.edit');
+
+        Route::put('edit/{id}', 'update')->name('admin.faq.update');
+
+        Route::delete('edit/{id}', 'destroy')->name('admin.faq.delete');
+
+        Route::post('mass-delete', 'massDestroy')->name('admin.faq.mass_delete');
+
+        Route::post('mass-update', 'massUpdate')->name('admin.faq.mass_update');
+    });
+});
+```
+
+<a id="creating-datagrid-views"></a>
+
+## Show the Grid
+
+Add the export button to the header and the grid between the render events:
+
+**File:** `packages/Webkul/Faq/src/Resources/views/admin/index.blade.php`
+
+```blade{12,27}
+<x-admin::layouts>
+    <x-slot:title>
+        @lang('faq::app.admin.index.title')
+    </x-slot>
+
+    <div class="flex items-center justify-between gap-4 max-sm:flex-wrap">
+        <p class="text-xl font-bold text-gray-800 dark:text-white">
+            @lang('faq::app.admin.index.title')
+        </p>
+
+        <div class="flex items-center gap-x-2.5">
+            <x-admin::datagrid.export :src="route('admin.faq.index')" />
+
+            @if (bouncer()->hasPermission('faq.create'))
+                <a
+                    href="{{ route('admin.faq.create') }}"
+                    class="primary-button"
+                >
+                    @lang('faq::app.admin.index.create-btn')
+                </a>
+            @endif
+        </div>
+    </div>
+
+    {!! view_render_event('bagisto.admin.faq.list.before') !!}
+
+    <x-admin::datagrid :src="route('admin.faq.index')" />
+
+    {!! view_render_event('bagisto.admin.faq.list.after') !!}
+</x-admin::layouts>
+```
+
+The export button asks the same URL for the grid's current filters and sorting as a CSV, XLS or XLSX file, without paging.
+
+## Add the Labels
+
+Add a `datagrid` group under `admin.index` in the language file, and the same keys in every other locale:
+
+**File:** `packages/Webkul/Faq/src/Resources/lang/en/app.php`
 
 ```php
-public function prepareMassActions()
-{
-    $this->addMassAction([
-        'icon' => 'icon-delete',
-        'title' => trans('rma::app.admin.return-requests.datagrid.mass-delete'),
-        'method' => 'POST',
-        'url' => route('admin.rma.return-requests.mass-delete'),
+<?php
+
+return [
+    'admin' => [
+        'index' => [
+            'title' => 'FAQ',
+            'create-btn' => 'Create FAQ',
+
+            'datagrid' => [
+                'id' => 'ID',
+                'question' => 'Question',
+                'channel' => 'Channel',
+                'sort-order' => 'Sort Order',
+                'status' => 'Status',
+                'active' => 'Active',
+                'inactive' => 'Inactive',
+                'edit' => 'Edit',
+                'delete' => 'Delete',
+                'update-status' => 'Update Status',
+                'mass-delete-success' => 'Selected questions deleted successfully.',
+                'mass-update-success' => 'Selected questions updated successfully.',
+            ],
+        ],
+
+        // ...
+    ],
+
+    // ...
+];
+```
+
+<a id="testing-your-datagrid"></a>
+
+## Test It
+
+Clear the cached views first:
+
+```bash
+php artisan optimize:clear
+```
+
+1. Open `/admin/faq`. The questions appear in their sort order, with the search box, a filter for every column, and edit and delete buttons on each row.
+2. Tick two rows, choose **Update Status** and a status from the actions menu, and confirm. The grid reloads with the new status and shows the success message.
+3. Use the export button. The download holds the rows the filters show.
+
+<a id="datagrid-properties"></a>
+
+## Grid Properties
+
+Override a property only when its default is wrong for the grid:
+
+| Property | Default | Meaning |
+|---|---|---|
+| `$primaryColumn` | `'id'` | The column that identifies a row; the ids sent as `indices` come from it |
+| `$sortColumn` | `null` | The initial sort column; `null` sorts by `$primaryColumn` |
+| `$sortOrder` | `'desc'` | The initial sort direction |
+| `$itemsPerPage` | `10` | Rows per page |
+| `$perPageOptions` | `[10, 20, 30, 40, 50]` | The page sizes the admin can choose |
+
+When the identifier is selected under an alias, set `$primaryColumn` to the alias.
+
+## Extending a DataGrid You Do Not Own
+
+Every grid dispatches events named after its class in snake case, `datagrid.<grid>.<stage>`, so a package can add columns, actions or filters to a core grid without editing it. `Webkul\Admin\DataGrids\Settings\ChannelDataGrid` dispatches `datagrid.channel_data_grid.*`, and the FAQ package could add a question count to it from its provider's `boot()` method:
+
+```php
+Event::listen('datagrid.channel_data_grid.columns.prepare.after', function ($datagrid) {
+    $datagrid->addColumn([
+        'index' => 'faq_count',
+        'label' => trans('faq::app.admin.channels.datagrid.faq-count'),
+        'type' => 'integer',
+        'sortable' => true,
     ]);
-}
+});
+
+Event::listen('datagrid.channel_data_grid.query_builder.prepare.after', function ($datagrid) {
+    $datagrid->getQueryBuilder()->addSelect([
+        'faq_count' => DB::table('faqs')
+            ->selectRaw('count(*)')
+            ->whereColumn('faqs.channel_id', 'channels.id'),
+    ]);
+});
 ```
 
-#### Step 4: Add Mass Action Translation
+with `Illuminate\Support\Facades\DB` and `Illuminate\Support\Facades\Event` imported, and the label key added to the language file. The column is added while the columns are prepared and its value while the query is, because the grid prepares the query last. The listener adds to the grid's own query builder, the same exception that lets `prepareQueryBuilder()` use `DB::`; anywhere else, read `faqs` through `FaqRepository`.
 
-```php{9}
-'datagrid' => [
-    'id' => 'ID',
-    'product-name' => 'Product Name',
-    'status' => 'Status',
-    'pending' => 'Pending',
-    'approved' => 'Approved',
-    'rejected' => 'Rejected',
-    'view' => 'View',
-    'mass-delete' => 'Delete Selected',
-    'mass-delete-success' => 'Selected return requests deleted successfully.',
-],
-```
+A grid dispatches its events in this order. Each listener receives the grid. `columns.add.*`, `actions.add.*` and `mass_actions.add.*` listeners also receive the column, action or mass action, and `filters.add.*` listeners receive the column index and the SQL column it maps to.
 
-::: tip Gradual Enhancement
-Start with just the ID column, then add one feature at a time. This approach helps you understand each DataGrid component without getting overwhelmed by complexity.
-:::
+| Stage | Events |
+|---|---|
+| Start | `prepare.before` |
+| Columns | `columns.prepare.before`; `columns.add.before` and `columns.add.after` for each column; `columns.prepare.after` |
+| Actions, mass actions | The same pattern under `actions` and `mass_actions` |
+| Query | `query_builder.prepare.before`; `filters.add.before` and `filters.add.after` for each `addFilter()`; `query_builder.prepare.after` |
+| Request | `process_request.before`; `process_request.filters.*`; `process_request.sorting.*`; `process_request.paginated.*` or `process_request.export.*`; `process_request.after` |
+| End | `prepare.after` |
 
-## Your Next Step
+A listener on `columns.prepare.after`, `actions.prepare.after` or `mass_actions.prepare.after` can also remove what the grid added: filter `getColumns()`, `getActions()` or `getMassActions()` and pass the result through `array_values()` to `setColumns()`, `setActions()` or `setMassActions()`, because the grid sends them to the browser as JSON arrays and a filtered array with gaps in its keys arrives as an object the admin grid can't read. To change more, such as the query or a column's closure, bind a subclass of the core grid in your provider's `register()`, since `datagrid()` resolves the class from the container. Keep the core class's short name, `ChannelDataGrid` here: the event names are built from it, so a subclass with another name silences every listener on `datagrid.channel_data_grid.*`.
 
-Congratulations! You've successfully mastered DataGrid development in Bagisto.
+## Things to Watch
 
-Your foundation is solid! You can now build professional admin interfaces with powerful data management capabilities. The next logical step is to make your DataGrid accessible to administrators through proper navigation.
+- **Return the builder.** Calling `get()` or `paginate()` in `prepareQueryBuilder()` breaks paging, filtering and export, which all add to the query you return.
+- **Escape what a closure puts in an attribute.** Cells render as HTML. The grid strips tags from row values first but leaves quotes, so a value placed inside an attribute, such as `style="color: '.$row->color.'"`, can break out of it. Wrap such values in `e()`; a closure that combines `trans()` output with fixed markup, like the status badge above, needs nothing.
+- **Keep closures cheap.** A closure runs for every row on the page, so a repository call inside one is a query per row. Join or select the value in `prepareQueryBuilder()` instead.
+- **Map every route an action calls in `acl.php`.** Actions gated with `bouncer()->hasPermission()` still need the route's ACL entry, with the same permission key.
 
-**Continue to:** **[Menu](./menu.md)** - Create admin menu entries so administrators can easily access your DataGrid
+## Next Step
 
-With DataGrid and menu integration complete, you'll have a fully functional admin interface that administrators will love to use. Each new concept builds upon what you've already learned, making your Bagisto packages more robust and user-friendly.
+The listing works. Next, give it an entry in the admin sidebar.
+
+**Continue to:** [Menu](./menu.md)
