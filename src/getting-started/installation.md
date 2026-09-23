@@ -172,7 +172,7 @@ The [bagisto-docker](https://github.com/bagisto/bagisto-docker) repository is a 
 
 ### Laravel Sail
 
-Bagisto's `docker-compose.yml` is a [Laravel Sail](https://laravel.com/docs/sail) file with MySQL 8.0, Redis, Elasticsearch, Kibana and Mailpit. Sail itself isn't installed with Bagisto.
+Bagisto's `docker-compose.yml` is a [Laravel Sail](https://laravel.com/docs/sail) file. It runs the application on PHP 8.4 alongside Redis, Elasticsearch, Kibana and Mailpit, and lets you choose the database — MySQL 8.0, MariaDB 10.11 or PostgreSQL 16 — and, if you want one, the web server in front of it. Sail itself isn't installed with Bagisto.
 
 1. Install Sail. On a machine without PHP, run Composer in a container from the project directory:
 
@@ -187,16 +187,7 @@ Bagisto's `docker-compose.yml` is a [Laravel Sail](https://laravel.com/docs/sail
 
    With PHP and Composer installed, run `composer require laravel/sail --dev` instead.
 
-2. In `docker-compose.yml`, point the `laravel.test` build at Sail's PHP 8.4 runtime. The file names `./vendor/laravel/sail/runtimes/8.3`, and Bagisto needs PHP 8.4:
-
-   ```yaml
-   services:
-       laravel.test:
-           build:
-               context: ./vendor/laravel/sail/runtimes/8.4
-   ```
-
-3. Point `.env` at the Sail services:
+2. Point `.env` at the Sail services. `DB_HOST` is the database container's service name, and `COMPOSE_PROFILES` decides which containers start:
 
    ```properties
    DB_CONNECTION=mysql
@@ -206,13 +197,17 @@ Bagisto's `docker-compose.yml` is a [Laravel Sail](https://laravel.com/docs/sail
    DB_USERNAME=sail
    DB_PASSWORD=password
 
+   COMPOSE_PROFILES=${DB_CONNECTION}
+
    REDIS_HOST=redis
 
    MAIL_HOST=mailpit
    MAIL_PORT=1025
    ```
 
-4. Build and start the containers, then install Bagisto:
+   `.env.example` already carries the `COMPOSE_PROFILES` line. `DB_USERNAME` can't be `root` — the MySQL and MariaDB images fail to initialise when asked to create a user by that name.
+
+3. Build and start the containers, then install Bagisto:
 
    ```bash
    vendor/bin/sail build --no-cache
@@ -222,9 +217,29 @@ Bagisto's `docker-compose.yml` is a [Laravel Sail](https://laravel.com/docs/sail
 
 The store is at `http://localhost`, Mailpit at `http://localhost:8025` and Kibana at `http://localhost:5601`. Stop the containers with `vendor/bin/sail down`.
 
-::: warning Elasticsearch Version
-The Sail file runs Elasticsearch 7.17, while Bagisto's Elasticsearch client is version 8. Change the `elasticsearch` and `kibana` images to an 8.x release before you use Elasticsearch search; see [Configure Elasticsearch](../performance/configure-elasticsearch.md).
-:::
+#### Choosing the Database
+
+Each database is a Docker Compose profile named after its `DB_CONNECTION` value, so `COMPOSE_PROFILES=${DB_CONNECTION}` starts the one the store is configured for and leaves the others out:
+
+| `DB_CONNECTION` | Database | `DB_HOST` | `DB_PORT` |
+|---|---|---|---|
+| `mysql` | MySQL 8.0 | `mysql` | `3306` |
+| `mariadb` | MariaDB 10.11 | `mariadb` | `3306` |
+| `pgsql` | PostgreSQL 16 | `pgsql` | `5432` |
+
+Only the container follows `DB_CONNECTION`. Every connection in `config/database.php` reads the same `DB_HOST` and `DB_PORT`, so set both from the table when you switch, and remove the `DB_PORT` line rather than emptying it — an empty value is an empty string, not the connection's default. Each database keeps its own volume, so switching points Bagisto at an empty server: run `vendor/bin/sail artisan bagisto:install` again.
+
+`COMPOSE_PROFILES` is Docker Compose's own variable, not Laravel's, and it belongs in `.env` because every command needs it, not only `up` — `sail down` without it stops the database container but leaves it behind. To try another database for a single command, prefix it instead, as in `COMPOSE_PROFILES=pgsql vendor/bin/sail up -d`. `sail up --profile pgsql` doesn't work: Compose accepts `--profile` only before the subcommand, and Sail appends arguments after it.
+
+#### Running Behind a Web Server
+
+The application container serves the store with `artisan serve`. Add `nginx`, `apache` or `litespeed` to `COMPOSE_PROFILES` to put one of them in front of it:
+
+```properties
+COMPOSE_PROFILES=pgsql,nginx
+```
+
+The server listens on `http://localhost:8080`, which `FORWARD_WEB_PORT` changes, while port 80 still reaches `artisan serve` directly. It serves `public/` from the project and passes everything else to the application container, so static assets, rewrite rules, cache and security headers behave as they do in production — the configurations in `docker/local/` mirror the production images' virtual hosts. The three are alternatives, since they share the same port.
 
 <a id="📱-mobile-app-installation"></a>
 

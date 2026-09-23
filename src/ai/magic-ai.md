@@ -20,14 +20,14 @@ The package has no models, migrations or Concord module.
 
 | Provider | Model enum | Example text models | Image models | Default text model |
 |---|---|---|---|---|
-| `anthropic` | `AnthropicModel` | `claude-opus-4-6`, `claude-sonnet-4-6`, `claude-haiku-4-5-20251001` | none | `claude-haiku-4-5-20251001` |
-| `deepseek` | `DeepSeekModel` | `deepseek-chat`, `deepseek-reasoner` | none | `deepseek-chat` |
-| `gemini` | `GeminiModel` | `gemini-2.5-pro`, `gemini-2.5-flash`, `gemini-3-flash-preview` | `imagen-4.0-generate-001`, `imagen-4.0-ultra-generate-001`, `imagen-4.0-fast-generate-001`, `imagen-3.0-generate-002` | `gemini-3-flash-preview` |
-| `groq` | `GroqModel` | `llama-3.3-70b-versatile`, `openai/gpt-oss-120b`, `qwen/qwen3-32b` | none | `llama-3.1-8b-instant` |
-| `mistral` | `MistralModel` | `mistral-large-latest`, `mistral-small-latest`, `magistral-medium-2509` | none | `mistral-small-latest` |
-| `ollama` | `OllamaModel` | `llama4:scout`, `llama3.3:70b`, `qwen3:8b`, `gemma3:27b` | none | `llama3.2:3b` |
-| `openai` | `OpenAiModel` | `gpt-5.2`, `gpt-5`, `gpt-4.1`, `gpt-4.1-mini` | `gpt-image-1.5`, `gpt-image-1` | `gpt-4.1` |
-| `xai` | `XAiModel` | `grok-4`, `grok-4-1-fast`, `grok-3` | `grok-imagine-image`, `grok-2-image` | `grok-3` |
+| `anthropic` | `AnthropicModel` | `claude-fable-5-1`, `claude-opus-5`, `claude-sonnet-5`, `claude-haiku-4-5-20251001` | none | `claude-sonnet-5` |
+| `deepseek` | `DeepSeekModel` | `deepseek-v4-pro`, `deepseek-flash` | none | `deepseek-flash` |
+| `gemini` | `GeminiModel` | `gemini-3.8-flash`, `gemini-3.7-flash`, `gemini-3.5-flash-lite`, `gemini-3.1-pro-preview` | `gemini-3-pro-image`, `gemini-3.1-flash-image`, `gemini-3.1-flash-lite-image` | `gemini-3.8-flash` |
+| `groq` | `GroqModel` | `openai/gpt-oss-120b`, `openai/gpt-oss-20b` | none | `openai/gpt-oss-20b` |
+| `mistral` | `MistralModel` | `mistral-large-latest`, `mistral-small-latest`, `mistral-large-2512`, `mistral-medium-3-5` | none | `mistral-small-latest` |
+| `ollama` | `OllamaModel` | `gemma4:26b`, `qwen3.8:27b`, `gpt-oss:120b`, `llama4:scout` | none | `llama3.2:3b` |
+| `openai` | `OpenAiModel` | `gpt-6-astra`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-4.1` | `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`, `gpt-image-2` | `gpt-5.6-terra` |
+| `xai` | `XAiModel` | `grok-4.7`, `grok-4.6`, `grok-4.5`, `grok-4.3` | `grok-imagine-image-2.0`, `grok-imagine-image` | `grok-4.3` |
 
 The enum cases in `packages/Webkul/MagicAI/src/Enums/Models` are the complete list.
 
@@ -65,7 +65,9 @@ The helper and the facade both give you the `Webkul\MagicAI\MagicAI` service:
 | `translate(string $content, string $locale): string` | The content translated into `$locale` | `magic_ai.storefront_features.review_translation.model` |
 | `checkoutMessage(mixed $order): string` | Plain text built from the order's items, the customer's name, the current locale and the channel name | `magic_ai.storefront_features.checkout_message.model` |
 
-The last three read their model for the current channel. When none is saved, they use `gpt-4.1`, the default text model of `AiProvider::defaultTextProvider()` (`openai`), which needs an OpenAI key even when the store configured another provider.
+The last three read their model for the current channel. When none is saved, or when the saved model is no longer one the store offers, they use `gpt-5.6-terra`, the default text model of `AiProvider::defaultTextProvider()` (`openai`), which needs an OpenAI key even when the store configured another provider.
+
+A model the registry doesn't know throws a `RuntimeException` naming it, rather than falling through to the SDK's own default provider.
 
 ```php
 use Webkul\MagicAI\Facades\MagicAI;
@@ -93,7 +95,7 @@ $images = magic_ai()->generateImage('A running shoe on a plain white background'
     'n' => 2,
     'size' => '3:2',
     'quality' => 'high',
-], 'gpt-image-1');
+], 'gpt-image-2.5-flare');
 
 $firstImageUrl = $images[0]['url'];
 ```
@@ -106,7 +108,7 @@ The admin controller is `packages/Webkul/Admin/src/Http/Controllers/MagicAIContr
 
 | Feature | Entry point | What it does |
 |---|---|---|
-| Admin text | `MagicAIController::content()`, route `admin.magic_ai.content` | Validates `prompt` and an optional `model`, and returns `{ "content": ... }`, or a `500` with the exception message |
+| Admin text | `MagicAIController::content()`, route `admin.magic_ai.content` | Validates `prompt` and an optional `model`, and returns `{ "content": ... }`, or a `500` carrying the provider's own message, extracted by `Webkul\MagicAI\ProviderError` |
 | Admin images | `MagicAIController::image()`, route `admin.magic_ai.image` | Validates `prompt`, `model`, `n` (1 to 10), `size` and `quality`, and returns `{ "images": [...] }` |
 | Image search | `SearchController::upload()`, route `shop.search.upload` | Stores the uploaded image and, when both switches are on, returns keywords from `analyzeImage()` with `engine` set to `ai`. Otherwise, or when the call throws, `engine` is `tensorflow` and the page classifies the image in the browser with TensorFlow.js |
 | Review translation | `API\ReviewController::translate()`, route `shop.api.products.reviews.translate` | Translates an approved review into the current locale's name |
@@ -295,7 +297,7 @@ it('generates text without calling the provider', function () {
 it('generates images without calling the provider', function () {
     Image::fake();
 
-    $images = magic_ai()->generateImage('A running shoe', ['n' => 2], 'gpt-image-1');
+    $images = magic_ai()->generateImage('A running shoe', ['n' => 2], 'gpt-image-2.5-flare');
 
     expect($images)->toHaveCount(2);
 

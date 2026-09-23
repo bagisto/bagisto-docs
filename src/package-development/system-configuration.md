@@ -282,6 +282,8 @@ No core setting uses `color` or `file`; check them on your own page before relyi
 
 `image` and `file` fields store the upload under `configuration/` on the default filesystem disk. Give each one a `validation` with an explicit `mimes:` list and a `max:` size, and don't accept `svg` for an upload that a storefront page renders.
 
+The admin renders both types as an upload tile with its own replace, download and delete actions. `Webkul\Core\Repositories\CoreConfigRepository` deletes the previous file from the disk when a value is replaced, and removes the stored file along with the configuration row when the setting is deleted.
+
 <a id="blade-type"></a>
 
 ### A View of Your Own
