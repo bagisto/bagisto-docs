@@ -310,7 +310,7 @@ The [bagisto-docker](https://github.com/bagisto/bagisto-docker) repository is a 
 
 ### Laravel Sail
 
-Bagisto's `docker-compose.yml` is a [Laravel Sail](https://laravel.com/docs/sail) file with MySQL 8.0, Redis, Elasticsearch, Kibana and Mailpit. Sail itself isn't installed with Bagisto.
+Bagisto's `docker-compose.yml` is a [Laravel Sail](https://laravel.com/docs/sail) file. It runs the application on PHP 8.4 alongside Redis, Elasticsearch, Kibana and Mailpit, and lets you choose the database — MySQL 8.0, MariaDB 10.11 or PostgreSQL 16 — and, if you want one, the web server in front of it. Sail itself isn't installed with Bagisto.
 
 1. Install Sail. On a machine without PHP, run Composer in a container from the project directory:
 
@@ -325,16 +325,7 @@ Bagisto's `docker-compose.yml` is a [Laravel Sail](https://laravel.com/docs/sail
 
    With PHP and Composer installed, run `composer require laravel/sail --dev` instead.
 
-2. In `docker-compose.yml`, point the `laravel.test` build at Sail's PHP 8.4 runtime. The file names `./vendor/laravel/sail/runtimes/8.3`, and Bagisto needs PHP 8.4:
-
-   ```yaml
-   services:
-       laravel.test:
-           build:
-               context: ./vendor/laravel/sail/runtimes/8.4
-   ```
-
-3. Point `.env` at the Sail services:
+2. Point `.env` at the Sail services. `DB_HOST` is the database container's service name, and `COMPOSE_PROFILES` decides which containers start:
 
    ```properties
    DB_CONNECTION=mysql
@@ -344,13 +335,17 @@ Bagisto's `docker-compose.yml` is a [Laravel Sail](https://laravel.com/docs/sail
    DB_USERNAME=sail
    DB_PASSWORD=password
 
+   COMPOSE_PROFILES=${DB_CONNECTION}
+
    REDIS_HOST=redis
 
    MAIL_HOST=mailpit
    MAIL_PORT=1025
    ```
 
-4. Build and start the containers, then install Bagisto:
+   `.env.example` already carries the `COMPOSE_PROFILES` line. `DB_USERNAME` can't be `root` — the MySQL and MariaDB images fail to initialise when asked to create a user by that name.
+
+3. Build and start the containers, then install Bagisto:
 
    ```bash
    vendor/bin/sail build --no-cache
@@ -360,9 +355,29 @@ Bagisto's `docker-compose.yml` is a [Laravel Sail](https://laravel.com/docs/sail
 
 The store is at `http://localhost`, Mailpit at `http://localhost:8025` and Kibana at `http://localhost:5601`. Stop the containers with `vendor/bin/sail down`.
 
-::: warning Elasticsearch Version
-The Sail file runs Elasticsearch 7.17, while Bagisto's Elasticsearch client is version 8. Change the `elasticsearch` and `kibana` images to an 8.x release before you use Elasticsearch search; see [Configure Elasticsearch](../performance/configure-elasticsearch.md).
-:::
+#### Choosing the Database
+
+Each database is a Docker Compose profile named after its `DB_CONNECTION` value, so `COMPOSE_PROFILES=${DB_CONNECTION}` starts the one the store is configured for and leaves the others out:
+
+| `DB_CONNECTION` | Database | `DB_HOST` | `DB_PORT` |
+|---|---|---|---|
+| `mysql` | MySQL 8.0 | `mysql` | `3306` |
+| `mariadb` | MariaDB 10.11 | `mariadb` | `3306` |
+| `pgsql` | PostgreSQL 16 | `pgsql` | `5432` |
+
+Only the container follows `DB_CONNECTION`. Every connection in `config/database.php` reads the same `DB_HOST` and `DB_PORT`, so set both from the table when you switch, and remove the `DB_PORT` line rather than emptying it — an empty value is an empty string, not the connection's default. Each database keeps its own volume, so switching points Bagisto at an empty server: run `vendor/bin/sail artisan bagisto:install` again.
+
+`COMPOSE_PROFILES` is Docker Compose's own variable, not Laravel's, and it belongs in `.env` because every command needs it, not only `up` — `sail down` without it stops the database container but leaves it behind. To try another database for a single command, prefix it instead, as in `COMPOSE_PROFILES=pgsql vendor/bin/sail up -d`. `sail up --profile pgsql` doesn't work: Compose accepts `--profile` only before the subcommand, and Sail appends arguments after it.
+
+#### Running Behind a Web Server
+
+The application container serves the store with `artisan serve`. Add `nginx`, `apache` or `litespeed` to `COMPOSE_PROFILES` to put one of them in front of it:
+
+```properties
+COMPOSE_PROFILES=pgsql,nginx
+```
+
+The server listens on `http://localhost:8080`, which `FORWARD_WEB_PORT` changes, while port 80 still reaches `artisan serve` directly. It serves `public/` from the project and passes everything else to the application container, so static assets, rewrite rules, cache and security headers behave as they do in production — the configurations in `docker/local/` mirror the production images' virtual hosts. The three are alternatives, since they share the same port.
 
 <a id="📱-mobile-app-installation"></a>
 
@@ -977,14 +992,14 @@ The package has no models, migrations or Concord module.
 
 | Provider | Model enum | Example text models | Image models | Default text model |
 |---|---|---|---|---|
-| `anthropic` | `AnthropicModel` | `claude-opus-4-6`, `claude-sonnet-4-6`, `claude-haiku-4-5-20251001` | none | `claude-haiku-4-5-20251001` |
-| `deepseek` | `DeepSeekModel` | `deepseek-chat`, `deepseek-reasoner` | none | `deepseek-chat` |
-| `gemini` | `GeminiModel` | `gemini-2.5-pro`, `gemini-2.5-flash`, `gemini-3-flash-preview` | `imagen-4.0-generate-001`, `imagen-4.0-ultra-generate-001`, `imagen-4.0-fast-generate-001`, `imagen-3.0-generate-002` | `gemini-3-flash-preview` |
-| `groq` | `GroqModel` | `llama-3.3-70b-versatile`, `openai/gpt-oss-120b`, `qwen/qwen3-32b` | none | `llama-3.1-8b-instant` |
-| `mistral` | `MistralModel` | `mistral-large-latest`, `mistral-small-latest`, `magistral-medium-2509` | none | `mistral-small-latest` |
-| `ollama` | `OllamaModel` | `llama4:scout`, `llama3.3:70b`, `qwen3:8b`, `gemma3:27b` | none | `llama3.2:3b` |
-| `openai` | `OpenAiModel` | `gpt-5.2`, `gpt-5`, `gpt-4.1`, `gpt-4.1-mini` | `gpt-image-1.5`, `gpt-image-1` | `gpt-4.1` |
-| `xai` | `XAiModel` | `grok-4`, `grok-4-1-fast`, `grok-3` | `grok-imagine-image`, `grok-2-image` | `grok-3` |
+| `anthropic` | `AnthropicModel` | `claude-fable-5-1`, `claude-opus-5`, `claude-sonnet-5`, `claude-haiku-4-5-20251001` | none | `claude-sonnet-5` |
+| `deepseek` | `DeepSeekModel` | `deepseek-v4-pro`, `deepseek-flash` | none | `deepseek-flash` |
+| `gemini` | `GeminiModel` | `gemini-3.8-flash`, `gemini-3.7-flash`, `gemini-3.5-flash-lite`, `gemini-3.1-pro-preview` | `gemini-3-pro-image`, `gemini-3.1-flash-image`, `gemini-3.1-flash-lite-image` | `gemini-3.8-flash` |
+| `groq` | `GroqModel` | `openai/gpt-oss-120b`, `openai/gpt-oss-20b` | none | `openai/gpt-oss-20b` |
+| `mistral` | `MistralModel` | `mistral-large-latest`, `mistral-small-latest`, `mistral-large-2512`, `mistral-medium-3-5` | none | `mistral-small-latest` |
+| `ollama` | `OllamaModel` | `gemma4:26b`, `qwen3.8:27b`, `gpt-oss:120b`, `llama4:scout` | none | `llama3.2:3b` |
+| `openai` | `OpenAiModel` | `gpt-6-astra`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-4.1` | `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`, `gpt-image-2` | `gpt-5.6-terra` |
+| `xai` | `XAiModel` | `grok-4.7`, `grok-4.6`, `grok-4.5`, `grok-4.3` | `grok-imagine-image-2.0`, `grok-imagine-image` | `grok-4.3` |
 
 The enum cases in `packages/Webkul/MagicAI/src/Enums/Models` are the complete list.
 
@@ -1022,7 +1037,9 @@ The helper and the facade both give you the `Webkul\MagicAI\MagicAI` service:
 | `translate(string $content, string $locale): string` | The content translated into `$locale` | `magic_ai.storefront_features.review_translation.model` |
 | `checkoutMessage(mixed $order): string` | Plain text built from the order's items, the customer's name, the current locale and the channel name | `magic_ai.storefront_features.checkout_message.model` |
 
-The last three read their model for the current channel. When none is saved, they use `gpt-4.1`, the default text model of `AiProvider::defaultTextProvider()` (`openai`), which needs an OpenAI key even when the store configured another provider.
+The last three read their model for the current channel. When none is saved, or when the saved model is no longer one the store offers, they use `gpt-5.6-terra`, the default text model of `AiProvider::defaultTextProvider()` (`openai`), which needs an OpenAI key even when the store configured another provider.
+
+A model the registry doesn't know throws a `RuntimeException` naming it, rather than falling through to the SDK's own default provider.
 
 ```php
 use Webkul\MagicAI\Facades\MagicAI;
@@ -1050,7 +1067,7 @@ $images = magic_ai()->generateImage('A running shoe on a plain white background'
     'n' => 2,
     'size' => '3:2',
     'quality' => 'high',
-], 'gpt-image-1');
+], 'gpt-image-2.5-flare');
 
 $firstImageUrl = $images[0]['url'];
 ```
@@ -1063,7 +1080,7 @@ The admin controller is `packages/Webkul/Admin/src/Http/Controllers/MagicAIContr
 
 | Feature | Entry point | What it does |
 |---|---|---|
-| Admin text | `MagicAIController::content()`, route `admin.magic_ai.content` | Validates `prompt` and an optional `model`, and returns `{ "content": ... }`, or a `500` with the exception message |
+| Admin text | `MagicAIController::content()`, route `admin.magic_ai.content` | Validates `prompt` and an optional `model`, and returns `{ "content": ... }`, or a `500` carrying the provider's own message, extracted by `Webkul\MagicAI\ProviderError` |
 | Admin images | `MagicAIController::image()`, route `admin.magic_ai.image` | Validates `prompt`, `model`, `n` (1 to 10), `size` and `quality`, and returns `{ "images": [...] }` |
 | Image search | `SearchController::upload()`, route `shop.search.upload` | Stores the uploaded image and, when both switches are on, returns keywords from `analyzeImage()` with `engine` set to `ai`. Otherwise, or when the call throws, `engine` is `tensorflow` and the page classifies the image in the browser with TensorFlow.js |
 | Review translation | `API\ReviewController::translate()`, route `shop.api.products.reviews.translate` | Translates an approved review into the current locale's name |
@@ -1252,7 +1269,7 @@ it('generates text without calling the provider', function () {
 it('generates images without calling the provider', function () {
     Image::fake();
 
-    $images = magic_ai()->generateImage('A running shoe', ['n' => 2], 'gpt-image-1');
+    $images = magic_ai()->generateImage('A running shoe', ['n' => 2], 'gpt-image-2.5-flare');
 
     expect($images)->toHaveCount(2);
 
@@ -4982,6 +4999,8 @@ No core setting uses `color` or `file`; check them on your own page before relyi
 ### Uploads
 
 `image` and `file` fields store the upload under `configuration/` on the default filesystem disk. Give each one a `validation` with an explicit `mimes:` list and a `max:` size, and don't accept `svg` for an upload that a storefront page renders.
+
+The admin renders both types as an upload tile with its own replace, download and delete actions. `Webkul\Core\Repositories\CoreConfigRepository` deletes the previous file from the disk when a value is replaced, and removes the stored file along with the configuration row when the setting is deleted.
 
 <a id="blade-type"></a>
 
