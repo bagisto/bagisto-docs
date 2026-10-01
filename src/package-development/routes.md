@@ -16,6 +16,8 @@ On this page you give the FAQ two addresses, `/admin/faq` and `/faq`, answered f
 | `cache.response` | Shop package | Lets the [full page cache](../performance/configure-fpc.md) store the response; [Cache Strategy](../advanced/cache-strategy.md#full-page-cache) lists what is cached and what clears it |
 | `Webkul\Core\Http\Middleware\NoCacheMiddleware` | Core package, by class name | Sends `Cache-Control: no-store`, so a browser never shows an admin page from its cache |
 | `Webkul\Core\Http\Middleware\PreventRequestsDuringMaintenance` | Core package, by class name | Answers storefront requests with the maintenance page while the channel is in maintenance mode |
+| `Webkul\Core\Http\Middleware\PreventSessionRevival` | `bootstrap/app.php`, appended to the `web` group | Remembers a session signed out during a request and invalidates one that a late write brought back, so a request still in flight can't hand the browser a signed-in session again |
+| `Webkul\Shop\Http\Middleware\EnsureGDPRIsEnabled` | Shop package, by class name | Answers `404` on the storefront GDPR routes while `general.gdpr.settings.enabled` is off |
 
 Admin routes run under `web`, `admin` and `NoCacheMiddleware`, prefixed with `config('app.admin_url')`, which is `admin` unless `APP_ADMIN_URL` changes it. Core's admin group also adds `PreventRequestsDuringMaintenance`, but that middleware lets every admin URL through, so a package leaves it out. Storefront routes run under `web`, `shop` and `PreventRequestsDuringMaintenance`, with no prefix, as core's do.
 
@@ -42,7 +44,7 @@ Route::group([
 });
 ```
 
-`web` comes first because `admin` reads the session it starts. Name every admin route `admin.<package>.<action>`, so the name says where the route belongs and doesn't collide with core's.
+`web` comes first because `admin` reads the session it starts. Name every admin route `admin.<package>.<action>`, so the name says where the route belongs and doesn't collide with core's. Route names are snake_case; translation keys are kebab-case ([Localization](./localization.md)).
 
 <a id="shop-routes-file"></a>
 

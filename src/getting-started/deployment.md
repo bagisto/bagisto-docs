@@ -17,8 +17,9 @@ Start from `.env.example` and set at least these keys:
 | `APP_ADMIN_URL` | Your admin prefix | Prefix of every admin route; defaults to `admin` |
 | `APP_TIMEZONE` | The store's timezone | `.env.example` sets `Asia/Kolkata` |
 | `DB_*` | Your database | `DB_CONNECTION` is `mysql`, `mariadb` or `pgsql` |
-| `CACHE_STORE`, `SESSION_DRIVER` | `redis` or `database` | `.env.example` uses `database` for both |
+| `CACHE_STORE`, `SESSION_DRIVER` | `redis` or `database` | `.env.example` uses `database` for both. Keep `SESSION_DRIVER=database` if a password reset should sign the user out of their other sessions: `Webkul\Core\Helpers\SessionPurger` does nothing on any other driver |
 | `QUEUE_CONNECTION` | `redis` or `database` | `.env.example` sets `sync`, which runs every job inside the web request |
+| `BROADCAST_CONNECTION` | `null`, `reverb` or `pusher` | `null` refreshes the admin notification bell only on page load; `reverb` or `pusher`, with that connection's keys, updates it as orders arrive |
 | `RESPONSE_CACHE_DRIVER` | `redis` or `file` | Where the full page cache stores pages; defaults to `file` |
 | `MAIL_MAILER` | `bagisto-dynamic-smtp` | Sends mail with the SMTP settings saved in the admin, falling back to the `MAIL_*` values |
 | `SESSION_SECURE_COOKIE` | `true` | The session cookie is only sent over HTTPS |
@@ -80,7 +81,7 @@ Keep a worker running under Supervisor or systemd, on both queues core uses:
 php artisan queue:work --queue=default,broadcastable --tries=3
 ```
 
-Mail, search indexing and imports run on `default`; the admin's order notifications are broadcast from `broadcastable` (`Webkul\Notification\Events\CreateOrderNotification::broadcastQueue()`). After each deploy, run `php artisan queue:restart` so the workers load the new code. See [Running Workers in Production](../advanced/queue-jobs-scheduling.md#running-workers-in-production).
+Mail, search indexing and imports run on `default`; the admin's order notifications are broadcast from `broadcastable` (`Webkul\Notification\Events\CreateOrderNotification::broadcastQueue()`). Nothing reaches the browser until `BROADCAST_CONNECTION` names a `reverb` or `pusher` connection: with the shipped `null`, the job is queued and then discarded. After each deploy, run `php artisan queue:restart` so the workers load the new code. See [Running Workers in Production](../advanced/queue-jobs-scheduling.md#running-workers-in-production) and [Real-Time Admin Notifications](../advanced/queue-jobs-scheduling.md#real-time-admin-notifications).
 
 ### 7. Run the Scheduler
 

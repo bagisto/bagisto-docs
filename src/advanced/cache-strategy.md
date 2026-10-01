@@ -112,7 +112,7 @@ The listeners are in `packages/Webkul/FPC/src/Listeners/` and registered in `Web
 | `catalog.product.create.after`, `catalog.product.update.after`, `catalog.product.delete.before` | `Product` | The home page, and the page and category pages of the product and its related products |
 | `catalog.category.create.after` | `Category` | The home page |
 | `catalog.category.update.after`, `catalog.category.delete.before` | `Category` | The home page and the category's page in every locale |
-| `catalog.product.price.reindex.after`, `promotions.catalog_rule.reindex.after` | `Price` | The affected products' pages as above, or the whole cache when no product ids are passed (a full price reindex) |
+| `catalog.product.price.reindex.after`, `promotions.catalog_rule.reindex.after` | `Price` | The affected products' pages as above, or the whole cache when no product ids are passed (a full price reindex) or when more than `Webkul\FPC\Listeners\Price::PER_PRODUCT_FORGET_LIMIT` (100) products changed |
 | `customer.review.update.after`, `customer.review.delete.before` | `Review` | The product's page |
 | `checkout.order.save.after`, `sales.order.cancel.after` | `Order` | The ordered products' pages as above |
 | `sales.refund.save.after` | `Refund` | The refunded products' pages as above |

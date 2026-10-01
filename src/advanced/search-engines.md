@@ -178,7 +178,7 @@ Because this runs at boot, a process that boots once, such as a queue worker or 
 
 ### Connection Test
 
-`POST admin/configuration/search-engines/{engine}/test-connection` (`admin.configuration.search-engines.test-connection`) probes the engine with the settings currently on the form, limited to `auth_type`, `hosts`, `cloud_id`, `username`, `password`, `api_key` and `index_prefix`. It answers `200` when the status is usable and `422` otherwise, with a `status` from `Webkul\Product\Enums\SearchEngineStatusEnum`; for what each status means, see [Configure Elasticsearch](../performance/configure-elasticsearch.md#troubleshooting). When the tested values match the saved ones, `SearchEngineAvailability` stores the verdict in the application cache for five minutes under `search_engines.{engine}.availability`, where the settings page and the About page read it.
+`POST admin/configuration/search-engines/{engine}/test-connection` (`admin.configuration.search_engines.test_connection`) probes the engine with the settings currently on the form, limited to `auth_type`, `hosts`, `cloud_id`, `username`, `password`, `api_key` and `index_prefix`. It answers `200` when the status is usable and `422` otherwise, with a `status` from `Webkul\Product\Enums\SearchEngineStatusEnum`; for what each status means, see [Configure Elasticsearch](../performance/configure-elasticsearch.md#troubleshooting). When the tested values match the saved ones, `SearchEngineAvailability` stores the verdict in the application cache for five minutes under `search_engines.{engine}.availability`, where the settings page and the About page read it.
 
 ## Indexing
 

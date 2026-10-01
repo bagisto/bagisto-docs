@@ -25,7 +25,7 @@ Most flags are plain properties that a matching method returns, so a type that o
 - **`getPriceIndexer()`**: not declared on the base class, but the price index job (`Webkul\Product\Helpers\Indexers\Price::getTypeIndexer()`) and `getFinalPrice()` call it. Return `app(\Webkul\Product\Helpers\Indexers\Price\Simple::class)` unless your pricing needs its own indexer.
 - **A constructor that calls `parent::__construct()`**, if you add dependencies, since the base constructor takes eight repositories that the container injects.
 
-Only `haveSufficientQuantity()`, `isInventoryManageable()`, `canBeCopied()`, `handleQuantity()`, `validateCartItem()` and `isCartItemInactive()` declare a return type. An override of any other method may add one, but it must still allow every value callers expect.
+Of the public methods, only `haveSufficientQuantity()`, `isInventoryManageable()`, `canBeCopied()`, `handleQuantity()`, `validateCartItem()` and `isCartItemInactive()` declare a return type. An override of any other method may add one, but it must still allow every value callers expect.
 
 ## Key Methods to Understand
 
@@ -320,6 +320,8 @@ A few other methods are worth knowing before you override them:
 | `getBaseImage($item)` | The image shown for a cart or order item |
 | `priceRuleCanBeApplied()` | Whether catalog price rules apply to the type |
 | `isInventoryManageable(): bool` | Whether stock is counted; `false` when `manage_stock` is in `$skipAttributes` |
+| `isCustomizableFileAllowed(UploadedFile $file, array $supportedExtensions): bool` | Protected. Whether a customer's upload for a file option may be stored: an alphanumeric extension outside `BLOCKED_UPLOAD_EXTENSIONS`, a MIME type outside `BLOCKED_UPLOAD_MIME_TYPES`, at most `MAX_CUSTOMIZABLE_FILE_SIZE` bytes (10 MB), and one of the option's extensions when it lists any |
+| `storeCustomizableFile(UploadedFile $file, int $cartId): string` | Protected. Stores that upload under `carts/{cartId}` with a random name. `Simple` and `Virtual` call both from `prepareForCart()`; a type that accepts file options should too |
 
 ## Next Step
 

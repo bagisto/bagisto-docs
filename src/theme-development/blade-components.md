@@ -8,7 +8,7 @@ A component that exists in both packages is described once, with the differences
 
 - **Shop and Admin:** [Accordion](#accordion), [Drawer](#drawer), [Modal](#modal), [Dropdown](#dropdown), [Tabs](#tabs), [Flash Messages and Confirm Modal](#flash-messages-and-confirm-modal), [Form](#form), [Button](#button), [Date Pickers](#date-pickers) (date and date-time; Admin adds time), [Quantity Changer](#quantity-changer), [TinyMCE](#tinymce), [DataGrid](#datagrid), [Table](#table), [Shimmer](#shimmer)
 - **Shop only:** [Range Slider](#range-slider), [`media`](#media-uploads), [Breadcrumbs](#breadcrumbs), [Carousel](#carousel), [Image Zoomer](#image-zoomer), [Lazy Image](#lazy-image), [Products, Categories and Ratings](#products-categories-and-ratings)
-- **Admin only:** [Date Range Picker](#date-pickers), [`media.images` and `media.videos`](#media-uploads), [Star Rating](#star-rating), [Tree View](#tree-view), [Charts](#charts), [Command Palette](#command-palette), [Product Search](#product-search), [SEO Preview](#seo-preview)
+- **Admin only:** [Date Range Picker](#date-pickers), [`media.images`, `media.videos` and `media.upload`](#media-uploads), [Star Rating](#star-rating), [Tree View](#tree-view), [Charts](#charts), [Command Palette](#command-palette), [Product Search](#product-search), [SEO Preview](#seo-preview)
 
 ## Overriding a Component
 
@@ -370,6 +370,20 @@ Build the fields with `form.control-group`, `.label`, `.control` and `.error`; t
 />
 ```
 
+`<x-admin::media.upload>` is the admin's tile for one stored image or file, used by the configuration screens' `image` and `file` fields and the product form's `image` and `file` attributes. Its Blade file passes every attribute to the Vue component, so all its props are Vue props. The tile previews an image or shows the file name, and hovering it reveals replace, download and delete. Delete posts a hidden `{name}[delete]` field set to `1`, which your save code must act on, as `CoreConfigRepository` and `ProductAttributeValueRepository` do.
+
+| Prop | Kind | Default | Description |
+|---|---|---|---|
+| `name` | Vue | None | Input name, also the file input's `id` |
+| `type` | Vue | None | `'image'` previews the file and, with no `extensions` or `mimes:` rule, accepts `image/*`; any other value, such as `'file'`, shows the file name |
+| `value` | Vue | None | The stored path, shown until it's replaced or deleted |
+| `src` | Vue | None | URL of the stored image, for the preview |
+| `download-url` | Vue | None | Link for the download action, which is hidden without it |
+| `rules` | Vue | None | VeeValidate rules |
+| `extensions` | Vue | None | Comma-separated extensions for the input's `accept` and the hint under the tile. Without it, they come from a `mimes:` rule, but only when `rules` is a string |
+| `label` | Vue | None | Field name in validation messages |
+| `removable` | Vue | None | `'0'` hides the delete action, for a required field; without it the file can be deleted |
+
 ### TinyMCE
 
 `<x-shop::tinymce>`, `<x-admin::tinymce>` wrap the TinyMCE editor. You rarely mount them directly; the form control renders one for a `textarea` when `:tinymce="true"` is passed.
@@ -434,10 +448,12 @@ The admin editor adds Generative AI (Magic AI) content generation: its **Magic A
     id-field="key"
     searchable="true"
     search-placeholder="{{ trans('admin::app.settings.roles.create.search-permissions') }}"
-    :items="json_encode(acl()->getItems())"
+    :items="json_encode(bouncer()->getGrantableAclItems())"
     :fallback-locale="config('app.fallback_locale')"
 />
 ```
+
+`bouncer()->getGrantableAclItems()` is `acl()->getItems()` trimmed to the permissions the signed-in admin's own role holds, so the form offers only what they may grant.
 
 A single-choice category picker:
 
@@ -517,7 +533,7 @@ The Chart.js bundle is a separate entry point of the admin build, so load it on 
 
 ### Breadcrumbs
 
-`<x-shop::breadcrumbs>` renders the breadcrumb trail registered under a name in `routes/breadcrumbs.php`, such as `<x-shop::breadcrumbs name="addresses.edit" :entity="$address" />`. A name with no registered breadcrumb makes the component fail.
+`<x-shop::breadcrumbs>` renders the breadcrumb trail registered under a name in `packages/Webkul/Shop/src/Routes/breadcrumbs.php`, such as `<x-shop::breadcrumbs name="addresses.edit" :entity="$address" />`. A name with no registered breadcrumb makes the component fail. `config/breadcrumbs.php` still loads `routes/breadcrumbs.php` when it exists, so keep only your own trails there: a copy of core's registers every name twice and throws `DuplicateBreadcrumbException`.
 
 | Prop | Kind | Default | Description |
 |---|---|---|---|

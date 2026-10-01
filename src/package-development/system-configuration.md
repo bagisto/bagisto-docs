@@ -280,9 +280,9 @@ No core setting uses `color` or `file`; check them on your own page before relyi
 
 ### Uploads
 
-`image` and `file` fields store the upload under `configuration/` on the default filesystem disk. Give each one a `validation` with an explicit `mimes:` list and a `max:` size, and don't accept `svg` for an upload that a storefront page renders.
+`image` and `file` fields store the upload under `configurations/` on the default filesystem disk. Give each one a `validation` with an explicit `mimes:` list and a `max:` size, and don't accept `svg` for an upload that a storefront page renders.
 
-The admin renders both types as an upload tile with its own replace, download and delete actions. `Webkul\Core\Repositories\CoreConfigRepository` deletes the previous file from the disk when a value is replaced, and removes the stored file along with the configuration row when the setting is deleted.
+The admin renders both types with `<x-admin::media.upload>`, an upload tile with its own replace, download and delete actions; the product form's `image` and `file` attributes use the same control. The download route, `admin.configuration.download`, answers `404` for a path with no saved row or no file on the disk. `Webkul\Core\Repositories\CoreConfigRepository` deletes the previous file from the disk when a value is replaced, and removes the stored file along with the configuration row when the setting is deleted.
 
 <a id="blade-type"></a>
 
@@ -333,8 +333,8 @@ A page of buttons or read-only information needs no save button or channel switc
 `'depends' => 'enabled:1'` shows `page_title` only while `enabled` is on:
 
 - **The format is `<field name>:<value>`**, naming a field of the same section. Several values are separated by commas, and the field shows while the other field has any of them.
-- **A boolean field sends `1` or `0`**, so a dependency on it names `1`.
-- **A hidden field isn't validated on save**, so a plain `required` rule on a dependent field is safe.
+- **A boolean field sends `1` or `0`**, so a dependency on it names `1`. `true` and `false` are accepted as aliases for `1` and `0`.
+- **A hidden field isn't validated on save**, so a plain `required` rule on a dependent field is safe. A save that carries no value for the other field leaves the condition unjudged, so a partial save still validates the dependent field.
 
 <a id="validations-in-system-configuration"></a>
 <a id="common-validation-rules"></a>
@@ -342,6 +342,7 @@ A page of buttons or read-only information needs no save button or channel switc
 ## Validation
 
 - **`validation` holds Laravel rules in one pipe-separated string.** A field without it is validated as `nullable`.
+- **The rules come from `system.php`, not from the form.** `Webkul\Admin\Http\Requests\ConfigurationForm` reads `config('core')` and validates every section the request posts a field of, so a hand-made request can't name its own rules, and a section none of whose fields is submitted is skipped. It also adds `in:0,1` to a `boolean` field and `numeric` to a `number` field.
 - **Bagisto adds four rules** a field can name: `comma_separated_integer`, `decimal`, `phone` and `postcode`, implemented in `Webkul\Core\Rules`.
 - **The browser checks the same string with VeeValidate** before the form posts. Rules only Laravel knows (`nullable`, `sometimes`, `present`, `filled`, `bail`) are left out of the browser's copy, and on a `number` field `min` and `max` become `min_value` and `max_value`.
 

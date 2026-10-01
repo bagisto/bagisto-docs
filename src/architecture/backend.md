@@ -131,13 +131,13 @@ Each package is autoloaded from `composer.json`, registers its service provider 
 | DebugBar | DebugBar integration, with a collector that groups models, views and queries by package |
 | EUWithdrawal | EU right-of-withdrawal requests |
 | FPC | The full page cache on `spatie/laravel-responsecache`: cache profile, hasher, replacers and invalidation listeners |
-| GDPR | Customer data requests |
+| GDPR | Customer data requests; its storefront routes answer `404` while `general.gdpr.settings.enabled` is off |
 | ImageCache | Resized images served at `cache/{template}/{path}`, and the template registry |
 | Installer | `bagisto:install`, the web installer and the seeders |
 | Inventory | Inventory sources |
 | MagicAI | Generative AI (Magic AI) through the Laravel AI SDK |
 | Marketing | Campaigns, email templates, events, search terms, search synonyms and URL rewrites |
-| Notification | Admin notifications for orders |
+| Notification | Admin notifications for orders, broadcast to the panel's notification bell on the private `admin.notifications` channel |
 | Omnibus | Price snapshots and the 30-day lowest price for the EU Omnibus directive |
 | PayGlocal | The PayGlocal payment gateway |
 | Payment | The base payment class, cash on delivery, money transfer and the `payment_methods` registry |

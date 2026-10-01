@@ -93,7 +93,7 @@ GET|HEAD  admin/catalog/products/edit/{id} admin.catalog.products.edit › Webku
 
 | Package | Route files | Middleware |
 |---|---|---|
-| Admin | `packages/Webkul/Admin/src/Routes/web.php`, which loads `auth-routes.php` and, under the `APP_ADMIN_URL` prefix, `catalog-routes.php`, `sales-routes.php` and the other `*-routes.php` files beside it | `web`, the maintenance check, then `admin` (`Webkul\User\Http\Middleware\Bouncer`) for everything but the sign-in routes |
+| Admin | `packages/Webkul/Admin/src/Routes/web.php`, which loads `web/auth-routes.php` and, under the `APP_ADMIN_URL` prefix, `web/catalog-routes.php`, `web/sales-routes.php` and the other `*-routes.php` files in `Routes/web/` | `web`, the maintenance check, then `admin` (`Webkul\User\Http\Middleware\Bouncer`) for everything but the sign-in routes |
 | Shop | `packages/Webkul/Shop/src/Routes/web.php`, which loads `webmcp-routes.php`, `store-front-routes.php`, `customer-routes.php` and `checkout-routes.php`, and `api.php` | `web`, the `shop` group, then the maintenance check |
 
 The `shop` group runs three middleware from `Webkul\Shop\Http\Middleware` in this order:

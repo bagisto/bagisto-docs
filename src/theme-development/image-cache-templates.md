@@ -6,15 +6,15 @@ Storefront images aren't stored in several sizes. Their URLs point at `/cache/{t
 
 `config/imagecache.php` registers three templates, `Webkul\Shop\CacheFilters\Small`, `Medium` and `Large`. Each one crops with `cover()` (scale, then crop from the centre to the exact size) and picks the size from the image's path in the URL:
 
-| Template | Product (`/product`) | Category (`/category`) | Swatch (`/attribute_option`) | Anything else, such as a slider image |
+| Template | Product (`/products`) | Category (`/categories`) | Swatch (`/attribute-options`) | Anything else, such as a slider image |
 |---|---|---|---|---|
 | `small` | 100 × 100 | 80 × 80 | 60 × 60 | 768 × 280 |
 | `medium` | 350 × 360 | 110 × 110 | 210 × 210 | 1024 × 372 |
 | `large` | 560 × 610 | 165 × 165 | 330 × 330 | 1280 × 467 |
 
-The product sizes are defaults: the filters read `catalog.products.cache_small_image`, `cache_medium_image` and `cache_large_image` (`width` and `height`) from the store configuration. The output keeps the stored file's format (uploads are stored as WebP, see [File Storage](../advanced/file-storage.md#image-processing)) at Laravel's default quality of 70; a template can change both with `quality()`, `toWebp()` and the other `to*()` methods.
+The sizes are fixed in the filters. Bagisto 2.5 removed the `catalog.products.cache_*_image` width, height and placeholder settings, and a migration deletes their stored values, so a store that had its own product sizes gets the ones above. The output keeps the stored file's format (uploads are stored as WebP, see [File Storage](../advanced/file-storage.md#image-processing)) at Laravel's default quality of 70; a template can change both with `quality()`, `toWebp()` and the other `to*()` methods.
 
-`original`, `download` and `logo` are reserved names, not templates. The controller answers them itself: `original` returns the stored file unchanged, `download` returns it as an attachment, and `logo` fetches the Bagisto logo from `updates.bagisto.com`.
+`original`, `download` and `logo` are reserved names, not templates. The controller answers them itself: `original` returns the stored file unchanged, `download` returns it as an attachment, and `logo` fetches the Bagisto logo from `updates.bagisto.com`. Like every cache response, they answer only when the file's bytes are one of the image types the cache serves; anything else, an SVG included, returns a 404.
 
 ## How Templates Are Resolved
 
@@ -32,7 +32,6 @@ Every option leaves the core packages untouched:
 
 | To change | Set | Applies to |
 |---|---|---|
-| Only the product sizes | `catalog.products.cache_{small,medium,large}_image.width` and `height` in the store configuration | Every theme that keeps the core template |
 | One template, for one theme | `customize.image_cache.templates` in `config/themes.php`, below | Channels running that theme |
 | One template, for every theme | `templates` in `config/imagecache.php` | Every channel |
 
@@ -89,7 +88,7 @@ class Medium extends BaseMedium
      */
     public function applyFilter($image): Image
     {
-        if (Str::startsWith((string) request()->route('filename'), ['product/', 'products/'])) {
+        if (Str::startsWith((string) request()->route('filename'), 'products/')) {
             return $image->cover(400, 400);
         }
 
@@ -98,7 +97,7 @@ class Medium extends BaseMedium
 }
 ```
 
-Unlike core's filters, which match `/product` anywhere in the URL, it checks the stored path: `product/{id}` for uploads and `products/{id}` for the installer's sample products. It ignores the `cache_medium_image` store configuration. A new name such as `product_card` can also extend `Webkul\ImageCache\Templates\Small`, `Medium` or `Large`, fixed 100, 300 and 600 pixel squares, and set their `$width` and `$height` properties.
+Unlike core's filters, which match `/products` anywhere in the URL, it checks the stored path, `products/{id}`, where both uploads and the installer's sample products are kept. A new name such as `product_card` can also extend `Webkul\ImageCache\Templates\Small`, `Medium` or `Large`, fixed 100, 300 and 600 pixel squares, and set their `$width` and `$height` properties.
 
 ### Step 2: Register the Templates
 
@@ -148,6 +147,7 @@ return [
 | `product_images` | Extra names every product image carries, as `{name}_image_url`. |
 | `category_images` | The same for `logo` and `banner` in `Webkul\Shop\Http\Resources\CategoryResource`, the storefront category API; `$category->banner_url` in Blade isn't affected. |
 | `swatch_images` | The same for the `swatch_image` that `Webkul\Product\Helpers\ConfigurableOption` builds for image swatches. |
+| `placeholders` | The image a product without one shows, keyed by template name, as a path in this theme's Vite build, such as `'small' => 'images/small-placeholder.webp'`. A core size left out shows the core placeholder, and any other name left out shows the `large` one. |
 
 Every key is optional. A listed name must be registered here or in `config/imagecache.php`; an unregistered one is reported and left out.
 
@@ -161,7 +161,7 @@ Every key is optional. A listed name must be registered here or in `config/image
 sizes="240px"
 ```
 
-A product without images gets a placeholder for every name, the `large` one for a non-core name. Behind the helper is `image_urls(string $path, ?string $key = null)`, where `$key` is `TemplateRegistry::PRODUCT_IMAGES`, `CATEGORY_IMAGES` or `SWATCH_IMAGES`; without a key it returns only the core sizes and `original`.
+A product without images gets a placeholder for every name, the `large` one for a non-core name, and the theme's `placeholders` entry wins over the core image; `product_image()->getPlaceholderUrl($template)` returns the one a template shows. Behind the helper is `image_urls(string $path, ?string $key = null)`, where `$key` is `TemplateRegistry::PRODUCT_IMAGES`, `CATEGORY_IMAGES` or `SWATCH_IMAGES`; without a key it returns only the core sizes and `original`.
 
 **Other channels.** A channel on another theme keeps its own templates, its image arrays have no `product_card_image_url`, and `/cache/product_card/…` requested on its hostname returns a 404.
 
@@ -175,7 +175,7 @@ php artisan responsecache:clear
 ```
 
 1. On a channel running `custom-theme`, copy a product image URL from the storefront and replace `/cache/medium/` with `/cache/product_card/`. The image is 240 × 320.
-2. Open the original `/cache/medium/…` URL and reload it without the browser cache. The image is 400 × 400, while a category logo under `/cache/medium/category/…` stays 110 × 110.
+2. Open the original `/cache/medium/…` URL and reload it without the browser cache. The image is 400 × 400, while a category logo under `/cache/medium/categories/…` stays 110 × 110.
 3. In grid view, the product cards load their images from `/cache/product_card/…`.
 
 ## How Cached Images Are Served
@@ -185,7 +185,8 @@ php artisan responsecache:clear
 1. Answers `original`, `download` and `logo` itself, and otherwise looks the template up in the registry; an unknown name returns a 404.
 2. Reads the file with `Storage::get()` from the default disk, then from the `imagecache.paths` directories, and always from `storage/app/public`, `public/` and `public/storage`; a missing file returns a 404.
 3. Runs `image_manager()->fromBytes()`, the template's `applyFilter()` and `toBytes()`. An exception, for example on an SVG or another format the driver can't decode, returns a 404.
-4. Responds with an `ETag` (the MD5 of the output) and `Cache-Control: max-age={lifetime × 60}, public`, or a `304` with no body when `If-None-Match` matches.
+4. Checks the output's MIME type against the nine image types the cache serves, such as `image/webp`, `image/jpeg` and `image/png`, and returns a 404 for anything else.
+5. Responds with an `ETag` (the MD5 of the output), `Cache-Control: max-age={lifetime × 60}, public`, `X-Content-Type-Options: nosniff` and `Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'; sandbox`, or a `304` with no body when `If-None-Match` matches.
 
 Nothing is written to disk and there's no command to clear or warm the image cache: a changed template takes effect on the next request. `image_manager()` is Laravel's `Illuminate\Image\ImageManager`, and its `gd` or `imagick` driver, both built on Intervention Image 4, comes from `IMAGE_DRIVER` in `config/images.php` (`gd` by default).
 

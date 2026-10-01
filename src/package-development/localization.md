@@ -53,7 +53,7 @@ return [
 ];
 ```
 
-The folder is the locale, the file name is the group and the nested keys follow, so `admin`, `index`, `title` in `lang/en/app.php` is `faq::app.admin.index.title`. Keys are lowercase and hyphenated, as in core's files. The later pages add groups to this file for the DataGrid, the menu, the ACL and the configuration fields.
+The folder is the locale, the file name is the group and the nested keys follow, so `admin`, `index`, `title` in `lang/en/app.php` is `faq::app.admin.index.title`. Keys are lowercase and hyphenated, as in core's files, while route names stay snake_case. A segment that is data rather than a name, such as a currency or locale code, keeps its own casing. The later pages add groups to this file for the DataGrid, the menu, the ACL and the configuration fields.
 
 <a id="registering-translations-with-service-provider"></a>
 

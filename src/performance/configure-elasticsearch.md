@@ -20,6 +20,8 @@ curl --cacert /path/to/http_ca.crt -u elastic https://localhost:9200
 
 A reachable cluster returns JSON with its `cluster_name` and `version.number`.
 
+Bagisto's [Laravel Sail](../getting-started/installation.md#laravel-sail) stack already runs Elasticsearch 8.19 and Kibana with security disabled. There, use the host `http://elasticsearch:9200` with the authentication type `none`, and drop the `--cacert` and `-u elastic` flags from the commands on this page.
+
 ## Step 2: Enter the Connection Settings
 
 Bagisto builds its client from `config/elasticsearch.php`, which reads `.env`. Settings saved in the admin are copied over it when the application boots, and any admin setting left empty keeps the `.env` value; see [Search Engines](../advanced/search-engines.md#applying-the-settings-at-boot). On Bagisto 2.4 the connection comes from `.env` and `config/elasticsearch.php` only, and the engine is chosen with the search settings of the catalog configuration.

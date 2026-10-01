@@ -78,7 +78,7 @@ The Theme package registers `@bagistoVite` in `packages/Webkul/Theme/src/Provide
 
 `bagisto_asset()` resolves images and fonts the same way. Given a namespace, as in `bagisto_asset('images/logo.svg', 'shop')`, both read the same three keys from the `viters` array in `config/bagisto-vite.php`, which registers `admin`, `shop` and `installer`. Assets come from the dev server while the hot file exists, and from the build manifest otherwise.
 
-Each package's `vite.config.js` loads `.env` from the application root, adds the Vue and Tailwind CSS plugins, and passes `laravel-vite-plugin` the hot file (`../../../public/shop-default-vite.hot` in Shop), the build directory (`themes/shop/default/build`) and the two entry points, `css/app.css` and `js/app.js`. [Vite-Powered Theme Assets](../theme-development/vite-powered-theme-assets.md#step-3-create-vite-config-js) shows the complete file.
+Each package's `vite.config.js` loads `.env` from the application root, adds the Vue and Tailwind CSS plugins, and passes `laravel-vite-plugin` the hot file (`../../../public/shop-default-vite.hot` in Shop), the build directory (`themes/shop/default/build`) and its entry points: `css/app.css` and `js/app.js` in Shop and the Installer, plus `js/chart.js` and `js/echo.js` in Admin. [Vite-Powered Theme Assets](../theme-development/vite-powered-theme-assets.md#step-3-create-vite-config-js) shows the complete file.
 
 ## Tailwind CSS 4
 

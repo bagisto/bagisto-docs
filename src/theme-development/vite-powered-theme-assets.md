@@ -271,7 +271,7 @@ return [
 
 The same steps apply to an admin theme, starting from `packages/Webkul/Admin`: copy its `assets` directory, `package.json` and `vite.config.js`, and register the build in the admin theme's `vite` block under `admin` in `config/themes.php` (see [Creating an Admin Theme](./creating-admin-theme.md)). Two differences:
 
-- Keep the `src/Resources/assets/js/chart.js` input. The reporting pages load it with `bagisto_asset('js/chart.js')`.
+- Keep the `src/Resources/assets/js/chart.js` and `src/Resources/assets/js/echo.js` inputs. The reporting pages load `bagisto_asset('js/chart.js')`, and the admin layout loads `bagisto_asset('js/echo.js')` on every page once a `reverb` or `pusher` broadcaster is configured, so a missing input turns those pages into a 404.
 - The Admin `app.css` also scans `packages/Webkul/Theme/src/Sections` for the section editor's tile icons. Add `@source "../../../../../Admin/src";` so the Admin views your theme doesn't override are scanned too.
 
 ## Deploying

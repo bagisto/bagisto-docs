@@ -151,7 +151,7 @@ php artisan optimize:clear
 
 1. A role whose permission type is **All** passes.
 2. A custom role with no permissions at all is signed out and sent back to the sign-in page.
-3. A route in `Bouncer::UNRESTRICTED_ROUTES` passes for every signed-in admin: the admin's own account and two-factor settings, notifications, the command palette, help, the DataGrid look-up and saved filters, the editor's image upload, Magic AI content and image generation, and deleting an admin user.
+3. A route in `Bouncer::UNRESTRICTED_ROUTES` passes for every signed-in admin: the admin's own account and two-factor settings, notifications, the command palette, help, the DataGrid look-up and saved filters, the editor's image upload, Magic AI content and image generation, and closing the admin's own account.
 4. Any other route is looked up in a map built from every `acl.php`, from route name to permission key. A route missing from the map is refused with a `401`, and so is a route whose key the role doesn't hold.
 
 <a id="checking-permissions-in-your-code"></a>
@@ -187,8 +187,9 @@ The middleware already enforces the permission of the route being requested. Che
 
 ## Things to Watch
 
-- **Every admin route needs an entry.** A route missing from every `acl.php` answers `401` to custom roles, while the default administrator still reaches it, so test as an admin with a custom role before you call a route done. `UNRESTRICTED_ROUTES` is a constant in the core middleware, not an extension point.
-- **Declare every parent key.** The roles form draws its tree from the dotted keys through `acl()->getItems()`. A key whose top-level parent has no entry of its own breaks the roles form, and a deeper key whose parent is missing is left out of the tree without a warning.
+- **Every admin route needs an entry.** A route missing from every `acl.php` answers `401` to custom roles, while the default administrator still reaches it, so test as an admin with a custom role before you call a route done. `UNRESTRICTED_ROUTES` is a constant in the core middleware, not an extension point. `acl()->getRoles()` maps each route name to a single key, so a name listed under two entries keeps only the last one merged; sign-in uses the same map to send an admin without the `dashboard` permission to the first `GET` route, with no required parameter, whose permission they hold.
+- **Declare every parent key.** The roles form draws its tree from the dotted keys through `bouncer()->getGrantableAclItems()`, which is `acl()->getItems()` trimmed to the permissions the signed-in admin's own role holds, so a key whose parent the admin doesn't hold drops with its parent. A key whose top-level parent has no entry of its own breaks the roles form, and a deeper key whose parent is missing is left out of the tree without a warning.
+- **An admin can only grant what they hold.** `bouncer()->canGrantRole()` and `canGrantPermissions()` refuse a role carrying a permission the signed-in admin lacks, and only an admin whose own role is **All** is offered the **All** permission type. Creating, opening or saving such a role redirects to the roles listing with the flash error `admin::app.settings.roles.permissions-not-grantable`; deleting it, or editing or deleting an admin user who holds it, answers `403`. The roles and admin users grids drop the row actions for such rows with a `condition`.
 - **Hiding isn't protecting.** A `bouncer()->hasPermission()` check around a button changes what is shown; the route's ACL entry is what refuses the request.
 - **Spell a key the same everywhere.** `acl.php`, `admin-menu.php`, views and DataGrids compare plain strings, so a typo hides a control or shows one the role can't use, and nothing reports it.
 - **Test the coverage.** `packages/Webkul/Admin/tests/Feature/Acl/PermissionCoverageTest.php` requests every route in the Admin package's `acl.php` as a role holding its permission; [Events, Commands and Tests](./events-commands-and-tests.md) tests the FAQ route with a role that lacks it.

@@ -251,7 +251,7 @@ Each `addAction()` adds a button to every row:
 
 Each `addMassAction()` adds an entry to the actions menu that appears once rows are ticked. The grid sends `method` to `url` with the selected ids as `indices`. A mass action with `options` shows them as a second choice and sends the chosen `value` as well.
 
-Every action and mass action is wrapped in `bouncer()->hasPermission()`, so a role that may not edit or delete never sees the button.
+Every action and mass action is wrapped in `bouncer()->hasPermission()`, so a role that may not edit or delete never sees the button. Core's roles and admin users grids also give those actions a `condition`, so a row the admin may not change loses the button even when they hold the permission.
 
 <a id="integrating-datagrid-with-controller"></a>
 

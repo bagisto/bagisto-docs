@@ -62,7 +62,7 @@ The base `Mailable` classes in `Webkul\Admin\Mail`, `Webkul\Shop\Mail` and `Webk
 |---|---|
 | `Webkul\Marketing\Jobs\UpdateCreateSearchTerm` | Records a storefront search term with its result count, per channel and locale. The storefront product API dispatches it when the request has a search term and no filters besides `mode`, `sort` and `limit` |
 | `Webkul\Sitemap\Jobs\ProcessSitemap` | Generates the XML files of a sitemap when the admin creates or updates it; does nothing when sitemaps are disabled in configuration or the sitemap has no channels |
-| `Webkul\Notification\Events\CreateOrderNotification`, `UpdateOrderNotification` | Broadcast events for the admin's notification bell. Their `broadcastQueue()` returns `broadcastable`, so Laravel queues them on that queue of the default connection |
+| `Webkul\Notification\Events\CreateOrderNotification`, `UpdateOrderNotification` | Broadcast events for the admin's notification bell, sent on the private channel `admin.notifications` as `create-notification` and `update-notification`. Their `broadcastQueue()` returns `broadcastable`, so Laravel queues them on that queue of the default connection; see [Real-Time Admin Notifications](#real-time-admin-notifications) |
 
 ## Running Workers in Production
 
@@ -93,6 +93,14 @@ stopwaitsecs=3600
 - **Restart workers after changing configuration too.** Before each job the worker clears the facade instances it resolved, so `core()` and `system_config()` start again for every job. Two things persist until the worker restarts: the configuration applied at boot, including the **File Management** disk and the **Search Engines** connection, and the repository cache's generation tokens, so the six cached repositories can keep returning old values (see [Cache Strategy](./cache-strategy.md#invalidation)). `--max-time` bounds how long a worker lives.
 - **The production Docker images run no worker.** Their `supervisord.conf` starts the web server, PHP and the database only, so add a program like the one above or run a worker container beside them.
 - **Failed jobs** are stored in `failed_jobs`; list them with `php artisan queue:failed` and retry with `php artisan queue:retry`.
+
+### Real-Time Admin Notifications
+
+The admin's notification bell refreshes on page load unless the store runs a broadcaster. `.env.example` ships `BROADCAST_CONNECTION=null`; set it to `reverb` or `pusher` and fill in that connection's keys (`REVERB_*` or `PUSHER_*`). `Webkul\Admin\Helpers\Broadcasting` then hands the panel its settings, the admin layout loads `js/echo.js`, and the bell listens on the private channel `admin.notifications`, authorized for the `admin` guard in `packages/Webkul/Admin/src/Routes/channels.php`. The worker above already listens on `broadcastable`. With Reverb, also keep its server running beside the workers, configured in `config/reverb.php`:
+
+```bash
+php artisan reverb:start
+```
 
 ### Refreshing Repository Cache Tokens Between Jobs
 

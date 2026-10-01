@@ -21,7 +21,7 @@ A section type is a PHP class extending `Webkul\Theme\Sections\SectionType`. It 
 | `prepareForEditor(array $options): array` | Reshape stored options the way the editor's fields read them. |
 | `prepareForStorage(array $options): array` | Reshape what the editor posts the way the storefront reads it. |
 
-Protected helpers build option lists and clean values: `categoryOptions()`, `limitOptions()`, `yesNo()`, `label()` (translates an `admin::app.appearance.sections.edit.*` key), and `sanitizeHtml()` / `sanitizeCss()`, which strip `script`, `iframe` and `form` elements and anything that could break out of a style block.
+Protected helpers build option lists and clean values: `categoryOptions()`, `limitOptions()`, `yesNo()`, `label()` (translates an `admin::app.appearance.sections.edit.*` key), and `sanitizeHtml()` / `sanitizeCss()`, which strip `script`, `iframe` and `form` elements and anything that could break out of a style block, and `sanitizeUrl()`, which empties a link whose scheme isn't `http`, `https`, `mailto` or `tel`.
 
 ### The Core Types
 
@@ -284,7 +284,7 @@ public function sanitize(array $options): array
 }
 ```
 
-Guard each key with `array_key_exists()` as it does, so a save never invents a field that wasn't posted. **`prepareForEditor()`** and **`prepareForStorage()`** translate between the shape the editor's fields expect and the shape stored; `FooterLinks` uses them to present stored `column_1`, `column_2`, … keys as one `columns` repeater.
+Guard each key with `array_key_exists()` as it does, so a save never invents a field that wasn't posted. A field holding a link the merchant types needs `sanitizeUrl()` in the same method, as `ImageCarousel` and `FooterLinks` do, or a `javascript:` URL reaches the storefront. The Hero Banner's `link` is one: give `HeroBanner` a `sanitize()` that passes each slide's `link` through `$this->sanitizeUrl()`, like `ImageCarousel::sanitize()` does for its `images`. **`prepareForEditor()`** and **`prepareForStorage()`** translate between the shape the editor's fields expect and the shape stored; `FooterLinks` uses them to present stored `column_1`, `column_2`, … keys as one `columns` repeater.
 
 ### Test It
 
@@ -314,7 +314,7 @@ The type class decides what the editor shows; **the theme's views decide what th
     @switch ($section->type)
         @case (\Webkul\Theme\Enums\SectionTypeEnum::IMAGE_CAROUSEL->value)
             <x-shop::carousel
-                :options="$data"
+                :options="$section->getTypeInstance()?->sanitize((array) $data) ?? $data"
                 aria-label="{{ trans('shop::app.home.index.image-carousel') }}"
             />
 
@@ -353,6 +353,7 @@ A section whose type isn't in that switch renders nothing, so a theme that adds 
 
 - **Keep the preview working.** The editor's live preview renders the same view with `$preview` set; the `$marks` wrapper's `data-section-id` lets the `preview-bridge` script scroll to and highlight a section. Keep the wrapper and the `@include('shop::home.preview-bridge')`.
 - **Image fields store bare disk paths**, without a host, so they survive a domain change and work on a remote disk. Resolve them with `bagisto_theme_storage()->url($path)` for the original, or `bagisto_theme_storage()->imageUrls($path)`, which returns `['url' => ..., 'srcset' => ['large' => ..., 'medium' => ..., 'small' => ...]]` through the image cache, or `null` for an empty path.
+- **Authored markup carries references, not URLs.** A static content section's `html` and `css` may hold `__media__/…` references, so a theme that renders them itself passes them through `bagisto_theme_storage()->resolveMarkup()`, as the core home view does. The upload endpoint, `POST admin/appearance/sections/{id}/media`, answers with `ref` for markup and `path` for an image field.
 - **Layout-drawn types read themselves.** The footer and the services strip aren't part of the home-page loop; `components/layouts/footer/index.blade.php` and `components/layouts/services.blade.php` load their section with `SectionRepository::findOneOfType()` and `findAllOfType()`. A custom type with `$layout = true` needs the same in the layout component that draws it, overridden under the theme's `views_path`, and must tolerate a section whose options are still empty.
 
 ## Starting Sections for a Theme
@@ -464,7 +465,7 @@ Event::listen(['appearance.theme.activate.after', 'core.channel.create.after'], 
 | Resolving a theme's list | `Webkul\Theme\SectionSchema::types()`, `type()`, `for()` |
 | Section model | `Webkul\Theme\Models\Section`, `getTypeInstance()` |
 | Admin editor | `Webkul\Admin\Http\Controllers\Appearance\SectionController`, the view `admin::appearance.sections.index` and the components under `admin::components.appearance.sections` |
-| Routes | `admin.appearance.sections.*` in `packages/Webkul/Admin/src/Routes/appearance-routes.php` |
+| Routes | `admin.appearance.sections.*` in `packages/Webkul/Admin/src/Routes/web/appearance-routes.php` |
 | ACL | `appearance.sections`, `appearance.sections.create`, `.edit`, `.delete` |
 | Drafts and publishing | `Webkul\Theme\Repositories\SectionRepository`: `saveDraft()`, `publishDraft()`, `discardDraft()`, `publishDrafts()`, `discardDrafts()`, `getDraftedForPreview()` |
 | Storefront preview | `shop.appearance.preview` route (`GET appearance-preview`), gated by the `appearance.sections` permission |

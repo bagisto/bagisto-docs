@@ -84,7 +84,7 @@ Signatures are as declared in `Core.php` and its `Webkul\Core\Concerns\CurrencyF
 |---|---|
 | `isChannelDateInInterval($dateFrom = null, $dateTo = null)` | Whether today, in the current channel's timezone, is between the two dates inclusive; an empty date leaves that side open |
 | `channelTimeStamp($channel)` | The current Unix timestamp; the channel's timezone doesn't change it |
-| `is_empty_date($date)` | Whether a SQL date such as `0000-00-00 00:00:00` is empty |
+| `isEmptyDate($date)` | Whether a SQL date such as `0000-00-00 00:00:00` is empty |
 | `formatDate($date = null, $format = 'd-m-Y H:i:s')` | The date (now when `null`) in the current channel's timezone, formatted with Carbon's `translatedFormat()` |
 | `xWeekRange($date, $day)` | As `Y-m-d`, the Sunday on or before `$date` when `$day` is `0`, otherwise the Saturday on or after it |
 
@@ -102,7 +102,7 @@ A value that has never been saved falls back to `config()` at the same key witho
 | Method | Returns |
 |---|---|
 | `countries()` | Every row of the `countries` table |
-| `country_name($code)` | The country name for an ISO 3166-1 alpha-2 code, or an empty string |
+| `countryName($code)` | The country name for an ISO 3166-1 alpha-2 code, or an empty string |
 | `states($countryCode)` | The states of a country |
 | `groupedStatesByCountries()` | Every state, grouped in an array keyed by country code |
 | `findStateByCountryCode($countryCode = null, $stateCode = null)` | The matching state, or `false` |
@@ -157,10 +157,10 @@ Each of these is defined in its package's `src/Http/helpers.php` and available e
 | `payment()` | Payment | `Webkul\Payment\Payment` |
 | `shipping()` | Shipping | `Webkul\Shipping\Shipping` |
 | `magic_ai()` | MagicAI | `Webkul\MagicAI\MagicAI` |
-| `bouncer()` | User | `Webkul\User\Bouncer`; `hasPermission()`, and the static `allow()` |
+| `bouncer()` | User | `Webkul\User\Bouncer`; `hasPermission()`, `canGrantRole()`, `canGrantPermissions()`, `getGrantableAclItems()`, and the static `allow()` |
 | `two_factor_authentication()` | User | `Webkul\User\TwoFactorAuthentication` |
 
-`db_grammar()`, `bagisto_theme_storage()` and `image_urls()` were added in Bagisto 2.5, and on Bagisto 2.4 `image_manager()` returns `Intervention\Image\ImageManager`. There is no `theme()`, `visitor()` or `money_format()` helper.
+`db_grammar()`, `bagisto_theme_storage()` and `image_urls()` were added in Bagisto 2.5, and `bouncer()`'s `canGrantRole()`, `canGrantPermissions()` and `getGrantableAclItems()` in Bagisto 2.5 and 2.4.11. On Bagisto 2.4 `image_manager()` returns `Intervention\Image\ImageManager`, and `core()->isEmptyDate()` and `countryName()` are named `is_empty_date()` and `country_name()`. There is no `theme()`, `visitor()` or `money_format()` helper.
 
 ## Things to Watch
 

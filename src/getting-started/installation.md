@@ -142,21 +142,23 @@ After installation, `/install` redirects to the storefront.
 
 ### Production Image
 
-The official images are built from `docker/production/` in the Bagisto repository. Each one bundles a web server, PHP 8.4, a database and an installed store with sample products:
+The official images are built from `docker/production/` in the Bagisto repository. Each one bundles a web server, PHP, a database and an installed store with sample products:
 
 ```bash
 docker run -d --name bagisto -p 80:80 webkul/bagisto:latest
 ```
 
+`latest` follows the newest stable release, so until a stable 2.5 image is published it's a 2.4 release on PHP 8.3. Replace it with a 2.5 tag from the [tag list](https://hub.docker.com/r/webkul/bagisto/tags), such as `2.5.0-beta6`, for Bagisto 2.5 on PHP 8.4.
+
 Open `http://localhost`, and the admin at `http://localhost/admin/login` with `admin@example.com` / `admin123`. Change that password on any store other people can reach.
 
 | Web server | MySQL 8.0 | MariaDB 10.11 | PostgreSQL 16 |
 |---|---|---|---|
-| Nginx and PHP-FPM | `latest`, `latest-nginx`, `latest-nginx-mysql` | `latest-nginx-mariadb` | `latest-nginx-postgres` |
-| Apache and mod_php | `latest-apache`, `latest-apache-mysql` | `latest-apache-mariadb` | `latest-apache-postgres` |
-| OpenLiteSpeed and lsphp | `latest-litespeed`, `latest-litespeed-mysql` | `latest-litespeed-mariadb` | `latest-litespeed-postgres` |
+| Nginx and PHP-FPM | `latest`, `latest-nginx`, `latest-nginx-mysql` | `latest-nginx-mariadb` | `<version>-nginx-postgres` |
+| Apache and mod_php | `latest-apache`, `latest-apache-mysql` | `latest-apache-mariadb` | `<version>-apache-postgres` |
+| OpenLiteSpeed and lsphp | `latest-litespeed`, `latest-litespeed-mysql` | `latest-litespeed-mariadb` | `<version>-litespeed-postgres` |
 
-To pin a release, replace `latest` with its version, for example `webkul/bagisto:2.5.0-nginx-postgres`. To use another host port, set `APP_URL` to match:
+The 2.4 line has no PostgreSQL images, so there's no `latest-*-postgres` tag yet. To pin a release, replace `latest` with its version, for example `webkul/bagisto:2.5.0-beta6-nginx-postgres`. To use another host port, set `APP_URL` to match:
 
 ```bash
 docker run -d --name bagisto -p 8080:80 -e APP_URL=http://localhost:8080 webkul/bagisto:latest
@@ -166,7 +168,7 @@ The container reads `APP_URL`, `APP_KEY`, `APP_TIMEZONE`, `APP_LOCALE`, `APP_CUR
 
 ### Docker Compose Workspace
 
-The [bagisto-docker](https://github.com/bagisto/bagisto-docker) repository is a development workspace with a choice of Nginx, OpenLiteSpeed or Apache runtimes, MySQL, phpMyAdmin and Mailpit. Its setup script installs Bagisto 2.4.7 and its runtimes run PHP 8.3, so it can't run Bagisto 2.5 yet. For a containerized Bagisto 2.5, use the [production image](#production-image) or [Laravel Sail](#laravel-sail).
+The [bagisto-docker](https://github.com/bagisto/bagisto-docker) repository is a development workspace with a choice of Nginx, OpenLiteSpeed or Apache runtimes, MySQL, phpMyAdmin and Mailpit. Its setup script installs Bagisto 2.4.7 and its runtimes run PHP 8.3, so it can't run Bagisto 2.5 yet. For a containerized Bagisto 2.5, use a 2.5 tag of the [production image](#production-image) or [Laravel Sail](#laravel-sail).
 
 <a id="⛵-laravel-sail-installation"></a>
 
@@ -203,9 +205,11 @@ Bagisto's `docker-compose.yml` is a [Laravel Sail](https://laravel.com/docs/sail
 
    MAIL_HOST=mailpit
    MAIL_PORT=1025
+
+   ELASTICSEARCH_HOST=http://elasticsearch:9200
    ```
 
-   `.env.example` already carries the `COMPOSE_PROFILES` line. `DB_USERNAME` can't be `root` — the MySQL and MariaDB images fail to initialise when asked to create a user by that name.
+   `.env.example` already carries the `COMPOSE_PROFILES` line. `DB_USERNAME` can't be `root` — the MySQL and MariaDB images fail to initialise when asked to create a user by that name. Elasticsearch and Kibana always start, and `ELASTICSEARCH_HOST` must name the `elasticsearch` container, since `localhost` inside the application container is the application container itself.
 
 3. Build and start the containers, then install Bagisto:
 

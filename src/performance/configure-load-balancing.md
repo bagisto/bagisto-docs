@@ -21,9 +21,9 @@ Use it when one web server is no longer enough, or when the store must keep runn
 
 ## Step 1: Share Sessions and Caches
 
-Point every server at the same database, and keep sessions and the application cache in the shared database or Redis. Any server can then handle any request, so sticky sessions on the load balancer are optional.
+Point every server at the same database, and keep sessions and the application cache in the shared database or Redis. Any server can then handle any request, so sticky sessions on the load balancer are optional. Prefer `SESSION_DRIVER=database`: a password reset signs the user out of their other sessions only on that driver (`Webkul\Core\Helpers\SessionPurger`).
 
-The application cache holds the repository cache's reads and generation tokens, the catalog API responses and their version, the search engine's last connection verdict and the `queue:restart` signal. With a `file` store, a configuration saved on one server bumps the repository cache token on that server only, and the others keep serving the old values until their cached reads expire.
+The application cache holds the repository cache's reads and generation tokens, the catalog API responses and their version, the search engine's last connection verdict, the `queue:restart` signal, the sign-in and rate limit counters, and the identifiers of signed-out sessions (`Webkul\Core\Helpers\RevokedSessions`). With a `file` store, a configuration saved on one server bumps the repository cache token on that server only, and the others keep serving the old values until their cached reads expire.
 
 The full page cache defaults to a `file` store too, and its listeners run on the server that handled the change. Give it a shared store of its own; see [Configure Full Page Cache](./configure-fpc.md#choose-where-pages-are-stored).
 
@@ -56,7 +56,7 @@ Product, category and theme media go to the default disk. Switch it to Amazon S3
 
 Some files stay on a local disk whatever the default is, so share those directories between servers:
 
-- **`storage/app/private`**: import files, validation fragments, downloaded import images, import error reports and downloadable product link files. Import jobs read their files by path on the server whose worker runs them.
+- **`storage/app/private`**: import files, validation fragments, downloaded import images, import error reports, downloadable product link and sample files, and return (RMA) photos and message attachments. Import jobs read their files by path on the server whose worker runs them.
 - **`storage/app/public`**: generated sitemaps, which `Webkul\Sitemap\Jobs\ProcessSitemap` writes to the `public` disk. `SitemapController` lists the files on its own server and links them under `/storage/`, so share the directory and run `php artisan storage:link` on every server, even when media are on S3 or R2.
 
 ## Step 5: Set Up the Servers Behind the Load Balancer
